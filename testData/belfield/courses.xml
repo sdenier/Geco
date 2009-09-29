@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CourseData>
+  <IOFVersion version="2.0.3" />
+  <Map>
+    <Scale>7500</Scale>
+    <MapPosition x="-156.95" y="144.05" />
+  </Map>
+  <StartPoint>
+    <StartPointCode>STA1</StartPointCode>
+    <MapPosition x="95.55" y="41.52" />
+  </StartPoint>
+  <Control>
+    <ControlCode>150</ControlCode>
+    <MapPosition x="72.81" y="16.64" />
+  </Control>
+  <Control>
+    <ControlCode>151</ControlCode>
+    <MapPosition x="59.51" y="19.38" />
+  </Control>
+  <Control>
+    <ControlCode>152</ControlCode>
+    <MapPosition x="43.59" y="7.04" />
+  </Control>
+  <Control>
+    <ControlCode>153</ControlCode>
+    <MapPosition x="35.11" y="18.29" />
+  </Control>
+  <Control>
+    <ControlCode>154</ControlCode>
+    <MapPosition x="-13.26" y="-4.31" />
+  </Control>
+  <Control>
+    <ControlCode>155</ControlCode>
+    <MapPosition x="-115.06" y="51.2" />
+  </Control>
+  <Control>
+    <ControlCode>156</ControlCode>
+    <MapPosition x="-114.73" y="81.61" />
+  </Control>
+  <Control>
+    <ControlCode>157</ControlCode>
+    <MapPosition x="-94.03" y="94.51" />
+  </Control>
+  <Control>
+    <ControlCode>158</ControlCode>
+    <MapPosition x="-48.77" y="60.81" />
+  </Control>
+  <Control>
+    <ControlCode>159</ControlCode>
+    <MapPosition x="-19.48" y="76.87" />
+  </Control>
+  <Control>
+    <ControlCode>160</ControlCode>
+    <MapPosition x="5.72" y="73.9" />
+  </Control>
+  <Control>
+    <ControlCode>161</ControlCode>
+    <MapPosition x="14.91" y="34.54" />
+  </Control>
+  <Control>
+    <ControlCode>162</ControlCode>
+    <MapPosition x="55.95" y="38.35" />
+  </Control>
+  <Control>
+    <ControlCode>163</ControlCode>
+    <MapPosition x="69.83" y="53.76" />
+  </Control>
+  <FinishPoint>
+    <FinishPointCode>FIN1</FinishPointCode>
+    <MapPosition x="95.78" y="41.69" />
+  </FinishPoint>
+</CourseData>

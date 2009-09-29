@@ -1,0 +1,6 @@
+#Geco 2009-02-14
+#Sat Feb 14 20:10:42 CET 2009
+name=LL Mullagmmeen 12 Oct 2008
+lastheatfile = ./mullaghmeen.csv
+heat-1 = men, category, 5, 4, M1, M2, M3, M4, M16, M18, M20, M21, M35
+heat-2 = women, category, 5, 3, W1, W2, W3, W16, W18, W20, W21, W35

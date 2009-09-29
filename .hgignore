@@ -1,0 +1,15 @@
+
+syntax: regexp
+^src/EventSerialComm\.java$
+syntax: regexp
+^src/EventSerialComm\.java$
+syntax: regexp
+^src/TwoWaySerialComm\.java$
+syntax: regexp
+^activeobjects-0\.8\.2$
+syntax: regexp
+^src/SimpleWrite\.java$
+syntax: regexp
+^activeobjects-0\.8\.2$
+syntax: regexp
+^mysql-connector-java-5\.1\.7$
