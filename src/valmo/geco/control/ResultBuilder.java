@@ -19,7 +19,7 @@ import valmo.geco.ui.Announcer;
  * @since Nov 23, 2008
  *
  */
-public class ResultBuilder extends Control implements Announcer.StageListener {
+public class ResultBuilder extends Control {
 	
 	public ResultBuilder(Factory factory, Stage stage, Announcer announcer) {
 		super(factory, stage, announcer);
