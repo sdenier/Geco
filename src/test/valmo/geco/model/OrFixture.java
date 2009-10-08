@@ -3,17 +3,17 @@
  */
 package test.valmo.geco.model;
 
-import valmo.geco.csv.CategoryIO;
-import valmo.geco.csv.ClubIO;
-import valmo.geco.csv.CourseIO;
-import valmo.geco.csv.CsvReader;
-import valmo.geco.csv.RaceDataIO;
-import valmo.geco.csv.RunnerIO;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.impl.POFactory;
+import valmo.geco.model.iocsv.CategoryIO;
+import valmo.geco.model.iocsv.ClubIO;
+import valmo.geco.model.iocsv.CourseIO;
+import valmo.geco.model.iocsv.CsvReader;
+import valmo.geco.model.iocsv.RaceDataIO;
+import valmo.geco.model.iocsv.RunnerIO;
 
 /**
  * @author Simon Denier

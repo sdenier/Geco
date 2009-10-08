@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2009 Simon Denier
  */
-package valmo.geco.csv;
+package valmo.geco.model.iocsv;
 
-import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import valmo.geco.core.Util;
@@ -16,21 +16,21 @@ import valmo.geco.core.Util;
  * @since Jan 3, 2009
  * 
  */
-public class CsvReader {
+public class CsvWriter {
 
-	private BufferedReader reader;
+	private BufferedWriter writer;
 
 	private String filepath;
 
 	private String csvSep;
 
 
-	public CsvReader initialize(String filePath) {
+	public CsvWriter initialize(String filePath) {
 		this.filepath = filePath;
 		return this;
 	}
 	
-	public CsvReader initialize(String baseDir, String filename) {
+	public CsvWriter initialize(String baseDir, String filename) {
 		this.filepath = baseDir + File.separator + filename;
 		return this;
 	}
@@ -48,13 +48,13 @@ public class CsvReader {
 		this.csvSep = csvSep;
 	}
 
-	public BufferedReader reader() {
-		return this.reader;
+	public BufferedWriter writer() {
+		return this.writer;
 	}
 
 	public void open() {
 		try {
-			this.reader = new BufferedReader(new FileReader(filePath()));
+			this.writer = new BufferedWriter(new FileWriter(filePath()));
 		} catch (IOException e) {
 			e.printStackTrace();
 			close();
@@ -63,37 +63,37 @@ public class CsvReader {
 
 	public void close() {
 		try {
-			if (reader() != null) {
-				reader().close();
+			if (writer() != null) {
+				writer().close();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public String read() {
+	public void write(String str) {
 		try {
-			if (reader() != null) {
-				return reader().readLine();
+			if (writer() != null) {
+				writer().write(str);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 			close();
 		}
-		return null;
 	}
 	
-	public String[] readRecord(String csvSep) {
-		String read = read();
-		if( read==null ) {
-			return null;
-		} else {
-			return Util.splitAndTrim(read, csvSep);
+	public void writeRecord(String[] record, String csvSep) {
+		write(Util.join(record, csvSep, new StringBuffer()));
+		try {
+			writer().newLine();
+		} catch (IOException e) {
+			e.printStackTrace();
+			close();
 		}
 	}
 	
-	public String[] readRecord() {
-		return readRecord(this.csvSep);
+	public void writeRecord(String[] record) {
+		writeRecord(record, this.csvSep);
 	}
 
 }

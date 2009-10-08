@@ -5,17 +5,17 @@ package valmo.geco.control;
 
 import java.io.File;
 
-import valmo.geco.csv.CategoryIO;
-import valmo.geco.csv.ClubIO;
-import valmo.geco.csv.CourseIO;
-import valmo.geco.csv.CsvReader;
-import valmo.geco.csv.CsvWriter;
-import valmo.geco.csv.HeatSetIO;
-import valmo.geco.csv.RaceDataIO;
-import valmo.geco.csv.ResultDataIO;
-import valmo.geco.csv.RunnerIO;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Registry;
+import valmo.geco.model.iocsv.CategoryIO;
+import valmo.geco.model.iocsv.ClubIO;
+import valmo.geco.model.iocsv.CourseIO;
+import valmo.geco.model.iocsv.CsvReader;
+import valmo.geco.model.iocsv.CsvWriter;
+import valmo.geco.model.iocsv.HeatSetIO;
+import valmo.geco.model.iocsv.RaceDataIO;
+import valmo.geco.model.iocsv.ResultDataIO;
+import valmo.geco.model.iocsv.RunnerIO;
 
 /**
  * RegistryBuilder is solely responsible for file-based persistence of Registry in csv format (using the

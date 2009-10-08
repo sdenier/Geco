@@ -18,17 +18,17 @@ import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import valmo.geco.csv.CategoryIO;
-import valmo.geco.csv.ClubIO;
-import valmo.geco.csv.CourseIO;
-import valmo.geco.csv.CsvReader;
-import valmo.geco.csv.RaceDataIO;
-import valmo.geco.csv.ResultDataIO;
-import valmo.geco.csv.RunnerIO;
-import valmo.geco.csv.StageIO;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Stage;
+import valmo.geco.model.iocsv.CategoryIO;
+import valmo.geco.model.iocsv.ClubIO;
+import valmo.geco.model.iocsv.CourseIO;
+import valmo.geco.model.iocsv.CsvReader;
+import valmo.geco.model.iocsv.RaceDataIO;
+import valmo.geco.model.iocsv.ResultDataIO;
+import valmo.geco.model.iocsv.RunnerIO;
+import valmo.geco.model.iocsv.StageIO;
 
 /**
  * StageBuilder is currently responsible for persistence of Stage and its data. It provides functions to

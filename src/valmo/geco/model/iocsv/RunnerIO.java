@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2009 Simon Denier
  */
-package valmo.geco.csv;
+package valmo.geco.model.iocsv;
 
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
