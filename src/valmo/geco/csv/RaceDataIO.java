@@ -3,7 +3,7 @@
  */
 package valmo.geco.csv;
 
-import valmo.geco.control.TimeManager;
+import valmo.geco.core.TimeManager;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Punch;
 import valmo.geco.model.Registry;

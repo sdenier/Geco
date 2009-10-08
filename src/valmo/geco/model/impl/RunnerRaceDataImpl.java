@@ -5,7 +5,7 @@ package valmo.geco.model.impl;
 
 import java.util.Date;
 
-import valmo.geco.control.TimeManager;
+import valmo.geco.core.TimeManager;
 import valmo.geco.model.Course;
 import valmo.geco.model.Punch;
 import valmo.geco.model.Runner;

@@ -11,7 +11,7 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 
-import valmo.geco.control.TimeManager;
+import valmo.geco.core.TimeManager;
 import valmo.geco.model.Punch;
 import valmo.geco.model.Registry;
 import valmo.geco.model.RunnerRaceData;

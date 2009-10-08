@@ -5,10 +5,10 @@ package valmo.geco.control;
 
 import java.util.Properties;
 
+import valmo.geco.core.Announcer;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Stage;
-import valmo.geco.ui.Announcer;
 
 /**
  * Control is an abstract class for any class acting on the stage data. In particular, one control should

@@ -5,6 +5,7 @@ package valmo.geco.control;
 
 import java.util.List;
 
+import valmo.geco.core.Announcer;
 import valmo.geco.model.Category;
 import valmo.geco.model.Course;
 import valmo.geco.model.Factory;
@@ -12,7 +13,6 @@ import valmo.geco.model.Result;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Stage;
-import valmo.geco.ui.Announcer;
 
 /**
  * @author Simon Denier

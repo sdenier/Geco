@@ -9,9 +9,9 @@ import org.martin.sireader.server.PortMessage;
 import org.martin.sireader.server.SIPortHandler;
 import org.martin.sireader.server.SIReaderListener;
 
+import valmo.geco.core.Announcer;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Stage;
-import valmo.geco.ui.Announcer;
 
 /**
  * @author Simon Denier

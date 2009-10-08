@@ -19,6 +19,9 @@ import javax.swing.JTextArea;
 import javax.swing.table.AbstractTableModel;
 
 import valmo.geco.control.RegistryStats;
+import valmo.geco.core.Announcer;
+import valmo.geco.core.Geco;
+import valmo.geco.core.Util;
 import valmo.geco.model.Stage;
 
 /**

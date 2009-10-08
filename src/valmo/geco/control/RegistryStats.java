@@ -8,13 +8,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
+import valmo.geco.core.Announcer;
 import valmo.geco.model.Course;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Stage;
 import valmo.geco.model.Status;
-import valmo.geco.ui.Announcer;
 
 /**
  * @author Simon Denier

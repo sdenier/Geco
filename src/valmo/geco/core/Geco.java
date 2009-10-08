@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2009 Simon Denier
  */
-package valmo.geco.ui;
+package valmo.geco.core;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -25,6 +25,7 @@ import valmo.geco.model.Factory;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Stage;
 import valmo.geco.model.impl.POFactory;
+import valmo.geco.ui.GecoWindow;
 
 import com.apple.eawt.Application;
 import com.apple.eawt.ApplicationAdapter;

@@ -7,6 +7,10 @@ import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Date;
 
+import valmo.geco.core.Announcer;
+import valmo.geco.core.Geco;
+import valmo.geco.core.TimeManager;
+import valmo.geco.core.Util;
 import valmo.geco.model.Category;
 import valmo.geco.model.Course;
 import valmo.geco.model.Factory;
@@ -14,9 +18,6 @@ import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Stage;
 import valmo.geco.model.Status;
-import valmo.geco.ui.Announcer;
-import valmo.geco.ui.Geco;
-import valmo.geco.ui.Util;
 
 /**
  * @author Simon Denier

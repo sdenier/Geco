@@ -25,7 +25,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 
-import valmo.geco.control.TimeManager;
+import valmo.geco.core.Announcer;
+import valmo.geco.core.Geco;
+import valmo.geco.core.TimeManager;
 import valmo.geco.model.Course;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;

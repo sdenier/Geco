@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-import valmo.geco.ui.Util;
+import valmo.geco.core.Util;
 
 
 /**

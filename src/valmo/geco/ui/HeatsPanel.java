@@ -36,6 +36,9 @@ import javax.swing.JTextPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import valmo.geco.core.Announcer;
+import valmo.geco.core.Geco;
+import valmo.geco.core.Util;
 import valmo.geco.model.Heat;
 import valmo.geco.model.HeatSet;
 import valmo.geco.model.Result;

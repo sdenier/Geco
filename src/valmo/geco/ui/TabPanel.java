@@ -7,8 +7,10 @@ import java.util.Properties;
 
 import javax.swing.JFrame;
 
+import valmo.geco.core.Announcer;
+import valmo.geco.core.Geco;
+import valmo.geco.core.Announcer.StageListener;
 import valmo.geco.model.Stage;
-import valmo.geco.ui.Announcer.StageListener;
 
 /**
  * @author Simon Denier

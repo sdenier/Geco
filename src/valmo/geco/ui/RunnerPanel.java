@@ -21,7 +21,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import valmo.geco.control.RunnerControl;
-import valmo.geco.control.TimeManager;
+import valmo.geco.core.Geco;
+import valmo.geco.core.TimeManager;
+import valmo.geco.core.Util;
 import valmo.geco.model.Course;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;

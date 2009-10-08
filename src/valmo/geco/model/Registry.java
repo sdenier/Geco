@@ -263,6 +263,7 @@ public class Registry {
 		return chipnumbers;
 	}
 	
+	// TODO: inverse dependency to PenaltyChecker or something
 	public void checkGecoData(Factory factory, PenaltyChecker checker) {
 		checkNoDataRunners(factory);
 		// compute trace for data

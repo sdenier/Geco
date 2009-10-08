@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2009 Simon Denier
  */
-package valmo.geco.control;
+package valmo.geco.core;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

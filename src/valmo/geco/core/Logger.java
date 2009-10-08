@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2009 Simon Denier
  */
-package valmo.geco.ui;
+package valmo.geco.core;
 
 import java.io.BufferedWriter;
 import java.io.File;
