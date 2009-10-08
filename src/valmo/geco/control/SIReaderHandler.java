@@ -67,7 +67,12 @@ public class SIReaderHandler extends Control implements SIReaderListener {
 
 	@Override
 	public void newCardRead(IResultData card) {
-		
+		/* 
+		 * get chip number
+		 * retrieve runner from chip number
+		 * check if already has result (or no runner found)
+		 * createRunnerRaceData()
+		 */
 	}
 
 
