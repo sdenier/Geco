@@ -236,5 +236,15 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 		}
 	}
 
+
+	/* (non-Javadoc)
+	 * @see valmo.geco.core.Announcer.RunnerListener#cardRead(java.lang.String)
+	 */
+	@Override
+	public void cardRead(String chip) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 }

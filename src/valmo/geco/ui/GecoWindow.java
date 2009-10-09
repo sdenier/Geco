@@ -138,7 +138,25 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 		});
 		toolBar.add(statusB);
 		toolBar.add(Box.createHorizontalGlue());
-		toolBar.add(new JLabel("Crawling for Better Orienteering Software - v0.1"));
+		final JButton startB = new JButton("Start reader");
+		startB.addActionListener(new ActionListener() {
+			private boolean started = false;
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if( started ) {
+					geco.siHandler().stop();
+					startB.setSelected(false);
+					startB.setText("Start reader");
+				} else {
+					geco.siHandler().start();
+					startB.setSelected(true);
+					startB.setText("Stop reader");
+				}
+				started = !started;
+			}
+		});
+		toolBar.add(startB);
+		toolBar.add(new JLabel(" v" + Geco.VERSION));
 		return toolBar;
 	}
 

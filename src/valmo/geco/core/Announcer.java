@@ -49,6 +49,13 @@ public class Announcer {
 	public interface RunnerListener {
 		
 		/**
+		 * Signal a card has been read by the handler.
+		 * 
+		 * @param chip
+		 */
+		public void cardRead(String chip);
+		
+		/**
 		 * Signal creation of a new runner in registry.
 		 * 
 		 * @param runner
@@ -120,6 +127,12 @@ public class Announcer {
 	/*
 	 * Runner annoucements
 	 */
+	public void announceCardRead(String chip) {
+		for (RunnerListener listener : this.runnerListeners) {
+			listener.cardRead(chip);
+		}
+	}
+	
 	public void announceRunnerCreation(RunnerRaceData runner) {
 		for (RunnerListener listener : this.runnerListeners) {
 			listener.runnerCreated(runner);

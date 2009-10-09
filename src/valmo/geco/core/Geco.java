@@ -20,6 +20,7 @@ import valmo.geco.control.PunchChecker;
 import valmo.geco.control.RegistryStats;
 import valmo.geco.control.ResultBuilder;
 import valmo.geco.control.RunnerControl;
+import valmo.geco.control.SIReaderHandler;
 import valmo.geco.control.StageBuilder;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Registry;
@@ -39,6 +40,8 @@ import com.apple.eawt.ApplicationEvent;
  * @since Jan 25, 2009
  */
 public class Geco {
+	
+	public static final String VERSION = "0.5"; 
 	
 	private class RuntimeStage {
 		private Stage stage;
@@ -94,6 +97,8 @@ public class Geco {
 	private HeatBuilder heatBuilder;
 
 	private StageBuilder stageBuilder;
+	
+	private SIReaderHandler siHandler;
 
 	/*
 	 * Stage list 
@@ -167,6 +172,7 @@ public class Geco {
 		resultBuilder = new ResultBuilder(factory, stage(), announcer);
 		heatBuilder = new HeatBuilder(factory);
 		stats = new RegistryStats(factory, stage(), announcer);
+		siHandler = new SIReaderHandler(factory, stage(), announcer);
 		window = new GecoWindow(this, announcer);
 	}
 
@@ -300,6 +306,10 @@ public class Geco {
 	}	
 	public RegistryStats registryStats() {
 		return this.stats;
+	}
+	
+	public SIReaderHandler siHandler() {
+		return this.siHandler;
 	}
 
 	public String getPreviousStageDir() {

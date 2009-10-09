@@ -22,14 +22,19 @@ import valmo.geco.control.RegistryStats;
 import valmo.geco.core.Announcer;
 import valmo.geco.core.Geco;
 import valmo.geco.core.Util;
+import valmo.geco.core.Announcer.RunnerListener;
+import valmo.geco.model.Course;
+import valmo.geco.model.Runner;
+import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Stage;
+import valmo.geco.model.Status;
 
 /**
  * @author Simon Denier
  * @since Sep 13, 2009
  *
  */
-public class LivePanel extends TabPanel {
+public class LivePanel extends TabPanel implements RunnerListener {
 
 	private JTextArea chiplogArea;
 	
@@ -51,6 +56,7 @@ public class LivePanel extends TabPanel {
 		super(geco, frame, announcer);
 		initLivePanel(this);
 		changed(null, null);
+		announcer.registerRunnerListener(this);
 		updateThread = startAutoUpdate();
 	}
 
@@ -62,7 +68,6 @@ public class LivePanel extends TabPanel {
 				while( true ){
 					stageTableModel.fireTableDataChanged();
 					courseTableModel.fireTableDataChanged();
-					System.out.println("sent");
 					try {
 						wait(5000);
 					} catch (InterruptedException e) {
@@ -88,6 +93,8 @@ public class LivePanel extends TabPanel {
 	
 	public JPanel initChipPanel() {
 		chiplogArea = new JTextArea(30, 80);
+		chiplogArea.setEditable(false);
+		chiplogArea.setLineWrap(true);
 		chiplogArea.setText("Waiting for data...");
 		JButton clearB = new JButton("Clear view");
 		clearB.addActionListener(new ActionListener() {
@@ -96,7 +103,6 @@ public class LivePanel extends TabPanel {
 				chiplogArea.setText("");
 			}
 		});
-		chiplogArea.setEditable(false);
 		JPanel chipPanel = new JPanel(new BorderLayout());
 		chipPanel.add(Util.embed(clearB), BorderLayout.NORTH);
 		chipPanel.add(new JScrollPane(chiplogArea), BorderLayout.CENTER);
@@ -211,6 +217,48 @@ public class LivePanel extends TabPanel {
 		} catch (InterruptedException e) {
 			geco().logger().debug(e);
 		}
+	}
+
+
+	/* (non-Javadoc)
+	 * @see valmo.geco.core.Announcer.RunnerListener#courseChanged(valmo.geco.model.Runner, valmo.geco.model.Course)
+	 */
+	@Override
+	public void courseChanged(Runner runner, Course oldCourse) {
+	}
+
+
+	/* (non-Javadoc)
+	 * @see valmo.geco.core.Announcer.RunnerListener#runnerCreated(valmo.geco.model.RunnerRaceData)
+	 */
+	@Override
+	public void runnerCreated(RunnerRaceData runner) {
+	}
+
+
+	/* (non-Javadoc)
+	 * @see valmo.geco.core.Announcer.RunnerListener#runnerDeleted(valmo.geco.model.RunnerRaceData)
+	 */
+	@Override
+	public void runnerDeleted(RunnerRaceData runner) {
+	}
+
+
+	/* (non-Javadoc)
+	 * @see valmo.geco.core.Announcer.RunnerListener#statusChanged(valmo.geco.model.RunnerRaceData, valmo.geco.model.Status)
+	 */
+	@Override
+	public void statusChanged(RunnerRaceData runner, Status oldStatus) {
+	}
+
+
+	/* (non-Javadoc)
+	 * @see valmo.geco.core.Announcer.RunnerListener#cardRead(java.lang.String)
+	 */
+	@Override
+	public void cardRead(String chip) {
+		chiplogArea.append("\n");
+		chiplogArea.append(chip);
 	}
 
 	

@@ -11,6 +11,7 @@ import org.martin.sireader.server.SIReaderListener;
 
 import valmo.geco.core.Announcer;
 import valmo.geco.model.Factory;
+import valmo.geco.model.Runner;
 import valmo.geco.model.Stage;
 
 /**
@@ -73,12 +74,26 @@ public class SIReaderHandler extends Control implements SIReaderListener {
 		 * check if already has result (or no runner found)
 		 * createRunnerRaceData()
 		 */
+		announcer.announceCardRead(card.formatCSV());
+		// TODO: synchronize on registry
+		Runner runner = registry().findRunnerByChip(card.getSiIdent());
+		if( runner==null ) {
+			announcer.announceCardRead("Dangling John Doe!");
+		} else {
+			announcer.announceCardRead(runner.idString());
+		}
+		
 	}
 
 
 	@Override
 	public void portStatusChanged(String status) {
 		
+	}
+
+	@Override
+	public void closing(Stage stage) {
+		stop();
 	}
 	
 }
