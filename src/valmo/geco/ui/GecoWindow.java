@@ -6,6 +6,7 @@ package valmo.geco.ui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Properties;
@@ -65,10 +66,15 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 		getContentPane().add(initToolbar(), BorderLayout.NORTH);
 		JTabbedPane pane = new JTabbedPane();
 		pane.addTab("Stage", this.stagePanel);
+		pane.setMnemonicAt(0, KeyEvent.VK_S);
 		pane.addTab("Runners", this.runnersPanel);
+		pane.setMnemonicAt(1, KeyEvent.VK_R);
 		pane.addTab("Live", this.livePanel);
+		pane.setMnemonicAt(2, KeyEvent.VK_L);
 		pane.addTab("Results", this.resultsPanel);
+		pane.setMnemonicAt(3, KeyEvent.VK_E);
 		pane.addTab("Heats", this.heatsPanel);
+		pane.setMnemonicAt(4, KeyEvent.VK_H);
 		getContentPane().add(pane, BorderLayout.CENTER);
 
 //		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
