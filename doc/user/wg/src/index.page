@@ -1,0 +1,50 @@
+---
+title: Geco User Help
+sort_info: 1
+in_menu: true
+routed_title: New webgen Website
+---
+## Geco User Help
+
+**Geco** is a lightweight desktop application in Java to manage orienteering race in live. Geco was developed to support the Orient’Show format. However, it works fine with classical formats of orienteering (and can be extended).
+
+### Philosophy
+Geco has three driving forces.
+- Custom application for the Orient’Show format, which has a number of peculiarities (rules and format) not well supported by other apps. But geco also supports classical formats out of the box, and leans towards an extensible platform for any format of orienteering.
+- Enhanced user experience through simple UI guidelines: in Geco, all data and possible actions are visible through the main panes and easily accessible, making obvious how to interact with the application. Very few capabilities are not visible at first hand.
+- Extensible by and for the open-source community: because it's time for everybody to get some good tools for our geeky sport.
+
+### Features
+Geco window is organized as series of tabbed panels, each panel dedicated to one aspect of race management. So here are the features, panel-wise:
+- Sportident station management (always accessible)
+- [Stage] management, to create and modify stage configuration, clubs, courses, categories
+- [Runners] management, to look at registered runners, filter data, check punches, and modify runner's status for the race
+- [Live] panel, to follow SI download and get race statistics
+- [Results] panel, to generate results
+- [Heats] panel, to generate heats from results for the next stage
+
+Read the [workflow] page for an how-to manage race with Geco.
+
+<img src="images/runners_panel.png" width="400px" />
+
+
+### What do you need to run Geco?
+- A recent JRE (Java Runtime Environment, version 6+)
+- SportIdent drivers 
+-- Windows: check sportident website
+-- Linux: recent kernels recognize the chip used by SI station, so it's plug'n'play
+-- Mac OS X: nothing out of the box, but it is easy to install some driver and get Mac OS to recognize the station (one line to hack). Contact me for the process
+- Geco bundle (download): it includes the application, template files for a race, user and developer documentation, native libraries for serial communication
+
+Note: if your platform is uncommon, you may need to install and compile RXTX drivers (serial drivers for the Java platform). Contact me if you need some help.
+
+
+### Author and contact
+Hi, my name is Simon Denier, I am a O'coholic and you can find more information on my website.
+
+[workflow]: workflow.html
+[Stage]: stage.html
+[Runners]: runners.html
+[Live]: live.html
+[Results]: results.html
+[Heats]: heats.html
