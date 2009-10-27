@@ -213,7 +213,6 @@ public class LivePanel extends TabPanel implements RunnerListener {
 		updateThread.interrupt();
 		try {
 			updateThread.join();
-			System.out.println("interrupted");
 		} catch (InterruptedException e) {
 			geco().logger().debug(e);
 		}
