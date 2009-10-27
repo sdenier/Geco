@@ -33,19 +33,13 @@ public class SIReaderHandler extends Control implements SIReaderListener {
 	public SIReaderHandler(Factory factory, Stage stage, Announcer announcer) {
 		super(factory, stage, announcer);
 		this.announcer = announcer;
-		this.portHandler = new SIPortHandler(new ResultData());
-		this.portHandler.addListener(this);
 	}
 
-	public void configure() {
+	private void configure() {
+		portHandler = new SIPortHandler(new ResultData());
+		portHandler.addListener(this);
 		portHandler.setPortName("/dev/tty.SLAB_USBtoUART");		// TODO: take parameter from stage properties
 		portHandler.setDebugDir(".");
-	}
-
-	public void reconfigure() {
-		stop();
-		configure();
-		portHandler.restart();
 	}
 
 	public void start() {
