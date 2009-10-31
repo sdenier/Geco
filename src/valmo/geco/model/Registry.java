@@ -69,7 +69,7 @@ public class Registry {
 		return courses.get(name);
 	}
 	
-	public void addCourse(Course course) {
+	public synchronized void addCourse(Course course) {
 		courses.put(course.getName(), course);
 	}
 
@@ -86,7 +86,7 @@ public class Registry {
 		return clubs.get(name);
 	}
 	
-	public void addClub(Club club) {
+	public synchronized void addClub(Club club) {
 		clubs.put(club.getName(), club);
 	}
 
@@ -103,7 +103,7 @@ public class Registry {
 		return categories.get(name);
 	}
 	
-	public void addCategory(Category cat) {
+	public synchronized void addCategory(Category cat) {
 		categories.put(cat.getShortname(), cat);
 	}
 
@@ -116,46 +116,46 @@ public class Registry {
 		return runnersByChip.get(chip);
 	}
 	
-	public void addRunner(Runner runner) {
+	public synchronized void addRunner(Runner runner) {
 		runnersByChip.put(runner.getChipnumber(), runner);
 		addRunnerinCategoryList(runner, runner.getCategory());
 		addRunnerinCourseList(runner, runner.getCourse());
 	}
 	
-	private void addRunnerinCourseList(Runner runner, Course course) {
+	private synchronized void addRunnerinCourseList(Runner runner, Course course) {
 		if( !runnersByCourse.containsKey(course) ) {
 			runnersByCourse.put(course, new Vector<Runner>());
 		}
 		runnersByCourse.get(course).add(runner);
 	}
 
-	private void addRunnerinCategoryList(Runner runner, Category cat) {
+	private synchronized void addRunnerinCategoryList(Runner runner, Category cat) {
 		if( !runnersByCategory.containsKey(cat) ) {
 			runnersByCategory.put(cat, new Vector<Runner>());
 		}
 		runnersByCategory.get(cat).add(runner);
 	}
 
-	public void updateRunnerChip(String oldChip, Runner runner) {
+	public synchronized void updateRunnerChip(String oldChip, Runner runner) {
 		runnersByChip.remove(oldChip);
 		runnersByChip.put(runner.getChipnumber(), runner);
 	}
 
-	public void updateRunnerCourse(Course oldCourse, Runner runner) {
+	public synchronized void updateRunnerCourse(Course oldCourse, Runner runner) {
 		if( !oldCourse.equals(runner.getCourse() )) {
 			runnersByCourse.get(oldCourse).remove(runner);
 			addRunnerinCourseList(runner, runner.getCourse());
 		}
 	}
 
-	public void updateRunnerCategory(Category oldCat, Runner runner) {
+	public synchronized void updateRunnerCategory(Category oldCat, Runner runner) {
 		if( !oldCat.equals(runner.getCategory() )) {
 			runnersByCategory.get(oldCat).remove(runner);
 			addRunnerinCategoryList(runner, runner.getCategory());
 		}
 	}
 	
-	public void removeRunner(Runner runner) {
+	public synchronized void removeRunner(Runner runner) {
 		runnersByChip.remove(runner.getChipnumber());
 		runnersByCategory.get(runner.getCategory()).remove(runner);
 		runnersByCourse.get(runner.getCourse()).remove(runner);
@@ -173,15 +173,15 @@ public class Registry {
 		return runnerData.get(findRunnerByChip(chip));
 	}
 	
-	public void addRunnerData(RunnerRaceData data) {
+	public synchronized void addRunnerData(RunnerRaceData data) {
 		runnerData.put(data.getRunner(), data);
 	}
 	
-	public void removeRunnerData(RunnerRaceData data) {
+	public synchronized void removeRunnerData(RunnerRaceData data) {
 		runnerData.remove(data.getRunner());
 	}
 
-	public RunnerRaceData createRunnerDataFor(Runner runner, Factory factory) {
+	public synchronized RunnerRaceData createRunnerDataFor(Runner runner, Factory factory) {
 		RunnerRaceData data = factory.createRunnerRaceData();
 		data.setRunner(runner);
 		data.setResult(factory.createRunnerResult());
@@ -218,11 +218,11 @@ public class Registry {
 		return heatsets.get(name);
 	}
 	
-	public void addHeatSet(HeatSet heatset) {
+	public synchronized void addHeatSet(HeatSet heatset) {
 		heatsets.put(heatset.getName(), heatset);
 	}
 
-	public void removeHeatset(HeatSet heatSet) {
+	public synchronized void removeHeatset(HeatSet heatSet) {
 		heatsets.remove(heatSet);
 	}
 
