@@ -11,6 +11,7 @@ import valmo.geco.model.Punch;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.RunnerResult;
+import valmo.geco.model.Status;
 
 /**
  * @author Simon Denier
@@ -96,6 +97,10 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 	 */
 	public Course getCourse() {
 		return runner.getCourse();
+	}
+	
+	public boolean hasResult() {
+		return getResult().getStatus() != Status.Unknown;
 	}
 
 	public RunnerResult getResult() {

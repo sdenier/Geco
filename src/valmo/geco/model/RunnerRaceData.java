@@ -41,7 +41,9 @@ public interface RunnerRaceData {
 	 * Should access course through Runner -> Course relation
 	 */
 	public Course getCourse();
-
+	
+	public boolean hasResult();
+	
 	public RunnerResult getResult();
 
 	public void setResult(RunnerResult result);

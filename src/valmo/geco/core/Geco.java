@@ -172,7 +172,7 @@ public class Geco {
 		resultBuilder = new ResultBuilder(factory, stage(), announcer);
 		heatBuilder = new HeatBuilder(factory);
 		stats = new RegistryStats(factory, stage(), announcer);
-		siHandler = new SIReaderHandler(factory, stage(), announcer);
+		siHandler = new SIReaderHandler(factory, stage(), this, announcer);
 		window = new GecoWindow(this, announcer);
 	}
 
@@ -358,6 +358,16 @@ public class Geco {
 			next = null;
 			announcer.announceChange(getStage(previous), stage());
 		} // else do nothing
+	}
+
+	/**
+	 * @param string
+	 * @param string2
+	 * @return
+	 */
+	public boolean askForConfirmation(String message, String title) {
+		int confirm = JOptionPane.showConfirmDialog(window, message, title, JOptionPane.YES_NO_OPTION);
+		return confirm==JOptionPane.YES_OPTION;
 	}
 
 }
