@@ -51,6 +51,8 @@ public class SIReaderHandler extends Control implements SIReaderListener {
 	}
 	
 	public void stop() {
+		if( portHandler==null )
+			return;
 		try {
 			portHandler.interrupt();
 			portHandler.join();
