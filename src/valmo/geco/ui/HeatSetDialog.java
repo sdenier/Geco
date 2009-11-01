@@ -58,37 +58,30 @@ public class HeatSetDialog extends JDialog {
 		getContentPane().setLayout(new GridBagLayout());
 		getContentPane().add(new JLabel("Heat Set Name"));
 		heatSetF = new JTextField(7);
-		getContentPane().add(heatSetF, compConstraint(1, 0));
-//		getContentPane().add(new JLabel("Number of Heats"));
-		GridBagConstraints c = compConstraint(0, 1);
+		getContentPane().add(heatSetF, Util.compConstraint(1, 0));
+		GridBagConstraints c = Util.compConstraint(0, 1);
 		c.gridwidth = 2;
-		c.anchor = GridBagConstraints.CENTER;
 		getContentPane().add(new JLabel("Heat Names: heat1, heat2, ..."), c);
 		heatNamesTA = new JTextArea();
 		heatNamesTA.setLineWrap(true);
 		heatNamesTA.setPreferredSize(new Dimension(200,40));
-		c = compConstraint(0, 2);
+		c = Util.compConstraint(0, 2);
 		c.gridwidth = 2;
-		c.anchor = GridBagConstraints.CENTER;
 		c.insets = new Insets(0, 0, 10, 0);
 		heatNamesTA.setBorder(BorderFactory.createLineBorder(Color.gray));
 		getContentPane().add(heatNamesTA, c);
 
-		getContentPane().add(new JLabel("Qualifying Rank"), compConstraint(0, 3));
+		getContentPane().add(new JLabel("Qualifying Rank"), Util.compConstraint(0, 3));
 		qRankF = new JTextField(7);
-		getContentPane().add(qRankF, compConstraint(1, 3));
+		getContentPane().add(qRankF, Util.compConstraint(1, 3));
 		
 		selectCourseB = new JRadioButton("Courses");
 		selectCatB = new JRadioButton("Categories");
 		ButtonGroup group = new ButtonGroup();
 		group.add(selectCourseB);
 		group.add(selectCatB);
-		c = compConstraint(0, 4);
-		c.anchor = GridBagConstraints.CENTER;
-		getContentPane().add(selectCourseB, c);
-		c = compConstraint(1, 4);
-		c.anchor = GridBagConstraints.CENTER;
-		getContentPane().add(selectCatB, c);
+		getContentPane().add(selectCourseB, Util.compConstraint(0, 4));
+		getContentPane().add(selectCatB, Util.compConstraint(1, 4));
 		
 		JButton saveB = new JButton("Save");
 		saveB.addActionListener(new ActionListener() {
@@ -97,9 +90,7 @@ public class HeatSetDialog extends JDialog {
 				checkSetFields();
 			}
 		});
-		c = compConstraint(0, 5);
-		c.anchor = GridBagConstraints.CENTER;
-		getContentPane().add(saveB, c);
+		getContentPane().add(saveB, Util.compConstraint(0, 5));
 		JButton cancelB = new JButton("Cancel");
 		cancelB.addActionListener(new ActionListener() {
 			@Override
@@ -108,25 +99,10 @@ public class HeatSetDialog extends JDialog {
 				setVisible(false);
 			}
 		});
-		c = compConstraint(1, 5);
-		c.anchor = GridBagConstraints.CENTER;
-		getContentPane().add(cancelB, c);
+		getContentPane().add(cancelB, Util.compConstraint(1, 5));
 		pack();
 	}
 	
-	public GridBagConstraints compConstraint(int gridx, int gridy) {
-		GridBagConstraints constraints = new GridBagConstraints();
-		constraints.gridx = gridx;
-		constraints.gridy = gridy;
-		constraints.anchor = GridBagConstraints.CENTER;
-//		constraints.anchor = GridBagConstraints.LINE_START;
-		constraints.ipadx = 10 ;
-		constraints.ipady = 10 ;
-//		constraints.gridwidth = gridwidth;
-//		constraints.gridheight = gridheigth;
-		return constraints;
-	}
-
 	private void checkSetFields() {
 		boolean ok = true;
 		String errorMessage = "";

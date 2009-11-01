@@ -4,6 +4,7 @@
 package valmo.geco.core;
 
 import java.awt.Component;
+import java.awt.GridBagConstraints;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -67,5 +68,18 @@ public class Util {
 		}
 		return allDifferent;
 	}
+
+	public static GridBagConstraints compConstraint(int gridx, int gridy) {
+			GridBagConstraints constraints = new GridBagConstraints();
+			constraints.gridx = gridx;
+			constraints.gridy = gridy;
+			constraints.anchor = GridBagConstraints.CENTER;
+	//		constraints.anchor = GridBagConstraints.LINE_START;
+			constraints.ipadx = 10 ;
+			constraints.ipady = 10 ;
+	//		constraints.gridwidth = gridwidth;
+	//		constraints.gridheight = gridheigth;
+			return constraints;
+		}
 
 }
