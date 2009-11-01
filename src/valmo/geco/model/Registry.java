@@ -42,6 +42,8 @@ public class Registry {
 	
 	private Map<String, HeatSet> heatsets;
 	
+	private Object runnersLock = new Object();
+	
 	/**
 	 * 
 	 */
@@ -58,130 +60,182 @@ public class Registry {
 	
 	
 	public Collection<Course> getCourses() {
-		return courses.values();
+		synchronized (courses) {
+			return courses.values();			
+		}
 	}
 
 	public Vector<String> getCoursenames() {
-		return new Vector<String>(courses.keySet());
+		synchronized (courses) {
+			return new Vector<String>(courses.keySet());	
+		}
 	}
 	
 	public Course findCourse(String name) {
-		return courses.get(name);
+		synchronized (courses) {
+			return courses.get(name);
+		}
 	}
 	
-	public synchronized void addCourse(Course course) {
-		courses.put(course.getName(), course);
+	public void addCourse(Course course) {
+		synchronized (courses) {
+			courses.put(course.getName(), course);
+		}
 	}
 
 
 	public Collection<Club> getClubs() {
-		return clubs.values();
+		synchronized (clubs) {
+			return clubs.values();
+		}
 	}
 	
 	public Vector<String> getClubnames() {
-		return new Vector<String>(clubs.keySet());
+		synchronized (clubs) {
+			return new Vector<String>(clubs.keySet());
+		}
 	}
 	
 	public Club findClub(String name) {
-		return clubs.get(name);
+		synchronized (clubs) {
+			return clubs.get(name);
+		}
 	}
 	
-	public synchronized void addClub(Club club) {
-		clubs.put(club.getName(), club);
+	public void addClub(Club club) {
+		synchronized (clubs) {
+			clubs.put(club.getName(), club);
+		}
 	}
 
 	
 	public Collection<Category> getCategories() {
-		return categories.values();
+		synchronized (categories) {
+			return categories.values();
+		}
 	}
 
 	public Vector<String> getCategorynames() {
-		return new Vector<String>(categories.keySet());
+		synchronized (categories) {
+			return new Vector<String>(categories.keySet());
+		}
 	}
 
 	public Category findCategory(String name) {
-		return categories.get(name);
+		synchronized (categories) {
+			return categories.get(name);
+		}
 	}
 	
-	public synchronized void addCategory(Category cat) {
-		categories.put(cat.getShortname(), cat);
+	public void addCategory(Category cat) {
+		synchronized (categories) {
+			categories.put(cat.getShortname(), cat);
+		}
 	}
 
 
 	public Collection<Runner> getRunners() {
-		return runnersByChip.values();
+		synchronized (runnersLock) {
+			return runnersByChip.values();
+		}
 	}
 	
 	public Runner findRunnerByChip(String chip) {
-		return runnersByChip.get(chip);
+		synchronized (runnersLock) {
+			return runnersByChip.get(chip);
+		}
 	}
 	
-	public synchronized void addRunner(Runner runner) {
-		runnersByChip.put(runner.getChipnumber(), runner);
-		addRunnerinCategoryList(runner, runner.getCategory());
-		addRunnerinCourseList(runner, runner.getCourse());
-	}
-	
-	private synchronized void addRunnerinCourseList(Runner runner, Course course) {
-		if( !runnersByCourse.containsKey(course) ) {
-			runnersByCourse.put(course, new Vector<Runner>());
-		}
-		runnersByCourse.get(course).add(runner);
-	}
-
-	private synchronized void addRunnerinCategoryList(Runner runner, Category cat) {
-		if( !runnersByCategory.containsKey(cat) ) {
-			runnersByCategory.put(cat, new Vector<Runner>());
-		}
-		runnersByCategory.get(cat).add(runner);
-	}
-
-	public synchronized void updateRunnerChip(String oldChip, Runner runner) {
-		runnersByChip.remove(oldChip);
-		runnersByChip.put(runner.getChipnumber(), runner);
-	}
-
-	public synchronized void updateRunnerCourse(Course oldCourse, Runner runner) {
-		if( !oldCourse.equals(runner.getCourse() )) {
-			runnersByCourse.get(oldCourse).remove(runner);
+	public void addRunner(Runner runner) {
+		synchronized (runnersLock) {
+			runnersByChip.put(runner.getChipnumber(), runner);
+			addRunnerinCategoryList(runner, runner.getCategory());
 			addRunnerinCourseList(runner, runner.getCourse());
 		}
 	}
+	
+	private void addRunnerinCourseList(Runner runner, Course course) {
+		synchronized (runnersLock) {
+			if( !runnersByCourse.containsKey(course) ) {
+				runnersByCourse.put(course, new Vector<Runner>());
+			}
+			runnersByCourse.get(course).add(runner);
+		}
+	}
 
-	public synchronized void updateRunnerCategory(Category oldCat, Runner runner) {
-		if( !oldCat.equals(runner.getCategory() )) {
-			runnersByCategory.get(oldCat).remove(runner);
-			addRunnerinCategoryList(runner, runner.getCategory());
+	private void addRunnerinCategoryList(Runner runner, Category cat) {
+		synchronized (runnersLock) {
+			if( !runnersByCategory.containsKey(cat) ) {
+				runnersByCategory.put(cat, new Vector<Runner>());
+			}
+			runnersByCategory.get(cat).add(runner);
+		}
+	}
+
+	public void updateRunnerChip(String oldChip, Runner runner) {
+		synchronized (runnersLock) {
+			runnersByChip.remove(oldChip);
+			runnersByChip.put(runner.getChipnumber(), runner);
+		}
+	}
+
+	public void updateRunnerCourse(Course oldCourse, Runner runner) {
+		synchronized (runnersLock) {
+			if( !oldCourse.equals(runner.getCourse() )) {
+				runnersByCourse.get(oldCourse).remove(runner);
+				addRunnerinCourseList(runner, runner.getCourse());
+			}
+		}
+	}
+
+	public void updateRunnerCategory(Category oldCat, Runner runner) {
+		synchronized (runnersLock) {
+			if( !oldCat.equals(runner.getCategory() )) {
+				runnersByCategory.get(oldCat).remove(runner);
+				addRunnerinCategoryList(runner, runner.getCategory());
+			}
 		}
 	}
 	
-	public synchronized void removeRunner(Runner runner) {
-		runnersByChip.remove(runner.getChipnumber());
-		runnersByCategory.get(runner.getCategory()).remove(runner);
-		runnersByCourse.get(runner.getCourse()).remove(runner);
+	public void removeRunner(Runner runner) {
+		synchronized (runnersLock) {
+			runnersByChip.remove(runner.getChipnumber());
+			runnersByCategory.get(runner.getCategory()).remove(runner);
+			runnersByCourse.get(runner.getCourse()).remove(runner);
+		}
 	}
 
 	public Collection<RunnerRaceData> getRunnersData() {
-		return runnerData.values();
+		synchronized (runnersLock) {
+			return runnerData.values();
+		}
 	}
 	
 	public RunnerRaceData findRunnerData(Runner runner) {
-		return runnerData.get(runner);
+		synchronized (runnersLock) {
+			return runnerData.get(runner);
+		}
 	}
 
 	public RunnerRaceData findRunnerData(String chip) {
-		return runnerData.get(findRunnerByChip(chip));
+		synchronized (runnersLock) {
+			return runnerData.get(findRunnerByChip(chip));
+		}
 	}
 	
-	public synchronized void addRunnerData(RunnerRaceData data) {
-		runnerData.put(data.getRunner(), data);
+	public void addRunnerData(RunnerRaceData data) {
+		synchronized (runnersLock) {
+			runnerData.put(data.getRunner(), data);
+		}
 	}
 	
-	public synchronized void removeRunnerData(RunnerRaceData data) {
-		runnerData.remove(data.getRunner());
+	public void removeRunnerData(RunnerRaceData data) {
+		synchronized (runnersLock) {
+			runnerData.remove(data.getRunner());
+		}
 	}
 
-	public synchronized RunnerRaceData createRunnerDataFor(Runner runner, Factory factory) {
+	public RunnerRaceData createRunnerDataFor(Runner runner, Factory factory) {
 		RunnerRaceData data = factory.createRunnerRaceData();
 		data.setRunner(runner);
 		data.setResult(factory.createRunnerResult());
@@ -190,40 +244,58 @@ public class Registry {
 	}
 	
 	public List<Runner> getRunnersFromCategory(Category cat) {
-		return runnersByCategory.get(cat);
+		synchronized (runnersLock) {
+			return runnersByCategory.get(cat);
+		}
 	}
 
 	public List<Runner> getRunnersFromCategory(String catName) {
-		return runnersByCategory.get(findCategory(catName));
+		synchronized (runnersLock) {
+			return runnersByCategory.get(findCategory(catName));
+		}
 	}
 
 	public List<Runner> getRunnersFromCourse(Course course) {
-		return runnersByCourse.get(course);
+		synchronized (runnersLock) {
+			return runnersByCourse.get(course);
+		}
 	}
 	
 	public List<Runner> getRunnersFromCourse(String courseName) {
-		return runnersByCourse.get(findCourse(courseName));
+		synchronized (runnersLock) {
+			return runnersByCourse.get(findCourse(courseName));
+		}
 	}
 
 	
 	public Collection<HeatSet> getHeatSets() {
-		return heatsets.values();
+		synchronized (heatsets) {
+			return heatsets.values();
+		}
 	}
 
 	public Vector<String> getHeatSetnames() {
-		return new Vector<String>(heatsets.keySet());
+		synchronized (heatsets) {
+			return new Vector<String>(heatsets.keySet());
+		}
 	}
 	
 	public HeatSet findHeatSet(String name) {
-		return heatsets.get(name);
+		synchronized (heatsets) {
+			return heatsets.get(name);
+		}
 	}
 	
-	public synchronized void addHeatSet(HeatSet heatset) {
-		heatsets.put(heatset.getName(), heatset);
+	public void addHeatSet(HeatSet heatset) {
+		synchronized (heatsets) {
+			heatsets.put(heatset.getName(), heatset);
+		}
 	}
 
-	public synchronized void removeHeatset(HeatSet heatSet) {
-		heatsets.remove(heatSet);
+	public void removeHeatset(HeatSet heatSet) {
+		synchronized (heatsets) {
+			heatsets.remove(heatSet);
+		}
 	}
 
 
@@ -231,62 +303,76 @@ public class Registry {
 	 * @return
 	 */
 	public Integer[] collectStartnumbers() { // TODO: maybe use the Integer type for startnumber, it will save some code
-		Integer[] startnums = new Integer[runnersByChip.size()];
-		int i = 0;
-		for (Runner runner : runnersByChip.values()) {
-			startnums[i] = runner.getStartnumber();
-			i++;
+		synchronized (runnersLock) {
+			Integer[] startnums = new Integer[runnersByChip.size()];
+			int i = 0;
+			for (Runner runner : runnersByChip.values()) {
+				startnums[i] = runner.getStartnumber();
+				i++;
+			}
+			Arrays.sort(startnums);
+			return startnums;
 		}
-		Arrays.sort(startnums);
-		return startnums;
 	}
 	
 	public Integer detectMaxStartnumber() {
-		int max = 0;
-		for (Runner runner : runnersByChip.values()) {
-			max = Math.max(max, runner.getStartnumber());
+		synchronized (runnersLock) {
+			int max = 0;
+			for (Runner runner : runnersByChip.values()) {
+				max = Math.max(max, runner.getStartnumber());
+			}
+			return max;
 		}
-		return max;
 	}
 
-	public Integer detectMaxChipnumber() { // Bad smell...
-		int max = 0;
-		for (String chip : runnersByChip.keySet()) {
-			max = Math.max(max, new Integer(chip));
+	public Integer detectMaxChipnumber() {
+		synchronized (runnersLock) {
+			int max = 0;
+			for (String chip : runnersByChip.keySet()) {
+				max = Math.max(max, new Integer(chip));
+			}
+			return max;
 		}
-		return max;
 	}
 	
 	public String[] collectChipnumbers() {
-		String[] chipnumbers = runnersByChip.keySet().toArray(new String[0]);
-		Arrays.sort(chipnumbers);
-		return chipnumbers;
+		synchronized (runnersLock) {
+			String[] chipnumbers = runnersByChip.keySet().toArray(new String[0]);
+			Arrays.sort(chipnumbers);
+			return chipnumbers;
+		}
 	}
 	
 	// TODO: inverse dependency to PenaltyChecker or something
 	public void checkGecoData(Factory factory, PenaltyChecker checker) {
-		checkNoDataRunners(factory);
-		// compute trace for data
-		for (RunnerRaceData raceData : getRunnersData()) {
-			checker.buildTrace(raceData);	
-		}		
+		synchronized (runnersLock) {
+			checkNoDataRunners(factory);
+			// compute trace for data
+			for (RunnerRaceData raceData : getRunnersData()) {
+				checker.buildTrace(raceData);	
+			}
+		}
 	}
 	
 	public void checkOrData(Factory factory, PenaltyChecker checker) {
-		checkNoDataRunners(factory);
-		// compute status and trace for data
-		for (RunnerRaceData raceData : getRunnersData()) {
-			 // Special runner status (DNS) should have been set before this point
-			if( raceData.getResult()==null ) {
-				checker.check(raceData);	
+		synchronized (runnersLock) {
+			checkNoDataRunners(factory);
+			// compute status and trace for data
+			for (RunnerRaceData raceData : getRunnersData()) {
+				// Special runner status (DNS) should have been set before this point
+				if( raceData.getResult()==null ) {
+					checker.check(raceData);	
+				}
 			}
 		}
 	}
 	
 	public void checkNoDataRunners(Factory factory) {
-		for (Runner runner : getRunners()) {
-			if( findRunnerData(runner) == null ) {
-				createRunnerDataFor(runner, factory);
+		synchronized (runnersLock) {
+			for (Runner runner : getRunners()) {
+				if( findRunnerData(runner) == null ) {
+					createRunnerDataFor(runner, factory);
+				}
 			}
 		}
 	}
@@ -294,14 +380,16 @@ public class Registry {
 	public Map<String, Integer> coursesCounts() {
 		HashMap<String,Integer> map = new HashMap<String, Integer>();
 		for (Course c : getCourses()) {
-			map.put(c.getName(), getRunnersFromCourse(c).size());
-			int running = 0;
-			for (Runner runner : getRunnersFromCourse(c)) {
-				if( findRunnerData(runner).getResult().getStatus().equals(Status.Unknown) ) {
-					running++;
+			synchronized (runnersLock) {
+				map.put(c.getName(), getRunnersFromCourse(c).size());
+				int running = 0;
+				for (Runner runner : getRunnersFromCourse(c)) {
+					if( findRunnerData(runner).getResult().getStatus().equals(Status.Unknown) ) {
+						running++;
+					}
 				}
+				map.put(c.getName() + "running", running);
 			}
-			map.put(c.getName() + "running", running);
 		}
 		return map;
 	}
@@ -312,12 +400,14 @@ public class Registry {
 		for (Status s : Status.values()) {
 			map.put(s.toString(), 0);
 		}
-		for (RunnerRaceData data : getRunnersData()) {
-			inc(data.getResult().getStatus().toString(), map);
+		synchronized (runnersLock) {
+			for (RunnerRaceData data : getRunnersData()) {
+				inc(data.getResult().getStatus().toString(), map);
+			}
+			map.put("total", getRunners().size());
+			map.put("actual", getRunners().size() - map.get("DNS"));
+			map.put("finished", getRunners().size() - map.get("DNS") - map.get("Unknown"));
 		}
-		map.put("total", getRunners().size());
-		map.put("actual", getRunners().size() - map.get("DNS"));
-		map.put("finished", getRunners().size() - map.get("DNS") - map.get("Unknown"));
 		return map;
 	}
 
@@ -325,7 +415,7 @@ public class Registry {
 	 * @param status
 	 * @param map
 	 */
-	private void inc(String status, HashMap<String, Integer> map) {
+	private static void inc(String status, HashMap<String, Integer> map) {
 		map.put(status, map.get(status) + 1);
 	}
 
