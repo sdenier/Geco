@@ -62,14 +62,14 @@ public class CourseIO extends AbstractIO<Course> {
 		String[] record = new String[] {
 				c.getName(),
 				new Float(c.getLength() / 1000.0).toString(),
-				new Integer(c.getClimb()).toString(),
+				Integer.toString(c.getClimb()),
 				"Cross Country", "1", "1001", "60", "10", "36000000", "", "", ""
 		};
 		int offset = record.length;
 		int[] codes = c.getCodes();
 		record = Arrays.copyOf(record, offset + codes.length);
 		for (int i = 0; i < codes.length; i++) {
-			record[i+offset] = new Integer(codes[i]).toString();
+			record[i+offset] = Integer.toString(codes[i]);
 		}
 		return record;
 	}

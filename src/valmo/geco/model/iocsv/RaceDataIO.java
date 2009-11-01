@@ -84,7 +84,7 @@ public class RaceDataIO extends AbstractIO<RunnerRaceData> {
 		record[3] = TimeManager.fullTime(d.getStarttime());
 		record[4] = TimeManager.fullTime(d.getFinishtime());
 		for (int i = 0; i < punches.length; i++) {
-			record[2*i+5] = new Integer(punches[i].getCode()).toString();
+			record[2*i+5] = Integer.toString(punches[i].getCode());
 			record[2*i+6] = TimeManager.fullTime(punches[i].getTime());
 		}
 		return record;

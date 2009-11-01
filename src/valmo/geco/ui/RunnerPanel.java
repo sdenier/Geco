@@ -96,7 +96,7 @@ public class RunnerPanel extends GecoPanel {
 	 */
 	public void refreshPanel() {
 		this.inRefreshMode = true; // happy hack :(
-		startF.setText(new Integer(runner.getStartnumber()).toString());
+		startF.setText(Integer.toString(runner.getStartnumber()));
 		chipF.setText(runner.getChipnumber());
 		fNameF.setText(runner.getFirstname());
 		lNameF.setText(runner.getLastname());
@@ -111,8 +111,8 @@ public class RunnerPanel extends GecoPanel {
 		rTimeF.setText(TimeManager.time(runnerData.getResult().getRacetime()));
 		realTimeL.setText(TimeManager.time(geco().checker().computeRaceTime(runnerData)));
 		statusCB.setSelectedItem(runnerData.getResult().getStatus());
-		mpF.setText(new Integer(runnerData.getResult().getNbMPs()).toString());
-		penaltyL.setText(new Integer(0).toString());
+		mpF.setText(Integer.toString(runnerData.getResult().getNbMPs()));
+		penaltyL.setText(Integer.toString(0)); // TODO: compute penalty here???
 		punchPanel.refreshPunches(runnerData);
 		this.inRefreshMode = false;
 	}
@@ -165,7 +165,7 @@ public class RunnerPanel extends GecoPanel {
 						    "Invalid Entry",
 						    JOptionPane.ERROR_MESSAGE);
 				}
-				startF.setText(new Integer(runner.getStartnumber()).toString());
+				startF.setText(Integer.toString(runner.getStartnumber()));
 			}
 		});
 		chipF.addActionListener(new ActionListener() {

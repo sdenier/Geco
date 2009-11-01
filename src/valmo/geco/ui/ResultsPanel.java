@@ -409,7 +409,7 @@ public class ResultsPanel extends TabPanel {
 			RunnerRaceData runnerData = rRunner.getRunnerData();
 			String[] line = new String[] {
 					id,
-					new Integer(rRunner.getRank()).toString(),
+					Integer.toString(rRunner.getRank()),
 					runnerData.getRunner().getFirstname(),
 					runnerData.getRunner().getLastname(),
 					TimeManager.time(runnerData.getResult().getRacetime()),

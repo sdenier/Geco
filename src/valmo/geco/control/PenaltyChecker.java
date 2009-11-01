@@ -25,7 +25,7 @@ public class PenaltyChecker extends PunchChecker {
 		private Date time;
 		
 		public Trace(Punch punch) {
-			this(new Integer(punch.getCode()).toString(), punch.getTime());
+			this(Integer.toString(punch.getCode()), punch.getTime());
 		}
 		
 		public Trace(String code, Date time) {

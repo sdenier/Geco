@@ -81,7 +81,7 @@ public class RunnerIO extends AbstractIO<Runner> {
 		 * Status,NC,IOA,bonus
 		 */
 		return new String[] {
-				new Integer(r.getStartnumber()).toString(),
+				Integer.toString(r.getStartnumber()),
 				r.getChipnumber(),
 				r.getName(),
 				r.getClub().getName(),

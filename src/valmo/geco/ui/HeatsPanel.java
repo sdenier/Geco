@@ -415,7 +415,7 @@ public class HeatsPanel extends TabPanel {
 		String courseName = heat.getName();
 		for (Runner runner : heat.getQualifiedRunners()) {
 			String[] dataLine = new String[] {
-					new Integer(runner.getStartnumber()).toString(),
+					Integer.toString(runner.getStartnumber()),
 					runner.getChipnumber(),
 					runner.getName(),
 					runner.getClub().getName(),

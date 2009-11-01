@@ -47,7 +47,7 @@ public class RunnerControl extends Control {
 	public RunnerRaceData createDummyRunner() {
 		Runner runner = factory().createRunner();
 		runner.setStartnumber(registry().detectMaxStartnumber() + 1);
-		String chip = new Integer(registry().detectMaxChipnumber() + 1).toString();
+		String chip = Integer.toString(registry().detectMaxChipnumber() + 1);
 		runner.setChipnumber(chip);
 		runner.setFirstname("John");
 		runner.setLastname("Doe");
