@@ -5,6 +5,7 @@ package valmo.geco.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -67,8 +68,10 @@ public class RunnerPanel extends GecoPanel {
 	private JButton resetRTimeB;
 	private JButton recheckStatusB;
 	
-	// this really is a hack, a flag set up while refreshing the panel so that listeners on comboboxes
-	// will do nothing when activated by refreshing the combo boxes selected item.  
+	/*
+	 * Hack: flag set up while refreshing the panel so that listeners on comboboxes
+	 * will do nothing when activated by refreshing the combo boxes selected item.
+	 */  
 	private boolean inRefreshMode;
 
 	
@@ -244,55 +247,6 @@ public class RunnerPanel extends GecoPanel {
 				control().validateNCStatus(runner, ncB.isSelected());
 			}
 		});
-		
-//		eTimeF.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				try {
-//					Date newTime = TimeManager.userParse(eTimeF.getText());
-//					runnerData.setErasetime(newTime);
-//					eTimeF.setText(TimeManager.fullTime(newTime)); // reformat the entry
-//				} catch (ParseException e1) {
-//					showBadTimeDialog();
-//					eTimeF.setText(TimeManager.fullTime(runnerData.getErasetime()));
-//				}
-//			}
-//		});
-//		cTimeF.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				try {
-//					Date newTime = TimeManager.userParse(cTimeF.getText());
-//					runnerData.setControltime(newTime);
-//					cTimeF.setText(TimeManager.fullTime(newTime)); // reformat the entry
-//				} catch (ParseException e1) {
-//					showBadTimeDialog();
-//					cTimeF.setText(TimeManager.fullTime(runnerData.getControltime()));
-//				}
-//			}
-//		});
-//		sTimeF.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				try {
-//					Date newTime = TimeManager.userParse(sTimeF.getText());
-//					runnerData.setStarttime(newTime);
-//					sTimeF.setText(TimeManager.fullTime(newTime)); // reformat the entry
-//				} catch (ParseException e1) {
-//					showBadTimeDialog();
-//					sTimeF.setText(TimeManager.fullTime(runnerData.getStarttime()));
-//				}
-//			}
-//		});
-//		fTimeF.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				try {
-//					Date newTime = TimeManager.userParse(fTimeF.getText());
-//					runnerData.setFinishtime(newTime);
-//					fTimeF.setText(TimeManager.fullTime(newTime)); // reformat the entry
-//				} catch (ParseException e1) {
-//					showBadTimeDialog();
-//					fTimeF.setText(TimeManager.fullTime(runnerData.getFinishtime()));
-//				}
-//			}
-//		});
 		rTimeF.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if( control().validateRaceTime(runnerData, rTimeF.getText()) ){
@@ -359,7 +313,7 @@ public class RunnerPanel extends GecoPanel {
 
 	
 	public JPanel initRunnerPanel(JPanel panel) {
-		panel.setLayout(new GridLayout(0,5)); // TODO: use GridBagLayout
+		panel.setLayout(new GridLayout(0,5));
 		panel.setBorder(BorderFactory.createTitledBorder("Runner"));
 
 		Component[] comps = new Component[] {
@@ -372,18 +326,18 @@ public class RunnerPanel extends GecoPanel {
 				chipF,
 				fNameF,
 				lNameF,
-				Box.createGlue(),
+				new JButton("Lookup"),
 				
 				new JLabel("Club"),
 				new JLabel("Category"),
 				new JLabel("Course"),
 				Box.createGlue(),
-				Box.createGlue(),
+				new JButton("Merge"),
 				clubCB,
 				catCB,
 				courseCB,
 				ncB,
-				Box.createGlue(),
+				new JButton("Guess course"),
 				
 				Box.createGlue(),
 				Box.createGlue(),
@@ -417,7 +371,62 @@ public class RunnerPanel extends GecoPanel {
 		for (int i = 0; i < comps.length; i++) {
 			panel.add(comps[i]);
 		}
+//		JPanel panel2 = new JPanel(new BorderLayout());
+//		panel2.add(panel, BorderLayout.CENTER);
+//		JPanel buttonsP = new JPanel();
+//		buttonsP.add(new JButton("Lookup"));
+//		buttonsP.add(new JButton("Guess course"));
+//		buttonsP.add(new JButton("Merge"));
+//		panel2.add(buttonsP, BorderLayout.SOUTH);
 		return panel;
 	}
 	
+	public JPanel initRunnerPanel2(JPanel panel) {
+		panel.setLayout(new GridBagLayout());
+		panel.setBorder(BorderFactory.createTitledBorder("Runner"));
+
+		panel.add(new JLabel("Startnumber"), Util.compConstraint(0, 0));
+		panel.add(startF, Util.compConstraint(0, 1));
+		panel.add(new JLabel("Chip"), Util.compConstraint(1, 0));
+		panel.add(chipF, Util.compConstraint(1, 1));
+		panel.add(new JLabel("First name"), Util.compConstraint(2, 0));
+		panel.add(fNameF, Util.compConstraint(2, 1));
+		panel.add(new JLabel("Last name"), Util.compConstraint(3, 0));
+		panel.add(lNameF, Util.compConstraint(3, 1));
+		panel.add(new JButton("Lookup"), Util.compConstraint(4, 1));
+		
+		panel.add(new JLabel("Club"), Util.compConstraint(0, 2));
+		panel.add(clubCB, Util.compConstraint(0, 3));
+		panel.add(new JLabel("Category"), Util.compConstraint(1, 2));
+		panel.add(catCB, Util.compConstraint(1, 3));
+		panel.add(new JLabel("Course"), Util.compConstraint(2, 2));
+		panel.add(courseCB, Util.compConstraint(2, 3));
+		panel.add(ncB, Util.compConstraint(3, 3));
+		panel.add(new JButton("Guess"), Util.compConstraint(4, 3));
+
+		panel.add(new JLabel("Erase time"), Util.compConstraint(0, 4));
+		panel.add(eTimeF, Util.compConstraint(0, 5));
+		panel.add(new JLabel("Check time"), Util.compConstraint(1, 4));
+		panel.add(cTimeF, Util.compConstraint(1, 5));
+		panel.add(new JLabel("Start time"), Util.compConstraint(2, 4));
+		panel.add(sTimeF, Util.compConstraint(2, 5));
+		panel.add(new JLabel("Finish time"), Util.compConstraint(3, 4));
+		panel.add(fTimeF, Util.compConstraint(3, 5));
+		panel.add(new JLabel("Real race time"), Util.compConstraint(4, 4));
+		panel.add(realTimeL, Util.compConstraint(4, 5));
+
+		panel.add(recheckStatusB, Util.compConstraint(0, 6));
+		panel.add(resetRTimeB, Util.compConstraint(0, 7));
+		panel.add(new JLabel("Status"), Util.compConstraint(1, 6));
+		panel.add(statusCB, Util.compConstraint(1, 7));
+		panel.add(new JLabel("MPs"), Util.compConstraint(2, 6));
+		panel.add(mpF, Util.compConstraint(2, 7));
+		panel.add(new JLabel("Time penalty"), Util.compConstraint(3, 6));
+		panel.add(penaltyL, Util.compConstraint(3, 7));
+		panel.add(new JLabel("Official race time"), Util.compConstraint(4, 6));
+		panel.add(rTimeF, Util.compConstraint(4, 7));
+
+		return panel;
+	}
+
 }

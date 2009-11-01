@@ -12,6 +12,7 @@ import java.util.Vector;
 
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -64,7 +65,7 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 
 	public void initRunnersPanel(JPanel panel, Announcer announcer) {
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-		splitPane.setOneTouchExpandable(true);
+//		splitPane.setOneTouchExpandable(true);
 		JPanel tablePan = new JPanel(new BorderLayout());
 		tablePan.add(initTableScroll(), BorderLayout.CENTER);
 		tablePan.add(initTopPanel(), BorderLayout.NORTH);
@@ -77,8 +78,8 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 	public JTabbedPane initBottomPanel(Announcer announcer) {
 		this.runnerPanel = new RunnerPanel(geco(), frame(), this);
 		JTabbedPane pane = new JTabbedPane();
-		pane.addTab("Stats", new StatsPanel(geco(), frame(), announcer));
 		pane.addTab("Runner Data", this.runnerPanel);
+		pane.addTab("Stats", new StatsPanel(geco(), frame(), announcer));
 		return pane;
 	}
 
@@ -112,6 +113,7 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 			}
 		});
 		topPanel.add(deleteButton);
+		topPanel.add(new JCheckBox("Live mode"));
 		topPanel.add(Box.createHorizontalStrut(400));
 		topPanel.add(initFilterPanel());
 		return topPanel;
