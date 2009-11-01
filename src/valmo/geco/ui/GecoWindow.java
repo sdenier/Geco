@@ -40,7 +40,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 	
 	private RunnersPanel runnersPanel;
 	
-	private LivePanel livePanel;
+	private LogPanel logPanel;
 	
 	private ResultsPanel resultsPanel;
 
@@ -55,7 +55,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 		this.stagePanel = new StagePanel(this.geco, this, announcer);
 		this.runnersPanel = new RunnersPanel(this.geco, this, announcer);
 		this.resultsPanel = new ResultsPanel(this.geco, this, announcer);
-		this.livePanel = new LivePanel(this.geco, this, announcer);
+		this.logPanel = new LogPanel(this.geco, this, announcer);
 		this.heatsPanel = new HeatsPanel(this.geco, this, announcer);
 		announcer.registerStageListener(this);
 		guiInit();
@@ -69,12 +69,12 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 		pane.setMnemonicAt(0, KeyEvent.VK_S);
 		pane.addTab("Runners", this.runnersPanel);
 		pane.setMnemonicAt(1, KeyEvent.VK_R);
-		pane.addTab("Live", this.livePanel);
-		pane.setMnemonicAt(2, KeyEvent.VK_L);
 		pane.addTab("Results", this.resultsPanel);
-		pane.setMnemonicAt(3, KeyEvent.VK_E);
+		pane.setMnemonicAt(2, KeyEvent.VK_E);
 		pane.addTab("Heats", this.heatsPanel);
-		pane.setMnemonicAt(4, KeyEvent.VK_H);
+		pane.setMnemonicAt(3, KeyEvent.VK_H);
+		pane.addTab("Log", this.logPanel);
+		pane.setMnemonicAt(4, KeyEvent.VK_L);
 		getContentPane().add(pane, BorderLayout.CENTER);
 
 //		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);

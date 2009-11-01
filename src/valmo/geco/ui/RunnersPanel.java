@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
@@ -56,22 +57,29 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 	 */
 	public RunnersPanel(Geco geco, JFrame frame, Announcer announcer) {
 		super(geco, frame, announcer);
-		initRunnersPanel(this);
+		initRunnersPanel(this, announcer);
 		announcer.registerRunnerListener(this);
 	}
 
 
-	public void initRunnersPanel(JPanel panel) {
+	public void initRunnersPanel(JPanel panel, Announcer announcer) {
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		splitPane.setOneTouchExpandable(true);
 		JPanel tablePan = new JPanel(new BorderLayout());
 		tablePan.add(initTableScroll(), BorderLayout.CENTER);
 		tablePan.add(initTopPanel(), BorderLayout.NORTH);
 		splitPane.add(tablePan);
-		this.runnerPanel = new RunnerPanel(geco(), frame(), this);
-		splitPane.add(runnerPanel);
+		splitPane.add(initBottomPanel(announcer));
 		updateRunnerPanel();
 		panel.add(splitPane);
+	}
+	
+	public JTabbedPane initBottomPanel(Announcer announcer) {
+		this.runnerPanel = new RunnerPanel(geco(), frame(), this);
+		JTabbedPane pane = new JTabbedPane();
+		pane.addTab("Stats", new StatsPanel(geco(), frame(), announcer));
+		pane.addTab("Runner Data", this.runnerPanel);
+		return pane;
 	}
 
 	public Box initTopPanel() {
