@@ -100,7 +100,7 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 	}
 	
 	public boolean hasResult() {
-		return getResult().getStatus() != Status.Unknown;
+		return !getResult().getStatus().equals(Status.Unknown);
 	}
 
 	public RunnerResult getResult() {
@@ -109,6 +109,10 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 
 	public void setResult(RunnerResult result) {
 		this.result = result;
+	}
+
+	public boolean isRunning() {
+		return getResult().getStatus().equals(Status.Unknown);
 	}
 	
 }

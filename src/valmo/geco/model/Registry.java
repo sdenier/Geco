@@ -419,5 +419,17 @@ public class Registry {
 		map.put(status, map.get(status) + 1);
 	}
 
+	public int countRunningRunnersFor(Course c) {
+		synchronized (runnersLock) {
+			int running = 0;
+			for (Runner runner : getRunnersFromCourse(c)) {
+				if( findRunnerData(runner).isRunning() ) {
+					running++;
+				}
+			}
+			return running;			
+		}
+	}
+
 
 }

@@ -89,19 +89,13 @@ public class RegistryStats extends Control implements Announcer.RunnerListener {
 	public void updateCourseStats() {
 		courseStats = new HashMap<String, Integer>();
 		for (Course c : registry().getCourses()) {
-			courseStats.put(c.getName(), registry().getRunnersFromCourse(c).size());
-			int running = 0;
-			for (Runner runner : registry().getRunnersFromCourse(c)) {
-				if( isRunning(registry().findRunnerData(runner)) ) {
-					running++;
-				}
-			}
-			courseStats.put(c.getName() + "running", running);
+			updateStatsForCourse(c);
 		}
 	}
 
-	private boolean isRunning(RunnerRaceData data) {
-		return data.getResult().getStatus().equals(Status.Unknown);
+	private void updateStatsForCourse(Course c) {
+		courseStats.put(c.getName(), registry().getRunnersFromCourse(c).size());
+		courseStats.put(c.getName() + "running", registry().countRunningRunnersFor(c));
 	}
 
 	private void inc(String status, Map<String, Integer> map) {
@@ -129,7 +123,7 @@ public class RegistryStats extends Control implements Announcer.RunnerListener {
 		updateStageStats();
 		String courseName = data.getCourse().getName();
 		inc(courseName, courseStats);
-		if( isRunning(data) )
+		if( data.isRunning() )
 			inc(courseName + "running", courseStats);
 	}
 
@@ -143,7 +137,7 @@ public class RegistryStats extends Control implements Announcer.RunnerListener {
 		updateStageStats();
 		String courseName = data.getCourse().getName();
 		dec(courseName, courseStats);
-		if( isRunning(data) )
+		if( data.isRunning() )
 			dec(courseName + "running", courseStats);
 	}
 
@@ -153,9 +147,19 @@ public class RegistryStats extends Control implements Announcer.RunnerListener {
 	 */
 	@Override
 	public void statusChanged(RunnerRaceData runnerData, Status oldStatus) {
-		inc(runnerData.getResult().getStatus().toString(), stageStats);
+		Status newStatus = runnerData.getResult().getStatus();
+		inc(newStatus.toString(), stageStats);
 		dec(oldStatus.toString(), stageStats);
 		updateStageStats();
+		updateStatsForCourse(runnerData.getCourse());
+//		if( newStatus != oldStatus ) {
+//			if( isRunning(newStatus) && !isRunning(oldStatus) ) {
+//				inc(runnerData.getCourse().getName() + "running", courseStats);
+//			}
+//			if( !isRunning(newStatus) && isRunning(oldStatus) ) {
+//				dec(runnerData.getCourse().getName() + "running", courseStats);
+//			}
+//		}
 	}
 
 
@@ -166,10 +170,12 @@ public class RegistryStats extends Control implements Announcer.RunnerListener {
 	public void courseChanged(Runner runner, Course oldCourse) {
 		inc(runner.getCourse().getName(), courseStats);
 		dec(oldCourse.getName(), courseStats);
-		if( isRunning(registry().findRunnerData(runner)) ) {
-			inc(runner.getCourse().getName() + "running", courseStats);
-			dec(oldCourse.getName() + "running", courseStats);			
-		}
+		updateStatsForCourse(oldCourse);
+//		updateStatsForCourse(newCourse); // assume statusChanged is called and will do the update
+//		if( isRunning(registry().findRunnerData(runner)) ) {
+//			inc(runner.getCourse().getName() + "running", courseStats);
+//			dec(oldCourse.getName() + "running", courseStats);			
+//		}
 	}
 
 	/* (non-Javadoc)

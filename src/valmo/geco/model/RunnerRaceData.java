@@ -47,5 +47,7 @@ public interface RunnerRaceData {
 	public RunnerResult getResult();
 
 	public void setResult(RunnerResult result);
+	
+	public boolean isRunning();
 
 }
