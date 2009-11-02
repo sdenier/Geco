@@ -73,6 +73,7 @@ public class RunnerPanel extends GecoPanel {
 	 * will do nothing when activated by refreshing the combo boxes selected item.
 	 */  
 	private boolean inRefreshMode;
+	private JButton mergeDialogB;
 
 	
 	public RunnerPanel(Geco geco, JFrame frame, RunnersPanel parent) {
@@ -130,6 +131,7 @@ public class RunnerPanel extends GecoPanel {
 		catCB = new JComboBox(registry().getCategorynames());
 		courseCB = new JComboBox(registry().getCoursenames());
 		ncB = new JCheckBox("NC");
+		mergeDialogB = new JButton("Merge...");
 		
 		cTimeF = new JTextField(5);
 		cTimeF.setEditable(false);
@@ -247,6 +249,11 @@ public class RunnerPanel extends GecoPanel {
 				control().validateNCStatus(runner, ncB.isSelected());
 			}
 		});
+		mergeDialogB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new MergeRunnerDialog(geco(), frame());
+			}
+		});
 		rTimeF.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if( control().validateRaceTime(runnerData, rTimeF.getText()) ){
@@ -332,7 +339,7 @@ public class RunnerPanel extends GecoPanel {
 				new JLabel("Category"),
 				new JLabel("Course"),
 				Box.createGlue(),
-				new JButton("Merge"),
+				mergeDialogB,
 				clubCB,
 				catCB,
 				courseCB,

@@ -27,6 +27,7 @@ import valmo.geco.model.Registry;
 import valmo.geco.model.Stage;
 import valmo.geco.model.impl.POFactory;
 import valmo.geco.ui.GecoWindow;
+import valmo.geco.ui.MergeRunnerDialog;
 
 import com.apple.eawt.Application;
 import com.apple.eawt.ApplicationAdapter;
@@ -360,14 +361,8 @@ public class Geco {
 		} // else do nothing
 	}
 
-	/**
-	 * @param string
-	 * @param string2
-	 * @return
-	 */
-	public boolean askForConfirmation(String message, String title) {
-		int confirm = JOptionPane.showConfirmDialog(window, message, title, JOptionPane.YES_NO_OPTION);
-		return confirm==JOptionPane.YES_OPTION;
+	public void openMergeDialog(String title, String description) {
+		new MergeRunnerDialog(this, window);
 	}
-
+	
 }

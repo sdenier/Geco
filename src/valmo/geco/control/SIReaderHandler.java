@@ -6,8 +6,6 @@ package valmo.geco.control;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.swing.JOptionPane;
-
 import org.martin.sireader.common.PunchObject;
 import org.martin.sireader.common.PunchRecordData;
 import org.martin.sireader.common.ResultData;
@@ -19,7 +17,6 @@ import org.martin.sireader.server.SIReaderListener;
 
 import valmo.geco.core.Announcer;
 import valmo.geco.core.Geco;
-import valmo.geco.core.TimeManager;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Punch;
 import valmo.geco.model.Runner;
@@ -46,6 +43,7 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 	 */
 	public SIReaderHandler(Factory factory, Stage stage, Geco geco, Announcer announcer) {
 		super(factory, stage, announcer);
+		this.geco = geco;
 		this.announcer = announcer;
 	}
 
@@ -78,34 +76,21 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 
 	@Override
 	public void newCardRead(IResultData<PunchObject,PunchRecordData> card) {
-		/* 
-		 * get chip number
-		 * retrieve runner from registry
-		 * if runner exists
-		 *   if runner has previous data
-		 *      ask to override data with new data (proceed to else case)
-		 *   else 
-		 *      createRunnerRaceData()
-		 *      set data
-		 *      run checker to set result
-		 * else
-		 *   createRunnerRaceData() as Dangling
-		 *   launch NewCardManager
-		 */
-		// TODO: check synchronization in registry
 		Runner runner = registry().findRunnerByChip(card.getSiIdent());
 		if( runner!=null ) {
 			RunnerRaceData runnerData = registry().findRunnerData(runner);
 			if( runnerData.hasResult() ) {
-				boolean confirm = geco.askForConfirmation("Override data and result for Runner?", "Existing Data for Runner");
-				if( confirm ) {
-					handleData(runnerData, card);
-				} // else // could launch the manager
+				// create John Doe
+				// launch merger
+				// autoselect the target
+				geco.openMergeDialog("Existing Data for Runner", "Override data and result for Runner?");
 			} else {
 				handleData(runnerData, card);	
 			}
 		} else {
-			// TODO: launch cardManager
+			// TODO: create John Doe
+			// launch merger
+			geco.openMergeDialog("Unknown Chip", "Record data or merge into existing runner?");
 			announcer.announceCardRead("Dangling John Doe!");
 		}
 		
