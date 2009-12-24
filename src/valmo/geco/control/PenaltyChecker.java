@@ -58,7 +58,7 @@ public class PenaltyChecker extends PunchChecker {
 	public PenaltyChecker(Factory factory) {
 		super(factory);
 		setMPPenalty(0);
-		setMPLimit(1);
+		setMPLimit(0);
 	}
 
 	
@@ -87,7 +87,7 @@ public class PenaltyChecker extends PunchChecker {
 		int[][] matrix = lcssMatrix(codes, punches);
 		this.nbMP = codes.length - matrix[punches.length][codes.length];
 		this.trace = trace2(codes, punches, matrix);
-		return (this.nbMP < getMPLimit()) ? Status.OK : Status.MP;
+		return (this.nbMP <= getMPLimit()) ? Status.OK : Status.MP;
 	}
 	
 	/**

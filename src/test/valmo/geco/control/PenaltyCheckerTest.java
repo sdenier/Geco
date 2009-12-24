@@ -38,7 +38,7 @@ public class PenaltyCheckerTest {
 		factory = new POFactory();
 		checker = new PenaltyChecker(factory);
 		checker.setMPPenalty(30000);
-		checker.setMPLimit(5);
+		checker.setMPLimit(4);
 		course = factory.createCourse();
 		data = factory.createRunnerRaceData();
 		Runner runner = factory.createRunner();
