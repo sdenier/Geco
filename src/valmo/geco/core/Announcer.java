@@ -46,6 +46,15 @@ public class Announcer {
 		public void closing(Stage stage);
 	}
 	
+	public interface StageConfigListener {
+		
+		public void coursesChanged();
+		
+		public void categoriesChanged();
+		
+		public void clubsChanged();
+	}
+	
 	public interface RunnerListener {
 		
 		/**
@@ -88,15 +97,22 @@ public class Announcer {
 	
 	private Vector<StageListener> stageListeners;
 	
+	private Vector<StageConfigListener> stageConfigListeners;
+	
 	private Vector<RunnerListener> runnerListeners;
 	
 	public Announcer() {
 		this.stageListeners = new Vector<StageListener>();
+		this.stageConfigListeners = new Vector<StageConfigListener>();
 		this.runnerListeners = new Vector<RunnerListener>();
 	}
 	
 	public void registerStageListener(StageListener listener) {
 		this.stageListeners.add(listener);
+	}
+
+	public void registerStageConfigListener(StageConfigListener listener) {
+		this.stageConfigListeners.add(listener);
 	}
 
 	public void registerRunnerListener(RunnerListener listener) {
@@ -122,6 +138,27 @@ public class Announcer {
 		for (StageListener listener : this.stageListeners) {
 			listener.closing(stage);
 		}		
+	}
+	
+	/*
+	 * Stage config announcements
+	 */
+	public void announceCoursesChanged() {
+		for (StageConfigListener listener : this.stageConfigListeners) {
+			listener.coursesChanged();
+		}
+	}
+
+	public void announceCategoriesChanged() {
+		for (StageConfigListener listener : this.stageConfigListeners) {
+			listener.categoriesChanged();
+		}
+	}
+
+	public void announceClubsChanged() {
+		for (StageConfigListener listener : this.stageConfigListeners) {
+			listener.clubsChanged();
+		}
 	}
 
 	/*

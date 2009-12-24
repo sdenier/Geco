@@ -22,6 +22,7 @@ import valmo.geco.control.ResultBuilder;
 import valmo.geco.control.RunnerControl;
 import valmo.geco.control.SIReaderHandler;
 import valmo.geco.control.StageBuilder;
+import valmo.geco.control.StageControl;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Stage;
@@ -90,6 +91,8 @@ public class Geco {
 	 * Controls
 	 */
 	private PenaltyChecker checker;
+
+	private StageControl stageControl;
 	
 	private RunnerControl runnerControl;
 	
@@ -169,6 +172,7 @@ public class Geco {
 			System.exit(-1);
 		}
 
+		stageControl = new StageControl(factory, stage(), this, announcer);
 		runnerControl = new RunnerControl(factory, stage(), this, announcer);
 		resultBuilder = new ResultBuilder(factory, stage(), announcer);
 		heatBuilder = new HeatBuilder(factory);
@@ -180,7 +184,9 @@ public class Geco {
 	public boolean importStage() {
 		RuntimeStage oldStage = current;
 		try {
-			RuntimeStage newStage = loadStage(launcher());
+			// TODO: temporary bypass
+//			RuntimeStage newStage = loadStage(launcher());
+			RuntimeStage newStage = loadStage("./testData/belfield");
 			closeAllStages();
 			current = newStage;
 			updateStageList(stage().getBaseDir());
@@ -287,6 +293,9 @@ public class Geco {
 	public Logger logger() {
 		return current.logger();
 	}
+	public Announcer announcer() {
+		return this.announcer;
+	}
 	public Stage stage() {
 		return current.stage();
 	}
@@ -295,6 +304,9 @@ public class Geco {
 	}
 	public PunchChecker checker() {
 		return this.checker;
+	}
+	public StageControl stageControl() {
+		return this.stageControl;
 	}
 	public RunnerControl runnerControl() {
 		return this.runnerControl;

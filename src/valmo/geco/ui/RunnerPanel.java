@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -25,6 +26,7 @@ import valmo.geco.control.RunnerControl;
 import valmo.geco.core.Geco;
 import valmo.geco.core.TimeManager;
 import valmo.geco.core.Util;
+import valmo.geco.core.Announcer.StageConfigListener;
 import valmo.geco.model.Course;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
@@ -35,7 +37,7 @@ import valmo.geco.model.Status;
  * @since Jan 24, 2009
  *
  */
-public class RunnerPanel extends GecoPanel {
+public class RunnerPanel extends GecoPanel implements StageConfigListener {
 	/*
 	 * Dev note: since extracting the RunnerControl from RunnerPanel, there remains some
 	 * strong implicit dependencies between both (ie how values are checked, what does true/false
@@ -83,6 +85,7 @@ public class RunnerPanel extends GecoPanel {
 		createComponents();
 		createListeners();
 		initPanel(this);
+		geco().announcer().registerStageConfigListener(this);
 	}
 	
 	private RunnerControl control() {
@@ -434,6 +437,21 @@ public class RunnerPanel extends GecoPanel {
 		panel.add(rTimeF, Util.compConstraint(4, 7));
 
 		return panel;
+	}
+
+	@Override
+	public void categoriesChanged() {
+		catCB.setModel(new DefaultComboBoxModel(registry().getCategorynames()));
+	}
+
+	@Override
+	public void clubsChanged() {
+		clubCB.setModel(new DefaultComboBoxModel(registry().getClubnames()));
+	}
+
+	@Override
+	public void coursesChanged() {
+		courseCB.setModel(new DefaultComboBoxModel(registry().getCoursenames()));
 	}
 
 }

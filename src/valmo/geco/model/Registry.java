@@ -83,6 +83,13 @@ public class Registry {
 		}
 	}
 
+	public void removeCourse(Course course) {
+		synchronized (courses) {
+			courses.remove(course.getName());
+			runnersByCourse.remove(course);
+		}
+	}
+
 
 	public Collection<Club> getClubs() {
 		synchronized (clubs) {
@@ -105,6 +112,20 @@ public class Registry {
 	public void addClub(Club club) {
 		synchronized (clubs) {
 			clubs.put(club.getName(), club);
+		}
+	}
+	
+	public void removeClub(Club club) {
+		synchronized (clubs) {
+			clubs.remove(club.getName());
+		}		
+	}
+	
+	public void updateClubname(Club club, String newName) {
+		synchronized (clubs) {
+			clubs.remove(club.getName());
+			club.setName(newName);
+			addClub(club);
 		}
 	}
 
@@ -130,6 +151,13 @@ public class Registry {
 	public void addCategory(Category cat) {
 		synchronized (categories) {
 			categories.put(cat.getShortname(), cat);
+		}
+	}
+	
+	public void removeCategory(Category cat) {
+		synchronized (categories) {
+			categories.remove(cat.getShortname());
+			runnersByCategory.remove(cat);
 		}
 	}
 
