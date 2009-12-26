@@ -39,8 +39,11 @@ import javax.swing.event.ListSelectionListener;
 import valmo.geco.core.Announcer;
 import valmo.geco.core.Geco;
 import valmo.geco.core.Util;
+import valmo.geco.model.Category;
+import valmo.geco.model.Course;
 import valmo.geco.model.Heat;
 import valmo.geco.model.HeatSet;
+import valmo.geco.model.Pool;
 import valmo.geco.model.Result;
 import valmo.geco.model.Runner;
 import valmo.geco.model.Stage;
@@ -61,7 +64,7 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 	
 	private JTextPane heatsTA;
 	private JList heatList;
-	private JList setList;
+	private JList poolList;
 	private JButton newB;
 	private JButton deleteB;
 	private JButton refreshB;
@@ -86,12 +89,70 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 		announcer.registerStageConfigListener(this);
 	}
 
-	private void updateNames() {
+	private void updatePoolnames() {
 		coursenames = registry().getCoursenames();
 		Collections.sort(coursenames);
 		categorynames = registry().getCategorynames();
 		Collections.sort(categorynames);
 	}
+	
+	private Vector<String> getAllPoolnames(HeatSet heatset) {
+		if( heatset.isCourseType() ) {
+			return coursenames;
+		} else {
+			return categorynames;
+		}
+	}
+	
+	public HeatSet getSelectedHeatset() {
+		return (HeatSet) heatList.getSelectedValue();
+	}
+	
+	public void showPoolList() {
+		HeatSet currentHeatset = getSelectedHeatset();
+		final Vector<String> poolnames = getAllPoolnames(currentHeatset);
+		poolList.setModel(new AbstractListModel() {
+			public int getSize() {
+				return poolnames.size();
+			}
+			public Object getElementAt(int index) {
+				return poolnames.get(index);
+			}
+		});
+		poolList.setSelectedIndices(getSelectedIndices(currentHeatset));
+	}
+	
+	private int[] getSelectedIndices(HeatSet heatset) {
+		int[] indices = new int[heatset.getSelectedPools().length];
+		Vector<String> nameset = getAllPoolnames(heatset);
+		int i = 0;
+		for (Pool pool : heatset.getSelectedPools()) {
+			indices[i] = nameset.indexOf(pool.getName());
+			i++;
+		}
+		return indices;
+	}
+	
+	
+	private void setPoolsForHeatSet() {
+		HeatSet set = getSelectedHeatset();
+		set.setSelectedPools(getSelectedPoolsFromList(set, poolList.getSelectedValues()));
+	}
+	
+	private Pool[] getSelectedPoolsFromList(HeatSet heatSet, Object[] selectedValues) {
+		Pool[] selectedPools = new Pool[selectedValues.length];
+		if( heatSet.isCourseType() ) {
+			for (int i = 0; i < selectedValues.length; i++) {
+				selectedPools[i] = registry().findCourse((String) selectedValues[i]);
+			}
+		} else {
+			for (int i = 0; i < selectedValues.length; i++) {
+				selectedPools[i] = registry().findCategory((String) selectedValues[i]);
+			}			
+		}
+		return selectedPools;
+	}
+
 
 	public void showHeatSetCreationDialog() {
 		heatDialog.showDialog();
@@ -108,13 +169,12 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 		if( selectedHeatset!=null ) {
 			heatDialog.showHeatSet((HeatSet) selectedHeatset);
 			// selection listener not triggered because heatset already selected
-			showSetList(); // so directly refresh the setlist
+			showPoolList(); // so directly refresh the setlist
 		}
 	}
 
-	/**
-	 * 
-	 */
+
+	
 	public void createListeners() {
 		newB.addActionListener(new ActionListener() {
 			@Override
@@ -137,10 +197,10 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 			public void valueChanged(ListSelectionEvent e) {
 				int selectionSize = heatList.getSelectedIndices().length;
 				if( selectionSize==1 ) {
-					showSetList();
-					setList.setVisible(true);
+					showPoolList();
+					poolList.setVisible(true);
 				} else {
-					setList.setVisible(false);
+					poolList.setVisible(false);
 				}
 			}
 		});
@@ -152,11 +212,11 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 				}
 			}
 		});
-		setList.addMouseListener(new MouseAdapter() {
+		poolList.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if( e.getButton()==MouseEvent.BUTTON1 && e.getClickCount()==1 ) {
-					(getSelectedHeatset()).setSelectedSets(setList.getSelectedValues());
+					setPoolsForHeatSet();
 				}
 			}
 		});
@@ -230,9 +290,9 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 			}
 		});
 
-		setList = new JList();
-		setList.setVisible(false);
-		JScrollPane scrollPane = new JScrollPane(setList);
+		poolList = new JList();
+		poolList.setVisible(false);
+		JScrollPane scrollPane = new JScrollPane(poolList);
 		scrollPane.setPreferredSize(new Dimension(150, 300));
 		JPanel embed = Util.embed(scrollPane);
 		selectionPanel.add(embed, BorderLayout.CENTER);
@@ -285,64 +345,20 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 		for (Object selName : selectedValues) {
 			HeatSet heatset = (HeatSet) selName;
 			List<Result> heatsetResults = new Vector<Result>();
-			Object[] selectedSets = heatset.getSelectedSets();
+			Pool[] selectedPools = heatset.getSelectedPools();
 			if( heatset.isCourseType() ) {
-				for (Object setname : selectedSets) {
-					heatsetResults.add(geco().resultBuilder().buildResultForCourse(registry().findCourse((String) setname)));	
+				for (Pool pool : selectedPools) {
+					heatsetResults.add(geco().resultBuilder().buildResultForCourse((Course) pool));	
 				}
 			} else {
-				for (Object setname : selectedSets) {
-					heatsetResults.add(geco().resultBuilder().buildResultForCategory(registry().findCategory((String) setname)));	
+				for (Pool pool : selectedPools) {
+					heatsetResults.add(geco().resultBuilder().buildResultForCategory((Category) pool));	
 				}				
 			}
 			List<Heat> heatsForCurrentHeatset = geco().heatBuilder().buildHeatsFromResults(heatsetResults, heatset.getHeatNames(), heatset.getQualifyingRank());
 			heats.addAll(heatsForCurrentHeatset);
-//			List<List<Runner>> heatsForCurrentHeatset = geco().heatBuilder().buildHeatsFromResults(heatsetResults, heatset.getQualifyingRank(), heatset.getNbHeats());
-//			String[] heatNames = heatset.getHeatNames();
-//			for (int i = 0; i < heatNames.length; i++) {
-//				heats.add(new Heat(heatNames[i], heatsForCurrentHeatset.get(i)));				
-//			}
-
 		}
 		return heats;
-	}
-	
-	public HeatSet getSelectedHeatset() {
-		return (HeatSet) heatList.getSelectedValue();
-	}
-
-	
-	public void showSetList() {
-		HeatSet currentHeatset = getSelectedHeatset();
-		final Vector<String> setnames = getNameset(currentHeatset);
-		setList.setModel(new AbstractListModel() {
-			public int getSize() {
-				return setnames.size();
-			}
-			public Object getElementAt(int index) {
-				return setnames.get(index);
-			}
-		});
-		setList.setSelectedIndices(getSelectedIndices(currentHeatset));
-	}
-	
-	public Vector<String> getNameset(HeatSet heatset) {
-		if( heatset.isCourseType() ) {
-			return coursenames;
-		} else {
-			return categorynames;
-		}
-	}
-	
-	private int[] getSelectedIndices(HeatSet heatset) {
-		int[] indices = new int[heatset.getSelectedSets().length];
-		Vector<String> nameset = getNameset(heatset);
-		int i = 0;
-		for (Object set : heatset.getSelectedSets()) {
-			indices[i] = nameset.indexOf(set);
-			i++;
-		}
-		return indices;
 	}
 	
 	public void refreshHeatView() {
@@ -446,7 +462,7 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 	}
 
 	private void refresh() {
-		updateNames();
+		updatePoolnames();
 		heatlistModel.clear();
 		for (HeatSet heatset : registry().getHeatSets() ) {
 			heatlistModel.addElement(heatset);	

@@ -9,7 +9,7 @@ package valmo.geco.model;
  * @since Jan 4, 2009
  *
  */
-public interface Category {
+public interface Category extends Pool {
 
 	public String getShortname();
 

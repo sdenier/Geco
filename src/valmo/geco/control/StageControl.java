@@ -10,6 +10,7 @@ import valmo.geco.model.Club;
 import valmo.geco.model.Course;
 import valmo.geco.model.Factory;
 import valmo.geco.model.HeatSet;
+import valmo.geco.model.Pool;
 import valmo.geco.model.Runner;
 import valmo.geco.model.Stage;
 
@@ -117,8 +118,8 @@ public class StageControl extends Control {
 		}
 		for (HeatSet set : registry().getHeatSets()) {
 			if( set.isCourseType() ) {
-				for (Object cname : set.getSelectedSets()) {
-					if( cname == course.getName() ) {
+				for (Pool pool : set.getSelectedPools()) {
+					if( pool == course ) {
 						throw new Exception("Heatsets use course");
 					}
 				}

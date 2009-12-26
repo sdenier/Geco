@@ -4,20 +4,21 @@
 package valmo.geco.model.impl;
 
 import valmo.geco.model.HeatSet;
+import valmo.geco.model.Pool;
 
 public class HeatSetImpl implements HeatSet {
 	private String name;
 	private Integer qualifyingRank;
 	private String type;
 	private String[] heatNames;
-	private Object[] selectedSets;
+	private Pool[] selectedPools;
 	
 	public HeatSetImpl() {
 		name = "";
 		qualifyingRank = 0;
 		type = "course";
 		heatNames = new String[] { "" };
-		selectedSets = new Object[0];
+		selectedPools = new Pool[0];
 	}
 	
 	public String getName() {
@@ -54,11 +55,11 @@ public class HeatSetImpl implements HeatSet {
 	public boolean isCategoryType() {
 		return getSetType().equals("category");
 	}
-	public Object[] getSelectedSets() {
-		return selectedSets;
+	public Pool[] getSelectedPools() {
+		return selectedPools;
 	}
-	public void setSelectedSets(Object[] selectedSets) {
-		this.selectedSets = selectedSets;
+	public void setSelectedPools(Pool[] selectedPools) {
+		this.selectedPools = selectedPools;
 	}
 	public String toString() {
 		return getName();

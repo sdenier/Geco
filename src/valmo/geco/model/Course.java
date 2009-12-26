@@ -9,7 +9,7 @@ package valmo.geco.model;
  * @since Nov 22, 2008
  *
  */
-public interface Course {
+public interface Course extends Pool {
 
 	public String getName();
 

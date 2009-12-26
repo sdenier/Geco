@@ -5,6 +5,7 @@ package valmo.geco.model.iocsv;
 
 import valmo.geco.model.Factory;
 import valmo.geco.model.HeatSet;
+import valmo.geco.model.Pool;
 import valmo.geco.model.Registry;
 
 
@@ -29,7 +30,7 @@ public class HeatSetIO extends AbstractIO<HeatSet> {
 	@Override
 	public String[] exportTData(HeatSet heatset) {
 		Integer nbHeats = heatset.getNbHeats();
-		String[] values = new String[4 + nbHeats + heatset.getSelectedSets().length];
+		String[] values = new String[4 + nbHeats + heatset.getSelectedPools().length];
 		values[0] = heatset.getName();
 		values[1] = heatset.getSetType();
 		values[2] = heatset.getQualifyingRank().toString();
@@ -37,8 +38,8 @@ public class HeatSetIO extends AbstractIO<HeatSet> {
 		for (int i = 0; i < nbHeats; i++) {
 			values[4 + i] = heatset.getHeatNames()[i]; 
 		}
-		for (int i = 0; i < heatset.getSelectedSets().length; i++) {
-			values[4 + nbHeats + i] = (String) heatset.getSelectedSets()[i]; 
+		for (int i = 0; i < heatset.getSelectedPools().length; i++) {
+			values[4 + nbHeats + i] = heatset.getSelectedPools()[i].getName(); 
 		}
 		return values;
 	}
@@ -56,11 +57,17 @@ public class HeatSetIO extends AbstractIO<HeatSet> {
 		}
 		heatSet.setHeatNames(heatNames);
 		int nbSets = record.length - nbHeats - 4;
-		String[] selectedSets = new String[nbSets];
-		for (int i = 0; i < selectedSets.length; i++) {
-			selectedSets[i] = record[4 + nbHeats + i];
+		Pool[] selectedSets = new Pool[nbSets];
+		if( heatSet.isCourseType() ) {
+			for (int i = 0; i < selectedSets.length; i++) {
+				selectedSets[i] = registry.findCourse(record[4 + nbHeats + i]);
+			}
+		} else {
+			for (int i = 0; i < selectedSets.length; i++) {
+				selectedSets[i] = registry.findCategory(record[4 + nbHeats + i]);
+			}			
 		}
-		heatSet.setSelectedSets(selectedSets);
+		heatSet.setSelectedPools(selectedSets);
 		return heatSet;
 	}
 

@@ -43,5 +43,10 @@ public class CategoryImpl implements Category {
 	public void setShortname(String shortname) {
 		this.shortname = shortname;
 	}
+
+	@Override
+	public String getName() {
+		return getShortname();
+	}
 	
 }

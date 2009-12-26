@@ -34,8 +34,8 @@ public interface HeatSet {
 
 	public boolean isCategoryType();
 
-	public Object[] getSelectedSets();
+	public Pool[] getSelectedPools();
 
-	public void setSelectedSets(Object[] selectedSets);
+	public void setSelectedPools(Pool[] selectedPools);
 
 }

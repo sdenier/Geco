@@ -24,6 +24,7 @@ import javax.swing.JTextField;
 
 import valmo.geco.core.Util;
 import valmo.geco.model.HeatSet;
+import valmo.geco.model.Pool;
 import valmo.geco.model.impl.HeatSetImpl;
 
 
@@ -33,6 +34,7 @@ import valmo.geco.model.impl.HeatSetImpl;
  *
  */
 public class HeatSetDialog extends JDialog {
+	// TODO: redefine what happens when closing dialog with window buttons???
 	
 	private HeatSet currentHeatSet;
 	private boolean cancelled;
@@ -135,7 +137,7 @@ public class HeatSetDialog extends JDialog {
 			currentHeatSet.setHeatNames(newHeatNames);
 			if( !currentHeatSet.getSetType().equals(getSelectedSettype()) ) {
 				currentHeatSet.setSetType(getSelectedSettype());
-				currentHeatSet.setSelectedSets(new Object[0]);
+				currentHeatSet.setSelectedPools(new Pool[0]);
 			}
 			cancelled = false;
 			setVisible(false);
