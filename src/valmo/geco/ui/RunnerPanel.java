@@ -130,9 +130,9 @@ public class RunnerPanel extends GecoPanel implements StageConfigListener {
 		chipF = new JTextField(7);
 		fNameF = new JTextField(10);
 		lNameF = new JTextField(10);
-		clubCB = new JComboBox(registry().getClubnames());
-		catCB = new JComboBox(registry().getCategorynames());
-		courseCB = new JComboBox(registry().getCoursenames());
+		clubCB = new JComboBox(registry().getSortedClubnames());
+		catCB = new JComboBox(registry().getSortedCategorynames());
+		courseCB = new JComboBox(registry().getSortedCoursenames());
 		ncB = new JCheckBox("NC");
 		mergeDialogB = new JButton("Merge...");
 		
@@ -441,19 +441,19 @@ public class RunnerPanel extends GecoPanel implements StageConfigListener {
 
 	@Override
 	public void categoriesChanged() {
-		catCB.setModel(new DefaultComboBoxModel(registry().getCategorynames()));
+		catCB.setModel(new DefaultComboBoxModel(registry().getSortedCategorynames()));
 		refreshPanel();
 	}
 
 	@Override
 	public void clubsChanged() {
-		clubCB.setModel(new DefaultComboBoxModel(registry().getClubnames()));
+		clubCB.setModel(new DefaultComboBoxModel(registry().getSortedClubnames()));
 		refreshPanel();
 	}
 
 	@Override
 	public void coursesChanged() {
-		courseCB.setModel(new DefaultComboBoxModel(registry().getCoursenames()));
+		courseCB.setModel(new DefaultComboBoxModel(registry().getSortedCoursenames()));
 		refreshPanel();
 	}
 

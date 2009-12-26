@@ -5,6 +5,8 @@ package valmo.geco.model;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,9 +30,15 @@ public class Registry {
 	
 	private Map<String, Course> courses;
 	
+	private Vector<String> sortedCoursenames;
+	
 	private Map<String, Club> clubs;
+
+	private Vector<String> sortedClubnames;
 	
 	private Map<String, Category> categories;
+	
+	private Vector<String> sortedCategorynames;
 	
 	private Map<String, Runner> runnersByChip;
 	
@@ -43,6 +51,7 @@ public class Registry {
 	private Map<String, HeatSet> heatsets;
 	
 	private Object runnersLock = new Object();
+
 	
 	/**
 	 * 
@@ -64,11 +73,29 @@ public class Registry {
 			return courses.values();			
 		}
 	}
+	
+	public Vector<Course> getSortedCourses() {
+		Vector<Course> courseList = new Vector<Course>(getCourses());
+		Collections.sort(courseList, new Comparator<Course>() {
+			@Override
+			public int compare(Course c1, Course c2) {
+				return c1.getName().compareTo(c2.getName());
+			}});
+		return courseList;
+	}
 
 	public Vector<String> getCoursenames() {
 		synchronized (courses) {
 			return new Vector<String>(courses.keySet());	
 		}
+	}
+
+	public Vector<String> getSortedCoursenames() {
+		if( sortedCoursenames==null ) {
+			sortedCoursenames = getCoursenames();
+			Collections.sort(sortedCoursenames);
+		}
+		return sortedCoursenames;
 	}
 	
 	public Course findCourse(String name) {
@@ -85,6 +112,7 @@ public class Registry {
 				// create the entry for runners
 				runnersByCourse.put(course, new Vector<Runner>());
 			}
+			sortedCoursenames = null;
 		}
 	}
 
@@ -92,6 +120,7 @@ public class Registry {
 		synchronized (courses) {
 			courses.remove(course.getName());
 			runnersByCourse.remove(course);
+			sortedCoursenames = null;
 		}
 	}
 	
@@ -115,11 +144,29 @@ public class Registry {
 			return clubs.values();
 		}
 	}
+
+	public Vector<Club> getSortedClubs() {
+		Vector<Club> clubList = new Vector<Club>(getClubs());
+		Collections.sort(clubList, new Comparator<Club>() {
+			@Override
+			public int compare(Club c1, Club c2) {
+				return c1.getName().compareTo(c2.getName());
+			}});
+		return clubList;
+	}
 	
 	public Vector<String> getClubnames() {
 		synchronized (clubs) {
 			return new Vector<String>(clubs.keySet());
 		}
+	}
+	
+	public Vector<String> getSortedClubnames() {
+		if( sortedClubnames==null ) {
+			sortedClubnames = getClubnames();
+			Collections.sort(sortedClubnames);
+		}
+		return sortedClubnames;
 	}
 	
 	public Club findClub(String name) {
@@ -131,12 +178,14 @@ public class Registry {
 	public void addClub(Club club) {
 		synchronized (clubs) {
 			clubs.put(club.getName(), club);
+			sortedClubnames = null;
 		}
 	}
 	
 	public void removeClub(Club club) {
 		synchronized (clubs) {
 			clubs.remove(club.getName());
+			sortedClubnames = null;
 		}		
 	}
 	
@@ -160,11 +209,29 @@ public class Registry {
 			return categories.values();
 		}
 	}
+	
+	public Vector<Category> getSortedCategories() {
+		Vector<Category> catList = new Vector<Category>(getCategories());
+		Collections.sort(catList, new Comparator<Category>() {
+			@Override
+			public int compare(Category c1, Category c2) {
+				return c1.getName().compareTo(c2.getName());
+			}});
+		return catList;
+	}
 
 	public Vector<String> getCategorynames() {
 		synchronized (categories) {
 			return new Vector<String>(categories.keySet());
 		}
+	}
+
+	public Vector<String> getSortedCategorynames() {
+		if( sortedCategorynames==null ) {
+			sortedCategorynames = getCategorynames();
+			Collections.sort(sortedCategorynames);
+		}
+		return sortedCategorynames;
 	}
 
 	public Category findCategory(String name) {
@@ -179,6 +246,7 @@ public class Registry {
 			if( !runnersByCategory.containsKey(cat) ) {
 				runnersByCategory.put(cat, new Vector<Runner>());
 			}
+			sortedCategorynames = null;
 		}
 	}
 	
@@ -186,6 +254,7 @@ public class Registry {
 		synchronized (categories) {
 			categories.remove(cat.getShortname());
 			runnersByCategory.remove(cat);
+			sortedCategorynames = null;
 		}
 	}
 	

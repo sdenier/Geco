@@ -129,12 +129,11 @@ public class StagePanel extends TabPanel {
 					}
 				}
 		};
-		tableModel.setData(new Vector<Club>(registry().getClubs()));
+		tableModel.setData(registry().getSortedClubs());
 		announcer.registerStageConfigListener( new Announcer.StageConfigListener() {
 			public void coursesChanged() {}
 			public void clubsChanged() {
-				tableModel.setData(new Vector<Club>(registry().getClubs()));
-//				panel.refreshTableData(new Vector<Club>(registry().getClubs()));
+				tableModel.setData(registry().getSortedClubs());
 			}
 			public void categoriesChanged() {}
 		});
@@ -190,12 +189,20 @@ public class StagePanel extends TabPanel {
 					default: break;
 					}
 				}
+				@Override
+				public Class<?> getColumnClass(int columnIndex) {
+					switch (columnIndex) {
+					case 1: return Integer.class;
+					default: return super.getColumnClass(columnIndex);
+					}
+
+				}
 		};
-		tableModel.setData(new Vector<Course>(registry().getCourses()));
+		tableModel.setData(registry().getSortedCourses());
+		
 		announcer.registerStageConfigListener( new Announcer.StageConfigListener() {
 			public void coursesChanged() {
-				tableModel.setData(new Vector<Course>(registry().getCourses()));
-//				panel.refreshTableData(new Vector<Club>(registry().getClubs()));
+				tableModel.setData(new Vector<Course>(registry().getSortedCourses()));
 			}
 			public void clubsChanged() {}
 			public void categoriesChanged() {}
@@ -232,13 +239,13 @@ public class StagePanel extends TabPanel {
 		final ConfigTablePanel<Category> panel = new ConfigTablePanel<Category>(geco(), frame());
 		
 		final ConfigTableModel<Category> tableModel = 
-			new ConfigTableModel<Category>(new String[] {"Short name", "Long name", "Course"}) {
+			new ConfigTableModel<Category>(new String[] {"Short name", "Long name"}) {
 				@Override
 				public Object getValueIn(Category cat, int columnIndex) {
 					switch (columnIndex) {
 					case 0: return cat.getShortname();
 					case 1: return cat.getLongname();
-					case 2: return (cat.getCourse()==null) ? "" : cat.getCourse().getName();
+//					case 2: return (cat.getCourse()==null) ? "" : cat.getCourse().getName();
 					default: return super.getValueIn(cat, columnIndex);
 					}
 				}
@@ -252,7 +259,7 @@ public class StagePanel extends TabPanel {
 					// TODO: announce change in club name
 				}
 		};
-		tableModel.setData(new Vector<Category>(registry().getCategories()));
+		tableModel.setData(registry().getSortedCategories());
 		
 		ActionListener addAction = new ActionListener() {
 			@Override

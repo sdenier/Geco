@@ -14,7 +14,6 @@ import java.awt.print.PrinterException;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
@@ -90,12 +89,9 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 	}
 
 	private void updatePoolnames() {
-		coursenames = registry().getCoursenames();
-		Collections.sort(coursenames);
-		categorynames = registry().getCategorynames();
-		Collections.sort(categorynames);
+		coursenames = registry().getSortedCoursenames();
+		categorynames = registry().getSortedCategorynames();
 	}
-	
 	private Vector<String> getAllPoolnames(HeatSet heatset) {
 		if( heatset.isCourseType() ) {
 			return coursenames;

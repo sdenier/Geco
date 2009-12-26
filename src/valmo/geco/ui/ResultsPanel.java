@@ -13,7 +13,6 @@ import java.awt.print.PrinterException;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -86,11 +85,8 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	}
 
 	private void updateNames() {
-		// TODO: sort in registry
-		coursenames = registry().getCoursenames();
-		Collections.sort(coursenames);
-		categorynames = registry().getCategorynames();
-		Collections.sort(categorynames);
+		coursenames = registry().getSortedCoursenames();
+		categorynames = registry().getSortedCategorynames();
 	}
 	private void updateCourseList() {
 		list.setModel(new AbstractListModel() {
