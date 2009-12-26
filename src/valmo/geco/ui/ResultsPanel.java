@@ -36,6 +36,7 @@ import valmo.geco.core.Announcer;
 import valmo.geco.core.Geco;
 import valmo.geco.core.TimeManager;
 import valmo.geco.core.Util;
+import valmo.geco.core.Announcer.StageConfigListener;
 import valmo.geco.model.RankedRunner;
 import valmo.geco.model.Result;
 import valmo.geco.model.Runner;
@@ -49,7 +50,7 @@ import valmo.geco.model.Status;
  * @since Jan 25, 2009
  *
  */
-public class ResultsPanel extends TabPanel {
+public class ResultsPanel extends TabPanel implements StageConfigListener {
 	
 	// cache field
 	private Vector<String> coursenames;
@@ -81,9 +82,11 @@ public class ResultsPanel extends TabPanel {
 		initResultsPanel(this);
 		initFileDialog();
 		createListeners();
+		announcer.registerStageConfigListener(this);
 	}
 
 	private void updateNames() {
+		// TODO: sort in registry
 		coursenames = registry().getCoursenames();
 		Collections.sort(coursenames);
 		categorynames = registry().getCategorynames();
@@ -470,6 +473,20 @@ public class ResultsPanel extends TabPanel {
 	@Override
 	public void saving(Stage stage, Properties properties) {
 		// TODO: save last filename for result
+	}
+
+	
+	@Override
+	public void categoriesChanged() {
+		changed(null, null);
+	}
+
+	@Override
+	public void clubsChanged() {}
+
+	@Override
+	public void coursesChanged() {
+		changed(null, null);
 	}
 
 }

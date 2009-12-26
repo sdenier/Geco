@@ -22,7 +22,7 @@ import valmo.geco.model.Stage;
  * @since Sep 13, 2009
  *
  */
-public class StatsPanel extends TabPanel {
+public class StatsPanel extends TabPanel implements Announcer.StageConfigListener {
 
 	private AbstractTableModel stageTableModel;
 
@@ -41,6 +41,7 @@ public class StatsPanel extends TabPanel {
 	public StatsPanel(Geco geco, JFrame frame, Announcer announcer) {
 		super(geco, frame, announcer);
 		initStatsPanel(this);
+		announcer.registerStageConfigListener(this);
 		changed(null, null);
 		updateThread = startAutoUpdate();
 	}
@@ -140,16 +141,11 @@ public class StatsPanel extends TabPanel {
 		};
 	}
 
-	/* (non-Javadoc)
-	 * @see valmo.geco.ui.Announcer.StageListener#saving(valmo.geco.model.Stage, java.util.Properties)
-	 */
+	
 	@Override
 	public void saving(Stage stage, Properties properties) {
 	}
 
-	/* (non-Javadoc)
-	 * @see valmo.geco.ui.Announcer.Listener#changed(java.lang.Object, java.lang.Object)
-	 */
 	@Override
 	public void changed(Stage previous, Stage next) {
 		stageKeys = stats().stageStatsKeys().toArray(new String[0]);
@@ -158,10 +154,6 @@ public class StatsPanel extends TabPanel {
 		courseTableModel.fireTableDataChanged();
 	}
 
-
-	/* (non-Javadoc)
-	 * @see valmo.geco.ui.Announcer.StageListener#closing(valmo.geco.model.Stage)
-	 */
 	@Override
 	public void closing(Stage stage) {
 		updateThread.interrupt();
@@ -170,6 +162,18 @@ public class StatsPanel extends TabPanel {
 		} catch (InterruptedException e) {
 			geco().logger().debug(e);
 		}
+	}
+
+	
+	@Override
+	public void categoriesChanged() {}
+
+	@Override
+	public void clubsChanged() {}
+
+	@Override
+	public void coursesChanged() {
+		changed(null, null);
 	}
 
 	

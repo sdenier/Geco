@@ -139,6 +139,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 						geco.checker().check(data);
 					}
 				}
+				runnersPanel.refreshTableData();
 				geco.logger().log("Recheck all OK|MP data");
 			}
 		});

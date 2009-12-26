@@ -89,6 +89,14 @@ public class Registry {
 			runnersByCourse.remove(course);
 		}
 	}
+	
+	public void updateCoursename(Course course, String newName) {
+		synchronized (courses) {
+			courses.remove(course.getName());
+			course.setName(newName);
+			addCourse(course);
+		}		
+	}
 
 
 	public Collection<Club> getClubs() {

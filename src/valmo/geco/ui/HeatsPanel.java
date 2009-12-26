@@ -51,7 +51,7 @@ import valmo.geco.model.Stage;
  * @since Jan 25, 2009
  *
  */
-public class HeatsPanel extends TabPanel {
+public class HeatsPanel extends TabPanel implements Announcer.StageConfigListener {
 //	TODO: remove duplication between ResultsPanel and HeatsPanel
 
 	private Vector<String> coursenames;	
@@ -83,6 +83,7 @@ public class HeatsPanel extends TabPanel {
 		initHeatsPanel(this);
 		initFileDialog();
 		createListeners();
+		announcer.registerStageConfigListener(this);
 	}
 
 	private void updateNames() {
@@ -450,6 +451,20 @@ public class HeatsPanel extends TabPanel {
 		for (HeatSet heatset : registry().getHeatSets() ) {
 			heatlistModel.addElement(heatset);	
 		}
+	}
+	
+	
+	@Override
+	public void categoriesChanged() {
+		changed(null, null);
+	}
+
+	@Override
+	public void clubsChanged() {}
+
+	@Override
+	public void coursesChanged() {
+		changed(null, null);
 	}
 	
 }

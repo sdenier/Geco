@@ -21,7 +21,8 @@ import valmo.geco.model.Status;
  * @since Sep 13, 2009
  *
  */
-public class RegistryStats extends Control implements Announcer.RunnerListener {
+public class RegistryStats extends Control
+	implements Announcer.RunnerListener, Announcer.StageConfigListener {
 
 	/*
 	 * compute stats on registry after initial upload and keep numbers up to date by following
@@ -39,6 +40,7 @@ public class RegistryStats extends Control implements Announcer.RunnerListener {
 	public RegistryStats(Factory factory, Stage stage, Announcer announcer) {
 		super(factory, stage, announcer);
 		announcer.registerRunnerListener(this);
+		announcer.registerStageConfigListener(this);
 		fullUpdate();
 	}
 	
@@ -185,6 +187,17 @@ public class RegistryStats extends Control implements Announcer.RunnerListener {
 	public void cardRead(String chip) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void categoriesChanged() {}
+
+	@Override
+	public void clubsChanged() {}
+
+	@Override
+	public void coursesChanged() {
+		updateCourseStats();
 	}
 
 	

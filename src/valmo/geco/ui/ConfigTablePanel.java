@@ -4,6 +4,7 @@
 package valmo.geco.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.util.List;
 
@@ -58,9 +59,11 @@ public class ConfigTablePanel<T> extends GecoPanel {
 
 		TableRowSorter<ConfigTableModel<T>> sorter = new TableRowSorter<ConfigTableModel<T>>(tableModel);
 		table.setRowSorter(sorter);
-		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 		table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		add(new JScrollPane(table), BorderLayout.CENTER);
+		table.setPreferredScrollableViewportSize(table.getPreferredSize());
+		JScrollPane jsp = new JScrollPane(table);
+		jsp.setPreferredSize(new Dimension(50, 200));
+		add(jsp, BorderLayout.CENTER);
 		
 		JPanel buttonBar = new JPanel();
 		JButton addB = new JButton("+");

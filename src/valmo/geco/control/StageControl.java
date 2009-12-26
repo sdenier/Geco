@@ -6,6 +6,7 @@ package valmo.geco.control;
 import valmo.geco.core.Announcer;
 import valmo.geco.core.Geco;
 import valmo.geco.model.Club;
+import valmo.geco.model.Course;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Runner;
 import valmo.geco.model.Stage;
@@ -37,9 +38,9 @@ public class StageControl extends Control {
 	
 	public Club createClub() {
 		Club club = factory().createClub();
-		club.setName("Unknown");
+		club.setName("Unknown" + (registry().getClubs().size() + 1));
 		club.setShortname("");
-		stage().registry().addClub(club);
+		registry().addClub(club);
 		announcer().announceClubsChanged();
 		return club;
 	}
@@ -73,6 +74,38 @@ public class StageControl extends Control {
 			clubHasRunners |= (runner.getClub() == club);
 		}
 		return !clubHasRunners;
+	}
+
+	/**
+	 * 
+	 */
+	public Course createCourse() {
+		Course course = factory().createCourse();
+		course.setName("NewCourse" + (registry().getCourses().size() + 1));
+		course.setCodes(new int[0]);
+		registry().addCourse(course);
+		announcer().announceCoursesChanged();
+		return course;
+	}
+
+	/**
+	 * @param course
+	 * @return
+	 */
+	public boolean removeCourse(Course course) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/**
+	 * @param course
+	 * @param value
+	 */
+	public void updateName(Course course, String newName) {
+		if( !course.getName().equals(newName) ) {
+			registry().updateCoursename(course, newName);
+			announcer().announceCoursesChanged();
+		}		
 	}
 	
 }

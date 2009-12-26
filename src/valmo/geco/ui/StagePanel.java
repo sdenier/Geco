@@ -10,6 +10,7 @@ import java.util.Properties;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,6 +23,7 @@ import valmo.geco.core.Geco;
 import valmo.geco.core.Util;
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
+import valmo.geco.model.Course;
 import valmo.geco.model.Stage;
 
 /**
@@ -45,6 +47,10 @@ public class StagePanel extends TabPanel {
 		JPanel configPanel = Util.embed(stageConfigPanel());		
 		add(configPanel);
 		add(Util.embed(checkerConfigPanel()));
+//		add(courseConfigPanel());
+//		add(clubConfigPanel());
+//		add(categoryConfigPanel());
+		add(Util.embed(courseConfigPanel()));
 		add(Util.embed(clubConfigPanel()));
 		add(Util.embed(categoryConfigPanel()));
 	}
@@ -133,7 +139,68 @@ public class StagePanel extends TabPanel {
 		panel.initialize("Club", tableModel, addAction, removeAction);
 		return panel;
 	}
-	
+
+	private JPanel courseConfigPanel() {
+		final ConfigTablePanel<Course> panel = new ConfigTablePanel<Course>(geco(), frame());
+		
+		final ConfigTableModel<Course> tableModel = 
+			new ConfigTableModel<Course>(new String[] {"Name", "Nb controls"}) {
+				@Override
+				public Object getValueIn(Course course, int columnIndex) {
+					switch (columnIndex) {
+					case 0: return course.getName();
+					case 1: return course.getCodes().length;
+					default: return super.getValueIn(course, columnIndex);
+					}
+				}
+				@Override
+				public boolean isCellEditable(int row, int col) {
+					return col == 0;
+				}
+				@Override
+				public void setValueIn(Course course, Object value, int col) {
+					switch (col) {
+					case 0: geco().stageControl().updateName(course, (String) value); break;
+//					case 1: geco().stageControl().updateName(course, (String) value); break;
+					default: break;
+					}
+				}
+		};
+		tableModel.setData(new Vector<Course>(registry().getCourses()));
+		announcer.registerStageConfigListener( new Announcer.StageConfigListener() {
+			public void coursesChanged() {
+				tableModel.setData(new Vector<Course>(registry().getCourses()));
+//				panel.refreshTableData(new Vector<Club>(registry().getClubs()));
+			}
+			public void clubsChanged() {}
+			public void categoriesChanged() {}
+		});
+		
+		ActionListener addAction = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				geco().stageControl().createCourse();
+			}
+		};
+		ActionListener removeAction = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Course course = panel.getSelectedData();
+				if( course!=null ) {
+					boolean removed = geco().stageControl().removeCourse(course);
+					if( !removed ) {
+						JOptionPane.showMessageDialog(frame(),
+							    "This course can not be deleted because some runners are registered with it.",
+							    "Action cancelled",
+							    JOptionPane.WARNING_MESSAGE);
+					}
+				}
+			}
+		};
+
+		panel.initialize("Course", tableModel, addAction, removeAction);
+		return panel;
+	}
 	
 	private JPanel categoryConfigPanel() {
 		final ConfigTablePanel<Category> panel = new ConfigTablePanel<Category>(geco(), frame());
