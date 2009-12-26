@@ -138,5 +138,75 @@ public class StageControl extends Control {
 			announcer().announceCoursesChanged();
 		}		
 	}
+
+
+	/**
+	 * 
+	 */
+	public Category createCategory() {
+		Category cat = factory().createCategory();
+		cat.setShortname("Category" + (registry().getCategories().size() + 1));
+		registry().addCategory(cat);
+		announcer().announceCategoriesChanged();
+		return cat;		
+	}
+
+	/**
+	 * @param cat
+	 * @throws Exception 
+	 */
+	public boolean removeCategory(Category cat) throws Exception {
+		if( canRemoveCategory(cat) ) {
+			stage().registry().removeCategory(cat);
+			announcer().announceCategoriesChanged();
+			return true;
+		}
+		return false;		
+	}
+
+	/**
+	 * @param cat
+	 * @return
+	 * @throws Exception 
+	 */
+	private boolean canRemoveCategory(Category cat) throws Exception {
+		for (Runner runner : registry().getRunners()) {
+			if( runner.getCategory() == cat ) {
+				throw new Exception("Runners use category");
+			}
+		}
+		for (HeatSet set : registry().getHeatSets()) {
+			if( set.isCategoryType() ) {
+				for (Pool pool : set.getSelectedPools()) {
+					if( pool == cat ) {
+						throw new Exception("Heatsets use category");
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * @param cat
+	 * @param value
+	 */
+	public void updateShortname(Category cat, String newName) {
+		if( !cat.getShortname().equals(newName) ) {
+			registry().updateCategoryname(cat, newName);
+			announcer().announceCategoriesChanged();
+		}		
+	}
+
+	/**
+	 * @param cat
+	 * @param value
+	 */
+	public void updateName(Category cat, String newName) {
+		if( !cat.getLongname().equals(newName) ) {
+			cat.setLongname(newName);
+			announcer().announceCategoriesChanged();
+		}
+	}
 	
 }

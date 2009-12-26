@@ -233,11 +233,12 @@ public class StagePanel extends TabPanel {
 
 		panel.initialize("Course", tableModel, addAction, removeAction);
 		return panel;
-	}
+	}	
+
 	
 	private JPanel categoryConfigPanel() {
 		final ConfigTablePanel<Category> panel = new ConfigTablePanel<Category>(geco(), frame());
-		
+	
 		final ConfigTableModel<Category> tableModel = 
 			new ConfigTableModel<Category>(new String[] {"Short name", "Long name"}) {
 				@Override
@@ -252,19 +253,26 @@ public class StagePanel extends TabPanel {
 				@Override
 				public void setValueIn(Category cat, Object value, int col) {
 					switch (col) {
-					case 0: cat.setShortname((String) value); break;
-					case 1: cat.setLongname((String) value); break;
+					case 0: geco().stageControl().updateShortname(cat, (String) value); break;
+					case 1: geco().stageControl().updateName(cat, (String) value); break;
 					default: break;
 					}
-					// TODO: announce change in club name
 				}
 		};
 		tableModel.setData(registry().getSortedCategories());
 		
+		announcer.registerStageConfigListener( new Announcer.StageConfigListener() {
+			public void coursesChanged() {}
+			public void clubsChanged() {}
+			public void categoriesChanged() {
+				tableModel.setData(registry().getSortedCategories());
+			}
+		});
+	
 		ActionListener addAction = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-//				geco().stageControl().createCategory();
+				geco().stageControl().createCategory();
 			}
 		};
 		ActionListener removeAction = new ActionListener() {
@@ -272,7 +280,14 @@ public class StagePanel extends TabPanel {
 			public void actionPerformed(ActionEvent e) {
 				Category cat = panel.getSelectedData();
 				if( cat!=null ) {
-//					geco().stageControl().removeCategory(cat);
+					try {
+						geco().stageControl().removeCategory(cat);	
+					} catch (Exception e2) {
+						JOptionPane.showMessageDialog(frame(),
+								"This category can not be deleted because " + e2.getMessage(),
+								"Action cancelled",
+								JOptionPane.WARNING_MESSAGE);
+					}
 				}
 			}
 		};
@@ -280,7 +295,7 @@ public class StagePanel extends TabPanel {
 		panel.initialize("Category", tableModel, addAction, removeAction);
 		return panel;
 	}
-	
+		
 	@Override
 	public void changed(Stage previous, Stage next) {
 		refresh();

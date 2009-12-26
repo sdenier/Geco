@@ -257,6 +257,19 @@ public class Registry {
 			sortedCategorynames = null;
 		}
 	}
+
+
+	/**
+	 * @param cat
+	 * @param newName
+	 */
+	public void updateCategoryname(Category cat, String newName) {
+		synchronized (categories) {
+			categories.remove(cat.getShortname());
+			cat.setShortname(newName);
+			addCategory(cat);
+		}
+	}
 	
 	public Category noCategory() {
 		return findCategory("[None]");

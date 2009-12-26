@@ -53,7 +53,6 @@ public abstract class Control implements Announcer.StageListener {
 	}
 
 	public Registry registry() {
-//		return this.registry;
 		return stage().registry();
 	}
 
