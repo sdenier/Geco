@@ -5,9 +5,11 @@ package valmo.geco.control;
 
 import valmo.geco.core.Announcer;
 import valmo.geco.core.Geco;
+import valmo.geco.model.Category;
 import valmo.geco.model.Club;
 import valmo.geco.model.Course;
 import valmo.geco.model.Factory;
+import valmo.geco.model.HeatSet;
 import valmo.geco.model.Runner;
 import valmo.geco.model.Stage;
 
@@ -38,7 +40,7 @@ public class StageControl extends Control {
 	
 	public Club createClub() {
 		Club club = factory().createClub();
-		club.setName("Unknown" + (registry().getClubs().size() + 1));
+		club.setName("Club" + (registry().getClubs().size() + 1));
 		club.setShortname("");
 		registry().addClub(club);
 		announcer().announceClubsChanged();
@@ -81,7 +83,7 @@ public class StageControl extends Control {
 	 */
 	public Course createCourse() {
 		Course course = factory().createCourse();
-		course.setName("NewCourse" + (registry().getCourses().size() + 1));
+		course.setName("Course" + (registry().getCourses().size() + 1));
 		course.setCodes(new int[0]);
 		registry().addCourse(course);
 		announcer().announceCoursesChanged();
@@ -91,12 +93,40 @@ public class StageControl extends Control {
 	/**
 	 * @param course
 	 * @return
+	 * @throws Exception 
 	 */
-	public boolean removeCourse(Course course) {
-		// TODO Auto-generated method stub
+	public boolean removeCourse(Course course) throws Exception {
+		if( canRemoveCourse(course) ) {
+			stage().registry().removeCourse(course);
+			announcer().announceCoursesChanged();
+			return true;
+		}
 		return false;
 	}
 
+	public boolean canRemoveCourse(Course course) throws Exception {
+		for (Category cat : registry().getCategories()) {
+			if( cat.getCourse() == course ) {
+				throw new Exception("Categories use course");
+			}
+		}
+		for (Runner runner : registry().getRunners()) {
+			if( runner.getCourse() == course ) {
+				throw new Exception("Runners use course");
+			}
+		}
+		for (HeatSet set : registry().getHeatSets()) {
+			if( set.isCourseType() ) {
+				for (Object cname : set.getSelectedSets()) {
+					if( cname == course.getName() ) {
+						throw new Exception("Heatsets use course");
+					}
+				}
+			}
+		}
+		return true;
+	}
+	
 	/**
 	 * @param course
 	 * @param value

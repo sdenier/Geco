@@ -127,8 +127,8 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 			public void actionPerformed(ActionEvent e) {
 				int remove = heatList.getSelectedIndex();
 				if( remove!=-1 )
-					heatlistModel.remove(remove);
 					registry().removeHeatset(getSelectedHeatset());
+					heatlistModel.remove(remove);
 			}
 		});
 		

@@ -3,6 +3,9 @@
  */
 package valmo.geco.ui;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,26 +41,36 @@ public class StagePanel extends TabPanel {
 	public StagePanel(Geco geco, JFrame frame, Announcer announcer) {
 		super(geco, frame, announcer);
 		this.announcer = announcer;
-		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		setLayout(new BorderLayout()); // TODO: use gridbaglayout
 		refresh();
 	}
 	
 	public void refresh() {
-		this.removeAll(); // not smart?
-		JPanel configPanel = Util.embed(stageConfigPanel());		
-		add(configPanel);
-		add(Util.embed(checkerConfigPanel()));
-//		add(courseConfigPanel());
-//		add(clubConfigPanel());
-//		add(categoryConfigPanel());
-		add(Util.embed(courseConfigPanel()));
-		add(Util.embed(clubConfigPanel()));
-		add(Util.embed(categoryConfigPanel()));
+		this.removeAll();
+		JPanel north = new JPanel();
+//		north.setLayout(new BoxLayout(north, BoxLayout.X_AXIS));
+//		north.add(Util.embed(stageConfigPanel()));
+//		north.add(Util.embed(checkerConfigPanel()));
+//		north.add(Util.embed(sireaderConfigPanel()));
+		north.setLayout(new FlowLayout(FlowLayout.LEFT));
+		north.add(stageConfigPanel());
+		north.add(checkerConfigPanel());
+		north.add(sireaderConfigPanel());
+		//		north.add(Box.createHorizontalGlue());
+		add(north, BorderLayout.NORTH);
+		JPanel south = new JPanel();
+		south.setLayout(new FlowLayout(FlowLayout.LEADING));
+		south.add(Util.embed(courseConfigPanel()));
+		south.add(Util.embed(clubConfigPanel()));
+		south.add(Util.embed(categoryConfigPanel()));
+		south.add(Box.createHorizontalGlue());
+		add(south, BorderLayout.CENTER);
 	}
 
 	private JPanel stageConfigPanel() {
 		JPanel panel = new JPanel(new GridLayout(0,2));
-		panel.setBorder(BorderFactory.createTitledBorder("Stage Configuration"));
+		panel.setBorder(BorderFactory.createTitledBorder("Stage"));
+		panel.setAlignmentY(Component.TOP_ALIGNMENT);
 		panel.add(new JLabel("Stage name:"));
 		panel.add(new JTextField(geco().stage().getName()));
 		panel.add(new JLabel("Previous stage:"));
@@ -69,7 +82,8 @@ public class StagePanel extends TabPanel {
 
 	private JPanel checkerConfigPanel() {
 		JPanel panel = new JPanel(new GridLayout(0,2));
-		panel.setBorder(BorderFactory.createTitledBorder("Orientshow Configuration"));
+		panel.setBorder(BorderFactory.createTitledBorder("Orientshow"));
+		panel.setAlignmentY(Component.TOP_ALIGNMENT);
 		panel.add(new JLabel("MP limit:"));
 		JTextField mplimitF = new JTextField("0");
 		mplimitF.setToolTipText("Number of missing punches authorized before marking the runner as MP.");
@@ -79,6 +93,17 @@ public class StagePanel extends TabPanel {
 		penaltyF.setToolTipText("Time penalty per missing punch in seconds");
 		panel.add(penaltyF);
 		return panel;
+	}
+	
+	private JPanel sireaderConfigPanel() {
+		JPanel panel = new JPanel(new GridLayout(0,2));
+		panel.setAlignmentY(Component.TOP_ALIGNMENT);
+		panel.setBorder(BorderFactory.createTitledBorder("SI Reader"));
+		panel.add(new JLabel("Station port:"));
+		JTextField stationPortF = new JTextField("/dev/tty/");
+//		stationPortF.setToolTipText("");
+		panel.add(stationPortF);
+		return panel;		
 	}
 
 	
@@ -187,12 +212,13 @@ public class StagePanel extends TabPanel {
 			public void actionPerformed(ActionEvent e) {
 				Course course = panel.getSelectedData();
 				if( course!=null ) {
-					boolean removed = geco().stageControl().removeCourse(course);
-					if( !removed ) {
+					try {
+						geco().stageControl().removeCourse(course);
+					} catch (Exception e1) {
 						JOptionPane.showMessageDialog(frame(),
-							    "This course can not be deleted because some runners are registered with it.",
-							    "Action cancelled",
-							    JOptionPane.WARNING_MESSAGE);
+							"This course can not be deleted because " + e1.getMessage(),
+							"Action cancelled",
+							JOptionPane.WARNING_MESSAGE);
 					}
 				}
 			}
@@ -206,12 +232,13 @@ public class StagePanel extends TabPanel {
 		final ConfigTablePanel<Category> panel = new ConfigTablePanel<Category>(geco(), frame());
 		
 		final ConfigTableModel<Category> tableModel = 
-			new ConfigTableModel<Category>(new String[] {"Short name", "Long name"}) {
+			new ConfigTableModel<Category>(new String[] {"Short name", "Long name", "Course"}) {
 				@Override
 				public Object getValueIn(Category cat, int columnIndex) {
 					switch (columnIndex) {
 					case 0: return cat.getShortname();
 					case 1: return cat.getLongname();
+					case 2: return (cat.getCourse()==null) ? "" : cat.getCourse().getName();
 					default: return super.getValueIn(cat, columnIndex);
 					}
 				}

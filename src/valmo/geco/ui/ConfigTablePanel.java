@@ -62,7 +62,7 @@ public class ConfigTablePanel<T> extends GecoPanel {
 		table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 		JScrollPane jsp = new JScrollPane(table);
-		jsp.setPreferredSize(new Dimension(50, 200));
+		jsp.setPreferredSize(new Dimension(75, 300));
 		add(jsp, BorderLayout.CENTER);
 		
 		JPanel buttonBar = new JPanel();
