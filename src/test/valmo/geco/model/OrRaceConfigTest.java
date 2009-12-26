@@ -35,7 +35,7 @@ public class OrRaceConfigTest {
 	
 	@Test
 	public void testImportClubs() {
-		assertEquals(13, registryB.getClubs().size()); // TODO: remove club with empty name
+		assertEquals(12, registryB.getClubs().size());
 		assertEquals("[None]", registryB.findClub("[None]").getName());
 		assertEquals("3ROC", registryB.findClub("3ROC").getName());
 		assertEquals("CORKO", registryB.findClub("CORKO").getName());

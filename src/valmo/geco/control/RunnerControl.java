@@ -51,9 +51,9 @@ public class RunnerControl extends Control {
 		runner.setChipnumber(chip);
 		runner.setFirstname("John");
 		runner.setLastname("Doe");
-		runner.setClub(registry().getClubs().iterator().next());
-		runner.setCategory(registry().getCategories().iterator().next());
-		runner.setCourse(registry().getCourses().iterator().next());
+		runner.setClub(registry().noClub());
+		runner.setCategory(registry().noCategory());
+		runner.setCourse(registry().anyCourse());
 		stage().registry().addRunner(runner);
 		RunnerRaceData data = stage().registry().createRunnerDataFor(runner, factory());
 		announcer().announceRunnerCreation(data);

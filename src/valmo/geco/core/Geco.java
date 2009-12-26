@@ -191,7 +191,7 @@ public class Geco {
 			current = newStage;
 			updateStageList(stage().getBaseDir());
 		} catch (Exception e) {
-//			logger().log(e.toString());
+			e.printStackTrace();
 			return false;
 		}
 		announcer.announceChange(getStage(oldStage), stage());

@@ -5,6 +5,7 @@ package valmo.geco.model.iocsv;
 
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
+import valmo.geco.model.Course;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Runner;
@@ -46,15 +47,22 @@ public class RunnerIO extends AbstractIO<Runner> {
 		}
 		Club club = registry.findClub(record[3]);
 		if( club == null ) {
-			runner.setClub(registry.findClub("[None]"));
+			runner.setClub(registry.noClub());
+			System.err.println("Unknown club " + record[3] + " for runner " + runner.idString());
 		} else {
 			runner.setClub(club);
 		}
-		runner.setCourse(registry.findCourse(record[4]));
+		Course course = registry.findCourse(record[4]);
+		if( course == null ) {
+			runner.setCourse(registry.anyCourse());
+			System.err.println("Unknown course " + record[4] + " for runner " + runner.idString());
+		} else {
+			runner.setCourse(course);
+		}
 		Category cat = registry.findCategory(record[6]);
 		if( cat == null ) {
-			runner.setCategory(this.factory.createCategory());
-			runner.getCategory().setShortname(""); // TODO temporary hack, use default category like club
+			runner.setCategory(registry.noCategory());
+			System.err.println("Unknown category " + record[6] + " for runner " + runner.idString());
 		} else {
 			runner.setCategory(cat);	
 		}

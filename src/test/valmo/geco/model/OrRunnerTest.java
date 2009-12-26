@@ -103,7 +103,7 @@ public class OrRunnerTest {
 		assertEquals("Caoimhe", runner.getFirstname());
 		assertEquals("O'Boyle", runner.getLastname());
 		assertEquals(registryM.findClub("CNOC"), runner.getClub());
-		assertEquals("", runner.getCategory().getShortname());
+		assertEquals("[None]", runner.getCategory().getShortname());
 		assertEquals(registryM.findCourse("Orange"), runner.getCourse());
 		assertFalse(runner.isNC());
 	}

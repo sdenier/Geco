@@ -80,6 +80,11 @@ public class Registry {
 	public void addCourse(Course course) {
 		synchronized (courses) {
 			courses.put(course.getName(), course);
+			if( !runnersByCourse.containsKey(course) ) {
+				// if creating a previously unknown course, we also
+				// create the entry for runners
+				runnersByCourse.put(course, new Vector<Runner>());
+			}
 		}
 	}
 
@@ -96,6 +101,12 @@ public class Registry {
 			course.setName(newName);
 			addCourse(course);
 		}		
+	}
+	
+	public Course anyCourse() {
+		synchronized (courses) {
+			return courses.values().iterator().next();
+		}
 	}
 
 
@@ -136,6 +147,12 @@ public class Registry {
 			addClub(club);
 		}
 	}
+	
+	public Club noClub() {
+		synchronized (clubs) {
+			return findClub("[None]");
+		}
+	}
 
 	
 	public Collection<Category> getCategories() {
@@ -159,6 +176,9 @@ public class Registry {
 	public void addCategory(Category cat) {
 		synchronized (categories) {
 			categories.put(cat.getShortname(), cat);
+			if( !runnersByCategory.containsKey(cat) ) {
+				runnersByCategory.put(cat, new Vector<Runner>());
+			}
 		}
 	}
 	
@@ -167,6 +187,10 @@ public class Registry {
 			categories.remove(cat.getShortname());
 			runnersByCategory.remove(cat);
 		}
+	}
+	
+	public Category noCategory() {
+		return findCategory("[None]");
 	}
 
 
@@ -192,18 +216,12 @@ public class Registry {
 	
 	private void addRunnerinCourseList(Runner runner, Course course) {
 		synchronized (runnersLock) {
-			if( !runnersByCourse.containsKey(course) ) {
-				runnersByCourse.put(course, new Vector<Runner>());
-			}
 			runnersByCourse.get(course).add(runner);
 		}
 	}
 
 	private void addRunnerinCategoryList(Runner runner, Category cat) {
 		synchronized (runnersLock) {
-			if( !runnersByCategory.containsKey(cat) ) {
-				runnersByCategory.put(cat, new Vector<Runner>());
-			}
 			runnersByCategory.get(cat).add(runner);
 		}
 	}
@@ -330,7 +348,7 @@ public class Registry {
 
 	public void removeHeatset(HeatSet heatSet) {
 		synchronized (heatsets) {
-			heatsets.remove(heatSet);
+			heatsets.remove(heatSet.getName());
 		}
 	}
 
