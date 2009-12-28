@@ -90,11 +90,9 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 		addButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				geco().runnerControl().createDummyRunner();
 				// announce runner creation and add in tablemodel
-				int newIndex = table.convertRowIndexToView(tableModel.getData().size()-1);
-				table.getSelectionModel().setSelectionInterval(newIndex, newIndex);
-				table.scrollRectToVisible(table.getCellRect(newIndex, 0, true));
+				geco().runnerControl().createAnonymousRunner();
+//				focusTableOnIndex(tableModel.getData().size()-1);
 			}
 		});
 		topPanel.add(addButton);
@@ -106,8 +104,8 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 				RunnerRaceData data = selectedData();
 				if( data!=null ) {
 					int nextSelection = Math.max(0, table.getSelectedRow()-1);
-					geco().runnerControl().deleteRunner(data);
 					// announce runner deletion and remove from tablemodel
+					geco().runnerControl().deleteRunner(data);
 					table.getSelectionModel().setSelectionInterval(nextSelection, nextSelection);
 				}
 			}
@@ -175,6 +173,27 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 		tableModel.setData(new Vector<RunnerRaceData>(registry().getRunnersData()));
 	}
 	
+	private void refreshTableIndex(int index) {
+		tableModel.fireTableRowsUpdated(index, index);
+		if( table.convertRowIndexToView(index) == table.getSelectedRow() ) {
+			updateRunnerPanel();	
+		}
+	}
+	
+	public void refreshTableRunner(RunnerRaceData runner) {
+		refreshTableIndex(tableModel.getData().indexOf(runner));
+	}
+	
+	private void focusTableOnIndex(int index) {
+		int newIndex = table.convertRowIndexToView(index);
+		table.getSelectionModel().setSelectionInterval(newIndex, newIndex);
+		table.scrollRectToVisible(table.getCellRect(newIndex, 0, true));		
+	}
+	
+	public void focusTableOnRunner(RunnerRaceData runner) {
+		focusTableOnIndex(tableModel.getData().indexOf(runner));
+	}
+	
 	public void refreshSelectionInTable() {
 		int modelRow = table.convertRowIndexToModel(table.getSelectedRow()); 
 		this.tableModel.fireTableRowsUpdated(modelRow, modelRow);
@@ -227,7 +246,8 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 
 	@Override
 	public void runnerCreated(RunnerRaceData data) {
-		tableModel.addData(data);		
+		tableModel.addData(data);
+		focusTableOnRunner(data);
 	}
 
 	@Override
@@ -240,11 +260,7 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 	public void statusChanged(RunnerRaceData runner, Status oldStatus) {
 		// TODO: this makes some refreshing process in RunnerPanel redundant
 		// if RunnerPanel itself is at the origin of the event.
-		int index = tableModel.getData().indexOf(runner);
-		tableModel.fireTableRowsUpdated(index, index);
-		if( table.convertRowIndexToView(index) == table.getSelectedRow() ) {
-			updateRunnerPanel();	
-		}
+		refreshTableRunner(runner);
 	}
 
 
@@ -253,8 +269,7 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 	 */
 	@Override
 	public void cardRead(String chip) {
-		// TODO Auto-generated method stub
-		
+		refreshTableRunner(registry().findRunnerData(chip));
 	}
 
 	
