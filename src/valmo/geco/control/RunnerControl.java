@@ -44,10 +44,15 @@ public class RunnerControl extends RunnerBuilder {
 		return this.announcer;
 	}
 
-	public Runner buildAnonymousRunner() {
+	public Runner buildMockRunner() {
+		Runner runner = factory().createRunner();
+		runner.setCourse(registry().anyCourse());
+		return runner;		
+	}
+	
+	public Runner buildAnonymousRunner(String chip) {
 		Runner runner = factory().createRunner();
 		runner.setStartnumber(registry().detectMaxStartnumber() + 1);
-		String chip = Integer.toString(registry().detectMaxChipnumber() + 1);
 		runner.setChipnumber(chip);
 		runner.setFirstname("John");
 		runner.setLastname("Doe");
@@ -58,15 +63,24 @@ public class RunnerControl extends RunnerBuilder {
 	}
 	
 	public Runner createAnonymousRunner() {
-		Runner runner = buildAnonymousRunner();
-		stage().registry().addRunner(runner);
-		announcer().announceRunnerCreation(createRunnerDataFor(runner));
+		Runner runner = buildAnonymousRunner(newChipCnumber());
+		registerRunner(runner, buildRunnerData());
 		return runner;
+	}
+
+	public String newChipCnumber() {
+		return Integer.toString(registry().detectMaxChipnumber() + 1);
+	}
+	
+	public RunnerRaceData registerRunner(Runner runner, RunnerRaceData runnerData) {
+		registry().addRunner(runner);
+		announcer().announceRunnerCreation(registerRunnerDataFor(runner, runnerData));
+		return runnerData;
 	}
 	
 	public void deleteRunner(RunnerRaceData data) {
-		stage().registry().removeRunner(data.getRunner());
-		stage().registry().removeRunnerData(data);
+		registry().removeRunner(data.getRunner());
+		registry().removeRunnerData(data);
 		announcer().announceRunnerDeletion(data);
 	}
 	

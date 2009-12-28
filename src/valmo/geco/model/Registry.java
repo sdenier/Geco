@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import valmo.geco.control.PenaltyChecker;
-
 
 /**
  * Registry holds all data related to the stage itself and provides a facade to access them. It does not

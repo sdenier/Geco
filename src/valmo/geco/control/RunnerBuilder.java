@@ -33,14 +33,10 @@ public class RunnerBuilder extends Control {
 	
 	public RunnerRaceData registerRunnerDataFor(Runner runner, RunnerRaceData runnerData) {
 		runnerData.setRunner(runner);
-		stage().registry().addRunnerData(runnerData);
+		registry().addRunnerData(runnerData);
 		return runnerData;
 	}
 
-	public RunnerRaceData createRunnerDataFor(Runner runner) {
-		return registerRunnerDataFor(runner, buildRunnerData());
-	}
-	
 	
 	public void checkGecoData(PenaltyChecker checker) {
 		checkNoDataRunners();
@@ -64,7 +60,7 @@ public class RunnerBuilder extends Control {
 	public void checkNoDataRunners() {
 		for (Runner runner : registry().getRunners()) {
 			if( registry().findRunnerData(runner) == null ) {
-				createRunnerDataFor(runner);
+				registerRunnerDataFor(runner, buildRunnerData());
 			}
 		}
 	}
