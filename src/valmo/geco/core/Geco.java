@@ -16,7 +16,6 @@ import javax.swing.JOptionPane;
 
 import valmo.geco.control.HeatBuilder;
 import valmo.geco.control.PenaltyChecker;
-import valmo.geco.control.PunchChecker;
 import valmo.geco.control.RegistryStats;
 import valmo.geco.control.ResultBuilder;
 import valmo.geco.control.RunnerControl;
@@ -25,6 +24,8 @@ import valmo.geco.control.StageBuilder;
 import valmo.geco.control.StageControl;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Registry;
+import valmo.geco.model.Runner;
+import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Stage;
 import valmo.geco.model.impl.POFactory;
 import valmo.geco.ui.GecoWindow;
@@ -302,7 +303,7 @@ public class Geco {
 	public Registry registry() {
 		return stage().registry();
 	}
-	public PunchChecker checker() {
+	public PenaltyChecker checker() {
 		return this.checker;
 	}
 	public StageControl stageControl() {
@@ -373,8 +374,12 @@ public class Geco {
 		} // else do nothing
 	}
 
-	public void openMergeDialog(String title, String description) {
-		new MergeRunnerDialog(this, window);
+	public void openMergeDialog(String title, RunnerRaceData data, String chip) {
+		new MergeRunnerDialog(this, window, title).showMergeDialogFor(data, chip);
+	}
+	
+	public void openOverrideDialog(String title, RunnerRaceData data, Runner target) {
+		new MergeRunnerDialog(this, window, title).showOverrideDialogFor(data, target);
 	}
 	
 }

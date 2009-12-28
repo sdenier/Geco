@@ -80,20 +80,21 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 		if( runner!=null ) {
 			RunnerRaceData runnerData = registry().findRunnerData(runner);
 			if( runnerData.hasResult() ) {
-				// create John Doe
-				// launch merger
-				// autoselect the target
-				geco.openMergeDialog("Existing Data for Runner", "Override data and result for Runner?");
+				geco.openOverrideDialog("Existing Data for Runner", handleNewData(card), runner);
 			} else {
 				handleData(runnerData, card);	
 			}
 		} else {
-			// TODO: create John Doe
-			// launch merger
-			geco.openMergeDialog("Unknown Chip", "Record data or merge into existing runner?");
-			announcer.announceCardRead("Dangling John Doe!");
+			geco.openMergeDialog("Unknown Chip", handleNewData(card), card.getSiIdent());
+//			announcer.announceCardRead("Dangling John Doe!");
 		}
 		
+	}
+	
+	private RunnerRaceData handleNewData(IResultData<PunchObject,PunchRecordData> card) {
+		RunnerRaceData newData = factory().createRunnerRaceData(); 
+		updateRaceDataWith(newData, card);
+		return newData;
 	}
 	
 	/**

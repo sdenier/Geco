@@ -68,18 +68,60 @@ public class Util {
 		}
 		return allDifferent;
 	}
+	
+	public static String italicize(String content) {
+		return inHtml(content, "i");
+	}
+	
+	public static String inHtml(String content, String htmlTag) {
+		return "<html>" + html(content, htmlTag, new StringBuffer()) + "</html>";
+	}
 
-	public static GridBagConstraints compConstraint(int gridx, int gridy) {
-			GridBagConstraints constraints = new GridBagConstraints();
-			constraints.gridx = gridx;
-			constraints.gridy = gridy;
-			constraints.anchor = GridBagConstraints.CENTER;
-	//		constraints.anchor = GridBagConstraints.LINE_START;
-			constraints.ipadx = 10 ;
-			constraints.ipady = 10 ;
-	//		constraints.gridwidth = gridwidth;
-	//		constraints.gridheight = gridheigth;
-			return constraints;
+	public static String html(String content, String htmlTag, StringBuffer buf) {
+		htmlTag(htmlTag, true, buf);
+		buf.append(content);
+		htmlTag(htmlTag, false, buf);
+		return buf.toString();
+	}
+
+	public static String htmlTag(String htmlTag, boolean starting, StringBuffer buf) {
+		buf.append("<");
+		if( !starting) {
+			buf.append("/");
 		}
+		buf.append(htmlTag);
+		buf.append(">");
+		return buf.toString();
+	}
 
+	public static GridBagConstraints gbConstr() {
+		return compConstraint(GridBagConstraints.RELATIVE, GridBagConstraints.RELATIVE);
+	}
+
+	public static GridBagConstraints gbConstr(int gridy) {
+		return compConstraint(GridBagConstraints.RELATIVE, gridy);
+	}
+	
+	public static GridBagConstraints compConstraint(int gridx, int gridy) {
+		return compConstraint(gridx, gridy, GridBagConstraints.LINE_START);
+	}
+
+	public static GridBagConstraints compConstraint(int gridx, int gridy, int anchor) {
+		return compConstraint(gridx, gridy, GridBagConstraints.NONE, anchor);
+	}
+	
+	public static GridBagConstraints compConstraint(int gridx, int gridy, int fill, int anchor) {
+		GridBagConstraints constraints = new GridBagConstraints();
+		constraints.gridx = gridx;
+		constraints.gridy = gridy;
+		constraints.fill = fill;
+		constraints.anchor = anchor;
+//		constraints.ipadx = 10 ;
+//		constraints.ipady = 10 ;
+//		constraints.gridwidth = gridwidth;
+//		constraints.gridheight = gridheigth;
+		return constraints;
+	}
+
+	
 }

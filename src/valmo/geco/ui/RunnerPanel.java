@@ -118,8 +118,9 @@ public class RunnerPanel extends GecoPanel implements StageConfigListener {
 		rTimeF.setText(TimeManager.time(runnerData.getResult().getRacetime()));
 		realTimeL.setText(TimeManager.time(geco().checker().computeRaceTime(runnerData)));
 		statusCB.setSelectedItem(runnerData.getResult().getStatus());
-		mpF.setText(Integer.toString(runnerData.getResult().getNbMPs()));
-		penaltyL.setText(Integer.toString(0)); // TODO: compute penalty here???
+		int nbMPs = runnerData.getResult().getNbMPs();
+		mpF.setText(Integer.toString(nbMPs));
+		penaltyL.setText(TimeManager.time(geco().checker().timePenalty(nbMPs)));
 		punchPanel.refreshPunches(runnerData);
 		this.inRefreshMode = false;
 	}
@@ -236,7 +237,11 @@ public class RunnerPanel extends GecoPanel implements StageConfigListener {
 					Course oldCourse = runner.getCourse();
 					String newCourse = (String) courseCB.getSelectedItem();
 					if( !oldCourse.getName().equals(newCourse) ) {
-						int confirm = JOptionPane.showConfirmDialog(frame(), "This will trigger a status check. Please confirm the change of runner's course?", "Update Runner", JOptionPane.YES_NO_OPTION);
+						int confirm = JOptionPane.showConfirmDialog(
+							frame(), 
+							"This will trigger a status check. Please confirm the change of runner's course?", 
+							"Update Runner", 
+							JOptionPane.YES_NO_OPTION);
 						if( confirm==JOptionPane.YES_OPTION ) {
 							if( control().validateCourse(runnerData, newCourse)) {
 								parentContainer.refreshSelectionInTable();
@@ -254,7 +259,9 @@ public class RunnerPanel extends GecoPanel implements StageConfigListener {
 		});
 		mergeDialogB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new MergeRunnerDialog(geco(), frame());
+				new MergeRunnerDialog(geco(), frame(), "Merge runner").showMergeDialogFor(
+																runnerData.clone(), 
+																geco().runnerControl().newChipCnumber());
 			}
 		});
 		rTimeF.addActionListener(new ActionListener() {
@@ -284,7 +291,11 @@ public class RunnerPanel extends GecoPanel implements StageConfigListener {
 				if( !inRefreshMode ) {
 					Status newStatus = (Status) statusCB.getSelectedItem();
 					if( !newStatus.equals(runnerData.getResult().getStatus()) ) {
-						int confirm = JOptionPane.showConfirmDialog(frame(), "Please confirm the change of runner's status", "Update Runner", JOptionPane.YES_NO_OPTION);
+						int confirm = JOptionPane.showConfirmDialog(
+								frame(), 
+								"Please confirm the change of runner's status", 
+								"Update Runner", 
+								JOptionPane.YES_NO_OPTION);
 						if( confirm==JOptionPane.YES_OPTION ) {
 							if( control().validateStatus(runnerData, newStatus)) {
 								parentContainer.refreshSelectionInTable();	
@@ -359,7 +370,7 @@ public class RunnerPanel extends GecoPanel implements StageConfigListener {
 				new JLabel("Control time"),
 				new JLabel("Start time"),
 				new JLabel("Finish time"),
-				new JLabel("Real race time"),
+				new JLabel("Race time"),
 				eTimeF,
 				cTimeF,
 				sTimeF,
@@ -370,7 +381,7 @@ public class RunnerPanel extends GecoPanel implements StageConfigListener {
 				new JLabel("Status"),
 				new JLabel("MPs"),
 				new JLabel("Time penalty"),
-				new JLabel("Race time"),
+				new JLabel("Official time"),
 				resetRTimeB,
 				statusCB,
 				mpF,
