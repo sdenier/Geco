@@ -24,7 +24,7 @@ import valmo.geco.model.Status;
  * @since Aug 21, 2009
  *
  */
-public class RunnerControl extends Control {
+public class RunnerControl extends RunnerBuilder {
 	
 	private Geco geco;
 	private Announcer announcer;
@@ -43,8 +43,8 @@ public class RunnerControl extends Control {
 	private Announcer announcer() {
 		return this.announcer;
 	}
-	
-	public RunnerRaceData createDummyRunner() {
+
+	public Runner buildAnonymousRunner() {
 		Runner runner = factory().createRunner();
 		runner.setStartnumber(registry().detectMaxStartnumber() + 1);
 		String chip = Integer.toString(registry().detectMaxChipnumber() + 1);
@@ -54,10 +54,14 @@ public class RunnerControl extends Control {
 		runner.setClub(registry().noClub());
 		runner.setCategory(registry().noCategory());
 		runner.setCourse(registry().anyCourse());
+		return runner;
+	}
+	
+	public Runner createAnonymousRunner() {
+		Runner runner = buildAnonymousRunner();
 		stage().registry().addRunner(runner);
-		RunnerRaceData data = stage().registry().createRunnerDataFor(runner, factory());
-		announcer().announceRunnerCreation(data);
-		return data;
+		announcer().announceRunnerCreation(createRunnerDataFor(runner));
+		return runner;
 	}
 	
 	public void deleteRunner(RunnerRaceData data) {
@@ -188,5 +192,6 @@ public class RunnerControl extends Control {
 		}
 		return false;
 	}
+
 
 }

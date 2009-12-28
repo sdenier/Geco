@@ -370,14 +370,6 @@ public class Registry {
 			runnerData.remove(data.getRunner());
 		}
 	}
-
-	public RunnerRaceData createRunnerDataFor(Runner runner, Factory factory) {
-		RunnerRaceData data = factory.createRunnerRaceData();
-		data.setRunner(runner);
-		data.setResult(factory.createRunnerResult());
-		addRunnerData(data);
-		return data;
-	}
 	
 	public List<Runner> getRunnersFromCategory(Category cat) {
 		synchronized (runnersLock) {
@@ -479,39 +471,6 @@ public class Registry {
 		}
 	}
 	
-	// TODO: inverse dependency to PenaltyChecker or something
-	public void checkGecoData(Factory factory, PenaltyChecker checker) {
-		synchronized (runnersLock) {
-			checkNoDataRunners(factory);
-			// compute trace for data
-			for (RunnerRaceData raceData : getRunnersData()) {
-				checker.buildTrace(raceData);	
-			}
-		}
-	}
-	
-	public void checkOrData(Factory factory, PenaltyChecker checker) {
-		synchronized (runnersLock) {
-			checkNoDataRunners(factory);
-			// compute status and trace for data
-			for (RunnerRaceData raceData : getRunnersData()) {
-				// Special runner status (DNS) should have been set before this point
-				if( raceData.getResult()==null ) {
-					checker.check(raceData);	
-				}
-			}
-		}
-	}
-	
-	public void checkNoDataRunners(Factory factory) {
-		synchronized (runnersLock) {
-			for (Runner runner : getRunners()) {
-				if( findRunnerData(runner) == null ) {
-					createRunnerDataFor(runner, factory);
-				}
-			}
-		}
-	}
 
 	public Map<String, Integer> coursesCounts() {
 		HashMap<String,Integer> map = new HashMap<String, Integer>();
