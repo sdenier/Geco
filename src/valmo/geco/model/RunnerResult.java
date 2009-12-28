@@ -10,7 +10,7 @@ import valmo.geco.control.PenaltyChecker.Trace;
  * @since Jun 30, 2009
  *
  */
-public interface RunnerResult {
+public interface RunnerResult extends Cloneable {
 
 	public long getRacetime();
 
@@ -28,4 +28,7 @@ public interface RunnerResult {
 
 	public void setTrace(Trace[] trace);
 
+	public RunnerResult clone();
+
+	
 }

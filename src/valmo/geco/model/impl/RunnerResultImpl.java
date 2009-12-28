@@ -22,6 +22,21 @@ public class RunnerResultImpl implements RunnerResult {
 		this.trace = new Trace[0];
 	}
 	
+	public RunnerResult clone() {
+		try {
+			RunnerResult clone = (RunnerResult) super.clone();
+			Trace[] trace = new Trace[getTrace().length];
+			for (int i = 0; i < getTrace().length; i++) {
+				trace[i] = getTrace()[i].clone();
+			}
+			clone.setTrace(trace);
+			return clone;
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public long getRacetime() {
 		return racetime;
 	}

@@ -10,7 +10,7 @@ import java.util.Date;
  * @since Jun 30, 2009
  *
  */
-public interface Punch {
+public interface Punch extends Cloneable {
 
 	public int getCode();
 
@@ -19,5 +19,7 @@ public interface Punch {
 	public Date getTime();
 
 	public void setTime(Date time);
+
+	public Punch clone();
 
 }

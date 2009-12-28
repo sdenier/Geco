@@ -20,7 +20,7 @@ import valmo.geco.model.Status;
  */
 public class PenaltyChecker extends PunchChecker {	
 	
-	public static class Trace {
+	public static class Trace implements Cloneable {
 		private String code;
 		private Date time;
 		
@@ -31,6 +31,17 @@ public class PenaltyChecker extends PunchChecker {
 		public Trace(String code, Date time) {
 			this.code = code;
 			this.time = time;
+		}
+		
+		public Trace clone() {
+			try {
+				Trace clone = (Trace) super.clone();
+				clone.time = (Date) time.clone();
+				return clone;
+			} catch (CloneNotSupportedException e) {
+				e.printStackTrace();
+			}
+			return null;
 		}
 		
 		public String getCode() {

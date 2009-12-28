@@ -116,8 +116,9 @@ public class RunnerImpl implements Runner {
 	
 	@Override
 	public String toString() {
-		return getStartnumber() + "," + getChipnumber() + "," +getFirstname() + "," + getLastname()
-		+ "," + getClub().getName() + ", " + getCategory().getShortname() + "," + getCourse().getName();
+		return getNameR() + ", " + getChipnumber() + ", " + getCourse().getName();
+//		return getStartnumber() + "," + getChipnumber() + "," +getFirstname() + "," + getLastname()
+//		+ "," + getClub().getName() + ", " + getCategory().getShortname() + "," + getCourse().getName();
 	}
 	
 	public String idString() {

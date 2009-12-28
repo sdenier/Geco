@@ -43,6 +43,27 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 		this.punches = new Punch[0];
 	}
 	
+	
+	public RunnerRaceData clone() {
+		try {
+			RunnerRaceData clone = (RunnerRaceData) super.clone();
+			clone.setStarttime((Date) getStarttime().clone());
+			clone.setFinishtime((Date) getFinishtime().clone());
+			clone.setErasetime((Date) getErasetime().clone());
+			clone.setControltime((Date) getControltime().clone());
+			Punch[] punches = new Punch[getPunches().length];
+			for (int i = 0; i < getPunches().length; i++) {
+				punches[i] = getPunches()[i].clone();
+			}
+			clone.setPunches(punches);
+			clone.setResult(getResult().clone());
+			// dont clone runner, keep the reference
+			return clone;
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	public Runner getRunner() {
 		return runner;
@@ -92,9 +113,6 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 		this.punches = punches;
 	}
 	
-	/*
-	 * Should access course through Runner -> Course relation
-	 */
 	public Course getCourse() {
 		return runner.getCourse();
 	}
@@ -113,6 +131,22 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 
 	public boolean isRunning() {
 		return getResult().getStatus().equals(Status.Unknown);
+	}
+	
+	public long raceTime() {
+		return getFinishtime().getTime() - getStarttime().getTime();
+	}
+	
+	public String punchSummary(int sumLength) {
+		StringBuffer buf = new StringBuffer("(");
+		int i = 0;
+		while( i<sumLength && i<punches.length ) {
+			buf.append(punches[i].getCode());
+			buf.append(",");
+			i++;
+		}
+		buf.append("...)");
+		return buf.toString();
 	}
 	
 }

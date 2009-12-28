@@ -11,7 +11,7 @@ import java.util.Date;
  * @since Jun 30, 2009
  *
  */
-public interface RunnerRaceData {
+public interface RunnerRaceData extends Cloneable {
 
 	public Runner getRunner();
 
@@ -37,9 +37,6 @@ public interface RunnerRaceData {
 
 	public void setPunches(Punch[] punches);
 
-	/*
-	 * Should access course through Runner -> Course relation
-	 */
 	public Course getCourse();
 	
 	public boolean hasResult();
@@ -49,5 +46,11 @@ public interface RunnerRaceData {
 	public void setResult(RunnerResult result);
 	
 	public boolean isRunning();
+
+	public long raceTime();
+
+	public String punchSummary(int sumLength);
+	
+	public RunnerRaceData clone();
 
 }

@@ -11,6 +11,17 @@ public class PunchImpl implements Punch {
 	
 	private int code;
 	private Date time;
+	
+	public Punch clone() {
+		try {
+			Punch clone = (Punch) super.clone();
+			clone.setTime((Date) getTime().clone());
+			return clone;
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	public int getCode() {
 		return code;
