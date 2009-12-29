@@ -185,8 +185,7 @@ public class RegistryStats extends Control
 	 */
 	@Override
 	public void cardRead(String chip) {
-		// TODO Auto-generated method stub
-		
+		fullUpdate();
 	}
 
 	@Override

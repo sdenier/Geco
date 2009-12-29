@@ -64,6 +64,16 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 		}
 		return null;
 	}
+	
+	public void copyFrom(RunnerRaceData data) {
+		
+		setStarttime(data.getStarttime());
+		setFinishtime(data.getFinishtime());
+		setErasetime(data.getErasetime());
+		setControltime(data.getControltime());
+		setPunches(data.getPunches());
+		setResult(data.getResult());
+	}
 
 	public Runner getRunner() {
 		return runner;

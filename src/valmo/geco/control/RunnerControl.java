@@ -63,13 +63,21 @@ public class RunnerControl extends RunnerBuilder {
 	}
 	
 	public Runner createAnonymousRunner() {
-		Runner runner = buildAnonymousRunner(newChipCnumber());
+		Runner runner = buildAnonymousRunner(newUniqueChipnumber());
 		registerRunner(runner, buildRunnerData());
 		return runner;
 	}
 
-	public String newChipCnumber() {
+	public String newUniqueChipnumber() {
 		return Integer.toString(registry().detectMaxChipnumber() + 1);
+	}
+	
+	public String deriveUniqueChipnumber(String chipnumber) {
+		String[] chips = registry().collectChipnumbers();
+		if( Util.different(chipnumber, -1, chips) ) {
+			return chipnumber;
+		} else 
+			return deriveUniqueChipnumber(chipnumber + "a");
 	}
 	
 	public RunnerRaceData registerRunner(Runner runner, RunnerRaceData runnerData) {
@@ -82,6 +90,14 @@ public class RunnerControl extends RunnerBuilder {
 		registry().removeRunner(data.getRunner());
 		registry().removeRunnerData(data);
 		announcer().announceRunnerDeletion(data);
+	}
+	
+	public void updateRunnerDataFor(Runner runner, RunnerRaceData newData) {
+		RunnerRaceData runnerData = registry().findRunnerData(runner);
+		Status oldStatus = runnerData.getResult().getStatus();
+		runnerData.copyFrom(newData);
+//		registerRunnerDataFor(runner, runnerData);
+		announcer().announceStatusChange(runnerData, oldStatus);
 	}
 	
 	

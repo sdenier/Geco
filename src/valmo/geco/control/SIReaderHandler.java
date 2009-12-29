@@ -92,7 +92,8 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 	}
 	
 	private RunnerRaceData handleNewData(IResultData<PunchObject,PunchRecordData> card) {
-		RunnerRaceData newData = factory().createRunnerRaceData(); 
+		RunnerRaceData newData = factory().createRunnerRaceData();
+		newData.setResult(factory().createRunnerResult());
 		updateRaceDataWith(newData, card);
 		return newData;
 	}

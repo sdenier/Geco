@@ -260,8 +260,8 @@ public class RunnerPanel extends GecoPanel implements StageConfigListener {
 		mergeDialogB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new MergeRunnerDialog(geco(), frame(), "Merge runner").showMergeDialogFor(
-																runnerData.clone(), 
-																geco().runnerControl().newChipCnumber());
+														runnerData.clone(), 
+														runner.getChipnumber());
 			}
 		});
 		rTimeF.addActionListener(new ActionListener() {
