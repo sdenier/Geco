@@ -34,7 +34,6 @@ import valmo.geco.model.impl.HeatSetImpl;
  *
  */
 public class HeatSetDialog extends JDialog {
-	// TODO: redefine what happens when closing dialog with window buttons???
 	
 	private HeatSet currentHeatSet;
 	private boolean cancelled;
@@ -56,6 +55,7 @@ public class HeatSetDialog extends JDialog {
 	public HeatSetDialog(JFrame frame) {
 		super(frame, "Heat Set Editor", true);
 		setLocationRelativeTo(frame);
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		
 		getContentPane().setLayout(new GridBagLayout());
 		getContentPane().add(new JLabel("Heat Set Name"));

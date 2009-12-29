@@ -258,7 +258,7 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 
 	@Override
 	public void statusChanged(RunnerRaceData runner, Status oldStatus) {
-		// TODO: this makes some refreshing process in RunnerPanel redundant
+		// This makes some refreshing process in RunnerPanel redundant
 		// if RunnerPanel itself is at the origin of the event.
 		refreshTableRunner(runner);
 	}
