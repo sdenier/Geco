@@ -35,6 +35,8 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 	private Announcer announcer;
 	
 	private SIPortHandler portHandler;
+
+	private String portName;
 	
 	/**
 	 * @param factory
@@ -47,11 +49,39 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 		this.announcer = announcer;
 	}
 
+	public static String portNameProperty() {
+		return "SIPortname";
+	}
+
+	public String defaultPortName() {
+		return "/dev/tty.SLAB_USBtoUART";
+	}
+
+	private void setNewPortName() {
+		String port = stage().getProperties().getProperty(portNameProperty());
+		if( port!=null ) {
+			setPortName(port);
+		} else {
+			setPortName(defaultPortName());
+		}
+	}
+	
+	public String getPortName() {
+		if( portName==null ) {
+			setNewPortName();
+		}
+		return portName;
+	}
+
+	public void setPortName(String portName) {
+		this.portName = portName;
+	}
+
 	private void configure() {
 		portHandler = new SIPortHandler(new ResultData());
 		portHandler.addListener(this);
-		portHandler.setPortName("/dev/tty.SLAB_USBtoUART");		// TODO: take parameter from stage properties
-		portHandler.setDebugDir(".");
+		portHandler.setPortName(getPortName());
+		portHandler.setDebugDir(stage().getBaseDir());
 	}
 
 	public void start() {
@@ -141,6 +171,13 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 	@Override
 	public void portStatusChanged(String status) {
 		
+	}
+	
+	
+	@Override
+	public void changed(Stage previous, Stage next) {
+		super.changed(previous, next);
+		setNewPortName();
 	}
 
 	@Override

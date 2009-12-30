@@ -3,18 +3,19 @@
  */
 package valmo.geco.ui;
 
-import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Properties;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -41,69 +42,108 @@ public class StagePanel extends TabPanel {
 	public StagePanel(Geco geco, JFrame frame, Announcer announcer) {
 		super(geco, frame, announcer);
 		this.announcer = announcer;
-		setLayout(new BorderLayout()); // TODO: use gridbaglayout
 		refresh();
 	}
 	
 	public void refresh() {
 		this.removeAll();
-		JPanel north = new JPanel();
-//		north.setLayout(new BoxLayout(north, BoxLayout.X_AXIS));
-//		north.add(Util.embed(stageConfigPanel()));
-//		north.add(Util.embed(checkerConfigPanel()));
-//		north.add(Util.embed(sireaderConfigPanel()));
-		north.setLayout(new FlowLayout(FlowLayout.LEFT));
-		north.add(stageConfigPanel());
-		north.add(checkerConfigPanel());
-		north.add(sireaderConfigPanel());
-		//		north.add(Box.createHorizontalGlue());
-		add(north, BorderLayout.NORTH);
-		JPanel south = new JPanel();
-		south.setLayout(new FlowLayout(FlowLayout.LEADING));
-		south.add(Util.embed(courseConfigPanel()));
-		south.add(Util.embed(clubConfigPanel()));
-		south.add(Util.embed(categoryConfigPanel()));
-		south.add(Box.createHorizontalGlue());
-		add(south, BorderLayout.CENTER);
+		
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridBagLayout());
+//		setBorder(BorderFactory.createLineBorder(Color.gray));
+
+		GridBagConstraints c = Util.compConstraint(	GridBagConstraints.RELATIVE,
+													0,
+													GridBagConstraints.BOTH,
+													GridBagConstraints.NORTH);
+		c.insets = new Insets(10, 10, 0, 0);
+		panel.add(stageConfigPanel(), c);
+		panel.add(checkerConfigPanel(), c);
+		panel.add(sireaderConfigPanel(), c);
+
+		c.gridy = 1;
+		panel.add(courseConfigPanel(), c);
+		panel.add(clubConfigPanel(), c);
+		panel.add(categoryConfigPanel(), c);
+
+		setLayout(new FlowLayout(FlowLayout.LEFT));
+		add(panel);
+	}
+
+	private JPanel titlePanel(JPanel panel, String title) {
+		JPanel embed = Util.embed(panel);
+		embed.setBorder(BorderFactory.createTitledBorder(title));
+		return embed;
 	}
 
 	private JPanel stageConfigPanel() {
-		JPanel panel = new JPanel(new GridLayout(0,2));
-		panel.setBorder(BorderFactory.createTitledBorder("Stage"));
-		panel.setAlignmentY(Component.TOP_ALIGNMENT);
-		panel.add(new JLabel("Stage name:"));
-		panel.add(new JTextField(geco().stage().getName()));
-		panel.add(new JLabel("Previous stage:"));
-		panel.add(new JLabel(geco().getPreviousStageDir()));
-		panel.add(new JLabel("Next stage:"));
-		panel.add(new JLabel(geco().getNextStageDir()));
-		return panel;
+		JPanel panel = new JPanel(new GridBagLayout());
+		GridBagConstraints c = Util.gbConstr(0);
+		c.insets = new Insets(0, 0, 5, 5);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		panel.add(new JLabel("Stage name:"), c);
+		final JTextField stagenameF = new JTextField(geco().stage().getName());
+		stagenameF.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				geco().stage().setName(stagenameF.getText());
+				// TODO: update window title
+			}
+		});
+		panel.add(stagenameF, c);
+		c.gridy = 1;
+		panel.add(new JLabel("Previous stage:"), c);
+		JTextField previousF = new JTextField(geco().getPreviousStageDir());
+		previousF.setEditable(false);
+		previousF.setToolTipText("Edit 'stages.prop' in parent folder to change stage order");
+		panel.add(previousF, c);
+		c.gridy = 2;
+		panel.add(new JLabel("Next stage:"), c);
+		JTextField nextF = new JTextField(geco().getNextStageDir());
+		nextF.setEditable(false);
+		nextF.setToolTipText("Edit 'stages.prop' in parent folder to change stage order");
+		panel.add(nextF, c);
+		return titlePanel(panel, "Stage");
 	}
 
 	private JPanel checkerConfigPanel() {
-		JPanel panel = new JPanel(new GridLayout(0,2));
-		panel.setBorder(BorderFactory.createTitledBorder("Orientshow"));
-		panel.setAlignmentY(Component.TOP_ALIGNMENT);
-		panel.add(new JLabel("MP limit:"));
-		JTextField mplimitF = new JTextField("0");
+		JPanel panel = new JPanel(new GridBagLayout());
+		GridBagConstraints c = Util.gbConstr(0);
+		c.insets = new Insets(0, 0, 5, 5);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		panel.add(new JLabel("MP limit:"), c);
+		// TODO: propose to recheck all punches if mod
+		int mpLimit = geco().checker().getMPLimit();
+		JTextField mplimitF = new JTextField(new Integer(mpLimit).toString());
+		mplimitF.setColumns(7);
 		mplimitF.setToolTipText("Number of missing punches authorized before marking the runner as MP.");
-		panel.add(mplimitF);
-		panel.add(new JLabel("Time penalty:"));
-		JTextField penaltyF = new JTextField("30");
+		panel.add(mplimitF, c);
+		c.gridy = 1;
+		panel.add(new JLabel("Time penalty:"), c);
+		long penalty = geco().checker().getMPPenalty() / 1000;
+		JTextField penaltyF = new JTextField(new Long(penalty).toString());
+		penaltyF.setColumns(7);
 		penaltyF.setToolTipText("Time penalty per missing punch in seconds");
-		panel.add(penaltyF);
-		return panel;
+		panel.add(penaltyF, c);
+		return titlePanel(panel, "Orientshow");
 	}
 	
 	private JPanel sireaderConfigPanel() {
-		JPanel panel = new JPanel(new GridLayout(0,2));
-		panel.setAlignmentY(Component.TOP_ALIGNMENT);
-		panel.setBorder(BorderFactory.createTitledBorder("SI Reader"));
-		panel.add(new JLabel("Station port:"));
-		JTextField stationPortF = new JTextField("/dev/tty/");
-//		stationPortF.setToolTipText("");
-		panel.add(stationPortF);
-		return panel;		
+		JPanel panel = new JPanel(new GridBagLayout());
+		GridBagConstraints c = Util.gbConstr(0);
+		c.insets = new Insets(0, 0, 5, 5);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		panel.add(new JLabel("Station port:"), c);
+		final JTextField stationPortF = new JTextField(geco().siHandler().getPortName());
+		stationPortF.setToolTipText("Com port for the SI station (COMx on Windows platform, /dev/ttyX on Linux/Mac platform)");
+		panel.add(stationPortF, c);
+		stationPortF.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				geco().siHandler().setPortName(stationPortF.getText());
+			}
+		});
+		return titlePanel(panel, "SI Reader");
 	}
 
 	
