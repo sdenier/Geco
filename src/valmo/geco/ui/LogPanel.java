@@ -7,6 +7,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -49,6 +50,7 @@ public class LogPanel extends TabPanel implements RunnerListener {
 //		splitPane.setOneTouchExpandable(true);
 		splitPane.add(initChipPanel());
 		splitPane.add(initStatsPanel(announcer));
+		splitPane.setBorder(BorderFactory.createEmptyBorder());
 		panel.add(splitPane);
 	}
 	

@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.util.Comparator;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -71,6 +72,7 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 		tablePan.add(initTopPanel(), BorderLayout.NORTH);
 		splitPane.add(tablePan);
 		splitPane.add(initBottomPanel(announcer));
+		splitPane.setBorder(BorderFactory.createEmptyBorder());
 		updateRunnerPanel();
 		panel.add(splitPane);
 	}
@@ -169,9 +171,16 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 	}
 
 
-	public void refreshTableData() {
+	private void refreshTableData() {
 		tableModel.setData(new Vector<RunnerRaceData>(registry().getRunnersData()));
 	}
+	
+	public void refreshRunnersPanel() {
+		refreshTableData();
+		table.getSelectionModel().setSelectionInterval(0, 0);
+		runnerPanel.updateStageData();
+	}
+
 	
 	private void refreshTableIndex(int index) {
 		tableModel.fireTableRowsUpdated(index, index);
@@ -227,8 +236,7 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 
 	@Override
 	public void changed(Stage previous, Stage next) {
-		refreshTableData();
-		table.getSelectionModel().setSelectionInterval(0, 0);
+		refreshRunnersPanel();
 	}
 
 

@@ -450,21 +450,41 @@ public class RunnerPanel extends GecoPanel implements StageConfigListener {
 		return panel;
 	}
 
+
+	private void updateCategoryCB() {
+		catCB.setModel(new DefaultComboBoxModel(registry().getSortedCategorynames()));
+	}
+
+	private void updateClubCB() {
+		clubCB.setModel(new DefaultComboBoxModel(registry().getSortedClubnames()));
+	}
+
+	private void updateCourseCB() {
+		courseCB.setModel(new DefaultComboBoxModel(registry().getSortedCoursenames()));
+	}
+
+	public void updateStageData() {
+		updateCategoryCB();
+		updateClubCB();
+		updateCourseCB();
+		refreshPanel();
+	}
+	
 	@Override
 	public void categoriesChanged() {
-		catCB.setModel(new DefaultComboBoxModel(registry().getSortedCategorynames()));
+		updateCategoryCB();
 		refreshPanel();
 	}
 
 	@Override
 	public void clubsChanged() {
-		clubCB.setModel(new DefaultComboBoxModel(registry().getSortedClubnames()));
+		updateClubCB();
 		refreshPanel();
 	}
 
 	@Override
 	public void coursesChanged() {
-		courseCB.setModel(new DefaultComboBoxModel(registry().getSortedCoursenames()));
+		updateCourseCB();
 		refreshPanel();
 	}
 

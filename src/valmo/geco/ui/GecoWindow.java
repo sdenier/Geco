@@ -77,7 +77,6 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 		pane.setMnemonicAt(4, KeyEvent.VK_L);
 		getContentPane().add(pane, BorderLayout.CENTER);
 
-//		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -139,7 +138,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 						geco.checker().check(data);
 					}
 				}
-				runnersPanel.refreshTableData();
+				runnersPanel.refreshRunnersPanel();
 				geco.logger().log("Recheck all OK|MP data");
 			}
 		});
@@ -170,8 +169,6 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 	@Override
 	public void changed(Stage previous, Stage next) {
 		setTitle("Geco - " + geco.stage().getName());
-//		this.stagePanel.refresh();
-//		repaint();
 	}
 
 	@Override
