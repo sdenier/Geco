@@ -22,6 +22,7 @@ import valmo.geco.model.Punch;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Stage;
+import valmo.geco.model.Status;
 
 /**
  * @author Simon Denier
@@ -132,8 +133,10 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 	 */
 	private void handleData(RunnerRaceData runnerData, IResultData<PunchObject,PunchRecordData> card) {
 		updateRaceDataWith(runnerData, card);
+		Status oldStatus = runnerData.getResult().getStatus();
 		geco.checker().check(runnerData);
-		announcer.announceCardRead(runnerData.getRunner().getChipnumber());	
+		announcer.announceCardRead(runnerData.getRunner().getChipnumber());
+		announcer.announceStatusChange(runnerData, oldStatus);
 	}
 
 	/**

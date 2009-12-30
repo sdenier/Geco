@@ -163,10 +163,11 @@ public class RunnerControl extends RunnerBuilder {
 		if( !oldCourse.getName().equals(newCourse) ) {
 			runner.setCourse(registry().findCourse(newCourse));
 			registry().updateRunnerCourse(oldCourse, runner);
+			announcer().announceCourseChange(runner, oldCourse);
+			geco.logger().log("Course change for " + runner.idString() + " from " + oldCourse.getName() + " to " + newCourse);
+			// Proceed by checking the new status
 			Status oldStatus = runnerData.getResult().getStatus();
 			geco.checker().check(runnerData); // use and share an action with refresh button
-			geco.logger().log("Course change for " + runner.idString() + " from " + oldCourse.getName() + " to " + newCourse);
-			announcer().announceCourseChange(runner, oldCourse);
 			announcer().announceStatusChange(runnerData, oldStatus);
 			return true;
 		}
