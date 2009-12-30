@@ -20,9 +20,7 @@ import javax.swing.JToolBar;
 
 import valmo.geco.core.Announcer;
 import valmo.geco.core.Geco;
-import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Stage;
-import valmo.geco.model.Status;
 
 
 /**
@@ -62,7 +60,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 	}
 	
 	public void guiInit() {
-		setTitle("Geco - " + geco.stage().getName());
+		updateWindowTitle();
 		getContentPane().add(initToolbar(), BorderLayout.NORTH);
 		JTabbedPane pane = new JTabbedPane();
 		pane.addTab("Stage", this.stagePanel);
@@ -83,6 +81,10 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 				geco.exit();
 			}
 		});
+	}
+
+	public void updateWindowTitle() {
+		setTitle("Geco - " + geco.stage().getName());
 	}
 
 	public void launchGUI() {
@@ -132,14 +134,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 		statusB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				for (RunnerRaceData data: geco.registry().getRunnersData()) {
-					if( data.getResult().getStatus().equals(Status.OK) 
-							|| data.getResult().getStatus().equals(Status.MP) ) {
-						geco.checker().check(data);
-					}
-				}
-				runnersPanel.refreshRunnersPanel();
-				geco.logger().log("Recheck all OK|MP data");
+				geco.runnerControl().recheckAllRunners();
 			}
 		});
 		toolBar.add(statusB);
@@ -168,7 +163,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 
 	@Override
 	public void changed(Stage previous, Stage next) {
-		setTitle("Geco - " + geco.stage().getName());
+		updateWindowTitle();
 	}
 
 	@Override

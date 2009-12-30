@@ -199,5 +199,13 @@ public class RegistryStats extends Control
 		updateCourseStats();
 	}
 
+	/* (non-Javadoc)
+	 * @see valmo.geco.core.Announcer.RunnerListener#runnersChanged()
+	 */
+	@Override
+	public void runnersChanged() {
+		fullUpdate();
+	}
+
 	
 }

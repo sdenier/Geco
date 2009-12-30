@@ -94,6 +94,7 @@ public class StageBuilder extends Control {
 		currentStage.initialize(baseDir);
 		loadStageProperties(currentStage, propFile);
 		importDataIntoRegistry(baseDir, true);
+		checker.postInitialize(currentStage); // post initialization
 		new RunnerBuilder(factory(), currentStage).checkGecoData(checker);
 		return currentStage;
 	}
@@ -118,6 +119,7 @@ public class StageBuilder extends Control {
 		currentStage = new StageIO(factory(), reader).getStage();
 		currentStage.initialize(baseDir);
 		importDataIntoRegistry(baseDir, false);
+		checker.postInitialize(currentStage); // post initialization
 		new RunnerBuilder(factory(), currentStage).checkOrData(checker);
 		return currentStage;
 	}

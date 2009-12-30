@@ -3,12 +3,9 @@
  */
 package valmo.geco.ui;
 
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -62,8 +59,8 @@ public class StagePanel extends TabPanel {
 		panel.add(sireaderConfigPanel(), c);
 
 		c.gridy = 1;
-		panel.add(courseConfigPanel(), c);
 		panel.add(clubConfigPanel(), c);
+		panel.add(courseConfigPanel(), c);
 		panel.add(categoryConfigPanel(), c);
 
 		setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -83,11 +80,12 @@ public class StagePanel extends TabPanel {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		panel.add(new JLabel("Stage name:"), c);
 		final JTextField stagenameF = new JTextField(geco().stage().getName());
+		stagenameF.setColumns(12);
 		stagenameF.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				geco().stage().setName(stagenameF.getText());
-				// TODO: update window title
+				((GecoWindow) frame()).updateWindowTitle();
 			}
 		});
 		panel.add(stagenameF, c);
@@ -108,23 +106,59 @@ public class StagePanel extends TabPanel {
 
 	private JPanel checkerConfigPanel() {
 		JPanel panel = new JPanel(new GridBagLayout());
+		
 		GridBagConstraints c = Util.gbConstr(0);
 		c.insets = new Insets(0, 0, 5, 5);
 		c.fill = GridBagConstraints.HORIZONTAL;
 		panel.add(new JLabel("MP limit:"), c);
-		// TODO: propose to recheck all punches if mod
 		int mpLimit = geco().checker().getMPLimit();
-		JTextField mplimitF = new JTextField(new Integer(mpLimit).toString());
+		final JTextField mplimitF = new JTextField(new Integer(mpLimit).toString());
 		mplimitF.setColumns(7);
 		mplimitF.setToolTipText("Number of missing punches authorized before marking the runner as MP.");
+		mplimitF.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					geco().checker().setMPLimit(new Integer(mplimitF.getText()));
+					int confirm = JOptionPane.showConfirmDialog(frame(), "Recheck statuses for runners", 
+																"Recheck all?", JOptionPane.YES_NO_OPTION);
+					if( confirm==JOptionPane.YES_OPTION ) {
+						geco().runnerControl().recheckAllRunners();
+					}
+				} catch (NumberFormatException e2) {
+					JOptionPane.showMessageDialog(frame(), "Not an integer. Reverting.");
+					int mpLimit = geco().checker().getMPLimit();
+					mplimitF.setText(new Integer(mpLimit).toString());
+				}
+			}
+		});
 		panel.add(mplimitF, c);
+		
 		c.gridy = 1;
 		panel.add(new JLabel("Time penalty:"), c);
 		long penalty = geco().checker().getMPPenalty() / 1000;
-		JTextField penaltyF = new JTextField(new Long(penalty).toString());
+		final JTextField penaltyF = new JTextField(new Long(penalty).toString());
 		penaltyF.setColumns(7);
 		penaltyF.setToolTipText("Time penalty per missing punch in seconds");
+		penaltyF.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					geco().checker().setMPPenalty(1000 * new Long(penaltyF.getText()));
+					int confirm = JOptionPane.showConfirmDialog(frame(), "Recheck statuses for runners",
+																"Recheck all?", JOptionPane.YES_NO_OPTION);
+					if( confirm==JOptionPane.YES_OPTION ) {
+						geco().runnerControl().recheckAllRunners();
+					}
+				} catch (NumberFormatException e2) {
+					JOptionPane.showMessageDialog(frame(), "Not an integer. Reverting.");
+					long penalty = geco().checker().getMPPenalty();
+					penaltyF.setText(new Long(penalty).toString());
+				}				
+			}
+		});
 		panel.add(penaltyF, c);
+		
 		return titlePanel(panel, "Orientshow");
 	}
 	
@@ -135,7 +169,8 @@ public class StagePanel extends TabPanel {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		panel.add(new JLabel("Station port:"), c);
 		final JTextField stationPortF = new JTextField(geco().siHandler().getPortName());
-		stationPortF.setToolTipText("Com port for the SI station (COMx on Windows platform, /dev/ttyX on Linux/Mac platform)");
+		stationPortF.setColumns(12);
+		stationPortF.setToolTipText("Serial port for the SI station (COMx on Windows, /dev/ttyX on Linux/Mac)");
 		panel.add(stationPortF, c);
 		stationPortF.addActionListener(new ActionListener() {
 			@Override
@@ -225,7 +260,6 @@ public class StagePanel extends TabPanel {
 				public void setValueIn(Course course, Object value, int col) {
 					switch (col) {
 					case 0: geco().stageControl().updateName(course, (String) value); break;
-//					case 1: geco().stageControl().updateName(course, (String) value); break;
 					default: break;
 					}
 				}

@@ -280,5 +280,14 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 		refreshTableRunner(registry().findRunnerData(chip));
 	}
 
+
+	/* (non-Javadoc)
+	 * @see valmo.geco.core.Announcer.RunnerListener#runnersChanged()
+	 */
+	@Override
+	public void runnersChanged() {
+		refreshRunnersPanel();		
+	}
+
 	
 }

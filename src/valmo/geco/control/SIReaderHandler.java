@@ -47,6 +47,7 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 		super(factory, stage, announcer);
 		this.geco = geco;
 		this.announcer = announcer;
+		setNewPortName();
 	}
 
 	public static String portNameProperty() {
@@ -67,9 +68,6 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 	}
 	
 	public String getPortName() {
-		if( portName==null ) {
-			setNewPortName();
-		}
 		return portName;
 	}
 

@@ -123,5 +123,15 @@ public class LogPanel extends TabPanel implements RunnerListener {
 		chiplogArea.append(chip);
 	}
 
+
+	/* (non-Javadoc)
+	 * @see valmo.geco.core.Announcer.RunnerListener#runnersChanged()
+	 */
+	@Override
+	public void runnersChanged() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 }

@@ -68,10 +68,15 @@ public class PenaltyChecker extends PunchChecker {
 	 */
 	public PenaltyChecker(Factory factory) {
 		super(factory);
-		setMPPenalty(0);
-		setMPLimit(0);
+		setMPLimit(defaultMPLimit());
+		setMPPenalty(defaultMPPenalty());
 	}
 
+	protected void postInitialize(Stage stage) {
+		setStage(stage);
+		setNewProperties();
+	}
+	
 	
 	@Override
 	public void check(RunnerRaceData data) {
@@ -278,6 +283,15 @@ public class PenaltyChecker extends PunchChecker {
 	public long timePenalty(int nbMPs) {
 		return nbMPs * getMPPenalty();
 	}
+	
+	public int defaultMPLimit() {
+		return 0;
+	}
+
+	public long defaultMPPenalty() {
+		return 0;
+	}
+
 
 	public long getMPPenalty() {
 		return MPPenalty;
@@ -293,6 +307,37 @@ public class PenaltyChecker extends PunchChecker {
 
 	public void setMPLimit(int limit) {
 		MPLimit = limit;
+	}
+
+	protected void setNewProperties() {
+		String limit = stage().getProperties().getProperty("MPLimit");
+		if( limit!=null ) {
+			try {
+				setMPLimit(new Integer(limit));				
+			} catch (NumberFormatException e) {
+				setMPLimit(defaultMPLimit());
+				System.err.println(e);
+			}
+		} else {
+			setMPLimit(defaultMPLimit());
+		}
+		String penalty = stage().getProperties().getProperty("MPPenalty");
+		if( penalty!=null ) {
+			try {
+				setMPPenalty(new Long(penalty));				
+			} catch (NumberFormatException e) {
+				setMPPenalty(defaultMPPenalty());
+				System.err.println(e);
+			}
+		} else {
+			setMPPenalty(defaultMPPenalty());
+		}		
+	}
+	
+	@Override
+	public void changed(Stage previous, Stage next) {
+		super.changed(previous, next);
+		setNewProperties();
 	}
 
 	@Override

@@ -92,6 +92,11 @@ public class Announcer {
 		 * @param oldCourse
 		 */
 		public void courseChanged(Runner runner, Course oldCourse);
+		
+		/**
+		 * Signal potential changes across all runners.
+		 */
+		public void runnersChanged();
 	}
 
 	
@@ -191,6 +196,12 @@ public class Announcer {
 	public void announceCourseChange(Runner runner, Course oldCourse) {
 		for (RunnerListener listener : this.runnerListeners) {
 			listener.courseChanged(runner, oldCourse);
+		}
+	}
+
+	public void announceRunnersChange() {
+		for (RunnerListener listener : this.runnerListeners) {
+			listener.runnersChanged();
 		}
 	}
 

@@ -222,6 +222,17 @@ public class RunnerControl extends RunnerBuilder {
 		}
 		return false;
 	}
+	
+	public void recheckAllRunners() {
+		for (RunnerRaceData data: geco.registry().getRunnersData()) {
+			if( data.getResult().getStatus().equals(Status.OK) 
+					|| data.getResult().getStatus().equals(Status.MP) ) {
+				geco.checker().check(data);
+			}
+		}
+		announcer().announceRunnersChange();
+		geco.logger().log("Recheck all OK|MP data");
+	}
 
 
 }
