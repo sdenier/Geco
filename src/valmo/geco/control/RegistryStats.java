@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import valmo.geco.core.Announcer;
 import valmo.geco.model.Course;
@@ -30,9 +31,12 @@ public class RegistryStats extends Control
 	 */
 	
 	public static enum StatItem {
-		OK, MP, DNS, DNF, DSQ, Unknown, Registered, Present, Finished
-		// short list: reg, pres, unknown, ok, mp
+		Registered, Present, Unknown, Finished, OK, MP, DNS, DNF, DSQ
 	}
+
+	public static final String[] shortStatusList = new String[] {
+		"Present", "Unknown", "Finished", "OK", "MP"
+	};
 	
 	private Map<String, Map<String, Integer>> stats;
 	private int totalOk;
@@ -49,13 +53,30 @@ public class RegistryStats extends Control
 		fullUpdate();
 	}
 	
-	public StatItem[] statuses() {
-		return StatItem.values();
-//		return stats.entrySet().iterator().next().getValue().keySet();
+	public String[] longStatuses() {
+		String[] statusKeys = new String[StatItem.values().length];
+		for (int i = 0; i < StatItem.values().length; i++) {
+			statusKeys[i] = StatItem.values()[i].toString();			
+		}
+		return statusKeys;
+	}
+	
+	public String[] shortStatuses() {
+		return shortStatusList;
 	}
 	
 	public Collection<String> entries() {
 		return stats.keySet();
+	}
+	
+	public String[] sortedEntries() {
+		Vector<String> entries = new Vector<String>(registry().getSortedCoursenames());
+		entries.add(totalName());
+		return entries.toArray(new String[0]);
+	}
+	
+	private String totalName() {
+		return "Total";
 	}
 
 	public Map<String, Integer> getCourseStatsFor(String coursename) {
@@ -63,7 +84,7 @@ public class RegistryStats extends Control
 	}
 
 	public Map<String, Integer> getTotalCourse() {
-		return stats.get("Total");
+		return stats.get(totalName());
 	}
 	
 	public Integer getCourseStatsFor(String course, String status) {
@@ -81,7 +102,7 @@ public class RegistryStats extends Control
 	
 	private void initStatMaps() {
 		stats = new HashMap<String, Map<String,Integer>>();
-		stats.put("Total", new HashMap<String, Integer>());
+		stats.put(totalName(), new HashMap<String, Integer>());
 		totalOk = 0;
 		totalMp = 0;
 		totalDns = 0;
@@ -204,8 +225,10 @@ public class RegistryStats extends Control
 		int courseTotal = getCourseStatsFor(data.getCourse().getName(), StatItem.Registered.toString());
 		updateCourseStats(courseStats, courseTotal);
 		
-		dec(status, getTotalCourse());
-		int total = dec(StatItem.Registered.toString(), getTotalCourse());
+		inc(status, getTotalCourse());
+		dec(oldStatus.toString(), getTotalCourse());
+		int total = getCourseStatsFor(totalName(), StatItem.Registered.toString());
+//		int total = dec(StatItem.Registered.toString(), getTotalCourse());
 		updateCourseStats(getTotalCourse(), total);
 	}
 
