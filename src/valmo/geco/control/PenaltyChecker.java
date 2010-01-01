@@ -343,7 +343,8 @@ public class PenaltyChecker extends PunchChecker {
 	@Override
 	public void saving(Stage stage, Properties properties) {
 		super.saving(stage, properties);
-		// TODO: properties MPlimit and MPPenalty
+		properties.setProperty("MPLimit", new Integer(getMPLimit()).toString());
+		properties.setProperty("MPPenalty", new Long(getMPPenalty()).toString());
 	}
 	
 }

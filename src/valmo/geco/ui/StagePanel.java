@@ -378,7 +378,6 @@ public class StagePanel extends TabPanel {
 
 	@Override
 	public void saving(Stage stage, Properties properties) {
-		// TODO save stage properties
 		super.saving(stage, properties);
 	}
 	

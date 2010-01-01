@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.print.PrinterException;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
@@ -147,7 +148,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		exportB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 //				filePane.setCurrentDirectory(); // stage dir
-				// default file name?
+				// TODO: default file name? lastfile prop
 				int response = filePane.showSaveDialog(frame());
 				if( response==JFileChooser.APPROVE_OPTION ) {
 					exportFile(filePane.getSelectedFile().getAbsolutePath(), exportFormat);
@@ -468,7 +469,10 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 
 	@Override
 	public void saving(Stage stage, Properties properties) {
-		// TODO: save last filename for result
+		File selectedFile = filePane.getSelectedFile();
+		if( selectedFile!=null ){
+			properties.setProperty("LastResultFile", selectedFile.getName());
+		}
 	}
 
 	
