@@ -3,6 +3,8 @@
  */
 package valmo.geco.model;
 
+import java.util.Date;
+
 
 /**
  * Factory implenents the Abstract Factory design pattern to hide (some) details about implementation.
@@ -31,6 +33,10 @@ public interface Factory {
 	public RunnerRaceData createRunnerRaceData();
 
 	public RunnerResult createRunnerResult();
+	
+	public Trace createTrace(Punch punch);
+	
+	public Trace createTrace(String code, Date time);
 
 	public Result createResult();
 

@@ -12,6 +12,7 @@ import valmo.geco.model.Punch;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Stage;
 import valmo.geco.model.Status;
+import valmo.geco.model.Trace;
 
 /**
  * @author Simon Denier
@@ -19,38 +20,6 @@ import valmo.geco.model.Status;
  *
  */
 public class PenaltyChecker extends PunchChecker {	
-	
-	public static class Trace implements Cloneable {
-		private String code;
-		private Date time;
-		
-		public Trace(Punch punch) {
-			this(Integer.toString(punch.getCode()), punch.getTime());
-		}
-		
-		public Trace(String code, Date time) {
-			this.code = code;
-			this.time = time;
-		}
-		
-		public Trace clone() {
-			try {
-				Trace clone = (Trace) super.clone();
-				clone.time = (Date) time.clone();
-				return clone;
-			} catch (CloneNotSupportedException e) {
-				e.printStackTrace();
-			}
-			return null;
-		}
-		
-		public String getCode() {
-			return code;
-		}
-		public Date getTime() {
-			return time;
-		}
-	}
 	
 	private long MPPenalty;
 
@@ -82,7 +51,7 @@ public class PenaltyChecker extends PunchChecker {
 	public void check(RunnerRaceData data) {
 		super.check(data);
 		data.getResult().setNbMPs(this.nbMP);
-		data.getResult().setTrace(this.trace.toArray(new PenaltyChecker.Trace[0]));
+		data.getResult().setTrace(this.trace.toArray(new Trace[0]));
 	}
 	
 	public void buildTrace(RunnerRaceData data) {
@@ -233,26 +202,28 @@ public class PenaltyChecker extends PunchChecker {
 		
 		while( i>=0 && j>=0 ) {
 			if( codes[i]==punches[j].getCode() ) {
-				path.add(0, new Trace(punches[j]));
+				path.add(0, factory().createTrace(punches[j]));
 				i--;
 				j--;
 			} else {
 				int max = max(matrix[j][i], matrix[j+1][i], matrix[j][i+1]);
 				choice: {
 					if( max==matrix[j][i] ) {
-						Trace t = new Trace("-" + codes[i] + "+" + punches[j].getCode(), punches[j].getTime());
+						Trace t = factory().createTrace("-" + codes[i] + "+" + punches[j].getCode(),
+															punches[j].getTime());
 						path.add(0, t);
 						i--;
 						j--;
 						break choice;
 					}
 					if( max==matrix[j][i+1] ) {
-						path.add(0, new Trace("+" + punches[j].getCode(), punches[j].getTime()));
+						path.add(0, factory().createTrace("+" + punches[j].getCode(), 
+															punches[j].getTime()));
 						j--;
 						break choice;
 					}
 					if( max==matrix[j+1][i] ) {
-						path.add(0, new Trace("-" + codes[i], new Date(0)));
+						path.add(0, factory().createTrace("-" + codes[i], new Date(0)));
 						i--;
 						break choice;
 					}
@@ -261,11 +232,11 @@ public class PenaltyChecker extends PunchChecker {
 //			path.insert(0, ",");
 		}
 		while( i>=0 ) {
-			path.add(0, new Trace("-" + codes[i], new Date(0)));
+			path.add(0, factory().createTrace("-" + codes[i], new Date(0)));
 			i--;			
 		}
 		while( j>=0 ) {
-			path.add(0, new Trace("+" + punches[j].getCode(), punches[j].getTime()));
+			path.add(0, factory().createTrace("+" + punches[j].getCode(), punches[j].getTime()));
 			j--;
 		}
 		return path;

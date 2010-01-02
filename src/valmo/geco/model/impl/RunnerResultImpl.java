@@ -3,9 +3,9 @@
  */
 package valmo.geco.model.impl;
 
-import valmo.geco.control.PenaltyChecker.Trace;
 import valmo.geco.model.RunnerResult;
 import valmo.geco.model.Status;
+import valmo.geco.model.Trace;
 
 
 public class RunnerResultImpl implements RunnerResult {

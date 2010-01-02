@@ -3,6 +3,8 @@
  */
 package valmo.geco.model.impl;
 
+import java.util.Date;
+
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
 import valmo.geco.model.Course;
@@ -15,6 +17,7 @@ import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.RunnerResult;
 import valmo.geco.model.Stage;
+import valmo.geco.model.Trace;
 
 
 /**
@@ -62,6 +65,15 @@ public class POFactory implements Factory {
 		return new RunnerResultImpl();
 	}
 	
+	public Trace createTrace(Punch punch) {
+		return new TraceImpl(punch);
+	}
+
+	@Override
+	public Trace createTrace(String code, Date time) {
+		return new TraceImpl(code, time);
+	}
+
 	public Result createResult() {
 		return new ResultImpl();
 	}

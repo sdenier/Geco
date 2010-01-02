@@ -3,7 +3,6 @@
  */
 package valmo.geco.model;
 
-import valmo.geco.control.PenaltyChecker.Trace;
 
 /**
  * @author Simon Denier

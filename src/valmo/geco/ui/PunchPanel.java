@@ -14,10 +14,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
-import valmo.geco.control.PenaltyChecker.Trace;
 import valmo.geco.core.Geco;
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.RunnerRaceData;
+import valmo.geco.model.Trace;
 
 /**
  * @author Simon Denier
