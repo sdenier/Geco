@@ -128,8 +128,6 @@ public class LogPanel extends TabPanel implements RunnerListener {
 	 */
 	@Override
 	public void runnersChanged() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	

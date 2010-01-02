@@ -68,7 +68,6 @@ public class RegistryBuilder  extends Control{
 	 * 
 	 */
 	public Registry importAllData(Registry registry, boolean importResult) {
-//		setRegistry(registry);
 		
 		reader.initialize(baseDir, ClubIO.orFilename());
 		new ClubIO(factory(), reader, null, registry).importData();
@@ -99,7 +98,6 @@ public class RegistryBuilder  extends Control{
 	}
 	
 	public void exportAllData(Registry registry) {
-//		setRegistry(registry);
 		
 		writer.initialize(baseDir, ClubIO.orFilename());
 		new ClubIO(factory(), null, writer, registry).exportData(registry.getClubs());
