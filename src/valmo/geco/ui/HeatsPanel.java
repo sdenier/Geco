@@ -77,15 +77,15 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 	 * @param frame 
 	 * @param announcer 
 	 */
-	public HeatsPanel(Geco geco, JFrame frame, Announcer announcer) {
-		super(geco, frame, announcer);
+	public HeatsPanel(Geco geco, JFrame frame) {
+		super(geco, frame);
 		heatlistModel = new DefaultListModel();
 		heatDialog = new HeatSetDialog(frame);
 		refresh();
 		initHeatsPanel(this);
 		initFileDialog();
 		createListeners();
-		announcer.registerStageConfigListener(this);
+		geco().announcer().registerStageConfigListener(this);
 	}
 
 	private void updatePoolnames() {

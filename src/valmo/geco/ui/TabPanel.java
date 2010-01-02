@@ -7,7 +7,6 @@ import java.util.Properties;
 
 import javax.swing.JFrame;
 
-import valmo.geco.core.Announcer;
 import valmo.geco.core.Geco;
 import valmo.geco.core.Announcer.StageListener;
 import valmo.geco.model.Stage;
@@ -23,9 +22,9 @@ public abstract class TabPanel extends GecoPanel implements StageListener {
 	 * @param geco
 	 * @param frame
 	 */
-	public TabPanel(Geco geco, JFrame frame, Announcer announcer) {
+	public TabPanel(Geco geco, JFrame frame) {
 		super(geco, frame);
-		announcer.registerStageListener(this);
+		geco().announcer().registerStageListener(this);
 	}
 
 	@Override

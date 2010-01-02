@@ -4,7 +4,6 @@
 package valmo.geco.control;
 
 import valmo.geco.core.Announcer;
-import valmo.geco.core.Geco;
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
 import valmo.geco.model.Course;
@@ -21,7 +20,6 @@ import valmo.geco.model.Stage;
  */
 public class StageControl extends Control {
 	
-	private Geco geco;
 	private Announcer announcer;
 	
 	/**
@@ -29,14 +27,13 @@ public class StageControl extends Control {
 	 * @param stage
 	 * @param announcer 
 	 */
-	public StageControl(Factory factory, Stage stage, Geco geco, Announcer announcer) {
+	public StageControl(Factory factory, Stage stage, Announcer announcer) {
 		super(factory, stage, announcer);
-		this.geco = geco;
 		this.announcer = announcer;
 	}
 	
 	private Announcer announcer() {
-		return this.announcer;
+		return announcer;
 	}
 	
 	public Club createClub() {

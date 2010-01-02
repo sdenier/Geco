@@ -15,7 +15,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 
-import valmo.geco.core.Announcer;
 import valmo.geco.core.Geco;
 import valmo.geco.core.Util;
 import valmo.geco.core.Announcer.RunnerListener;
@@ -38,18 +37,18 @@ public class LogPanel extends TabPanel implements RunnerListener {
 	 * @param geco
 	 * @param frame
 	 */
-	public LogPanel(Geco geco, JFrame frame, Announcer announcer) {
-		super(geco, frame, announcer);
-		initPanels(this, announcer);
-		announcer.registerRunnerListener(this);
+	public LogPanel(Geco geco, JFrame frame) {
+		super(geco, frame);
+		initPanels(this);
+		geco().announcer().registerRunnerListener(this);
 	}
 
 	
-	public void initPanels(JPanel panel, Announcer announcer) {
+	public void initPanels(JPanel panel) {
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 //		splitPane.setOneTouchExpandable(true);
 		splitPane.add(initChipPanel());
-		splitPane.add(initStatsPanel(announcer));
+		splitPane.add(initStatsPanel());
 		splitPane.setBorder(BorderFactory.createEmptyBorder());
 		panel.add(splitPane);
 	}
@@ -77,8 +76,8 @@ public class LogPanel extends TabPanel implements RunnerListener {
 	 * @param announcer 
 	 * @return
 	 */
-	private JPanel initStatsPanel(Announcer announcer) {
-		return new StatsPanel(geco(), frame(), announcer);
+	private JPanel initStatsPanel() {
+		return new StatsPanel(geco(), frame());
 	}
 
 	

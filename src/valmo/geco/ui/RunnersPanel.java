@@ -57,31 +57,31 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 	 * @param frame 
 	 * @param announcer 
 	 */
-	public RunnersPanel(Geco geco, JFrame frame, Announcer announcer) {
-		super(geco, frame, announcer);
-		initRunnersPanel(this, announcer);
-		announcer.registerRunnerListener(this);
+	public RunnersPanel(Geco geco, JFrame frame) {
+		super(geco, frame);
+		initRunnersPanel(this);
+		geco().announcer().registerRunnerListener(this);
 	}
 
 
-	public void initRunnersPanel(JPanel panel, Announcer announcer) {
+	public void initRunnersPanel(JPanel panel) {
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 //		splitPane.setOneTouchExpandable(true);
 		JPanel tablePan = new JPanel(new BorderLayout());
 		tablePan.add(initTableScroll(), BorderLayout.CENTER);
 		tablePan.add(initTopPanel(), BorderLayout.NORTH);
 		splitPane.add(tablePan);
-		splitPane.add(initBottomPanel(announcer));
+		splitPane.add(initBottomPanel());
 		splitPane.setBorder(BorderFactory.createEmptyBorder());
 		updateRunnerPanel();
 		panel.add(splitPane);
 	}
 	
-	public JTabbedPane initBottomPanel(Announcer announcer) {
+	public JTabbedPane initBottomPanel() {
 		this.runnerPanel = new RunnerPanel(geco(), frame(), this);
 		JTabbedPane pane = new JTabbedPane();
 		pane.addTab("Runner Data", this.runnerPanel);
-		pane.addTab("Stats", new StatsPanel(geco(), frame(), announcer));
+		pane.addTab("Stats", new StatsPanel(geco(), frame()));
 		return pane;
 	}
 

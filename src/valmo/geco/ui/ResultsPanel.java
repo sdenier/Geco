@@ -32,7 +32,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 
-import valmo.geco.core.Announcer;
 import valmo.geco.core.Geco;
 import valmo.geco.core.TimeManager;
 import valmo.geco.core.Util;
@@ -76,13 +75,13 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	 * @param frame 
 	 * @param announcer 
 	 */
-	public ResultsPanel(Geco geco, JFrame frame, Announcer announcer) {
-		super(geco, frame, announcer);
+	public ResultsPanel(Geco geco, JFrame frame) {
+		super(geco, frame);
 		updateNames();
 		initResultsPanel(this);
 		initFileDialog();
 		createListeners();
-		announcer.registerStageConfigListener(this);
+		geco().announcer().registerStageConfigListener(this);
 	}
 
 	private void updateNames() {

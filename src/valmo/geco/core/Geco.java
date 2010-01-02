@@ -173,13 +173,13 @@ public class Geco {
 			System.exit(-1);
 		}
 
-		stageControl = new StageControl(factory, stage(), this, announcer);
+		stageControl = new StageControl(factory, stage(), announcer);
 		runnerControl = new RunnerControl(factory, stage(), this, announcer);
 		resultBuilder = new ResultBuilder(factory, stage(), announcer);
 		heatBuilder = new HeatBuilder(factory);
 		stats = new RegistryStats(factory, stage(), announcer);
 		siHandler = new SIReaderHandler(factory, stage(), this, announcer);
-		window = new GecoWindow(this, announcer);
+		window = new GecoWindow(this);
 	}
 
 	public boolean importStage() {

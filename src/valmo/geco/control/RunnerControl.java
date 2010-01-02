@@ -27,7 +27,6 @@ import valmo.geco.model.Status;
 public class RunnerControl extends RunnerBuilder {
 	
 	private Geco geco;
-	private Announcer announcer;
 	
 	/**
 	 * @param factory
@@ -37,11 +36,10 @@ public class RunnerControl extends RunnerBuilder {
 	public RunnerControl(Factory factory, Stage stage, Geco geco, Announcer announcer) {
 		super(factory, stage, announcer);
 		this.geco = geco;
-		this.announcer = announcer;
 	}
 	
 	private Announcer announcer() {
-		return this.announcer;
+		return geco.announcer();
 	}
 
 	public Runner buildMockRunner() {

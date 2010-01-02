@@ -25,13 +25,14 @@ public class OrRaceDataTest {
 	
 	private Registry registryB;
 	
-	private Registry registryM;
+//	private Registry registryM;
 	
 	@Before
 	public void setUp() {
 		OrFixture fixture = new OrFixture();
 		registryB = fixture.importBelfieldData(true);
-		registryM = fixture.importMullaghmeenData(true);
+//		registryM = fixture.importMullaghmeenData(true);
+		fixture.importMullaghmeenData(true);
 	}
 
 	@Test

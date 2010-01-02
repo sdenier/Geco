@@ -50,11 +50,11 @@ public class StatsPanel extends TabPanel implements Announcer.StageConfigListene
 	 * @param geco
 	 * @param frame
 	 */
-	public StatsPanel(Geco geco, JFrame frame, Announcer announcer) {
-		super(geco, frame, announcer);
+	public StatsPanel(Geco geco, JFrame frame) {
+		super(geco, frame);
 		refreshTableKeys();
 		initStatsPanel(this);
-		announcer.registerStageConfigListener(this);
+		geco().announcer().registerStageConfigListener(this);
 		updateThread = startAutoUpdate();
 	}
 

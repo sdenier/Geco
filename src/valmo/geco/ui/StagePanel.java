@@ -34,11 +34,8 @@ import valmo.geco.model.Stage;
  */
 public class StagePanel extends TabPanel {
 
-	Announcer announcer;
-	
-	public StagePanel(Geco geco, JFrame frame, Announcer announcer) {
-		super(geco, frame, announcer);
-		this.announcer = announcer;
+	public StagePanel(Geco geco, JFrame frame) {
+		super(geco, frame);
 		refresh();
 	}
 	
@@ -205,7 +202,7 @@ public class StagePanel extends TabPanel {
 				}
 		};
 		tableModel.setData(registry().getSortedClubs());
-		announcer.registerStageConfigListener( new Announcer.StageConfigListener() {
+		geco().announcer().registerStageConfigListener( new Announcer.StageConfigListener() {
 			public void coursesChanged() {}
 			public void clubsChanged() {
 				tableModel.setData(registry().getSortedClubs());
@@ -274,7 +271,7 @@ public class StagePanel extends TabPanel {
 		};
 		tableModel.setData(registry().getSortedCourses());
 		
-		announcer.registerStageConfigListener( new Announcer.StageConfigListener() {
+		geco().announcer().registerStageConfigListener( new Announcer.StageConfigListener() {
 			public void coursesChanged() {
 				tableModel.setData(new Vector<Course>(registry().getSortedCourses()));
 			}
@@ -335,7 +332,7 @@ public class StagePanel extends TabPanel {
 		};
 		tableModel.setData(registry().getSortedCategories());
 		
-		announcer.registerStageConfigListener( new Announcer.StageConfigListener() {
+		geco().announcer().registerStageConfigListener( new Announcer.StageConfigListener() {
 			public void coursesChanged() {}
 			public void clubsChanged() {}
 			public void categoriesChanged() {

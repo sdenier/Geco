@@ -33,8 +33,6 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 
 	private Geco geco;
 	
-	private Announcer announcer;
-	
 	private SIPortHandler portHandler;
 
 	private String portName;
@@ -47,7 +45,6 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 	public SIReaderHandler(Factory factory, Stage stage, Geco geco, Announcer announcer) {
 		super(factory, stage, announcer);
 		this.geco = geco;
-		this.announcer = announcer;
 		setNewPortName();
 	}
 
@@ -135,8 +132,8 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 		updateRaceDataWith(runnerData, card);
 		Status oldStatus = runnerData.getResult().getStatus();
 		geco.checker().check(runnerData);
-		announcer.announceCardRead(runnerData.getRunner().getChipnumber());
-		announcer.announceStatusChange(runnerData, oldStatus);
+		geco.announcer().announceCardRead(runnerData.getRunner().getChipnumber());
+		geco.announcer().announceStatusChange(runnerData, oldStatus);
 	}
 
 	/**

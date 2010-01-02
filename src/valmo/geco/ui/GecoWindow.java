@@ -48,14 +48,14 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 	/**
 	 * 
 	 */
-	public GecoWindow(Geco geco, Announcer announcer) {
+	public GecoWindow(Geco geco) {
 		this.geco = geco;
-		this.stagePanel = new StagePanel(this.geco, this, announcer);
-		this.runnersPanel = new RunnersPanel(this.geco, this, announcer);
-		this.resultsPanel = new ResultsPanel(this.geco, this, announcer);
-		this.logPanel = new LogPanel(this.geco, this, announcer);
-		this.heatsPanel = new HeatsPanel(this.geco, this, announcer);
-		announcer.registerStageListener(this);
+		this.stagePanel = new StagePanel(this.geco, this);
+		this.runnersPanel = new RunnersPanel(this.geco, this);
+		this.resultsPanel = new ResultsPanel(this.geco, this);
+		this.logPanel = new LogPanel(this.geco, this);
+		this.heatsPanel = new HeatsPanel(this.geco, this);
+		geco.announcer().registerStageListener(this);
 		guiInit();
 	}
 	
