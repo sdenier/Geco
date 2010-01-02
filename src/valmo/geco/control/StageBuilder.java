@@ -25,6 +25,7 @@ import valmo.geco.model.iocsv.CategoryIO;
 import valmo.geco.model.iocsv.ClubIO;
 import valmo.geco.model.iocsv.CourseIO;
 import valmo.geco.model.iocsv.CsvReader;
+import valmo.geco.model.iocsv.HeatSetIO;
 import valmo.geco.model.iocsv.RaceDataIO;
 import valmo.geco.model.iocsv.ResultDataIO;
 import valmo.geco.model.iocsv.RunnerIO;
@@ -132,9 +133,9 @@ public class StageBuilder extends Control {
 	}
 	
 	public void save(Stage stage, Properties props, String backupname) {
-		backupPreviousData(stage.getBaseDir(), backupname);
 		saveStageProperties(stage, props);
 		registryBuilder.exportAllData(stage.registry());
+		backupData(stage.getBaseDir(), backupname);
 	}
 	
 	private void saveStageProperties(Stage stage, Properties properties) {
@@ -150,14 +151,20 @@ public class StageBuilder extends Control {
 	/**
 	 * 
 	 */
-	public void backupPreviousData(String basedir, String backupname) {
+	public void backupData(String basedir, String backupname) {
 		try {
 			ZipOutputStream zipStream = new ZipOutputStream(new FileOutputStream(filepath(basedir, backupname)));
 			for (String datafile : datafiles) {
 				writeZipEntry(zipStream, datafile, basedir);	
 			}
-			if( new File(ResultDataIO.sourceFilename()).exists() ) {
+			if( fileExists(basedir, ResultDataIO.sourceFilename()) ) {
 				writeZipEntry(zipStream, ResultDataIO.sourceFilename(), basedir);
+			}
+			if( fileExists(basedir, HeatSetIO.sourceFilename()) ) {
+				writeZipEntry(zipStream, HeatSetIO.sourceFilename(), basedir);
+			}
+			if( propFile(basedir).exists() ) {
+				writeZipEntry(zipStream, "geco.prop", basedir);
 			}
 			zipStream.close();
 		} catch (FileNotFoundException e) {
@@ -185,6 +192,10 @@ public class StageBuilder extends Control {
 
 	public static String filepath(String base, String filename) {
 		return base + File.separator + filename;
+	}
+	
+	public static boolean fileExists(String base, String filename) {
+		return new File(filepath(base, filename)).exists();
 	}
 	
 }

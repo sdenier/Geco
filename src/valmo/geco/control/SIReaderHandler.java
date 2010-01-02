@@ -5,6 +5,7 @@ package valmo.geco.control;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Properties;
 
 import org.martin.sireader.common.PunchObject;
 import org.martin.sireader.common.PunchRecordData;
@@ -95,7 +96,6 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 			portHandler.interrupt();
 			portHandler.join();
 		} catch (InterruptedException e) {
-			// TODO log
 			e.printStackTrace();
 		}
 	}
@@ -174,8 +174,14 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 	
 	@Override
 	public void changed(Stage previous, Stage next) {
+//		stop();
 		super.changed(previous, next);
 		setNewPortName();
+	}
+
+	@Override
+	public void saving(Stage stage, Properties properties) {
+		properties.setProperty(portNameProperty(), getPortName());
 	}
 
 	@Override

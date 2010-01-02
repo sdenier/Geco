@@ -34,6 +34,14 @@ public interface Stage {
 
 	public void setRegistry(Registry registry);
 
+	public int getAutosaveDelay();	
+
+	public void setAutosaveDelay(int autosaveDelay);
+	
+	public int getNbAutoBackups();
+
+	public void setNbAutoBackups(int nbBackups);
+
 	/**
 	 * Return the properties for the current stage, create new ones if necessary.
 	 * 

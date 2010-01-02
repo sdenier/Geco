@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -63,7 +65,7 @@ public class Geco {
 		
 		public Logger logger() {
 			return this.logger;
-		}	
+		}
 	}
 	
 	/*
@@ -87,6 +89,8 @@ public class Geco {
 	private GecoWindow window;
 	
 	private Announcer announcer;
+
+	private Thread autosaveThread;
 	
 	/*
 	 * Controls
@@ -105,6 +109,8 @@ public class Geco {
 	
 	private SIReaderHandler siHandler;
 
+	private RegistryStats stats;
+
 	/*
 	 * Stage list 
 	 */
@@ -115,8 +121,6 @@ public class Geco {
 	private int stageIndex;
 
 	private String parentDir;
-
-	private RegistryStats stats;
 	
 
 	public static void main(String[] args) {
@@ -172,6 +176,9 @@ public class Geco {
 		if( !importStage() ) {
 			System.exit(-1);
 		}
+		
+		// last step in checker initialization
+		announcer.registerStageListener(checker);
 
 		stageControl = new StageControl(factory, stage(), announcer);
 		runnerControl = new RunnerControl(factory, stage(), this, announcer);
@@ -183,11 +190,11 @@ public class Geco {
 	}
 
 	public boolean importStage() {
+		stopAutosave();
 		RuntimeStage oldStage = current;
 		try {
-			// TODO: temporary bypass
-//			RuntimeStage newStage = loadStage(launcher());
-			RuntimeStage newStage = loadStage("./testData/belfield");
+			RuntimeStage newStage = loadStage(launcher());
+//			RuntimeStage newStage = loadStage("./testData/belfield");
 			closeAllStages();
 			current = newStage;
 			updateStageList(stage().getBaseDir());
@@ -196,6 +203,7 @@ public class Geco {
 			return false;
 		}
 		announcer.announceChange(getStage(oldStage), stage());
+		startAutosave();
 		return true;
 	}
 
@@ -209,7 +217,10 @@ public class Geco {
 		}
 		String baseDir = chooser.getSelectedFile().getAbsolutePath();
 		if( !new File(baseDir + File.separator + "Competition.csv").exists() ) {
-			JOptionPane.showMessageDialog(null, "Directory does not contain Òr data", "Exit", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null,
+										"Directory does not contain Òr data",
+										"Exit",
+										JOptionPane.ERROR_MESSAGE);
 			throw new Exception("Incorrect directory");
 		}
 		return baseDir;
@@ -217,6 +228,8 @@ public class Geco {
 
 	private RuntimeStage loadStage(String baseDir) {
 		Stage stage = stageBuilder.loadStage(baseDir, checker);
+		stageBuilder.backupData(stage.getBaseDir(),
+								backupFilename( new SimpleDateFormat("yyMMdd-HHmmss'i'").format(new Date()) ));
 		Logger logger = initializeLogger(stage);
 		return new RuntimeStage(stage, logger);
 	}
@@ -260,11 +273,55 @@ public class Geco {
 			}
 		}
 	}
+	
+	public Thread startAutosave() {
+		final long saveDelay = stage().getAutosaveDelay() * 60 * 1000;
+		autosaveThread = new Thread(new Runnable() {
+			@Override
+			public synchronized void run() {
+				int id = stage().getNbAutoBackups();
+				while( true ){
+					try {
+						wait(saveDelay);
+						id ++;
+						if( id > stage().getNbAutoBackups() ) {
+							id = 1;
+						}
+						saveStage(backupFilename(new Integer(id).toString()));
+					} catch (InterruptedException e) {
+						return;
+					}					
+				}
+			}});
+		autosaveThread.start();
+		return autosaveThread;
+	}
+	
+	public void stopAutosave() {
+		if( autosaveThread!=null ) {
+			autosaveThread.interrupt();
+			try {
+				autosaveThread.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
-	public void saveCurrentStage() {
+	private String backupFilename(String id) {
+		return "backup" + id + ".zip";
+	}
+	
+	private void saveStage(String backupName) {
 		Properties props = new Properties();
 		announcer.announceSave(stage(), props);
-		stageBuilder.save(stage(), props, "backup.zip");
+		stageBuilder.save(	stage(), 
+							props, 
+							backupName);
+	}
+
+	public void saveCurrentStage() {
+		saveStage( backupFilename( new SimpleDateFormat("yyMMdd-HHmmss").format(new Date()) ));
 	}
 	
 	public void closeStage(RuntimeStage runStage) {
@@ -275,6 +332,9 @@ public class Geco {
 		}
 	}
 	private void closeCurrentStage() {
+		if( current!=null ) {
+			saveCurrentStage();
+		}
 		closeStage(current);
 	}
 	private void closeNextStage() {
@@ -344,7 +404,8 @@ public class Geco {
 	
 	public void switchToPreviousStage() {
 		if( getPreviousStageDir()!="" ) {
-			// save current stage to disk?
+			stopAutosave();
+			saveCurrentStage();
 			if( previous==null ) {
 				previous = loadStage(fileInParentDir(getPreviousStageDir()));
 			}
@@ -355,12 +416,14 @@ public class Geco {
 			current = previous; // previous becomes current
 			previous = null; // unset previous ref (we dont want to automatically load previous one)
 			announcer.announceChange(getStage(next), stage());
+			startAutosave();
 		} // else do nothing
 	}
 
 	public void switchToNextStage() {
 		if( getNextStageDir()!="" ) {
-			// save current stage to disk?
+			stopAutosave();
+			saveCurrentStage();
 			if( next==null ) {
 				next = loadStage(fileInParentDir(getNextStageDir()));
 			}
@@ -371,6 +434,7 @@ public class Geco {
 			current = next;
 			next = null;
 			announcer.announceChange(getStage(previous), stage());
+			startAutosave();
 		} // else do nothing
 	}
 

@@ -17,24 +17,27 @@ public class StageImpl implements Stage {
 	
 	private Registry registry;
 	private Properties properties;
+	
+	private int nbBackups;
+	private int autosaveDelay; // in minutes
 
 	
 	public StageImpl() {
+		initializeDefault();
+	}
+
+	protected void initializeDefault() {
 		name = "";
+		nbBackups = 9;
+		autosaveDelay = 2;
 	}
 	
 	public void initialize(String baseDir) {
 		this.baseDir = baseDir;
 	}
 
-	public void close() {
-		// TODO: ask for saving
-	}
+	public void close() {}
 	
-//	public void save() {
-//		saveProperties();
-//	}
-
 	public String getBaseDir() {
 		return baseDir;
 	}
@@ -57,6 +60,24 @@ public class StageImpl implements Stage {
 		this.registry = registry;
 	}
 
+
+	public int getAutosaveDelay() {
+		return autosaveDelay;
+	}	
+
+	public void setAutosaveDelay(int autosaveDelay) {
+		this.autosaveDelay = autosaveDelay;
+	}
+	
+	public int getNbAutoBackups() {
+		return nbBackups;
+	}
+
+	public void setNbAutoBackups(int nbBackups) {
+		this.nbBackups = nbBackups;
+	}
+
+	
 	/**
 	 * Return the properties for the current stage, create new ones if necessary.
 	 * 
@@ -78,8 +99,35 @@ public class StageImpl implements Stage {
 	 */
 	public void loadProperties(Properties properties) {
 		setProperties(properties);
-		setName(properties.getProperty("name"));
+//		initializeDefault();
+		
+		String prop = properties.getProperty("name");
+		if( prop!=null ) {
+			setName(prop);
+		}
+
+		prop = properties.getProperty("AutosaveDelay");
+		if( prop!=null ) {
+			try {
+				setAutosaveDelay(new Integer(prop));				
+			} catch (NumberFormatException e) {
+				setAutosaveDelay( 2 );
+				System.err.println(e);
+			}
+		}
+		
+		prop = properties.getProperty("NbAutoBackups");
+		if( prop!=null ) {
+			try {
+				setNbAutoBackups(new Integer(prop));				
+			} catch (NumberFormatException e) {
+				setNbAutoBackups( 9 );
+				System.err.println(e);
+			}
+		}	
 	}
+	
+	
 	/**
 	 * Save stage attributes in given properties, which become the new properties.
 	 * 
@@ -87,6 +135,8 @@ public class StageImpl implements Stage {
 	 */
 	public void saveProperties(Properties properties) {
 		properties.setProperty("name", getName());
+		properties.setProperty("AutosaveDelay", new Integer(getAutosaveDelay()).toString());
+		properties.setProperty("NbAutoBackups", new Integer(getNbAutoBackups()).toString());
 		setProperties(properties);
 	}
 
