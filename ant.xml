@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="cleanBackups" name="GecO">
+    <target name="cleanBackups">
+		<delete>
+			<fileset dir="testData" includes="**/backups/*.zip"/>
+		</delete>
+    </target>
+</project>

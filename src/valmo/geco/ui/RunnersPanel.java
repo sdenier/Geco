@@ -113,8 +113,8 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 			}
 		});
 		topPanel.add(deleteButton);
-		topPanel.add(new JCheckBox("Live mode"));
-		topPanel.add(new JCheckBox("Auto mode"));
+//		topPanel.add(new JCheckBox("Live mode"));
+//		topPanel.add(new JCheckBox("Auto mode"));
 		topPanel.add(Box.createHorizontalStrut(400));
 		topPanel.add(initFilterPanel());
 		return topPanel;

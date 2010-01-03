@@ -46,7 +46,7 @@ import com.apple.eawt.ApplicationEvent;
  */
 public class Geco {
 	
-	public static final String VERSION = "0.5"; 
+	public static final String VERSION = "0.9b1"; 
 	
 	private class RuntimeStage {
 		private Stage stage;
@@ -309,7 +309,7 @@ public class Geco {
 	}
 
 	private String backupFilename(String id) {
-		return "backup" + id + ".zip";
+		return "backups" + File.separator + "backup" + id + ".zip";
 	}
 	
 	private void saveStage(String backupName) {
