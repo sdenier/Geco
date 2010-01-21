@@ -27,47 +27,18 @@ import valmo.geco.model.iocsv.RunnerIO;
  */
 public class RegistryBuilder  extends Control{
 
-	private String baseDir;
-	
 	private CsvReader reader;
 
 	private CsvWriter writer;
 	
-	
-	/**
-	 * @param factory 
-	 * @param stage 
-	 * 
-	 */
 	public RegistryBuilder(Factory factory) {
-		this(factory, "");
-	}
-	
-	/**
-	 * 
-	 */
-	public RegistryBuilder(Factory factory, String baseDir) {
 		super(factory);
-		this.baseDir = baseDir;
 		this.reader = new CsvReader();
 		this.writer = new CsvWriter();
 	}
 	
-	public String getBaseDir() {
-		return baseDir;
-	}
 
-	public void setBaseDir(String baseDir) {
-		this.baseDir = baseDir;
-	}
-
-
-	/**
-	 * @param registry 
-	 * @return 
-	 * 
-	 */
-	public Registry importAllData(Registry registry, boolean importResult) {
+	public Registry importAllData(Registry registry, String baseDir, boolean importResult) {
 		
 		reader.initialize(baseDir, ClubIO.orFilename());
 		new ClubIO(factory(), reader, null, registry).importData();
@@ -97,7 +68,8 @@ public class RegistryBuilder  extends Control{
 		return registry;
 	}
 	
-	public void exportAllData(Registry registry) {
+	
+	public void exportAllData(Registry registry, String baseDir) {
 		
 		writer.initialize(baseDir, ClubIO.orFilename());
 		new ClubIO(factory(), null, writer, registry).exportData(registry.getClubs());

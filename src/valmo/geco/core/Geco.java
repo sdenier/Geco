@@ -169,15 +169,17 @@ public class Geco {
 		
 		factory = new POFactory();
 		announcer = new Announcer();
+		
+		// early controls
 		stageBuilder = new StageBuilder(factory);
-//		checker = new PunchChecker(factory);
 		checker = new PenaltyChecker(factory);
 		
 		if( !importStage() ) {
 			System.exit(-1);
 		}
 		
-		// last step in checker initialization
+		// early controls post-initialization
+		announcer.registerStageListener(stageBuilder);
 		announcer.registerStageListener(checker);
 
 		stageControl = new StageControl(factory, stage(), announcer);

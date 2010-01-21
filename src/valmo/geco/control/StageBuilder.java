@@ -128,13 +128,12 @@ public class StageBuilder extends Control {
 	private void importDataIntoRegistry(String baseDir, boolean importResult) {
 		Registry registry = new Registry();
 		currentStage.setRegistry(registry);
-		this.registryBuilder.setBaseDir(baseDir);
-		this.registryBuilder.importAllData(registry, importResult);
+		this.registryBuilder.importAllData(registry, baseDir, importResult);
 	}
 	
 	public void save(Stage stage, Properties props, String backupname) {
 		saveStageProperties(stage, props);
-		registryBuilder.exportAllData(stage.registry());
+		registryBuilder.exportAllData(stage.registry(), stage.getBaseDir());
 		backupData(stage.getBaseDir(), backupname);
 	}
 	
