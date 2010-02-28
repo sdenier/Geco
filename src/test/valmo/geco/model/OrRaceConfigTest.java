@@ -1,9 +1,11 @@
 /**
  * Copyright (c) 2009 Simon Denier
+ * Released under the MIT License (see LICENSE file)
  */
 package test.valmo.geco.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 import java.util.Collection;

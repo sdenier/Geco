@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2009 Simon Denier
+ * Released under the MIT License (see LICENSE file)
  */
 package valmo.geco.ui;
 
@@ -13,7 +14,6 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;

@@ -1,9 +1,12 @@
 /**
  * Copyright (c) 2009 Simon Denier
+ * Released under the MIT License (see LICENSE file)
  */
 package test.valmo.geco.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2008 Simon Denier
+ * Released under the MIT License (see LICENSE file)
  */
 package valmo.geco.control;
 

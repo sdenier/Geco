@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2009 Simon Denier
+ * Released under the MIT License (see LICENSE file)
  */
 package valmo.geco.control;
 
@@ -9,9 +10,9 @@ import java.util.Vector;
 
 import valmo.geco.model.Factory;
 import valmo.geco.model.Heat;
+import valmo.geco.model.RankedRunner;
 import valmo.geco.model.Result;
 import valmo.geco.model.Runner;
-import valmo.geco.model.RankedRunner;
 
 /**
  * @author Simon Denier

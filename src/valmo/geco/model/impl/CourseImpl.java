@@ -1,7 +1,10 @@
 /**
  * Copyright (c) 2009 Simon Denier
+ * Released under the MIT License (see LICENSE file)
  */
 package valmo.geco.model.impl;
+
+import java.util.Arrays;
 
 import valmo.geco.model.Course;
 
@@ -20,8 +23,6 @@ public class CourseImpl implements Course {
 	private int climb;
 	
 	private int[] codes;
-	
-//	private StartList startlist;
 
 	
 	public int getClimb() {
@@ -40,9 +41,6 @@ public class CourseImpl implements Course {
 		return name;
 	}
 
-//	public StartList getStartlist() {
-//		return startlist;
-//	}
 
 	public void setClimb(int climb) {
 		this.climb = climb;
@@ -60,8 +58,10 @@ public class CourseImpl implements Course {
 		this.name = name;
 	}
 
-//	public void setStartlist(StartList startlist) {
-//		this.startlist = startlist;
-//	}
+	@Override
+	public String toString() {
+		return "Course " + name + ", " + codes.length + "p (" + length +"m, " + climb + "m): "
+				+ Arrays.toString(codes);
+	} 
 
 }
