@@ -64,10 +64,10 @@ public class RunnerPanel extends GecoPanel implements StageConfigListener {
 	private JTextField sTimeF;
 	private JTextField fTimeF;
 	private JTextField rTimeF;
-	private JLabel realTimeL;
+	private JTextField realTimeF;
 	private JComboBox statusCB;
 	private JTextField mpF;
-	private JLabel penaltyL;
+	private JTextField penaltyF;
 	private JButton resetRTimeB;
 	private JButton recheckStatusB;
 	
@@ -117,11 +117,11 @@ public class RunnerPanel extends GecoPanel implements StageConfigListener {
 		sTimeF.setText(TimeManager.fullTime(runnerData.getStarttime()));
 		fTimeF.setText(TimeManager.fullTime(runnerData.getFinishtime()));
 		rTimeF.setText(TimeManager.time(runnerData.getResult().getRacetime()));
-		realTimeL.setText(TimeManager.time(geco().checker().computeRaceTime(runnerData)));
+		realTimeF.setText(TimeManager.time(geco().checker().computeRaceTime(runnerData)));
 		statusCB.setSelectedItem(runnerData.getResult().getStatus());
 		int nbMPs = runnerData.getResult().getNbMPs();
 		mpF.setText(Integer.toString(nbMPs));
-		penaltyL.setText(TimeManager.time(geco().checker().timePenalty(nbMPs)));
+		penaltyF.setText(TimeManager.time(geco().checker().timePenalty(nbMPs)));
 		punchPanel.refreshPunches(runnerData);
 		this.inRefreshMode = false;
 	}
@@ -147,10 +147,13 @@ public class RunnerPanel extends GecoPanel implements StageConfigListener {
 		fTimeF = new JTextField(5);
 		fTimeF.setEditable(false);
 		rTimeF = new JTextField(5);
-		realTimeL = new JLabel();
+		realTimeF = new JTextField(5);
+		realTimeF.setEditable(false);
 		statusCB = new JComboBox(Status.values());
 		mpF = new JTextField();
-		penaltyL = new JLabel();
+		mpF.setEditable(false);
+		penaltyF = new JTextField(5);
+		penaltyF.setEditable(false);
 		
 		resetRTimeB = new JButton("Reset Time");
 		recheckStatusB = new JButton("Refresh Status");
@@ -378,7 +381,7 @@ public class RunnerPanel extends GecoPanel implements StageConfigListener {
 				cTimeF,
 				sTimeF,
 				fTimeF,
-				realTimeL,
+				realTimeF,
 
 				recheckStatusB,
 				new JLabel("Status"),
@@ -388,7 +391,7 @@ public class RunnerPanel extends GecoPanel implements StageConfigListener {
 				resetRTimeB,
 				statusCB,
 				mpF,
-				penaltyL,
+				penaltyF,
 				rTimeF,
 		};
 		
@@ -437,7 +440,7 @@ public class RunnerPanel extends GecoPanel implements StageConfigListener {
 		panel.add(new JLabel("Finish time"), Util.compConstraint(3, 4));
 		panel.add(fTimeF, Util.compConstraint(3, 5));
 		panel.add(new JLabel("Real race time"), Util.compConstraint(4, 4));
-		panel.add(realTimeL, Util.compConstraint(4, 5));
+		panel.add(realTimeF, Util.compConstraint(4, 5));
 
 		panel.add(recheckStatusB, Util.compConstraint(0, 6));
 		panel.add(resetRTimeB, Util.compConstraint(0, 7));
@@ -446,7 +449,7 @@ public class RunnerPanel extends GecoPanel implements StageConfigListener {
 		panel.add(new JLabel("MPs"), Util.compConstraint(2, 6));
 		panel.add(mpF, Util.compConstraint(2, 7));
 		panel.add(new JLabel("Time penalty"), Util.compConstraint(3, 6));
-		panel.add(penaltyL, Util.compConstraint(3, 7));
+		panel.add(penaltyF, Util.compConstraint(3, 7));
 		panel.add(new JLabel("Official race time"), Util.compConstraint(4, 6));
 		panel.add(rTimeF, Util.compConstraint(4, 7));
 
