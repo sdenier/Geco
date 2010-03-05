@@ -302,8 +302,17 @@ public class StagePanel extends TabPanel {
 				}
 			}
 		};
+		ActionListener editAction = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Course course = panel.getSelectedData();
+				if( course!=null ) {
+					new CourseControlDialog(frame(), course);
+				}
+			}
+		};
 
-		panel.initialize("Course", tableModel, addAction, removeAction);
+		panel.initialize("Course", tableModel, addAction, removeAction, editAction);
 		return panel;
 	}	
 
