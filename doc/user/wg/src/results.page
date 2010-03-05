@@ -7,3 +7,17 @@ routed_title: New webgen Website
 ## Results Panel
 
 <img src="images/results_panel.png" />
+
+The results panel can generate results from current data at any time during a race.
+
+Select either *Courses* or *Categories* to compute results. The list of courses (or categories) appears below the control panel. It is possible to manually select courses or categories for which to compute results. Select *All* to select all sets currently available, and *None* to cancel the selection.
+
+Options for computing results include:
+- *Show NC*: include runners ticked as NC in the results. They will appear after the ranked runners, with MPs and others.
+- *Show others*: include DNS runners, which were registered but did not run.
+- *Show empty sets*: show all courses or categories in results, even if there is not yet any race data.
+
+The three buttons generate results:
+- *Refresh* shows results in the right panel.
+- *Print* opens a print dialog.
+- *Export* opens a file dialog to save results in an external file. Two formats are available, html and csv.

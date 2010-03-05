@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project basedir="." default="cleanBackups" name="GecO">
+<project basedir="." default="webgen" name="GecO">
+	<property name="srcdoc.dir" value="doc" />
+	<property name="wg.dir" value="${srcdoc.dir}/user/wg" />
+	
     <target name="cleanBackups">
 		<delete>
 			<fileset dir="testData" includes="**/backups/*.zip"/>
 		</delete>
+    </target>
+    <target name="webgen">
+    	<exec dir="${wg.dir}" executable="webgen"></exec>
+    </target>
+	<target name="userHelp" depends="webgen">
+    	<mkdir dir="help" />
+    	<copy todir="help">
+    		<fileset dir="${wg.dir}/out" />
+		</copy>
     </target>
 </project>

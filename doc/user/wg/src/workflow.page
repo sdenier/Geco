@@ -13,6 +13,7 @@ routed_title: New webgen Website
 
 When you launch a Geco application, it first opens a file window so that you can choose a folder with existing data.
 
+<img src="images/launcher.png" />
 
 ### Backup and data management on disk
 
