@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import valmo.geco.core.Util;
@@ -29,7 +30,7 @@ public class CourseControlDialog extends JDialog {
 	
 	private JTextField controlsF;
 
-	public CourseControlDialog(JFrame frame, Course course) {
+	public CourseControlDialog(JFrame frame, final Course course) {
 		super(frame, "Course Editor", true);
 		setLocationRelativeTo(frame);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -37,7 +38,8 @@ public class CourseControlDialog extends JDialog {
 		getContentPane().setLayout(new GridBagLayout());
 		getContentPane().add(new JLabel("Control sequence for course " + course.getName() + " (separated by comma):"));
 		controlsF = new JTextField(40);
-		controlsF.setText(Arrays.toString(course.getCodes()));
+		String codes = Arrays.toString(course.getCodes());
+		controlsF.setText(codes.substring(1, codes.length() - 1));
 		GridBagConstraints c = Util.compConstraint(0, 1);
 		c.gridwidth = 2;
 		getContentPane().add(controlsF, c);
@@ -45,8 +47,22 @@ public class CourseControlDialog extends JDialog {
 		saveB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO: parse fields and check format, then set new control codes for course
-				setVisible(false);
+				String dataLine = controlsF.getText();
+				String[] data = Util.splitAndTrim(dataLine, ",");
+				int[] newCodes = new int[data.length];
+				try {
+					for (int i = 0; i < data.length; i++) {
+						newCodes[i] = new Integer(data[i]);
+					}
+					course.setCodes(newCodes);
+					setVisible(false);
+				} catch (NumberFormatException e2) {
+					JOptionPane.showMessageDialog(
+							CourseControlDialog.this,
+							e2.getMessage(), 
+							"Bad code number", 
+							JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		getContentPane().add(saveB, Util.compConstraint(0, 2));
