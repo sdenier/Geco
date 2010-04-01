@@ -183,15 +183,23 @@ public class RunnerPanel extends GecoPanel implements StageConfigListener {
 		});
 		chipF.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String newChip = chipF.getText();
-				if( control().validateChipnumber(runner, newChip)) {
-					parentContainer.refreshSelectionInTable();
-				} else {
+				String newChip = chipF.getText().trim();
+				if( newChip.isEmpty() ) {
 					JOptionPane.showMessageDialog(frame(),
-						    "Chip number already in use. Reverting to previous chip number.",
+						    "Chip number can not be empty. Reverting to previous chip number.",
 						    "Invalid Entry",
 						    JOptionPane.ERROR_MESSAGE);
-					chipF.setText(runner.getChipnumber());
+					chipF.setText(runner.getChipnumber());					
+				} else {
+					if( control().validateChipnumber(runner, newChip)) {
+						parentContainer.refreshSelectionInTable();
+					} else {
+						JOptionPane.showMessageDialog(frame(),
+								"Chip number already in use. Reverting to previous chip number.",
+								"Invalid Entry",
+								JOptionPane.ERROR_MESSAGE);
+						chipF.setText(runner.getChipnumber());
+					}
 				}
 			}
 		});
