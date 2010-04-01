@@ -14,7 +14,6 @@ import java.util.Properties;
 import java.util.Vector;
 
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 
 import valmo.geco.control.HeatBuilder;
 import valmo.geco.control.PenaltyChecker;
@@ -218,13 +217,14 @@ public class Geco {
 			throw new Exception("Cancelled import");
 		}
 		String baseDir = chooser.getSelectedFile().getAbsolutePath();
-		if( !new File(baseDir + File.separator + "Competition.csv").exists() ) {
-			JOptionPane.showMessageDialog(null,
-										"Directory does not contain Òr data",
-										"Exit",
-										JOptionPane.ERROR_MESSAGE);
-			throw new Exception("Incorrect directory");
-		}
+		// TODO: replace by a different check?
+		//		if( !new File(baseDir + File.separator + "Competition.csv").exists() ) {
+//			JOptionPane.showMessageDialog(null,
+//										"Directory does not contain Òr data",
+//										"Exit",
+//										JOptionPane.ERROR_MESSAGE);
+//			throw new Exception("Incorrect directory");
+//		}
 		return baseDir;
 	}
 
