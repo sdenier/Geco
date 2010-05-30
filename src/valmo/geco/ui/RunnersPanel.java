@@ -157,6 +157,7 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 			}
 		});
 		table = new JTable(tableModel);
+		tableModel.initTableColumnSize(table);
 		table.setRowSorter(sorter);
 		table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.getSelectionModel().setSelectionInterval(0, 0);

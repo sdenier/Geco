@@ -7,7 +7,9 @@ package valmo.geco.ui;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumnModel;
 
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.Runner;
@@ -32,7 +34,7 @@ public class RunnersTableModel extends AbstractTableModel {
 	 */
 	public RunnersTableModel() {
 		this.headers = new String[] {
-				"Startnumber", "Chip", "First name", "Last name", "Category", "Course", "Club", "Racetime", "Status" 
+				"Startnumber", "Chip", "First name", "Last name", "Category", "Course", "Club", "Racetime", "Status", "NC" 
 		};
 		this.data = new Vector<RunnerRaceData>();
 	}
@@ -65,6 +67,7 @@ public class RunnersTableModel extends AbstractTableModel {
 		case 6: return runner.getClub().getName();
 		case 7: return TimeManager.time(runnerData.getResult().getRacetime()); // optimize
 		case 8: return runnerData.getResult().getStatus();
+		case 9: return runner.isNC();
 		default: return "Pbm";
 		}
 	}
@@ -81,10 +84,37 @@ public class RunnersTableModel extends AbstractTableModel {
 		case 6: return String.class;
 		case 7: return String.class;
 		case 8: return Status.class;
+		case 9: return Boolean.class;
 		default: return Object.class;
 		}
 	}
 
+	public void initTableColumnSize(JTable table) {
+		TableColumnModel model = table.getColumnModel();
+		for (int i = 0; i < headers.length; i++) {
+			int width = 0;
+			switch (i) {
+			case 0: width = 10 ; break;
+			case 1: width = 20 ;break;
+			case 2: width = 100 ;break;
+			case 3: width = 100 ;break;
+			case 4: width = 50 ;break;
+			case 5: width = 50 ;break;
+			case 6: width = 50 ;break;
+			case 7: width = 20 ;break;
+			case 8: width = 10 ;break;
+			case 9: width = 10 ;break;
+			default: break;
+			}
+			model.getColumn(i).setPreferredWidth(width);
+		}
+//		model.getColumn(8).setCellEditor(new DefaultCellEditor(new JComboBox(Status.values())));
+	}
+
+//	@Override
+//	public boolean isCellEditable(int rowIndex, int columnIndex) {
+//		return columnIndex>=8;
+//	}
 
 	public List<RunnerRaceData> getData() {
 		return data;
