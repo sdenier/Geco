@@ -88,6 +88,39 @@ public class StageControl extends Control {
 		announcer().announceCoursesChanged();
 		return course;
 	}
+	
+	public Course addCourse(Course course) {
+		Course previousCourse = registry().findCourse(course.getName());
+		registry().addCourse(course);
+		if( previousCourse!=null ) {
+			changeCourse(previousCourse, course);
+		}
+		announcer().announceCoursesChanged();
+		return previousCourse;
+	}
+
+	private void changeCourse(Course previousCourse, Course newCourse) {
+		for (Category cat : registry().getCategories()) {
+			if( cat.getCourse() == previousCourse ) {
+				cat.setCourse(newCourse);
+			}
+		}
+		for (Runner runner : registry().getRunners()) {
+			if( runner.getCourse() == previousCourse ) {
+				runner.setCourse(newCourse);
+			}
+		}
+		for (HeatSet set : registry().getHeatSets()) {
+			if( set.isCourseType() ) {
+				Pool[] pools = set.getSelectedPools();
+				for (int i = 0; i < pools.length; i++) {
+					if( pools[i]==previousCourse ) {
+						pools[i] = newCourse;
+					}
+				}
+			}
+		}
+	}
 
 	/**
 	 * @param course

@@ -6,6 +6,7 @@ package valmo.geco.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.util.List;
 
@@ -45,10 +46,10 @@ public class ConfigTablePanel<T> extends GecoPanel {
 
 	public ConfigTablePanel<T> initialize(String panelTitle,
 			ConfigTableModel<T> tableModel, ActionListener addAction,
-			ActionListener removeAction, ActionListener editAction) {
+			ActionListener removeAction, JButton... moreActions) {
 		
 		initTable(panelTitle, tableModel);
-		initButtonBar(panelTitle, addAction, removeAction, editAction);
+		initButtonBar(panelTitle, addAction, removeAction, moreActions);
 		return this;
 	}
 
@@ -72,7 +73,7 @@ public class ConfigTablePanel<T> extends GecoPanel {
 	private JPanel initButtonBar(String panelTitle, ActionListener addAction,
 			ActionListener removeAction) {
 		
-		JPanel buttonBar = new JPanel();
+		JPanel buttonBar = new JPanel(new GridLayout(0, 3));
 		add(buttonBar, BorderLayout.SOUTH);
 		
 		JButton addB = new JButton("+");
@@ -89,14 +90,12 @@ public class ConfigTablePanel<T> extends GecoPanel {
 	}
 	
 	private JPanel initButtonBar(String panelTitle, ActionListener addAction,
-			ActionListener removeAction, ActionListener editAction) {
+			ActionListener removeAction, JButton... moreActions) {
 		
-		JPanel buttonBar = initButtonBar(panelTitle, addAction, removeAction);
-		
-		JButton editB = new JButton("...");
-		editB.setToolTipText("Edit " + panelTitle);
-		editB.addActionListener(editAction);
-		buttonBar.add(editB);
+		JPanel buttonBar = initButtonBar(panelTitle, addAction, removeAction);		
+		for (JButton button : moreActions) {
+			buttonBar.add(button);
+		}
 		
 		return buttonBar;
 	}

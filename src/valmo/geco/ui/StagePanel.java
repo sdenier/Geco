@@ -10,15 +10,19 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.Properties;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileFilter;
 
 import valmo.geco.core.Announcer;
 import valmo.geco.core.Geco;
@@ -27,6 +31,7 @@ import valmo.geco.model.Category;
 import valmo.geco.model.Club;
 import valmo.geco.model.Course;
 import valmo.geco.model.Stage;
+import valmo.geco.model.xml.CourseSaxImporter;
 
 /**
  * @author Simon Denier
@@ -311,8 +316,48 @@ public class StagePanel extends TabPanel {
 				}
 			}
 		};
+		ActionListener importAction = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser chooser = new JFileChooser();
+				chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				chooser.setFileFilter(new FileFilter() {
+					@Override
+					public String getDescription() {
+						return "XML files";
+					}
+					@Override
+					public boolean accept(File f) {
+						return f.getName().endsWith(".xml");
+					}
+				});
+				int answer = chooser.showDialog(frame(), "Import");
+				if( answer==JFileChooser.APPROVE_OPTION ) {
+					String file = chooser.getSelectedFile().getAbsolutePath();
+					try {
+						Vector<Course> courses = CourseSaxImporter.importFromXml(file, geco().stageControl().factory());
+						for (Course course : courses) {
+							geco().stageControl().addCourse(course);	
+						}
+					} catch (Exception e1) {
+						JOptionPane.showMessageDialog(frame(),
+								e1.getMessage(),
+								"Error loading XML",
+								JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+		};
+		
+		JButton editB = new JButton("...");
+		editB.setToolTipText("Edit course");
+		editB.addActionListener(editAction);
+		
+		JButton importB = new JButton("XML");
+		importB.setToolTipText("Import courses from XML");
+		importB.addActionListener(importAction);
 
-		panel.initialize("Course", tableModel, addAction, removeAction, editAction);
+		panel.initialize("Course", tableModel, addAction, removeAction, editB, importB);
 		return panel;
 	}	
 
