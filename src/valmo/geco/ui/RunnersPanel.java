@@ -143,8 +143,7 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 	}
 	
 	public JScrollPane initTableScroll() {
-		tableModel = new RunnersTableModel();
-		refreshTableData();
+		tableModel = new RunnersTableModel(geco());
 		sorter = new TableRowSorter<RunnersTableModel>(tableModel);
 		sorter.setComparator(7, new Comparator<String>() { // Date column
 			@Override
@@ -157,6 +156,7 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 			}
 		});
 		table = new JTable(tableModel);
+		tableModel.initCellEditors(table);
 		tableModel.initTableColumnSize(table);
 		table.setRowSorter(sorter);
 		table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -168,11 +168,13 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 				}
 			}
 		});
+		refreshTableData();
 		return new JScrollPane(table);
 	}
 
 
 	private void refreshTableData() {
+		tableModel.updateComboBoxEditors(table);
 		tableModel.setData(new Vector<RunnerRaceData>(registry().getRunnersData()));
 	}
 	

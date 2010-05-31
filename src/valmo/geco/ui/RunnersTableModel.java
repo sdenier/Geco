@@ -7,11 +7,16 @@ package valmo.geco.ui;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumnModel;
 
+import valmo.geco.control.RunnerControl;
+import valmo.geco.core.Geco;
 import valmo.geco.core.TimeManager;
+import valmo.geco.model.Registry;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Status;
@@ -23,20 +28,27 @@ import valmo.geco.model.Status;
  */
 public class RunnersTableModel extends AbstractTableModel {
 
+	private Geco geco;
+
 	private String[] headers;
 	
-	// we should have both?
 	private List<RunnerRaceData> data;
 	
 	
-	/**
-	 * 
-	 */
-	public RunnersTableModel() {
+	public RunnersTableModel(Geco geco) {
+		this.geco = geco;
 		this.headers = new String[] {
 				"Startnumber", "Chip", "First name", "Last name", "Category", "Course", "Club", "Racetime", "Status", "NC" 
 		};
 		this.data = new Vector<RunnerRaceData>();
+	}
+	
+	private RunnerControl control() {
+		return geco.runnerControl();
+	}
+	
+	private Registry registry() {
+		return geco.registry();
 	}
 	
 	public int getColumnCount() {
@@ -55,8 +67,6 @@ public class RunnersTableModel extends AbstractTableModel {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		RunnerRaceData runnerData = data.get(rowIndex);
 		Runner runner = runnerData.getRunner();
-		// horrible, have to do a manual lookup with an index, 80's style
-		// other solution would be a hashtable with key->function to evaluate - verbose in Java but less cumbersome to maintain
 		switch (columnIndex) {
 		case 0: return runner.getStartnumber();
 		case 1: return runner.getChipnumber();
@@ -88,6 +98,19 @@ public class RunnersTableModel extends AbstractTableModel {
 		default: return Object.class;
 		}
 	}
+	
+	public void initCellEditors(JTable table) {
+		TableColumnModel model = table.getColumnModel();
+		updateComboBoxEditors(table);
+		model.getColumn(8).setCellEditor(new DefaultCellEditor(new JComboBox(Status.values())));
+	}
+
+	protected void updateComboBoxEditors(JTable table) {
+		TableColumnModel model = table.getColumnModel();
+		model.getColumn(4).setCellEditor(new DefaultCellEditor(new JComboBox(registry().getSortedCategorynames())));
+		model.getColumn(5).setCellEditor(new DefaultCellEditor(new JComboBox(registry().getSortedCoursenames())));
+		model.getColumn(6).setCellEditor(new DefaultCellEditor(new JComboBox(registry().getSortedClubnames())));
+	}
 
 	public void initTableColumnSize(JTable table) {
 		TableColumnModel model = table.getColumnModel();
@@ -108,13 +131,57 @@ public class RunnersTableModel extends AbstractTableModel {
 			}
 			model.getColumn(i).setPreferredWidth(width);
 		}
-//		model.getColumn(8).setCellEditor(new DefaultCellEditor(new JComboBox(Status.values())));
 	}
 
-//	@Override
-//	public boolean isCellEditable(int rowIndex, int columnIndex) {
-//		return columnIndex>=8;
-//	}
+	@Override
+	public boolean isCellEditable(int rowIndex, int columnIndex) {
+		return true;
+	}
+	
+
+	@Override
+	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+		RunnerRaceData runnerData = data.get(rowIndex);
+		Runner runner = runnerData.getRunner();
+		switch (columnIndex) {
+		case 0: break;
+		case 1: break;
+		case 2: setFirstName(runner, (String) aValue); break;
+		case 3: break;
+		case 4: setCategory(runner, (String) aValue); break;
+		case 5: setCourse(runnerData, (String) aValue); break;
+		case 6: setClub(runner, (String) aValue); break;
+		case 7: break;
+		case 8: setStatus(runnerData, (Status) aValue); break;
+		case 9: setNC(runner, ((Boolean) aValue).booleanValue() ); break;
+		default: break;
+		}
+	}
+
+	private void setFirstName(Runner runner, String newName) {
+		control().validateFirstname(runner, newName);
+	}
+	
+	private void setCategory(Runner runner, String newCategory) {
+		control().validateCategory(runner, newCategory);
+	}
+
+	private void setCourse(RunnerRaceData runnerData, String newCourse) {
+		control().validateCourse(runnerData, newCourse);
+	}
+	
+	private void setClub(Runner runner, String newClub) {
+		control().validateClub(runner, newClub);
+	}
+	
+	private void setStatus(RunnerRaceData runnerData, Status newStatus) {
+		control().validateStatus(runnerData, newStatus);
+	}
+	
+	private void setNC(Runner runner, boolean nc) {
+		control().validateNCStatus(runner, nc);
+	}
+	
 
 	public List<RunnerRaceData> getData() {
 		return data;
