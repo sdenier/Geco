@@ -455,7 +455,12 @@ public class Registry {
 		synchronized (runnersLock) {
 			int max = 0;
 			for (String chip : runnersByChip.keySet()) {
-				max = Math.max(max, new Integer(chip));
+				try {
+					Integer chipi = new Integer(chip);					
+					max = Math.max(max, chipi);
+				} catch (NumberFormatException e) {
+					// bypass chip number xxxxa (cloned entries)
+				}
 			}
 			return max;
 		}
