@@ -80,6 +80,11 @@ public class LogPanel extends TabPanel implements RunnerListener {
 	private JPanel initStatsPanel() {
 		return new StatsPanel(geco(), frame());
 	}
+	
+	public void displayLog(String message) {
+		chiplogArea.append("\n");
+		chiplogArea.append(message);
+	}
 
 	
 	/* (non-Javadoc)

@@ -56,6 +56,8 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 		this.resultsPanel = new ResultsPanel(this.geco, this);
 		this.logPanel = new LogPanel(this.geco, this);
 		this.heatsPanel = new HeatsPanel(this.geco, this);
+		// TODO: bad smell
+		((ProxyLogger) geco.logger()).setUiLog(logPanel);
 		geco.announcer().registerStageListener(this);
 		guiInit();
 	}
@@ -164,6 +166,8 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 
 	@Override
 	public void changed(Stage previous, Stage next) {
+		// TODO: bad smell
+		((ProxyLogger) geco.logger()).setUiLog(logPanel);
 		updateWindowTitle();
 	}
 
