@@ -164,7 +164,7 @@ public class RunnerPanel extends GecoPanel implements StageConfigListener {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					Integer newStart = new Integer(startF.getText());
-					if( control().validateStartnumber(runner, newStart)) {
+					if( control().validateStartnumber(runner, startF.getText())) {
 						parentContainer.refreshSelectionInTable();
 					} else {
 						JOptionPane.showMessageDialog(frame(),

@@ -100,23 +100,44 @@ public class RunnerControl extends RunnerBuilder {
 	}
 	
 	
-	public boolean validateStartnumber(Runner runner, int newStart) {
+	public boolean verifyStartnumber(Runner runner, String newStartString) {
+		try {
+			return verifyStartnumber(runner, new Integer(newStartString));
+		} catch (NumberFormatException e) {
+			return false; // Bad number format
+		}
+	}
+
+	public boolean verifyStartnumber(Runner runner, int newStart) {
 		int oldStart = runner.getStartnumber();
 		Integer[] startnums = registry().collectStartnumbers();
-		if( Util.different(newStart, Arrays.binarySearch(startnums, oldStart), startnums)) {
+		return Util.different(newStart, Arrays.binarySearch(startnums, oldStart), startnums);
+	}
+	
+	public boolean validateStartnumber(Runner runner, String newStartString) throws NumberFormatException {
+		int newStart = new Integer(newStartString);
+		if( verifyStartnumber(runner, newStart) ) {
 			runner.setStartnumber(newStart);
 			return true;
 		} else {
-//			"Start number already used. Reverting to previous start number.",
+//				"Start number already used. Reverting to previous start number.",
 			return false;
-		}		
+		}
+	}
+	
+	public boolean verifyChipnumber(Runner runner, String newChipString) {
+		String newChip = newChipString.trim();
+		if( newChip.isEmpty() )
+			return false; // empty chipnumber
+		String oldChip = runner.getChipnumber();
+		String[] chips = registry().collectChipnumbers();
+		return Util.different(newChip, Arrays.binarySearch(chips, oldChip), chips);		
 	}
 
 	public boolean validateChipnumber(Runner runner, String newChip) {
-		String oldChip = runner.getChipnumber();
-		String[] chips = registry().collectChipnumbers();
-		if( Util.different(newChip, Arrays.binarySearch(chips, oldChip), chips)) {
-			runner.setChipnumber(newChip);
+		if( verifyChipnumber(runner, newChip) ) {
+			String oldChip = runner.getChipnumber();
+			runner.setChipnumber(newChip.trim());
 			registry().updateRunnerChip(oldChip, runner);
 			return true;
 		} else {
@@ -126,16 +147,20 @@ public class RunnerControl extends RunnerBuilder {
 	}
 	
 	public boolean validateFirstname(Runner runner, String newName) {
-		runner.setFirstname(newName);
+		runner.setFirstname(newName.trim());
 		return true;
 	}
 
+	public boolean verifyLastname(String newName) {
+		return newName.trim().length()==0;
+	}
+
 	public boolean validateLastname(Runner runner, String newName) {
-		if( newName.length()==0 ) {
+		if( verifyLastname(newName) ) {
 //			"Last name can not be empty. Reverting.",
 			return false;
 		} else {
-			runner.setLastname(newName);
+			runner.setLastname(newName.trim());
 			return true;
 		}
 	}
@@ -178,12 +203,23 @@ public class RunnerControl extends RunnerBuilder {
 		return true;
 	}
 	
+	public boolean verifyRaceTime(String raceTime) {
+		try {
+			TimeManager.userParse(raceTime);
+			return true;
+		} catch (ParseException e1) {
+			return false;
+		}		
+	}
+	
 	public boolean validateRaceTime(RunnerRaceData runnerData, String raceTime) {
 		try {
 			long oldTime = runnerData.getResult().getRacetime();
 			Date newTime = TimeManager.userParse(raceTime);
-			runnerData.getResult().setRacetime(newTime.getTime());
-			geco.logger().log("Race time change for " + runnerData.getRunner().idString() + " from " + TimeManager.fullTime(oldTime) + " to " + TimeManager.fullTime(newTime));
+			if( oldTime!=newTime.getTime() ) {
+				runnerData.getResult().setRacetime(newTime.getTime());
+				geco.logger().log("Race time change for " + runnerData.getRunner().idString() + " from " + TimeManager.fullTime(oldTime) + " to " + TimeManager.fullTime(newTime));
+			}
 			return true;
 		} catch (ParseException e1) {
 			return false;
