@@ -14,6 +14,7 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -113,6 +114,19 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 			}
 		});
 		topPanel.add(deleteButton);
+		final JCheckBox lockB = new JCheckBox("Lock");
+		lockB.setToolTipText("Lock edition in table");
+		lockB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if( lockB.isSelected() )
+					tableModel.lock();
+				else
+					tableModel.unlock();
+						
+			}
+		});
+		topPanel.add(lockB);
 //		topPanel.add(new JCheckBox("Live mode"));
 //		topPanel.add(new JCheckBox("Auto mode"));
 		topPanel.add(Box.createHorizontalStrut(400));

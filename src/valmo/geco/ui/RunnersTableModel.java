@@ -33,6 +33,8 @@ public class RunnersTableModel extends AbstractTableModel {
 	private String[] headers;
 	
 	private List<RunnerRaceData> data;
+
+	private boolean isEditable;
 	
 	
 	public RunnersTableModel(Geco geco) {
@@ -41,6 +43,7 @@ public class RunnersTableModel extends AbstractTableModel {
 				"Startnumber", "Chip", "First name", "Last name", "Category", "Course", "Club", "Racetime", "Status", "NC" 
 		};
 		this.data = new Vector<RunnerRaceData>();
+		unlock();
 	}
 	
 	private RunnerControl control() {
@@ -51,6 +54,14 @@ public class RunnersTableModel extends AbstractTableModel {
 		return geco.registry();
 	}
 	
+	public void lock() {
+		isEditable = false;
+	}
+
+	public void unlock() {
+		isEditable = true;
+	}
+
 	public int getColumnCount() {
 		return headers.length;
 	}
@@ -135,7 +146,7 @@ public class RunnersTableModel extends AbstractTableModel {
 
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		return true;
+		return isEditable;
 	}
 	
 
