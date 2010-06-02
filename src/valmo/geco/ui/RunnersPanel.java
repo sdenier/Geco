@@ -5,6 +5,7 @@
 package valmo.geco.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
@@ -19,7 +20,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -66,23 +66,25 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 
 
 	public void initRunnersPanel(JPanel panel) {
-		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+//		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 //		splitPane.setOneTouchExpandable(true);
 		JPanel tablePan = new JPanel(new BorderLayout());
 		tablePan.add(initTableScroll(), BorderLayout.CENTER);
 		tablePan.add(initTopPanel(), BorderLayout.NORTH);
-		splitPane.add(tablePan);
-		splitPane.add(initBottomPanel());
-		splitPane.setBorder(BorderFactory.createEmptyBorder());
-		updateRunnerPanel();
-		panel.add(splitPane);
+		tablePan.add(initInfoPanel(), BorderLayout.EAST);
+		panel.add(tablePan);
+//		splitPane.add(tablePan);
+//		splitPane.add(initInfoPanel());
+//		panel.add(splitPane);
+//		splitPane.setBorder(BorderFactory.createEmptyBorder());
+//		updateRunnerPanel();
 	}
 	
-	public JTabbedPane initBottomPanel() {
+	public JTabbedPane initInfoPanel() {
 		this.runnerPanel = new RunnerPanel(geco(), frame(), this);
 		JTabbedPane pane = new JTabbedPane();
 		pane.addTab("Runner Data", this.runnerPanel);
-		pane.addTab("Stats", new StatsPanel(geco(), frame()));
+		pane.addTab("Stats", new VStatsPanel(geco(), frame()));
 		return pane;
 	}
 
@@ -129,8 +131,9 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 		topPanel.add(lockB);
 //		topPanel.add(new JCheckBox("Live mode"));
 //		topPanel.add(new JCheckBox("Auto mode"));
-		topPanel.add(Box.createHorizontalStrut(400));
+		topPanel.add(Box.createHorizontalStrut(500));
 		topPanel.add(initFilterPanel());
+		topPanel.setBorder(BorderFactory.createEtchedBorder());
 		return topPanel;
 	}
 
@@ -170,6 +173,8 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 			}
 		});
 		table = new JTable(tableModel);
+//		table.setPreferredScrollableViewportSize(table.getPreferredSize());
+		table.setPreferredScrollableViewportSize(new Dimension(800, 600));
 		tableModel.initCellEditors(table);
 		tableModel.initTableColumnSize(table);
 		table.setRowSorter(sorter);
@@ -195,7 +200,7 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 	public void refreshRunnersPanel() {
 		refreshTableData();
 		table.getSelectionModel().setSelectionInterval(0, 0);
-		runnerPanel.updateStageData();
+//		runnerPanel.updateStageData();
 	}
 
 	
@@ -280,27 +285,16 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 		tableModel.removeData(data);
 	}
 
-
 	@Override
 	public void statusChanged(RunnerRaceData runner, Status oldStatus) {
-		// This makes some refreshing process in RunnerPanel redundant
-		// if RunnerPanel itself is at the origin of the event.
 		refreshTableRunner(runner);
 	}
 
-
-	/* (non-Javadoc)
-	 * @see valmo.geco.core.Announcer.RunnerListener#cardRead(java.lang.String)
-	 */
 	@Override
 	public void cardRead(String chip) {
 		refreshTableRunner(registry().findRunnerData(chip));
 	}
 
-
-	/* (non-Javadoc)
-	 * @see valmo.geco.core.Announcer.RunnerListener#runnersChanged()
-	 */
 	@Override
 	public void runnersChanged() {
 		refreshRunnersPanel();		

@@ -151,16 +151,16 @@ public class RunnersTableModel extends AbstractTableModel {
 		for (int i = 0; i < headers.length; i++) {
 			int width = 0;
 			switch (i) {
-			case 0: width = 10 ; break;
-			case 1: width = 20 ;break;
+			case 0: width = 30 ; break;
+			case 1: width = 50 ;break;
 			case 2: width = 100 ;break;
 			case 3: width = 100 ;break;
 			case 4: width = 50 ;break;
 			case 5: width = 50 ;break;
 			case 6: width = 50 ;break;
-			case 7: width = 20 ;break;
-			case 8: width = 10 ;break;
-			case 9: width = 10 ;break;
+			case 7: width = 50 ;break;
+			case 8: width = 50 ;break;
+			case 9: width = 15 ;break;
 			default: break;
 			}
 			model.getColumn(i).setPreferredWidth(width);

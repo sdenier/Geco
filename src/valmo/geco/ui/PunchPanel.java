@@ -8,12 +8,12 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.Date;
 
-import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumnModel;
 
 import valmo.geco.core.Geco;
 import valmo.geco.core.TimeManager;
@@ -41,10 +41,10 @@ public class PunchPanel extends GecoPanel {
 
 	public JPanel initPunchPanel(JPanel panel) {
 		panel.setLayout(new BorderLayout());
-		panel.setBorder(BorderFactory.createTitledBorder("Punches"));
+//		panel.setBorder(BorderFactory.createTitledBorder("Punches"));
 		JScrollPane scrollPane = new JScrollPane(punchesT);
-		scrollPane.setPreferredSize(new Dimension(300, 250));
-		panel.add(scrollPane, BorderLayout.NORTH);
+		scrollPane.setPreferredSize(new Dimension(300, 300));
+		panel.add(scrollPane, BorderLayout.CENTER);
 //		JPanel butPanel = new JPanel();
 //		butPanel.add(new JButton("Save"));
 //		butPanel.add(new JButton("Cancel"));
@@ -111,6 +111,11 @@ public class PunchPanel extends GecoPanel {
 				}
 			}
 		});
+		TableColumnModel columnModel = punchesT.getColumnModel();
+		columnModel.getColumn(0).setPreferredWidth(10);
+		columnModel.getColumn(1).setPreferredWidth(10);
+		columnModel.getColumn(2).setPreferredWidth(25);
+		columnModel.getColumn(3).setPreferredWidth(25);
 	}
 	
 	
