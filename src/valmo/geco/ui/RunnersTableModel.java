@@ -18,12 +18,14 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.InputVerifier;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
 import valmo.geco.control.RunnerControl;
@@ -164,6 +166,29 @@ public class RunnersTableModel extends AbstractTableModel {
 			model.getColumn(i).setPreferredWidth(width);
 		}
 	}
+	
+	public static class StatusCellRenderer extends JLabel implements TableCellRenderer {
+		public StatusCellRenderer() {
+			setOpaque(true);
+		}
+		@Override
+		public Component getTableCellRendererComponent(JTable table,
+				Object value, boolean isSelected, boolean hasFocus, int row,
+				int column) {
+			Color bg = Color.white;
+			Status status = (Status) value;
+			switch (status) {
+			case OK: bg = new Color(0.6f, 1, 0.6f); break;
+			case MP: bg = new Color(0.75f, 0.5f, 0.75f); break;
+			case Unknown: bg = new Color(1, 1, 0.5f); break;
+			default: break;
+			}
+			setBackground(bg);
+			setHorizontalAlignment(CENTER);
+			setText(value.toString());
+			return this;
+		}
+	}
 
 	public void initCellEditors(JTable table) {
 		TableColumnModel model = table.getColumnModel();
@@ -173,6 +198,8 @@ public class RunnersTableModel extends AbstractTableModel {
 		updateComboBoxEditors(table);
 		model.getColumn(7).setCellEditor(new RacetimeEditor());
 		model.getColumn(8).setCellEditor(new DefaultCellEditor(new JComboBox(Status.values())));
+		// also init cell renderer for Status cell
+		model.getColumn(8).setCellRenderer(new StatusCellRenderer());
 	}
 
 	protected void updateComboBoxEditors(JTable table) {
