@@ -31,7 +31,7 @@ import valmo.geco.model.Status;
  */
 public class LogPanel extends TabPanel implements RunnerListener {
 
-	private JTextArea chiplogArea;
+	private JTextArea logArea;
 	
 	
 	/**
@@ -48,28 +48,28 @@ public class LogPanel extends TabPanel implements RunnerListener {
 	public void initPanels(JPanel panel) {
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 //		splitPane.setOneTouchExpandable(true);
-		splitPane.add(initChipPanel());
+		splitPane.add(initLogArea());
 		splitPane.add(initStatsPanel());
 		splitPane.setBorder(BorderFactory.createEmptyBorder());
 		panel.add(splitPane);
 	}
 	
-	public JPanel initChipPanel() {
-		chiplogArea = new JTextArea(30, 80);
-		chiplogArea.setEditable(false);
-		chiplogArea.setLineWrap(true);
-		chiplogArea.setText("Waiting for data...");
+	public JPanel initLogArea() {
+		logArea = new JTextArea(25, 80);
+		logArea.setEditable(false);
+		logArea.setLineWrap(true);
+//		chiplogArea.setText("Waiting for data...");
 		JButton clearB = new JButton("Clear log view");
 		clearB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				chiplogArea.setText("");
+				logArea.setText("");
 			}
 		});
-		JPanel chipPanel = new JPanel(new BorderLayout());
-		chipPanel.add(Util.embed(clearB), BorderLayout.NORTH);
-		chipPanel.add(new JScrollPane(chiplogArea), BorderLayout.CENTER);
-		return chipPanel;
+		JPanel logPanel = new JPanel(new BorderLayout());
+		logPanel.add(Util.embed(clearB), BorderLayout.SOUTH);
+		logPanel.add(new JScrollPane(logArea), BorderLayout.CENTER);
+		return logPanel;
 	}
 
 	
@@ -78,12 +78,12 @@ public class LogPanel extends TabPanel implements RunnerListener {
 	 * @return
 	 */
 	private JPanel initStatsPanel() {
-		return new StatsPanel(geco(), frame());
+		return new HStatsPanel(geco(), frame());
 	}
 	
 	public void displayLog(String message) {
-		chiplogArea.append("\n");
-		chiplogArea.append(message);
+		logArea.append("\n");
+		logArea.append(message);
 	}
 
 	
@@ -124,8 +124,8 @@ public class LogPanel extends TabPanel implements RunnerListener {
 	 */
 	@Override
 	public void cardRead(String chip) {
-		chiplogArea.append("\n");
-		chiplogArea.append(chip);
+		logArea.append("\n");
+		logArea.append(chip);
 	}
 
 
