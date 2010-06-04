@@ -101,9 +101,6 @@ public class VStatsPanel extends StatsPanel {
 			public void valueChanged(ListSelectionEvent e) {
 				if( !e.getValueIsAdjusting() ) {
 					selectedCourse = (String) coursesL.getSelectedValue();
-//					if( selectedCourse==null ) {
-//						coursesL.setSelectedValue(anObject, shouldScroll);
-//					}
 					updateTable();
 				}
 			}
@@ -121,10 +118,8 @@ public class VStatsPanel extends StatsPanel {
 		JTable table = new JTable(courseTableModel);
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 		JScrollPane jsp = new JScrollPane(table);
-		jsp.setPreferredSize(new Dimension(300, 200));
+		jsp.setPreferredSize(new Dimension(300, 170));
 		panel.add( Util.embed(jsp), BorderLayout.CENTER );
-		
-//		panel.add( Box.createHorizontalStrut(200), BorderLayout.EAST );
 	}
 	
 	protected AbstractTableModel createCourseTableModel() {
@@ -167,9 +162,10 @@ public class VStatsPanel extends StatsPanel {
 	}
 	
 	protected void refreshTableKeys() {
-		coursesL.setListData(stats().sortedEntries());
 		statusKeys = stats().shortStatuses();
-		selectedCourse = "Total"; // courseKeys[courseKeys.length-1];
+		coursesL.setListData(stats().sortedEntries());
+		coursesL.setSelectedValue("Total", true);
+//		selectedCourse = "Total"; // courseKeys[courseKeys.length-1];
 	}
 
 	@Override
