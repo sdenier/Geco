@@ -32,27 +32,26 @@ public class CourseIO extends AbstractIO<Course> {
 		Float meterLength = new Float(record[1]) * 1000;
 		course.setLength(meterLength.intValue());
 		course.setClimb(new Integer(record[2]));
-		int[] codes = new int[record.length - 12];
+		int nbCodes;
+		if( record.length<=12 ) {
+			nbCodes = 0;
+		} else {
+			nbCodes = record.length - 12;
+		}
+		int[] codes = new int[nbCodes];
 		for (int i = 0; i < codes.length; i++) {
 			codes[i] = new Integer(record[i + 12]);
 		};
 		course.setCodes(codes);
-//		course.save();
 		return course;
 	}
 
 
-	/* (non-Javadoc)
-	 * @see valmo.geco.csv.AbstractImporter#register(java.lang.Object, valmo.geco.csv.Registry)
-	 */
 	@Override
 	public void register(Course data, Registry registry) {
 		registry.addCourse(data);
 	}
 
-	/* (non-Javadoc)
-	 * @see valmo.geco.csv.AbstractIO#exportTData(java.lang.Object)
-	 */
 	@Override
 	public String[] exportTData(Course c) {
 		/*
