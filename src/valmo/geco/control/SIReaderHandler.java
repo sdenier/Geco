@@ -148,14 +148,27 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 		runnerData.setControltime(safeTime(card.getCheckTime()));		
 		runnerData.setStarttime(safeTime(card.getStartTime()));
 		runnerData.setFinishtime(safeTime(card.getFinishTime()));
+		checkStartFinishTimes(runnerData);
 		handlePunches(runnerData, card.getPunches());
 	}
-	
+
 	private Date safeTime(long siTime) {
 		if( siTime>PunchObject.INVALID ) {
 			return new Date(siTime);
 		} else {
 			return TimeManager.NO_TIME;
+		}
+	}
+	
+	/**
+	 * @param runnerData
+	 */
+	private void checkStartFinishTimes(RunnerRaceData runnerData) {
+		if( runnerData.getStarttime().equals(TimeManager.NO_TIME) ) {
+			geco.log("Missing start time for " + runnerData.getRunner().toString());
+		}
+		if( runnerData.getFinishtime().equals(TimeManager.NO_TIME) ) {
+			geco.log("Missing finish time for " + runnerData.getRunner().toString());
 		}
 	}
 
