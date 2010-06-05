@@ -44,9 +44,7 @@ public class RaceDataIO extends AbstractIO<RunnerRaceData> {
 		// this is the time since midnight, day of the race.						
 		data.setErasetime(TimeManager.safeParse(record[1]));
 		data.setControltime(TimeManager.safeParse(record[2]));
-		// TODO: if null, look for start time?
 		data.setStarttime(TimeManager.safeParse(record[3]));
-		// TODO: if finish time is null, it's a MP right?
 		data.setFinishtime(TimeManager.safeParse(record[4]));
 		data.setRunner(this.registry.findRunnerByChip(record[0]));
 		

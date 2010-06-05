@@ -4,6 +4,7 @@
  */
 package valmo.geco.control;
 
+import valmo.geco.core.TimeManager;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Punch;
 import valmo.geco.model.RunnerRaceData;
@@ -27,6 +28,9 @@ public class PunchChecker extends Control {
 		Punch[] punches = data.getPunches();
 		Status status = checkCodes(codes, punches);
 		long racetime = computeRaceTime(data);
+		if( racetime==TimeManager.NO_TIME.getTime() ) {
+			status = Status.MP;
+		}
 		RunnerResult result = factory().createRunnerResult();
 		result.setStatus(status);
 		result.setRacetime(racetime);
@@ -46,6 +50,12 @@ public class PunchChecker extends Control {
 	 * @return
 	 */
 	public long computeRaceTime(RunnerRaceData data) {
+		if( data.getFinishtime().equals(TimeManager.NO_TIME) ) {
+			return TimeManager.NO_TIME.getTime();
+		}
+		if( data.getStarttime().equals(TimeManager.NO_TIME) ) {
+			return TimeManager.NO_TIME.getTime();
+		}
 		return data.getFinishtime().getTime() - data.getStarttime().getTime();
 	}
 

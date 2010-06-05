@@ -15,7 +15,8 @@ import java.util.TimeZone;
  */
 public class TimeManager {
 	
-	public static final Date ZEROTIME = new Date(0);
+	public static final Date NO_TIME = new Date(90000000000L);
+	public static final String NO_TIME_STRING = "--:--";
 
 	private static SimpleDateFormat FORMATTER;
 	private static SimpleDateFormat FORMATTER60;
@@ -35,10 +36,8 @@ public class TimeManager {
 	public static Date safeParse(String time) {
 		try {
 			return parse(time, FORMATTER);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return ZEROTIME;
+		} catch (ParseException e) {}
+		return NO_TIME;
 	}
 	
 	public static Date userParse(String time) throws ParseException {
@@ -50,14 +49,18 @@ public class TimeManager {
 	}
 
 	public static String fullTime(Date date) {
+		if( date.equals(NO_TIME) )
+			return NO_TIME_STRING;
 		return FORMATTER.format(date);
 	}
 
 	public static String fullTime(long timestamp) {
 		return fullTime(new Date(timestamp));
 	}
-
+	
 	public static String time(Date date) {
+		if( date.equals(NO_TIME) )
+			return NO_TIME_STRING;
 		if( date.getTime()<3600000 ) {
 			return FORMATTER60.format(date);
 		} else {

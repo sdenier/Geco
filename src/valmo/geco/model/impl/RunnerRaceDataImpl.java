@@ -37,10 +37,10 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 		
 
 	public RunnerRaceDataImpl() {
-		this.starttime = TimeManager.ZEROTIME;
-		this.finishtime = TimeManager.ZEROTIME;
-		this.erasetime = TimeManager.ZEROTIME;
-		this.controltime = TimeManager.ZEROTIME;
+		this.starttime = TimeManager.NO_TIME;
+		this.finishtime = TimeManager.NO_TIME;
+		this.erasetime = TimeManager.NO_TIME;
+		this.controltime = TimeManager.NO_TIME;
 		this.punches = new Punch[0];
 	}
 	

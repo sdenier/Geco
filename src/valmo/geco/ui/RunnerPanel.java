@@ -5,10 +5,12 @@
 package valmo.geco.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -69,15 +71,28 @@ public class RunnerPanel extends GecoPanel {
 	}
 	
 	public void refreshPanel() {
-		eTimeF.setText(TimeManager.fullTime(runnerData.getErasetime()));
-		cTimeF.setText(TimeManager.fullTime(runnerData.getControltime()));
-		sTimeF.setText(TimeManager.fullTime(runnerData.getStarttime()));
-		fTimeF.setText(TimeManager.fullTime(runnerData.getFinishtime()));
+		displayTime(eTimeF, runnerData.getErasetime());
+		displayTime(cTimeF, runnerData.getControltime());
+		displayTime(sTimeF, runnerData.getStarttime());
+		displayTime(fTimeF, runnerData.getFinishtime());
+//		eTimeF.setText(TimeManager.fullTime(runnerData.getErasetime()));
+//		cTimeF.setText(TimeManager.fullTime(runnerData.getControltime()));
+//		sTimeF.setText(TimeManager.fullTime(runnerData.getStarttime()));
+//		fTimeF.setText(TimeManager.fullTime(runnerData.getFinishtime()));
 		realTimeF.setText(TimeManager.time(geco().checker().computeRaceTime(runnerData)));
 		int nbMPs = runnerData.getResult().getNbMPs();
 		mpF.setText(Integer.toString(nbMPs));
 		penaltyF.setText(TimeManager.time(geco().checker().timePenalty(nbMPs)));
 		punchPanel.refreshPunches(runnerData);
+	}
+	
+	private void displayTime(JTextField timeF, Date time) {
+		timeF.setText(TimeManager.fullTime(time));
+		if( time.equals(TimeManager.NO_TIME) ) {
+			timeF.setBackground(new Color(1.0f, 0.9f, 0.9f));
+		} else {
+			timeF.setBackground(Color.white);
+		}
 	}
 	
 	public void createComponents() {		

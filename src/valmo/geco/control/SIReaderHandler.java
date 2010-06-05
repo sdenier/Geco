@@ -19,6 +19,7 @@ import org.martin.sireader.server.SIReaderListener;
 
 import valmo.geco.core.Announcer;
 import valmo.geco.core.Geco;
+import valmo.geco.core.TimeManager;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Punch;
 import valmo.geco.model.Runner;
@@ -122,6 +123,7 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 		RunnerRaceData newData = factory().createRunnerRaceData();
 		newData.setResult(factory().createRunnerResult());
 		updateRaceDataWith(newData, card);
+		// do not do any announcement here since the case is handled in the Merge dialog after that and depends on user decision
 		return newData;
 	}
 	
@@ -142,13 +144,19 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 	 * @param card
 	 */
 	private void updateRaceDataWith(RunnerRaceData runnerData, IResultData<PunchObject,PunchRecordData> card) {
-		// TODO handle missinf finish time in the checker??? -> MP/DNF?
-		runnerData.setErasetime(new Date(card.getClearTime()));
-		runnerData.setControltime(new Date(card.getCheckTime()));		
-		runnerData.setStarttime(new Date(card.getStartTime()));
-//		data.setStarttime(TimeManager.safeParse(record[3]));
-		runnerData.setFinishtime(new Date(card.getFinishTime()));
+		runnerData.setErasetime(safeTime(card.getClearTime()));
+		runnerData.setControltime(safeTime(card.getCheckTime()));		
+		runnerData.setStarttime(safeTime(card.getStartTime()));
+		runnerData.setFinishtime(safeTime(card.getFinishTime()));
 		handlePunches(runnerData, card.getPunches());
+	}
+	
+	private Date safeTime(long siTime) {
+		if( siTime>PunchObject.INVALID ) {
+			return new Date(siTime);
+		} else {
+			return TimeManager.NO_TIME;
+		}
 	}
 
 
