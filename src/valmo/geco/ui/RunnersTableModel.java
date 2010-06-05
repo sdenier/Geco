@@ -315,22 +315,10 @@ public class RunnersTableModel extends AbstractTableModel {
 			return new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					try {
-						if( control().validateStartnumber(selectedRunner, getValue())) {
-							fireEditingStopped();
-						} else {
-							editField.setBorder(new LineBorder(Color.red));
-							JOptionPane.showMessageDialog(null,
-								    "Start number already used.",
-								    "Invalid Entry",
-								    JOptionPane.ERROR_MESSAGE);
-						}					
-					} catch (NumberFormatException ex) {
+					if( control().validateStartnumber(selectedRunner, getValue())) {
+						fireEditingStopped();
+					} else {
 						editField.setBorder(new LineBorder(Color.red));
-						JOptionPane.showMessageDialog(null,
-							    "Bad format for start number.",
-							    "Invalid Entry",
-							    JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			};
@@ -340,11 +328,7 @@ public class RunnersTableModel extends AbstractTableModel {
 			return new InputVerifier() {
 				@Override
 				public boolean shouldYieldFocus(JComponent input) {
-					try {
-						return control().validateStartnumber(selectedRunner, getValue());	
-					} catch (NumberFormatException e) {
-						return false; // "Bad format for start number."
-					}
+					return control().validateStartnumber(selectedRunner, getValue());	
 				}
 				@Override
 				public boolean verify(JComponent input) {
