@@ -238,6 +238,7 @@ public class MergeRunnerDialog extends JDialog {
 					if( selectedCoursename.equals("[Unknown]")) {
 						mockRunner.setCourse(registry().anyCourse());
 						runnerData.getResult().setStatus(Status.Unknown);
+						geco.checker().normalTrace(runnerData);
 					} else {
 						mockRunner.setCourse(registry().findCourse(selectedCoursename));
 						geco.checker().check(runnerData);

@@ -14,6 +14,7 @@ import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Stage;
 import valmo.geco.model.Status;
 import valmo.geco.model.Trace;
+import valmo.geco.ui.MergeRunnerDialog;
 
 /**
  * @author Simon Denier
@@ -59,6 +60,21 @@ public class PenaltyChecker extends PunchChecker {
 		checkCodes(data.getCourse().getCodes(), data.getPunches());
 		data.getResult().setNbMPs(this.nbMP);
 		data.getResult().setTrace(this.trace.toArray(new Trace[0]));
+	}
+	
+	/**
+	 * This is a utility method to build a trace without checking codes, typically because
+	 * the data comes from an unknown chip without a course.
+	 * 
+	 * @param data
+	 * @see MergeRunnerDialog
+	 */
+	public void normalTrace(RunnerRaceData data) {
+		Trace[] nTrace = new Trace[data.getPunches().length];
+		for (int i = 0; i < nTrace.length; i++) {
+			nTrace[i] = factory().createTrace(data.getPunches()[i]);
+		}
+		data.getResult().setTrace(nTrace);
 	}
 
 
