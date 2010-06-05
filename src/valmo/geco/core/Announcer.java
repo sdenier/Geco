@@ -18,6 +18,13 @@ import valmo.geco.model.Status;
  *
  */
 public class Announcer {
+	
+	public interface Logger {
+		
+		public void log(String message, boolean warning);
+		
+		public void info(String message, boolean warning);
+	}
 
 	public interface StageListener {
 		
@@ -99,6 +106,7 @@ public class Announcer {
 		public void runnersChanged();
 	}
 
+	private Vector<Logger> loggers;
 	
 	private Vector<StageListener> stageListeners;
 	
@@ -107,9 +115,14 @@ public class Announcer {
 	private Vector<RunnerListener> runnerListeners;
 	
 	public Announcer() {
+		this.loggers = new Vector<Logger>();
 		this.stageListeners = new Vector<StageListener>();
 		this.stageConfigListeners = new Vector<StageConfigListener>();
 		this.runnerListeners = new Vector<RunnerListener>();
+	}
+	
+	public void registerLogger(Logger logger) {
+		this.loggers.add(logger);
 	}
 	
 	public void registerStageListener(StageListener listener) {
@@ -122,6 +135,21 @@ public class Announcer {
 
 	public void registerRunnerListener(RunnerListener listener) {
 		this.runnerListeners.add(listener);
+	}
+	
+	/*
+	 * Log
+	 */
+	public void log(String message, boolean warning) {
+		for (Logger logger : this.loggers) {
+			logger.log(message, warning);
+		}
+	}
+	
+	public void info(String message, boolean warning) {
+		for (Logger logger : this.loggers) {
+			logger.info(message, warning);
+		}
 	}
 	
 	/*

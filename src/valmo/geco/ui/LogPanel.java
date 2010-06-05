@@ -18,6 +18,7 @@ import javax.swing.JTextArea;
 
 import valmo.geco.core.Geco;
 import valmo.geco.core.Util;
+import valmo.geco.core.Announcer.Logger;
 import valmo.geco.core.Announcer.RunnerListener;
 import valmo.geco.model.Course;
 import valmo.geco.model.Runner;
@@ -29,7 +30,7 @@ import valmo.geco.model.Status;
  * @since Sep 13, 2009
  *
  */
-public class LogPanel extends TabPanel implements RunnerListener {
+public class LogPanel extends TabPanel implements Logger, RunnerListener {
 
 	private JTextArea logArea;
 	
@@ -41,6 +42,7 @@ public class LogPanel extends TabPanel implements RunnerListener {
 	public LogPanel(Geco geco, JFrame frame) {
 		super(geco, frame);
 		initPanels(this);
+		geco().announcer().registerLogger(this);
 		geco().announcer().registerRunnerListener(this);
 	}
 
@@ -134,6 +136,24 @@ public class LogPanel extends TabPanel implements RunnerListener {
 	 */
 	@Override
 	public void runnersChanged() {
+	}
+
+
+	/* (non-Javadoc)
+	 * @see valmo.geco.core.Announcer.Logger#info(java.lang.String, boolean)
+	 */
+	@Override
+	public void info(String message, boolean warning) {
+		// do nothing
+	}
+
+
+	/* (non-Javadoc)
+	 * @see valmo.geco.core.Announcer.Logger#log(java.lang.String, boolean)
+	 */
+	@Override
+	public void log(String message, boolean warning) {
+		displayLog(message);
 	}
 
 	

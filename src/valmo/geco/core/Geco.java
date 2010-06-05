@@ -31,7 +31,6 @@ import valmo.geco.model.Stage;
 import valmo.geco.model.impl.POFactory;
 import valmo.geco.ui.GecoWindow;
 import valmo.geco.ui.MergeRunnerDialog;
-import valmo.geco.ui.ProxyLogger;
 
 import com.apple.eawt.Application;
 import com.apple.eawt.ApplicationAdapter;
@@ -237,7 +236,7 @@ public class Geco {
 		return new RuntimeStage(stage, logger);
 	}
 	private Logger initializeLogger(Stage stage) {
-		Logger logger = new ProxyLogger(stage.getBaseDir(), "geco.log");
+		Logger logger = new Logger(stage.getBaseDir(), "geco.log");
 		logger.initSessionLog(stage.getName());
 		return logger;
 	}
@@ -357,6 +356,18 @@ public class Geco {
 	public Logger logger() {
 		return current.logger();
 	}
+	public void debug(String message) {
+		logger().debug(message);
+		announcer().log(message, true);
+	}
+	public void log(String message) {
+		logger().log(message);
+		announcer().log(message, false);
+	}
+	public void info(String message, boolean warning) {
+		announcer().info(message, warning);
+	}
+	
 	public Announcer announcer() {
 		return this.announcer;
 	}
