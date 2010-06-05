@@ -57,6 +57,7 @@ public class PenaltyChecker extends PunchChecker {
 	
 	public void buildTrace(RunnerRaceData data) {
 		checkCodes(data.getCourse().getCodes(), data.getPunches());
+		data.getResult().setNbMPs(this.nbMP);
 		data.getResult().setTrace(this.trace.toArray(new Trace[0]));
 	}
 
