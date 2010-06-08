@@ -108,13 +108,14 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 		if( runner!=null ) {
 			RunnerRaceData runnerData = registry().findRunnerData(runner);
 			if( runnerData.hasResult() ) {
+				geco.log("Re-Reading " + card.getSiIdent());
 				geco.openOverrideDialog("Existing Data for Runner", handleNewData(card), runner);
 			} else {
 				handleData(runnerData, card);	
 			}
 		} else {
+			geco.log("Read unknown " + card.getSiIdent());
 			geco.openMergeDialog("Unknown Chip", handleNewData(card), card.getSiIdent());
-//			announcer.announceCardRead("Dangling John Doe!");
 		}
 		
 	}
@@ -135,6 +136,7 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 		updateRaceDataWith(runnerData, card);
 		Status oldStatus = runnerData.getResult().getStatus();
 		geco.checker().check(runnerData);
+		geco.log("Read " + runnerData.infoString());
 		geco.announcer().announceCardRead(runnerData.getRunner().getChipnumber());
 		geco.announcer().announceStatusChange(runnerData, oldStatus);
 	}
@@ -165,10 +167,10 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 	 */
 	private void checkStartFinishTimes(RunnerRaceData runnerData) {
 		if( runnerData.getStarttime().equals(TimeManager.NO_TIME) ) {
-			geco.log("Missing start time for " + runnerData.getRunner().toString());
+			geco.log("Missing start time for " + runnerData.getRunner().idString());
 		}
 		if( runnerData.getFinishtime().equals(TimeManager.NO_TIME) ) {
-			geco.log("Missing finish time for " + runnerData.getRunner().toString());
+			geco.log("Missing finish time for " + runnerData.getRunner().idString());
 		}
 	}
 

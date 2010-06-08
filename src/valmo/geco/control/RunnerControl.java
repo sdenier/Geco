@@ -95,7 +95,6 @@ public class RunnerControl extends RunnerBuilder {
 		RunnerRaceData runnerData = registry().findRunnerData(runner);
 		Status oldStatus = runnerData.getResult().getStatus();
 		runnerData.copyFrom(newData);
-//		registerRunnerDataFor(runner, runnerData);
 		announcer().announceStatusChange(runnerData, oldStatus);
 	}
 	
@@ -124,8 +123,6 @@ public class RunnerControl extends RunnerBuilder {
 			if( verifyStartnumber(runner, newStart) ) {
 				runner.setStartnumber(newStart);
 				return true;
-			} else {
-				geco.info("Start number already used", true);
 			}
 		} catch (NumberFormatException e) {
 			geco.info("Bad format for start number", true);
@@ -135,11 +132,16 @@ public class RunnerControl extends RunnerBuilder {
 	
 	public boolean verifyChipnumber(Runner runner, String newChipString) {
 		String newChip = newChipString.trim();
-		if( newChip.isEmpty() )
-			return false; // empty chipnumber
+		if( newChip.isEmpty() ) {
+			geco.info("Chip number can not be empty", true);
+			return false;
+		}
 		String oldChip = runner.getChipnumber();
 		String[] chips = registry().collectChipnumbers();
-		return Util.different(newChip, Arrays.binarySearch(chips, oldChip), chips);		
+		boolean ok = Util.different(newChip, Arrays.binarySearch(chips, oldChip), chips);
+		if( !ok )
+			geco.info("Chip number already used", true);
+		return ok;
 	}
 
 	public boolean validateChipnumber(Runner runner, String newChip) {
@@ -149,7 +151,6 @@ public class RunnerControl extends RunnerBuilder {
 			registry().updateRunnerChip(oldChip, runner);
 			return true;
 		} else {
-//			"Chip number already in use. Reverting to previous chip number.",
 			return false;
 		}		
 	}
@@ -160,16 +161,19 @@ public class RunnerControl extends RunnerBuilder {
 	}
 
 	public boolean verifyLastname(String newName) {
-		return newName.trim().length()==0;
+		boolean ok = ! newName.trim().isEmpty();
+		if( !ok ) {
+			geco.info("Last name can not be empty", true);
+		}
+		return ok;
 	}
 
 	public boolean validateLastname(Runner runner, String newName) {
 		if( verifyLastname(newName) ) {
-//			"Last name can not be empty. Reverting.",
-			return false;
-		} else {
 			runner.setLastname(newName.trim());
 			return true;
+		} else {
+			return false;
 		}
 	}
 	
@@ -216,6 +220,7 @@ public class RunnerControl extends RunnerBuilder {
 			TimeManager.userParse(raceTime);
 			return true;
 		} catch (ParseException e1) {
+			geco.info("Bad time format", true);
 			return false;
 		}		
 	}
@@ -230,6 +235,7 @@ public class RunnerControl extends RunnerBuilder {
 			}
 			return true;
 		} catch (ParseException e1) {
+			geco.info("Bad time format", true);
 			return false;
 		}
 	}

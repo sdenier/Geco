@@ -160,4 +160,11 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 		return buf.toString();
 	}
 	
+	public String infoString() {
+		StringBuffer buffer = new StringBuffer(getRunner().idString());
+		buffer.append(", " + getCourse().getName() + " " + getResult().getStatus().toString());
+		buffer.append(" in " + TimeManager.time(getResult().getRacetime()) );
+		return buffer.toString();
+	}
+	
 }

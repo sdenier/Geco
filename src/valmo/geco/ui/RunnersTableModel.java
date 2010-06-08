@@ -19,7 +19,6 @@ import javax.swing.InputVerifier;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
@@ -352,10 +351,6 @@ public class RunnersTableModel extends AbstractTableModel {
 						fireEditingStopped();
 					} else {
 						editField.setBorder(new LineBorder(Color.red));
-						JOptionPane.showMessageDialog(null,
-								"Chip number empty or already used.",
-								"Invalid Entry",
-								JOptionPane.ERROR_MESSAGE);
 					}			
 				}
 			};
@@ -389,10 +384,6 @@ public class RunnersTableModel extends AbstractTableModel {
 						fireEditingStopped();
 					} else {
 						editField.setBorder(new LineBorder(Color.red));
-						JOptionPane.showMessageDialog(null,
-							    "Last name can not be empty.",
-							    "Invalid Entry",
-							    JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			};
@@ -427,10 +418,6 @@ public class RunnersTableModel extends AbstractTableModel {
 						fireEditingStopped();
 					} else {
 						editField.setBorder(new LineBorder(Color.red));
-						JOptionPane.showMessageDialog(null,
-							    "Bad time format.",
-							    "Invalid Entry",
-							    JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			};

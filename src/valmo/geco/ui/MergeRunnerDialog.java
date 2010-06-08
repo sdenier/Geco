@@ -264,6 +264,7 @@ public class MergeRunnerDialog extends JDialog {
 					newRunner.setCourse(registry().findCourse(selectedCoursename));
 				}
 				runnerControl().registerRunner(newRunner, runnerData);
+				geco.log("Creation " + runnerData.infoString());
 				setVisible(false);
 			}
 		});
@@ -305,6 +306,7 @@ public class MergeRunnerDialog extends JDialog {
 						runnerControl().deleteRunner(getRunnerData(existingRunner));
 					}
 				}
+				geco.log("Merge " + getRunnerData(getTargetRunner()).infoString());
 				setVisible(false);
 			}
 		});

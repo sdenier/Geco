@@ -126,8 +126,11 @@ public class LogPanel extends TabPanel implements Logger, RunnerListener {
 	 */
 	@Override
 	public void cardRead(String chip) {
-		logArea.append("\n");
-		logArea.append(chip);
+//		logArea.append("\n");
+//		RunnerRaceData data = geco().registry().findRunnerData(chip);
+//		logArea.append("Read " + data.getRunner().idString() );
+//		logArea.append(", " + data.getCourse().getName() + " " + data.getResult().getStatus().toString());
+//		logArea.append(" in " + TimeManager.time(data.getResult().getRacetime()) );
 	}
 
 
@@ -144,7 +147,7 @@ public class LogPanel extends TabPanel implements Logger, RunnerListener {
 	 */
 	@Override
 	public void info(String message, boolean warning) {
-		// do nothing
+//		displayLog(message);
 	}
 
 

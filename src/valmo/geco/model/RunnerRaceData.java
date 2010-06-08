@@ -55,4 +55,6 @@ public interface RunnerRaceData extends Cloneable {
 
 	public void copyFrom(RunnerRaceData newData);
 
+	public String infoString();
+
 }
