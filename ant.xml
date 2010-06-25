@@ -2,6 +2,10 @@
 <project basedir="." default="webgen" name="GecO">
 	<property name="srcdoc.dir" value="doc" />
 	<property name="wg.dir" value="${srcdoc.dir}/user/wg" />
+	<property name="version.num" value="09b2"/>
+	<property name="build.num" value="84"/>
+	<property name="geco.dir" value="${basedir}"/>
+	<property name="sireader.dir" value="${basedir}/../SIReader"/>
 	
     <target name="cleanBackups">
 		<delete>
@@ -16,5 +20,19 @@
     	<copy todir="help">
     		<fileset dir="${wg.dir}/out" />
 		</copy>
+    </target>
+	
+	<target name="build_SIReader">
+		<ant dir="${sireader.dir}" target="build_jar" />
+	</target>
+    <target name="build_jar" depends="build_SIReader">
+        <jar destfile="${geco.dir}/geco${version.num}-${build.num}.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="valmo.geco.GecoLauncher"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="${geco.dir}/bin" excludes="${geco.dir}/bin/test/**.class"/>
+            <fileset file="${sireader.dir}/SIReader.jar"/>
+        </jar>
     </target>
 </project>

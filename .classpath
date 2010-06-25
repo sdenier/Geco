@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="valmo/geco/ui/AbstractResultsPanel.java|valmo/geco/old/|SimpleWrite.java|valmo/geco/ui/CopyOfRunnerPanel.java" kind="src" path="src"/>
+	<classpathentry excluding="valmo/geco/ui/RunnerPanel2.java" kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="lib/RXTXcomm.jar" sourcepath="/rxtx-2.2pre2">
-		<attributes>
-			<attribute name="javadoc_location" value="file:/Users/deniersi/workspace/rxtx-2.2pre2/doc/"/>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="GecO/lib"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/SIReader"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/JarLoader"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
