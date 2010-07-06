@@ -32,10 +32,6 @@ import valmo.geco.model.impl.POFactory;
 import valmo.geco.ui.GecoWindow;
 import valmo.geco.ui.MergeRunnerDialog;
 
-import com.apple.eawt.Application;
-import com.apple.eawt.ApplicationAdapter;
-import com.apple.eawt.ApplicationEvent;
-
 /**
  * Geco is the main class, responsible for launching the application and managing the current stage.
  * It also acts as a Facade between UI widgets and controls.  
@@ -120,19 +116,12 @@ public class Geco {
 	private int stageIndex;
 
 	private String parentDir;
-	
+
 
 	public static void main(String[] args) {
 		final Geco geco = new Geco();
-		if( System.getProperty("mrj.version")!=null ) {
-			// http://oreilly.com/pub/a/mac/2002/09/06/osx_java.html
-			Application app = Application.getApplication();
-			app.addApplicationListener(new ApplicationAdapter() {
-				@Override
-				public void handleQuit(ApplicationEvent arg0) {
-					geco.exit();
-				}
-			});			
+		if( GecoMacos.platformIsMacOs() ) {
+			GecoMacos.setupQuitAction(geco);
 		}
 		geco.window.launchGUI();
 	}
