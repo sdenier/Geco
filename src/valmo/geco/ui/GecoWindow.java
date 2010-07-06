@@ -18,9 +18,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import valmo.geco.core.Announcer;
 import valmo.geco.core.Geco;
+import valmo.geco.core.GecoMacos;
 import valmo.geco.model.Stage;
 
 
@@ -46,11 +49,9 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 	private HeatsPanel heatsPanel;
 
 	
-	/**
-	 * 
-	 */
 	public GecoWindow(Geco geco) {
 		this.geco = geco;
+		setLookAndFeel();
 		this.stagePanel = new StagePanel(this.geco, this);
 		this.runnersPanel = new RunnersPanel(this.geco, this);
 		this.resultsPanel = new ResultsPanel(this.geco, this);
@@ -60,6 +61,26 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 		guiInit();
 	}
 	
+	private void setLookAndFeel() {
+		if( ! GecoMacos.platformIsMacOs() ) { // try to use Nimbus unless on Mac Os
+			try {
+				UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+			} catch (Exception e) {
+				try {
+					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+				} catch (ClassNotFoundException e1) {
+					e1.printStackTrace();
+				} catch (InstantiationException e1) {
+					e1.printStackTrace();
+				} catch (IllegalAccessException e1) {
+					e1.printStackTrace();
+				} catch (UnsupportedLookAndFeelException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}
+	}
+
 	public void guiInit() {
 		updateWindowTitle();
 		getContentPane().add(initToolbar(), BorderLayout.NORTH);
