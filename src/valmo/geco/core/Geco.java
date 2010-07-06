@@ -120,12 +120,18 @@ public class Geco {
 
 	public static void main(String[] args) {
 		final Geco geco = new Geco();
-		if( GecoMacos.platformIsMacOs() ) {
+		if( platformIsMacOs() ) {
 			GecoMacos.setupQuitAction(geco);
 		}
 		geco.window.launchGUI();
 	}
 
+	public static boolean platformIsMacOs() {
+		// See for more: http://oreilly.com/pub/a/mac/2002/09/06/osx_java.html
+		return System.getProperty("mrj.version")!=null;
+	}
+	
+	
 	public void exit() {
 		closeAllStages();
 		System.exit(0);

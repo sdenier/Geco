@@ -23,7 +23,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import valmo.geco.core.Announcer;
 import valmo.geco.core.Geco;
-import valmo.geco.core.GecoMacos;
 import valmo.geco.model.Stage;
 
 
@@ -62,7 +61,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 	}
 	
 	private void setLookAndFeel() {
-		if( ! GecoMacos.platformIsMacOs() ) { // try to use Nimbus unless on Mac Os
+		if( ! Geco.platformIsMacOs() ) { // try to use Nimbus unless on Mac Os
 			try {
 				UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
 			} catch (Exception e) {
