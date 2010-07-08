@@ -394,29 +394,50 @@ public class Geco {
 	public SIReaderHandler siHandler() {
 		return this.siHandler;
 	}
-
-	public String getPreviousStageDir() {
-		if( stageIndex<=0 ) { // no stage list or first stage
-			return "";
-		} else {
-			return this.stageList.get(this.stageIndex - 1);
-		}			
+	
+	
+	public String getCurrentStagePath() {
+		return new File(stage().getBaseDir()).getAbsolutePath();
 	}
-	public String getNextStageDir() {
-		if( stageIndex==-1 || stageIndex==this.stageList.size()-1 ) {
-			// no stage list or last stage
-			return "";
+
+	public boolean hasPreviousStage() {
+		return stageIndex > 0;
+	}
+	
+	public String getPreviousStageDir() {
+		if( hasPreviousStage() ) {
+			return this.stageList.get(this.stageIndex - 1);
 		} else {
-			return this.stageList.get(this.stageIndex + 1);
+			return "";
 		}
 	}
 	
+	public String getPreviousStagePath() {
+		return fileInParentDir(getPreviousStageDir());
+	}
+	
+	public boolean hasNextStage() {
+		return stageIndex >= 0 && stageIndex < this.stageList.size()-1;
+	}
+
+	public String getNextStageDir() {
+		if( hasNextStage() ) {
+			return this.stageList.get(this.stageIndex + 1);
+		} else {
+			return "";
+		}
+	}
+	
+	public String getNextStagePath() {
+		return fileInParentDir(getNextStageDir());
+	}
+	
 	public void switchToPreviousStage() {
-		if( getPreviousStageDir()!="" ) {
+		if( hasPreviousStage() ) {
 			stopAutosave();
 			saveCurrentStage();
 			if( previous==null ) {
-				previous = loadStage(fileInParentDir(getPreviousStageDir()));
+				previous = loadStage(getPreviousStagePath());
 			}
 			stageIndex--;
 			// previous loaded, proceed with switching references around
@@ -430,11 +451,11 @@ public class Geco {
 	}
 
 	public void switchToNextStage() {
-		if( getNextStageDir()!="" ) {
+		if( hasNextStage() ) {
 			stopAutosave();
 			saveCurrentStage();
 			if( next==null ) {
-				next = loadStage(fileInParentDir(getNextStageDir()));
+				next = loadStage(getNextStagePath());
 			}
 			stageIndex++;
 			// next loaded, proceed with switching references around

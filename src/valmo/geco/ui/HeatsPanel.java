@@ -13,6 +13,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.print.PrinterException;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
@@ -47,6 +48,7 @@ import valmo.geco.model.Pool;
 import valmo.geco.model.Result;
 import valmo.geco.model.Runner;
 import valmo.geco.model.Stage;
+import valmo.geco.model.iocsv.RunnerIO;
 
 /**
  * 
@@ -225,8 +227,13 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 		});
 		exportB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				filePane.setCurrentDirectory(); // stage dir
-				// default file name?
+				String heatFile;
+				if( geco().hasNextStage() ) {
+					heatFile = geco().getNextStagePath() + File.separator + RunnerIO.sourceFilename();
+				} else {
+					heatFile = geco().getCurrentStagePath() + File.separator + "heats";
+				}
+				filePane.setSelectedFile(new File(heatFile).getAbsoluteFile());
 				int response = filePane.showSaveDialog(frame());
 				if( response==JFileChooser.APPROVE_OPTION ) {
 					exportFile(filePane.getSelectedFile().getAbsolutePath(), exportFormat);
@@ -328,8 +335,8 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 		ButtonGroup group = new ButtonGroup();
 		group.add(selectHtmlB);
 		group.add(selectCsvB);
-		group.setSelected(selectHtmlB.getModel(), true);
-		exportFormat = "html";
+		group.setSelected(selectCsvB.getModel(), true);
+		exportFormat = "csv";
 		fileFormatRB.add(selectHtmlB);
 		fileFormatRB.add(selectCsvB);
 		

@@ -147,8 +147,9 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		});
 		exportB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				filePane.setCurrentDirectory(); // stage dir
-				// TODO: default file name? lastfile prop
+				String resultFile = geco().getCurrentStagePath() + File.separator + "ranking";
+				System.out.println(resultFile);
+				filePane.setSelectedFile(new File(resultFile).getAbsoluteFile());
 				int response = filePane.showSaveDialog(frame());
 				if( response==JFileChooser.APPROVE_OPTION ) {
 					exportFile(filePane.getSelectedFile().getAbsolutePath(), exportFormat);
