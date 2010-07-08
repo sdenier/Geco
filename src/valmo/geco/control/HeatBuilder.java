@@ -4,15 +4,25 @@
  */
 package valmo.geco.control;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 import java.util.Vector;
 
+import valmo.geco.core.Geco;
+import valmo.geco.model.Category;
+import valmo.geco.model.Course;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Heat;
+import valmo.geco.model.HeatSet;
+import valmo.geco.model.Pool;
 import valmo.geco.model.RankedRunner;
 import valmo.geco.model.Result;
 import valmo.geco.model.Runner;
+import valmo.geco.model.iocsv.CsvWriter;
+import valmo.geco.model.iocsv.RunnerIO;
 
 /**
  * @author Simon Denier
@@ -21,12 +31,17 @@ import valmo.geco.model.Runner;
  */
 public class HeatBuilder extends Control {
 	
+	private Geco geco;
+	
+	private int startnumber;
+
 	/**
 	 * @param factory
 	 * @param stage
 	 */
-	public HeatBuilder(Factory factory) {
+	public HeatBuilder(Factory factory, Geco geco) {
 		super(factory);
+		this.geco = geco;
 	}
 
 	public List<Heat> buildHeatsFromResults(List<Result> results, String[] heatnames, int qualifyingRank) {
@@ -37,9 +52,6 @@ public class HeatBuilder extends Control {
 			h.setName(name);
 			heats.add(h);
 		}
-//		for (int i = 0; i < nbHeats; i++) {
-//			heats.add(new Heat());
-//		}
 		Vector<List<RankedRunner>> rankings = new Vector<List<RankedRunner>>();
 		for (Result result : results) {
 			rankings.add(result.getRanking());
@@ -51,8 +63,6 @@ public class HeatBuilder extends Control {
 		int heat = 0; // current heat where to add next qualified runner
 		while( miss<nbRankings ) {
 			miss = 0;
-//			for (List<RankedRunner> ranking : rankings) {
-//			}
 			int[] series = getRandomSeries(nbRankings);
 			for (int j : series) {
 				try {
@@ -73,68 +83,6 @@ public class HeatBuilder extends Control {
 		return heats;
 	}
 	
-	public List<List<Runner>> buildHeatsFromResults(List<Result> results, int qualifyingRank, int nbHeats) {
-		List<List<Runner>> heats = new Vector<List<Runner>>(nbHeats);
-		for (int i = 0; i < nbHeats; i++) {
-			heats.add(new Vector<Runner>());
-		}
-		Vector<List<RankedRunner>> rankings = new Vector<List<RankedRunner>>();
-		for (Result result : results) {
-			rankings.add(result.getRanking());
-		}
-
-		int nbRankings = rankings.size();
-		int miss = 0; // number of misses per pass through rankings
-		int pos = 0; // current position requested in each ranking
-		int heat = 0; // current heat where to add next qualified runner
-		while( miss<nbRankings ) {
-			miss = 0;
-//			for (List<RankedRunner> ranking : rankings) {
-//			}
-			int[] series = getRandomSeries(nbRankings);
-			for (int j : series) {
-				try {
-					RankedRunner runner = rankings.get(j).get(pos);
-					if( runner.getRank() <= qualifyingRank ) {
-						heats.get(heat).add(runner.getRunnerData().getRunner());
-						heat = (heat + 1) % nbHeats;
-					} else {
-						miss++;
-					}					
-				} catch (IndexOutOfBoundsException e) {
-					miss++;
-				}				
-			}
-			pos++;
-		}
-
-//		int result = 0;
-//		int nbResults = results.size();
-//		int heat = 0;
-//		int i = 0;
-//		int miss = 0;
-//		while( miss<nbResults ) {
-//			try {
-//				RankedRunner runner = rankings.get(result).get(i / nbResults);
-//				System.out.println((i / nbResults) + " " + runner.getRunnerData().getRunner());
-//				if( runner.getRank() <= qualifyingRank ) {
-//					heats.get(heat).add(runner.getRunnerData().getRunner());
-//					heat = (heat + 1) % nbHeats;
-//					i++;
-//					miss = 0;
-//				} else {
-//					miss++;
-//				}
-//			} catch (IndexOutOfBoundsException e) {
-//				miss++;
-//			}
-//
-//			result = (result + 1) % nbResults;
-//		}
-		
-		return heats;
-	}
-	
 	private int[] getRandomSeries(int nb) {
 		// makes nb random permutations in an array of [0,..,nb-1]
 		int[] series = new int[nb];
@@ -151,4 +99,130 @@ public class HeatBuilder extends Control {
 		return series;
 	}
 
+	
+	private Vector<Heat> refreshHeats(HeatSet[] selectedHeatsets) {
+		Vector<Heat> heats = new Vector<Heat>();
+		for (HeatSet heatset : selectedHeatsets) {
+			List<Result> heatsetResults = new Vector<Result>();
+			Pool[] selectedPools = heatset.getSelectedPools();
+			if( heatset.isCourseType() ) {
+				for (Pool pool : selectedPools) {
+					heatsetResults.add(geco.resultBuilder().buildResultForCourse((Course) pool));	
+				}
+			} else {
+				for (Pool pool : selectedPools) {
+					heatsetResults.add(geco.resultBuilder().buildResultForCategory((Category) pool));	
+				}				
+			}
+			List<Heat> heatsForCurrentHeatset = buildHeatsFromResults(heatsetResults, heatset.getHeatNames(), heatset.getQualifyingRank());
+			heats.addAll(heatsForCurrentHeatset);
+		}
+		return heats;
+	}
+	
+	public void exportFile(String filename, String format, HeatSet[] selectedHeatsets) throws IOException {
+		if( !filename.endsWith(format) ) {
+			filename = filename + "." + format;
+		}
+		if( format.equals("html") ) {
+			// TODO: replace by StringWriter
+			BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+			writer.write(generateHtmlHeats(selectedHeatsets));	
+			writer.close();
+		}
+		if( format.equals("csv") ) {
+			generateCsvHeats(filename, selectedHeatsets);
+		}
+	}
+
+	public String generateHtmlHeats(HeatSet[] selectedHeatsets) {
+		Vector<Heat> heats = refreshHeats(selectedHeatsets);
+		StringBuffer res = new StringBuffer("<html>");
+		for (Heat heat : heats) {
+			appendHtmlHeat(heat, res);
+		}
+		res.append("</html>");
+		return res.toString();
+	}
+
+
+	/**
+	 * @param result
+	 * @param res
+	 */
+	private void appendHtmlHeat(Heat heat, StringBuffer res) {
+		res.append("<h1>").append(heat.getName()).append("</h1>");
+		res.append("<table>");
+		int i = 1;
+		for (Runner runner : heat.getQualifiedRunners()) {
+			res.append("<tr><td>");
+			res.append(i).append("</td><td>").append(runner.getName());
+			res.append("</td></tr>");
+			i++;
+		}
+		res.append("</table>");
+	}
+	
+	public void generateCsvHeats(String filename, HeatSet[] selectedHeatsets) throws IOException {
+		Vector<Heat> heats = refreshHeats(selectedHeatsets);
+		resetStartnumber();
+		CsvWriter writer = new CsvWriter();
+		writer.initialize(filename);
+		writer.open();
+		for (Heat heat : heats) {
+			appendCsvHeat(heat, writer);
+		}
+		writer.close();
+	}
+
+	/**
+	 * @param heat
+	 * @param writer
+	 * @throws IOException 
+	 */
+	private void appendCsvHeat(Heat heat, CsvWriter writer) throws IOException {
+		RunnerIO runnerIO = new RunnerIO(null, null, writer, null);
+		Course heatCourse = factory().createCourse();
+		heatCourse.setName(heat.getName());
+		for (Runner runner : heat.getQualifiedRunners()) {
+			writer.writeRecord(runnerIO.exportTData(cloneRunnerForHeat(runner, heatCourse)));
+			//			String[] dataLine = new String[] {
+//					Integer.toString(runner.getStartnumber()),
+//					runner.getChipnumber(),
+//					runner.getName(),
+//					runner.getClub().getName(),
+//					courseName,
+//					"false",
+//					runner.getCategory().getShortname(),
+//					"0",
+//					"0",
+//					"0",
+//					"false",
+//					"",
+//					"",
+//			};
+		}
+	}
+	
+	private Runner cloneRunnerForHeat(Runner runner, Course heatCourse) {
+		Runner newRunner = factory().createRunner();
+		newRunner.setStartnumber(newStartnumber());
+		newRunner.setChipnumber(runner.getChipnumber());
+		newRunner.setFirstname(runner.getFirstname());
+		newRunner.setLastname(runner.getLastname());
+		newRunner.setCategory(runner.getCategory());
+		newRunner.setClub(runner.getClub());
+		newRunner.setNC(runner.isNC());
+		newRunner.setCourse(heatCourse);
+		return newRunner;
+	}
+	
+	private void resetStartnumber() {
+		startnumber = 0;
+	}
+	
+	private int newStartnumber() {
+		return ++startnumber;
+	}
+	
 }

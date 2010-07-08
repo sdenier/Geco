@@ -12,11 +12,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.print.PrinterException;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.AbstractListModel;
@@ -40,13 +38,8 @@ import javax.swing.event.ListSelectionListener;
 import valmo.geco.core.Announcer;
 import valmo.geco.core.Geco;
 import valmo.geco.core.Util;
-import valmo.geco.model.Category;
-import valmo.geco.model.Course;
-import valmo.geco.model.Heat;
 import valmo.geco.model.HeatSet;
 import valmo.geco.model.Pool;
-import valmo.geco.model.Result;
-import valmo.geco.model.Runner;
 import valmo.geco.model.Stage;
 import valmo.geco.model.iocsv.RunnerIO;
 
@@ -105,6 +98,11 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 	
 	public HeatSet getSelectedHeatset() {
 		return (HeatSet) heatList.getSelectedValue();
+	}
+	
+	public HeatSet[] getSelectedHeatsets() {
+		Object[] selectedValues = heatList.getSelectedValues();
+		return Arrays.copyOf(selectedValues, selectedValues.length, HeatSet[].class ); 
 	}
 	
 	public void showPoolList() {
@@ -236,7 +234,13 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 				filePane.setSelectedFile(new File(heatFile).getAbsoluteFile());
 				int response = filePane.showSaveDialog(frame());
 				if( response==JFileChooser.APPROVE_OPTION ) {
-					exportFile(filePane.getSelectedFile().getAbsolutePath(), exportFormat);
+					String filename = filePane.getSelectedFile().getAbsolutePath();
+					try {
+						geco().heatBuilder().exportFile(filename, exportFormat, getSelectedHeatsets());
+					} catch (IOException e1) {
+						JOptionPane.showMessageDialog(frame(), "Error while saving " + filename + "(" + e +")",
+								"Export Error", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 			}
 		});
@@ -343,116 +347,9 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 		filePane = new JFileChooser();
 		filePane.setAccessory(fileFormatRB);
 	}
-
-	private Vector<Heat> refreshHeats(Object[] selectedValues) {
-		Vector<Heat> heats = new Vector<Heat>();
-		for (Object selName : selectedValues) {
-			HeatSet heatset = (HeatSet) selName;
-			List<Result> heatsetResults = new Vector<Result>();
-			Pool[] selectedPools = heatset.getSelectedPools();
-			if( heatset.isCourseType() ) {
-				for (Pool pool : selectedPools) {
-					heatsetResults.add(geco().resultBuilder().buildResultForCourse((Course) pool));	
-				}
-			} else {
-				for (Pool pool : selectedPools) {
-					heatsetResults.add(geco().resultBuilder().buildResultForCategory((Category) pool));	
-				}				
-			}
-			List<Heat> heatsForCurrentHeatset = geco().heatBuilder().buildHeatsFromResults(heatsetResults, heatset.getHeatNames(), heatset.getQualifyingRank());
-			heats.addAll(heatsForCurrentHeatset);
-		}
-		return heats;
-	}
 	
 	public void refreshHeatView() {
-		heatsTA.setText(generateHtmlHeats());
-	}
-	
-	public void exportFile(String filename, String format) {
-		if( !filename.endsWith(format) ) {
-			filename = filename + "." + format;
-		}
-		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
-			if( format.equals("html") ) {
-				writer.write(generateHtmlHeats());	
-			}
-			if( format.equals("csv") ) {
-				generateCsvHeats(writer);
-			}
-			writer.close();
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(frame(), "Error while saving " + filename + "(" + e +")",
-					"Export Error", JOptionPane.ERROR_MESSAGE);
-		}
-	}
-
-	private String generateHtmlHeats() {
-		Vector<Heat> heats = refreshHeats(heatList.getSelectedValues());
-		StringBuffer res = new StringBuffer("<html>");
-		for (Heat heat : heats) {
-			appendHtmlHeat(heat, res);
-		}
-		res.append("</html>");
-		return res.toString();
-	}
-
-
-	/**
-	 * @param result
-	 * @param res
-	 */
-	private void appendHtmlHeat(Heat heat, StringBuffer res) {
-		res.append("<h1>").append(heat.getName()).append("</h1>");
-		res.append("<table>");
-		int i = 1;
-		for (Runner runner : heat.getQualifiedRunners()) {
-			res.append("<tr><td>");
-			res.append(i).append("</td><td>").append(runner.getName());
-			res.append("</td></tr>");
-			i++;
-		}
-		res.append("</table>");
-	}
-	
-	private void generateCsvHeats(BufferedWriter writer) throws IOException {
-		Vector<Heat> heats = refreshHeats(heatList.getSelectedValues());
-		for (Heat heat : heats) {
-			appendCsvHeat(heat, writer);			
-		}
-	}
-
-	/**
-	 * @param heat
-	 * @param writer
-	 * @throws IOException 
-	 */
-	private void appendCsvHeat(Heat heat, BufferedWriter writer) throws IOException {
-		/*
-		 * id,SI card,Name,Club,Course,Rented,Class,Start time,Finish Time,
-		 * Status,NC,IOA,bonus
-		 */		
-		String courseName = heat.getName();
-		for (Runner runner : heat.getQualifiedRunners()) {
-			String[] dataLine = new String[] {
-					Integer.toString(runner.getStartnumber()),
-					runner.getChipnumber(),
-					runner.getName(),
-					runner.getClub().getName(),
-					courseName,
-					"false",
-					runner.getCategory().getShortname(),
-					"0",
-					"0",
-					"0",
-					"false",
-					"",
-					"",
-			};
-			writer.write(Util.join(dataLine, ";", new StringBuffer()));
-			writer.write("\n");
-		}
+		heatsTA.setText(geco().heatBuilder().generateHtmlHeats(getSelectedHeatsets()));
 	}
 
 	
@@ -462,7 +359,6 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 	@Override
 	public void changed(Stage previous, Stage next) {
 		refresh();
-	//		repaint();
 	}
 
 	private void refresh() {

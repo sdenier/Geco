@@ -179,7 +179,7 @@ public class Geco {
 		stageControl = new StageControl(factory, stage(), announcer);
 		runnerControl = new RunnerControl(factory, stage(), this, announcer);
 		resultBuilder = new ResultBuilder(factory, stage(), announcer);
-		heatBuilder = new HeatBuilder(factory);
+		heatBuilder = new HeatBuilder(factory, this);
 		stats = new RegistryStats(factory, stage(), announcer);
 		siHandler = new SIReaderHandler(factory, stage(), this, announcer);
 		window = new GecoWindow(this);
