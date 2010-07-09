@@ -11,9 +11,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.print.PrinterException;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.Vector;
@@ -33,17 +31,12 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 
+import valmo.geco.control.ResultBuilder;
+import valmo.geco.control.ResultBuilder.ResultConfig;
 import valmo.geco.core.Geco;
-import valmo.geco.core.TimeManager;
 import valmo.geco.core.Util;
 import valmo.geco.core.Announcer.StageConfigListener;
-import valmo.geco.model.RankedRunner;
-import valmo.geco.model.Result;
-import valmo.geco.model.Runner;
-import valmo.geco.model.RunnerRaceData;
-import valmo.geco.model.RunnerResult;
 import valmo.geco.model.Stage;
-import valmo.geco.model.Status;
 
 /**
  * @author Simon Denier
@@ -152,7 +145,13 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 				filePane.setSelectedFile(new File(resultFile).getAbsoluteFile());
 				int response = filePane.showSaveDialog(frame());
 				if( response==JFileChooser.APPROVE_OPTION ) {
-					exportFile(filePane.getSelectedFile().getAbsolutePath(), exportFormat);
+					String filename = filePane.getSelectedFile().getAbsolutePath();
+					try {
+						geco().resultBuilder().exportFile(filename, exportFormat, createResultConfig());
+					} catch (IOException ex) {
+						JOptionPane.showMessageDialog(frame(), "Error while saving " + filename + "(" + ex +")",
+								"Export Error", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 			}
 		});
@@ -291,171 +290,20 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	private void selectNone(JList list) {
 		list.clearSelection();
 	}
-	
-	private Vector<Result> refreshResults(Object[] selectedValues) {
-		Vector<Result> results = new Vector<Result>();
-		for (Object selName : selectedValues) {
-			if( showCourses() ) {
-				results.add(
-						geco().resultBuilder().buildResultForCourse(registry().findCourse((String) selName))
-						);
-			} else {
-				results.add(
-						geco().resultBuilder().buildResultForCategory(registry().findCategory((String) selName))
-						);
-			}
-		}
-		return results;
-	}
 
 	public void refreshResultView() {
-		resultTA.setText(generateHtmlResults());
+		resultTA.setText(geco().resultBuilder().generateHtmlResults(createResultConfig()));
+	}
+	
+	private ResultConfig createResultConfig() {
+		return ResultBuilder.createResultConfig(
+				list.getSelectedValues(), 
+				showCourses(),
+				showEsC.isSelected(),
+				showNcC.isSelected(),
+				showOtC.isSelected());
 	}
 
-	public void exportFile(String filename, String format) {
-		if( !filename.endsWith(format) ) {
-			filename = filename + "." + format;
-		}
-		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
-			if( format.equals("html") ) {
-				writer.write(generateHtmlResults());	
-			}
-			if( format.equals("csv") ) {
-				generateCsvResult(writer);
-			}
-			writer.close();
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(frame(), "Error while saving " + filename + "(" + e +")",
-					"Export Error", JOptionPane.ERROR_MESSAGE);
-		}
-	}
-
-
-	private String generateHtmlResults() {
-		Vector<Result> results = refreshResults(list.getSelectedValues());
-		StringBuffer res = new StringBuffer("<html>");
-		for (Result result : results) {
-			if( showEsC.isSelected() || !result.isEmpty()) {
-				appendHtmlResult(result, res);	
-			}
-		}
-		res.append("</html>");
-		return res.toString();
-	}
-
-	/**
-	 * @param result
-	 * @param res
-	 */
-	private void appendHtmlResult(Result result, StringBuffer res) {
-		res.append("<h1>").append(result.getIdentifier()).append("</h1>");
-		res.append("<table>");
-		for (RankedRunner runner : result.getRanking()) {
-			res.append("<tr>");
-			res.append("<td>").append(runner.getRank()).append("</td><td>").append(runner.getRunnerData().getRunner().getName());
-			res.append("</td><td>").append(TimeManager.time(runner.getRunnerData().getResult().getRacetime()));
-			res.append("</td></tr>");
-		}
-		res.append("<tr><td></td><td></td><td></td></tr>");
-		for (RunnerRaceData runnerData : result.getNRRunners()) {
-			Runner runner = runnerData.getRunner();
-			if( !runner.isNC() ) {
-				res.append("<tr>");
-				res.append("<td></td><td>").append(runner.getName());
-				res.append("</td><td>").append(runnerData.getResult().getStatus());
-				res.append("</td></tr>");				
-			} else if( showNcC.isSelected() ) {
-				res.append("<tr>");
-				res.append("<td>NC</td><td>").append(runner.getName());
-				RunnerResult runnerResult = runnerData.getResult();
-				res.append("</td><td>");
-				res.append( (runnerResult.getStatus().equals(Status.OK))? TimeManager.time(runnerResult.getRacetime()) : runnerResult.getStatus());
-				res.append("</td></tr>");
-			}
-		}
-		if( showOtC.isSelected() ) {
-			res.append("<tr><td></td><td></td><td></td></tr>");
-			for (RunnerRaceData runnerData : result.getOtherRunners()) {
-				res.append("<tr>");
-				res.append("<td></td><td>").append(runnerData.getRunner().getName());
-				res.append("</td><td>").append(runnerData.getResult().getStatus());
-				res.append("</td></tr>");
-			}			
-		}
-		res.append("</table>");
-	}
-
-	/**
-	 * @param writer
-	 * @throws IOException 
-	 */
-	private void generateCsvResult(BufferedWriter writer) throws IOException {
-		Vector<Result> results = refreshResults(list.getSelectedValues());
-		for (Result result : results) {
-			if( showEsC.isSelected() || !result.isEmpty()) {
-				appendCsvResult(result, writer);
-			}
-		}
-	}
-
-	/**
-	 * @param result
-	 * @param writer
-	 * @throws IOException 
-	 */
-	private void appendCsvResult(Result result, BufferedWriter writer) throws IOException {
-		String id = result.getIdentifier();
-		for (RankedRunner rRunner : result.getRanking()) {
-			RunnerRaceData runnerData = rRunner.getRunnerData();
-			String[] line = new String[] {
-					id,
-					Integer.toString(rRunner.getRank()),
-					runnerData.getRunner().getFirstname(),
-					runnerData.getRunner().getLastname(),
-					TimeManager.time(runnerData.getResult().getRacetime()),
-			};
-			writer.write(Util.join(line, ",", new StringBuffer()));
-			writer.write("\n");
-		}
-		for (RunnerRaceData runnerData : result.getNRRunners()) {
-			Runner runner = runnerData.getRunner();
-			if( !runner.isNC() ) {
-				String[] line = new String[] {
-						id,
-						runnerData.getResult().getStatus().toString(),
-						runnerData.getRunner().getFirstname(),
-						runnerData.getRunner().getLastname(),
-				};
-				writer.write(Util.join(line, ",", new StringBuffer()));
-				writer.write("\n");
-			} else if( showNcC.isSelected() ) {
-				String[] line = new String[] {
-						id,
-						"NC",
-						runnerData.getRunner().getFirstname(),
-						runnerData.getRunner().getLastname(),
-				};
-				writer.write(Util.join(line, ",", new StringBuffer()));
-				if( runnerData.getResult().getStatus().equals(Status.OK) ) {
-					writer.write("," + TimeManager.time(runnerData.getResult().getRacetime()));
-				}
-				writer.write("\n");
-			}
-		}
-		if( showOtC.isSelected() ) {
-			for (RunnerRaceData runnerData : result.getOtherRunners()) {
-				String[] line = new String[] {
-						id,
-						runnerData.getResult().getStatus().toString(),
-						runnerData.getRunner().getFirstname(),
-						runnerData.getRunner().getLastname(),
-				};
-				writer.write(Util.join(line, ",", new StringBuffer()));
-				writer.write("\n");
-			}			
-		}
-	}
 
 	@Override
 	public void changed(Stage previous, Stage next) {

@@ -50,7 +50,6 @@ import valmo.geco.model.iocsv.RunnerIO;
  *
  */
 public class HeatsPanel extends TabPanel implements Announcer.StageConfigListener {
-//	TODO: remove duplication between ResultsPanel and HeatsPanel
 
 	private Vector<String> coursenames;	
 	private Vector<String> categorynames;
