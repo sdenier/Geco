@@ -12,6 +12,7 @@
     <target name="cleanBackups">
 		<delete>
 			<fileset dir="testData" includes="**/backups/*.zip"/>
+			<fileset dir="data" includes="**/backups/*.zip"/>
 		</delete>
     </target>
 	

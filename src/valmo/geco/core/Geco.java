@@ -190,7 +190,7 @@ public class Geco {
 		RuntimeStage oldStage = current;
 		try {
 //			RuntimeStage newStage = loadStage(launcher());
-			RuntimeStage newStage = loadStage("./testData/belfield");
+			RuntimeStage newStage = loadStage("./data/belfield");
 			closeAllStages();
 			current = newStage;
 			updateStageList(stage().getBaseDir());
@@ -205,7 +205,7 @@ public class Geco {
 
 	private String launcher() throws Exception {
 		JFileChooser chooser = new JFileChooser();
-		chooser.setCurrentDirectory(new File("./testData"));
+		chooser.setCurrentDirectory(new File("./data"));
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		int result = chooser.showOpenDialog(null);
 		if( result==JFileChooser.CANCEL_OPTION || result==JFileChooser.ERROR_OPTION ) {
