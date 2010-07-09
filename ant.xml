@@ -2,19 +2,23 @@
 <project basedir="." default="webgen" name="GecO">
 	<property name="srcdoc.dir" value="doc" />
 	<property name="wg.dir" value="${srcdoc.dir}/user/wg" />
-	<property name="version.num" value="09b2"/>
-	<property name="build.num" value="84"/>
 	<property name="geco.dir" value="${basedir}"/>
 	<property name="sireader.dir" value="${basedir}/../SIReader"/>
+
+	<property name="version.num" value="09b2"/>
+<!--	<property name="build.num" value="87"/> -->
+	<property name="hg.cmdpath" value="/usr/local/bin/hg"/>
 	
     <target name="cleanBackups">
 		<delete>
 			<fileset dir="testData" includes="**/backups/*.zip"/>
 		</delete>
     </target>
+	
     <target name="webgen">
     	<exec dir="${wg.dir}" executable="webgen"></exec>
     </target>
+	
 	<target name="userHelp" depends="webgen">
     	<mkdir dir="help" />
     	<copy todir="help">
@@ -22,10 +26,21 @@
 		</copy>
     </target>
 	
+	<target name="buildnumber">
+		<exec executable="${hg.cmdpath}" outputproperty="hg.buildnumber">
+			<arg line="parents --template {rev}" />
+		</exec>
+		<tstamp />
+		<property name="build.num" value="${hg.buildnumber}-${DSTAMP}"/>
+<!--		<property name="build.num" value="${hg.buildnumber}"/> -->
+		<echo message="${build.num}" />
+	</target>
+	
 	<target name="build_SIReader">
 		<ant dir="${sireader.dir}" target="build_jar" />
 	</target>
-    <target name="build_jar" depends="build_SIReader">
+	
+    <target name="build_jar" depends="build_SIReader,buildnumber">
         <jar destfile="${geco.dir}/geco${version.num}-${build.num}.jar" filesetmanifest="mergewithoutmain">
             <manifest>
                 <attribute name="Main-Class" value="valmo.geco.GecoLauncher"/>
