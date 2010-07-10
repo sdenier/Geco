@@ -40,6 +40,8 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 
 	private String portName;
 	
+	private long zeroTime = 32400000; // 9:00
+	
 	/**
 	 * @param factory
 	 * @param stage
@@ -49,12 +51,17 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 		super(factory, stage, announcer);
 		this.geco = geco;
 		setNewPortName();
+		setNewZeroTime();
 	}
 
 	public static String portNameProperty() {
 		return "SIPortname";
 	}
 
+	public static String zerotimeProperty() {
+		return "SIZeroTime";
+	}
+	
 	public String defaultPortName() {
 		return "/dev/tty.SLAB_USBtoUART";
 	}
@@ -68,6 +75,16 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 		}
 	}
 	
+	private void setNewZeroTime() {
+		try {
+			setZeroTime( Long.parseLong(stage().getProperties().getProperty(zerotimeProperty())) );			
+		} catch (NumberFormatException e) {
+			setZeroTime(32400000);
+		}
+		if( portHandler!=null )
+			portHandler.setCourseZeroTime(getZeroTime());
+	}
+	
 	public String getPortName() {
 		return portName;
 	}
@@ -76,11 +93,20 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 		this.portName = portName;
 	}
 
+	public long getZeroTime() {
+		return zeroTime;
+	}
+
+	public void setZeroTime(long zeroTime) {
+		this.zeroTime = zeroTime;
+	}
+
 	private void configure() {
 		portHandler = new SIPortHandler(new ResultData());
 		portHandler.addListener(this);
 		portHandler.setPortName(getPortName());
 		portHandler.setDebugDir(stage().getBaseDir());
+		portHandler.setCourseZeroTime(getZeroTime());
 	}
 
 	public void start() {
@@ -201,11 +227,13 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 //		stop();
 		super.changed(previous, next);
 		setNewPortName();
+		setNewZeroTime();
 	}
 
 	@Override
 	public void saving(Stage stage, Properties properties) {
 		properties.setProperty(portNameProperty(), getPortName());
+		properties.setProperty(zerotimeProperty(), Long.toString(getZeroTime()));
 	}
 
 	@Override

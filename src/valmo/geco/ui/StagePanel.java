@@ -11,7 +11,11 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
+import java.util.TimeZone;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -181,6 +185,27 @@ public class StagePanel extends TabPanel {
 				geco().siHandler().setPortName(stationPortF.getText());
 			}
 		});
+		
+		c.gridy = 1;
+		panel.add(new JLabel("Zero hour:"), c);
+		final SimpleDateFormat formatter = new SimpleDateFormat("H:mm");
+		formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
+		final JTextField zerohourF = new JTextField(formatter.format(geco().siHandler().getZeroTime()));
+		zerohourF.setColumns(7);
+		zerohourF.setToolTipText("Zero hour of the competition");
+		panel.add(zerohourF, c);
+		zerohourF.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Date zeroTime = formatter.parse(zerohourF.getText());
+					geco().siHandler().setZeroTime(zeroTime.getTime());
+				} catch (ParseException e1) {
+					geco().info("Bad time format", true);
+				}
+			}
+		});
+		
 		return titlePanel(panel, "SI Reader");
 	}
 
