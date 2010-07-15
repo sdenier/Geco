@@ -172,6 +172,7 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 	 * @param card
 	 */
 	private void updateRaceDataWith(RunnerRaceData runnerData, IResultData<PunchObject,PunchRecordData> card) {
+		runnerData.stampReadtime();
 		runnerData.setErasetime(safeTime(card.getClearTime()));
 		runnerData.setControltime(safeTime(card.getCheckTime()));		
 		runnerData.setStarttime(safeTime(card.getStartTime()));

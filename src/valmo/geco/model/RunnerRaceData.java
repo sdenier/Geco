@@ -33,6 +33,12 @@ public interface RunnerRaceData extends Cloneable {
 
 	public void setControltime(Date controltime);
 
+	public Date getReadtime();
+
+	public void setReadtime(Date readtime);
+	
+	public Date stampReadtime();
+
 	public Punch[] getPunches();
 
 	public void setPunches(Punch[] punches);

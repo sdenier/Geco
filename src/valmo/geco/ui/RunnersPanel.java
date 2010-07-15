@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Vector;
 
@@ -51,6 +52,7 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 	private JTextField filterField;
 	
 	private RunnerPanel runnerPanel;
+	private JCheckBox liveB;
 
 	
 	/**
@@ -101,6 +103,7 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 			}
 		});
 		topPanel.add(addButton);
+		
 		JButton deleteButton = new JButton("-");
 		deleteButton.setToolTipText("Delete selected runner");
 		deleteButton.addActionListener(new ActionListener() {
@@ -116,6 +119,22 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 			}
 		});
 		topPanel.add(deleteButton);
+		
+		liveB = new JCheckBox("Live");
+		liveB.setToolTipText("Enable live mode");
+		liveB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if( liveModeOn() ) {
+					disableRowSorting();
+					sortRunnersByReadOrder();
+				}
+				else
+					enableRowSorting();
+			}
+		});
+		topPanel.add(liveB);
+
 		final JCheckBox lockB = new JCheckBox("Lock");
 		lockB.setToolTipText("Lock edition in table");
 		lockB.addActionListener(new ActionListener() {
@@ -125,12 +144,11 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 					tableModel.lock();
 				else
 					tableModel.unlock();
-						
 			}
 		});
 		topPanel.add(lockB);
-//		topPanel.add(new JCheckBox("Live mode"));
-//		topPanel.add(new JCheckBox("Auto mode"));
+
+		//		topPanel.add(new JCheckBox("Auto mode"));
 		topPanel.add(Box.createHorizontalStrut(500));
 		topPanel.add(initFilterPanel());
 		topPanel.setBorder(BorderFactory.createEtchedBorder());
@@ -161,6 +179,26 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 	
 	public JScrollPane initTableScroll() {
 		tableModel = new RunnersTableModel(geco());
+		table = new JTable(tableModel);
+//		table.setPreferredScrollableViewportSize(table.getPreferredSize());
+		table.setPreferredScrollableViewportSize(new Dimension(800, 600));
+		tableModel.initCellEditors(table);
+		tableModel.initTableColumnSize(table);
+		enableRowSorting();
+		table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.getSelectionModel().setSelectionInterval(0, 0);
+		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				if (!e.getValueIsAdjusting() ) {
+					updateRunnerPanel();
+				}
+			}
+		});
+		refreshTableData();
+		return new JScrollPane(table);
+	}
+
+	private void enableRowSorting() {
 		sorter = new TableRowSorter<RunnersTableModel>(tableModel);
 		sorter.setComparator(1, new Comparator<String>() { // Chip column
 			@Override
@@ -185,25 +223,28 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 				}
 			}
 		});
-		table = new JTable(tableModel);
-//		table.setPreferredScrollableViewportSize(table.getPreferredSize());
-		table.setPreferredScrollableViewportSize(new Dimension(800, 600));
-		tableModel.initCellEditors(table);
-		tableModel.initTableColumnSize(table);
 		table.setRowSorter(sorter);
-		table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.getSelectionModel().setSelectionInterval(0, 0);
-		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent e) {
-				if (!e.getValueIsAdjusting() ) {
-					updateRunnerPanel();
-				}
-			}
-		});
-		refreshTableData();
-		return new JScrollPane(table);
+	}
+	
+	private void disableRowSorting() {
+		table.setRowSorter(null);
 	}
 
+	private boolean liveModeOn() {
+		return liveB.isSelected();
+	}
+
+	private void sortRunnersByReadOrder() {
+		Vector<RunnerRaceData> data = new Vector<RunnerRaceData>(registry().getRunnersData());
+		Collections.sort(data, new Comparator<RunnerRaceData>() {
+			@Override
+			public int compare(RunnerRaceData o1, RunnerRaceData o2) {
+				return -1 * o1.getReadtime().compareTo(o2.getReadtime());
+			}
+		});
+		tableModel.setData(data);
+		table.getSelectionModel().setSelectionInterval(0, 0);
+	}
 
 	private void refreshTableData() {
 		tableModel.updateComboBoxEditors(table);
@@ -305,7 +346,14 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 
 	@Override
 	public void cardRead(String chip) {
-		refreshTableRunner(registry().findRunnerData(chip));
+//		refresh made through statusChanged announcement
+//		refreshTableRunner(registry().findRunnerData(chip));
+		if( liveModeOn() ) {
+			RunnerRaceData data = registry().findRunnerData(chip);
+			tableModel.removeData(data);
+			tableModel.addDataFirst(data);
+			focusTableOnIndex(0);
+		}
 	}
 
 	@Override

@@ -86,6 +86,11 @@ public class RunnersTableModel extends AbstractTableModel {
 		fireTableDataChanged();
 	}
 
+	public void addDataFirst(RunnerRaceData data) {
+		this.data.add(0, data);
+		fireTableRowsInserted(0, 0);
+	}
+
 	public void addData(RunnerRaceData data) {
 		this.data.add(data);
 		fireTableRowsInserted(this.data.size() - 1, this.data.size() - 1);

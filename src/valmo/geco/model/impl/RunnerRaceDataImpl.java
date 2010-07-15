@@ -28,6 +28,8 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 	private Date erasetime;
 	
 	private Date controltime;
+
+	private Date readtime;
 	
 	private Punch[] punches;
 	
@@ -41,6 +43,7 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 		this.finishtime = TimeManager.NO_TIME;
 		this.erasetime = TimeManager.NO_TIME;
 		this.controltime = TimeManager.NO_TIME;
+		this.readtime = TimeManager.NO_TIME;
 		this.punches = new Punch[0];
 	}
 	
@@ -52,6 +55,7 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 			clone.setFinishtime((Date) getFinishtime().clone());
 			clone.setErasetime((Date) getErasetime().clone());
 			clone.setControltime((Date) getControltime().clone());
+			clone.setReadtime((Date) getReadtime().clone());
 			Punch[] punches = new Punch[getPunches().length];
 			for (int i = 0; i < getPunches().length; i++) {
 				punches[i] = getPunches()[i].clone();
@@ -72,6 +76,7 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 		setFinishtime(data.getFinishtime());
 		setErasetime(data.getErasetime());
 		setControltime(data.getControltime());
+		setReadtime(data.getReadtime());
 		setPunches(data.getPunches());
 		setResult(data.getResult());
 	}
@@ -114,6 +119,22 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 
 	public void setControltime(Date controltime) {
 		this.controltime = controltime;
+	}
+	
+	@Override
+	public Date getReadtime() {
+		return this.readtime;
+	}
+
+	@Override
+	public void setReadtime(Date readtime) {
+		this.readtime = readtime;
+	}
+
+	@Override
+	public Date stampReadtime() {
+		setReadtime(new Date());
+		return getReadtime();
 	}
 
 	public Punch[] getPunches() {
@@ -166,5 +187,5 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 		buffer.append(" in " + TimeManager.time(getResult().getRacetime()) );
 		return buffer.toString();
 	}
-	
+
 }

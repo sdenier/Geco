@@ -12,7 +12,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
 
-import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -38,6 +37,7 @@ public class RunnerPanel extends GecoPanel {
 	private RunnersPanel parentContainer;
 	private PunchPanel punchPanel;
 	
+	private JTextField rTimeF;
 	private JTextField cTimeF;
 	private JTextField eTimeF;
 	private JTextField sTimeF;
@@ -71,6 +71,7 @@ public class RunnerPanel extends GecoPanel {
 	}
 	
 	public void refreshPanel() {
+		rTimeF.setText(TimeManager.fullTime(runnerData.getReadtime()));
 		displayTime(eTimeF, runnerData.getErasetime());
 		displayTime(cTimeF, runnerData.getControltime());
 		displayTime(sTimeF, runnerData.getStarttime());
@@ -95,7 +96,9 @@ public class RunnerPanel extends GecoPanel {
 		}
 	}
 	
-	public void createComponents() {		
+	public void createComponents() {
+		rTimeF = new JTextField(5);
+		rTimeF.setEditable(false);
 		cTimeF = new JTextField(5);
 		cTimeF.setEditable(false);
 		eTimeF = new JTextField(5);
@@ -155,6 +158,8 @@ public class RunnerPanel extends GecoPanel {
 //		panel.setBorder(BorderFactory.createTitledBorder("Runner"));
 
 		Component[] comps = new Component[] {
+				new JLabel("Read time"),
+				rTimeF,
 				new JLabel("Erase time"),
 				eTimeF,
 				new JLabel("Control time"),
@@ -170,8 +175,8 @@ public class RunnerPanel extends GecoPanel {
 				new JLabel("Time penalty"),
 				penaltyF,
 				
-				Box.createHorizontalGlue(),
-				Box.createHorizontalGlue(),
+//				Box.createHorizontalGlue(),
+//				Box.createHorizontalGlue(),
 
 				resetRTimeB,
 				recheckStatusB,
