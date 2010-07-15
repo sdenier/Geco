@@ -29,6 +29,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
 import valmo.geco.control.ResultBuilder;
@@ -63,6 +64,11 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	private JCheckBox showOtC;
 	private JCheckBox showEsC;
 	private JFileChooser filePane;
+	
+	private Thread autoexportThread;
+	private int autoexportDelay = 60;
+	private JButton autoexportB;
+	private JTextField autodelayF;
 
 	/**
 	 * @param geco
@@ -141,7 +147,6 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		exportB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String resultFile = geco().getCurrentStagePath() + File.separator + "ranking";
-				System.out.println(resultFile);
 				filePane.setSelectedFile(new File(resultFile).getAbsoluteFile());
 				int response = filePane.showSaveDialog(frame());
 				if( response==JFileChooser.APPROVE_OPTION ) {
@@ -152,6 +157,29 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 						JOptionPane.showMessageDialog(frame(), "Error while saving " + filename + "(" + ex +")",
 								"Export Error", JOptionPane.ERROR_MESSAGE);
 					}
+				}
+			}
+		});
+		autoexportB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if( autoexportB.isSelected() ) {
+					autoexportB.setSelected(false);
+					stopAutoexport();
+				} else {
+					autoexportB.setSelected(true);
+					startAutoexport();
+				}
+			}
+		});
+		autodelayF.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					autoexportDelay = Integer.parseInt(autodelayF.getText());
+				} catch (NumberFormatException e1) {
+					geco().info("Bad number format", true);
+					autodelayF.setText(Integer.toString(autoexportDelay));
 				}
 			}
 		});
@@ -214,6 +242,13 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		selectNoneB = new JButton("None");
 		commandPanel.add(Util.embed(selectAllB));
 		commandPanel.add(Util.embed(selectNoneB));
+		
+		autoexportB = new JButton("Autoexport");
+		autodelayF = new JTextField(5);
+		autodelayF.setText(Integer.toString(autoexportDelay));
+		autodelayF.setToolTipText("Autoexport delay in seconds");
+		commandPanel.add(Util.embed(autoexportB));
+		commandPanel.add(Util.embed(autodelayF));
 		
 		commandPanel.setBorder(BorderFactory.createLineBorder(Color.gray));
 
@@ -304,6 +339,35 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 				showOtC.isSelected());
 	}
 
+	
+	public Thread startAutoexport() {
+		final long saveDelay = autoexportDelay * 1000;
+		autoexportThread = new Thread(new Runnable() {
+			@Override
+			public synchronized void run() {
+				while( true ){
+					String resultFile = geco().getCurrentStagePath() + File.separator + "lastresults";
+					try {
+						try {
+							geco().resultBuilder().exportFile(resultFile, exportFormat, createResultConfig());
+						} catch (IOException ex) {
+							geco().logger().debug(ex);
+						}
+						wait(saveDelay);
+					} catch (InterruptedException e) {
+						return;
+					}					
+				}
+			}});
+		autoexportThread.start();
+		return autoexportThread;
+	}
+	
+	public void stopAutoexport() {
+		if( autoexportThread!=null ) {
+			autoexportThread.interrupt();
+		}
+	}
 
 	@Override
 	public void changed(Stage previous, Stage next) {
