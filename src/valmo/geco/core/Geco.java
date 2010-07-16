@@ -14,6 +14,7 @@ import java.util.Properties;
 import java.util.Vector;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 import valmo.geco.control.HeatBuilder;
 import valmo.geco.control.PenaltyChecker;
@@ -155,12 +156,6 @@ public class Geco {
 		 * switch current stage
 		 */
 		
-//		try {
-//			System.setErr(new PrintStream("error.log"));
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		}
-		
 		factory = new POFactory();
 		announcer = new Announcer();
 		
@@ -189,8 +184,8 @@ public class Geco {
 		stopAutosave();
 		RuntimeStage oldStage = current;
 		try {
-//			RuntimeStage newStage = loadStage(launcher());
-			RuntimeStage newStage = loadStage("./data/belfield");
+			RuntimeStage newStage = loadStage(launcher());
+//			RuntimeStage newStage = loadStage("./data/belfield");
 			closeAllStages();
 			current = newStage;
 			updateStageList(stage().getBaseDir());
@@ -212,14 +207,15 @@ public class Geco {
 			throw new Exception("Cancelled import");
 		}
 		String baseDir = chooser.getSelectedFile().getAbsolutePath();
-		// TODO: replace by a different check?
-		//		if( !new File(baseDir + File.separator + "Competition.csv").exists() ) {
-//			JOptionPane.showMessageDialog(null,
-//										"Directory does not contain Òr data",
-//										"Exit",
-//										JOptionPane.ERROR_MESSAGE);
-//			throw new Exception("Incorrect directory");
-//		}
+		if( !new File(baseDir + File.separator + "Competition.csv").exists()
+			&&
+			!new File(baseDir + File.separator + "geco.prop").exists() ) {
+			JOptionPane.showMessageDialog(null,
+										"Directory does not contain data",
+										"Exit",
+										JOptionPane.ERROR_MESSAGE);
+			throw new Exception("Incorrect directory");
+		}
 		return baseDir;
 	}
 

@@ -5,8 +5,8 @@
 	<property name="geco.dir" value="${basedir}"/>
 	<property name="sireader.dir" value="${basedir}/../SIReader"/>
 
+	<property name="dev.username" value="Simon Denier"/>
 	<property name="version.num" value="09b2"/>
-<!--	<property name="build.num" value="87"/> -->
 	<property name="hg.cmdpath" value="/usr/local/bin/hg"/>
 	
     <target name="cleanBackups">
@@ -46,6 +46,9 @@
             <manifest>
                 <attribute name="Main-Class" value="valmo.geco.GecoLauncher"/>
                 <attribute name="Class-Path" value="."/>
+            	<attribute name="Built-By" value="${dev.username}"/>
+            	<attribute name="Built-Date" value="${TODAY}"/> 
+               	<attribute name="Implementation-Version" value="${version.num}-${build.num}"/>
             </manifest>
             <fileset dir="${geco.dir}/bin" excludes="${geco.dir}/bin/test/**.class"/>
             <fileset file="${sireader.dir}/SIReader.jar"/>

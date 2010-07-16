@@ -4,6 +4,9 @@
  */
 package valmo.geco;
 
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
+
 import com.jdotsoft.jarloader.JarClassLoader;
 
 /**
@@ -14,6 +17,13 @@ import com.jdotsoft.jarloader.JarClassLoader;
 public class GecoLauncher {
 
 	public static void main(String[] args) {
+		try {
+			PrintStream ps = new PrintStream("error.log");
+			System.setErr(ps);
+			System.setOut(ps);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 		JarClassLoader loader = new JarClassLoader();
 		try {
 			loader.invokeMain("valmo.geco.core.Geco", new String[0]);
