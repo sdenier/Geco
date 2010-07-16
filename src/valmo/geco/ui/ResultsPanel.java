@@ -161,13 +161,19 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 			}
 		});
 		autoexportB.addActionListener(new ActionListener() {
+			private Color defaultColor;
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if( autoexportB.isSelected() ) {
 					autoexportB.setSelected(false);
+					autoexportB.setBackground(defaultColor);
+					autodelayF.setEnabled(true);
 					stopAutoexport();
 				} else {
 					autoexportB.setSelected(true);
+					defaultColor = autoexportB.getBackground();
+					autoexportB.setBackground(Color.GREEN);
+					autodelayF.setEnabled(false);
 					startAutoexport();
 				}
 			}
@@ -341,7 +347,6 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 
 	
 	public Thread startAutoexport() {
-		final long saveDelay = autoexportDelay * 1000;
 		autoexportThread = new Thread(new Runnable() {
 			@Override
 			public synchronized void run() {
@@ -353,7 +358,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 						} catch (IOException ex) {
 							geco().logger().debug(ex);
 						}
-						wait(saveDelay);
+						wait(autoexportDelay * 1000);
 					} catch (InterruptedException e) {
 						return;
 					}					
