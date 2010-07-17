@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project basedir="." default="webgen" name="GecO">
+	<property file="src/version.prop"/>
+	<property file="dev.prop"/>
+	
 	<property name="srcdoc.dir" value="doc" />
 	<property name="wg.dir" value="${srcdoc.dir}/user/wg" />
 	<property name="geco.dir" value="${basedir}"/>
 	<property name="sireader.dir" value="${basedir}/../SIReader"/>
-
-	<property name="dev.username" value="Simon Denier"/>
-	<property name="version.num" value="10rc"/>
-	<property name="hg.cmdpath" value="/usr/local/bin/hg"/>
 	
     <target name="cleanBackups">
 		<delete>
@@ -34,6 +33,7 @@
 		<tstamp />
 		<property name="build.num" value="${hg.buildnumber}-${DSTAMP}"/>
 <!--		<property name="build.num" value="${hg.buildnumber}"/> -->
+		<echo message="${version.num}" />
 		<echo message="${build.num}" />
 	</target>
 	

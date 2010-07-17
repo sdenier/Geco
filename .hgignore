@@ -25,3 +25,5 @@ syntax: regexp
 ^doc/user/wg/out$
 syntax: regexp
 ^doc/user/wg/webgen\.cache$
+syntax: regexp
+^dev\.prop$

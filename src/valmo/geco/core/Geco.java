@@ -40,7 +40,20 @@ import valmo.geco.ui.MergeRunnerDialog;
  */
 public class Geco {
 	
-	public static final String VERSION = "1.0rc"; 
+	public static String VERSION; 
+	
+	{
+		Properties prop = new Properties();
+		VERSION = "x.x";
+		try {
+			prop.load(getClass().getResourceAsStream("/version.prop"));
+			VERSION = prop.getProperty("version.num");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	private class RuntimeStage {
 		private Stage stage;
