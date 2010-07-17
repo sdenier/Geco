@@ -34,6 +34,9 @@ Geco UI is designed to be very usable (there is still room for improvements): al
 Directory structure
 _
 |- geco*.jar: application
+|- readme.txt: this file
+|- LICENSE: license info
+|- IOFdata.dtd: dtd file for checking XML course descriptions
 |- data/: folder holding multiple stage folders (stage folders can be in any folder)
 |- data/sample_stages.prop: sample file describing a multi-stage event
 |- data/templates/: sample stage files editable with a spreadsheet application 

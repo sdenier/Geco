@@ -59,6 +59,8 @@
     <target name="build_distrib" depends="build_jar">
     	<zip destfile="${geco.dir}/geco${version.num}-${build.num}.zip">
     		<fileset file="${geco.dir}/geco${version.num}-${build.num}.jar"/>
+    		<fileset file="${geco.dir}/readme.txt"/>
+    		<fileset file="${geco.dir}/LICENSE"/>
     		<fileset file="${geco.dir}/IOFdata.dtd"/>
     		<fileset dir="${geco.dir}" includes="help/"/>
     		<fileset dir="${geco.dir}" includes="data/template/"/>
@@ -72,6 +74,8 @@
 		</delete>
     	<zip destfile="${geco.dir}/geco${version.num}-${build.num}-demo.zip">
     		<fileset file="${geco.dir}/geco${version.num}-${build.num}.jar"/>
+        	<fileset file="${geco.dir}/readme.txt"/>
+        	<fileset file="${geco.dir}/LICENSE"/>
     		<fileset file="${geco.dir}/IOFdata.dtd"/>
     		<fileset dir="${geco.dir}" includes="help/"/>
     		<fileset dir="${geco.dir}" includes="data/template/"/>
