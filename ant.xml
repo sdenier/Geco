@@ -12,6 +12,7 @@
 		<delete>
 			<fileset dir="testData" includes="**/backups/*.zip"/>
 			<fileset dir="data" includes="**/backups/*.zip"/>
+			<fileset dir="demo" includes="**/backups/*.zip"/>
 		</delete>
     </target>
 	
@@ -56,5 +57,27 @@
     </target>
 	
     <target name="build_distrib" depends="build_jar">
+    	<zip destfile="${geco.dir}/geco${version.num}-${build.num}.zip">
+    		<fileset file="${geco.dir}/geco${version.num}-${build.num}.jar"/>
+    		<fileset file="${geco.dir}/IOFdata.dtd"/>
+    		<fileset dir="${geco.dir}" includes="help/"/>
+    		<fileset dir="${geco.dir}" includes="data/template/"/>
+    		<fileset dir="${geco.dir}" includes="data/sample_stages.prop"/>
+    	</zip>
 	</target>
+
+	<target name="build_demo" depends="build_jar">
+		<delete>
+			<fileset dir="demo" includes="**/backups/*.zip"/>
+		</delete>
+    	<zip destfile="${geco.dir}/geco${version.num}-${build.num}-demo.zip">
+    		<fileset file="${geco.dir}/geco${version.num}-${build.num}.jar"/>
+    		<fileset file="${geco.dir}/IOFdata.dtd"/>
+    		<fileset dir="${geco.dir}" includes="help/"/>
+    		<fileset dir="${geco.dir}" includes="data/template/"/>
+    		<fileset dir="${geco.dir}" includes="data/sample_stages.prop"/>
+    		<fileset dir="${geco.dir}" includes="demo/"/>
+    	</zip>
+	</target>
+
 </project>

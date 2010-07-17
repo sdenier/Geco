@@ -6,13 +6,18 @@ Geco is a lightweight application for managing orienteering races.
 It is written in Java and designed to be cross-platform (please report if you find platform issues).
 
 Geco is especially geared towards the Orient'Show format:
-- it provides advanced functions to explain MPs and count penalties (including butterfly miss)
+- it provides advanced functions to explain MPs and count penalties (including butterfly miss);
 - it manages heat qualifications.
 
-Geco UI is also designed to provide a lean user experience: navigate through race workflow using the top tabs, and access data by direct manipulation.
+Geco UI is also designed to provide a lean user experience: navigate through stage workflow using the top tabs, and access data by direct manipulation.
 
 ----------
-Install: you need the SportIdent drivers to read SI chips.
+Install: unzip the archive file (should be done if you can read this file).
+
+Geco runs with Java version 6 and above. It might run with Java version 5.
+You can download a JRE (Java Runtime Environment) from http://www.java.com
+
+you need the SportIdent drivers to read SI chips.
 – Windows: download available at http://www.sportident.com/
 – Linux: recent kernels recognize the chip used by SI station, so it’s plug’n’play.
 – Mac OS X: nothing out of the box, but it is easy to install some driver and get Mac OS to recognize the station (one line to hack). Contact me for the process.
@@ -20,7 +25,7 @@ Install: you need the SportIdent drivers to read SI chips.
 Launch: double-click on the jar file.
 
 ----------
-User documentation available under the help folder in html format.
+User documentation available under the help/ folder in html format.
 
 If you are experienced with orienteering softwares, you can jump-start using the application without the doc.
 Geco UI is designed to be very usable (there is still room for improvements): almost any actions available is visible, data accessible through direct manipulation, no hidden menus, no complicated workflow. 
@@ -29,8 +34,8 @@ Geco UI is designed to be very usable (there is still room for improvements): al
 Directory structure
 _
 |- geco*.jar: application
-|- data/: folder holding multiple stage folders (can be changed)
-|- data/stages.prop: sample file describing a multi-stage event
+|- data/: folder holding multiple stage folders (stage folders can be in any folder)
+|- data/sample_stages.prop: sample file describing a multi-stage event
 |- data/templates/: sample stage files editable with a spreadsheet application 
 |- help/: documentation in html format
 
