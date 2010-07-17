@@ -346,6 +346,7 @@ public class StagePanel extends TabPanel {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser chooser = new JFileChooser();
 				chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				chooser.setSelectedFile(new File(geco().getCurrentStagePath()));
 				chooser.setFileFilter(new FileFilter() {
 					@Override
 					public String getDescription() {
@@ -365,6 +366,7 @@ public class StagePanel extends TabPanel {
 							geco().stageControl().addCourse(course);	
 						}
 					} catch (Exception e1) {
+						e1.printStackTrace();
 						JOptionPane.showMessageDialog(frame(),
 								e1.getMessage(),
 								"Error loading XML",
