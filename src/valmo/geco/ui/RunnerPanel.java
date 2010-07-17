@@ -122,15 +122,17 @@ public class RunnerPanel extends GecoPanel {
 	public void createListeners() {
 		mergeDialogB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new MergeRunnerDialog(geco(), frame(), "Merge runner").showMergeDialogFor(
+				if( runnerData!=null ) {
+					new MergeRunnerDialog(geco(), frame(), "Merge runner").showMergeDialogFor(
 														runnerData.clone(), 
 														runner.getChipnumber());
+				}
 			}
 		});
 		resetRTimeB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if( control().resetRaceTime(runnerData) ){
+				if( runnerData!=null && control().resetRaceTime(runnerData) ){
 					parentContainer.refreshSelectionInTable();					
 				}
 			}
@@ -138,7 +140,7 @@ public class RunnerPanel extends GecoPanel {
 		recheckStatusB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if( control().resetStatus(runnerData) ){
+				if( runnerData!=null && control().resetStatus(runnerData) ){
 					parentContainer.refreshSelectionInTable();					
 				}
 			}
