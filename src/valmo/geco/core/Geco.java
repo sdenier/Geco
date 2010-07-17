@@ -13,9 +13,6 @@ import java.util.Date;
 import java.util.Properties;
 import java.util.Vector;
 
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-
 import valmo.geco.control.HeatBuilder;
 import valmo.geco.control.PenaltyChecker;
 import valmo.geco.control.RegistryStats;
@@ -30,6 +27,7 @@ import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Stage;
 import valmo.geco.model.impl.POFactory;
+import valmo.geco.ui.GecoLauncher;
 import valmo.geco.ui.GecoWindow;
 import valmo.geco.ui.MergeRunnerDialog;
 
@@ -42,7 +40,7 @@ import valmo.geco.ui.MergeRunnerDialog;
  */
 public class Geco {
 	
-	public static final String VERSION = "0.9b2"; 
+	public static final String VERSION = "1.0rc"; 
 	
 	private class RuntimeStage {
 		private Stage stage;
@@ -163,7 +161,10 @@ public class Geco {
 		stageBuilder = new StageBuilder(factory);
 		checker = new PenaltyChecker(factory);
 		
-		if( !importStage() ) {
+		try {
+			openStage(launcher());
+//			openStage("data/belfield");
+		} catch (Exception e) {
 			System.exit(-1);
 		}
 		
@@ -180,43 +181,39 @@ public class Geco {
 		window = new GecoWindow(this);
 	}
 
-	public boolean importStage() {
+	public void openStage(String baseDir) {
 		stopAutosave();
 		RuntimeStage oldStage = current;
-		try {
-			RuntimeStage newStage = loadStage(launcher());
-//			RuntimeStage newStage = loadStage("./data/belfield");
-			closeAllStages();
-			current = newStage;
-			updateStageList(stage().getBaseDir());
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
+
+		RuntimeStage newStage = loadStage(baseDir);
+		closeAllStages();
+		current = newStage;
+		updateStageList(stage().getBaseDir());
+
 		announcer.announceChange(getStage(oldStage), stage());
 		startAutosave();
-		return true;
 	}
 
 	private String launcher() throws Exception {
-		JFileChooser chooser = new JFileChooser();
-		chooser.setCurrentDirectory(new File("./data"));
-		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		int result = chooser.showOpenDialog(null);
-		if( result==JFileChooser.CANCEL_OPTION || result==JFileChooser.ERROR_OPTION ) {
-			throw new Exception("Cancelled import");
-		}
-		String baseDir = chooser.getSelectedFile().getAbsolutePath();
-		if( !new File(baseDir + File.separator + "Competition.csv").exists()
-			&&
-			!new File(baseDir + File.separator + "geco.prop").exists() ) {
-			JOptionPane.showMessageDialog(null,
-										"Directory does not contain data",
-										"Exit",
-										JOptionPane.ERROR_MESSAGE);
-			throw new Exception("Incorrect directory");
-		}
-		return baseDir;
+		return new GecoLauncher(System.getProperty("user.dir")).open(null);
+//		JFileChooser chooser = new JFileChooser();
+//		chooser.setCurrentDirectory(new File("./data"));
+//		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+//		int result = chooser.showOpenDialog(null);
+//		if( result==JFileChooser.CANCEL_OPTION || result==JFileChooser.ERROR_OPTION ) {
+//			throw new Exception("Cancelled import");
+//		}
+//		String baseDir = chooser.getSelectedFile().getAbsolutePath();
+//		if( !new File(baseDir + File.separator + "Competition.csv").exists()
+//			&&
+//			!new File(baseDir + File.separator + "geco.prop").exists() ) {
+//			JOptionPane.showMessageDialog(null,
+//										"Directory does not contain data",
+//										"Exit",
+//										JOptionPane.ERROR_MESSAGE);
+//			throw new Exception("Incorrect directory");
+//		}
+//		return baseDir;
 	}
 
 	private RuntimeStage loadStage(String baseDir) {
@@ -251,8 +248,8 @@ public class Geco {
 			} catch (IOException e) {
 				logger().debug(e);
 			}
-			updateStageIndex(baseDir);
 		}
+		updateStageIndex(baseDir);
 	}
 	private String fileInParentDir(String filename) {
 		return parentDir + File.separator + filename;

@@ -10,9 +10,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.net.URL;
+import java.util.Hashtable;
 import java.util.Properties;
 
 import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -47,6 +51,38 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 
 	private HeatsPanel heatsPanel;
 
+	private JButton nextB;
+
+	private JButton previousB;
+
+	private static final String THEME = "crystal/";
+
+	private static Hashtable<String,String[]> ICONS;
+
+	{
+		ICONS = new Hashtable<String, String[]>();
+//		ICONS.put("tango/", new String[] {
+//			"document-open.png",
+//			"document-save.png",
+//			"go-previous.png",
+//			"go-next.png",
+//			"view-refresh.png",
+//			"media-record.png",
+//			"process-stop.png"
+//		});
+		ICONS.put("crystal/", new String[] {
+			"folder_new.png",
+			"folder_sent_mail.png",
+//			"previous.png",
+//			"next.png",
+			"undo.png",
+			"redo.png",
+			"quick_restart.png",
+			"cnr.png",
+//			"logout.png"
+			"exit.png"
+		});
+	}
 	
 	public GecoWindow(Geco geco) {
 		this.geco = geco;
@@ -83,6 +119,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 	public void guiInit() {
 		updateWindowTitle();
 		getContentPane().add(initToolbar(), BorderLayout.NORTH);
+		checkButtonsStatus();
 		JTabbedPane pane = new JTabbedPane();
 		pane.addTab("Stage", this.stagePanel);
 		pane.setMnemonicAt(0, KeyEvent.VK_S);
@@ -118,15 +155,19 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 	private JToolBar initToolbar() {
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);
-		JButton importB = new JButton("import");
-		importB.addActionListener(new ActionListener() {
+		JButton openB = new JButton("New/Open", createIcon(0));
+		openB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				geco.importStage();
+				try {
+					geco.openStage(new GecoLauncher(new File(geco.getCurrentStagePath()).getParentFile()).open(GecoWindow.this));
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
-		toolBar.add(importB);
-		JButton saveB = new JButton("save");
+		toolBar.add(openB);
+		JButton saveB = new JButton("Save", createIcon(1));
 		toolBar.add(saveB);
 		saveB.addActionListener(new ActionListener() {
 			@Override
@@ -135,7 +176,8 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 			}
 		});
 		toolBar.addSeparator();
-		JButton previousB = new JButton("previous stage");
+		
+		previousB = new JButton("Previous stage", createIcon(2));
 		previousB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -143,7 +185,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 			}
 		});
 		toolBar.add(previousB);
-		JButton nextB = new JButton("next stage");
+		nextB = new JButton("Next stage", createIcon(3));
 		nextB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -152,7 +194,8 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 		});
 		toolBar.add(nextB);
 		toolBar.addSeparator();
-		JButton statusB = new JButton("Recheck All");
+		
+		JButton statusB = new JButton("Recheck All", createIcon(4));
 		statusB.setToolTipText("Recheck all OK/MP to update statuses");
 		statusB.addActionListener(new ActionListener() {
 			@Override
@@ -162,7 +205,9 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 		});
 		toolBar.add(statusB);
 		toolBar.add(Box.createHorizontalGlue());
-		final JButton startB = new JButton("Start reader");
+		final ImageIcon startIcon = createIcon(5);
+		final ImageIcon stopIcon = createIcon(6);
+		final JButton startB = new JButton("Start reader", startIcon);
 		startB.addActionListener(new ActionListener() {
 			private boolean started = false;
 			@Override
@@ -171,10 +216,12 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 					geco.siHandler().stop();
 					startB.setSelected(false);
 					startB.setText("Start reader");
+					startB.setIcon(startIcon);
 				} else {
 					geco.siHandler().start();
 					startB.setSelected(true);
 					startB.setText("Stop reader");
+					startB.setIcon(stopIcon);
 				}
 				started = !started;
 			}
@@ -183,10 +230,33 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 		toolBar.add(new JLabel(" v" + Geco.VERSION));
 		return toolBar;
 	}
+	
+	public ImageIcon createIcon(int i) {
+		return createImageIcon(THEME, ICONS.get(THEME)[i]);
+	}
+	
+	public ImageIcon createImageIcon(String theme, String path) {
+		URL url = getClass().getResource("/resources/icons/" + theme + path);
+		return new ImageIcon(url);
+	}
 
 	@Override
 	public void changed(Stage previous, Stage next) {
 		updateWindowTitle();
+		checkButtonsStatus();
+	}
+
+	private void checkButtonsStatus() {
+		if( geco.hasPreviousStage() ) {
+			previousB.setEnabled(true);
+		} else {
+			previousB.setEnabled(false);
+		}
+		if( geco.hasNextStage() ) {
+			nextB.setEnabled(true);
+		} else {
+			nextB.setEnabled(false);
+		}
 	}
 
 	@Override

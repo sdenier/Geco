@@ -14,11 +14,11 @@ import com.jdotsoft.jarloader.JarClassLoader;
  * @since Jun 12, 2010
  *
  */
-public class GecoLauncher {
+public class GecoLoader {
 
 	public static void main(String[] args) {
 		try {
-			PrintStream ps = new PrintStream("error.log");
+			PrintStream ps = new PrintStream("gecoerror.log");
 			System.setErr(ps);
 			System.setOut(ps);
 		} catch (FileNotFoundException e) {

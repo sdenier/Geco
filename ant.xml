@@ -6,7 +6,7 @@
 	<property name="sireader.dir" value="${basedir}/../SIReader"/>
 
 	<property name="dev.username" value="Simon Denier"/>
-	<property name="version.num" value="09b2"/>
+	<property name="version.num" value="10rc"/>
 	<property name="hg.cmdpath" value="/usr/local/bin/hg"/>
 	
     <target name="cleanBackups">
@@ -44,14 +44,17 @@
     <target name="build_jar" depends="build_SIReader,buildnumber">
         <jar destfile="${geco.dir}/geco${version.num}-${build.num}.jar" filesetmanifest="mergewithoutmain">
             <manifest>
-                <attribute name="Main-Class" value="valmo.geco.GecoLauncher"/>
+                <attribute name="Main-Class" value="valmo.geco.GecoLoader"/>
                 <attribute name="Class-Path" value="."/>
             	<attribute name="Built-By" value="${dev.username}"/>
             	<attribute name="Built-Date" value="${TODAY}"/> 
                	<attribute name="Implementation-Version" value="${version.num}-${build.num}"/>
             </manifest>
-            <fileset dir="${geco.dir}/bin" excludes="${geco.dir}/bin/test/**.class"/>
+            <fileset dir="${geco.dir}/bin"/>
             <fileset file="${sireader.dir}/SIReader.jar"/>
         </jar>
     </target>
+	
+    <target name="build_distrib" depends="build_jar">
+	</target>
 </project>

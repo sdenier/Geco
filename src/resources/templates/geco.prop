@@ -1,0 +1,6 @@
+name=Stage Name
+MPLimit=0
+MPPenalty=0
+AutosaveDelay=2
+NbAutoBackups=9
+SIPortname=/dev/tty.SLAB_USBtoUART
