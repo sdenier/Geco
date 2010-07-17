@@ -1,0 +1,6 @@
+== edit file with stage folders in order (one per line)
+== remove the three lines starting with ==
+== save this file as "stages.prop" in the parent folder of all stages
+folder_stage1
+folder_stage2
+folder_stage3

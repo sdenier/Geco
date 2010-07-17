@@ -1,22 +1,8 @@
 
 syntax: regexp
-^src/EventSerialComm\.java$
-syntax: regexp
-^src/EventSerialComm\.java$
-syntax: regexp
-^src/TwoWaySerialComm\.java$
-syntax: regexp
-^activeobjects-0\.8\.2$
-syntax: regexp
-^src/SimpleWrite\.java$
-syntax: regexp
 ^activeobjects-0\.8\.2$
 syntax: regexp
 ^mysql-connector-java-5\.1\.7$
-syntax: regexp
-^rxtx$
-syntax: regexp
-^data$
 syntax: regexp
 ^archives$
 syntax: regexp
@@ -27,3 +13,13 @@ syntax: regexp
 ^doc/user/wg/webgen\.cache$
 syntax: regexp
 ^dev\.prop$
+syntax: regexp
+^demo$
+syntax: regexp
+^data/IOFdata-2\.0\.3$
+syntax: regexp
+^data/training03042010$
+syntax: regexp
+^data/licencesFFCO_HorsRaid\.csv$
+syntax: regexp
+^data/licencesFFCO\.csv$
