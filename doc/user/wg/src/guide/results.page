@@ -2,11 +2,10 @@
 title: Results
 sort_info: 6
 in_menu: true
-routed_title: New webgen Website
 ---
-## Results Panel
+# Results Panel
 
-<img src="images/results_panel.png" />
+<img src="../images/results_panel.png" />
 
 The results panel can generate results from current data at any time during a race.
 

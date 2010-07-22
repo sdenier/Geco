@@ -1,92 +1,364 @@
-/* andreas07 - an open source xhtml/css website layout by Andreas Viklund - http://andreasviklund.com . Free to use for any purpose as long as the proper credits are given for the original design work.
+/* andreas06 - an open source xhtml/css website layout by Andreas Viklund - http://andreasviklund.com . Free to use for any purpose as long as the proper credits are given for the original design work.
 
 Version: 1.1, November 28, 2005 */
 
-/**************** Page and tag styles ****************/
+body{
+background:#e0e0e0 url(images/bodybg.gif) repeat-x;
+color:#505050;
+font:76% Georgia,Verdana,Tahoma,Arial,sans-serif;
+margin:0;
+padding:0;
+text-align:center;
+}
 
-body
-{margin:0; padding:0; color:#303030; background:#fafafa url(images/bodybg.gif) top left repeat-y; font:76% Verdana,Tahoma,sans-serif;}
+p{
+line-height:1.5em;
+margin:0 0 15px;
+}
 
-ul
-{list-style:circle; margin:15px 0 20px 0; font-size:0.9em;}
+a{
+color:#fa9035;
+font-weight:700;
+text-decoration:none;
+}
 
-li
-{margin:0 0 8px 25px;}
+a:hover{
+color:#d04a10;
+}
 
-a
-{color:#d85d5d; font-weight:bold; text-decoration:none;}
+hr{
+height:1px;
+margin:10px 0;
+width:98%;
+}
 
-a:hover
-{color:#505050; text-decoration:underline;}
+dt{
+font-weight:700;
+}
 
-img
-{float:left; margin:0 15px 15px 0; padding:1px; background:#ffffff; border:1px solid #d0d0d0;}
+dd{
+margin:1px 0 12px 15px;
+}
 
-a img
-{border-color:#d85d5d;}
+#container{
+background:#c0c0c0 url(images/bodybg.gif) repeat-x;
+margin:0 auto;
+text-align:left;
+width:752px;
+}
 
-a img:hover
-{background:#d85d5d; border-color:#d85d5d;}
+#sitename{
+background:url(images/leaves.jpg) top center no-repeat;
+color:#ffffff;
+font-weight:400;
+height:80px;
+margin:0 20px 10px 0;
+text-align:center;
+}
 
-/**************** Sidebar area styles ****************/
+#sitename h1{
+font-size:2.2em;
+margin:0;
+padding-top:20px;
+}
 
-#sidebar
-{position:absolute; top:0; left:0; width:220px; height:100%; overflow:auto; background:#e0e0e0 url(images/sidebarbg.gif) top right repeat-y; text-align:right;}
+#sitename span{
+font-size:1.6em;
+letter-spacing:-1px;
+margin:0;
+}
 
-body > #sidebar
-{position:fixed;}
+#nav{
+background:url(images/greypx.gif) bottom left repeat-x;
+float:left;
+width:752px;
+}
 
-#sidebar h1
-{margin:20px 18px 0 5px; color:#d85d5d; font-size:1.6em; letter-spacing:-2px; text-align:right;}
+#nav ul, #nav li{
+list-style:none;
+margin:0;
+padding:0;
+}
 
-#sidebar h2, #sidebar h3
-{margin:0 20px 18px 5px; color:#808080; font-size:1.1em; font-weight:bold; letter-spacing:-1px; text-align:right;}
+#nav a, #nav span {
+background:url(images/tabs.gif) no-repeat 100% 0;
+color:#808080;
+display:block;
+font-size:1.2em;
+font-weight: 700;
+letter-spacing:-1px;
+padding:7px 20px 4px 11px;
+text-decoration:none;
+}
 
-#sidebar h3
-{margin:20px 18px 4px 5px; color:#606060;}
+#nav a:hover{
+color:#505050;
+}
 
-#sidebar  p
-{margin:0 20px 18px 5px; color:#606060; font-size:0.8em;}
+#nav li{
+background:url(images/tabs.gif) no-repeat 0 0;
+float:left;
+margin:0 4px 0 0;
+padding:0 0 0 9px;
+}
 
-#sidebar a
-{color:#808080}
+#nav li.webgen-menu-item-selected, #nav li.webgen-menu-submenu-inhierarchy {
+background:url(images/tabs.gif) no-repeat 0 -41px;
+}
 
-#sidebar ul
-{margin-right: 20px; margin-left: 5px; list-style-type: none;}
+#nav li.webgen-menu-item-selected a, #nav li.webgen-menu-submenu-inhierarchy a, #nav li.webgen-menu-submenu-inhierarchy span, #nav li.webgen-menu-item-selected span {
+background:url(images/tabs.gif) no-repeat 100% -41px;
+color:#303030;
+padding:7px 20px 5px 11px;
+}
 
-#sidebar li
-{margin: 0px; padding-left: 5px;}
+#wrap1{
+background:#ffffff url(images/innerbg.gif) repeat-y;
+border-bottom:1px solid #808080;
+border-left:1px solid #808080;
+border-right:1px solid #808080;
+clear:both;
+padding:0;
+width:750px;
+}
 
-/**************** Navigation menu styles ****************/
+#wrap2{
+background:url(images/header.jpg) top left no-repeat;
+padding:10px;
+width:730px;
+}
 
-#menu ul
-{list-style-type: none; margin: 0px; padding: 0px; font-size: 1.0em;}
+#header{
+height:30px;
+position:relative;
+width:730px;
+}
 
-#menu li
-{margin: 0px; padding: 0px}
+#header h1{
+float:left;
+font-size:1.4em;
+margin:0;
+width:180px;
+}
 
-#menu a,  #menu span
-{display:block; width:202px; padding:5px 18px 5px 0; color:#606060; background:#e0e0e0 url(images/sidebarbg.gif) top right repeat-y; font-size:1.8em; font-weight:normal; text-decoration:none; letter-spacing:-2px;}
+#topbox{
+color:#808080;
+margin:0 0 4px;
+text-align:right;
+}
 
-#menu a:hover, #menu span:hover
-{color:#303030; background:#f0f0f0 url(images/sidebarbg.gif) top right repeat-y;}
+#topbox a{
+color:#d04a10;
+}
 
-#menu li.webgen-menu-item-selected a, #menu li.webgen-menu-item-selected span
-{padding:5px 18px 5px 0; background:#fafafa; border-top:2px solid #c0c0c0; border-bottom:2px solid #c0c0c0;}
+#topbox a:hover{
+text-decoration:underline;
+}
 
-#menu li.webgen-menu-item-selected a:hover, #menu li.webgen-menu-item-selected span:hover
-{color:#505050; background:#fafafa;}
+#leftside{
+float:left;
+margin:-15px 0 0;
+width:145px;
+}
 
-/**************** Content area styles ****************/
+#leftside h1{
+font-size:1.4em;
+font-weight:400;
+}
 
-#content
-{width:520px; margin:0 0 0 240px; padding:20px 0; background:#fafafa;}
+#rightside{
+float:right;
+margin:40px 15px 20px 0;
+width:130px;
+}
 
-#content p
-{margin:0 0 20px 0; line-height:1.5em;}
+#rightside h1{
+font-size:1.4em;
+font-weight:400;
+margin:0 0 12px;
+}
 
-#content h1
-{margin:0; color:#808080; font-weight:normal; font-size:2.5em; letter-spacing:-2px; text-align:center;}
+#rightside p{
+font-size:0.9em;
+margin:2px 0 12px 10px;
+}
 
-#content h2
-{clear:both; margin:30px 0 10px 0; color:#d85d5d; font-weight:normal; font-size: 2em; letter-spacing:-2px;}
+#rightside img{
+border:1px solid #fa9035;
+margin:10px 0 5px 5px;
+padding:2px;
+}
+
+#content{
+margin:45px 160px 0 180px;
+}
+
+#contentalt{
+margin:45px 30px 0 195px;
+}
+
+#content p,#contentalt p{
+margin:8px 0 0 10px;
+}
+
+#content h1,#contentalt h1{
+color:#505050;
+font-size:2em;
+font-weight:400;
+margin:15px 0 10px;
+padding:0;
+}
+
+#content h2,#contentalt h2{
+color:#505050;
+font-size:1.5em;
+font-weight:400;
+margin:20px 0 10px;
+padding:0;
+}
+
+#content img,#contentalt img{
+float:left;
+margin:15px 0px 30px;
+width:500px;
+}
+
+#content a img,#contentalt a img{
+border:1px solid #fa9035;
+}
+
+#footer{
+clear:both;
+color:#a0a0a0;
+font-size:0.9em;
+height:26px;
+margin-top:20px;
+padding:1px;
+text-align:right;
+width:730px;
+}
+
+#footer a{
+color:#a0a0a0;
+font-weight:400;
+}
+
+#footer a:hover{
+color:#a0a0a0;
+text-decoration:underline;
+}
+
+.menublock{
+margin-bottom:10px;
+}
+
+#leftside #submenu ul, #leftside #links ul {
+margin: 0px;
+padding: 0px;
+list-style-type: none;
+}
+
+#leftside #submenu li, #leftside #links li {
+margin: 0px;
+padding: 0px;
+}
+
+#leftside #links ul a {
+padding:2px 2px 2px 10px;
+}
+
+.nav, #leftside #submenu ul a, #leftside #submenu ul span {
+color:#d04a10;
+display:block;
+font-size:1.1em;
+font-weight:700;
+margin-bottom:1px;
+padding:2px 2px 2px 10px;
+position:relative;
+text-decoration:none;
+width:125px;
+}
+
+.nav:hover, #leftside #submenu ul a:hover, #leftside #submenu ul span:hover,
+#leftside #submenu ul li.webgen-menu-item-selected a, #leftside #submenu ul li.webgen-menu-item-selected span {
+border:1px solid #fa9035;
+color:#505050;
+padding:1px 1px 1px 9px;
+}
+
+.sub, #leftside #submenu ul ul a, #leftside #submenu ul ul span {
+font-size:0.9em;
+margin-left:20px;
+padding:1px 1px 1px 6px;
+width:105px;
+}
+
+.sub:hover, #leftside #submenu ul ul a:hover, #leftside #submenu ul ul span:hover,
+#leftside #submenu ul ul li.webgen-menu-item-selected a, #leftside #submenu ul ul li.webgen-menu-item-selected span {
+border:1px solid #fa9035;
+color:#505050;
+padding:0 0 0 5px;
+}
+
+.intro{
+font-weight:700;
+}
+
+.active{
+border:1px solid #fa9035;
+padding:1px 1px 1px 9px;
+}
+
+.box{
+background:#f8f8f8 url(images/boxbg.gif) top left repeat-y;
+border:1px solid #d0d4d4;
+color:#505050;
+margin:15px auto;
+padding:10px 10px 10px 20px;
+width:75%;
+}
+
+.photo{
+margin:5px auto 15px;
+padding:5px;
+}
+
+.smallcaps{
+font-variant:small-caps;
+}
+
+.mini{
+color:#a0a0a0;
+font-size:0.75em;
+font-weight:400;
+line-height:1.2em;
+margin:20px 0 10px 8px;
+}
+
+.small{
+font-size:0.85em;
+}
+
+.large{
+font-size:1.4em;
+}
+
+.soft{
+color:#808080;
+}
+
+.normal{
+font-weight:400;
+}
+
+.sharp{
+color:#101010;
+}
+
+.center{
+text-align:center;
+}
+
+.hide{
+display:none;
+}

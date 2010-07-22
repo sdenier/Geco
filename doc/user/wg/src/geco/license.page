@@ -1,0 +1,20 @@
+---
+title: License
+sort_info: 4
+in_menu: true
+routed_title: Geco
+
+---
+#License
+
+Original parts of this program are distributed under the MIT license. See LICENSE file for details.
+Open-source code is available at [http://bitbucket.org/sdenier/geco](http://bitbucket.org/sdenier/geco)
+
+SIReader library kindly provided by Martin Flynn, many thanks to him!
+Visit his software Òr on [http://orienteering.ie/wiki/doku.php?id=or:index](http://orienteering.ie/wiki/doku.php?id=or:index)
+
+SIReader uses the RXTX library, released under LGPL.
+See website for details [http://www.rxtx.org/](http://www.rxtx.org/)
+
+Icons come from the Crystal Project Icons, released under LGPL, designed by Everaldo Coelho.
+See [http://everaldo.com/crystal](http://everaldo.com/crystal)

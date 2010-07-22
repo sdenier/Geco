@@ -2,17 +2,16 @@
 title: Runners
 sort_info: 4
 in_menu: true
-routed_title: New webgen Website
 ---
-## Runners Panel
+# Runners Panel
 
-<img src="images/runners_panel.png" />
+<a href="../images/runners_panel.png"><img src="../images/runners_panel.png" /></a>
 
 The runners panel is the central place for managing runners data.
 
-It is organized in two subpanes. Top pane holds a table which shows all runners with a summary of data. Bottom pane can hold either detailed information for the selected runner in top pane, or [statistics](Live) of the race.
+It is organized in two subpanes. Top pane holds a table which shows all runners with a summary of data. Bottom pane can hold either detailed information for the selected runner in top pane, or [statistics](live.html) of the race.
 
-### Runners Table
+## Runners Table
 
 The table gives a general overview of all competitors registered in the race and displays a summary of information for each runner. It allows one to sort, filter information, or select a runner for edition. Selecting a runner updates the edition pane below with more detailed information, where it can be modified. Data can not be edited directly in the table.
 
@@ -23,7 +22,7 @@ The table gives a general overview of all competitors registered in the race and
 It is recommended to perform mass registration with a spreadsheet application. The table is only adapted to registration and modification on the fly, during the race.
 
 
-### Runner Edition Pane
+## Runner Edition Pane
 
 The runner edition pane shows detailed information about the currently selected runner in the table and allows one to edit information. It displays general information about the name, club, category, course, and chip number, but also the status, official time, and trace of punches once the runner has downloaded his/her chip.
 
@@ -35,20 +34,20 @@ You can freely edit the first name, last name, club, and category of the runner.
 - erase, control, start, and finish time are not editable - they only have informative value
 - consequently, race time always displays the real race time of the runner if available, that is *finish - start*
 - status can be changed manually if necessary
--- Unknown: runner registered but no race data available - runner may still be racing
--- DNS: Did Not Start
--- DNF: Did Not Finish
--- DSQ: Disqualified
--- OK
--- MP: Missing Punch
+  - Unknown: runner registered but no race data available - runner may still be racing
+  - DNS: Did Not Start
+  - DNF: Did Not Finish
+  - DSQ: Disqualified
+  - OK
+  - MP: Missing Punch
 - MP field shows the number of MPS detected by Geco algorithm - not editable, as well as the time penaly
 - official time is used to compute the results - it can be edited by hand if necessary
 - *reset buttons* allows one to easily come back to computed values after manual modification
--- refresh status computes the status based on punches and course
--- reset time compute the official time based on race time and penalties
--- global actions like *Recheck all* might trigger a status change, even if it has been manually changed. Be careful!
+  - refresh status computes the status based on punches and course
+  - reset time compute the official time based on race time and penalties
+  - global actions like *Recheck all* might trigger a status change, even if it has been manually changed. Be careful!
 
-#### Punches
+### Punches
 The right part of the pane displays the list of controls for the course compared with the list of punches (control code and punch time) of the runner. It is an informative panel of great help to understand and explain why/where a runner mispunched. Geco uses a sophisticated algorithm to detect accurately mispunches, even in the case of butterfly loop.
 
 - a missing control is displayed in red with a *-* sign in front
@@ -56,11 +55,11 @@ The right part of the pane displays the list of controls for the course compared
 - in some cases, the control is displayed in red as *-X+Y*: this is a mispunch best explained as a substitution, the runner took control Y instead of X
 - in the case illustrated, we also see an inversion: the runner took 185 before 184, while he should have go the other way.
 
-#### Merge Dialog
+### Merge Dialog
 Clicking this button opens the *Merge dialog* on the currently selected runner.
 
 
-### Statistics Pane
-See the [Log](live) page for how to use the statistics.
+## Statistics Pane
+See the [Live] page for how to use the statistics.
 
 [Live]: live.html

@@ -56,7 +56,7 @@
         </jar>
     </target>
 	
-    <target name="build_distrib" depends="build_jar">
+    <target name="build_distrib" depends="build_jar,userHelp">
     	<zip destfile="${geco.dir}/geco${version.num}-${build.num}.zip">
     		<fileset file="${geco.dir}/geco${version.num}-${build.num}.jar"/>
     		<fileset file="${geco.dir}/readme.txt"/>
@@ -68,7 +68,7 @@
     	</zip>
 	</target>
 
-	<target name="build_demo" depends="build_jar">
+	<target name="build_demo" depends="build_jar,userHelp">
 		<delete>
 			<fileset dir="demo" includes="**/backups/*.zip"/>
 		</delete>
