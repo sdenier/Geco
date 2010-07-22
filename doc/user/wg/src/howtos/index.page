@@ -7,7 +7,7 @@ routed_title: How-tos
 
 # Create and fill in registrations
 - create a new folder for your stage
-- copy a virgin set of data files from data/templates
+- copy a virgin set of data files from `data/template`
 - use a spreadsheet application to fill in templates with course data, runners registration, etc.
 - open Geco on the folder
 

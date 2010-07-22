@@ -21,7 +21,8 @@
     </target>
 	
 	<target name="userHelp" depends="webgen">
-    	<mkdir dir="help" />
+    	<delete dir="help" />
+		<mkdir dir="help" />
     	<copy todir="help">
     		<fileset dir="${wg.dir}/out" />
 		</copy>
