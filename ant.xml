@@ -69,7 +69,7 @@
     	</zip>
 	</target>
 
-	<target name="build_demo" depends="build_jar,userHelp">
+	<target name="build_demo" depends="cleanBackups,build_jar,userHelp">
 		<delete>
 			<fileset dir="demo" includes="**/backups/*.zip"/>
 		</delete>
