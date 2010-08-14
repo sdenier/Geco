@@ -8,7 +8,6 @@ import valmo.geco.core.TimeManager;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Punch;
 import valmo.geco.model.RunnerRaceData;
-import valmo.geco.model.RunnerResult;
 import valmo.geco.model.Status;
 
 /**
@@ -24,32 +23,22 @@ public class PunchChecker extends Control {
 	}
 
 	public void check(RunnerRaceData data) {
-		int[] codes = data.getCourse().getCodes();
-		Punch[] punches = data.getPunches();
-		Status status = checkCodes(codes, punches);
-		long racetime = computeRaceTime(data);
+		data.setResult(factory().createRunnerResult());
+
+		Status status = computeStatus(data);
+		long racetime = computeOfficialRaceTime(data);
 		if( racetime==TimeManager.NO_TIME.getTime() ) {
 			status = Status.MP;
 		}
-		RunnerResult result = factory().createRunnerResult();
-		result.setStatus(status);
-		result.setRacetime(racetime);
-		data.setResult(result);
+		data.getResult().setStatus(status);
+		data.getResult().setRacetime(racetime);
 	}
 
-	public void resetRaceTime(RunnerRaceData data) {
-		if( data.getResult()==null ) { // possible dead branch, but too complex to assert
-			check(data);
-		} else {
-			data.getResult().setRacetime(computeRaceTime(data));
-		}
+	public long computeOfficialRaceTime(RunnerRaceData data) {
+		return computeRealRaceTime(data);
 	}
-	
-	/**
-	 * @param data
-	 * @return
-	 */
-	public long computeRaceTime(RunnerRaceData data) {
+
+	public final long computeRealRaceTime(RunnerRaceData data) {
 		if( data.getFinishtime().equals(TimeManager.NO_TIME) ) {
 			return TimeManager.NO_TIME.getTime();
 		}
@@ -57,6 +46,18 @@ public class PunchChecker extends Control {
 			return TimeManager.NO_TIME.getTime();
 		}
 		return data.getFinishtime().getTime() - data.getStarttime().getTime();
+	}
+
+	public void resetRaceTime(RunnerRaceData data) {
+		if( data.getResult()==null ) { // possible dead branch
+			check(data);
+		} else {
+			data.getResult().setRacetime(computeOfficialRaceTime(data));
+		}
+	}
+
+	protected Status computeStatus(RunnerRaceData data) {
+		return checkCodes(data.getCourse().getCodes(), data.getPunches());
 	}
 
 	/**

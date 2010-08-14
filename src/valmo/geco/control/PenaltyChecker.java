@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.Properties;
 import java.util.Vector;
 
+import valmo.geco.core.TimeManager;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Punch;
 import valmo.geco.model.RunnerRaceData;
@@ -48,20 +49,31 @@ public class PenaltyChecker extends PunchChecker {
 		setNewProperties();
 	}
 	
+	/*
+	 * This method has side-effect.
+	 */
+	@Override
+	protected Status computeStatus(RunnerRaceData data) {
+		Status status = super.computeStatus(data);
+		data.getResult().setNbMPs(this.nbMP);
+		data.getResult().setTrace(this.trace.toArray(new Trace[0]));
+		return status;
+	}
 	
 	@Override
-	public void check(RunnerRaceData data) {
-		super.check(data);
-		data.getResult().setNbMPs(this.nbMP);
-		data.getResult().setTrace(this.trace.toArray(new Trace[0]));
+	public long computeOfficialRaceTime(RunnerRaceData data) {
+		long time = super.computeOfficialRaceTime(data);
+		if( time==TimeManager.NO_TIME.getTime() ) {
+			return time;
+		}
+		time += timePenalty(data.getResult().getNbMPs());
+		return time;
 	}
-	
-	public void buildTrace(RunnerRaceData data) {
-		checkCodes(data.getCourse().getCodes(), data.getPunches());
-		data.getResult().setNbMPs(this.nbMP);
-		data.getResult().setTrace(this.trace.toArray(new Trace[0]));
+
+	public long timePenalty(int nbMPs) {
+		return nbMPs * getMPPenalty();
 	}
-	
+
 	/**
 	 * This is a utility method to build a trace without checking codes, typically because
 	 * the data comes from an unknown chip without a course.
@@ -168,7 +180,7 @@ public class PenaltyChecker extends PunchChecker {
 	}
 	
 
-	public String[] trace(int[] codes, Punch[] punches, int[][] matrix) {
+	private String[] trace(int[] codes, Punch[] punches, int[][] matrix) {
 		StringBuffer path = new StringBuffer();
 		int i = codes.length - 1;
 		int j = punches.length - 1;
@@ -247,7 +259,6 @@ public class PenaltyChecker extends PunchChecker {
 					}
 				}
 			}
-//			path.insert(0, ",");
 		}
 		while( i>=0 ) {
 			path.add(0, factory().createTrace("-" + codes[i], new Date(0)));
@@ -258,21 +269,8 @@ public class PenaltyChecker extends PunchChecker {
 			j--;
 		}
 		return path;
-//		return path.substring(1).split(",");
 	}
 
-	@Override
-	public long computeRaceTime(RunnerRaceData data) {
-		long time = super.computeRaceTime(data);
-		time += timePenalty(this.nbMP);
-		return time;
-	}
-
-
-	public long timePenalty(int nbMPs) {
-		return nbMPs * getMPPenalty();
-	}
-	
 	public int defaultMPLimit() {
 		return 0;
 	}

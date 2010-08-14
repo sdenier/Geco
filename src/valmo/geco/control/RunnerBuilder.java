@@ -43,7 +43,7 @@ public class RunnerBuilder extends Control {
 		checkNoDataRunners();
 		// compute trace for data
 		for (RunnerRaceData raceData : registry().getRunnersData()) {
-			checker.buildTrace(raceData);	
+			checker.computeStatus(raceData);	
 		}
 	}
 	
