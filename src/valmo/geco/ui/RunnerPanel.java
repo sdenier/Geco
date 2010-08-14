@@ -80,7 +80,7 @@ public class RunnerPanel extends GecoPanel {
 //		cTimeF.setText(TimeManager.fullTime(runnerData.getControltime()));
 //		sTimeF.setText(TimeManager.fullTime(runnerData.getStarttime()));
 //		fTimeF.setText(TimeManager.fullTime(runnerData.getFinishtime()));
-		realTimeF.setText(TimeManager.time(geco().checker().computeRaceTime(runnerData)));
+		displayRacetime();
 		int nbMPs = runnerData.getResult().getNbMPs();
 		mpF.setText(Integer.toString(nbMPs));
 		penaltyF.setText(TimeManager.time(geco().checker().timePenalty(nbMPs)));
@@ -94,6 +94,14 @@ public class RunnerPanel extends GecoPanel {
 		} else {
 			timeF.setBackground(Color.white);
 		}
+	}
+
+	private void displayRacetime() {
+		realTimeF.setText(TimeManager.time(geco().checker().computeRealRaceTime(runnerData)));
+		if( geco().checker().computeOfficialRaceTime(runnerData) != runnerData.getResult().getRacetime() ) {
+			realTimeF.setBackground(new Color(1, 1, 0.5f));
+		} else
+			realTimeF.setBackground(Color.white);
 	}
 	
 	public void createComponents() {
@@ -133,7 +141,8 @@ public class RunnerPanel extends GecoPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if( runnerData!=null && control().resetRaceTime(runnerData) ){
-					parentContainer.refreshSelectionInTable();					
+					parentContainer.refreshSelectionInTable();
+					displayRacetime(); // update background color
 				}
 			}
 		});
@@ -170,7 +179,7 @@ public class RunnerPanel extends GecoPanel {
 				sTimeF,
 				new JLabel("Finish time"),
 				fTimeF,
-				new JLabel("Race time"),
+				new JLabel("Real race time"),
 				realTimeF,
 				new JLabel("MPs"),
 				mpF,
