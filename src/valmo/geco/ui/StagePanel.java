@@ -19,7 +19,9 @@ import java.util.TimeZone;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.InputVerifier;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -91,8 +93,18 @@ public class StagePanel extends TabPanel {
 		stagenameF.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				geco().stage().setName(stagenameF.getText());
-				((GecoWindow) frame()).updateWindowTitle();
+				validateStagename(stagenameF);
+			}
+		});
+		stagenameF.setInputVerifier(new InputVerifier() {
+			@Override
+			public boolean verify(JComponent input) {
+				System.out.println("check");
+				return verifyStagename(stagenameF.getText());
+			}
+			@Override
+			public boolean shouldYieldFocus(JComponent input) {
+				return validateStagename(stagenameF);
 			}
 		});
 		panel.add(stagenameF, c);
@@ -110,6 +122,21 @@ public class StagePanel extends TabPanel {
 		panel.add(nextF, c);
 		return titlePanel(panel, "Stage");
 	}
+	
+	private boolean verifyStagename(String text) {
+		return ! text.trim().isEmpty();
+	}
+	private boolean validateStagename(JTextField stagenameF) {
+		if( verifyStagename(stagenameF.getText()) ){
+			geco().stage().setName(stagenameF.getText().trim());
+			((GecoWindow) frame()).updateWindowTitle();
+			return true;					
+		} else {
+			geco().info("Avoid empty stage name", true);
+			stagenameF.setText(geco().stage().getName());
+			return false;
+		}	
+	}
 
 	private JPanel checkerConfigPanel() {
 		JPanel panel = new JPanel(new GridBagLayout());
@@ -125,18 +152,18 @@ public class StagePanel extends TabPanel {
 		mplimitF.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
-					geco().checker().setMPLimit(new Integer(mplimitF.getText()));
-					int confirm = JOptionPane.showConfirmDialog(frame(), "Recheck statuses for runners", 
-																"Recheck all?", JOptionPane.YES_NO_OPTION);
-					if( confirm==JOptionPane.YES_OPTION ) {
-						geco().runnerControl().recheckAllRunners();
-					}
-				} catch (NumberFormatException e2) {
-					JOptionPane.showMessageDialog(frame(), "Not an integer. Reverting.");
-					int mpLimit = geco().checker().getMPLimit();
-					mplimitF.setText(new Integer(mpLimit).toString());
-				}
+				validateMPLimit(mplimitF);
+			}
+		});
+		mplimitF.setInputVerifier(new InputVerifier() {
+			@Override
+			public boolean verify(JComponent input) {
+				return verifyMPLimit(mplimitF.getText());
+			}
+
+			@Override
+			public boolean shouldYieldFocus(JComponent input) {
+				return validateMPLimit(mplimitF);
 			}
 		});
 		panel.add(mplimitF, c);
@@ -150,23 +177,80 @@ public class StagePanel extends TabPanel {
 		penaltyF.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
-					geco().checker().setMPPenalty(1000 * new Long(penaltyF.getText()));
-					int confirm = JOptionPane.showConfirmDialog(frame(), "Recheck statuses for runners",
-																"Recheck all?", JOptionPane.YES_NO_OPTION);
-					if( confirm==JOptionPane.YES_OPTION ) {
-						geco().runnerControl().recheckAllRunners();
-					}
-				} catch (NumberFormatException e2) {
-					JOptionPane.showMessageDialog(frame(), "Not an integer. Reverting.");
-					long penalty = geco().checker().getMPPenalty();
-					penaltyF.setText(new Long(penalty).toString());
-				}				
+				validateTimePenalty(penaltyF);
+			}
+		});
+		penaltyF.setInputVerifier(new InputVerifier() {
+			@Override
+			public boolean verify(JComponent input) {
+				return verifyTimePenalty(penaltyF.getText());
+			}
+			@Override
+			public boolean shouldYieldFocus(JComponent input) {
+				return validateTimePenalty(penaltyF);
 			}
 		});
 		panel.add(penaltyF, c);
 		
 		return titlePanel(panel, "Orientshow");
+	}
+	
+	private boolean verifyMPLimit(String text) {
+		try {
+			Integer.parseInt(text);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+	private boolean validateMPLimit(final JTextField mplimitF) {
+		if( verifyMPLimit(mplimitF.getText()) ){
+			int oldLimit = geco().checker().getMPLimit();
+			int newLimit = Integer.parseInt(mplimitF.getText());
+			if( oldLimit!=newLimit ) {
+				geco().checker().setMPLimit(newLimit);
+				int confirm = JOptionPane.showConfirmDialog(frame(), "Recheck statuses for runners", 
+															"Recheck all?", JOptionPane.YES_NO_OPTION);
+				if( confirm==JOptionPane.YES_OPTION ) {
+					geco().runnerControl().recheckAllRunners();
+				}
+			}
+			return true;
+		} else {
+			geco().info("MP limit should be an integer", true);
+			int mpLimit = geco().checker().getMPLimit();
+			mplimitF.setText(Integer.toString(mpLimit));
+			return false;
+		}
+	}
+	
+	private boolean verifyTimePenalty(String text) {
+		try {
+			Long.parseLong(text);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+	private boolean validateTimePenalty(JTextField penaltyF) {
+		if( verifyTimePenalty(penaltyF.getText()) ){
+			long oldPenalty = geco().checker().getMPPenalty();
+			long newPenalty = 1000 * Long.parseLong(penaltyF.getText());
+			if( oldPenalty!=newPenalty ) {
+				geco().checker().setMPPenalty(newPenalty);
+				int confirm = JOptionPane.showConfirmDialog(frame(), "Recheck statuses for runners",
+																"Recheck all?", JOptionPane.YES_NO_OPTION);
+				if( confirm==JOptionPane.YES_OPTION ) {
+					geco().runnerControl().recheckAllRunners();
+				}
+			}
+			return true;
+		} else {
+			geco().info("Time penalty should be an integer", true);
+			long penalty = geco().checker().getMPPenalty();
+			penaltyF.setText(Long.toString(penalty));
+			return false;
+		}				
 	}
 	
 	private JPanel sireaderConfigPanel() {
@@ -197,16 +281,38 @@ public class StagePanel extends TabPanel {
 		zerohourF.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				validateZeroHour(formatter, zerohourF);
+			}
+		});
+		zerohourF.setInputVerifier(new InputVerifier() {
+			@Override
+			public boolean verify(JComponent input) {
 				try {
-					Date zeroTime = formatter.parse(zerohourF.getText());
-					geco().siHandler().setZeroTime(zeroTime.getTime());
-				} catch (ParseException e1) {
-					geco().info("Bad time format", true);
+					formatter.parse(zerohourF.getText());
+					return true;
+				} catch (ParseException e) {
+					return false;
 				}
+			}
+			@Override
+			public boolean shouldYieldFocus(JComponent input) {
+				return validateZeroHour(formatter, zerohourF);
 			}
 		});
 		
 		return titlePanel(panel, "SI Reader");
+	}
+	
+	private boolean validateZeroHour(SimpleDateFormat formatter, JTextField zerohourF) {
+		try {
+			Date zeroTime = formatter.parse(zerohourF.getText());
+			geco().siHandler().setNewZeroTime(zeroTime.getTime());
+			return true;
+		} catch (ParseException e1) {
+			geco().info("Bad time format", true);
+			zerohourF.setText(formatter.format(geco().siHandler().getZeroTime()));
+			return false;
+		}
 	}
 
 	

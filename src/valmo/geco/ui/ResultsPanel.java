@@ -20,8 +20,10 @@ import javax.swing.AbstractListModel;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.InputVerifier;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -186,6 +188,28 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 				} catch (NumberFormatException e1) {
 					geco().info("Bad number format", true);
 					autodelayF.setText(Integer.toString(autoexportDelay));
+				}
+			}
+		});
+		autodelayF.setInputVerifier(new InputVerifier() {
+			@Override
+			public boolean verify(JComponent input) {
+				try {
+					Integer.parseInt(autodelayF.getText());
+					return true;
+				} catch (NumberFormatException e1) {
+					return false;
+				}
+			}
+			@Override
+			public boolean shouldYieldFocus(JComponent input) {
+				try {
+					autoexportDelay = Integer.parseInt(autodelayF.getText());
+					return true;
+				} catch (NumberFormatException e1) {
+					geco().info("Bad number format", true);
+					autodelayF.setText(Integer.toString(autoexportDelay));
+					return false;
 				}
 			}
 		});

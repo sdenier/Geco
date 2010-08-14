@@ -50,8 +50,8 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 	public SIReaderHandler(Factory factory, Stage stage, Geco geco, Announcer announcer) {
 		super(factory, stage, announcer);
 		this.geco = geco;
-		setNewPortName();
-		setNewZeroTime();
+		changePortName();
+		changeZeroTime();
 	}
 
 	public static String portNameProperty() {
@@ -66,7 +66,7 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 		return "/dev/tty.SLAB_USBtoUART";
 	}
 
-	private void setNewPortName() {
+	private void changePortName() {
 		String port = stage().getProperties().getProperty(portNameProperty());
 		if( port!=null ) {
 			setPortName(port);
@@ -75,12 +75,16 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 		}
 	}
 	
-	private void setNewZeroTime() {
+	private void changeZeroTime() {
 		try {
-			setZeroTime( Long.parseLong(stage().getProperties().getProperty(zerotimeProperty())) );			
+			setNewZeroTime( Long.parseLong(stage().getProperties().getProperty(zerotimeProperty())) );			
 		} catch (NumberFormatException e) {
-			setZeroTime(32400000);
+			setNewZeroTime(32400000);
 		}
+	}
+	
+	public void setNewZeroTime(long newZerotime) {
+		setZeroTime( newZerotime );			
 		if( portHandler!=null )
 			portHandler.setCourseZeroTime(getZeroTime());
 	}
@@ -227,8 +231,8 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 	public void changed(Stage previous, Stage next) {
 //		stop();
 		super.changed(previous, next);
-		setNewPortName();
-		setNewZeroTime();
+		changePortName();
+		changeZeroTime();
 	}
 
 	@Override
