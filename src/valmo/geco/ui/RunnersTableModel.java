@@ -171,6 +171,20 @@ public class RunnersTableModel extends AbstractTableModel {
 		}
 	}
 	
+	public class RacetimeCellRenderer extends JLabel implements TableCellRenderer {
+		public RacetimeCellRenderer() {
+//			setOpaque(true);
+		}
+		@Override
+		public Component getTableCellRendererComponent(JTable table,
+				Object value, boolean isSelected, boolean hasFocus, int row,
+				int column) {
+			setHorizontalAlignment(RIGHT);
+			setText(value.toString());
+			return this;
+		}
+	}
+	
 	public static class StatusCellRenderer extends JLabel implements TableCellRenderer {
 		public StatusCellRenderer() {
 			setOpaque(true);
@@ -202,7 +216,9 @@ public class RunnersTableModel extends AbstractTableModel {
 		updateComboBoxEditors(table);
 		model.getColumn(7).setCellEditor(new RacetimeEditor());
 		model.getColumn(8).setCellEditor(new DefaultCellEditor(new JComboBox(Status.values())));
-		// also init cell renderer for Status cell
+
+		// also init some specific cell renderers
+		model.getColumn(7).setCellRenderer(new RacetimeCellRenderer());
 		model.getColumn(8).setCellRenderer(new StatusCellRenderer());
 	}
 
