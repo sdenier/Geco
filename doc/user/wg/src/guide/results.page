@@ -9,14 +9,16 @@ The results panel can generate results from current data at any time during a ra
 
 <a href="../images/results_panel.png"><img src="../images/results_panel.png" /></a>
 
-Select either *Courses* or *Categories* to compute results. The list of courses (or categories) appears below the control panel. It is possible to manually select courses or categories for which to compute results. Select *All* to select all sets currently available, and *None* to cancel the selection.
+Select either *Courses* or *Categories* to compute results. A manual selection of courses (categories) can be performed in the list below.
 
-Options for computing results include:
+By default, results display the ranking of runners with OK status, as well as runners with status MP, DNF, DSQ. Courses/categories for which no race data are available yet are not displayed.
+Options for displaying results include:
 - *Show NC*: include runners ticked as NC in the results. They will appear after the ranked runners, with MPs and others.
 - *Show others*: include DNS runners, which were registered but did not run.
-- *Show empty sets*: show all courses or categories in results, even if there is not yet any race data.
+- *Show empty sets*: show all courses (categories) in results, even if there is no race data yet.
 
-The three buttons generate results:
-- *Refresh* shows results in the right panel.
-- *Print* opens a print dialog.
-- *Export* opens a file dialog to save results in an external file. Two formats are available, html and csv.
+Results can be displayed in the right panel (*Refresh* button), printed, or exported in an external file using either **html** or **csv** format. The default export format is html.
+
+The *Autoexport* button, when on (pressed), repeatedly generates a result file called `lastresults` in the data folder with the interval specified (in seconds) in the textfield at the right.
+The autoexport feature takes into account parameters specified when the button is pressed (selected courses or categories, export format, *Show NC*,...).
+Stop then start again autoexport to take into account new parameters.

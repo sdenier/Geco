@@ -5,4 +5,27 @@ in_menu: true
 ---
 # Heats Panel
 
-<a href="../images/heats_panel.png"><img src="../images/heats_panel.png" /></a>
+The heats panel lets you define how runners in the current stage got qualified for the next stage in knockout qualifications.
+Geco takes care of building pools of qualified runners based on results and your specifications.
+Pools can be exported directly as start lists for the next stage.
+
+<a href="../images/heats_panel_dialog.png"><img src="../images/heats_panel_dialog.png" /></a>
+
+A **heatset** describes how runners got qualified.
+Create a **heatset** by clicking the *New* button. It pops up a small window called *Heat Set Editor* which lets you parameterize the heatset:
+
+- give the heatset a name
+- give names of heats to put qualified runners into, separated by comma. **Such heats should match courses defined in the next stage**
+- give a qualifying rank, which must be attained by a runner to get qualified
+- select whether runners are to be drawn according to courses or categories
+
+Save the heatset parameters. Finally, select in the bottom left list from which courses (or categories) runners should be drawn.
+
+For example, the heatset *Men* in the above figure indicates that runners ranked at most 4th in the M* categories should be qualified.
+All qualified runners will be dispatched in two heats, *Course A* and *Course B*, which correspond to courses in the next stage. 
+In this case, this stage would be quarter-finals and the next one is semi-finals.
+
+Hit the *Refresh* button to generate and view heats. Hit the *Export* button to export generated heats to a file.
+If there is a next stage, Geco will automatically propose to overwrite the startlist of the next stage.
+
+Use *Next stage/Previous stage* buttons in the toolbar to navigate to the next/previous stage in the qualifications. See [Qualifications](howtos/quals.html) for how to manage qualification series in Geco.

@@ -5,4 +5,24 @@ in_menu: true
 ---
 # Log Panel
 
+The log panel is a journal of important events since the beginning of session. It also shows statistics for the stage.
+To see all events captured since the stage was created, scan the `geco.log` file.
+
 <a href="../images/log_panel.png"><img src="../images/log_panel.png" /></a>
+
+The statistics pane displays status of runners for each course as well as the total.
+There is a short listing with most important numbers, and a long listing of statistics, enabled through the *Short view* tickbox.
+
+When the *Short view* mode is on, the following status are displayed:
+- Present: runners who ran or are running the stage
+- Unknown: runners without race data for now. They might still be running, or they might be absent (you should mark such people as DNS)
+- Finished: runners having some race data. Hence, Present = Unknown + Finished
+- OK: runners who finished
+- MP: a high number of MPs early in the stage might indicate a problem with course settings (in Geco or on terrain)
+
+When the *Short view* is off, the long listing displays more numbers:
+- Registered: runners in the database, including Present + DNS
+- DNS, DNF, DSQ runners
+- Finished = OK + MP + DNF + DSQ
+
+The statistics updates automatically every 10 seconds. You can press the *Refresh* button to manually update the statistics.

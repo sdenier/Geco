@@ -1,0 +1,31 @@
+---
+title: Aqua
+sort_info: 2
+in_menu: true
+routed_title: Screenshots
+---
+
+### Geco launches with the Aqua look and feel under Mac OS
+To use the Nimbus look and feel, launch Geco from the command line with `java -jar <geco jar file> -Dswing.defaultlaf=com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel`
+
+<img src="../images/launcher.png" />
+
+**Stage panel**
+
+<img src="../images/stage_panel.png" />
+
+**Runners panel**
+
+<img src="../images/runners_panel.png" />
+
+**Results panel (with autoexport on)**
+
+<img src="../images/results_panel.png" />
+
+**Heats panel**
+
+<img src="../images/heats_panel_dialog.png" />
+
+**Log panel**
+
+<img src="../images/log_panel.png" />

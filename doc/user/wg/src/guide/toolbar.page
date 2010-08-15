@@ -4,3 +4,23 @@ sort_info: 2
 in_menu: true
 ---
 # Toolbar
+
+
+<img src="../images/toolbar.png" />
+
+The toolbar offers global actions.
+
+- *New/Open* opens the [Launcher](index.html)
+- *Save* saves current data on disk. Note that data are [backuped and saved](../howtos/backups.html) automatically at start/exit and regular intervals
+- *Previous stage/Next stage* navigate to the indicated stage in qualifications. Only available if current stage is detected as part of qualifications
+- *Recheck All* resets all status and all official times for all runners, to be used when a problem affecting results has been detected and fixed.
+Be careful with this action as it will also discard any manual modification you may have made.
+
+In addition, the toolbar lets you control the state of the Sportident reader station.
+
+The underneath button indicates that the reader is off. Click it to start the reader and accepts card reading.  
+<img style="float:none; width:114px" src="../images/startreader.png" />
+
+The underneath button indicates that the reader is on and accepts card reading. Click it to stop the reader.  
+<img style="float:none; width:114px" src="../images/stopreader.png" />
+

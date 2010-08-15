@@ -6,8 +6,11 @@ routed_title: Geco
 
 ---
 # Features
+
+Geco currently supports the Sportident timing system.
+
+
 Geco UI is organized as a series of tabbed panels, each panel dedicated to one aspect of race management. So here are the features, panel-wise:
-- Geco currently supports Sportident stations
 - Toolbar supports creating/loading/navigating between stages
 - [Stage] management, to configure stage, clubs, courses, categories
   - import course from the IOF XML format
@@ -23,6 +26,11 @@ Geco UI is organized as a series of tabbed panels, each panel dedicated to one a
 
 Read the [UI Guide] for a description of each panel.
 
+
+Geco presents some features dedicated to Orient'Show:
+- time penalties and MP threshold
+- accurate count of MPs and detailed trace
+- management of knockout qualifications
 
 [UI Guide]: ../guide/index.html
 [workflow]: ../guide/workflow.html
