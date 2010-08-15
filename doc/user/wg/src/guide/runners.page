@@ -8,6 +8,7 @@ in_menu: true
 The runners panel is the central place to manage runners data before and during the event.
 
 <a href="../images/runners_panel_notes.png"><img src="../images/runners_panel_notes.png" /></a>
+(Click to zoom in)
 
 The main part of the panel is the table, which lets you view/edit/filter/sort runners with all the important data.
 The right pane displays either complementary information about the currently selected runner (like the list of punches), or statistics about the race.

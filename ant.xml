@@ -19,6 +19,11 @@
     <target name="webgen">
     	<exec dir="${wg.dir}" executable="webgen"></exec>
     </target>
+
+	<target name="cleanWebgen">
+		<delete dir="${wg.dir}/out" />
+		<delete file="${wg.dir}/webgen.cache" />
+    </target>
 	
 	<target name="userHelp" depends="webgen">
     	<delete dir="help" />
