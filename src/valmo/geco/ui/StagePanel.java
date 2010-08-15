@@ -148,7 +148,7 @@ public class StagePanel extends TabPanel {
 		int mpLimit = geco().checker().getMPLimit();
 		final JTextField mplimitF = new JTextField(new Integer(mpLimit).toString());
 		mplimitF.setColumns(7);
-		mplimitF.setToolTipText("Number of missing punches authorized before marking the runner as MP.");
+		mplimitF.setToolTipText("Number of missing punches authorized before marking the runner as MP");
 		mplimitF.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

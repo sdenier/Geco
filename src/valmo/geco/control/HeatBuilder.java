@@ -35,6 +35,8 @@ public class HeatBuilder extends Control {
 	
 	private int startnumber;
 
+	private Vector<Heat> heats;
+
 	/**
 	 * @param factory
 	 * @param stage
@@ -100,8 +102,8 @@ public class HeatBuilder extends Control {
 	}
 
 	
-	private Vector<Heat> refreshHeats(HeatSet[] selectedHeatsets) {
-		Vector<Heat> heats = new Vector<Heat>();
+	private Vector<Heat> buildHeats(HeatSet[] selectedHeatsets) {
+		heats = new Vector<Heat>();
 		for (HeatSet heatset : selectedHeatsets) {
 			List<Result> heatsetResults = new Vector<Result>();
 			Pool[] selectedPools = heatset.getSelectedPools();
@@ -120,6 +122,18 @@ public class HeatBuilder extends Control {
 		return heats;
 	}
 	
+	private Vector<Heat> getHeats(HeatSet[] selectedHeatsets) {
+		if( heats==null ) {
+			buildHeats(selectedHeatsets);
+		}
+		return heats;
+	}
+	
+	public String refreshHtmlHeats(HeatSet[] selectedHeatsets) {
+		heats = null;
+		return generateHtmlHeats(selectedHeatsets);
+	}
+	
 	public void exportFile(String filename, String format, HeatSet[] selectedHeatsets) throws IOException {
 		if( !filename.endsWith(format) ) {
 			filename = filename + "." + format;
@@ -136,7 +150,7 @@ public class HeatBuilder extends Control {
 	}
 
 	public String generateHtmlHeats(HeatSet[] selectedHeatsets) {
-		Vector<Heat> heats = refreshHeats(selectedHeatsets);
+		Vector<Heat> heats = getHeats(selectedHeatsets);
 		StringBuffer res = new StringBuffer("<html>");
 		for (Heat heat : heats) {
 			appendHtmlHeat(heat, res);
@@ -144,12 +158,6 @@ public class HeatBuilder extends Control {
 		res.append("</html>");
 		return res.toString();
 	}
-
-
-	/**
-	 * @param result
-	 * @param res
-	 */
 	private void appendHtmlHeat(Heat heat, StringBuffer res) {
 		res.append("<h1>").append(heat.getName()).append("</h1>");
 		res.append("<table>");
@@ -164,7 +172,7 @@ public class HeatBuilder extends Control {
 	}
 	
 	public void generateCsvHeats(String filename, HeatSet[] selectedHeatsets) throws IOException {
-		Vector<Heat> heats = refreshHeats(selectedHeatsets);
+		Vector<Heat> heats = getHeats(selectedHeatsets);
 		resetStartnumber();
 		CsvWriter writer = new CsvWriter();
 		writer.initialize(filename);
@@ -174,36 +182,14 @@ public class HeatBuilder extends Control {
 		}
 		writer.close();
 	}
-
-	/**
-	 * @param heat
-	 * @param writer
-	 * @throws IOException 
-	 */
 	private void appendCsvHeat(Heat heat, CsvWriter writer) throws IOException {
 		RunnerIO runnerIO = new RunnerIO(null, null, writer, null);
 		Course heatCourse = factory().createCourse();
 		heatCourse.setName(heat.getName());
 		for (Runner runner : heat.getQualifiedRunners()) {
 			writer.writeRecord(runnerIO.exportTData(cloneRunnerForHeat(runner, heatCourse)));
-			//			String[] dataLine = new String[] {
-//					Integer.toString(runner.getStartnumber()),
-//					runner.getChipnumber(),
-//					runner.getName(),
-//					runner.getClub().getName(),
-//					courseName,
-//					"false",
-//					runner.getCategory().getShortname(),
-//					"0",
-//					"0",
-//					"0",
-//					"false",
-//					"",
-//					"",
-//			};
 		}
 	}
-	
 	private Runner cloneRunnerForHeat(Runner runner, Course heatCourse) {
 		Runner newRunner = factory().createRunner();
 		newRunner.setStartnumber(newStartnumber());
@@ -220,7 +206,6 @@ public class HeatBuilder extends Control {
 	private void resetStartnumber() {
 		startnumber = 0;
 	}
-	
 	private int newStartnumber() {
 		return ++startnumber;
 	}

@@ -61,25 +61,13 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 
 	{
 		ICONS = new Hashtable<String, String[]>();
-//		ICONS.put("tango/", new String[] {
-//			"document-open.png",
-//			"document-save.png",
-//			"go-previous.png",
-//			"go-next.png",
-//			"view-refresh.png",
-//			"media-record.png",
-//			"process-stop.png"
-//		});
 		ICONS.put("crystal/", new String[] {
 			"folder_new.png",
 			"folder_sent_mail.png",
-//			"previous.png",
-//			"next.png",
 			"undo.png",
 			"redo.png",
 			"quick_restart.png",
 			"cnr.png",
-//			"logout.png"
 			"exit.png"
 		});
 	}

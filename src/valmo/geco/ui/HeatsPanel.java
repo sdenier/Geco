@@ -348,7 +348,7 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 	}
 	
 	public void refreshHeatView() {
-		heatsTA.setText(geco().heatBuilder().generateHtmlHeats(getSelectedHeatsets()));
+		heatsTA.setText(geco().heatBuilder().refreshHtmlHeats(getSelectedHeatsets()));
 	}
 
 	
