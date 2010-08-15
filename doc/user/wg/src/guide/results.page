@@ -5,9 +5,9 @@ in_menu: true
 ---
 # Results Panel
 
-<img src="../images/results_panel.png" />
-
 The results panel can generate results from current data at any time during a race.
+
+<a href="../images/results_panel.png"><img src="../images/results_panel.png" /></a>
 
 Select either *Courses* or *Categories* to compute results. The list of courses (or categories) appears below the control panel. It is possible to manually select courses or categories for which to compute results. Select *All* to select all sets currently available, and *None* to cancel the selection.
 

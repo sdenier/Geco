@@ -1,0 +1,16 @@
+---
+title: Merge
+sort_info: 5
+in_menu: true
+---
+
+# Merge Dialog
+
+The *Merge Dialog* allows to manage card data after a problem arises: wrong SI number, duplication of runner data, problem when reading the card...
+
+<img src="../images/merge_dialog.png" />
+
+You get the merge dialog when:
+- a SI card has been read but no runner with this SI number is registered
+- a SI card has been read the linked runner has some results already
+- opening it on the selected runner in the runners table

@@ -6,21 +6,28 @@ routed_title: Geco
 
 ---
 # Features
-Geco window is organized as series of tabbed panels, each panel dedicated to one aspect of race management. So here are the features, panel-wise:
-- Sportident station management (always accessible)
-- [Stage] management, to create and modify stage configuration, clubs, courses, categories
+Geco UI is organized as a series of tabbed panels, each panel dedicated to one aspect of race management. So here are the features, panel-wise:
+- Geco currently supports Sportident stations
+- Toolbar supports creating/loading/navigating between stages
+- [Stage] management, to configure stage, clubs, courses, categories
+  - import course from the IOF XML format
+  - change Orient'Show parameters
 - [Runners] management, to look at registered runners, filter data, check punches, and modify runner's status for the race
-- [Live] panel, to follow SI download and get race statistics
+  - follow the race in live 
+  - get trace explanation about any runner
+  - manage special cases using the merge dialog
 - [Results] panel, to generate results
+  - automatically export results for live update
 - [Heats] panel, to generate heats from results for the next stage
+- [Log] panel, to get race statistics
 
 Read the [UI Guide] for a description of each panel.
 
 
 [UI Guide]: ../guide/index.html
-[workflow]: workflow.html
-[Stage]: stage.html
-[Runners]: runners.html
-[Live]: live.html
-[Results]: results.html
-[Heats]: heats.html
+[workflow]: ../guide/workflow.html
+[Stage]: ../guide/stage.html
+[Runners]: ../guide/runners.html
+[Log]: ../guide/log.html
+[Results]: ../guide/results.html
+[Heats]: ../guide/heats.html

@@ -6,4 +6,11 @@ routed_title: UI Guide
 ---
 # Launcher
 
-<a href="../images/launcher.png"><img src="../images/launcher.png" /></a>
+The launcher is the first window to pop up when opening Geco. It allows you to open/create a stage.
+
+- To open an existing stage, select the folder with data (just select, do not double-click) and click the Open button.
+- To create a new stage, create/select the folder where you want to put data then click the Open button: Geco will propose you to create a new stage by copying some data template.
+
+<img src="../images/launcher.png" />
+
+How to spot a folder with stage data? Simple, it contains a file named `geco.prop` as well as multiple csv files.

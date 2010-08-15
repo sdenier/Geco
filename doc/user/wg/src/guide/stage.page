@@ -5,4 +5,20 @@ in_menu: true
 ---
 # Stage Panel
 
-<img src="../images/stage_panel.png" />
+The stage panel allows one to configure general data for the stage.
+
+<a href="../images/stage_panel.png"><img src="../images/stage_panel.png" /></a>
+(Click to zoom in)
+
+- Previous stage/next stage (not editable): see [Qualifications](../howtos/quals.html) for details
+- Orientshow options
+  - MP limit: number of missing punches authorized before marking the runner as MP
+  - Time penalty: time penalty per missing punch, in seconds
+- SIReader configuration
+  - Station port: `COMx` under Windows, `/dev/ttyX` under Linux and Mac OS
+  - Zero hour: give the hour before first start to be safe (used for older SI cards)
+- Course
+  - Geco can import courses described with the *[IOF XML](http://www.soenniksen.dk/iof-datastandard/index.shtml)* format. Click the *XML* button to select the course file
+  - The *...* button can be used to edit the course sequence, if necessary
+  
+  Loading/changing course definition does not trigger an automatic check of concerned runners. Use the *Recheck All* button or check status in the runners panel.
