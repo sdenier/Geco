@@ -1,8 +1,21 @@
 ---
 title: Qualifications
-sort_info: 2
+sort_info: 3
 in_menu: true
 routed_title: How-tos
 ---
 
-# How to manage a series of stages (qualifications)
+# Create a series of stages for qualifications
+
+1. Create one stage for each step of the qualification (quarter-finals, semi-finals, finals, ...)
+1. Put all stage folders in the same parent folder
+1. Create a file named `stages.prop` in the parent folder
+1. Open `stages.prop` and write stage folder names in order (from first quals to finals), one per line
+
+<img style="float:none; width:168px" src="../images/stages.png" />
+
+
+Content of `stages.prop` for the above example (where belfield would be the first stage and mullaghmeen the last):  
+  `belfield`  
+  `belfield2`  
+  `mullaghmeen`  

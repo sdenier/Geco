@@ -1,0 +1,28 @@
+---
+title: Registrations
+sort_info: 2
+in_menu: true
+routed_title: How-tos
+---
+
+# Fill in mass registrations
+
+Whenever you have to perform mass pre-registration for a stage, it is possible to work with your own spreadsheet application.
+The folder `data/template` provides some data files with basic samples for clubs, categories, courses, and runners. 
+Copying the content of this folder into a new folder is a simple way to create a new stage.
+
+Editing `Clubs.csv` and `Classes.csv` (categories) is straightforward.
+
+To create courses in `Courses.csv`:
+- one course per line
+- the first line `Course name, distance, elevation, Cross Country,1,1001,60,10,36000000,,,, Control 1, Control2, Control 3, ...` shows what is expected in each field. **Remove it** before saving the file
+- a sample course description looks like `Course A, 5.5, 100, Cross Country,1,1001,60,10,36000000,,,,31,32,33`
+- if possible, it is better and less error-prone to import courses from Geco in XML format
+
+To register runners in `Competitors.csv`:
+- one runner per line
+- the first line `startnumber; si number; firstname lastname; club; course; false; category;;;1;NC?;;0;` shows what is expected in each field. **Remove it** before saving the file
+- sample runner description: `1; 10000; John Doe; ClubName1; Course A;false;M21;;;1;false;;0;`
+- give a unique `startnumber` and `si number` to avoid problems
+- give `club`, `course`, and `category` names which match those declared in above files
+- `NC?` field is either `true` or `false` (`false` in most cases)

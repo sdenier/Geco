@@ -23,7 +23,7 @@ The right pane displays either complementary information about the currently sel
 - *Live Mode (tickbox):* in this mode, Geco automatically focuses on the last data received from the card reader; runners are dynamically sorted by order of card reading, with most recent on top (other sort options disabled)
 - *Lock Mode (tickbox):* prevent accidental edition of data in the table
 
-The table is good for registration/modification on the fly during the event. See [Registrations](../howtos/index.html) for some advice about mass registration.
+The table is good for registration/modification on the fly during the event. See [Registrations](../howtos/register.html) for some advice about mass registration.
 
 - Geco checks that the values you enter in the table are valid
 - Information/problems are displayed in the status bar (and in the log for the most important ones)

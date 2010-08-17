@@ -1,14 +1,28 @@
 ---
-title: Registrations
+title: Backup
 sort_info: 1
 in_menu: true
 routed_title: How-tos
 ---
 
-# Create and fill in registrations
-- create a new folder for your stage
-- copy a virgin set of data files from `data/template`
-- use a spreadsheet application to fill in templates with course data, runners registration, etc.
-- open Geco on the folder
+# Data organization on disk and Backup
 
-<img src="../images/launcher.png" />
+All data relating to a stage are stored in the same directory. This page explains what are the most important files in this directory:
+
+- `geco.prop` stores stage information and meta-data
+- `Classes.csv` stores category information
+- `Clubs.csv` stores club information
+- `Competitors.csv` stores runner information
+- `Courses.csv` stores course information
+- `HeatSets.csv` stores heatset information
+- `results.csv` stores card data information
+- `ResultData.csv` stores result information
+
+
+See [Registrations](register.html) for detailed information about the internal format of each file.
+
+
+When you save or quit Geco, data are saved on disk in the above files. Geco automatically performs a backup right after the save in the `backups` subfolder of the folder.
+They are named `backupXXXXX.zip` following their creation timestamp. In case of problems, you can directly restore data by unzipping the last backup. Such backups are never deleted by Geco.
+
+Geco also saves data on disk every 2 minutes (this parameter `AutosaveDelay` can be changed in the `geco.prop` file). Autosave performs a backup using a circular set of files named `backupX.zip`. Geco uses 9 backups so that the last 18 minutes of activity are always on disk.

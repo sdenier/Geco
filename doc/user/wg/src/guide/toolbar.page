@@ -11,7 +11,7 @@ in_menu: true
 The toolbar offers global actions.
 
 - *New/Open* opens the [Launcher](index.html)
-- *Save* saves current data on disk. Note that data are [backuped and saved](../howtos/backups.html) automatically at start/exit and regular intervals
+- *Save* saves current data on disk. Note that data are [backuped and saved](../howtos/index.html) automatically at start/exit and regular intervals
 - *Previous stage/Next stage* navigate to the indicated stage in qualifications. Only available if current stage is detected as part of qualifications
 - *Recheck All* resets all status and all official times for all runners, to be used when a problem affecting results has been detected and fixed.
 Be careful with this action as it will also discard any manual modification you may have made.

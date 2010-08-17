@@ -28,7 +28,7 @@ If you select a runner who already has card data, the *Merge* button changes to 
 Following are typical usage of the *Merge* dialog.
 
 
-### Unknown chip
+### Unknown Chip
 
 When a SI chip which has not been registered in the system is read, the merge dialog pops up automatically.
 
@@ -50,7 +50,7 @@ When a SI chip is read and the linked runner already has card data, the merge di
 - *Close* simply discards card data
 
 
-### Merge card data
+### Merge Card Data
 
 You previously read an unknown chip and you choose to create an anonymous runner. Then you found the registered runner which should be linked with card data. You now want to merge the card data with the registered runner.
 
