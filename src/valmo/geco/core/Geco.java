@@ -478,8 +478,8 @@ public class Geco {
 		new MergeRunnerDialog(this, window, title).showMergeDialogFor(data, chip);
 	}
 	
-	public void openOverrideDialog(String title, RunnerRaceData data, Runner target) {
-		new MergeRunnerDialog(this, window, title).showOverrideDialogFor(data, target);
+	public void openOverwriteDialog(String title, RunnerRaceData data, Runner target) {
+		new MergeRunnerDialog(this, window, title).showOverwriteDialogFor(data, target);
 	}
 	
 }

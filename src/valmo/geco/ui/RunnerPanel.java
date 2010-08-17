@@ -131,7 +131,7 @@ public class RunnerPanel extends GecoPanel {
 		mergeDialogB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if( runnerData!=null ) {
-					new MergeRunnerDialog(geco(), frame(), "Merge runner").showMergeDialogFor(
+					new MergeRunnerDialog(geco(), frame(), "Merge Card Data").showMergeDialogFor(
 														runnerData.clone(), 
 														runner.getChipnumber());
 				}

@@ -139,7 +139,7 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 			RunnerRaceData runnerData = registry().findRunnerData(runner);
 			if( runnerData.hasResult() ) {
 				geco.log("Re-Reading " + card.getSiIdent());
-				geco.openOverrideDialog("Existing Data for Runner", handleNewData(card), runner);
+				geco.openOverwriteDialog("Existing Data for Runner", handleNewData(card), runner);
 			} else {
 				handleData(runnerData, card);	
 			}

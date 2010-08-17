@@ -135,12 +135,12 @@ public class MergeRunnerDialog extends JDialog {
 		c = Util.gbConstr(5);
 		c.gridwidth = 2;
 		c.insets = insets;
-		cardPanel.add(new JLabel("Create new runner with above card data."), c);
+		cardPanel.add(new JLabel("Create new runner with above card data"), c);
 		cardPanel.add(closeB, Util.gbConstr(6));
 		c = Util.gbConstr(6);
 		c.gridwidth = 2;
 		c.insets = insets;
-		cardPanel.add(new JLabel("Do nothing (discard card data if new)."), c);
+		cardPanel.add(new JLabel("Do nothing (discard card data if new)"), c);
 		
 		JPanel embed = Util.embed(cardPanel);
 		embed.setBorder(BorderFactory.createTitledBorder("Card data"));
@@ -200,27 +200,27 @@ public class MergeRunnerDialog extends JDialog {
 		setVisible(true);
 	}
 	
-	public void showOverrideDialogFor(RunnerRaceData data, Runner target) {
+	public void showOverwriteDialogFor(RunnerRaceData data, Runner target) {
 		showDialogFor(data, target.getChipnumber());
 		courseCB.setSelectedItem(target.getCourse().getName());
 		runnersCB.setSelectedItem(target);
-		showOverrideInfo();
+		showOverwriteInfo();
 		pack();
 		setVisible(true);
 	}
 
 	
 	public void showMergeInfo() {
-		mergeInfoL.setText("Merge card data into above runner.");
+		mergeInfoL.setText("Merge card data into above runner");
 		mergeB.setText("Merge");
 		repaint();
 	}
 
-	public void showOverrideInfo() {
+	public void showOverwriteInfo() {
 //		mergeInfoL.setText("Override runner result with card data.");
 		RunnerResult result = registry().findRunnerData(getTargetRunner()).getResult();
-		mergeInfoL.setText("Override " + printResult(result) + " with " + printResult(runnerData.getResult()));
-		mergeB.setText("Override");
+		mergeInfoL.setText("Overwrite " + printResult(result) + " with " + printResult(runnerData.getResult()));
+		mergeB.setText("Overwrite");
 		repaint();
 	}
 	
@@ -285,7 +285,7 @@ public class MergeRunnerDialog extends JDialog {
 				courseCB.setSelectedItem(getTargetRunner().getCourse().getName());
 				mergeB.setEnabled(true);
 				if( hasStatus(getTargetRunner()) ) {
-					showOverrideInfo();
+					showOverwriteInfo();
 				} else {
 					showMergeInfo();
 				}
