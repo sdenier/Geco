@@ -231,8 +231,8 @@ public class Geco {
 
 	private RuntimeStage loadStage(String baseDir) {
 		Stage stage = stageBuilder.loadStage(baseDir, checker);
-		stageBuilder.backupData(stage.getBaseDir(),
-								backupFilename( new SimpleDateFormat("yyMMdd-HHmmss'i'").format(new Date()) ));
+//		stageBuilder.backupData(stage.getBaseDir(),
+//								backupFilename( new SimpleDateFormat("yyMMdd-HHmmss'i'").format(new Date()) ));
 		Logger logger = initializeLogger(stage);
 		return new RuntimeStage(stage, logger);
 	}
