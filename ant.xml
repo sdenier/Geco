@@ -8,6 +8,8 @@
 	<property name="geco.dir" value="${basedir}"/>
 	<property name="sireader.dir" value="${basedir}/../SIReader"/>
 	
+	<target name="cleanAll" depends="cleanWebgen,cleanBackups" />
+	
     <target name="cleanBackups">
 		<delete>
 			<fileset dir="testData" includes="**/backups/*.zip"/>
@@ -25,7 +27,7 @@
 		<delete file="${wg.dir}/webgen.cache" />
     </target>
 	
-	<target name="userHelp" depends="webgen">
+	<target name="userHelp" depends="cleanWebgen,webgen">
     	<delete dir="help" />
 		<mkdir dir="help" />
     	<copy todir="help">
