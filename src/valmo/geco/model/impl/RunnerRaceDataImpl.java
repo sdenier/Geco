@@ -165,7 +165,13 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 		return getResult().getStatus().equals(Status.Unknown);
 	}
 	
-	public long raceTime() {
+	public long realRaceTime() {
+		if( getFinishtime().equals(TimeManager.NO_TIME) ) {
+			return TimeManager.NO_TIME.getTime();
+		}
+		if( getStarttime().equals(TimeManager.NO_TIME) ) {
+			return TimeManager.NO_TIME.getTime();
+		}
 		return getFinishtime().getTime() - getStarttime().getTime();
 	}
 	

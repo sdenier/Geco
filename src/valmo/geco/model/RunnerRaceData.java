@@ -53,7 +53,7 @@ public interface RunnerRaceData extends Cloneable {
 	
 	public boolean isRunning();
 
-	public long raceTime();
+	public long realRaceTime();
 
 	public String punchSummary(int sumLength);
 	

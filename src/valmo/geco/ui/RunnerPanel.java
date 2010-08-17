@@ -97,7 +97,7 @@ public class RunnerPanel extends GecoPanel {
 	}
 
 	private void displayRacetime() {
-		realTimeF.setText(TimeManager.time(geco().checker().computeRealRaceTime(runnerData)));
+		realTimeF.setText(TimeManager.time(runnerData.realRaceTime()));
 		if( geco().checker().computeOfficialRaceTime(runnerData) != runnerData.getResult().getRacetime() ) {
 			realTimeF.setBackground(new Color(1, 1, 0.5f));
 		} else

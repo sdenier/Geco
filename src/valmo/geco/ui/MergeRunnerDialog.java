@@ -163,7 +163,7 @@ public class MergeRunnerDialog extends JDialog {
 		chipL.setText(Util.italicize(chip));
 		punchesL.setText(Util.italicize(runnerData.getPunches().length
 										+ " starting with " + runnerData.punchSummary(5)));
-		timeL.setText(Util.italicize(TimeManager.time(runnerData.raceTime())));
+		timeL.setText(Util.italicize(TimeManager.time(runnerData.realRaceTime())));
 		updateStatusLabel();
 	}
 

@@ -35,17 +35,7 @@ public class PunchChecker extends Control {
 	}
 
 	public long computeOfficialRaceTime(RunnerRaceData data) {
-		return computeRealRaceTime(data);
-	}
-
-	public final long computeRealRaceTime(RunnerRaceData data) {
-		if( data.getFinishtime().equals(TimeManager.NO_TIME) ) {
-			return TimeManager.NO_TIME.getTime();
-		}
-		if( data.getStarttime().equals(TimeManager.NO_TIME) ) {
-			return TimeManager.NO_TIME.getTime();
-		}
-		return data.getFinishtime().getTime() - data.getStarttime().getTime();
+		return data.realRaceTime();
 	}
 
 	public void resetRaceTime(RunnerRaceData data) {
