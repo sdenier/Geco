@@ -15,6 +15,7 @@ By default, results display the ranking of runners with OK status, as well as ru
 Options for displaying results include:
 - *Show NC*: include runners ticked as NC in the results. They will appear after the ranked runners, with MPs and others.
 - *Show others*: include DNS runners, which were registered but did not run.
+- *Show penalties*: show real race time and number of MPs for each runner.
 - *Show empty sets*: show all courses (categories) in results, even if there is no race data yet.
 
 Results can be displayed in the right panel (*Refresh* button), printed, or exported in an external file using either **html** or **csv** format. The default export format is html.

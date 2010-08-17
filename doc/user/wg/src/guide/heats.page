@@ -28,4 +28,4 @@ In this case, this stage would be quarter-finals and the next one is semi-finals
 Hit the *Refresh* button to generate and view heats. Hit the *Export* button to export generated heats to a file.
 If there is a next stage, Geco will automatically propose to overwrite the startlist of the next stage.
 
-Use *Next stage/Previous stage* buttons in the toolbar to navigate to the next/previous stage in the qualifications. See [Qualifications](howtos/quals.html) for how to manage qualification series in Geco.
+Use *Next stage/Previous stage* buttons in the toolbar to navigate to the next/previous stage in the qualifications. See [Qualifications](../howtos/quals.html) for how to manage qualification series in Geco.

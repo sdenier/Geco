@@ -16,25 +16,26 @@ The right pane displays either complementary information about the currently sel
 
 ## Runners Table
 
+- Click/Double-click in a cell to start edition
 - *Add/Remove Runner:* add a runner at the end of the startlist; remove the currently selected runner
 - *Sort Runners:* click on a header cell of the table to sort runners according to ascending/descending rank
 - *Filter Runners:* enter a text to display only runner matching the text (the search is performed full-text and matches substring in data)
 - *Live Mode (tickbox):* in this mode, Geco automatically focuses on the last data received from the card reader; runners are dynamically sorted by order of card reading, with most recent on top (other sort options disabled)
 - *Lock Mode (tickbox):* prevent accidental edition of data in the table
 
-The table is good for registration/modification on the fly during the event. See [Registrations](../howtos/index.html) for some advice to perform mass registration.
+The table is good for registration/modification on the fly during the event. See [Registrations](../howtos/index.html) for some advice about mass registration.
 
 - Geco checks that the values you enter in the table are valid
-- information/problems are displayed in the status bar (and in the log for the most important ones)
-- changing the course triggers a status computation to check if the trace is still valid
-- if necessary, the official race time (used for results) can be edited by hand
-- if necessary, status can be changed manually
+- Information/problems are displayed in the status bar (and in the log for the most important ones)
+- Changing the course triggers a status computation to check if the trace is still valid
+- If necessary, the official race time (used for results) can be edited by hand
+- If necessary, status can be changed manually
   - Unknown: runner registered but no race data available - runner may still be racing
+  - OK
+  - MP: Missing Punch
   - DNS: Did Not Start
   - DNF: Did Not Finish
   - DSQ: Disqualified
-  - OK
-  - MP: Missing Punch
 
 <a href="../images/runners_filter.png"><img src="../images/runners_filter.png" /></a>
 (Table with a filter on the 'Short' keyword)
@@ -42,18 +43,18 @@ The table is good for registration/modification on the fly during the event. See
 
 ## Runner Data Pane
 
-The *Runner Data* pane shows complementary information about the currently selected runner. It is useful to get a good analysis of runner race when resolving a problem. In particular, Geco is able to accurately detect and display *missing punches* in the trace view.
+The *Runner Data* pane shows complementary information about the currently selected runner. It is useful for an analysis of runner race when resolving a problem. In particular, Geco is able to accurately detect and display *missing punches* in the trace view.
 
-- *Real Race Time* always displays *finish - start*, not taking into account time penalties nor the official race time which may have been edited
-- some reset buttons can restore computed values after manual modification
-  - *Reset Time* compute the official race time based on race time and penalties
+- *Real Race Time* always displays *finish - start*, not taking into account time penalties nor the official race time which may have been edited by hand
+- Some reset buttons can restore computed values after manual modification
+  - *Reset Time* computes the official race time based on race time and penalties
   - *Refresh Status* computes the status based on punches and course
-  - global actions like *Recheck All* will reset any manual modifications to computed values. Be careful!
-- click the *Merge...* button for advanced management of data, like merging two runners together. It opens the *[Merge dialog](merge.html)* on the currently selected runner.
+  - global action *Recheck All* resets any manual modification to computed values, be careful!
+- Click the *Merge...* button for advanced management of data, like merging two runners together. It opens the *[Merge dialog](merge.html)* on the currently selected runner.
 
 
 ### Trace
-The trace pane displays the list of controls for the course compared with the list of punches (control code and punch time) of the runner. It is of great help to understand where a runner mispunched. Geco uses a sophisticated algorithm to detect accurately mispunches, even in the case of butterfly loop.
+The trace pane displays the list of controls for the course compared with the list of punches (control code and punch time) of the runner. It is of great help to understand where a runner mispunched. Geco uses a sophisticated algorithm to detect accurately mispunches, even in the case of butterfly loop:
 
 - a missing control is displayed in red with a **-** sign in front
 - a supplementary control is displayed in blue with a **+** sign in front
