@@ -18,6 +18,7 @@ import java.util.Vector;
 
 import javax.swing.AbstractListModel;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.InputVerifier;
@@ -65,6 +66,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	private JCheckBox showNcC;
 	private JCheckBox showOtC;
 	private JCheckBox showEsC;
+	private JCheckBox showPeC;
 	private JFileChooser filePane;
 	
 	private Thread autoexportThread;
@@ -241,20 +243,22 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		commandPanel.add(selectCatB);
 		
 		showNcC = new JCheckBox("Show NC");
-		commandPanel.add(showNcC);
 		showOtC = new JCheckBox("Show Others");
-		commandPanel.add(showOtC);
+		showPeC = new JCheckBox("Show penalties");
 		showEsC = new JCheckBox("Show empty sets");
+		commandPanel.add(showNcC);
+		commandPanel.add(showOtC);
+		commandPanel.add(showPeC);
 		commandPanel.add(showEsC);
-//		commandPanel.add(Box.createHorizontalStrut(10));
 		
 		refreshB = new JButton("Refresh");
 		refreshB.requestFocusInWindow();
-		JButton printB = new JButton("Print");
 		exportB = new JButton("Export");
+		JButton printB = new JButton("Print");
 		commandPanel.add(Util.embed(refreshB));
-		commandPanel.add(Util.embed(printB));
+		commandPanel.add(Box.createHorizontalGlue());
 		commandPanel.add(Util.embed(exportB));
+		commandPanel.add(Util.embed(printB));
 		
 		printB.addActionListener(new ActionListener() {
 			@Override
@@ -268,17 +272,17 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 			}
 		});
 		
-		selectAllB = new JButton("All");
-		selectNoneB = new JButton("None");
-		commandPanel.add(Util.embed(selectAllB));
-		commandPanel.add(Util.embed(selectNoneB));
-		
 		autoexportB = new JButton("Autoexport");
 		autodelayF = new JTextField(5);
 		autodelayF.setText(Integer.toString(autoexportDelay));
 		autodelayF.setToolTipText("Autoexport delay in seconds");
 		commandPanel.add(Util.embed(autoexportB));
 		commandPanel.add(Util.embed(autodelayF));
+		
+		selectAllB = new JButton("All");
+		selectNoneB = new JButton("None");
+		commandPanel.add(Util.embed(selectAllB));
+		commandPanel.add(Util.embed(selectNoneB));
 		
 		commandPanel.setBorder(BorderFactory.createLineBorder(Color.gray));
 
@@ -366,7 +370,8 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 				showCourses(),
 				showEsC.isSelected(),
 				showNcC.isSelected(),
-				showOtC.isSelected());
+				showOtC.isSelected(),
+				showPeC.isSelected());
 	}
 
 	

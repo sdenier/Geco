@@ -263,12 +263,12 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 		JPanel butPanel = new JPanel();
 		butPanel.setLayout(new BoxLayout(butPanel, BoxLayout.Y_AXIS));
 		newB = new JButton("New");
-		butPanel.add(Util.embed(newB));
 		deleteB = new JButton("Delete");
+		butPanel.add(Util.embed(newB));
 		butPanel.add(Util.embed(deleteB));
 		heatPanel.add(butPanel);
+		
 		heatList = new JList(heatlistModel);
-//		heatList.setVisibleRowCount(4);
 		JScrollPane spane = new JScrollPane(heatList);
 		spane.setPreferredSize(new Dimension(90, 90));
 		heatPanel.add(spane);
@@ -281,8 +281,8 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 		exportB = new JButton("Export");
 		buttonPanel.add(Util.embed(refreshB));
 		buttonPanel.add(Box.createHorizontalStrut(10));
-		buttonPanel.add(Util.embed(printB));
 		buttonPanel.add(Util.embed(exportB));
+		buttonPanel.add(Util.embed(printB));
 		selectionPanel.add(buttonPanel, BorderLayout.NORTH);
 
 		printB.addActionListener(new ActionListener() {
