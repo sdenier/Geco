@@ -12,6 +12,7 @@ import java.util.Random;
 import java.util.Vector;
 
 import valmo.geco.core.Geco;
+import valmo.geco.core.Html;
 import valmo.geco.model.Category;
 import valmo.geco.model.Course;
 import valmo.geco.model.Factory;
@@ -143,7 +144,6 @@ public class HeatBuilder extends Control {
 			filename = filename + "." + format;
 		}
 		if( format.equals("html") ) {
-			// TODO: replace by StringWriter
 			BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
 			writer.write(generateHtmlHeats(selectedHeatsets));	
 			writer.close();
@@ -155,24 +155,21 @@ public class HeatBuilder extends Control {
 
 	public String generateHtmlHeats(HeatSet[] selectedHeatsets) {
 		Vector<Heat> heats = getHeats(selectedHeatsets);
-		StringBuffer res = new StringBuffer("<html>");
+		Html html = new Html();
 		for (Heat heat : heats) {
-			appendHtmlHeat(heat, res);
+			appendHtmlHeat(heat, html);
 		}
-		res.append("</html>");
-		return res.toString();
+		return html.close();
 	}
-	private void appendHtmlHeat(Heat heat, StringBuffer res) {
-		res.append("<h1>").append(heat.getName()).append("</h1>");
-		res.append("<table>");
+	private void appendHtmlHeat(Heat heat, Html html) {
+		html.tag("h1", heat.getName());
+		html.open("table");
 		int i = 1;
 		for (Runner runner : heat.getQualifiedRunners()) {
-			res.append("<tr><td>");
-			res.append(i).append("</td><td>").append(runner.getName());
-			res.append("</td></tr>");
+			html.open("tr").td(i).td(runner.getName()).close("tr");
 			i++;
 		}
-		res.append("</table>");
+		html.close("table");
 	}
 	
 	public void generateCsvHeats(String filename, HeatSet[] selectedHeatsets) throws IOException {

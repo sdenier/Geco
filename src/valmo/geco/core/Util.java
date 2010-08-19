@@ -60,29 +60,4 @@ public class Util {
 		return allDifferent;
 	}
 	
-	public static String italicize(String content) {
-		return inHtml(content, "i");
-	}
-	
-	public static String inHtml(String content, String htmlTag) {
-		return "<html>" + html(content, htmlTag, new StringBuffer()) + "</html>";
-	}
-
-	public static String html(String content, String htmlTag, StringBuffer buf) {
-		htmlTag(htmlTag, true, buf);
-		buf.append(content);
-		htmlTag(htmlTag, false, buf);
-		return buf.toString();
-	}
-
-	public static String htmlTag(String htmlTag, boolean starting, StringBuffer buf) {
-		buf.append("<");
-		if( !starting) {
-			buf.append("/");
-		}
-		buf.append(htmlTag);
-		buf.append(">");
-		return buf.toString();
-	}
-	
 }

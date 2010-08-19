@@ -24,7 +24,7 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
 import valmo.geco.core.Geco;
-import valmo.geco.core.Util;
+import valmo.geco.core.Html;
 import valmo.geco.model.Stage;
 
 /**
@@ -124,7 +124,7 @@ public class HStatsPanel extends StatsPanel {
 					content = stats().getCourseStatsFor(	courseKeys[rowIndex],
 														statusKeys[columnIndex-1]).toString();
 				if( courseKeys[rowIndex]=="Total" ){
-					return Util.inHtml(content, "b");
+					return Html.htmlTag("b", content);
 				} else {
 					return content;
 				}

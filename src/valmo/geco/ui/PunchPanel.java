@@ -16,6 +16,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumnModel;
 
 import valmo.geco.core.Geco;
+import valmo.geco.core.Html;
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Trace;
@@ -77,9 +78,9 @@ public class PunchPanel extends GecoPanel {
 			public String traceLabel(final Trace[] trace, int rowIndex) {
 				String code = trace[rowIndex].getCode();
 				if( code.startsWith("-") )
-					return "<html><font color=red>" + code + "</font></html>";
+					return Html.htmlTag("font", "color=red", code);
 				if( code.startsWith("+") )
-					return "<html><font color=blue>" + code + "</font></html>";
+					return Html.htmlTag("font", "color=blue", code);
 				return code;
 			}
 			public String traceTime(final Trace[] trace, int rowIndex) {

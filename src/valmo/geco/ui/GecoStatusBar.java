@@ -11,8 +11,9 @@ import java.awt.event.MouseEvent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import valmo.geco.core.Geco;
 import valmo.geco.core.Announcer.Logger;
+import valmo.geco.core.Geco;
+import valmo.geco.core.Html;
 
 /**
  * @author Simon Denier
@@ -47,7 +48,7 @@ public class GecoStatusBar extends GecoPanel implements Logger {
 
 	private void display(String message, boolean warning) {
 		if( warning )
-			message = "<html><font color=red>" + message + "</font></html>";
+			message = Html.htmlTag("font", "color=red", message);
 		status.setText(message);
 		status.repaint();
 	}

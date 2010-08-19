@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Vector;
 
 import valmo.geco.core.Announcer;
+import valmo.geco.core.Html;
 import valmo.geco.core.TimeManager;
 import valmo.geco.core.Util;
 import valmo.geco.model.Category;
@@ -139,71 +140,71 @@ public class ResultBuilder extends Control {
 
 	public String generateHtmlResults(ResultConfig config) {
 		Vector<Result> results = refreshResults(config);
-		StringBuffer res = new StringBuffer("<html>");
+		Html html = new Html();
 		for (Result result : results) {
 			if( config.showEmptySets || !result.isEmpty()) {
-				appendHtmlResult(result, config, res);	
+				appendHtmlResult(result, config, html);	
 			}
 		}
-		res.append("</html>");
-		return res.toString();
+		return html.close();
 	}
 
 	/**
 	 * @param result
-	 * @param res
+	 * @param html
 	 */
-	private void appendHtmlResult(Result result, ResultConfig config, StringBuffer res) {
-		res.append("<h1>").append(result.getIdentifier()).append("</h1>");
-		res.append("<table>");
+	private void appendHtmlResult(Result result, ResultConfig config, Html html) {
+		html.tag("h1", result.getIdentifier());
+		html.open("table");
 		if( config.showPenalties ){
-			res.append("<tr><th></th><th>Name</th><th>Race time</th><th>MP</th><th>Time</th></tr>");
+			html.open("tr").th("").th("Name").th("Race time").th("MP").th("Time").closeTr();
 		}
 		for (RankedRunner runner : result.getRanking()) {
 			RunnerRaceData data = runner.getRunnerData();
-			res.append("<tr>");
-			res.append("<td>").append(runner.getRank()).append("</td><td>").append(data.getRunner().getName());
-			appendHtmlPenalties(config.showPenalties, data, res);
-			res.append("</td><td>").append(TimeManager.time(data.getResult().getRacetime()));
-			res.append("</td></tr>");
+			html.openTr();
+			html.td(runner.getRank()).td(data.getRunner().getName());
+			appendHtmlPenalties(config.showPenalties, data, html);
+			html.td(TimeManager.time(data.getResult().getRacetime()));
+			html.closeTr();
 		}
-		res.append("<tr><td></td><td></td><td></td></tr>");
+		html.openTr().td("").td("").td("").closeTr();
 		for (RunnerRaceData runnerData : result.getNRRunners()) {
 			Runner runner = runnerData.getRunner();
 			if( !runner.isNC() ) {
-				res.append("<tr>");
-				res.append("<td></td><td>").append(runner.getName());
-				appendHtmlPenalties(config.showPenalties, runnerData, res);
-				res.append("</td><td>").append(runnerData.getResult().getStatus());
-				res.append("</td></tr>");
+				html.openTr();
+				html.td("").td(runner.getName());
+				appendHtmlPenalties(config.showPenalties, runnerData, html);
+				html.td(runnerData.getResult().getStatus().toString());
+				html.closeTr();
 			} else if( config.showNC ) {
 				RunnerResult runnerResult = runnerData.getResult();
-				res.append("<tr>");
-				res.append("<td>NC</td><td>").append(runner.getName());
-				appendHtmlPenalties(config.showPenalties, runnerData, res);
-				res.append("</td><td>");
-				res.append( (runnerResult.getStatus().equals(Status.OK))? TimeManager.time(runnerResult.getRacetime()) : runnerResult.getStatus());
-				res.append("</td></tr>");
+				html.openTr();
+				html.td("NC").td(runner.getName());
+				appendHtmlPenalties(config.showPenalties, runnerData, html);
+				html.td( (runnerResult.getStatus().equals(Status.OK))?
+								TimeManager.time(runnerResult.getRacetime()) :
+								runnerResult.getStatus().toString() );
+				html.closeTr();
 			}
 		}
 		if( config.showOthers ) {
-			res.append("<tr><td></td><td></td><td></td></tr>");
+			html.openTr().td("").td("").td("").closeTr();
 			for (RunnerRaceData runnerData : result.getOtherRunners()) {
-				res.append("<tr>");
-				res.append("<td></td><td>").append(runnerData.getRunner().getName());
+				html.openTr();
+				html.td("").td(runnerData.getRunner().getName());
 				if( config.showPenalties ) {
-					res.append("</td><td></td><td>");
+					html.td("").td("");
 				}
-				res.append("</td><td>").append(runnerData.getResult().getStatus());
-				res.append("</td></tr>");
+				html.td(runnerData.getResult().getStatus().toString());
+				html.closeTr();
 			}			
 		}
-		res.append("</table>");
+		html.close("table");
 	}
 
-	private void appendHtmlPenalties(boolean showPenalties, RunnerRaceData data, StringBuffer res) {
+	private void appendHtmlPenalties(boolean showPenalties, RunnerRaceData data, Html html) {
 		if( showPenalties ){
-			res.append("</td><td>").append(TimeManager.time(data.realRaceTime())).append("</td><td>").append(data.getResult().getNbMPs());
+			html.td(TimeManager.time(data.realRaceTime())).td(data.getResult().getNbMPs());
 		}
 	}
 
@@ -212,6 +213,7 @@ public class ResultBuilder extends Control {
 	 * @throws IOException 
 	 */
 	public void generateCsvResult(ResultConfig config, BufferedWriter writer) throws IOException {
+		// TODO: use CsvWriter
 		Vector<Result> results = refreshResults(config);
 		for (Result result : results) {
 			if( config.showEmptySets || !result.isEmpty()) {

@@ -27,8 +27,8 @@ import javax.swing.JPanel;
 
 import valmo.geco.control.RunnerControl;
 import valmo.geco.core.Geco;
+import valmo.geco.core.Html;
 import valmo.geco.core.TimeManager;
-import valmo.geco.core.Util;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
@@ -160,15 +160,15 @@ public class MergeRunnerDialog extends JDialog {
 
 	
 	private void showCardData(String chip, RunnerRaceData runnerData) {
-		chipL.setText(Util.italicize(chip));
-		punchesL.setText(Util.italicize(runnerData.getPunches().length
+		chipL.setText(Html.htmlTag("i", chip));
+		punchesL.setText(Html.htmlTag("i", runnerData.getPunches().length
 										+ " starting with " + runnerData.punchSummary(5)));
-		timeL.setText(Util.italicize(TimeManager.time(runnerData.realRaceTime())));
+		timeL.setText(Html.htmlTag("i", TimeManager.time(runnerData.realRaceTime())));
 		updateStatusLabel();
 	}
 
 	private void updateStatusLabel() {
-		statusL.setText(Util.italicize(runnerData.getResult().getStatus().toString()));
+		statusL.setText(Html.htmlTag("i", runnerData.getResult().getStatus().toString()));
 	}
 	
 	private void showDialogFor(RunnerRaceData data, String chip) {
