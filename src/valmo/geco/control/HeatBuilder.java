@@ -45,6 +45,10 @@ public class HeatBuilder extends Control {
 		super(factory);
 		this.geco = geco;
 	}
+	
+	public HeatSet createHeatSet() {
+		return factory().createHeatSet();
+	}
 
 	public List<Heat> buildHeatsFromResults(List<Result> results, String[] heatnames, int qualifyingRank) {
 		int nbHeats = heatnames.length;

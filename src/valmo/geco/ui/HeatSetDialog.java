@@ -26,7 +26,6 @@ import javax.swing.JTextField;
 import valmo.geco.core.Util;
 import valmo.geco.model.HeatSet;
 import valmo.geco.model.Pool;
-import valmo.geco.model.impl.HeatSetImpl;
 
 
 /**
@@ -157,10 +156,6 @@ public class HeatSetDialog extends JDialog {
 		} else {
 			return "category";
 		}
-	}
-	
-	public void showDialog() { // TODO: factory
-		showHeatSet(new HeatSetImpl());
 	}
 	
 	public void showHeatSet(HeatSet heatSet) {

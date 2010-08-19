@@ -150,7 +150,7 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 
 
 	public void showHeatSetCreationDialog() {
-		heatDialog.showDialog();
+		heatDialog.showHeatSet(geco().heatBuilder().createHeatSet());
 		if( !heatDialog.cancelled() ) {
 			HeatSet newHeatset = heatDialog.getHeatSet();
 			heatlistModel.addElement(newHeatset);
