@@ -37,7 +37,6 @@ import javax.swing.event.ListSelectionListener;
 
 import valmo.geco.core.Announcer;
 import valmo.geco.core.Geco;
-import valmo.geco.core.Util;
 import valmo.geco.model.HeatSet;
 import valmo.geco.model.Pool;
 import valmo.geco.model.Stage;
@@ -264,8 +263,8 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 		butPanel.setLayout(new BoxLayout(butPanel, BoxLayout.Y_AXIS));
 		newB = new JButton("New");
 		deleteB = new JButton("Delete");
-		butPanel.add(Util.embed(newB));
-		butPanel.add(Util.embed(deleteB));
+		butPanel.add(SwingUtils.embed(newB));
+		butPanel.add(SwingUtils.embed(deleteB));
 		heatPanel.add(butPanel);
 		
 		heatList = new JList(heatlistModel);
@@ -279,10 +278,10 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 		refreshB = new JButton("Refresh");
 		JButton printB = new JButton("Print");
 		exportB = new JButton("Export");
-		buttonPanel.add(Util.embed(refreshB));
+		buttonPanel.add(SwingUtils.embed(refreshB));
 		buttonPanel.add(Box.createHorizontalStrut(10));
-		buttonPanel.add(Util.embed(exportB));
-		buttonPanel.add(Util.embed(printB));
+		buttonPanel.add(SwingUtils.embed(exportB));
+		buttonPanel.add(SwingUtils.embed(printB));
 		selectionPanel.add(buttonPanel, BorderLayout.NORTH);
 
 		printB.addActionListener(new ActionListener() {
@@ -301,11 +300,11 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 		poolList.setVisible(false);
 		JScrollPane scrollPane = new JScrollPane(poolList);
 		scrollPane.setPreferredSize(new Dimension(150, 300));
-		JPanel embed = Util.embed(scrollPane);
+		JPanel embed = SwingUtils.embed(scrollPane);
 		selectionPanel.add(embed, BorderLayout.CENTER);
 		
 		JPanel builderPanel = new JPanel(new BorderLayout());
-		builderPanel.add(Util.embed(heatPanel), BorderLayout.NORTH);
+		builderPanel.add(SwingUtils.embed(heatPanel), BorderLayout.NORTH);
 		builderPanel.add(selectionPanel, BorderLayout.CENTER);
 		return builderPanel;
 	}

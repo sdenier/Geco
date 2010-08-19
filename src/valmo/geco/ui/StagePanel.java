@@ -32,7 +32,6 @@ import javax.swing.filechooser.FileFilter;
 
 import valmo.geco.core.Announcer;
 import valmo.geco.core.Geco;
-import valmo.geco.core.Util;
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
 import valmo.geco.model.Course;
@@ -58,7 +57,7 @@ public class StagePanel extends TabPanel {
 		panel.setLayout(new GridBagLayout());
 //		setBorder(BorderFactory.createLineBorder(Color.gray));
 
-		GridBagConstraints c = Util.compConstraint(	GridBagConstraints.RELATIVE,
+		GridBagConstraints c = SwingUtils.compConstraint(	GridBagConstraints.RELATIVE,
 													0,
 													GridBagConstraints.BOTH,
 													GridBagConstraints.NORTH);
@@ -77,14 +76,14 @@ public class StagePanel extends TabPanel {
 	}
 
 	private JPanel titlePanel(JPanel panel, String title) {
-		JPanel embed = Util.embed(panel);
+		JPanel embed = SwingUtils.embed(panel);
 		embed.setBorder(BorderFactory.createTitledBorder(title));
 		return embed;
 	}
 
 	private JPanel stageConfigPanel() {
 		JPanel panel = new JPanel(new GridBagLayout());
-		GridBagConstraints c = Util.gbConstr(0);
+		GridBagConstraints c = SwingUtils.gbConstr(0);
 		c.insets = new Insets(0, 0, 5, 5);
 		c.fill = GridBagConstraints.HORIZONTAL;
 		panel.add(new JLabel("Stage name:"), c);
@@ -141,7 +140,7 @@ public class StagePanel extends TabPanel {
 	private JPanel checkerConfigPanel() {
 		JPanel panel = new JPanel(new GridBagLayout());
 		
-		GridBagConstraints c = Util.gbConstr(0);
+		GridBagConstraints c = SwingUtils.gbConstr(0);
 		c.insets = new Insets(0, 0, 5, 5);
 		c.fill = GridBagConstraints.HORIZONTAL;
 		panel.add(new JLabel("MP limit:"), c);
@@ -255,7 +254,7 @@ public class StagePanel extends TabPanel {
 	
 	private JPanel sireaderConfigPanel() {
 		JPanel panel = new JPanel(new GridBagLayout());
-		GridBagConstraints c = Util.gbConstr(0);
+		GridBagConstraints c = SwingUtils.gbConstr(0);
 		c.insets = new Insets(0, 0, 5, 5);
 		c.fill = GridBagConstraints.HORIZONTAL;
 		panel.add(new JLabel("Station port:"), c);

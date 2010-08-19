@@ -110,39 +110,39 @@ public class MergeRunnerDialog extends JDialog {
 	private void initCardPanel() {
 		JPanel cardPanel = new JPanel(new GridBagLayout());
 		Insets insets = new Insets(0, 10, 0, 0);
-		cardPanel.add(new JLabel("Chip number:"), Util.gbConstr(0));
-		GridBagConstraints c = Util.gbConstr(0);
+		cardPanel.add(new JLabel("Chip number:"), SwingUtils.gbConstr(0));
+		GridBagConstraints c = SwingUtils.gbConstr(0);
 		c.insets = insets;
 		cardPanel.add(chipL, c);
-		cardPanel.add(new JLabel("Punches:"), Util.gbConstr(1));
-		c = Util.gbConstr(1);
+		cardPanel.add(new JLabel("Punches:"), SwingUtils.gbConstr(1));
+		c = SwingUtils.gbConstr(1);
 		c.gridwidth = 2;
 		c.insets = insets;
 		cardPanel.add(punchesL, c);
-		cardPanel.add(new JLabel("Race time:"), Util.gbConstr(2));
-		c = Util.gbConstr(2);
+		cardPanel.add(new JLabel("Race time:"), SwingUtils.gbConstr(2));
+		c = SwingUtils.gbConstr(2);
 		c.insets = insets;
 		cardPanel.add(timeL, c);
-		cardPanel.add(new JLabel("Status:"), Util.gbConstr(3));
-		c = Util.gbConstr(3);
+		cardPanel.add(new JLabel("Status:"), SwingUtils.gbConstr(3));
+		c = SwingUtils.gbConstr(3);
 		c.insets = new Insets(0, 10, 0, 10);
 		cardPanel.add(statusL, c);
-		c = Util.gbConstr(3);
+		c = SwingUtils.gbConstr(3);
 		c.anchor = GridBagConstraints.CENTER;
 		cardPanel.add(courseCB, c);
 		
-		cardPanel.add(createB, Util.gbConstr(5));
-		c = Util.gbConstr(5);
+		cardPanel.add(createB, SwingUtils.gbConstr(5));
+		c = SwingUtils.gbConstr(5);
 		c.gridwidth = 2;
 		c.insets = insets;
 		cardPanel.add(new JLabel("Create new runner with above card data"), c);
-		cardPanel.add(closeB, Util.gbConstr(6));
-		c = Util.gbConstr(6);
+		cardPanel.add(closeB, SwingUtils.gbConstr(6));
+		c = SwingUtils.gbConstr(6);
 		c.gridwidth = 2;
 		c.insets = insets;
 		cardPanel.add(new JLabel("Do nothing (discard card data if new)"), c);
 		
-		JPanel embed = Util.embed(cardPanel);
+		JPanel embed = SwingUtils.embed(cardPanel);
 		embed.setBorder(BorderFactory.createTitledBorder("Card data"));
 		getContentPane().add(embed);
 	}

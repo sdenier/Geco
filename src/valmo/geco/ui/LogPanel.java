@@ -17,7 +17,6 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 
 import valmo.geco.core.Geco;
-import valmo.geco.core.Util;
 import valmo.geco.core.Announcer.Logger;
 import valmo.geco.core.Announcer.RunnerListener;
 import valmo.geco.model.Course;
@@ -69,7 +68,7 @@ public class LogPanel extends TabPanel implements Logger, RunnerListener {
 			}
 		});
 		JPanel logPanel = new JPanel(new BorderLayout());
-		logPanel.add(Util.embed(clearB), BorderLayout.SOUTH);
+		logPanel.add(SwingUtils.embed(clearB), BorderLayout.SOUTH);
 		logPanel.add(new JScrollPane(logArea), BorderLayout.CENTER);
 		return logPanel;
 	}

@@ -21,7 +21,6 @@ import javax.swing.JTextField;
 import valmo.geco.control.RunnerControl;
 import valmo.geco.core.Geco;
 import valmo.geco.core.TimeManager;
-import valmo.geco.core.Util;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 
@@ -158,8 +157,8 @@ public class RunnerPanel extends GecoPanel {
 	
 	public JPanel initPanel(JPanel panel) {
 		panel.setLayout(new BorderLayout());
-		panel.add(Util.embed(initRunnerPanel(new JPanel())), BorderLayout.NORTH);
-		panel.add(Util.embed(this.punchPanel), BorderLayout.CENTER);
+		panel.add(SwingUtils.embed(initRunnerPanel(new JPanel())), BorderLayout.NORTH);
+		panel.add(SwingUtils.embed(this.punchPanel), BorderLayout.CENTER);
 		return panel;
 	}
 

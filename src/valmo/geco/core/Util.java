@@ -3,13 +3,10 @@
  */
 package valmo.geco.core;
 
-import java.awt.Component;
-import java.awt.GridBagConstraints;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
-import javax.swing.JPanel;
 
 /**
  * @author Simon Denier
@@ -18,12 +15,6 @@ import javax.swing.JPanel;
  */
 public class Util {
 
-	public static JPanel embed(Component comp) {
-		JPanel pan = new JPanel();
-		pan.add(comp);
-		return pan;
-	}
-	
 	public static String[] splitAndTrim(String dataline, String token) {
 		String[] data = dataline.split(token);
 		for (int i = 0; i < data.length; i++) {
@@ -93,35 +84,5 @@ public class Util {
 		buf.append(">");
 		return buf.toString();
 	}
-
-	public static GridBagConstraints gbConstr() {
-		return compConstraint(GridBagConstraints.RELATIVE, GridBagConstraints.RELATIVE);
-	}
-
-	public static GridBagConstraints gbConstr(int gridy) {
-		return compConstraint(GridBagConstraints.RELATIVE, gridy);
-	}
-	
-	public static GridBagConstraints compConstraint(int gridx, int gridy) {
-		return compConstraint(gridx, gridy, GridBagConstraints.LINE_START);
-	}
-
-	public static GridBagConstraints compConstraint(int gridx, int gridy, int anchor) {
-		return compConstraint(gridx, gridy, GridBagConstraints.NONE, anchor);
-	}
-	
-	public static GridBagConstraints compConstraint(int gridx, int gridy, int fill, int anchor) {
-		GridBagConstraints constraints = new GridBagConstraints();
-		constraints.gridx = gridx;
-		constraints.gridy = gridy;
-		constraints.fill = fill;
-		constraints.anchor = anchor;
-//		constraints.ipadx = 10 ;
-//		constraints.ipady = 10 ;
-//		constraints.gridwidth = gridwidth;
-//		constraints.gridheight = gridheigth;
-		return constraints;
-	}
-
 	
 }

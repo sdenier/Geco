@@ -61,30 +61,30 @@ public class HeatSetDialog extends JDialog {
 		getContentPane().setLayout(new GridBagLayout());
 		getContentPane().add(new JLabel("Heat Set Name"));
 		heatSetF = new JTextField(7);
-		getContentPane().add(heatSetF, Util.compConstraint(1, 0));
-		GridBagConstraints c = Util.compConstraint(0, 1);
+		getContentPane().add(heatSetF, SwingUtils.compConstraint(1, 0));
+		GridBagConstraints c = SwingUtils.compConstraint(0, 1);
 		c.gridwidth = 2;
 		getContentPane().add(new JLabel("Heat Names: heat1, heat2, ..."), c);
 		heatNamesTA = new JTextArea();
 		heatNamesTA.setLineWrap(true);
 		heatNamesTA.setPreferredSize(new Dimension(200,40));
-		c = Util.compConstraint(0, 2);
+		c = SwingUtils.compConstraint(0, 2);
 		c.gridwidth = 2;
 		c.insets = new Insets(0, 0, 10, 0);
 		heatNamesTA.setBorder(BorderFactory.createLineBorder(Color.gray));
 		getContentPane().add(heatNamesTA, c);
 
-		getContentPane().add(new JLabel("Qualifying Rank"), Util.compConstraint(0, 3));
+		getContentPane().add(new JLabel("Qualifying Rank"), SwingUtils.compConstraint(0, 3));
 		qRankF = new JTextField(7);
-		getContentPane().add(qRankF, Util.compConstraint(1, 3));
+		getContentPane().add(qRankF, SwingUtils.compConstraint(1, 3));
 		
 		selectCourseB = new JRadioButton("Courses");
 		selectCatB = new JRadioButton("Categories");
 		ButtonGroup group = new ButtonGroup();
 		group.add(selectCourseB);
 		group.add(selectCatB);
-		getContentPane().add(selectCourseB, Util.compConstraint(0, 4));
-		getContentPane().add(selectCatB, Util.compConstraint(1, 4));
+		getContentPane().add(selectCourseB, SwingUtils.compConstraint(0, 4));
+		getContentPane().add(selectCatB, SwingUtils.compConstraint(1, 4));
 		
 		JButton saveB = new JButton("Save");
 		saveB.addActionListener(new ActionListener() {
@@ -93,7 +93,7 @@ public class HeatSetDialog extends JDialog {
 				checkSetFields();
 			}
 		});
-		getContentPane().add(saveB, Util.compConstraint(0, 5));
+		getContentPane().add(saveB, SwingUtils.compConstraint(0, 5));
 		JButton cancelB = new JButton("Cancel");
 		cancelB.addActionListener(new ActionListener() {
 			@Override
@@ -102,7 +102,7 @@ public class HeatSetDialog extends JDialog {
 				setVisible(false);
 			}
 		});
-		getContentPane().add(cancelB, Util.compConstraint(1, 5));
+		getContentPane().add(cancelB, SwingUtils.compConstraint(1, 5));
 		pack();
 	}
 	

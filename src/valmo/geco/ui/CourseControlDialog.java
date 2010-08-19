@@ -40,7 +40,7 @@ public class CourseControlDialog extends JDialog {
 		controlsF = new JTextField(40);
 		String codes = Arrays.toString(course.getCodes());
 		controlsF.setText(codes.substring(1, codes.length() - 1));
-		GridBagConstraints c = Util.compConstraint(0, 1);
+		GridBagConstraints c = SwingUtils.compConstraint(0, 1);
 		c.gridwidth = 2;
 		getContentPane().add(controlsF, c);
 		JButton saveB = new JButton("Save");
@@ -65,7 +65,7 @@ public class CourseControlDialog extends JDialog {
 				}
 			}
 		});
-		getContentPane().add(saveB, Util.compConstraint(0, 2));
+		getContentPane().add(saveB, SwingUtils.compConstraint(0, 2));
 		JButton cancelB = new JButton("Cancel");
 		cancelB.addActionListener(new ActionListener() {
 			@Override
@@ -73,7 +73,7 @@ public class CourseControlDialog extends JDialog {
 				setVisible(false);
 			}
 		});
-		getContentPane().add(cancelB, Util.compConstraint(1, 2));
+		getContentPane().add(cancelB, SwingUtils.compConstraint(1, 2));
 
 		pack();
 		setVisible(true);

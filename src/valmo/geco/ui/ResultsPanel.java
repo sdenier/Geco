@@ -38,7 +38,6 @@ import javax.swing.JTextPane;
 import valmo.geco.control.ResultBuilder;
 import valmo.geco.control.ResultBuilder.ResultConfig;
 import valmo.geco.core.Geco;
-import valmo.geco.core.Util;
 import valmo.geco.core.Announcer.StageConfigListener;
 import valmo.geco.model.Stage;
 
@@ -255,10 +254,10 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		refreshB.requestFocusInWindow();
 		exportB = new JButton("Export");
 		JButton printB = new JButton("Print");
-		commandPanel.add(Util.embed(refreshB));
+		commandPanel.add(SwingUtils.embed(refreshB));
 		commandPanel.add(Box.createHorizontalGlue());
-		commandPanel.add(Util.embed(exportB));
-		commandPanel.add(Util.embed(printB));
+		commandPanel.add(SwingUtils.embed(exportB));
+		commandPanel.add(SwingUtils.embed(printB));
 		
 		printB.addActionListener(new ActionListener() {
 			@Override
@@ -276,23 +275,23 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		autodelayF = new JTextField(5);
 		autodelayF.setText(Integer.toString(autoexportDelay));
 		autodelayF.setToolTipText("Autoexport delay in seconds");
-		commandPanel.add(Util.embed(autoexportB));
-		commandPanel.add(Util.embed(autodelayF));
+		commandPanel.add(SwingUtils.embed(autoexportB));
+		commandPanel.add(SwingUtils.embed(autodelayF));
 		
 		selectAllB = new JButton("All");
 		selectNoneB = new JButton("None");
-		commandPanel.add(Util.embed(selectAllB));
-		commandPanel.add(Util.embed(selectNoneB));
+		commandPanel.add(SwingUtils.embed(selectAllB));
+		commandPanel.add(SwingUtils.embed(selectNoneB));
 		
 		commandPanel.setBorder(BorderFactory.createLineBorder(Color.gray));
 
 		JPanel selectionPanel = new JPanel(new BorderLayout());
-		selectionPanel.add(Util.embed(commandPanel), BorderLayout.NORTH);
+		selectionPanel.add(SwingUtils.embed(commandPanel), BorderLayout.NORTH);
 	
 		list = new JList(coursenames);
 		selectAllCourses(list);
 		JScrollPane scrollPane = new JScrollPane(list);
-		JPanel embed = Util.embed(scrollPane);
+		JPanel embed = SwingUtils.embed(scrollPane);
 		scrollPane.setPreferredSize(new Dimension(150, 300));
 		selectionPanel.add(embed, BorderLayout.CENTER);
 

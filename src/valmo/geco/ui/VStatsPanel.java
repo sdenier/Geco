@@ -26,7 +26,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
 import valmo.geco.core.Geco;
-import valmo.geco.core.Util;
 import valmo.geco.model.Stage;
 
 /**
@@ -119,7 +118,7 @@ public class VStatsPanel extends StatsPanel {
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 		JScrollPane jsp = new JScrollPane(table);
 		jsp.setPreferredSize(new Dimension(300, 170));
-		panel.add( Util.embed(jsp), BorderLayout.CENTER );
+		panel.add( SwingUtils.embed(jsp), BorderLayout.CENTER );
 	}
 	
 	protected AbstractTableModel createCourseTableModel() {

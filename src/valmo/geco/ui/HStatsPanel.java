@@ -64,7 +64,7 @@ public class HStatsPanel extends StatsPanel {
 		
 		JPanel controlP = new JPanel();
 		controlP.setLayout(new GridBagLayout());
-		GridBagConstraints c = Util.gbConstr(1);
+		GridBagConstraints c = SwingUtils.gbConstr(1);
 		c.insets = new Insets(0, 0, 10, 0);
 		c.anchor = GridBagConstraints.CENTER;
 		c.gridy = 0;
@@ -98,7 +98,7 @@ public class HStatsPanel extends StatsPanel {
 		});
 		c.gridy = 2;
 		controlP.add(refreshB, c);
-		panel.add( Util.embed(controlP), BorderLayout.WEST );
+		panel.add( SwingUtils.embed(controlP), BorderLayout.WEST );
 		
 		courseTableModel = createCourseTableModel();
 		JTable table = new JTable(courseTableModel);
