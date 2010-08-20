@@ -35,9 +35,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
+import valmo.geco.Geco;
 import valmo.geco.control.ResultBuilder;
 import valmo.geco.control.ResultBuilder.ResultConfig;
-import valmo.geco.core.Geco;
 import valmo.geco.core.Announcer.StageConfigListener;
 import valmo.geco.model.Stage;
 

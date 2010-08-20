@@ -23,7 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
-import valmo.geco.core.Geco;
+import valmo.geco.Geco;
 import valmo.geco.core.Html;
 import valmo.geco.model.Stage;
 

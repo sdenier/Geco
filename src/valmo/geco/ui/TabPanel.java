@@ -8,7 +8,7 @@ import java.util.Properties;
 
 import javax.swing.JFrame;
 
-import valmo.geco.core.Geco;
+import valmo.geco.Geco;
 import valmo.geco.core.Announcer.StageListener;
 import valmo.geco.model.Stage;
 

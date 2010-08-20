@@ -25,8 +25,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import valmo.geco.Geco;
 import valmo.geco.control.RunnerControl;
-import valmo.geco.core.Geco;
 import valmo.geco.core.Html;
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.Registry;

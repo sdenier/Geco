@@ -16,7 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 
-import valmo.geco.core.Geco;
+import valmo.geco.Geco;
 import valmo.geco.core.Announcer.Logger;
 import valmo.geco.core.Announcer.RunnerListener;
 import valmo.geco.model.Course;

@@ -19,7 +19,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.TableRowSorter;
 
-import valmo.geco.core.Geco;
+import valmo.geco.Geco;
 
 /**
  * @author Simon Denier

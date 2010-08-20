@@ -27,8 +27,8 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
+import valmo.geco.Geco;
 import valmo.geco.control.RunnerControl;
-import valmo.geco.core.Geco;
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Runner;

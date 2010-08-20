@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2009 Simon Denier
  */
-package valmo.geco.core;
+package valmo.geco;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,6 +19,9 @@ import valmo.geco.control.ResultBuilder;
 import valmo.geco.control.RunnerControl;
 import valmo.geco.control.SIReaderHandler;
 import valmo.geco.control.StageControl;
+import valmo.geco.core.Announcer;
+import valmo.geco.core.GecoRequestHandler;
+import valmo.geco.core.Logger;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Runner;

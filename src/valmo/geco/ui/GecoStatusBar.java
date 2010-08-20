@@ -11,8 +11,8 @@ import java.awt.event.MouseEvent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import valmo.geco.Geco;
 import valmo.geco.core.Announcer.Logger;
-import valmo.geco.core.Geco;
 import valmo.geco.core.Html;
 
 /**

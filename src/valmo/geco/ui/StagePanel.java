@@ -30,8 +30,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 
+import valmo.geco.Geco;
 import valmo.geco.core.Announcer;
-import valmo.geco.core.Geco;
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
 import valmo.geco.model.Course;

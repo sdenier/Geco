@@ -6,9 +6,9 @@ package valmo.geco.ui;
 
 import javax.swing.JFrame;
 
+import valmo.geco.Geco;
 import valmo.geco.control.RegistryStats;
 import valmo.geco.core.Announcer;
-import valmo.geco.core.Geco;
 import valmo.geco.model.Stage;
 
 /**

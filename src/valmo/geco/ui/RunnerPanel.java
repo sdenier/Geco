@@ -18,8 +18,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import valmo.geco.Geco;
 import valmo.geco.control.RunnerControl;
-import valmo.geco.core.Geco;
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;

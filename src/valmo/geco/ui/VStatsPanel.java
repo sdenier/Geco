@@ -25,7 +25,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
-import valmo.geco.core.Geco;
+import valmo.geco.Geco;
 import valmo.geco.model.Stage;
 
 /**

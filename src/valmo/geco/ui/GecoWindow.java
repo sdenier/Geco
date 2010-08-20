@@ -25,8 +25,8 @@ import javax.swing.JToolBar;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import valmo.geco.Geco;
 import valmo.geco.core.Announcer;
-import valmo.geco.core.Geco;
 import valmo.geco.model.Stage;
 
 

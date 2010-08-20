@@ -15,7 +15,7 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumnModel;
 
-import valmo.geco.core.Geco;
+import valmo.geco.Geco;
 import valmo.geco.core.Html;
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.RunnerRaceData;

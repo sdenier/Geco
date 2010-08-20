@@ -7,7 +7,7 @@ package valmo.geco.ui;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import valmo.geco.core.Geco;
+import valmo.geco.Geco;
 import valmo.geco.model.Registry;
 
 /**
