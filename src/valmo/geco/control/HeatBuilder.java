@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Vector;
 
-import valmo.geco.core.Geco;
 import valmo.geco.core.Html;
 import valmo.geco.model.Category;
 import valmo.geco.model.Course;
@@ -32,19 +31,16 @@ import valmo.geco.model.iocsv.RunnerIO;
  */
 public class HeatBuilder extends Control {
 	
-	private Geco geco;
-	
 	private int startnumber;
 
 	private Vector<Heat> heats;
 
-	/**
-	 * @param factory
-	 * @param stage
-	 */
-	public HeatBuilder(Factory factory, Geco geco) {
+	private ResultBuilder resultBuilder;
+
+
+	public HeatBuilder(Factory factory, ResultBuilder resultBuilder) {
 		super(factory);
-		this.geco = geco;
+		this.resultBuilder = resultBuilder;
 	}
 	
 	public HeatSet createHeatSet() {
@@ -114,11 +110,11 @@ public class HeatBuilder extends Control {
 			Pool[] selectedPools = heatset.getSelectedPools();
 			if( heatset.isCourseType() ) {
 				for (Pool pool : selectedPools) {
-					heatsetResults.add(geco.resultBuilder().buildResultForCourse((Course) pool));	
+					heatsetResults.add(resultBuilder.buildResultForCourse((Course) pool));	
 				}
 			} else {
 				for (Pool pool : selectedPools) {
-					heatsetResults.add(geco.resultBuilder().buildResultForCategory((Category) pool));	
+					heatsetResults.add(resultBuilder.buildResultForCategory((Category) pool));	
 				}				
 			}
 			List<Heat> heatsForCurrentHeatset = buildHeatsFromResults(heatsetResults, heatset.getHeatNames(), heatset.getQualifyingRank());

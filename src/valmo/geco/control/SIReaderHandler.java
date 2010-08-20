@@ -17,8 +17,7 @@ import org.martin.sireader.server.PortMessage;
 import org.martin.sireader.server.SIPortHandler;
 import org.martin.sireader.server.SIReaderListener;
 
-import valmo.geco.core.Announcer;
-import valmo.geco.core.Geco;
+import valmo.geco.core.GecoRequestHandler;
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Punch;
@@ -34,7 +33,9 @@ import valmo.geco.model.Status;
  */
 public class SIReaderHandler extends Control implements SIReaderListener<PunchObject,PunchRecordData> {
 
-	private Geco geco;
+	private GecoControl geco;
+
+	private GecoRequestHandler requestHandler;
 	
 	private SIPortHandler portHandler;
 
@@ -47,9 +48,10 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 	 * @param stage
 	 * @param announcer
 	 */
-	public SIReaderHandler(Factory factory, Stage stage, Geco geco, Announcer announcer) {
-		super(factory, stage, announcer);
+	public SIReaderHandler(Factory factory, Stage stage, GecoControl geco, GecoRequestHandler requestHandler) {
+		super(factory, stage, geco.announcer());
 		this.geco = geco;
+		this.requestHandler = requestHandler;
 		changePortName();
 		changeZeroTime();
 	}
@@ -139,13 +141,13 @@ public class SIReaderHandler extends Control implements SIReaderListener<PunchOb
 			RunnerRaceData runnerData = registry().findRunnerData(runner);
 			if( runnerData.hasResult() ) {
 				geco.log("Re-Reading " + card.getSiIdent());
-				geco.openOverwriteDialog("Existing Data for Runner", handleNewData(card), runner);
+				requestHandler.requestMergeExistingRunner(handleNewData(card), runner);
 			} else {
 				handleData(runnerData, card);	
 			}
 		} else {
 			geco.log("Read unknown " + card.getSiIdent());
-			geco.openMergeDialog("Unknown Chip", handleNewData(card), card.getSiIdent());
+			requestHandler.requestMergeUnknownRunner(handleNewData(card), card.getSiIdent());
 		}
 		
 	}

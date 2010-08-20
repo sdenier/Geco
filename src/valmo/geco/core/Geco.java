@@ -8,18 +8,16 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Properties;
 import java.util.Vector;
 
+import valmo.geco.control.GecoControl;
 import valmo.geco.control.HeatBuilder;
 import valmo.geco.control.PenaltyChecker;
 import valmo.geco.control.RegistryStats;
 import valmo.geco.control.ResultBuilder;
 import valmo.geco.control.RunnerControl;
 import valmo.geco.control.SIReaderHandler;
-import valmo.geco.control.StageBuilder;
 import valmo.geco.control.StageControl;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Registry;
@@ -38,7 +36,7 @@ import valmo.geco.ui.MergeRunnerDialog;
  * @author Simon Denier
  * @since Jan 25, 2009
  */
-public class Geco {
+public class Geco implements GecoRequestHandler {
 	
 	public static String VERSION; 
 	
@@ -54,56 +52,20 @@ public class Geco {
 			e.printStackTrace();
 		}
 	}
-	
-	private class RuntimeStage {
-		private Stage stage;
-		
-		private Logger logger;
 
-		public RuntimeStage(Stage stage, Logger logger) {
-			super();
-			this.stage = stage;
-			this.logger = logger;
-		}
-
-		public Stage stage() {
-			return this.stage;
-		}
-		
-		public Logger logger() {
-			return this.logger;
-		}
-	}
-	
-	/*
-	 * stupid accessor against null value
-	 */
-	private static Stage getStage(RuntimeStage rstage) {
-		return ( rstage!=null ) ? rstage.stage() : null;
-	}
 
 	/*
 	 * General
 	 */
 	private Factory factory;
 	
-	private RuntimeStage current;
-	
-	private RuntimeStage previous;
-	
-	private RuntimeStage next;
+	private GecoControl gecoControl;
 
 	private GecoWindow window;
-	
-	private Announcer announcer;
-
-	private Thread autosaveThread;
 	
 	/*
 	 * Controls
 	 */
-	private PenaltyChecker checker;
-
 	private StageControl stageControl;
 	
 	private RunnerControl runnerControl;
@@ -111,15 +73,13 @@ public class Geco {
 	private ResultBuilder resultBuilder;
 	
 	private HeatBuilder heatBuilder;
-
-	private StageBuilder stageBuilder;
 	
 	private SIReaderHandler siHandler;
 
 	private RegistryStats stats;
 
 	/*
-	 * Stage list 
+	 * Stage list
 	 */
 	private String stageListFile;
 
@@ -145,102 +105,92 @@ public class Geco {
 	
 	
 	public void exit() {
-		closeAllStages();
+		gecoControl.closeAllStages();
 		System.exit(0);
 	}
 
-	/**
-	 * 
-	 */
 	public Geco() {
-		/*
-		 * Bootstrapper/Launcher: select base dir
-		 * if geco prop exists, open, else import Or
-		 * launch GUI
-		 * 
-		 * -importing Or data: import data, check punches, setup stage
-		 * 
-		 * -opening an existing stage: load properties, setup stage
-		 * -setup a stage: set properties, import data, setup heats
-		 * 
-		 * - switching to previous/next: if null, import/open stage
-		 * switch current stage
-		 */
-		
-		factory = new POFactory();
-		announcer = new Announcer();
-		
-		// early controls
-		stageBuilder = new StageBuilder(factory);
-		checker = new PenaltyChecker(factory);
 		
 		try {
-			openStage(launcher());
-//			openStage("data/belfield");
+			String startDir = launcher();
+			updateStageList(startDir);
+
+			// TODO: move factory into gecocontrol
+			factory = new POFactory();
+			gecoControl = new GecoControl(factory, startDir);
+
+			stageControl = new StageControl(factory, stage(), announcer());
+			runnerControl = new RunnerControl(factory, stage(), gecoControl, announcer());
+			resultBuilder = new ResultBuilder(factory, stage(), announcer());
+			heatBuilder = new HeatBuilder(factory, resultBuilder);
+			stats = new RegistryStats(factory, stage(), announcer());
+			siHandler = new SIReaderHandler(factory, stage(), gecoControl, this);
+			
+			window = new GecoWindow(this);
 		} catch (Exception e) {
 			System.exit(-1);
 		}
-		
-		// early controls post-initialization
-		announcer.registerStageListener(stageBuilder);
-		announcer.registerStageListener(checker);
-
-		stageControl = new StageControl(factory, stage(), announcer);
-		runnerControl = new RunnerControl(factory, stage(), this, announcer);
-		resultBuilder = new ResultBuilder(factory, stage(), announcer);
-		heatBuilder = new HeatBuilder(factory, this);
-		stats = new RegistryStats(factory, stage(), announcer);
-		siHandler = new SIReaderHandler(factory, stage(), this, announcer);
-		window = new GecoWindow(this);
-	}
-
-	public void openStage(String baseDir) {
-		stopAutosave();
-		RuntimeStage oldStage = current;
-
-		RuntimeStage newStage = loadStage(baseDir);
-		closeAllStages();
-		current = newStage;
-		updateStageList(stage().getBaseDir());
-
-		announcer.announceChange(getStage(oldStage), stage());
-		startAutosave();
 	}
 
 	private String launcher() throws Exception {
 		return new GecoLauncher(System.getProperty("user.dir")).open(null);
-//		JFileChooser chooser = new JFileChooser();
-//		chooser.setCurrentDirectory(new File("./data"));
-//		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-//		int result = chooser.showOpenDialog(null);
-//		if( result==JFileChooser.CANCEL_OPTION || result==JFileChooser.ERROR_OPTION ) {
-//			throw new Exception("Cancelled import");
-//		}
-//		String baseDir = chooser.getSelectedFile().getAbsolutePath();
-//		if( !new File(baseDir + File.separator + "Competition.csv").exists()
-//			&&
-//			!new File(baseDir + File.separator + "geco.prop").exists() ) {
-//			JOptionPane.showMessageDialog(null,
-//										"Directory does not contain data",
-//										"Exit",
-//										JOptionPane.ERROR_MESSAGE);
-//			throw new Exception("Incorrect directory");
-//		}
-//		return baseDir;
+	}
+	
+	public void openStage(String startDir) {
+		updateStageList(startDir);
+		gecoControl.openStage(startDir);
+	}
+	
+	public void saveCurrentStage() {
+		gecoControl.saveCurrentStage();
+	}
+	
+	
+	public Announcer announcer() {
+		return gecoControl.announcer();
+	}
+	public Stage stage() {
+		return gecoControl.stage();
+	}
+	public Registry registry() {
+		return gecoControl.registry();
+	}
+	
+	public PenaltyChecker checker() {
+		return gecoControl.checker();
+	}
+	public StageControl stageControl() {
+		return this.stageControl;
+	}
+	public RunnerControl runnerControl() {
+		return this.runnerControl;
+	}
+	public ResultBuilder resultBuilder() {
+		return this.resultBuilder;
+	}
+	public HeatBuilder heatBuilder() {
+		return this.heatBuilder;
+	}	
+	public RegistryStats registryStats() {
+		return this.stats;
+	}
+	public SIReaderHandler siHandler() {
+		return this.siHandler;
+	}
+	
+	public Logger logger() {
+		return gecoControl.logger();
+	}
+	public void debug(String message) {
+		gecoControl.debug(message);
+	}
+	public void log(String message) {
+		gecoControl.log(message);
+	}
+	public void info(String message, boolean warning) {
+		gecoControl.info(message, warning);
 	}
 
-	private RuntimeStage loadStage(String baseDir) {
-		Stage stage = stageBuilder.loadStage(baseDir, checker);
-//		stageBuilder.backupData(stage.getBaseDir(),
-//								backupFilename( new SimpleDateFormat("yyMMdd-HHmmss'i'").format(new Date()) ));
-		Logger logger = initializeLogger(stage);
-		return new RuntimeStage(stage, logger);
-	}
-	private Logger initializeLogger(Stage stage) {
-		Logger logger = new Logger(stage.getBaseDir(), "geco.log");
-		logger.initSessionLog(stage.getName());
-		return logger;
-	}
 	
 	private void updateStageList(String baseDir) {
 		parentDir = new File(baseDir).getParent();
@@ -276,131 +226,6 @@ public class Geco {
 			}
 		}
 	}
-	
-	public Thread startAutosave() {
-		final long saveDelay = stage().getAutosaveDelay() * 60 * 1000;
-		autosaveThread = new Thread(new Runnable() {
-			@Override
-			public synchronized void run() {
-				int id = stage().getNbAutoBackups();
-				while( true ){
-					try {
-						wait(saveDelay);
-						id ++;
-						if( id > stage().getNbAutoBackups() ) {
-							id = 1;
-						}
-						saveStage(backupFilename(new Integer(id).toString()));
-					} catch (InterruptedException e) {
-						return;
-					}					
-				}
-			}});
-		autosaveThread.start();
-		return autosaveThread;
-	}
-	
-	public void stopAutosave() {
-		if( autosaveThread!=null ) {
-			autosaveThread.interrupt();
-			try {
-				autosaveThread.join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	private String backupFilename(String id) {
-		return "backups" + File.separator + "backup" + id + ".zip";
-	}
-	
-	private void saveStage(String backupName) {
-		Properties props = new Properties();
-		announcer.announceSave(stage(), props);
-		stageBuilder.save(	stage(), 
-							props, 
-							backupName);
-	}
-
-	public void saveCurrentStage() {
-		saveStage( backupFilename( new SimpleDateFormat("yyMMdd-HHmmss").format(new Date()) ));
-	}
-	
-	public void closeStage(RuntimeStage runStage) {
-		if( runStage!=null ) {
-			announcer.announceClose(runStage.stage());
-			runStage.stage().close();
-			runStage.logger().close();
-		}
-	}
-	private void closeCurrentStage() {
-		if( current!=null ) {
-			saveCurrentStage();
-		}
-		closeStage(current);
-	}
-	private void closeNextStage() {
-		closeStage(next);
-		next = null;
-	}
-	private void closePreviousStage() {
-		closeStage(previous);
-		previous = null;
-	}
-	public void closeAllStages() {
-		closeCurrentStage();
-		closePreviousStage();
-		closeNextStage();
-	}
-
-	public Logger logger() {
-		return current.logger();
-	}
-	public void debug(String message) {
-		logger().debug(message);
-		announcer().log(message, true);
-	}
-	public void log(String message) {
-		logger().log(message);
-		announcer().log(message, false);
-	}
-	public void info(String message, boolean warning) {
-		announcer().info(message, warning);
-	}
-	
-	public Announcer announcer() {
-		return this.announcer;
-	}
-	public Stage stage() {
-		return current.stage();
-	}
-	public Registry registry() {
-		return stage().registry();
-	}
-	public PenaltyChecker checker() {
-		return this.checker;
-	}
-	public StageControl stageControl() {
-		return this.stageControl;
-	}
-	public RunnerControl runnerControl() {
-		return this.runnerControl;
-	}
-	public ResultBuilder resultBuilder() {
-		return this.resultBuilder;
-	}
-	public HeatBuilder heatBuilder() {
-		return this.heatBuilder;
-	}	
-	public RegistryStats registryStats() {
-		return this.stats;
-	}
-	
-	public SIReaderHandler siHandler() {
-		return this.siHandler;
-	}
-	
 	
 	public String getCurrentStagePath() {
 		return new File(stage().getBaseDir()).getAbsolutePath();
@@ -440,46 +265,28 @@ public class Geco {
 	
 	public void switchToPreviousStage() {
 		if( hasPreviousStage() ) {
-			stopAutosave();
-			saveCurrentStage();
-			if( previous==null ) {
-				previous = loadStage(getPreviousStagePath());
-			}
+			gecoControl.preloadPreviousStage(getPreviousStagePath());
 			stageIndex--;
-			// previous loaded, proceed with switching references around
-			closeNextStage();
-			next = current; // current becomes next
-			current = previous; // previous becomes current
-			previous = null; // unset previous ref (we dont want to automatically load previous one)
-			announcer.announceChange(getStage(next), stage());
-			startAutosave();
+			gecoControl.switchToPreviousStage();
 		} // else do nothing
 	}
 
 	public void switchToNextStage() {
 		if( hasNextStage() ) {
-			stopAutosave();
-			saveCurrentStage();
-			if( next==null ) {
-				next = loadStage(getNextStagePath());
-			}
+			gecoControl.preloadNextStage(getNextStagePath());
 			stageIndex++;
-			// next loaded, proceed with switching references around
-			closePreviousStage();
-			previous = current;
-			current = next;
-			next = null;
-			announcer.announceChange(getStage(previous), stage());
-			startAutosave();
+			gecoControl.switchToNextStage();
 		} // else do nothing
 	}
 
-	public void openMergeDialog(String title, RunnerRaceData data, String chip) {
-		new MergeRunnerDialog(this, window, title).showMergeDialogFor(data, chip);
+	@Override
+	public void requestMergeUnknownRunner(RunnerRaceData data, String chip) {
+		new MergeRunnerDialog(this, window, "Unknown Chip").showMergeDialogFor(data, chip);		
 	}
-	
-	public void openOverwriteDialog(String title, RunnerRaceData data, Runner target) {
-		new MergeRunnerDialog(this, window, title).showOverwriteDialogFor(data, target);
+
+	@Override
+	public void requestMergeExistingRunner(RunnerRaceData data,	Runner target) {
+		new MergeRunnerDialog(this, window, "Existing Data for Runner").showOverwriteDialogFor(data, target);
 	}
 	
 }

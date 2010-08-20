@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.Date;
 
 import valmo.geco.core.Announcer;
-import valmo.geco.core.Geco;
 import valmo.geco.core.TimeManager;
 import valmo.geco.core.Util;
 import valmo.geco.model.Category;
@@ -27,14 +26,14 @@ import valmo.geco.model.Status;
  */
 public class RunnerControl extends RunnerBuilder {
 	
-	private Geco geco;
+	private GecoControl geco;
 	
 	/**
 	 * @param factory
 	 * @param stage
 	 * @param announcer 
 	 */
-	public RunnerControl(Factory factory, Stage stage, Geco geco, Announcer announcer) {
+	public RunnerControl(Factory factory, Stage stage, GecoControl geco, Announcer announcer) {
 		super(factory, stage, announcer);
 		this.geco = geco;
 	}
