@@ -22,12 +22,10 @@ import valmo.geco.control.StageControl;
 import valmo.geco.core.Announcer;
 import valmo.geco.core.GecoRequestHandler;
 import valmo.geco.core.Logger;
-import valmo.geco.model.Factory;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Stage;
-import valmo.geco.model.impl.POFactory;
 import valmo.geco.ui.GecoLauncher;
 import valmo.geco.ui.GecoWindow;
 import valmo.geco.ui.MergeRunnerDialog;
@@ -60,8 +58,6 @@ public class Geco implements GecoRequestHandler {
 	/*
 	 * General
 	 */
-	private Factory factory;
-	
 	private GecoControl gecoControl;
 
 	private GecoWindow window;
@@ -113,21 +109,18 @@ public class Geco implements GecoRequestHandler {
 	}
 
 	public Geco() {
-		
 		try {
 			String startDir = launcher();
 			updateStageList(startDir);
 
-			// TODO: move factory into gecocontrol
-			factory = new POFactory();
-			gecoControl = new GecoControl(factory, startDir);
+			gecoControl = new GecoControl(startDir);
 
-			stageControl = new StageControl(factory, stage(), announcer());
-			runnerControl = new RunnerControl(factory, stage(), gecoControl, announcer());
-			resultBuilder = new ResultBuilder(factory, stage(), announcer());
-			heatBuilder = new HeatBuilder(factory, resultBuilder);
-			stats = new RegistryStats(factory, stage(), announcer());
-			siHandler = new SIReaderHandler(factory, stage(), gecoControl, this);
+			stageControl = new StageControl(gecoControl);
+			runnerControl = new RunnerControl(gecoControl);
+			resultBuilder = new ResultBuilder(gecoControl);
+			heatBuilder = new HeatBuilder(gecoControl, resultBuilder);
+			stats = new RegistryStats(gecoControl);
+			siHandler = new SIReaderHandler(gecoControl, this);
 			
 			window = new GecoWindow(this);
 		} catch (Exception e) {

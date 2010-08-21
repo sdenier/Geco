@@ -8,8 +8,8 @@ import java.util.Date;
 import java.util.Properties;
 import java.util.Vector;
 
+import valmo.geco.core.Announcer.StageListener;
 import valmo.geco.core.TimeManager;
-import valmo.geco.model.Factory;
 import valmo.geco.model.Punch;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Stage;
@@ -22,7 +22,7 @@ import valmo.geco.ui.MergeRunnerDialog;
  * @since Dec 7, 2008
  *
  */
-public class PenaltyChecker extends PunchChecker {	
+public class PenaltyChecker extends PunchChecker implements StageListener {	
 	
 	private long MPPenalty;
 
@@ -33,20 +33,15 @@ public class PenaltyChecker extends PunchChecker {
 	private Vector<Trace> trace;
 	
 	
-	/**
-	 * @param factory 
-	 * @param stage 
-	 * 
-	 */
-	public PenaltyChecker(Factory factory) {
-		super(factory);
+	public PenaltyChecker(GecoControl gecoControl) {
+		super(gecoControl);
 		setMPLimit(defaultMPLimit());
 		setMPPenalty(defaultMPPenalty());
+		gecoControl.announcer().registerStageListener(this);
 	}
 
 	protected void postInitialize(Stage stage) {
-		setStage(stage);
-		setNewProperties();
+		setNewProperties(stage);
 	}
 	
 	/*
@@ -296,8 +291,8 @@ public class PenaltyChecker extends PunchChecker {
 		MPLimit = limit;
 	}
 
-	protected void setNewProperties() {
-		String limit = stage().getProperties().getProperty("MPLimit");
+	protected void setNewProperties(Stage stage) {
+		String limit = stage.getProperties().getProperty("MPLimit");
 		if( limit!=null ) {
 			try {
 				setMPLimit(new Integer(limit));				
@@ -308,7 +303,7 @@ public class PenaltyChecker extends PunchChecker {
 		} else {
 			setMPLimit(defaultMPLimit());
 		}
-		String penalty = stage().getProperties().getProperty("MPPenalty");
+		String penalty = stage.getProperties().getProperty("MPPenalty");
 		if( penalty!=null ) {
 			try {
 				setMPPenalty(new Long(penalty));				
@@ -323,15 +318,16 @@ public class PenaltyChecker extends PunchChecker {
 	
 	@Override
 	public void changed(Stage previous, Stage next) {
-		super.changed(previous, next);
-		setNewProperties();
+		setNewProperties(next);
 	}
 
 	@Override
 	public void saving(Stage stage, Properties properties) {
-		super.saving(stage, properties);
 		properties.setProperty("MPLimit", new Integer(getMPLimit()).toString());
 		properties.setProperty("MPPenalty", new Long(getMPPenalty()).toString());
 	}
+
+	@Override
+	public void closing(Stage stage) {	}
 	
 }

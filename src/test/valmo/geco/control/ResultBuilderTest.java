@@ -15,16 +15,13 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import valmo.geco.control.PenaltyChecker;
+import valmo.geco.control.GecoControl;
 import valmo.geco.control.ResultBuilder;
-import valmo.geco.control.StageBuilder;
-import valmo.geco.core.Announcer;
 import valmo.geco.model.RankedRunner;
 import valmo.geco.model.Result;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Stage;
 import valmo.geco.model.Status;
-import valmo.geco.model.impl.POFactory;
 
 /**
  * @author Simon Denier
@@ -43,11 +40,13 @@ public class ResultBuilderTest {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		POFactory factory = new POFactory();
-		belfieldStage = new StageBuilder(factory).loadStage("testData/belfield", new PenaltyChecker(factory));
-		belfieldResultBuilder = new ResultBuilder(factory, belfieldStage, new Announcer());
-		mullaghmeenStage = new StageBuilder(factory).loadStage("testData/mullaghmeen", new PenaltyChecker(factory));
-		mullaghmeenResultBuilder = new ResultBuilder(factory, mullaghmeenStage, new Announcer());
+		GecoControl belfieldGeco = new GecoControl("testData/belfield");
+		belfieldStage = belfieldGeco.stage();
+		belfieldResultBuilder = new ResultBuilder(belfieldGeco);
+		
+		GecoControl mullaghmeenGeco = new GecoControl("testData/mullaghmeen");
+		mullaghmeenStage = mullaghmeenGeco.stage();
+		mullaghmeenResultBuilder = new ResultBuilder(mullaghmeenGeco);
 
 	}
 	

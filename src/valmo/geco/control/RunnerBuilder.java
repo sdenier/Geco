@@ -4,8 +4,7 @@
  */
 package valmo.geco.control;
 
-import valmo.geco.core.Announcer;
-import valmo.geco.model.Factory;
+import valmo.geco.model.Registry;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Stage;
@@ -17,13 +16,8 @@ import valmo.geco.model.Stage;
  */
 public class RunnerBuilder extends Control {
 	
-	public RunnerBuilder(Factory factory, Stage stage) {
-		super(factory);
-		setStage(stage);
-	}
-
-	protected RunnerBuilder(Factory factory, Stage stage, Announcer announcer) {
-		super(factory, stage, announcer);
+	public RunnerBuilder(GecoControl gecoControl) {
+		super(gecoControl);
 	}
 
 	public RunnerRaceData buildRunnerData() {
@@ -33,24 +27,27 @@ public class RunnerBuilder extends Control {
 	}
 	
 	public RunnerRaceData registerRunnerDataFor(Runner runner, RunnerRaceData runnerData) {
+		return registerRunnerDataFor(registry(), runner, runnerData);
+	}
+	
+	public static RunnerRaceData registerRunnerDataFor(Registry registry, Runner runner, RunnerRaceData runnerData) {
 		runnerData.setRunner(runner);
-		registry().addRunnerData(runnerData);
+		registry.addRunnerData(runnerData);
 		return runnerData;
 	}
-
 	
-	public void checkGecoData(PenaltyChecker checker) {
-		checkNoDataRunners();
+	public void checkGecoData(Stage currentStage, PenaltyChecker checker) {
+		checkNoDataRunners(currentStage.registry());
 		// compute trace for data
-		for (RunnerRaceData raceData : registry().getRunnersData()) {
+		for (RunnerRaceData raceData : currentStage.registry().getRunnersData()) {
 			checker.computeStatus(raceData);	
 		}
 	}
 	
-	public void checkOrData(PenaltyChecker checker) {
-		checkNoDataRunners();
+	public void checkOrData(Stage currentStage, PenaltyChecker checker) {
+		checkNoDataRunners(currentStage.registry());
 		// compute status and trace for data
-		for (RunnerRaceData raceData : registry().getRunnersData()) {
+		for (RunnerRaceData raceData : currentStage.registry().getRunnersData()) {
 			// Special runner status (DNS) should have been set before this point
 			if( raceData.getResult()==null ) {
 				checker.check(raceData);	
@@ -58,10 +55,10 @@ public class RunnerBuilder extends Control {
 		}
 	}
 	
-	public void checkNoDataRunners() {
-		for (Runner runner : registry().getRunners()) {
-			if( registry().findRunnerData(runner) == null ) {
-				registerRunnerDataFor(runner, buildRunnerData());
+	public void checkNoDataRunners(Registry registry) {
+		for (Runner runner : registry.getRunners()) {
+			if( registry.findRunnerData(runner) == null ) {
+				registerRunnerDataFor(registry, runner, buildRunnerData());
 			}
 		}
 	}

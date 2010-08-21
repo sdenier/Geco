@@ -8,11 +8,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Vector;
 
 import valmo.geco.core.Announcer;
 import valmo.geco.model.Course;
-import valmo.geco.model.Factory;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Stage;
@@ -24,7 +24,7 @@ import valmo.geco.model.Status;
  *
  */
 public class RegistryStats extends Control
-	implements Announcer.RunnerListener, Announcer.StageConfigListener {
+	implements Announcer.StageListener, Announcer.RunnerListener, Announcer.StageConfigListener {
 
 	/*
 	 * compute stats on registry after initial upload and keep numbers up to date by following
@@ -47,8 +47,10 @@ public class RegistryStats extends Control
 	private int totalDsq;
 	private int totalUnknown;
 	
-	public RegistryStats(Factory factory, Stage stage, Announcer announcer) {
-		super(factory, stage, announcer);
+	public RegistryStats(GecoControl gecoControl) {
+		super(gecoControl);
+		Announcer announcer = gecoControl.announcer();
+		announcer.registerStageListener(this);
 		announcer.registerRunnerListener(this);
 		announcer.registerStageConfigListener(this);
 		fullUpdate();
@@ -169,13 +171,6 @@ public class RegistryStats extends Control
 		return value;
 	}
 
-	
-	@Override
-	public void changed(Stage previous, Stage next) {
-		super.changed(previous, next);
-		fullUpdate();
-	}
-
 
 	/* (non-Javadoc)
 	 * @see valmo.geco.ui.Announcer.RunnerListener#runnerCreated(valmo.geco.model.Runner)
@@ -257,6 +252,17 @@ public class RegistryStats extends Control
 	public void runnersChanged() {
 		fullUpdate();		
 	}
+	
+	@Override
+	public void changed(Stage previous, Stage next) {
+		fullUpdate();
+	}
+
+	@Override
+	public void saving(Stage stage, Properties properties) {	}
+
+	@Override
+	public void closing(Stage stage) {	}
 
 	
 }

@@ -4,9 +4,6 @@
  */
 package valmo.geco.control;
 
-import java.util.Properties;
-
-import valmo.geco.core.Announcer;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Stage;
@@ -20,55 +17,28 @@ import valmo.geco.model.Stage;
  * @author Simon Denier
  * @since Nov 23, 2008
  */
-public abstract class Control implements Announcer.StageListener {
+public abstract class Control {
 	
-	private Factory factory;
+	private GecoControl gecoControl;
 
-	private Stage stage;
-	
-
-	public Control(Factory factory) {
-		setFactory(factory);
+	public Control(GecoControl gecoControl) {
+		this.gecoControl = gecoControl;
 	}
 	
-	public Control(Factory factory, Stage stage, Announcer announcer) {
-		this(factory);
-		setStage(stage);
-		announcer.registerStageListener(this);
+	protected GecoControl geco() {
+		return this.gecoControl;
 	}
 	
 	public Factory factory() {
-		return this.factory;
+		return gecoControl.factory();
 	}
 
-	public void setFactory(Factory factory) {
-		this.factory = factory;
-	}
-	
 	public Stage stage() {
-		return this.stage;
+		return gecoControl.stage();
 	}
 	
-	public void setStage(Stage stage) {
-		this.stage = stage;
-	}
-
 	public Registry registry() {
 		return stage().registry();
 	}
 
-
-	@Override
-	public void saving(Stage stage, Properties properties) {
-	}
-
-	@Override
-	public void changed(Stage previous, Stage next) {
-		this.stage = next;
-	}
-	
-	@Override
-	public void closing(Stage stage) {
-	}
-	
 }

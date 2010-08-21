@@ -13,10 +13,8 @@ import valmo.geco.core.TimeManager;
 import valmo.geco.core.Util;
 import valmo.geco.model.Category;
 import valmo.geco.model.Course;
-import valmo.geco.model.Factory;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
-import valmo.geco.model.Stage;
 import valmo.geco.model.Status;
 
 /**
@@ -26,20 +24,12 @@ import valmo.geco.model.Status;
  */
 public class RunnerControl extends RunnerBuilder {
 	
-	private GecoControl geco;
-	
-	/**
-	 * @param factory
-	 * @param stage
-	 * @param announcer 
-	 */
-	public RunnerControl(Factory factory, Stage stage, GecoControl geco, Announcer announcer) {
-		super(factory, stage, announcer);
-		this.geco = geco;
+	public RunnerControl(GecoControl gecoControl) {
+		super(gecoControl);
 	}
 	
 	private Announcer announcer() {
-		return geco.announcer();
+		return geco().announcer();
 	}
 
 	public Runner buildMockRunner() {
@@ -102,7 +92,7 @@ public class RunnerControl extends RunnerBuilder {
 		try {
 			return verifyStartnumber(runner, new Integer(newStartString));
 		} catch (NumberFormatException e) {
-			geco.info("Bad format for start number", true);
+			geco().info("Bad format for start number", true);
 			return false;
 		}
 	}
@@ -112,7 +102,7 @@ public class RunnerControl extends RunnerBuilder {
 		Integer[] startnums = registry().collectStartnumbers();
 		boolean ok = Util.different(newStart, Arrays.binarySearch(startnums, oldStart), startnums);
 		if( !ok )
-			geco.info("Start number already used", true);
+			geco().info("Start number already used", true);
 		return ok;
 	}
 	
@@ -124,7 +114,7 @@ public class RunnerControl extends RunnerBuilder {
 				return true;
 			}
 		} catch (NumberFormatException e) {
-			geco.info("Bad format for start number", true);
+			geco().info("Bad format for start number", true);
 		}
 		return false;
 	}
@@ -132,14 +122,14 @@ public class RunnerControl extends RunnerBuilder {
 	public boolean verifyChipnumber(Runner runner, String newChipString) {
 		String newChip = newChipString.trim();
 		if( newChip.isEmpty() ) {
-			geco.info("Chip number can not be empty", true);
+			geco().info("Chip number can not be empty", true);
 			return false;
 		}
 		String oldChip = runner.getChipnumber();
 		String[] chips = registry().collectChipnumbers();
 		boolean ok = Util.different(newChip, Arrays.binarySearch(chips, oldChip), chips);
 		if( !ok )
-			geco.info("Chip number already used", true);
+			geco().info("Chip number already used", true);
 		return ok;
 	}
 
@@ -162,7 +152,7 @@ public class RunnerControl extends RunnerBuilder {
 	public boolean verifyLastname(String newName) {
 		boolean ok = ! newName.trim().isEmpty();
 		if( !ok ) {
-			geco.info("Last name can not be empty", true);
+			geco().info("Last name can not be empty", true);
 		}
 		return ok;
 	}
@@ -186,7 +176,7 @@ public class RunnerControl extends RunnerBuilder {
 		if( !oldCat.getShortname().equals(newCat) ) {
 			runner.setCategory(registry().findCategory(newCat));
 			registry().updateRunnerCategory(oldCat, runner);
-			geco.log("Category change for " + runner.idString() + " from " + oldCat.getShortname() + " to " + newCat);
+			geco().log("Category change for " + runner.idString() + " from " + oldCat.getShortname() + " to " + newCat);
 			return true;
 		}
 		return false;
@@ -199,10 +189,10 @@ public class RunnerControl extends RunnerBuilder {
 			runner.setCourse(registry().findCourse(newCourse));
 			registry().updateRunnerCourse(oldCourse, runner);
 			announcer().announceCourseChange(runner, oldCourse);
-			geco.log("Course change for " + runner.idString() + " from " + oldCourse.getName() + " to " + newCourse);
+			geco().log("Course change for " + runner.idString() + " from " + oldCourse.getName() + " to " + newCourse);
 			// Proceed by checking the new status
 			Status oldStatus = runnerData.getResult().getStatus();
-			geco.checker().check(runnerData); // use and share an action with refresh button
+			geco().checker().check(runnerData); // use and share an action with refresh button
 			announcer().announceStatusChange(runnerData, oldStatus);
 			return true;
 		}
@@ -219,7 +209,7 @@ public class RunnerControl extends RunnerBuilder {
 			TimeManager.userParse(raceTime);
 			return true;
 		} catch (ParseException e1) {
-			geco.info("Bad time format", true);
+			geco().info("Bad time format", true);
 			return false;
 		}		
 	}
@@ -230,21 +220,21 @@ public class RunnerControl extends RunnerBuilder {
 			Date newTime = TimeManager.userParse(raceTime);
 			if( oldTime!=newTime.getTime() ) {
 				runnerData.getResult().setRacetime(newTime.getTime());
-				geco.log("Race time change for " + runnerData.getRunner().idString() + " from " + TimeManager.fullTime(oldTime) + " to " + TimeManager.fullTime(newTime));
+				geco().log("Race time change for " + runnerData.getRunner().idString() + " from " + TimeManager.fullTime(oldTime) + " to " + TimeManager.fullTime(newTime));
 			}
 			return true;
 		} catch (ParseException e1) {
-			geco.info("Bad time format", true);
+			geco().info("Bad time format", true);
 			return false;
 		}
 	}
 	
 	public boolean resetRaceTime(RunnerRaceData runnerData) {
 		long oldTime = runnerData.getResult().getRacetime();
-		geco.checker().resetRaceTime(runnerData);
+		geco().checker().resetRaceTime(runnerData);
 		long newTime = runnerData.getResult().getRacetime();
 		if( oldTime!=newTime ) {
-			geco.log("Race time reset for " + runnerData.getRunner().idString() + " from " + TimeManager.fullTime(oldTime) + " to " + TimeManager.fullTime(newTime));
+			geco().log("Race time reset for " + runnerData.getRunner().idString() + " from " + TimeManager.fullTime(oldTime) + " to " + TimeManager.fullTime(newTime));
 		}
 		return true;
 	}
@@ -253,7 +243,7 @@ public class RunnerControl extends RunnerBuilder {
 		Status oldStatus = runnerData.getResult().getStatus();
 		if( !newStatus.equals(oldStatus) ) {
 			runnerData.getResult().setStatus(newStatus);
-			geco.log("Status change for " + runnerData.getRunner().idString() + " from " + oldStatus + " to " + newStatus);
+			geco().log("Status change for " + runnerData.getRunner().idString() + " from " + oldStatus + " to " + newStatus);
 			announcer().announceStatusChange(runnerData, oldStatus);
 			return true;
 		}
@@ -262,10 +252,10 @@ public class RunnerControl extends RunnerBuilder {
 	
 	public boolean resetStatus(RunnerRaceData runnerData) {
 		Status oldStatus = runnerData.getResult().getStatus();
-		geco.checker().check(runnerData);
+		geco().checker().check(runnerData);
 		Status newStatus = runnerData.getResult().getStatus();
 		if( !oldStatus.equals(newStatus) ) {
-			geco.log("Status reset for " + runnerData.getRunner().idString() + " from " + oldStatus + " to " + newStatus);
+			geco().log("Status reset for " + runnerData.getRunner().idString() + " from " + oldStatus + " to " + newStatus);
 			announcer().announceStatusChange(runnerData, oldStatus);
 			return true;
 		}
@@ -273,14 +263,14 @@ public class RunnerControl extends RunnerBuilder {
 	}
 	
 	public void recheckAllRunners() {
-		for (RunnerRaceData data: geco.registry().getRunnersData()) {
+		for (RunnerRaceData data: registry().getRunnersData()) {
 			if( data.getResult().getStatus().equals(Status.OK) 
 					|| data.getResult().getStatus().equals(Status.MP) ) {
-				geco.checker().check(data);
+				geco().checker().check(data);
 			}
 		}
 		announcer().announceRunnersChange();
-		geco.log("Recheck all OK|MP data");
+		geco().log("Recheck all OK|MP data");
 	}
 
 

@@ -19,7 +19,6 @@ import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import valmo.geco.model.Factory;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Stage;
 import valmo.geco.model.iocsv.CategoryIO;
@@ -66,15 +65,10 @@ public class StageBuilder extends Control {
 	 * @param stage 
 	 * 
 	 */
-	public StageBuilder(Factory factory) {
-		super(factory);
-		this.registryBuilder = new RegistryBuilder(factory);
+	public StageBuilder(GecoControl gecoControl) {
+		super(gecoControl);
+		this.registryBuilder = new RegistryBuilder(gecoControl);
 	}
-	
-	public Stage builtStage() {
-		return this.currentStage;
-	}
-
 	
 	public Stage loadStage(String baseDir, PenaltyChecker checker) {
 		File propFile = propFile(baseDir);
@@ -97,7 +91,7 @@ public class StageBuilder extends Control {
 		loadStageProperties(currentStage, propFile);
 		importDataIntoRegistry(baseDir, true);
 		checker.postInitialize(currentStage); // post initialization
-		new RunnerBuilder(factory(), currentStage).checkGecoData(checker);
+		new RunnerBuilder(geco()).checkGecoData(currentStage, checker);
 		return currentStage;
 	}
 
@@ -122,7 +116,7 @@ public class StageBuilder extends Control {
 		currentStage.initialize(baseDir);
 		importDataIntoRegistry(baseDir, false);
 		checker.postInitialize(currentStage); // post initialization
-		new RunnerBuilder(factory(), currentStage).checkOrData(checker);
+		new RunnerBuilder(geco()).checkOrData(currentStage, checker);
 		return currentStage;
 	}
 

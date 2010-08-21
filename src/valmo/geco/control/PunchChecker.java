@@ -5,7 +5,6 @@
 package valmo.geco.control;
 
 import valmo.geco.core.TimeManager;
-import valmo.geco.model.Factory;
 import valmo.geco.model.Punch;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Status;
@@ -18,8 +17,8 @@ import valmo.geco.model.Status;
 public class PunchChecker extends Control {
 	
 	
-	public PunchChecker(Factory factory) {
-		super(factory);
+	public PunchChecker(GecoControl gecoControl) {
+		super(gecoControl);
 	}
 
 	public void check(RunnerRaceData data) {

@@ -12,6 +12,7 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 
+import valmo.geco.control.GecoControl;
 import valmo.geco.control.PenaltyChecker;
 import valmo.geco.model.Course;
 import valmo.geco.model.Factory;
@@ -19,7 +20,6 @@ import valmo.geco.model.Punch;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Status;
-import valmo.geco.model.impl.POFactory;
 
 /**
  * @author Simon Denier
@@ -36,8 +36,9 @@ public class PenaltyCheckerTest {
 
 	@Before
 	public void setUp() {
-		factory = new POFactory();
-		checker = new PenaltyChecker(factory);
+		GecoControl geco = new GecoControl();
+		factory = geco.factory();
+		checker = new PenaltyChecker(geco);
 		checker.setMPPenalty(30000);
 		checker.setMPLimit(4);
 		course = factory.createCourse();

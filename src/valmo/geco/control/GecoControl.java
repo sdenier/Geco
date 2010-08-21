@@ -14,6 +14,7 @@ import valmo.geco.core.Logger;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Stage;
+import valmo.geco.model.impl.POFactory;
 
 /**
  * @author Simon Denier
@@ -49,17 +50,16 @@ public class GecoControl {
 		return ( rstage!=null ) ? rstage.stage() : null;
 	}
 	
+
+	private final Factory factory;
 	
-	private Announcer announcer;
-
-	private Factory factory;
-
-	private Thread autosaveThread;
+	private final Announcer announcer;
 
 	private StageBuilder stageBuilder;
 
 	private PenaltyChecker checker;
 
+	private Thread autosaveThread;
 	
 	/*
 	 * Stage
@@ -70,22 +70,27 @@ public class GecoControl {
 	
 	private RuntimeStage next;
 
-	
-	public GecoControl(Factory factory, String startDir) {
-		this.factory = factory;
+	/**
+	 * Default constructor with very basic initialization. Do not use unless for testing!
+	 */
+	public GecoControl() {
+		factory = new POFactory();
 		announcer = new Announcer();
-		
-		// early controls
-		stageBuilder = new StageBuilder(factory);
-		checker = new PenaltyChecker(factory);
-		
-		openStage(startDir);
-		
-		// early controls post-initialization
-		announcer.registerStageListener(stageBuilder);
-		announcer.registerStageListener(checker);
 	}
 	
+	public GecoControl(String startDir) {
+		this();
+
+		// early controls
+		stageBuilder = new StageBuilder(this);
+		checker = new PenaltyChecker(this);
+		
+		openStage(startDir);
+	}
+	
+	public Factory factory() {
+		return this.factory;
+	}
 	public Announcer announcer() {
 		return this.announcer;
 	}

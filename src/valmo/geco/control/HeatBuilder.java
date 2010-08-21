@@ -14,7 +14,6 @@ import java.util.Vector;
 import valmo.geco.core.Html;
 import valmo.geco.model.Category;
 import valmo.geco.model.Course;
-import valmo.geco.model.Factory;
 import valmo.geco.model.Heat;
 import valmo.geco.model.HeatSet;
 import valmo.geco.model.Pool;
@@ -38,8 +37,8 @@ public class HeatBuilder extends Control {
 	private ResultBuilder resultBuilder;
 
 
-	public HeatBuilder(Factory factory, ResultBuilder resultBuilder) {
-		super(factory);
+	public HeatBuilder(GecoControl gecoControl, ResultBuilder resultBuilder) {
+		super(gecoControl);
 		this.resultBuilder = resultBuilder;
 	}
 	

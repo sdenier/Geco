@@ -10,19 +10,16 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
 
-import valmo.geco.core.Announcer;
 import valmo.geco.core.Html;
 import valmo.geco.core.TimeManager;
 import valmo.geco.core.Util;
 import valmo.geco.model.Category;
 import valmo.geco.model.Course;
-import valmo.geco.model.Factory;
 import valmo.geco.model.RankedRunner;
 import valmo.geco.model.Result;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.RunnerResult;
-import valmo.geco.model.Stage;
 import valmo.geco.model.Status;
 
 /**
@@ -58,8 +55,8 @@ public class ResultBuilder extends Control {
 		return config;
 	}
 	
-	public ResultBuilder(Factory factory, Stage stage, Announcer announcer) {
-		super(factory, stage, announcer);
+	public ResultBuilder(GecoControl gecoControl) {
+		super(gecoControl);
 	}
 	
 	public Result buildResultForCategory(Category cat) {

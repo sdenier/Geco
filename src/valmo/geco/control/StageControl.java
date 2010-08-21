@@ -8,11 +8,9 @@ import valmo.geco.core.Announcer;
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
 import valmo.geco.model.Course;
-import valmo.geco.model.Factory;
 import valmo.geco.model.HeatSet;
 import valmo.geco.model.Pool;
 import valmo.geco.model.Runner;
-import valmo.geco.model.Stage;
 
 /**
  * @author Simon Denier
@@ -21,20 +19,12 @@ import valmo.geco.model.Stage;
  */
 public class StageControl extends Control {
 	
-	private Announcer announcer;
-	
-	/**
-	 * @param factory
-	 * @param stage
-	 * @param announcer 
-	 */
-	public StageControl(Factory factory, Stage stage, Announcer announcer) {
-		super(factory, stage, announcer);
-		this.announcer = announcer;
+	public StageControl(GecoControl gecoControl) {
+		super(gecoControl);
 	}
 	
 	private Announcer announcer() {
-		return announcer;
+		return geco().announcer();
 	}
 	
 	public Club createClub() {
