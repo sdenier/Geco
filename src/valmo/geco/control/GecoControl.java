@@ -82,7 +82,7 @@ public class GecoControl {
 		this();
 
 		// early controls
-		stageBuilder = new StageBuilder(this);
+		stageBuilder = new StageBuilder(factory);
 		checker = new PenaltyChecker(this);
 		
 		openStage(startDir);

@@ -19,6 +19,7 @@ import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import valmo.geco.model.Factory;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Stage;
 import valmo.geco.model.iocsv.CategoryIO;
@@ -39,14 +40,7 @@ import valmo.geco.model.iocsv.StageIO;
  * @since Nov 23, 2008
  *
  */
-public class StageBuilder extends Control {
-	/*
-- name = name of stage
-?- dir = data directory (Òr): should be current directory?
-- date = current date of the stage
-?- gecodata = true/false, whether to load Status/race time in data files (because they have been manually updated in Geco)
-- lastresultfile = path to last exported result file
-	 */
+public class StageBuilder extends BasicControl {
 	
 	private RegistryBuilder registryBuilder;
 
@@ -61,13 +55,9 @@ public class StageBuilder extends Control {
 	};
 	
 	
-	/**
-	 * @param stage 
-	 * 
-	 */
-	public StageBuilder(GecoControl gecoControl) {
-		super(gecoControl);
-		this.registryBuilder = new RegistryBuilder(gecoControl);
+	public StageBuilder(Factory factory) {
+		super(factory);
+		this.registryBuilder = new RegistryBuilder(factory);
 	}
 	
 	public Stage loadStage(String baseDir, PenaltyChecker checker) {
@@ -91,7 +81,7 @@ public class StageBuilder extends Control {
 		loadStageProperties(currentStage, propFile);
 		importDataIntoRegistry(baseDir, true);
 		checker.postInitialize(currentStage); // post initialization
-		new RunnerBuilder(geco()).checkGecoData(currentStage, checker);
+		new RunnerBuilder(factory()).checkGecoData(currentStage, checker);
 		return currentStage;
 	}
 
@@ -116,7 +106,7 @@ public class StageBuilder extends Control {
 		currentStage.initialize(baseDir);
 		importDataIntoRegistry(baseDir, false);
 		checker.postInitialize(currentStage); // post initialization
-		new RunnerBuilder(geco()).checkOrData(currentStage, checker);
+		new RunnerBuilder(factory()).checkOrData(currentStage, checker);
 		return currentStage;
 	}
 

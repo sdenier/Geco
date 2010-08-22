@@ -22,10 +22,13 @@ import valmo.geco.model.Status;
  * @since Aug 21, 2009
  *
  */
-public class RunnerControl extends RunnerBuilder {
+public class RunnerControl extends Control {
+	
+	private RunnerBuilder builder;
 	
 	public RunnerControl(GecoControl gecoControl) {
 		super(gecoControl);
+		builder = new RunnerBuilder(geco().factory());
 	}
 	
 	private Announcer announcer() {
@@ -52,7 +55,7 @@ public class RunnerControl extends RunnerBuilder {
 	
 	public Runner createAnonymousRunner() {
 		Runner runner = buildAnonymousRunner(newUniqueChipnumber());
-		registerRunner(runner, buildRunnerData());
+		registerRunner(runner, builder.buildRunnerData());
 		return runner;
 	}
 
@@ -67,11 +70,14 @@ public class RunnerControl extends RunnerBuilder {
 		} else 
 			return deriveUniqueChipnumber(chipnumber + "a");
 	}
-	
+
 	public RunnerRaceData registerRunner(Runner runner, RunnerRaceData runnerData) {
 		registry().addRunner(runner);
 		announcer().announceRunnerCreation(registerRunnerDataFor(runner, runnerData));
 		return runnerData;
+	}
+	private RunnerRaceData registerRunnerDataFor(Runner runner, RunnerRaceData runnerData) {
+		return builder.registerRunnerDataFor(registry(), runner, runnerData);
 	}
 	
 	public void deleteRunner(RunnerRaceData data) {

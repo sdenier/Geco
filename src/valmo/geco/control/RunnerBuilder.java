@@ -4,6 +4,7 @@
  */
 package valmo.geco.control;
 
+import valmo.geco.model.Factory;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
@@ -14,10 +15,10 @@ import valmo.geco.model.Stage;
  * @since Aug 21, 2009
  *
  */
-public class RunnerBuilder extends Control {
+public class RunnerBuilder extends BasicControl {
 	
-	public RunnerBuilder(GecoControl gecoControl) {
-		super(gecoControl);
+	public RunnerBuilder(Factory factory) {
+		super(factory);
 	}
 
 	public RunnerRaceData buildRunnerData() {
@@ -26,11 +27,7 @@ public class RunnerBuilder extends Control {
 		return data;
 	}
 	
-	public RunnerRaceData registerRunnerDataFor(Runner runner, RunnerRaceData runnerData) {
-		return registerRunnerDataFor(registry(), runner, runnerData);
-	}
-	
-	public static RunnerRaceData registerRunnerDataFor(Registry registry, Runner runner, RunnerRaceData runnerData) {
+	public RunnerRaceData registerRunnerDataFor(Registry registry, Runner runner, RunnerRaceData runnerData) {
 		runnerData.setRunner(runner);
 		registry.addRunnerData(runnerData);
 		return runnerData;

@@ -6,6 +6,7 @@ package valmo.geco.control;
 
 import java.io.File;
 
+import valmo.geco.model.Factory;
 import valmo.geco.model.Registry;
 import valmo.geco.model.iocsv.CategoryIO;
 import valmo.geco.model.iocsv.ClubIO;
@@ -25,14 +26,14 @@ import valmo.geco.model.iocsv.RunnerIO;
  * @since Jan 20, 2009
  *
  */
-public class RegistryBuilder  extends Control{
+public class RegistryBuilder extends BasicControl{
 
 	private CsvReader reader;
 
 	private CsvWriter writer;
 	
-	public RegistryBuilder(GecoControl gecoControl) {
-		super(gecoControl);
+	public RegistryBuilder(Factory factory) {
+		super(factory);
 		this.reader = new CsvReader();
 		this.writer = new CsvWriter();
 	}
