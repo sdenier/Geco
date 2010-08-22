@@ -3,10 +3,8 @@
  */
 package valmo.geco;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.Vector;
@@ -22,6 +20,7 @@ import valmo.geco.control.StageControl;
 import valmo.geco.core.Announcer;
 import valmo.geco.core.GecoRequestHandler;
 import valmo.geco.core.Logger;
+import valmo.geco.core.Util;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
@@ -195,13 +194,7 @@ public class Geco implements GecoRequestHandler {
 			this.stageListFile = stageFile;
 			this.stageList = new Vector<String>();
 			try {
-				BufferedReader reader = new BufferedReader(new FileReader(this.stageListFile));
-				String line = reader.readLine();
-				while( line!=null ) {
-					this.stageList.add(line);
-					line = reader.readLine();
-				}
-				reader.close();
+				this.stageList = Util.readLines(this.stageListFile);
 			} catch (FileNotFoundException e) {
 				// no file, proceed
 			} catch (IOException e) {

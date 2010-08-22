@@ -3,9 +3,13 @@
  */
 package valmo.geco.core;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Vector;
 
 
 /**
@@ -58,6 +62,18 @@ public class Util {
 			i++;
 		}
 		return allDifferent;
+	}
+	
+	public static Vector<String> readLines(String filename) throws IOException {
+		Vector<String> lines = new Vector<String>();
+		BufferedReader reader = new BufferedReader(new FileReader(filename));
+		String line = reader.readLine();
+		while( line!=null ) {
+			lines.add(line);
+			line = reader.readLine();
+		}
+		reader.close();
+		return lines;
 	}
 	
 }
