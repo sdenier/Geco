@@ -10,6 +10,7 @@ import java.util.Vector;
 
 import valmo.geco.core.Announcer.StageListener;
 import valmo.geco.core.TimeManager;
+import valmo.geco.model.Factory;
 import valmo.geco.model.Punch;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Stage;
@@ -33,13 +34,17 @@ public class PenaltyChecker extends PunchChecker implements StageListener {
 	private Vector<Trace> trace;
 	
 	
-	public PenaltyChecker(GecoControl gecoControl) {
-		super(gecoControl);
+	public PenaltyChecker(Factory factory) {
+		super(factory);
 		setMPLimit(defaultMPLimit());
 		setMPPenalty(defaultMPPenalty());
-		gecoControl.announcer().registerStageListener(this);
 	}
 
+	public PenaltyChecker(GecoControl gecoControl) {
+		this(gecoControl.factory());
+		gecoControl.announcer().registerStageListener(this);
+	}
+	
 	protected void postInitialize(Stage stage) {
 		setNewProperties(stage);
 	}
@@ -58,7 +63,7 @@ public class PenaltyChecker extends PunchChecker implements StageListener {
 	@Override
 	public long computeOfficialRaceTime(RunnerRaceData data) {
 		long time = super.computeOfficialRaceTime(data);
-		if( time==TimeManager.NO_TIME.getTime() ) {
+		if( time==TimeManager.NO_TIME_l ) {
 			return time;
 		}
 		time += timePenalty(data.getResult().getNbMPs());

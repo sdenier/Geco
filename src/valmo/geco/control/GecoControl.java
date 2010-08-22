@@ -70,16 +70,10 @@ public class GecoControl {
 	
 	private RuntimeStage next;
 
-	/**
-	 * Default constructor with very basic initialization. Do not use unless for testing!
-	 */
-	public GecoControl() {
-		factory = new POFactory();
-		announcer = new Announcer();
-	}
 	
 	public GecoControl(String startDir) {
-		this();
+		factory = new POFactory();
+		announcer = new Announcer();
 
 		// early controls
 		stageBuilder = new StageBuilder(factory);

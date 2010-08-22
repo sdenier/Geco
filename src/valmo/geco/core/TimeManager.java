@@ -16,6 +16,7 @@ import java.util.TimeZone;
 public class TimeManager {
 	
 	public static final Date NO_TIME = new Date(90000000000L);
+	public static final long NO_TIME_l = NO_TIME.getTime();
 	public static final String NO_TIME_STRING = "--:--";
 
 	private static SimpleDateFormat FORMATTER;
