@@ -18,7 +18,7 @@ public class RunnerResultImpl implements RunnerResult {
 	private Trace[] trace;
 
 	public RunnerResultImpl() {
-		this.racetime = 0;
+		this.racetime = TimeManager.NO_TIME_l;
 		this.status = Status.Unknown;
 		this.nbMPs = 0;
 		this.trace = new Trace[0];
