@@ -108,23 +108,25 @@ public class Geco implements GecoRequestHandler {
 	}
 
 	public Geco() {
+		String startDir = null;
 		try {
-			String startDir = launcher();
-			updateStageList(startDir);
-
-			gecoControl = new GecoControl(startDir);
-
-			stageControl = new StageControl(gecoControl);
-			runnerControl = new RunnerControl(gecoControl);
-			resultBuilder = new ResultBuilder(gecoControl);
-			heatBuilder = new HeatBuilder(gecoControl, resultBuilder);
-			stats = new RegistryStats(gecoControl);
-			siHandler = new SIReaderHandler(gecoControl, this);
-			
-			window = new GecoWindow(this);
+			startDir = launcher();
 		} catch (Exception e) {
+			System.out.println(e);
 			System.exit(-1);
 		}
+
+		updateStageList(startDir);
+		gecoControl = new GecoControl(startDir);
+
+		stageControl = new StageControl(gecoControl);
+		runnerControl = new RunnerControl(gecoControl);
+		resultBuilder = new ResultBuilder(gecoControl);
+		heatBuilder = new HeatBuilder(gecoControl, resultBuilder);
+		stats = new RegistryStats(gecoControl);
+		siHandler = new SIReaderHandler(gecoControl, this);
+			
+		window = new GecoWindow(this);
 	}
 
 	private String launcher() throws Exception {
