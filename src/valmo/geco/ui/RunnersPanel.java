@@ -44,7 +44,8 @@ import valmo.geco.model.Status;
  * @since Jan 25, 2009
  *
  */
-public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
+public class RunnersPanel extends TabPanel
+		implements Announcer.RunnerListener, Announcer.StageConfigListener {
 	
 	private RunnersTableModel tableModel;
 	private TableRowSorter<RunnersTableModel> sorter;	
@@ -64,6 +65,7 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 		super(geco, frame);
 		initRunnersPanel(this);
 		geco().announcer().registerRunnerListener(this);
+		geco().announcer().registerStageConfigListener(this);
 	}
 
 
@@ -247,8 +249,12 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 	}
 
 	private void refreshTableData() {
-		tableModel.updateComboBoxEditors(table);
+		refreshComboBoxes();
 		tableModel.setData(new Vector<RunnerRaceData>(registry().getRunnersData()));
+	}
+
+	private void refreshComboBoxes() {
+		tableModel.updateComboBoxEditors(table);
 	}
 	
 	public void refreshRunnersPanel() {
@@ -361,5 +367,17 @@ public class RunnersPanel extends TabPanel implements Announcer.RunnerListener {
 		refreshRunnersPanel();		
 	}
 
+	@Override
+	public void coursesChanged() {
+		refreshComboBoxes();			
+	}
+	@Override
+	public void categoriesChanged() {
+		refreshComboBoxes();
+	}
+	@Override
+	public void clubsChanged() {
+		refreshComboBoxes();
+	}
 	
 }
