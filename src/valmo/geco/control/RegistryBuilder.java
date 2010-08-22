@@ -93,6 +93,9 @@ public class RegistryBuilder extends BasicControl{
 		if( registry.getHeatSets().size()>0 ) {
 			writer.initialize(baseDir, HeatSetIO.sourceFilename());
 			new HeatSetIO(factory(), null, writer, registry).exportData(registry.getHeatSets());			
+		} else {
+			// the file may still exist if heatsets have just been removed, so we delete it now
+			new File(baseDir + File.separator + HeatSetIO.sourceFilename()).delete();
 		}
 	}
 	
