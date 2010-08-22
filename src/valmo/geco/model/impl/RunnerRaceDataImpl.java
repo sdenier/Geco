@@ -167,10 +167,10 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 	
 	public long realRaceTime() {
 		if( getFinishtime().equals(TimeManager.NO_TIME) ) {
-			return TimeManager.NO_TIME.getTime();
+			return TimeManager.NO_TIME_l;
 		}
 		if( getStarttime().equals(TimeManager.NO_TIME) ) {
-			return TimeManager.NO_TIME.getTime();
+			return TimeManager.NO_TIME_l;
 		}
 		return getFinishtime().getTime() - getStarttime().getTime();
 	}
@@ -189,8 +189,8 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 	
 	public String infoString() {
 		StringBuffer buffer = new StringBuffer(getRunner().idString());
-		buffer.append(", " + getCourse().getName() + " " + getResult().getStatus().toString());
-		buffer.append(" in " + TimeManager.time(getResult().getRacetime()) );
+		buffer.append(", " + getCourse().getName() + " " + getResult().formatStatus());
+		buffer.append(" in " + getResult().formatRacetime());
 		return buffer.toString();
 	}
 

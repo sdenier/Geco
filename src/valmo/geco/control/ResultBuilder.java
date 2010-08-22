@@ -161,7 +161,7 @@ public class ResultBuilder extends Control {
 			html.openTr();
 			html.td(runner.getRank()).td(data.getRunner().getName());
 			appendHtmlPenalties(config.showPenalties, data, html);
-			html.td(TimeManager.time(data.getResult().getRacetime()));
+			html.td(data.getResult().formatRacetime());
 			html.closeTr();
 		}
 		html.openTr().td("").td("").td("").closeTr();
@@ -171,16 +171,14 @@ public class ResultBuilder extends Control {
 				html.openTr();
 				html.td("").td(runner.getName());
 				appendHtmlPenalties(config.showPenalties, runnerData, html);
-				html.td(runnerData.getResult().getStatus().toString());
+				html.td(runnerData.getResult().formatStatus());
 				html.closeTr();
 			} else if( config.showNC ) {
 				RunnerResult runnerResult = runnerData.getResult();
 				html.openTr();
 				html.td("NC").td(runner.getName());
 				appendHtmlPenalties(config.showPenalties, runnerData, html);
-				html.td( (runnerResult.getStatus().equals(Status.OK))?
-								TimeManager.time(runnerResult.getRacetime()) :
-								runnerResult.getStatus().toString() );
+				html.td( runnerResult.shortFormat() );
 				html.closeTr();
 			}
 		}
@@ -192,7 +190,7 @@ public class ResultBuilder extends Control {
 				if( config.showPenalties ) {
 					html.td("").td("");
 				}
-				html.td(runnerData.getResult().getStatus().toString());
+				html.td(runnerData.getResult().formatStatus());
 				html.closeTr();
 			}			
 		}
@@ -233,7 +231,7 @@ public class ResultBuilder extends Control {
 					Integer.toString(rRunner.getRank()),
 					runnerData.getRunner().getFirstname(),
 					runnerData.getRunner().getLastname(),
-					TimeManager.time(runnerData.getResult().getRacetime()),
+					runnerData.getResult().formatRacetime(),
 			};
 			writer.write(Util.join(line, ",", new StringBuffer()));
 			if( config.showPenalties ){
@@ -250,7 +248,7 @@ public class ResultBuilder extends Control {
 			if( !runner.isNC() ) {
 				String[] line = new String[] {
 						id,
-						runnerData.getResult().getStatus().toString(),
+						runnerData.getResult().formatStatus(),
 						runnerData.getRunner().getFirstname(),
 						runnerData.getRunner().getLastname(),
 				};
@@ -272,8 +270,8 @@ public class ResultBuilder extends Control {
 						runnerData.getRunner().getLastname(),
 				};
 				writer.write(Util.join(line, ",", new StringBuffer()));
-				if( runnerData.getResult().getStatus().equals(Status.OK) ) {
-					writer.write("," + TimeManager.time(runnerData.getResult().getRacetime()));
+				if( runnerData.getResult().is(Status.OK) ) {
+					writer.write("," + runnerData.getResult().formatRacetime());
 				} else {
 					writer.write(","); // empty cell for race time
 				}
@@ -291,7 +289,7 @@ public class ResultBuilder extends Control {
 			for (RunnerRaceData runnerData : result.getOtherRunners()) {
 				String[] line = new String[] {
 						id,
-						runnerData.getResult().getStatus().toString(),
+						runnerData.getResult().formatStatus(),
 						runnerData.getRunner().getFirstname(),
 						runnerData.getRunner().getLastname(),
 				};

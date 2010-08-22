@@ -225,7 +225,7 @@ public class MergeRunnerDialog extends JDialog {
 	}
 	
 	private String printResult(RunnerResult result) {
-		return result.getStatus() + " in " + TimeManager.time(result.getRacetime());
+		return result.getStatus() + " in " + result.formatRacetime();
 	}
 
 	

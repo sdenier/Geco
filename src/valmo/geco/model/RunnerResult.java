@@ -14,10 +14,18 @@ public interface RunnerResult extends Cloneable {
 	public long getRacetime();
 
 	public void setRacetime(long racetime);
+	
+	public String formatRacetime();
 
 	public Status getStatus();
 
 	public void setStatus(Status status);
+	
+	public String formatStatus();
+	
+	public boolean is(Status status);
+	
+	public String shortFormat();
 
 	public int getNbMPs();
 

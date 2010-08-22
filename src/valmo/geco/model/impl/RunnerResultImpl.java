@@ -4,6 +4,7 @@
  */
 package valmo.geco.model.impl;
 
+import valmo.geco.core.TimeManager;
 import valmo.geco.model.RunnerResult;
 import valmo.geco.model.Status;
 import valmo.geco.model.Trace;
@@ -44,12 +45,27 @@ public class RunnerResultImpl implements RunnerResult {
 	public void setRacetime(long racetime) {
 		this.racetime = racetime;
 	}
+	public String formatRacetime() {
+		return TimeManager.time(racetime);
+	}
 
 	public Status getStatus() {
 		return status;
 	}
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+	public String formatStatus() {
+		return this.status.toString();
+	}
+	public boolean is(Status status) {
+		return this.status.equals(status);
+	}
+	
+	public String shortFormat() {
+		return is(Status.OK) ?
+			formatRacetime() :
+			formatStatus();
 	}
 
 	public int getNbMPs() {

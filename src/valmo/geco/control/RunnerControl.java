@@ -270,8 +270,8 @@ public class RunnerControl extends Control {
 	
 	public void recheckAllRunners() {
 		for (RunnerRaceData data: registry().getRunnersData()) {
-			if( data.getResult().getStatus().equals(Status.OK) 
-					|| data.getResult().getStatus().equals(Status.MP) ) {
+			if( data.getResult().is(Status.OK) 
+					|| data.getResult().is(Status.MP) ) {
 				geco().checker().check(data);
 			}
 		}

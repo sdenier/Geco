@@ -29,7 +29,6 @@ import javax.swing.table.TableColumnModel;
 
 import valmo.geco.Geco;
 import valmo.geco.control.RunnerControl;
-import valmo.geco.core.TimeManager;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
@@ -126,7 +125,7 @@ public class RunnersTableModel extends AbstractTableModel {
 		case 4: return runner.getCategory().getShortname();
 		case 5: return runner.getCourse().getName();
 		case 6: return runner.getClub().getName();
-		case 7: return TimeManager.time(getRunnerData(rowIndex).getResult().getRacetime()); // optimize
+		case 7: return getRunnerData(rowIndex).getResult().formatRacetime();
 		case 8: return getRunnerData(rowIndex).getResult().getStatus();
 		case 9: return runner.isNC();
 		default: return "Pbm";
@@ -428,7 +427,7 @@ public class RunnersTableModel extends AbstractTableModel {
 		private RunnerRaceData selectedData;
 		@Override
 		public Object getCellEditorValue() {
-			return TimeManager.time(selectedData.getResult().getRacetime());
+			return selectedData.getResult().formatRacetime();
 		}
 		@Override
 		public ActionListener getActionListener() {
