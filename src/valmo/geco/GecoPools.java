@@ -8,6 +8,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Vector;
 
 import valmo.geco.control.GecoControl;
@@ -49,8 +50,10 @@ public class GecoPools {
 			exportMergedResults();
 			buildHeats();
 			System.out.println("Merge OK");
+			System.exit(0);
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.exit(-1);
 		}
 	}
 	
@@ -83,23 +86,25 @@ public class GecoPools {
 	}
 
 	private void exportMergedResult(String category, ResultBuilder resultBuilder, Html html) {
-		Result result = resultBuilder.buildResultForCategory(gecoControl.registry().findCategory(category));
-		html.tag("h1", result.getIdentifier());
-		html.open("table");
-		for (RankedRunner runner : result.getRanking()) {
-			writeResult(runner.getRunnerData(), Integer.toString(runner.getRank()), html);
-		}
-		html.openTr().td("").td("").td("").closeTr();
+		List<Result> results = resultBuilder.buildResultForCategory(gecoControl.registry().findCategory(category));
+		for (Result result : results) {
+			html.tag("h1", result.getIdentifier());
+			html.open("table");
+			for (RankedRunner runner : result.getRanking()) {
+				writeResult(runner.getRunnerData(), Integer.toString(runner.getRank()), html);
+			}
+			html.openTr().td("").td("").td("").closeTr();
 		
-		for (RunnerRaceData runnerData : result.getNRRunners()) {
-			writeResult(runnerData, "", html);
-		}
-		html.openTr().td("").td("").td("").closeTr();
+			for (RunnerRaceData runnerData : result.getNRRunners()) {
+				writeResult(runnerData, "", html);
+			}
+			html.openTr().td("").td("").td("").closeTr();
 		
-		for (RunnerRaceData runnerData : result.getOtherRunners()) {
-			writeResult(runnerData, "", html);
+			for (RunnerRaceData runnerData : result.getOtherRunners()) {
+				writeResult(runnerData, "", html);
+			}
+			html.close("table");
 		}
-		html.close("table");
 	}
 
 	private void writeResult(RunnerRaceData runnerData, String rank, Html html) {

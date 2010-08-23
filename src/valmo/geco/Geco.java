@@ -112,8 +112,8 @@ public class Geco implements GecoRequestHandler {
 		try {
 			startDir = launcher();
 		} catch (Exception e) {
-			System.out.println(e);
-			System.exit(-1);
+			System.out.println(e.getLocalizedMessage());
+			System.exit(0);
 		}
 
 		updateStageList(startDir);

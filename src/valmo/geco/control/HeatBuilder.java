@@ -113,7 +113,7 @@ public class HeatBuilder extends Control {
 				}
 			} else {
 				for (Pool pool : selectedPools) {
-					heatsetResults.add(resultBuilder.buildResultForCategory((Category) pool));	
+					heatsetResults.addAll(resultBuilder.buildResultForCategory((Category) pool));	
 				}				
 			}
 			List<Heat> heatsForCurrentHeatset = buildHeatsFromResults(heatsetResults, heatset.getHeatNames(), heatset.getQualifyingRank());

@@ -8,6 +8,8 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Vector;
 
 import valmo.geco.core.Html;
@@ -59,14 +61,15 @@ public class ResultBuilder extends Control {
 		super(gecoControl);
 	}
 	
-	public Result buildResultForCategory(Category cat) {
-		Result result = factory().createResult();
-		result.setIdentifier(cat.getShortname());
-		List<Runner> runners = registry().getRunnersFromCategory(cat);
-		if( runners!=null ) {
-			sortResult(result, runners);
+	public List<Result> buildResultForCategory(Category cat) {
+		Map<Course, List<Runner>> runnersMap = registry().getRunnersByCourseFromCategory(cat.getName());
+		List<Result> results = new Vector<Result>();
+		for (Entry<Course, List<Runner>> entry : runnersMap.entrySet()) {
+			Result result = factory().createResult();
+			result.setIdentifier(cat.getShortname() + " - " + entry.getKey().getName());
+			results.add(sortResult(result, entry.getValue()));
 		}
-		return result;
+		return results;
 	}
 	
 	public Result buildResultForCourse(Course course) {
@@ -113,7 +116,7 @@ public class ResultBuilder extends Control {
 				results.add(
 						buildResultForCourse(registry().findCourse((String) selName)) );
 			} else {
-				results.add(
+				results.addAll(
 						buildResultForCategory(registry().findCategory((String) selName)) );
 			}
 		}

@@ -380,6 +380,21 @@ public class Registry {
 			return runnersByCategory.get(findCategory(catName));
 		}
 	}
+	
+	public Map<Course, List<Runner>> getRunnersByCourseFromCategory(String catName) {
+		synchronized (runnersLock) {
+			HashMap<Course, List<Runner>> map = new HashMap<Course, List<Runner>>();
+			List<Runner> runners = getRunnersFromCategory(catName);
+			if( runners==null ) return map;
+			for (Runner runner : runners) {
+				if( ! map.containsKey(runner.getCourse()) ) {
+					map.put(runner.getCourse(), new Vector<Runner>());
+				}
+				map.get(runner.getCourse()).add(runner);
+			}
+			return map;
+		}
+	}
 
 	public List<Runner> getRunnersFromCourse(Course course) {
 		synchronized (runnersLock) {
