@@ -31,9 +31,11 @@ import valmo.geco.model.Status;
  */
 public class ResultBuilder extends Control {
 	
+	public enum ResultType { CourseResult, CategoryResult, MixedResult }
+	
 	public static class ResultConfig {
 		private Object[] selectedPools;
-		private boolean courseConfig;
+		private ResultType resultType;
 		private boolean showEmptySets;
 		private boolean showNC;
 		private boolean showOthers;
@@ -42,14 +44,14 @@ public class ResultBuilder extends Control {
 	
 	public static ResultConfig createResultConfig(
 			Object[] selectedPools,
-			boolean courseConfig,
+			ResultType courseConfig,
 			boolean showEmptySets,
 			boolean showNC,
 			boolean showOthers,
 			boolean showPenalties) {
 		ResultConfig config = new ResultConfig();
 		config.selectedPools = selectedPools;
-		config.courseConfig = courseConfig;
+		config.resultType = courseConfig;
 		config.showEmptySets = showEmptySets;
 		config.showNC = showNC;
 		config.showOthers = showOthers;
@@ -61,7 +63,7 @@ public class ResultBuilder extends Control {
 		super(gecoControl);
 	}
 	
-	public List<Result> buildResultForCategory(Category cat) {
+	public List<Result> buildResultForCategoryByCourses(Category cat) {
 		Map<Course, List<Runner>> runnersMap = registry().getRunnersByCourseFromCategory(cat.getName());
 		List<Result> results = new Vector<Result>();
 		for (Entry<Course, List<Runner>> entry : runnersMap.entrySet()) {
@@ -70,6 +72,16 @@ public class ResultBuilder extends Control {
 			results.add(sortResult(result, entry.getValue()));
 		}
 		return results;
+	}
+	
+	public Result buildResultForCategory(Category cat) {
+		Result result = factory().createResult();
+		result.setIdentifier(cat.getShortname());
+		List<Runner> runners = registry().getRunnersFromCategory(cat);
+		if( runners!=null ){
+			sortResult(result, runners);
+		}
+		return result;
 	}
 	
 	public Result buildResultForCourse(Course course) {
@@ -112,12 +124,18 @@ public class ResultBuilder extends Control {
 	private Vector<Result> refreshResults(ResultConfig config) {
 		Vector<Result> results = new Vector<Result>();
 		for (Object selName : config.selectedPools) {
-			if( config.courseConfig ) {
+			switch (config.resultType) {
+			case CourseResult:
 				results.add(
 						buildResultForCourse(registry().findCourse((String) selName)) );
-			} else {
-				results.addAll(
+				break;
+			case CategoryResult:
+				results.add(
 						buildResultForCategory(registry().findCategory((String) selName)) );
+				break;
+			case MixedResult:
+				results.addAll(
+						buildResultForCategoryByCourses(registry().findCategory((String) selName)));
 			}
 		}
 		return results;

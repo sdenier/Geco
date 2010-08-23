@@ -86,7 +86,7 @@ public class GecoPools {
 	}
 
 	private void exportMergedResult(String category, ResultBuilder resultBuilder, Html html) {
-		List<Result> results = resultBuilder.buildResultForCategory(gecoControl.registry().findCategory(category));
+		List<Result> results = resultBuilder.buildResultForCategoryByCourses(gecoControl.registry().findCategory(category));
 		for (Result result : results) {
 			html.tag("h1", result.getIdentifier());
 			html.open("table");

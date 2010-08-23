@@ -38,6 +38,7 @@ import javax.swing.JTextPane;
 import valmo.geco.Geco;
 import valmo.geco.control.ResultBuilder;
 import valmo.geco.control.ResultBuilder.ResultConfig;
+import valmo.geco.control.ResultBuilder.ResultType;
 import valmo.geco.core.Announcer.StageConfigListener;
 import valmo.geco.model.Stage;
 
@@ -58,6 +59,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	private JTextPane resultTA;
 	private JRadioButton selectCourseB;
 	private JRadioButton selectCatB;
+	private JRadioButton selectMixedB;
 	private JButton refreshB;
 	private JButton exportB;
 	private JButton selectAllB;
@@ -124,6 +126,11 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 			}
 		});
 		selectCatB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateCategoryList();
+			}
+		});
+		selectMixedB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				updateCategoryList();
 			}
@@ -234,12 +241,16 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 
 		selectCourseB = new JRadioButton("Courses");
 		selectCatB = new JRadioButton("Categories");
+		selectMixedB = new JRadioButton("Category/Courses");
 		ButtonGroup group = new ButtonGroup();
 		group.add(selectCourseB);
 		group.add(selectCatB);
+		group.add(selectMixedB);
 		group.setSelected(selectCourseB.getModel(), true);
-		commandPanel.add(selectCourseB);
 		commandPanel.add(selectCatB);
+		commandPanel.add(selectCourseB);
+		commandPanel.add(selectMixedB);
+		commandPanel.add(Box.createHorizontalGlue());
 		
 		showNcC = new JCheckBox("Show NC");
 		showOtC = new JCheckBox("Show Others");
@@ -366,11 +377,24 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	private ResultConfig createResultConfig() {
 		return ResultBuilder.createResultConfig(
 				list.getSelectedValues(), 
-				showCourses(),
+				getResultType(),
 				showEsC.isSelected(),
 				showNcC.isSelected(),
 				showOtC.isSelected(),
 				showPeC.isSelected());
+	}
+	
+	private ResultType getResultType() {
+		if( selectCourseB.isSelected() ) {
+			return ResultType.CourseResult;
+		}
+		if( selectCatB.isSelected() ) {
+			return ResultType.CategoryResult;
+		}
+		if( selectMixedB.isSelected() ) {
+			return ResultType.MixedResult;
+		}
+		return null;
 	}
 
 	
