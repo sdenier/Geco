@@ -202,9 +202,11 @@ public class RunnerControl extends Control {
 			announcer().announceCourseChange(runner, oldCourse);
 			geco().log("Course change for " + runner.idString() + " from " + oldCourse.getName() + " to " + newCourse);
 			// Proceed by checking the new status
-			Status oldStatus = runnerData.getResult().getStatus();
-			geco().checker().check(runnerData); // use and share an action with refresh button
-			announcer().announceStatusChange(runnerData, oldStatus);
+			if( ! runnerData.hasManualStatus() ) {
+				Status oldStatus = runnerData.getResult().getStatus();
+				geco().checker().check(runnerData);
+				announcer().announceStatusChange(runnerData, oldStatus);
+			}
 			return true;
 		}
 		return false;
