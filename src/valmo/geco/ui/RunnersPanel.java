@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Vector;
@@ -26,6 +27,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
@@ -225,6 +228,8 @@ public class RunnersPanel extends TabPanel
 				}
 			}
 		});
+		sorter.setSortKeys(Arrays.asList(new RowSorter.SortKey[] {
+					new RowSorter.SortKey(0, SortOrder.ASCENDING) }));
 		table.setRowSorter(sorter);
 	}
 	

@@ -24,6 +24,8 @@ public class Announcer {
 		public void log(String message, boolean warning);
 		
 		public void info(String message, boolean warning);
+
+		public void dataInfo(String data);
 	}
 
 	public interface StageListener {
@@ -149,6 +151,12 @@ public class Announcer {
 	public void info(String message, boolean warning) {
 		for (Logger logger : this.loggers) {
 			logger.info(message, warning);
+		}
+	}
+	
+	public void dataInfo(String data) {
+		for (Logger logger : this.loggers) {
+			logger.dataInfo(data);
 		}
 	}
 	

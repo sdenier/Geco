@@ -139,13 +139,13 @@ public class SIReaderHandler extends Control
 		if( runner!=null ) {
 			RunnerRaceData runnerData = registry().findRunnerData(runner);
 			if( runnerData.hasResult() ) {
-				geco().log("Re-Reading " + card.getSiIdent());
+				geco().log("READING AGAIN " + card.getSiIdent());
 				requestHandler.requestMergeExistingRunner(handleNewData(card), runner);
 			} else {
 				handleData(runnerData, card);	
 			}
 		} else {
-			geco().log("Read unknown " + card.getSiIdent());
+			geco().log("READING UNKNOWN " + card.getSiIdent());
 			requestHandler.requestMergeUnknownRunner(handleNewData(card), card.getSiIdent());
 		}
 		
@@ -167,7 +167,10 @@ public class SIReaderHandler extends Control
 		updateRaceDataWith(runnerData, card);
 		Status oldStatus = runnerData.getResult().getStatus();
 		geco().checker().check(runnerData);
-		geco().log("Read " + runnerData.infoString());
+		geco().log("READING " + runnerData.infoString());
+		if( runnerData.getResult().is(Status.MP) ) {
+			geco().announcer().dataInfo(runnerData.getResult().formatTrace() + " (" + runnerData.getResult().getNbMPs() + " MP)");
+		}
 		geco().announcer().announceCardRead(runnerData.getRunner().getChipnumber());
 		geco().announcer().announceStatusChange(runnerData, oldStatus);
 	}
@@ -199,10 +202,10 @@ public class SIReaderHandler extends Control
 	 */
 	private void checkStartFinishTimes(RunnerRaceData runnerData) {
 		if( runnerData.getStarttime().equals(TimeManager.NO_TIME) ) {
-			geco().log("Missing start time for " + runnerData.getRunner().idString());
+			geco().log("MISSING start time for " + runnerData.getRunner().idString());
 		}
 		if( runnerData.getFinishtime().equals(TimeManager.NO_TIME) ) {
-			geco().log("Missing finish time for " + runnerData.getRunner().idString());
+			geco().log("MISSING finish time for " + runnerData.getRunner().idString());
 		}
 	}
 

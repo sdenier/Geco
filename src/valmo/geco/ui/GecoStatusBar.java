@@ -8,6 +8,7 @@ import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
@@ -27,23 +28,15 @@ public class GecoStatusBar extends GecoPanel implements Logger {
 	public GecoStatusBar(Geco geco, JFrame frame) {
 		super(geco, frame);
 		setLayout(new FlowLayout(FlowLayout.LEFT));
-		status = new JLabel("");
+		status = new JLabel(" ");
 		addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				status.setText("");
+				status.setText(" ");
 			}
 		});
 		add(status);
 		geco.announcer().registerLogger(this);
-//		setBorder(BorderFactory.createLoweredBevelBorder());
-	}
-
-	/* (non-Javadoc)
-	 * @see valmo.geco.core.Announcer.Logger#info(java.lang.String, boolean)
-	 */
-	@Override
-	public void info(String message, boolean warning) {
-		display(message, warning);
+		setBorder(BorderFactory.createEtchedBorder());
 	}
 
 	private void display(String message, boolean warning) {
@@ -53,12 +46,17 @@ public class GecoStatusBar extends GecoPanel implements Logger {
 		status.repaint();
 	}
 
-	/* (non-Javadoc)
-	 * @see valmo.geco.core.Announcer.Logger#log(java.lang.String, boolean)
-	 */
+	@Override
+	public void info(String message, boolean warning) {
+		display(message, warning);
+	}
+
 	@Override
 	public void log(String message, boolean warning) {
 		display(message, warning);
 	}
+
+	@Override
+	public void dataInfo(String data) {	}
 
 }
