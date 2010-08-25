@@ -150,7 +150,12 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 	}
 	
 	public boolean hasResult() {
-		return !getResult().getStatus().equals(Status.Unknown);
+		return ! getResult().is(Status.Unknown);
+	}
+	
+	@Override
+	public boolean hasManualStatus() {
+		return ! getResult().is(Status.OK) && ! getResult().is(Status.MP);
 	}
 
 	public RunnerResult getResult() {
@@ -162,7 +167,7 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 	}
 
 	public boolean isRunning() {
-		return getResult().getStatus().equals(Status.Unknown);
+		return getResult().is(Status.Unknown);
 	}
 	
 	public long realRaceTime() {

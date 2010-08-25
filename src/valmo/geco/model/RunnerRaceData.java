@@ -46,6 +46,8 @@ public interface RunnerRaceData extends Cloneable {
 	public Course getCourse();
 	
 	public boolean hasResult();
+
+	public boolean hasManualStatus();
 	
 	public RunnerResult getResult();
 

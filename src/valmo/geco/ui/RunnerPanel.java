@@ -122,7 +122,7 @@ public class RunnerPanel extends GecoPanel {
 		penaltyF.setEditable(false);
 		
 		resetRTimeB = new JButton("Reset Time");
-		recheckStatusB = new JButton("Refresh Status");
+		recheckStatusB = new JButton("Recheck Runner");
 		mergeDialogB = new JButton("Merge...");
 	}
 	
@@ -148,7 +148,7 @@ public class RunnerPanel extends GecoPanel {
 		recheckStatusB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if( runnerData!=null && control().resetStatus(runnerData) ){
+				if( runnerData!=null && control().recheckRunner(runnerData) ){
 					parentContainer.refreshSelectionInTable();					
 				}
 			}

@@ -32,6 +32,7 @@ import javax.swing.filechooser.FileFilter;
 
 import valmo.geco.Geco;
 import valmo.geco.core.Announcer;
+import valmo.geco.core.Html;
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
 import valmo.geco.model.Course;
@@ -191,6 +192,11 @@ public class StagePanel extends TabPanel {
 		});
 		panel.add(penaltyF, c);
 		
+		c.gridy = 2;
+		c.gridwidth = 2;
+		String helpL = new Html().open("i").contents("Click ").tag("b", "Recheck All").contents(" if you want to refresh <br />all results with new parameters").close("i").close();
+		panel.add(new JLabel(helpL), c);
+		
 		return titlePanel(panel, "Orientshow");
 	}
 	
@@ -208,11 +214,11 @@ public class StagePanel extends TabPanel {
 			int newLimit = Integer.parseInt(mplimitF.getText());
 			if( oldLimit!=newLimit ) {
 				geco().checker().setMPLimit(newLimit);
-				int confirm = JOptionPane.showConfirmDialog(frame(), "Recheck statuses for runners", 
-															"Recheck all?", JOptionPane.YES_NO_OPTION);
-				if( confirm==JOptionPane.YES_OPTION ) {
-					geco().runnerControl().recheckAllRunners();
-				}
+//				int confirm = JOptionPane.showConfirmDialog(frame(), "Recheck statuses for runners", 
+//															"Recheck all?", JOptionPane.YES_NO_OPTION);
+//				if( confirm==JOptionPane.YES_OPTION ) {
+//					geco().runnerControl().recheckAllRunners();
+//				}
 			}
 			return true;
 		} else {
@@ -237,11 +243,11 @@ public class StagePanel extends TabPanel {
 			long newPenalty = 1000 * Long.parseLong(penaltyF.getText());
 			if( oldPenalty!=newPenalty ) {
 				geco().checker().setMPPenalty(newPenalty);
-				int confirm = JOptionPane.showConfirmDialog(frame(), "Recheck statuses for runners",
-																"Recheck all?", JOptionPane.YES_NO_OPTION);
-				if( confirm==JOptionPane.YES_OPTION ) {
-					geco().runnerControl().recheckAllRunners();
-				}
+//				int confirm = JOptionPane.showConfirmDialog(frame(), "Recheck statuses for runners",
+//																"Recheck all?", JOptionPane.YES_NO_OPTION);
+//				if( confirm==JOptionPane.YES_OPTION ) {
+//					geco().runnerControl().recheckAllRunners();
+//				}
 			}
 			return true;
 		} else {
@@ -480,16 +486,26 @@ public class StagePanel extends TabPanel {
 				}
 			}
 		};
+		ActionListener refreshAction = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Course course = panel.getSelectedData();
+				geco().runnerControl().recheckRunnersFromCourse(course);
+			}
+		};
 		
-		JButton editB = new JButton("...");
-		editB.setToolTipText("Edit course");
+		JButton editB = new JButton("Edit");
+		editB.setToolTipText("Edit selected course");
 		editB.addActionListener(editAction);
 		
 		JButton importB = new JButton("XML");
 		importB.setToolTipText("Import courses from XML");
 		importB.addActionListener(importAction);
 
-		panel.initialize("Course", tableModel, addAction, removeAction, editB, importB);
+		JButton refreshB = new JButton("Recheck");
+		refreshB.setToolTipText("Recheck runners from selected course");
+		refreshB.addActionListener(refreshAction);
+
+		panel.initialize("Course", tableModel, addAction, removeAction, editB, importB, refreshB);
 		return panel;
 	}	
 

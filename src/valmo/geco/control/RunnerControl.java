@@ -7,6 +7,7 @@ package valmo.geco.control;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import valmo.geco.core.Announcer;
 import valmo.geco.core.TimeManager;
@@ -260,12 +261,12 @@ public class RunnerControl extends Control {
 		return false;
 	}
 	
-	public boolean resetStatus(RunnerRaceData runnerData) {
+	public boolean recheckRunner(RunnerRaceData runnerData) {
 		Status oldStatus = runnerData.getResult().getStatus();
 		geco().checker().check(runnerData);
 		Status newStatus = runnerData.getResult().getStatus();
 		if( !oldStatus.equals(newStatus) ) {
-			geco().log("Status reset for " + runnerData.getRunner().idString() + " from " + oldStatus + " to " + newStatus);
+			geco().log("Recheck for " + runnerData.getRunner().idString() + " from " + oldStatus + " to " + newStatus);
 			announcer().announceStatusChange(runnerData, oldStatus);
 			return true;
 		}
@@ -274,8 +275,7 @@ public class RunnerControl extends Control {
 	
 	public void recheckAllRunners() {
 		for (RunnerRaceData data: registry().getRunnersData()) {
-			if( data.getResult().is(Status.OK) 
-					|| data.getResult().is(Status.MP) ) {
+			if( ! data.hasManualStatus() ) {
 				geco().checker().check(data);
 			}
 		}
@@ -283,5 +283,15 @@ public class RunnerControl extends Control {
 		geco().log("Recheck all OK|MP data");
 	}
 
+	public void recheckRunnersFromCourse(Course course) {
+		List<Runner> runners = registry().getRunnersFromCourse(course);
+		geco().log("Recheck course " + course.getName());
+		for (Runner runner : runners) {
+			RunnerRaceData runnerData = registry().findRunnerData(runner);
+			if( ! runnerData.hasManualStatus() ) {
+				recheckRunner(runnerData);
+			}
+		}
+	}
 
 }
