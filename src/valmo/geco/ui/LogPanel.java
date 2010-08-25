@@ -5,31 +5,32 @@
 package valmo.geco.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
+import javax.swing.SpinnerNumberModel;
 
 import valmo.geco.Geco;
+import valmo.geco.control.Generator;
 import valmo.geco.core.Announcer.Logger;
-import valmo.geco.core.Announcer.RunnerListener;
-import valmo.geco.model.Course;
-import valmo.geco.model.Runner;
-import valmo.geco.model.RunnerRaceData;
-import valmo.geco.model.Status;
 
 /**
  * @author Simon Denier
  * @since Sep 13, 2009
  *
  */
-public class LogPanel extends TabPanel implements Logger, RunnerListener {
+public class LogPanel extends TabPanel implements Logger {
 
 	private JTextArea logArea;
 	
@@ -42,13 +43,12 @@ public class LogPanel extends TabPanel implements Logger, RunnerListener {
 		super(geco, frame);
 		initPanels(this);
 		geco().announcer().registerLogger(this);
-		geco().announcer().registerRunnerListener(this);
 	}
 
 	
 	public void initPanels(JPanel panel) {
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-//		splitPane.setOneTouchExpandable(true);
+		splitPane.setOneTouchExpandable(true);
 		splitPane.add(initLogArea());
 		splitPane.add(initStatsPanel());
 		splitPane.setBorder(BorderFactory.createEmptyBorder());
@@ -59,7 +59,6 @@ public class LogPanel extends TabPanel implements Logger, RunnerListener {
 		logArea = new JTextArea(25, 80);
 		logArea.setEditable(false);
 		logArea.setLineWrap(true);
-//		chiplogArea.setText("Waiting for data...");
 		JButton clearB = new JButton("Clear log view");
 		clearB.addActionListener(new ActionListener() {
 			@Override
@@ -67,17 +66,92 @@ public class LogPanel extends TabPanel implements Logger, RunnerListener {
 				logArea.setText("");
 			}
 		});
+
 		JPanel logPanel = new JPanel(new BorderLayout());
 		logPanel.add(SwingUtils.embed(clearB), BorderLayout.SOUTH);
 		logPanel.add(new JScrollPane(logArea), BorderLayout.CENTER);
+
+		if( Geco.testModeOn() ) {
+			JPanel simuPanel = new JPanel();
+			simuPanel.setLayout(new BoxLayout(simuPanel, BoxLayout.Y_AXIS));
+
+			final JSpinner nbGeneration = new JSpinner(new SpinnerNumberModel(10, 0, null, 5));
+			nbGeneration.setPreferredSize(new Dimension(75, 20));
+			nbGeneration.setToolTipText("Number of runners to generate");
+			simuPanel.add(SwingUtils.embed(nbGeneration));
+			
+			final JSpinner genDelay = new JSpinner(new SpinnerNumberModel(1, 0, null, 1));
+			genDelay.setToolTipText("Delay in second between two creations");
+			genDelay.setPreferredSize(new Dimension(75, 20));
+			simuPanel.add(SwingUtils.embed(genDelay));
+
+			final JSpinner mutationS = new JSpinner(new SpinnerNumberModel(40, 0, null, 5));
+			mutationS.setPreferredSize(new Dimension(75, 20));
+			mutationS.setToolTipText("Mutation factor");
+			simuPanel.add(SwingUtils.embed(mutationS));
+			
+			final JButton generateB = new JButton("Generate");
+			simuPanel.add(generateB);
+			
+			JButton cUnknownB = new JButton("Create Unknown");
+			cUnknownB.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					geco().generator().generateUnknownData();
+				}
+			});
+			JButton cOverwriteB = new JButton("Create Overwriting");
+			cOverwriteB.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					geco().generator().generateOverwriting();
+				}
+			});
+			simuPanel.add(cUnknownB);
+			simuPanel.add(cOverwriteB);
+
+			generateB.addActionListener(new ActionListener() {
+				private Thread gen;
+				private Color defaultColor;
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (gen != null && gen.isAlive()) {
+						gen.interrupt();
+					} else {
+						generateB.setSelected(true);
+						defaultColor = generateB.getBackground();
+						generateB.setBackground(Color.GREEN);
+						final int nb = ((Integer) nbGeneration.getValue()).intValue();
+						final int delay = 1000 * ((Integer) genDelay.getValue()).intValue();
+						gen = new Thread(new Runnable() {
+							public synchronized void run() {
+								displayLog("--Generating " + nb + " runners--");
+								try {
+									Generator generator = geco().generator();
+									generator.setMutationX(((Integer) mutationS.getValue()).intValue());
+									for (int i = 1; i <= nb; i++) {
+										if (i % 10 == 0) {
+											displayLog(Integer.toString(i));
+										}
+										generator.runOnce();
+										wait(delay);
+									}
+								} catch (InterruptedException e) {
+								}
+								displayLog("--Stop--");
+								generateB.setBackground(defaultColor);
+								generateB.setSelected(false);
+							}
+						});
+						gen.start();
+					}
+				}
+			});
+			logPanel.add(SwingUtils.embed(simuPanel), BorderLayout.WEST);
+		}
+
 		return logPanel;
 	}
 
-	
-	/**
-	 * @param announcer 
-	 * @return
-	 */
 	private JPanel initStatsPanel() {
 		return new HStatsPanel(geco(), frame());
 	}
@@ -85,78 +159,22 @@ public class LogPanel extends TabPanel implements Logger, RunnerListener {
 	public void displayLog(String message) {
 		logArea.append("\n");
 		logArea.append(message);
+		logArea.setCaretPosition(logArea.getDocument().getLength());
 	}
 
-	
-	/* (non-Javadoc)
-	 * @see valmo.geco.core.Announcer.RunnerListener#courseChanged(valmo.geco.model.Runner, valmo.geco.model.Course)
-	 */
-	@Override
-	public void courseChanged(Runner runner, Course oldCourse) {
-	}
-
-
-	/* (non-Javadoc)
-	 * @see valmo.geco.core.Announcer.RunnerListener#runnerCreated(valmo.geco.model.RunnerRaceData)
-	 */
-	@Override
-	public void runnerCreated(RunnerRaceData runner) {
-	}
-
-
-	/* (non-Javadoc)
-	 * @see valmo.geco.core.Announcer.RunnerListener#runnerDeleted(valmo.geco.model.RunnerRaceData)
-	 */
-	@Override
-	public void runnerDeleted(RunnerRaceData runner) {
-	}
-
-
-	/* (non-Javadoc)
-	 * @see valmo.geco.core.Announcer.RunnerListener#statusChanged(valmo.geco.model.RunnerRaceData, valmo.geco.model.Status)
-	 */
-	@Override
-	public void statusChanged(RunnerRaceData runner, Status oldStatus) {
-	}
-
-
-	/* (non-Javadoc)
-	 * @see valmo.geco.core.Announcer.RunnerListener#cardRead(java.lang.String)
-	 */
-	@Override
-	public void cardRead(String chip) {
-//		logArea.append("\n");
-//		RunnerRaceData data = geco().registry().findRunnerData(chip);
-//		logArea.append("Read " + data.getRunner().idString() );
-//		logArea.append(", " + data.getCourse().getName() + " " + data.getResult().getStatus().toString());
-//		logArea.append(" in " + TimeManager.time(data.getResult().getRacetime()) );
-	}
-
-
-	/* (non-Javadoc)
-	 * @see valmo.geco.core.Announcer.RunnerListener#runnersChanged()
-	 */
-	@Override
-	public void runnersChanged() {
-	}
-
-
-	/* (non-Javadoc)
-	 * @see valmo.geco.core.Announcer.Logger#info(java.lang.String, boolean)
-	 */
 	@Override
 	public void info(String message, boolean warning) {
 //		displayLog(message);
 	}
 
-
-	/* (non-Javadoc)
-	 * @see valmo.geco.core.Announcer.Logger#log(java.lang.String, boolean)
-	 */
 	@Override
 	public void log(String message, boolean warning) {
 		displayLog(message);
 	}
 
-	
+	@Override
+	public void dataInfo(String data) {
+		displayLog(data);
+	}
+
 }

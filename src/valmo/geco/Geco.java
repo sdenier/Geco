@@ -10,6 +10,7 @@ import java.util.Properties;
 import java.util.Vector;
 
 import valmo.geco.control.GecoControl;
+import valmo.geco.control.Generator;
 import valmo.geco.control.HeatBuilder;
 import valmo.geco.control.PenaltyChecker;
 import valmo.geco.control.RegistryStats;
@@ -38,7 +39,9 @@ import valmo.geco.ui.MergeRunnerDialog;
  */
 public class Geco implements GecoRequestHandler {
 	
-	public static String VERSION; 
+	public static String VERSION;
+
+	private static boolean testMode = false;
 	
 	{
 		Properties prop = new Properties();
@@ -89,6 +92,9 @@ public class Geco implements GecoRequestHandler {
 
 
 	public static void main(String[] args) {
+		if( args.length > 0 && args[0].equals("--test") ) {
+			testMode = true;
+		}
 		final Geco geco = new Geco();
 		if( platformIsMacOs() ) {
 			GecoMacos.setupQuitAction(geco);
@@ -101,6 +107,9 @@ public class Geco implements GecoRequestHandler {
 		return System.getProperty("mrj.version")!=null;
 	}
 	
+	public static boolean testModeOn() {
+		return testMode;
+	}
 	
 	public void exit() {
 		gecoControl.closeAllStages();
@@ -173,6 +182,10 @@ public class Geco implements GecoRequestHandler {
 	}
 	public SIReaderHandler siHandler() {
 		return this.siHandler;
+	}
+	
+	public Generator generator() {
+		return new Generator(gecoControl, runnerControl, siHandler);
 	}
 	
 	public Logger logger() {
