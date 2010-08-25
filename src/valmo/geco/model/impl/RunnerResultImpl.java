@@ -5,6 +5,7 @@
 package valmo.geco.model.impl;
 
 import valmo.geco.core.TimeManager;
+import valmo.geco.core.Util;
 import valmo.geco.model.RunnerResult;
 import valmo.geco.model.Status;
 import valmo.geco.model.Trace;
@@ -81,5 +82,10 @@ public class RunnerResultImpl implements RunnerResult {
 	public void setTrace(Trace[] trace) {
 		this.trace = trace;
 	}
+	@Override
+	public String formatTrace() {
+		return Util.join(trace, ",", new StringBuffer());
+	}
+	
 	
 }

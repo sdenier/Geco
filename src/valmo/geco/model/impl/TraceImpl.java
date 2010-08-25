@@ -41,4 +41,8 @@ public class TraceImpl implements Trace {
 	public Date getTime() {
 		return time;
 	}
+	
+	public String toString() {
+		return getCode();
+	}
 }
