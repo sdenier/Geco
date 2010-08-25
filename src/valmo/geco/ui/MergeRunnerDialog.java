@@ -29,6 +29,7 @@ import valmo.geco.Geco;
 import valmo.geco.control.RunnerControl;
 import valmo.geco.core.Html;
 import valmo.geco.core.TimeManager;
+import valmo.geco.model.Course;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
@@ -254,15 +255,13 @@ public class MergeRunnerDialog extends JDialog {
 				// always assert we use a unique chipnumber (in particular if creating a new runner
 				// when one exists with the same chip)
 				String uniqueChipnumber = runnerControl().deriveUniqueChipnumber(chipNumber);
-				// Create from scratch a brand new runner
-				Runner newRunner = runnerControl().buildAnonymousRunner(uniqueChipnumber);
-				// do not run checker as it should have been run
 				String selectedCoursename = getSelectedCoursename();
-				if( selectedCoursename.equals("[Unknown]")) {
-					newRunner.setCourse(registry().anyCourse());
-				} else {
-					newRunner.setCourse(registry().findCourse(selectedCoursename));
-				}
+				Course course = selectedCoursename.equals("[Unknown]") ?
+					registry().anyCourse() :
+					registry().findCourse(selectedCoursename);
+				// Create from scratch a brand new runner
+				Runner newRunner = runnerControl().buildAnonymousRunner(uniqueChipnumber, course);
+				// do not run checker as it should have been run
 				runnerControl().registerRunner(newRunner, runnerData);
 				geco.log("Creation " + runnerData.infoString());
 				setVisible(false);

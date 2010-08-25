@@ -41,7 +41,7 @@ public class RunnerControl extends Control {
 		return runner;		
 	}
 	
-	public Runner buildAnonymousRunner(String chip) {
+	public Runner buildAnonymousRunner(String chip, Course course) {
 		Runner runner = factory().createRunner();
 		runner.setStartnumber(registry().detectMaxStartnumber() + 1);
 		runner.setChipnumber(chip);
@@ -49,14 +49,18 @@ public class RunnerControl extends Control {
 		runner.setLastname("Doe");
 		runner.setClub(registry().noClub());
 		runner.setCategory(registry().noCategory());
-		runner.setCourse(registry().anyCourse());
+		runner.setCourse(course);
 		return runner;
 	}
-	
-	public Runner createAnonymousRunner() {
-		Runner runner = buildAnonymousRunner(newUniqueChipnumber());
+
+	public Runner createAnonymousRunner(Course course) {
+		Runner runner = buildAnonymousRunner(newUniqueChipnumber(), course);
 		registerRunner(runner, builder.buildRunnerData());
 		return runner;
+	}
+
+	public Runner createAnonymousRunner() {
+		return createAnonymousRunner(registry().anyCourse());
 	}
 
 	public String newUniqueChipnumber() {
