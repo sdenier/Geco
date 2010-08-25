@@ -21,10 +21,8 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.InputVerifier;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -32,8 +30,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
+import javax.swing.JSpinner;
 import javax.swing.JTextPane;
+import javax.swing.SpinnerNumberModel;
 
 import valmo.geco.Geco;
 import valmo.geco.control.ResultBuilder;
@@ -48,6 +47,8 @@ import valmo.geco.model.Stage;
  *
  */
 public class ResultsPanel extends TabPanel implements StageConfigListener {
+	
+	private static final int AutoexportDelay = 60;
 	
 	// cache field
 	private Vector<String> coursenames;
@@ -71,9 +72,8 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	private JFileChooser filePane;
 	
 	private Thread autoexportThread;
-	private int autoexportDelay = 60;
 	private JButton autoexportB;
-	private JTextField autodelayF;
+	private JSpinner autodelayS;
 
 	/**
 	 * @param geco
@@ -177,47 +177,14 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 				if( autoexportB.isSelected() ) {
 					autoexportB.setSelected(false);
 					autoexportB.setBackground(defaultColor);
-					autodelayF.setEnabled(true);
+					autodelayS.setEnabled(true);
 					stopAutoexport();
 				} else {
 					autoexportB.setSelected(true);
 					defaultColor = autoexportB.getBackground();
 					autoexportB.setBackground(Color.GREEN);
-					autodelayF.setEnabled(false);
+					autodelayS.setEnabled(false);
 					startAutoexport();
-				}
-			}
-		});
-		autodelayF.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					autoexportDelay = Integer.parseInt(autodelayF.getText());
-				} catch (NumberFormatException e1) {
-					geco().info("Bad number format", true);
-					autodelayF.setText(Integer.toString(autoexportDelay));
-				}
-			}
-		});
-		autodelayF.setInputVerifier(new InputVerifier() {
-			@Override
-			public boolean verify(JComponent input) {
-				try {
-					Integer.parseInt(autodelayF.getText());
-					return true;
-				} catch (NumberFormatException e1) {
-					return false;
-				}
-			}
-			@Override
-			public boolean shouldYieldFocus(JComponent input) {
-				try {
-					autoexportDelay = Integer.parseInt(autodelayF.getText());
-					return true;
-				} catch (NumberFormatException e1) {
-					geco().info("Bad number format", true);
-					autodelayF.setText(Integer.toString(autoexportDelay));
-					return false;
 				}
 			}
 		});
@@ -283,11 +250,11 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		});
 		
 		autoexportB = new JButton("Autoexport");
-		autodelayF = new JTextField(5);
-		autodelayF.setText(Integer.toString(autoexportDelay));
-		autodelayF.setToolTipText("Autoexport delay in seconds");
+		autodelayS = new JSpinner(new SpinnerNumberModel(AutoexportDelay, 1, null, 10));
+		autodelayS.setPreferredSize(new Dimension(75, 20));
+		autodelayS.setToolTipText("Autoexport delay in seconds");
 		commandPanel.add(SwingUtils.embed(autoexportB));
-		commandPanel.add(SwingUtils.embed(autodelayF));
+		commandPanel.add(SwingUtils.embed(autodelayS));
 		
 		selectAllB = new JButton("All");
 		selectNoneB = new JButton("None");
@@ -402,6 +369,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		autoexportThread = new Thread(new Runnable() {
 			@Override
 			public synchronized void run() {
+				long autoexportDelay = 1000 * ((Integer) autodelayS.getValue()).intValue();
 				while( true ){
 					String resultFile = geco().getCurrentStagePath() + File.separator + "lastresults";
 					try {
@@ -410,7 +378,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 						} catch (IOException ex) {
 							geco().logger().debug(ex);
 						}
-						wait(autoexportDelay * 1000);
+						wait(autoexportDelay);
 					} catch (InterruptedException e) {
 						return;
 					}					

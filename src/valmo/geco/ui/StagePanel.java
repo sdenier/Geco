@@ -4,6 +4,7 @@
  */
 package valmo.geco.ui;
 
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -27,7 +28,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 
 import valmo.geco.Geco;
@@ -146,52 +151,37 @@ public class StagePanel extends TabPanel {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		panel.add(new JLabel("MP limit:"), c);
 		int mpLimit = geco().checker().getMPLimit();
-		final JTextField mplimitF = new JTextField(new Integer(mpLimit).toString());
-		mplimitF.setColumns(7);
-		mplimitF.setToolTipText("Number of missing punches authorized before marking the runner as MP");
-		mplimitF.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				validateMPLimit(mplimitF);
+		final JSpinner mplimitS = new JSpinner(new SpinnerNumberModel(mpLimit, 0, null, 1));
+		mplimitS.setPreferredSize(new Dimension(100, 20));
+		mplimitS.setToolTipText("Number of missing punches authorized before marking the runner as MP");
+		mplimitS.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				int oldLimit = geco().checker().getMPLimit();
+				int newLimit = ((Integer) mplimitS.getValue()).intValue();
+				if( oldLimit!=newLimit ) {
+					geco().checker().setMPLimit(newLimit);
+				}
 			}
 		});
-		mplimitF.setInputVerifier(new InputVerifier() {
-			@Override
-			public boolean verify(JComponent input) {
-				return verifyMPLimit(mplimitF.getText());
-			}
-
-			@Override
-			public boolean shouldYieldFocus(JComponent input) {
-				return validateMPLimit(mplimitF);
-			}
-		});
-		panel.add(mplimitF, c);
+		panel.add(SwingUtils.embed(mplimitS), c);
 		
 		c.gridy = 1;
 		panel.add(new JLabel("Time penalty:"), c);
 		long penalty = geco().checker().getMPPenalty() / 1000;
-		final JTextField penaltyF = new JTextField(new Long(penalty).toString());
-		penaltyF.setColumns(7);
-		penaltyF.setToolTipText("Time penalty per missing punch in seconds");
-		penaltyF.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				validateTimePenalty(penaltyF);
+		final JSpinner penaltyS = new JSpinner(new SpinnerNumberModel(penalty, 0l, null, 10));
+		penaltyS.setPreferredSize(new Dimension(100, 20));
+		penaltyS.setToolTipText("Time penalty per missing punch in seconds");
+		penaltyS.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				long oldPenalty = geco().checker().getMPPenalty();
+				long newPenalty = 1000 * ((Long) penaltyS.getValue()).longValue();
+				if( oldPenalty!=newPenalty ) {
+					geco().checker().setMPPenalty(newPenalty);
+				}
 			}
 		});
-		penaltyF.setInputVerifier(new InputVerifier() {
-			@Override
-			public boolean verify(JComponent input) {
-				return verifyTimePenalty(penaltyF.getText());
-			}
-			@Override
-			public boolean shouldYieldFocus(JComponent input) {
-				return validateTimePenalty(penaltyF);
-			}
-		});
-		panel.add(penaltyF, c);
-		
+		panel.add(SwingUtils.embed(penaltyS), c);
+
 		c.gridy = 2;
 		c.gridwidth = 2;
 		String helpL = new Html().open("i").contents("Click ").tag("b", "Recheck All").contents(" if you want to refresh <br />all results with new parameters").close("i").close();
@@ -200,63 +190,6 @@ public class StagePanel extends TabPanel {
 		return titlePanel(panel, "Orientshow");
 	}
 	
-	private boolean verifyMPLimit(String text) {
-		try {
-			Integer.parseInt(text);
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
-		}
-	}
-	private boolean validateMPLimit(final JTextField mplimitF) {
-		if( verifyMPLimit(mplimitF.getText()) ){
-			int oldLimit = geco().checker().getMPLimit();
-			int newLimit = Integer.parseInt(mplimitF.getText());
-			if( oldLimit!=newLimit ) {
-				geco().checker().setMPLimit(newLimit);
-//				int confirm = JOptionPane.showConfirmDialog(frame(), "Recheck statuses for runners", 
-//															"Recheck all?", JOptionPane.YES_NO_OPTION);
-//				if( confirm==JOptionPane.YES_OPTION ) {
-//					geco().runnerControl().recheckAllRunners();
-//				}
-			}
-			return true;
-		} else {
-			geco().info("MP limit should be an integer", true);
-			int mpLimit = geco().checker().getMPLimit();
-			mplimitF.setText(Integer.toString(mpLimit));
-			return false;
-		}
-	}
-	
-	private boolean verifyTimePenalty(String text) {
-		try {
-			Long.parseLong(text);
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
-		}
-	}
-	private boolean validateTimePenalty(JTextField penaltyF) {
-		if( verifyTimePenalty(penaltyF.getText()) ){
-			long oldPenalty = geco().checker().getMPPenalty();
-			long newPenalty = 1000 * Long.parseLong(penaltyF.getText());
-			if( oldPenalty!=newPenalty ) {
-				geco().checker().setMPPenalty(newPenalty);
-//				int confirm = JOptionPane.showConfirmDialog(frame(), "Recheck statuses for runners",
-//																"Recheck all?", JOptionPane.YES_NO_OPTION);
-//				if( confirm==JOptionPane.YES_OPTION ) {
-//					geco().runnerControl().recheckAllRunners();
-//				}
-			}
-			return true;
-		} else {
-			geco().info("Time penalty should be an integer", true);
-			long penalty = geco().checker().getMPPenalty();
-			penaltyF.setText(Long.toString(penalty));
-			return false;
-		}				
-	}
 	
 	private JPanel sireaderConfigPanel() {
 		JPanel panel = new JPanel(new GridBagLayout());
