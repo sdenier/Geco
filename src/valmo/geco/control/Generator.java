@@ -12,6 +12,7 @@ import java.util.Vector;
 import org.martin.sireader.common.PunchObject;
 import org.martin.sireader.common.ResultData;
 
+import valmo.geco.core.TimeManager;
 import valmo.geco.model.Course;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
@@ -43,10 +44,10 @@ public class Generator extends Control {
 		this.mutationX = mutationX;
 	}
 	
-	public ResultData runOnce() {
+	public ResultData generateRunnerData() {
 		random = new Random();
 		Runner runner = generateRunner();
-		ResultData card = generateCardData(runner, this.siHandler.getZeroTime(), this.siHandler.getZeroTime() + 5000000);
+		ResultData card = generateCardData(runner, siHandler.getZeroTime(), siHandler.getZeroTime() + 1000000);
 		siHandler.newCardRead(card);
 		return card;
 	}
@@ -99,8 +100,10 @@ public class Generator extends Control {
 		if (random.nextInt(100) == 50) {
 			return PunchObject.INVALID;
 		}
-		long time = random.nextInt((int) (endRange - startRange)) + startRange;
-		return time;
+		double nextGaussian = random.nextGaussian();
+		System.out.println(nextGaussian + 1);
+		double time = (nextGaussian + 1) * (endRange - startRange) + startRange;
+		return (long) time;
 	}
 
 	
@@ -167,7 +170,8 @@ public class Generator extends Control {
 	
 	
 	public static void main(String[] args) {
-		displayPowerLawRandow();
+		displayTime(new GecoControl("demo/belfield"));
+//		displayPowerLawRandow();
 //		GecoControl c = new GecoControl("demo/belfield");
 //		for (int i = 0; i < 20; i++) {
 //			displayOne(c);
@@ -175,9 +179,18 @@ public class Generator extends Control {
 //		System.exit(0);
 	}
 
-	private static void displayOne(GecoControl c) {
+	public static void displayTime(GecoControl c) {
 		Generator generator = new Generator(c, new RunnerControl(c), new SIReaderHandler(c, null));
-		ResultData data = generator.runOnce();
+		generator.random = new Random();
+		for (int i = 0; i < 20; i++) {
+			long time = generator.randomTime(0, 1000000);
+			System.out.println(time + " - " + TimeManager.time(time));
+		}
+	}
+	
+	public static void displayOne(GecoControl c) {
+		Generator generator = new Generator(c, new RunnerControl(c), new SIReaderHandler(c, null));
+		ResultData data = generator.generateRunnerData();
 		RunnerRaceData rData = c.registry().findRunnerData(data.getSiIdent());
 		System.out.println(rData.infoString());
 		System.out.println(rData.getResult().formatTrace());

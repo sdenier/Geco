@@ -132,7 +132,7 @@ public class LogPanel extends TabPanel implements Logger {
 										if (i % 10 == 0) {
 											displayLog(Integer.toString(i));
 										}
-										generator.runOnce();
+										generator.generateRunnerData();
 										wait(delay);
 									}
 								} catch (InterruptedException e) {
