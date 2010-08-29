@@ -7,6 +7,7 @@ package valmo.geco.model.xml;
 import java.io.File;
 import java.io.FileReader;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import org.xml.sax.Attributes;
@@ -40,14 +41,19 @@ public class CourseSaxImporter extends DefaultHandler {
 	private String variationName;
 	private int courseLength;
 
+	private HashMap<String, Float[]> controls;
+	private Float[] coord;
+
 	public static void main(String args[]) throws Exception {
-		importFromXml("testData/IOFdata-2.0.3/CourseData_example1.xml", new POFactory());
+//		importFromXml("testData/IOFdata-2.0.3/CourseData_example1.xml", new POFactory());
+		importFromXml("hellemmes.xml", new POFactory());
 	}
 	
 	public CourseSaxImporter(Factory factory) {
 		this.factory = factory;
-		courses = new Vector<Course>();
 		resetBuffer();
+		controls = new HashMap<String, Float[]>();
+		courses = new Vector<Course>();
 		variations = new HashMap<String, Course>();
 		codes = new Vector<Integer>();
 	}
@@ -56,18 +62,25 @@ public class CourseSaxImporter extends DefaultHandler {
 		return courses;
 	}
 	
+	public Map<String, Float[]> controls() {
+		return controls;
+	}
+	
 	public static Vector<Course> importFromXml(String xmlFile, Factory factory) throws Exception {
+		return new CourseSaxImporter(factory).importFromXml(xmlFile);
+	}
+	
+	public Vector<Course> importFromXml(String xmlFile) throws Exception {
 		XMLReader xr = XMLReaderFactory.createXMLReader();
-		CourseSaxImporter handler = new CourseSaxImporter(factory);
-		xr.setContentHandler(handler);
-		xr.setErrorHandler(handler);
+		xr.setContentHandler(this);
+		xr.setErrorHandler(this);
 		if( ! new File("IOFdata.dtd").exists() ) {
 			xr.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
 			xr.setFeature("http://xml.org/sax/features/validation", false);
 		}
 		FileReader r = new FileReader(xmlFile);
 		xr.parse(new InputSource(r));
-		return handler.courses();
+		return courses();
 	}
 	
 	@Override
@@ -101,17 +114,30 @@ public class CourseSaxImporter extends DefaultHandler {
 	
 	
 	public void startElement(String uri, String name, String qName, Attributes atts) {
-//		if( "Course".equals(name) ) {
+		if( "MapPosition".equals(name) ) {
+			coord = new Float[] {
+						new Float(atts.getValue("x")).floatValue(),
+						new Float(atts.getValue("y")).floatValue() };
+			return;
+		}
+		if( "StartPoint".equals(name) ) {
+			resetBuffer();
+			return;
+		}
+// buffer reset through ControlCode
+//		if( "Control".equals(name) ) {
+//			resetBuffer();
 //			return;
 //		}
+		if( "FinishPoint".equals(name) ) {
+			resetBuffer();
+			return;
+		}
+
 		if( "CourseName".equals(name) ) {
 			resetBuffer();
 			return;
 		}
-//		if( "CourseVariation".equals(name) ) {
-//			resetBuffer();
-//			return;
-//		}
 		if( "CourseVariationId".equals(name) ) {
 			resetBuffer();
 			return;
@@ -135,6 +161,23 @@ public class CourseSaxImporter extends DefaultHandler {
 	}
 
 	public void endElement(String uri, String name, String qName) {
+		if( "Map".equals(name) ) {
+			controls.put("Map", coord );
+			return;
+		}
+		if( "StartPoint".equals(name) ) {
+			controls.put(buffer(), coord );
+			return;
+		}
+		if( "Control".equals(name) ) {
+			controls.put(buffer(), coord );
+			return;
+		}
+		if( "FinishPoint".equals(name) ) {
+			controls.put(buffer(), coord );
+			return;
+		}
+		
 		if( "Course".equals(name) ) {
 			registerCourses();
 			return;
