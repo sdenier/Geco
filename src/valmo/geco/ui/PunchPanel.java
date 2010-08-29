@@ -26,7 +26,7 @@ import valmo.geco.model.Trace;
  * @since Jun 26, 2009
  *
  */
-public class PunchPanel extends GecoPanel {
+public class PunchPanel extends JPanel {
 
 	private JTable punchesT;
 	
@@ -35,7 +35,7 @@ public class PunchPanel extends GecoPanel {
 	 * @param frame
 	 */
 	public PunchPanel(Geco geco, JFrame frame) {
-		super(geco, frame);
+//		super(geco, frame);
 		punchesT = new JTable();
 		initPunchPanel(this);
 	}
