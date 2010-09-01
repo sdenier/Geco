@@ -185,7 +185,7 @@ public class Geco implements GecoRequestHandler {
 	}
 	
 	public Generator generator() {
-		return new Generator(gecoControl, runnerControl, siHandler);
+		return new Generator(gecoControl, runnerControl, siHandler).withRegistryControls();
 	}
 	
 	public Logger logger() {

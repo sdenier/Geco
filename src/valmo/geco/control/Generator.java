@@ -5,8 +5,10 @@
 package valmo.geco.control;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.Vector;
 
 import org.martin.sireader.common.PunchObject;
@@ -31,6 +33,8 @@ public class Generator extends Control {
 	private Random random;
 
 	private int mutationX;
+
+	private Integer[] allControls;
 
 
 	public Generator(GecoControl gecoControl, RunnerControl runnerControl, SIReaderHandler siHandler) {
@@ -101,8 +105,7 @@ public class Generator extends Control {
 			return PunchObject.INVALID;
 		}
 		double nextGaussian = random.nextGaussian();
-		System.out.println(nextGaussian + 1);
-		double time = (nextGaussian + 1) * (endRange - startRange) + startRange;
+		double time = (nextGaussian + 2) * (endRange - startRange) + startRange;
 		return (long) time;
 	}
 
@@ -142,15 +145,41 @@ public class Generator extends Control {
 		}
 	}
 	private void mutateAddPunch(ArrayList<PunchObject> punches, int pos) {
-		punches.add(pos, new PunchObject(random.nextInt(300) + 1, 0));
+		punches.add(pos, new PunchObject(randomControl(0), 0));
 	}
 	private void mutateSubsPunch(ArrayList<PunchObject> punches, int pos) {
-		punches.set(pos, new PunchObject(300 - punches.get(pos).getCode(), 0));
+		punches.set(pos, new PunchObject(randomControl(punches.get(pos).getCode()), 0));
 	}
 	private void mutateMissingPunch(ArrayList<PunchObject> punches, int pos) {
 		punches.remove(pos);
 	}
+
+	private int randomControl(int excludeCode) {
+		if( allControls==null ) {
+			if( excludeCode==0 )
+				return random.nextInt(300) + 1;
+			else
+				return 301 - excludeCode;
+		} else {
+			int pos = 0;
+			do {
+				pos = random.nextInt(allControls.length);
+			} while( allControls[pos]==excludeCode );
+			return allControls[pos];
+		}
+	}
 	
+	public Generator withRegistryControls() {
+		Set<Integer> controls = new HashSet<Integer>();
+		for (Course c : registry().getCourses()) {
+			for (int i : c.getCodes()) {
+				controls.add(i);
+			}
+		}
+		this.allControls = controls.toArray(new Integer[0]);
+		return this;
+	}
+
 	private ArrayList<PunchObject> normalTrace(int[] codes) {
 		ArrayList<PunchObject> punches = new ArrayList<PunchObject>(codes.length);
 		for (int i = 0; i < codes.length; i++) {
