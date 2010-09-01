@@ -16,6 +16,7 @@ public class RunnerResultImpl implements RunnerResult {
 	private long racetime;
 	private Status status;
 	private int nbMPs;
+	private long timePenalty;
 	private Trace[] trace;
 
 	public RunnerResultImpl() {
@@ -76,13 +77,22 @@ public class RunnerResultImpl implements RunnerResult {
 		this.nbMPs = nbMPs;
 	}
 
+	public void setTimePenalty(long timePenalty) {
+		this.timePenalty = timePenalty;
+	}
+	public long getTimePenalty() {
+		return this.timePenalty;
+	}
+	public String formatTimePenalty() {
+		return TimeManager.time(timePenalty);
+	}
+
 	public Trace[] getTrace() {
 		return trace;
 	}
 	public void setTrace(Trace[] trace) {
 		this.trace = trace;
 	}
-	@Override
 	public String formatTrace() {
 		return Util.join(trace, ",", new StringBuffer());
 	}

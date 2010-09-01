@@ -53,7 +53,7 @@ public class RunnerPanel extends GecoPanel {
 	public RunnerPanel(Geco geco, JFrame frame, RunnersPanel parent) {
 		super(geco, frame);
 		this.parentContainer = parent;
-		this.punchPanel = new PunchPanel(geco, frame);
+		this.punchPanel = new PunchPanel();
 		createComponents();
 		createListeners();
 		initPanel(this);
@@ -80,9 +80,8 @@ public class RunnerPanel extends GecoPanel {
 //		sTimeF.setText(TimeManager.fullTime(runnerData.getStarttime()));
 //		fTimeF.setText(TimeManager.fullTime(runnerData.getFinishtime()));
 		displayRacetime();
-		int nbMPs = runnerData.getResult().getNbMPs();
-		mpF.setText(Integer.toString(nbMPs));
-		penaltyF.setText(TimeManager.time(geco().checker().timePenalty(nbMPs)));
+		mpF.setText(Integer.toString(runnerData.getResult().getNbMPs()));
+		penaltyF.setText(runnerData.getResult().formatTimePenalty());
 		punchPanel.refreshPunches(runnerData);
 	}
 	
@@ -97,7 +96,8 @@ public class RunnerPanel extends GecoPanel {
 
 	private void displayRacetime() {
 		realTimeF.setText(TimeManager.time(runnerData.realRaceTime()));
-		if( geco().checker().computeOfficialRaceTime(runnerData) != runnerData.getResult().getRacetime() ) {
+		if( runnerData.realRaceTime() + runnerData.getResult().getTimePenalty()
+				!= runnerData.getResult().getRacetime() ) {
 			realTimeF.setBackground(new Color(1, 1, 0.5f));
 		} else
 			realTimeF.setBackground(Color.white);
@@ -141,7 +141,7 @@ public class RunnerPanel extends GecoPanel {
 			public void actionPerformed(ActionEvent e) {
 				if( runnerData!=null && control().resetRaceTime(runnerData) ){
 					parentContainer.refreshSelectionInTable();
-					displayRacetime(); // update background color
+					refreshPanel();
 				}
 			}
 		});
@@ -149,7 +149,8 @@ public class RunnerPanel extends GecoPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if( runnerData!=null && control().recheckRunner(runnerData) ){
-					parentContainer.refreshSelectionInTable();					
+					parentContainer.refreshSelectionInTable();
+					refreshPanel();
 				}
 			}
 		});

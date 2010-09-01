@@ -31,6 +31,8 @@ public class PenaltyChecker extends PunchChecker implements StageListener {
 	
 	private int nbMP;
 
+	private long timePenalty;
+
 	private Vector<Trace> trace;
 	
 	
@@ -62,14 +64,21 @@ public class PenaltyChecker extends PunchChecker implements StageListener {
 	
 	@Override
 	public long computeOfficialRaceTime(RunnerRaceData data) {
+		long time = officialRaceTime(data);
+		data.getResult().setTimePenalty(timePenalty);
+		return time;
+	}	
+	
+	public long officialRaceTime(RunnerRaceData data) {
+		timePenalty = timePenalty(data.getResult().getNbMPs());
 		long time = super.computeOfficialRaceTime(data);
 		if( time==TimeManager.NO_TIME_l ) {
 			return time;
 		}
-		time += timePenalty(data.getResult().getNbMPs());
+		time += timePenalty;
 		return time;
 	}
-
+	
 	public long timePenalty(int nbMPs) {
 		return nbMPs * getMPPenalty();
 	}

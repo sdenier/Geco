@@ -270,9 +270,9 @@ public class RunnerControl extends Control {
 		if( !oldStatus.equals(newStatus) ) {
 			geco().log("Recheck for " + runnerData.getRunner().idString() + " from " + oldStatus + " to " + newStatus);
 			announcer().announceStatusChange(runnerData, oldStatus);
-			return true;
+//			return true;
 		}
-		return false;
+		return true;
 	}
 	
 	public void recheckAllRunners() {

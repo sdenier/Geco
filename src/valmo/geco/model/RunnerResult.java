@@ -31,6 +31,12 @@ public interface RunnerResult extends Cloneable {
 
 	public void setNbMPs(int nbMPs);
 
+	public void setTimePenalty(long timePenalty);
+	
+	public long getTimePenalty();
+
+	public String formatTimePenalty();
+
 	public Trace[] getTrace();
 
 	public void setTrace(Trace[] trace);

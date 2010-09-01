@@ -8,14 +8,12 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.Date;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumnModel;
 
-import valmo.geco.Geco;
 import valmo.geco.core.Html;
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.RunnerRaceData;
@@ -30,33 +28,22 @@ public class PunchPanel extends JPanel {
 
 	private JTable punchesT;
 	
-	/**
-	 * @param geco
-	 * @param frame
-	 */
-	public PunchPanel(Geco geco, JFrame frame) {
-//		super(geco, frame);
+	public PunchPanel() {
 		punchesT = new JTable();
 		initPunchPanel(this);
 	}
 
 	public JPanel initPunchPanel(JPanel panel) {
 		panel.setLayout(new BorderLayout());
-//		panel.setBorder(BorderFactory.createTitledBorder("Punches"));
 		JScrollPane scrollPane = new JScrollPane(punchesT);
 		scrollPane.setPreferredSize(new Dimension(300, 300));
 		panel.add(scrollPane, BorderLayout.CENTER);
-//		JPanel butPanel = new JPanel();
-//		butPanel.add(new JButton("Save"));
-//		butPanel.add(new JButton("Cancel"));
-//		panel.add(butPanel, BorderLayout.SOUTH);
 		return panel;
 	}
 
 	
 	public void refreshPunches(RunnerRaceData runnerData) {
 		final int[] codes = runnerData.getCourse().getCodes();
-//		final Punch[] punches = runnerData.getPunches();
 		final Trace[] trace = runnerData.getResult().getTrace();
 		punchesT.setModel(new AbstractTableModel() {
 			public Object getValueAt(int rowIndex, int columnIndex) {
@@ -67,10 +54,8 @@ public class PunchPanel extends JPanel {
 					return (rowIndex < codes.length) ? codes[rowIndex] : "";					
 				case 2:
 					return traceLabel(trace, rowIndex);
-//					return (rowIndex < trace.length) ? trace[rowIndex].getCode() : "";					
 				case 3:
 					return traceTime(trace, rowIndex);
-//					return (rowIndex < trace.length) ? TimeManager.fullTime(trace[rowIndex].getTime()) : "";
 				default:
 					return "";
 				}
@@ -91,7 +76,6 @@ public class PunchPanel extends JPanel {
 			}
 			public int getRowCount() {
 				return trace.length;
-//				return Math.max(codes.length, trace.length);
 			}
 			public int getColumnCount() {
 				return 4;
@@ -118,6 +102,5 @@ public class PunchPanel extends JPanel {
 		columnModel.getColumn(2).setPreferredWidth(25);
 		columnModel.getColumn(3).setPreferredWidth(25);
 	}
-	
 	
 }

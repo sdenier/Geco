@@ -37,7 +37,8 @@ public class RunnerBuilder extends BasicControl {
 		checkNoDataRunners(currentStage.registry());
 		// compute trace for data
 		for (RunnerRaceData raceData : currentStage.registry().getRunnersData()) {
-			checker.computeStatus(raceData);	
+			checker.computeStatus(raceData);
+			checker.computeOfficialRaceTime(raceData);
 		}
 	}
 	
