@@ -44,12 +44,18 @@ public class GecoMapComponent extends Component {
         return new Dimension(mapImage.getWidth(), mapImage.getHeight());
     }
 	
+	public Dimension getMinimumSize() {
+		return new Dimension(800, 500);
+	}
+	
 	public void setControls(Collection<MapControl> controls) {
 		this.controls = controls;
+		repaint();
 	}
 	
 	public void showTrace(Punch punch) {
 		this.startPunch = punch;
+		repaint();
 	}
 
 	@Override
@@ -69,9 +75,7 @@ public class GecoMapComponent extends Component {
 		if( startPunch!=null ) {
 			startPunch.drawOn(g2);
 		}
-
 	}
-
 	
 	
 }

@@ -30,8 +30,15 @@ public class Punch implements Trace {
 
 	private boolean added;
 	
+	private String order;
+
 	public Punch(MapControl control) {
 		this.mapControl = control;
+	}
+	
+	public Punch(MapControl control, int order) {
+		this(control);
+		this.order = Integer.toString(order);
 	}
 	
 	public Punch clone() {
@@ -71,12 +78,12 @@ public class Punch implements Trace {
 	}
 	
 	public void beMissed() {
-		mapControl.beMissedControl();
+		mapControl.beMissedControl(order);
 		missed = true;
 	}
 	
 	public void beOk() {
-		mapControl.beOkControl();
+		mapControl.beOkControl(order);
 	}
 	
 	public void beAdded() {
@@ -94,7 +101,11 @@ public class Punch implements Trace {
 				color = getColor();
 			} else {
 				stroke = new BasicStroke(5);
-				color = Color.magenta; //nextPunch.getColor();
+				if( nextMissedPunch!=null || nextPunch.isAdded() ) {
+					color = Color.cyan;
+				} else {
+					color = Color.magenta; //nextPunch.getColor();
+				}
 			}
 			drawLine(
 					this,
@@ -102,8 +113,9 @@ public class Punch implements Trace {
 					stroke,
 					color,
 					g2);
-
-			nextPunch.drawOn(g2);
+			if( !isMissed() || nextPunch.isMissed() ){
+				nextPunch.drawOn(g2);
+			}
 		}
 		if( nextMissedPunch!=null ) {
 			drawLine(

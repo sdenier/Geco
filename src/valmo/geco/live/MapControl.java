@@ -25,10 +25,13 @@ public class MapControl {
 	private Point position;
 	
 	private String status;
+
+	private StringBuilder labelBuffer;
 	
 	
 	MapControl(String code, Point position) {
 		this.code = code;
+		// TODO: check, is is circle center or bounding box origin?
 		this.position = position;
 		resetStatus();
 	}
@@ -45,7 +48,15 @@ public class MapControl {
 		g2.setStroke(new BasicStroke(StrokeWidth));
 		g2.setColor(getStatusColor());
 		g2.drawOval(position.x, position.y, ControlDiameter, ControlDiameter);
-		g2.drawString(code, position.x + ControlDiameter, position.y + ControlDiameter + 20);
+		g2.drawString(getLabel(), position.x + ControlDiameter, position.y + ControlDiameter + 20);
+	}
+
+	private String getLabel() {
+		if( labelBuffer==null ) {
+			return code;
+		} else {
+			return labelBuffer + "-" + code;
+		}
 	}
 	
 	public Color getStatusColor() {
@@ -63,26 +74,36 @@ public class MapControl {
 
 	public void resetStatus() {
 		this.status = "default";
+		this.labelBuffer = null;
 	}
 	
-	public void beOkControl() {
+	public void beOkControl(String order) {
 		// default < added < ok < missed
 		if( this.status!="missed" ) {
 			this.status = "ok";
 		}
+		addLabel(order);
 	}
 	
-	public void beMissedControl() {
+	public void beMissedControl(String order) {
 		// default < added < ok < missed
 		this.status = "missed";
+		addLabel(order);
 	}
-	
+
 	public void beAddedControl() {
 		// default < added < ok < missed
 		if( this.status=="default" ) {
 			this.status = "added";
 		}
 	}
-
+	
+	private void addLabel(String order) {
+		if( labelBuffer==null ) {
+			labelBuffer = new StringBuilder(order);
+		} else {
+			labelBuffer.append("/").append(order);
+		}
+	}
 	
 }
