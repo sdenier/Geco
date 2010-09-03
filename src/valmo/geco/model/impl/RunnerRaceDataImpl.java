@@ -153,9 +153,12 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 		return ! getResult().is(Status.Unknown);
 	}
 	
-	@Override
 	public boolean hasManualStatus() {
 		return ! getResult().is(Status.OK) && ! getResult().is(Status.MP);
+	}
+	
+	public boolean hasTrace() {
+		return ! ( getResult().is(Status.Unknown) || getResult().is(Status.DNS) );
 	}
 
 	public RunnerResult getResult() {

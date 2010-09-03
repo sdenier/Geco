@@ -172,7 +172,7 @@ public class RunnersTableModel extends AbstractTableModel {
 	
 	public class RacetimeCellRenderer extends JLabel implements TableCellRenderer {
 		public RacetimeCellRenderer() {
-//			setOpaque(true);
+			setOpaque(true);
 		}
 		@Override
 		public Component getTableCellRendererComponent(JTable table,
@@ -180,6 +180,13 @@ public class RunnersTableModel extends AbstractTableModel {
 				int column) {
 			setHorizontalAlignment(RIGHT);
 			setText(value.toString());
+			if( isSelected ) {
+				setBackground(table.getSelectionBackground());
+				setForeground(table.getSelectionForeground());
+			} else {
+				setBackground(null);
+				setForeground(null);
+			}
 			return this;
 		}
 	}

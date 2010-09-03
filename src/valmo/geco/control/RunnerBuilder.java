@@ -35,10 +35,12 @@ public class RunnerBuilder extends BasicControl {
 	
 	public void checkGecoData(Stage currentStage, PenaltyChecker checker) {
 		checkNoDataRunners(currentStage.registry());
-		// compute trace for data
 		for (RunnerRaceData raceData : currentStage.registry().getRunnersData()) {
-			checker.computeStatus(raceData);
-			checker.computeOfficialRaceTime(raceData);
+			if( raceData.hasTrace() ) {
+				// compute trace, mps, penalties for race data
+				checker.computeStatus(raceData);
+				checker.computeOfficialRaceTime(raceData);
+			}
 		}
 	}
 	
