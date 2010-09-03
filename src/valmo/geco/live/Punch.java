@@ -20,7 +20,7 @@ import valmo.geco.model.Trace;
  */
 public class Punch implements Trace {
 
-	private MapControl mapControl;
+	private ControlCircle mapControl;
 	
 	private Punch nextPunch;
 	
@@ -32,11 +32,11 @@ public class Punch implements Trace {
 	
 	private String order;
 
-	public Punch(MapControl control) {
+	public Punch(ControlCircle control) {
 		this.mapControl = control;
 	}
 	
-	public Punch(MapControl control, int order) {
+	public Punch(ControlCircle control, int order) {
 		this(control);
 		this.order = Integer.toString(order);
 	}
@@ -129,7 +129,7 @@ public class Punch implements Trace {
 	}
 
 	private BasicStroke missedStroke() {
-		return new BasicStroke(MapControl.StrokeWidth, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 10.0f, new float[] {20f, 15f}, 0f);
+		return new BasicStroke(ControlCircle.StrokeWidth, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 10.0f, new float[] {20f, 15f}, 0f);
 	}
 	
 	public void drawLine(Punch start, Punch end, Stroke stroke, Color color, Graphics2D g2) {
@@ -150,7 +150,7 @@ public class Punch implements Trace {
 		double dx = eX - sX;
 		double dy = eY - sY;
 		
-		int clip = (int) (MapControl.ControlDiameter * 0.9f);
+		int clip = (int) (ControlCircle.ControlDiameter * 0.9f);
 		if( dx * dx + dy * dy > Math.pow(2 * clip, 2)) {
 			int diagX = (int) (clip * Math.cos(Math.atan(dy / dx)));
 			int diagY = (int) (clip * Math.sin(Math.atan(dy / dx)));
@@ -159,7 +159,7 @@ public class Punch implements Trace {
 	}
 	
 	public static int centerPos(int p) {
-		return p + MapControl.ControlDiameter / 2;
+		return p + ControlCircle.ControlDiameter / 2;
 	}
 	
 	/* (non-Javadoc)

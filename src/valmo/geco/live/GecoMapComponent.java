@@ -27,7 +27,7 @@ public class GecoMapComponent extends Component {
 	
 	private BufferedImage mapImage;
 
-	private Collection<MapControl> controls;
+	private Collection<ControlCircle> controls;
 
 	private Punch startPunch;
 	
@@ -48,7 +48,7 @@ public class GecoMapComponent extends Component {
 		return new Dimension(800, 500);
 	}
 	
-	public void setControls(Collection<MapControl> controls) {
+	public void setControls(Collection<ControlCircle> controls) {
 		this.controls = controls;
 		repaint();
 	}
@@ -68,7 +68,7 @@ public class GecoMapComponent extends Component {
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2.setFont(new Font(Font.DIALOG_INPUT, Font.BOLD, 20));
 		if( controls!=null ) {
-			for (MapControl control : controls) {
+			for (ControlCircle control : controls) {
 				control.drawOn(g2);
 			}
 		}

@@ -14,7 +14,7 @@ import java.awt.Point;
  * @since Aug 27, 2010
  *
  */
-public class MapControl {
+public class ControlCircle {
 
 	public static final int StrokeWidth = 4;
 
@@ -29,7 +29,7 @@ public class MapControl {
 	private StringBuilder labelBuffer;
 	
 	
-	MapControl(String code, Point position) {
+	ControlCircle(String code, Point position) {
 		this.code = code;
 		// TODO: check, is is circle center or bounding box origin?
 		this.position = position;

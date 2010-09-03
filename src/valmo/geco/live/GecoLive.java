@@ -5,7 +5,7 @@
 package valmo.geco.live;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.Component;
 import java.awt.Point;
 import java.text.ParseException;
 import java.util.Arrays;
@@ -20,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowSorter;
@@ -36,7 +37,6 @@ import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.impl.POFactory;
 import valmo.geco.model.xml.CourseSaxImporter;
 import valmo.geco.ui.GecoLauncher;
-import valmo.geco.ui.PunchPanel;
 import valmo.geco.ui.SwingUtils;
 
 /**
@@ -61,12 +61,12 @@ public class GecoLive {
 
 	private GecoControl gecoControl;
 //	private ResultBuilder resultBuilder;
-	private Map<String, MapControl> controls;
+	private Map<String, ControlCircle> controls;
 	private Map<String, Punch> courses;
 
 	private JTable table;
 	private GecoMapComponent map;
-	private PunchPanel punchP;
+	private RunnerResultPanel runnerP;
 
 	
 	public static void main(String[] args) {
@@ -118,14 +118,17 @@ public class GecoLive {
 //		GecoMacos.setupQuitAction(geco);
 //	}
 
-//		JTabbedPane tabbedPane = new JTabbedPane();
-//		tabbedPane.add("Map", component);
-//		tabbedPane.add("Results", new ResultsPanel(geco, frame));
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		splitPane.setOneTouchExpandable(true);
 		splitPane.add(initMapPanel());
 		splitPane.add(initRunnersTable());
-		jFrame.add(splitPane);
+
+		JTabbedPane tabbedPane = new JTabbedPane();
+		tabbedPane.add("Map", splitPane);
+		tabbedPane.add("Results", new JPanel());
+		tabbedPane.add("Stats", null);
+
+		jFrame.add(tabbedPane);
 		jFrame.pack();
 		jFrame.setVisible(true);
 	}
@@ -136,8 +139,8 @@ public class GecoLive {
 
 	private JPanel initMapPanel() {
 		JPanel mapPanel = new JPanel(new BorderLayout());
-		punchP = new PunchPanel();
-		mapPanel.add(SwingUtils.embed(punchP), BorderLayout.WEST);
+		runnerP = new RunnerResultPanel();
+		mapPanel.add(SwingUtils.embed(runnerP), BorderLayout.WEST);
 
 		map = new GecoMapComponent();
 //		map.loadMapImage("hellemmes_all150.jpg");
@@ -146,10 +149,10 @@ public class GecoLive {
 		return mapPanel;
 	}
 	
-	private JPanel initRunnersTable() {
+	private Component initRunnersTable() {
 		ExtendedRunnersTableModel tableModel = new ExtendedRunnersTableModel();
 		table = new JTable(tableModel);
-		table.setPreferredScrollableViewportSize(new Dimension(800, 300));
+//		table.setPreferredScrollableViewportSize(new Dimension(800, 300));
 		tableModel.initCellRenderers(table);
 		tableModel.initTableColumnSize(table);
 		enableRowSorting(tableModel);
@@ -169,7 +172,11 @@ public class GecoLive {
 		row.add(Box.createHorizontalStrut(100));
 		row.add(new JScrollPane(table));
 		row.add(Box.createHorizontalStrut(100));
-		return row;
+		
+		JTabbedPane tabs = new JTabbedPane();
+		tabs.add("Runners", new JScrollPane(table));
+		tabs.add("Config", new JPanel());
+		return tabs;
 	}
 
 	private void enableRowSorting(ExtendedRunnersTableModel tableModel) {
@@ -216,7 +223,7 @@ public class GecoLive {
 	private void updateRunnerMap() {
 		RunnerRaceData runnerData = registry().findRunnerData(selectedChip());
 		if( runnerData!=null ) {
-			punchP.refreshPunches(runnerData);
+			runnerP.updateRunnerData(runnerData);
 			displayTraceFor( runnerData );
 		}
 	}
@@ -234,25 +241,29 @@ public class GecoLive {
 	}
 	
 	private void displayTraceFor(RunnerRaceData runnerData) {
-		map.showTrace(createPunchTraceFor(
-				courses.get(runnerData.getCourse().getName()),
-				runnerData.getResult().formatTrace().split(",") ));
+		Punch course = courses.get(runnerData.getCourse().getName());
+		if( runnerData.hasTrace() ) {
+			map.showTrace(createPunchTraceFor(course, runnerData.getResult().formatTrace().split(",") ));
+		} else {
+			resetControls();
+			map.showTrace(course);
+		}
 	}
 	
 
-	public static Map<String, MapControl> createMapControlsFrom(Map<String, Float[]> controls) {
+	public static Map<String, ControlCircle> createMapControlsFrom(Map<String, Float[]> controls) {
 		Point mapOrigin = new Point();
-		Map<String, MapControl> mCtr = new HashMap<String, MapControl>();
+		Map<String, ControlCircle> mCtr = new HashMap<String, ControlCircle>();
 		for (String controlId : controls.keySet()) {
 			Float[] origin = controls.get(controlId);
 			 Point position = createPointFrom(origin);
 			if( controlId.equals("Map") ) {
 				mapOrigin = position;
 			} else {
-				mCtr.put(controlId, new MapControl(controlId, position));
+				mCtr.put(controlId, new ControlCircle(controlId, position));
 			}
 		}
-		for (MapControl mapControl : mCtr.values()) {
+		for (ControlCircle mapControl : mCtr.values()) {
 			mapControl.getPosition().translate( xTrans - mapOrigin.x, yTrans - mapOrigin.y);
 		}
 		return mCtr;
@@ -292,7 +303,7 @@ public class GecoLive {
 		return new Point((int) x, (int) y);
 	}
 	
-	private Punch createPunchTrace(Map<String, MapControl> controls) {
+	private Punch createPunchTrace(Map<String, ControlCircle> controls) {
 		Punch start = createPunch("31");
 		Punch punch2 = createPunch("32");
 		Punch punch3 = createPunch("33");
@@ -361,7 +372,7 @@ public class GecoLive {
 	 * 
 	 */
 	private void resetControls() {
-		for (MapControl control : controls.values()) {
+		for (ControlCircle control : controls.values()) {
 			control.resetStatus();
 		}
 	}

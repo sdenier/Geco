@@ -146,7 +146,7 @@ public class ExtendedRunnersTableModel extends AbstractTableModel {
 	
 	public class RacetimeCellRenderer extends JLabel implements TableCellRenderer {
 		public RacetimeCellRenderer() {
-//			setOpaque(true);
+			setOpaque(true);
 		}
 		@Override
 		public Component getTableCellRendererComponent(JTable table,
@@ -156,6 +156,10 @@ public class ExtendedRunnersTableModel extends AbstractTableModel {
 			setText(value.toString());
 			if( isSelected ) {
 				setBackground(table.getSelectionBackground());
+				setForeground(table.getSelectionForeground());
+			} else {
+				setBackground(null);
+				setForeground(null);
 			}
 			return this;
 		}
