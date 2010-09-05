@@ -31,6 +31,10 @@ public class GecoMapComponent extends Component {
 
 	private Punch startPunch;
 	
+	public GecoMapComponent() {
+		mapImage = new BufferedImage(500, 500, BufferedImage.TYPE_3BYTE_BGR);
+	}
+	
 	public void loadMapImage(String filename) {
 		try {
 			mapImage = ImageIO.read(new File(filename));
@@ -48,12 +52,14 @@ public class GecoMapComponent extends Component {
 		return new Dimension(800, 500);
 	}
 	
-	public void setControls(Collection<ControlCircle> controls) {
+	public void showControls(Collection<ControlCircle> controls) {
 		this.controls = controls;
+		this.startPunch = null;
 		repaint();
 	}
 	
 	public void showTrace(Punch punch) {
+		this.controls = null;
 		this.startPunch = punch;
 		repaint();
 	}
