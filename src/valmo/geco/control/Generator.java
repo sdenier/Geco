@@ -4,6 +4,7 @@
  */
 package valmo.geco.control;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -26,12 +27,15 @@ import valmo.geco.model.RunnerRaceData;
  */
 public class Generator extends Control {
 
-	private RunnerControl runnerControl;
+	private static final int NoTimeFactor = 100;
+	private static final int TimeDispersion = 5;
+	private static final int EndRange = 60;
+	private static final int StartRange = 30;
 
+	private RunnerControl runnerControl;
 	private SIReaderHandler siHandler;
 
 	private Random random;
-
 	private int mutationX;
 
 	private Integer[] allControls;
@@ -51,7 +55,7 @@ public class Generator extends Control {
 	public ResultData generateRunnerData() {
 		random = new Random();
 		Runner runner = generateRunner();
-		ResultData card = generateCardData(runner, siHandler.getZeroTime(), siHandler.getZeroTime() + 1000000);
+		ResultData card = generateCardData(runner);
 		siHandler.newCardRead(card);
 		return card;
 	}
@@ -62,15 +66,16 @@ public class Generator extends Control {
 		return runner;
 	}
 	
-	public ResultData generateCardData(Runner runner, long startRange, long endRange) {
-		return generateCardData(runner.getChipnumber(), runner.getCourse(), startRange, endRange);
+	public ResultData generateCardData(Runner runner) {
+		return generateCardData(runner.getChipnumber(), runner.getCourse());
 	}
 
-	public ResultData generateCardData(String chipNumber, Course course, long startRange, long endRange) {
+	public ResultData generateCardData(String chipNumber, Course course) {
 		ResultData card = new ResultData();
 		card.setSiIdent(chipNumber);
-		card.setStartTime(randomTime(startRange, endRange));
-		card.setFinishTime(randomTime(startRange, endRange));
+		long startTime = siHandler.getZeroTime() + randomTime();
+		card.setStartTime(startTime);
+		card.setFinishTime(startTime + randomTime());
 		card.setPunches(generateRandomPunchesFor(course, mutationX));
 		card.evaluateTimes();
 		return card;
@@ -79,7 +84,7 @@ public class Generator extends Control {
 	
 	public ResultData generateUnknownData() {
 		random = new Random();
-		ResultData cardData = generateCardData(runnerControl.newUniqueChipnumber(), randomCourse(), this.siHandler.getZeroTime(), this.siHandler.getZeroTime() + 5000000);
+		ResultData cardData = generateCardData(runnerControl.newUniqueChipnumber(), randomCourse());
 		siHandler.newCardRead(cardData);
 		return cardData;
 	}
@@ -88,7 +93,7 @@ public class Generator extends Control {
 		random = new Random();
 		List<Runner> runnersFromCourse = registry().getRunnersFromCourse(randomCourse());
 		Runner runner = runnersFromCourse.get(random.nextInt(runnersFromCourse.size()));
-		ResultData cardData = generateCardData(runner, this.siHandler.getZeroTime(), this.siHandler.getZeroTime() + 5000000);
+		ResultData cardData = generateCardData(runner);
 		siHandler.newCardRead(cardData);
 		return cardData;
 	}
@@ -99,14 +104,24 @@ public class Generator extends Control {
 		Course course = registry().findCourse(courses.get(random.nextInt(courses.size())));
 		return course;
 	}
-	
-	private long randomTime(long startRange, long endRange) {
-		if (random.nextInt(100) == 50) {
+
+	private long randomTime() {
+		return randomTime(StartRange, EndRange, TimeDispersion, NoTimeFactor);
+	}
+	private long randomTime(int startRange, int endRange, float timeDis, int noTimeFreq) {
+		if (random.nextInt(noTimeFreq) == 1) {
 			return PunchObject.INVALID;
 		}
-		double nextGaussian = random.nextGaussian();
-		double time = (nextGaussian + 2) * (endRange - startRange) + startRange;
-		return (long) time;
+
+		float meanTime = (endRange - startRange) / 2f + startRange;
+		double nextGaussian = random.nextGaussian() / (meanTime / timeDis);
+		int minutes = (int) ((nextGaussian + 1) * meanTime);
+		try {
+			return TimeManager.userParse(minutes + ":" + random.nextInt(60)).getTime();
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return PunchObject.INVALID;
+		}
 	}
 
 	
@@ -145,10 +160,10 @@ public class Generator extends Control {
 		}
 	}
 	private void mutateAddPunch(ArrayList<PunchObject> punches, int pos) {
-		punches.add(pos, new PunchObject(randomControl(0), 0));
+		punches.add(pos, new PunchObject(randomControl(0), PunchObject.NO_TIME));
 	}
 	private void mutateSubsPunch(ArrayList<PunchObject> punches, int pos) {
-		punches.set(pos, new PunchObject(randomControl(punches.get(pos).getCode()), 0));
+		punches.set(pos, new PunchObject(randomControl(punches.get(pos).getCode()), PunchObject.NO_TIME));
 	}
 	private void mutateMissingPunch(ArrayList<PunchObject> punches, int pos) {
 		punches.remove(pos);
@@ -183,7 +198,7 @@ public class Generator extends Control {
 	private ArrayList<PunchObject> normalTrace(int[] codes) {
 		ArrayList<PunchObject> punches = new ArrayList<PunchObject>(codes.length);
 		for (int i = 0; i < codes.length; i++) {
-			punches.add(new PunchObject(codes[i], 0));
+			punches.add(new PunchObject(codes[i], PunchObject.NO_TIME));
 		}
 		return punches;
 	}
@@ -199,21 +214,21 @@ public class Generator extends Control {
 	
 	
 	public static void main(String[] args) {
-		displayTime(new GecoControl("demo/belfield"));
+		testRandomTime(new GecoControl("demo/belfield"));
 //		displayPowerLawRandow();
 //		GecoControl c = new GecoControl("demo/belfield");
 //		for (int i = 0; i < 20; i++) {
 //			displayOne(c);
 //		}
-//		System.exit(0);
+		System.exit(0);
 	}
 
-	public static void displayTime(GecoControl c) {
+	public static void testRandomTime(GecoControl c) {
 		Generator generator = new Generator(c, new RunnerControl(c), new SIReaderHandler(c, null));
 		generator.random = new Random();
 		for (int i = 0; i < 20; i++) {
-			long time = generator.randomTime(0, 1000000);
-			System.out.println(time + " - " + TimeManager.time(time));
+			long time = generator.randomTime(30, 60, 10, 100);
+			System.out.println(time + " --> " + TimeManager.time(time));
 		}
 	}
 	
