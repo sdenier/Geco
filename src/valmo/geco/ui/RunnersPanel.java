@@ -328,7 +328,7 @@ public class RunnersPanel extends TabPanel
 	
 	public void openMapWindow() {
 		if( gecoLiveMap==null ) {
-			gecoLiveMap = new GecoLiveComponent();
+			gecoLiveMap = new GecoLiveComponent().initWindow();
 		}
 		gecoLiveMap.openWindow();
 	}

@@ -4,14 +4,10 @@
  */
 package valmo.geco.live;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Point;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.Box;
@@ -31,13 +27,9 @@ import javax.swing.table.TableRowSorter;
 
 import valmo.geco.control.GecoControl;
 import valmo.geco.core.TimeManager;
-import valmo.geco.model.Course;
 import valmo.geco.model.Registry;
 import valmo.geco.model.RunnerRaceData;
-import valmo.geco.model.impl.POFactory;
-import valmo.geco.model.xml.CourseSaxImporter;
 import valmo.geco.ui.GecoLauncher;
-import valmo.geco.ui.SwingUtils;
 
 /**
  * @author Simon Denier
@@ -46,32 +38,16 @@ import valmo.geco.ui.SwingUtils;
  */
 public class GecoLive {
 
-//	150dpi
-	private static final int yTrans = -25;
-	private static final int xTrans = -18;
-	private static final float factor = 150 / 25.4f; // dpi / mm/inch 
-	private static final float xFactor = factor;
-	private static final float yFactor = factor;
-
-//	300 dpi
-//	private static final int yTrans = -25;
-//	private static final int xTrans = -18;
-//	private static final float xFactor = 11.8f;
-//	private static final float yFactor = xFactor;
-
 	private GecoControl gecoControl;
 //	private ResultBuilder resultBuilder;
-	private Map<String, ControlCircle> controls;
-	private Map<String, Punch> courses;
 
-	private JTable table;
-	private GecoMapComponent map;
-	private RunnerResultPanel runnerP;
-
+	private JTable runnersTable;
+	private GecoLiveComponent liveComponent;
+	
 	
 	public static void main(String[] args) {
 		GecoLive gecoLive = new GecoLive();
-		gecoLive.importCourseData();
+//		gecoLive.importCourseData();
 		gecoLive.guiLaunch();
 		
 	}
@@ -87,6 +63,7 @@ public class GecoLive {
 		}
 
 		gecoControl = new GecoControl(startDir);
+		liveComponent = new GecoLiveComponent();
 
 //		stageControl = new StageControl(gecoControl);
 //		runnerControl = new RunnerControl(gecoControl);
@@ -97,17 +74,6 @@ public class GecoLive {
 		return new GecoLauncher(System.getProperty("user.dir")).open(null);
 	}
 
-	private void importCourseData() {
-		try {
-			CourseSaxImporter importer = new CourseSaxImporter(new POFactory());
-			importer.importFromXml("hellemmes.xml");
-			controls = createMapControlsFrom(importer.controls());
-			courses = createCoursesFrom(importer.courses());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
 	private Registry registry() {
 		return gecoControl.registry();
 	}
@@ -120,7 +86,7 @@ public class GecoLive {
 
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		splitPane.setOneTouchExpandable(true);
-		splitPane.add(initMapPanel());
+		splitPane.add(liveComponent.initGui(new JPanel()));
 		splitPane.add(initRunnersTable());
 
 		JTabbedPane tabbedPane = new JTabbedPane();
@@ -137,28 +103,16 @@ public class GecoLive {
 //		System.exit(0);
 //	}
 
-	private JPanel initMapPanel() {
-		JPanel mapPanel = new JPanel(new BorderLayout());
-		runnerP = new RunnerResultPanel();
-		mapPanel.add(SwingUtils.embed(runnerP), BorderLayout.WEST);
-
-		map = new GecoMapComponent();
-//		map.loadMapImage("hellemmes_all150.jpg");
-		map.loadMapImage("hellemmes.jpg");
-		mapPanel.add(new JScrollPane(map), BorderLayout.CENTER);
-		return mapPanel;
-	}
-	
 	private Component initRunnersTable() {
 		ExtendedRunnersTableModel tableModel = new ExtendedRunnersTableModel();
-		table = new JTable(tableModel);
+		runnersTable = new JTable(tableModel);
 //		table.setPreferredScrollableViewportSize(new Dimension(800, 300));
-		tableModel.initCellRenderers(table);
-		tableModel.initTableColumnSize(table);
+		tableModel.initCellRenderers(runnersTable);
+		tableModel.initTableColumnSize(runnersTable);
 		enableRowSorting(tableModel);
-		table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.getSelectionModel().setSelectionInterval(0, 0);
-		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+		runnersTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		runnersTable.getSelectionModel().setSelectionInterval(0, 0);
+		runnersTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				if (!e.getValueIsAdjusting() ) {
 					updateRunnerMap();
@@ -170,13 +124,10 @@ public class GecoLive {
 		JPanel row = new JPanel();
 		row.setLayout(new BoxLayout(row, BoxLayout.LINE_AXIS));
 		row.add(Box.createHorizontalStrut(100));
-		row.add(new JScrollPane(table));
+		row.add(new JScrollPane(runnersTable));
 		row.add(Box.createHorizontalStrut(100));
 		
-		JTabbedPane tabs = new JTabbedPane();
-		tabs.add("Runners", new JScrollPane(table));
-		tabs.add("Config", new JPanel());
-		return tabs;
+		return new JScrollPane(runnersTable);
 	}
 
 	private void enableRowSorting(ExtendedRunnersTableModel tableModel) {
@@ -216,166 +167,61 @@ public class GecoLive {
 		});
 		sorter.setSortKeys(Arrays.asList(new RowSorter.SortKey[] {
 					new RowSorter.SortKey(0, SortOrder.ASCENDING) }));
-		table.setRowSorter(sorter);
+		runnersTable.setRowSorter(sorter);
 	}
 
 	
 	private void updateRunnerMap() {
 		RunnerRaceData runnerData = registry().findRunnerData(selectedChip());
 		if( runnerData!=null ) {
-			runnerP.updateRunnerData(runnerData);
-			displayTraceFor( runnerData );
+			liveComponent.displayRunnerMap(runnerData);
 		}
 	}
 
 	private String selectedChip() {
 		String chip = "";
-		int selectedRow = table.getSelectedRow();
-		if( selectedRow!=-1 && table.getRowCount() > 0) {
+		int selectedRow = runnersTable.getSelectedRow();
+		if( selectedRow!=-1 && runnersTable.getRowCount() > 0) {
 			// we have to test the number of displayed rows too.
 			// If user inputs a filter which matches nothins,
 			// there is no row to show but table still points to the 0-index.
-			chip = (String) table.getValueAt(selectedRow, 1);
+			chip = (String) runnersTable.getValueAt(selectedRow, 1);
 		}
 		return chip;
 	}
 	
-	private void displayTraceFor(RunnerRaceData runnerData) {
-		Punch course = courses.get(runnerData.getCourse().getName());
-		if( runnerData.hasTrace() ) {
-			map.showTrace(createPunchTraceFor(course, runnerData.getResult().formatTrace().split(",") ));
-		} else {
-			resetControls();
-			map.showTrace(course);
-		}
-	}
 	
-
-	public static Map<String, ControlCircle> createMapControlsFrom(Map<String, Float[]> controls) {
-		Point mapOrigin = new Point();
-		Map<String, ControlCircle> mCtr = new HashMap<String, ControlCircle>();
-		for (String controlId : controls.keySet()) {
-			Float[] origin = controls.get(controlId);
-			 Point position = createPointFrom(origin);
-			if( controlId.equals("Map") ) {
-				mapOrigin = position;
-			} else {
-				mCtr.put(controlId, new ControlCircle(controlId, position));
-			}
-		}
-		for (ControlCircle mapControl : mCtr.values()) {
-			mapControl.getPosition().translate( xTrans - mapOrigin.x, yTrans - mapOrigin.y);
-		}
-		return mCtr;
-	}
-
-	public Map<String, Punch> createCoursesFrom(Vector<Course> courses) {
-		HashMap<String,Punch> startPunches = new HashMap<String, Punch>();
-		for (Course course : courses) {
-			Punch previousPunch = createPunch("S1");
-			startPunches.put(course.getName(), previousPunch);
-			int i = 1;
-			for (int code : course.getCodes()) {
-				Punch punch = createPunch(Integer.toString(code), i);
-				if( previousPunch!=null ) {
-					previousPunch.setNextPunch(punch);
-				}
-				previousPunch = punch;
-				i++;
-			}
-			previousPunch.setNextPunch(createPunch("F1"));
-		}
-		return startPunches;
-	}
-
-	private Punch createPunch(String code) {
-		return new Punch(controls.get(code));
-	}
-
-	private Punch createPunch(String code, int order) {
-		return new Punch(controls.get(code), order);
-	}
-
-	private static Point createPointFrom(Float[] origin) {
-		// TODO: check, is is circle center or bounding box origin?
-		float x = origin[0].floatValue() * xFactor;
-		float y = origin[1].floatValue() * -1 * yFactor;
-		return new Point((int) x, (int) y);
-	}
-	
-	private Punch createPunchTrace(Map<String, ControlCircle> controls) {
-		Punch start = createPunch("31");
-		Punch punch2 = createPunch("32");
-		Punch punch3 = createPunch("33");
-		Punch punch4 = createPunch("41");
-		Punch punch5 = createPunch("36");
-		start.setNextPunch(punch2);
-		punch2.setNextPunch(punch3);
-		punch2.nextPunchMissed();
-		punch2.setNextPunch(punch4);
-		punch3.setNextPunch(punch5);
-		punch4.setNextPunch(punch5);
-		start.beOk();
-		punch2.beOk();
-		punch4.beAdded();
-		punch5.beOk();
-		return start;
-	}
+//	private Punch createPunchTrace(Map<String, ControlCircle> controls) {
+//		Punch start = createPunch("31");
+//		Punch punch2 = createPunch("32");
+//		Punch punch3 = createPunch("33");
+//		Punch punch4 = createPunch("41");
+//		Punch punch5 = createPunch("36");
+//		start.setNextPunch(punch2);
+//		punch2.setNextPunch(punch3);
+//		punch2.nextPunchMissed();
+//		punch2.setNextPunch(punch4);
+//		punch3.setNextPunch(punch5);
+//		punch4.setNextPunch(punch5);
+//		start.beOk();
+//		punch2.beOk();
+//		punch4.beAdded();
+//		punch5.beOk();
+//		return start;
+//	}
 
 	/**
 	 * @param punch
 	 * @return
 	 */
-	private Punch createPunchTraceA(Punch punch) {
-		String[] traceString = new String[] {
-				"31", "+40", "32", "-33+41", "-34", "35", "36", "+38", "37", "38", "39", "-31"
-		};
-		return createPunchTraceFor(punch, traceString);
-	}
+//	private Punch createPunchTraceA(Punch punch) {
+//		String[] traceString = new String[] {
+//				"31", "+40", "32", "-33+41", "-34", "35", "36", "+38", "37", "38", "39", "-31"
+//		};
+//		return createPunchTraceFor(punch, traceString);
+//	}
 
-	private Punch createPunchTraceFor(Punch punch, String[] traceString) {
-		resetControls();
-		Punch startPunch = punch.clone(); // start control
-		Punch previousPunch = startPunch;
-		for (String code : traceString) {
-			if( code.startsWith("-") ) {
-				Punch nextPunch = previousPunch.getNextPunch().getNextPunch();
-				if( !previousPunch.isAdded() ) {
-					previousPunch.nextPunchMissed();
-				} else {
-					previousPunch.getNextPunch().beMissed();
-				}
-				previousPunch.setNextPunch(nextPunch);
-				if( code.contains("+") ) {
-					Punch addedPunch = createPunch(code.substring(code.indexOf("+") + 1));
-					addedPunch.beAdded();
-					addedPunch.setNextPunch(previousPunch.getNextPunch());
-					previousPunch.setNextPunch(addedPunch);
-					previousPunch = previousPunch.getNextPunch();
-				}
-			} else {
-				if( code.startsWith("+") ) {
-					Punch addedPunch = createPunch(code.substring(1));
-					addedPunch.beAdded();
-					addedPunch.setNextPunch(previousPunch.getNextPunch());
-					previousPunch.setNextPunch(addedPunch);
-				} else {
-					previousPunch.getNextPunch().beOk();
-				}
-				previousPunch = previousPunch.getNextPunch();
-			}
-		}
-		return startPunch;
-	}
 
-	/**
-	 * 
-	 */
-	private void resetControls() {
-		for (ControlCircle control : controls.values()) {
-			control.resetStatus();
-		}
-	}
 
 
 }

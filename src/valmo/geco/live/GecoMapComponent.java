@@ -38,6 +38,7 @@ public class GecoMapComponent extends Component {
 	public void loadMapImage(String filename) {
 		try {
 			mapImage = ImageIO.read(new File(filename));
+			repaint();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

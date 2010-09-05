@@ -51,7 +51,6 @@ public class GecoLiveComponent {
 		controlPos = Collections.emptyMap();
 		courses = Collections.emptyList();
 		liveControl = new GecoLiveControl();
-		initWindow();
 	}
 
 	public GecoLiveComponent initWindow() {
@@ -70,7 +69,7 @@ public class GecoLiveComponent {
 		return jFrame.isShowing();
 	}
 
-	private Container initGui(Container mainContainer) {
+	public Container initGui(Container mainContainer) {
 		mainContainer.setLayout(new BorderLayout());
 		mainContainer.add(initControlPanel(), BorderLayout.WEST);
 		map = new GecoMapComponent();
@@ -88,7 +87,6 @@ public class GecoLiveComponent {
 
 	public void loadMapImage(String mapfile) {
 		map.loadMapImage(mapfile);
-		jFrame.pack();
 	}
 
 	public void importCourseData(String filename) {
