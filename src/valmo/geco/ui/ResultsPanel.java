@@ -50,30 +50,31 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	
 	private static final int AutoexportDelay = 60;
 	
-	// cache field
 	private Vector<String> coursenames;
 	private Vector<String> categorynames;
-	
-	private String exportFormat;
-	
-	private JList list;
 	private JTextPane resultTA;
+	
 	private JRadioButton selectCourseB;
 	private JRadioButton selectCatB;
 	private JRadioButton selectMixedB;
 	private JButton refreshB;
 	private JButton exportB;
-	private JButton selectAllB;
-	private JButton selectNoneB;
 	private JCheckBox showNcC;
 	private JCheckBox showOtC;
 	private JCheckBox showEsC;
 	private JCheckBox showPeC;
+
+	private String exportFormat;
 	private JFileChooser filePane;
+
+	private JButton selectAllB;
+	private JButton selectNoneB;
+	private JList list;
 	
 	private Thread autoexportThread;
 	private JButton autoexportB;
 	private JSpinner autodelayS;
+	private JRadioButton refreshRB;
 
 	/**
 	 * @param geco
@@ -203,17 +204,19 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	}
 
 	private JPanel initSelectionPanel() {
-		JPanel commandPanel = new JPanel();
-		commandPanel.setLayout(new GridLayout(0, 2));
-
+		// Options and commands
+		JPanel commandPanel = new JPanel(new GridLayout(0, 2));
+		commandPanel.setBorder(
+				BorderFactory.createTitledBorder("Options"));
+		
 		selectCourseB = new JRadioButton("Courses");
 		selectCatB = new JRadioButton("Categories");
 		selectMixedB = new JRadioButton("Category/Courses");
-		ButtonGroup group = new ButtonGroup();
-		group.add(selectCourseB);
-		group.add(selectCatB);
-		group.add(selectMixedB);
-		group.setSelected(selectCourseB.getModel(), true);
+		ButtonGroup poolGroup = new ButtonGroup();
+		poolGroup.add(selectCourseB);
+		poolGroup.add(selectCatB);
+		poolGroup.add(selectMixedB);
+		poolGroup.setSelected(selectCourseB.getModel(), true);
 		commandPanel.add(selectCatB);
 		commandPanel.add(selectCourseB);
 		commandPanel.add(selectMixedB);
@@ -249,30 +252,49 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 			}
 		});
 		
-		autoexportB = new JButton("Autoexport");
-		autodelayS = new JSpinner(new SpinnerNumberModel(AutoexportDelay, 1, null, 10));
-		autodelayS.setPreferredSize(new Dimension(75, 20));
-		autodelayS.setToolTipText("Autoexport delay in seconds");
-		commandPanel.add(SwingUtils.embed(autoexportB));
-		commandPanel.add(SwingUtils.embed(autodelayS));
 		
+		// Pool list
 		selectAllB = new JButton("All");
 		selectNoneB = new JButton("None");
-		commandPanel.add(SwingUtils.embed(selectAllB));
-		commandPanel.add(SwingUtils.embed(selectNoneB));
-		
-		commandPanel.setBorder(BorderFactory.createLineBorder(Color.gray));
+		JPanel listButtonsPanel = new JPanel();
+		listButtonsPanel.setLayout(new BoxLayout(listButtonsPanel, BoxLayout.Y_AXIS));
+		listButtonsPanel.add(SwingUtils.embed(selectAllB));
+		listButtonsPanel.add(SwingUtils.embed(selectNoneB));
 
-		JPanel selectionPanel = new JPanel(new BorderLayout());
-		selectionPanel.add(SwingUtils.embed(commandPanel), BorderLayout.NORTH);
-	
 		list = new JList(coursenames);
 		selectAllCourses(list);
 		JScrollPane scrollPane = new JScrollPane(list);
-		JPanel embed = SwingUtils.embed(scrollPane);
 		scrollPane.setPreferredSize(new Dimension(150, 300));
-		selectionPanel.add(embed, BorderLayout.CENTER);
+		JPanel listPanel = new JPanel(new BorderLayout());
+		listPanel.add(SwingUtils.embed(scrollPane), BorderLayout.CENTER);
+		listPanel.add(SwingUtils.embed(listButtonsPanel), BorderLayout.EAST);
 
+		
+		// Automode
+		JPanel autoPanel = new JPanel(new GridLayout(0, 2));
+		autoPanel.setBorder(BorderFactory.createTitledBorder("Automode"));
+
+		ButtonGroup autoGroup = new ButtonGroup();
+		refreshRB = new JRadioButton("Refresh");
+		JRadioButton exportRB = new JRadioButton("Export");
+		autoGroup.add(refreshRB);
+		autoGroup.add(exportRB);
+		refreshRB.setSelected(true);
+		autoPanel.add(refreshRB);
+		autoPanel.add(exportRB);
+
+		autoexportB = new JButton("Auto");
+		autodelayS = new JSpinner(new SpinnerNumberModel(AutoexportDelay, 1, null, 10));
+		autodelayS.setPreferredSize(new Dimension(75, 20));
+		autodelayS.setToolTipText("Auto delay in seconds");
+		autoPanel.add(SwingUtils.embed(autoexportB));
+		autoPanel.add(SwingUtils.embed(autodelayS));
+
+		
+		JPanel selectionPanel = new JPanel(new BorderLayout());
+		selectionPanel.add(commandPanel, BorderLayout.NORTH);
+		selectionPanel.add(listPanel, BorderLayout.CENTER);
+		selectionPanel.add(autoPanel, BorderLayout.SOUTH);
 		return selectionPanel;
 	}
 	
@@ -370,22 +392,39 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 			@Override
 			public synchronized void run() {
 				long autoexportDelay = 1000 * ((Integer) autodelayS.getValue()).intValue();
-				while( true ){
-					String resultFile = geco().getCurrentStagePath() + File.separator + "lastresults";
-					try {
-						try {
-							geco().resultBuilder().exportFile(resultFile, exportFormat, createResultConfig());
-						} catch (IOException ex) {
-							geco().logger().debug(ex);
-						}
-						wait(autoexportDelay);
-					} catch (InterruptedException e) {
-						return;
-					}					
+				if( refreshRB.isSelected() ) {
+					autorefresh(autoexportDelay);
+				} else {
+					autoexport(autoexportDelay);
 				}
 			}});
 		autoexportThread.start();
 		return autoexportThread;
+	}
+	private synchronized void autorefresh(long autoexportDelay) {
+		while( true ){
+			try {
+				refreshResultView();
+				wait(autoexportDelay);
+			} catch (InterruptedException e) {
+				return;
+			}					
+		}	
+	}
+	private synchronized void autoexport(long autoexportDelay) {
+		while( true ){
+			String resultFile = geco().getCurrentStagePath() + File.separator + "lastresults";
+			try {
+				try {
+					geco().resultBuilder().exportFile(resultFile, exportFormat, createResultConfig());
+				} catch (IOException ex) {
+					geco().logger().debug(ex);
+				}
+				wait(autoexportDelay);
+			} catch (InterruptedException e) {
+				return;
+			}					
+		}	
 	}
 	
 	public void stopAutoexport() {
