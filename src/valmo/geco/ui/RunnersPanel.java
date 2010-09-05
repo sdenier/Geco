@@ -36,6 +36,7 @@ import javax.swing.table.TableRowSorter;
 import valmo.geco.Geco;
 import valmo.geco.core.Announcer;
 import valmo.geco.core.TimeManager;
+import valmo.geco.live.GecoLiveComponent;
 import valmo.geco.model.Course;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
@@ -50,13 +51,14 @@ import valmo.geco.model.Status;
 public class RunnersPanel extends TabPanel
 		implements Announcer.RunnerListener, Announcer.StageConfigListener {
 	
+	private JTable table;
 	private RunnersTableModel tableModel;
 	private TableRowSorter<RunnersTableModel> sorter;	
-	private JTable table;
 	private JTextField filterField;
 	
-	private RunnerPanel runnerPanel;
 	private JCheckBox liveB;
+	private RunnerPanel runnerPanel;
+	private GecoLiveComponent gecoLiveMap;
 
 	
 	/**
@@ -309,8 +311,12 @@ public class RunnersPanel extends TabPanel
 
 	public void updateRunnerPanel() {
 		String chip = selectedChip();
-		if( !chip.equals("") )
+		if( !chip.equals("") ) {
 			runnerPanel.updateRunner(chip);
+			if( gecoLiveMap!=null && gecoLiveMap.isShowing() ) {
+				gecoLiveMap.displayRunnerMap(registry().findRunnerData(chip));
+			}
+		}
 	}
 	
 	private RunnerRaceData selectedData() {
@@ -318,6 +324,13 @@ public class RunnersPanel extends TabPanel
 		if( !chip.equals("") )
 			return registry().findRunnerData(chip);
 		return null;
+	}
+	
+	public void openMapWindow() {
+		if( gecoLiveMap==null ) {
+			gecoLiveMap = new GecoLiveComponent();
+		}
+		gecoLiveMap.openWindow();
 	}
 
 

@@ -6,6 +6,7 @@ package valmo.geco.live;
 
 import java.awt.Point;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +26,10 @@ public class GecoLiveControl {
 	private float yFactor;
 
 	
-	public GecoLiveControl() {	}
+	public GecoLiveControl() {	
+		controls = Collections.emptyMap();
+		courses = Collections.emptyMap();
+	}
 	
 	
 	public Map<String, ControlCircle> createMapControlsFrom(Map<String, Float[]> someControls, int dx, int dy) {

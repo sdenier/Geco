@@ -123,6 +123,7 @@ public class GecoLiveConfig extends JPanel {
 					try {
 						liveComponent.importCourseData(fileChooser.getSelectedFile().getCanonicalPath());
 						showCourseCB.setModel(new DefaultComboBoxModel(liveComponent.coursenames()));
+						refreshCourses();
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -138,12 +139,7 @@ public class GecoLiveConfig extends JPanel {
 		});
 		refreshB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				liveComponent.createCourses(
-						((Number) xfactorS.getValue()).floatValue(),
-						((Number) yfactorS.getValue()).floatValue(),
-						((Number) xtranS.getValue()).intValue(),
-						((Number) ytranS.getValue()).intValue());
-				liveComponent.displayAllControls();
+				refreshCourses();
 			}
 		});
 		showControlsB.addActionListener(new ActionListener() {
@@ -163,6 +159,15 @@ public class GecoLiveConfig extends JPanel {
 		});
 	}
 	
+	private void refreshCourses() {
+		liveComponent.createCourses(
+				((Number) xfactorS.getValue()).floatValue(),
+				((Number) yfactorS.getValue()).floatValue(),
+				((Number) xtranS.getValue()).intValue(),
+				((Number) ytranS.getValue()).intValue());
+		liveComponent.displayAllControls();
+	}
+
 	private JPanel initConfigPanel() {
 		JPanel datafileP = new JPanel(new GridLayout(0, 2));
 		datafileP.setBorder(BorderFactory.createTitledBorder("1. Load Data"));

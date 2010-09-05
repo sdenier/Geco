@@ -66,6 +66,9 @@ public class GecoLiveComponent {
 	public void closeWindow() {
 		jFrame.setVisible(false);
 	}
+	public boolean isShowing() {
+		return jFrame.isShowing();
+	}
 
 	private Container initGui(Container mainContainer) {
 		mainContainer.setLayout(new BorderLayout());

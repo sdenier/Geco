@@ -68,7 +68,8 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 			"redo.png",
 			"quick_restart.png",
 			"cnr.png",
-			"exit.png"
+			"exit.png",
+			"search.png"
 		});
 	}
 	
@@ -192,6 +193,15 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 			}
 		});
 		toolBar.add(statusB);
+		
+		JButton liveMapB = new JButton("Live Map", createIcon(7));
+		liveMapB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				runnersPanel.openMapWindow();
+			}
+		});
+		toolBar.add(liveMapB);
+		
 		toolBar.add(Box.createHorizontalGlue());
 		final ImageIcon startIcon = createIcon(5);
 		final ImageIcon stopIcon = createIcon(6);
