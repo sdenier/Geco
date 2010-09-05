@@ -194,6 +194,8 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 		});
 		toolBar.add(statusB);
 		
+		toolBar.add(Box.createHorizontalGlue());
+
 		JButton liveMapB = new JButton("Live Map", createIcon(7));
 		liveMapB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -201,8 +203,8 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 			}
 		});
 		toolBar.add(liveMapB);
+		toolBar.addSeparator();
 		
-		toolBar.add(Box.createHorizontalGlue());
 		final ImageIcon startIcon = createIcon(5);
 		final ImageIcon stopIcon = createIcon(6);
 		final JButton startB = new JButton("Start reader", startIcon);

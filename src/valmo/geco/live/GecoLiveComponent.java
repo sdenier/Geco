@@ -124,12 +124,14 @@ public class GecoLiveComponent {
 	}
 	
 	public void displayAllControls() {
+		liveControl.resetControls();
 		map.showControls(liveControl.allControls());
 	}
 	
 	public void displayCourse(String coursename) {
 		Punch course = liveControl.startPunchForCourse(coursename);
 		if( course!=null ) {
+			liveControl.resetControls();
 			map.showTrace(course);
 		}
 	}
@@ -143,8 +145,8 @@ public class GecoLiveComponent {
 
 	private void displayTraceFor(RunnerRaceData runnerData) {
 		Punch course = liveControl.startPunchForCourse(runnerData.getCourse().getName());
-		liveControl.resetControls();
 		if( course!=null ) {
+			liveControl.resetControls();
 			if( runnerData.hasTrace() ) {
 				map.showTrace( liveControl.createPunchTraceFor(course, runnerData.getResult().formatTrace().split(",")) );
 			} else {

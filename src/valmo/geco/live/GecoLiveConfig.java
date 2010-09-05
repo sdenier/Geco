@@ -43,6 +43,8 @@ public class GecoLiveConfig extends JPanel {
 
 	private JButton mapfileB;
 	private JButton coursefileB;
+	private JLabel mapfileL;
+	private JLabel coursefileL;
 
 	private JSpinner dpiS;
 	private JSpinner xfactorS;
@@ -73,8 +75,10 @@ public class GecoLiveConfig extends JPanel {
 	
 	private void createComponents() {
 		// data files
-		mapfileB = new JButton("Choose...");
-		coursefileB = new JButton("Choose...");
+		mapfileB = new JButton("Map image...");
+		mapfileL = new JLabel();
+		coursefileB = new JButton("Course file...");
+		coursefileL = new JLabel();
 		// map config
 		dpiS = new JSpinner(new SpinnerNumberModel(150, 0, null, 50));
 		dpiS.setPreferredSize(new Dimension(75, 20));
@@ -103,10 +107,12 @@ public class GecoLiveConfig extends JPanel {
 	private void initListeners() {
 		mapfileB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser fileChooser = new JFileChooser(System.getenv("user.dir"));
+				JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
+				fileChooser.setDialogTitle("Select image file for map");
 				int answer = fileChooser.showOpenDialog(frame);
 				if( answer==JFileChooser.APPROVE_OPTION ) {
 					try {
+						mapfileL.setText(fileChooser.getSelectedFile().getName());
 						liveComponent.loadMapImage(fileChooser.getSelectedFile().getCanonicalPath());
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
@@ -117,10 +123,12 @@ public class GecoLiveConfig extends JPanel {
 		});
 		coursefileB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser fileChooser = new JFileChooser(System.getenv("user.dir"));
+				JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
+				fileChooser.setDialogTitle("Select xml file with course descriptions");
 				int answer = fileChooser.showOpenDialog(frame);
 				if( answer==JFileChooser.APPROVE_OPTION ) {
 					try {
+						coursefileL.setText(fileChooser.getSelectedFile().getName());
 						liveComponent.importCourseData(fileChooser.getSelectedFile().getCanonicalPath());
 						showCourseCB.setModel(new DefaultComboBoxModel(liveComponent.coursenames()));
 						refreshCourses();
@@ -171,14 +179,16 @@ public class GecoLiveConfig extends JPanel {
 	private JPanel initConfigPanel() {
 		JPanel datafileP = new JPanel(new GridLayout(0, 2));
 		datafileP.setBorder(BorderFactory.createTitledBorder("1. Load Data"));
-		addComponent(datafileP, new JLabel("Image file"));
+//		addComponent(datafileP, new JLabel("Image file"));
 		addComponent(datafileP, mapfileB);
-		addComponent(datafileP, new JLabel("Courses file"));
+		addComponent(datafileP, mapfileL);
+//		addComponent(datafileP, new JLabel("Courses file"));
 		addComponent(datafileP, coursefileB);
+		addComponent(datafileP, coursefileL);
 				
 		JPanel mapConfigP = new JPanel(new GridLayout(0, 2));
 		mapConfigP.setBorder(BorderFactory.createTitledBorder("2. Setup Map Parameters"));
-		addComponent(mapConfigP, new JLabel("Image DPI"));
+		addComponent(mapConfigP, new JLabel("Image DPI:"));
 		addComponent(mapConfigP, dpiS);
 		addComponent(mapConfigP, new JLabel("X factor"));
 		addComponent(mapConfigP, new JLabel("Y factor"));
@@ -194,12 +204,12 @@ public class GecoLiveConfig extends JPanel {
 		courseConfigP.setBorder(BorderFactory.createTitledBorder("3. Check Courses"));		
 		addComponent(courseConfigP, showControlsB);
 		addComponent(courseConfigP, showMapB);
-		addComponent(courseConfigP, new JLabel("Show course"));
+		addComponent(courseConfigP, new JLabel("Show course:"));
 		addComponent(courseConfigP, showCourseCB);
 		
 		JPanel networkConfigP = new JPanel(new GridLayout(0, 2));
 		networkConfigP.setBorder(BorderFactory.createTitledBorder("4. Setup Live Server"));
-		addComponent(networkConfigP, new JLabel("Server port"));
+		addComponent(networkConfigP, new JLabel("Server port:"));
 		addComponent(networkConfigP, portF);
 		addComponent(networkConfigP, listenB);
 		
