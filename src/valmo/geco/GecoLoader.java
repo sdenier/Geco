@@ -26,7 +26,7 @@ public class GecoLoader {
 		}
 		JarClassLoader loader = new JarClassLoader();
 		try {
-			loader.invokeMain("valmo.geco.core.Geco", new String[0]);
+			loader.invokeMain("valmo.geco.Geco", new String[0]);
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
