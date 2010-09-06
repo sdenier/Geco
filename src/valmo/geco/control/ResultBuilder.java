@@ -141,13 +141,13 @@ public class ResultBuilder extends Control {
 		return results;
 	}
 
-	public void exportFile(String filename, String format, ResultConfig config) throws IOException {
+	public void exportFile(String filename, String format, ResultConfig config, int refreshInterval) throws IOException {
 		if( !filename.endsWith(format) ) {
 			filename = filename + "." + format;
 		}
 		BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
 		if( format.equals("html") ) {
-			writer.write(generateHtmlResults(config));	
+			writer.write(generateHtmlResults(config, refreshInterval));	
 		}
 		if( format.equals("csv") ) {
 			generateCsvResult(config, writer);
@@ -156,9 +156,14 @@ public class ResultBuilder extends Control {
 	}
 
 
-	public String generateHtmlResults(ResultConfig config) {
+	public String generateHtmlResults(ResultConfig config, int refreshInterval) {
 		Vector<Result> results = refreshResults(config);
 		Html html = new Html();
+		if( refreshInterval>0 ) {
+			html.open("head");
+			html.contents("<meta http-equiv=\"refresh\" content=\"" + refreshInterval + "\" />");
+			html.close("head");
+		}
 		for (Result result : results) {
 			if( config.showEmptySets || !result.isEmpty()) {
 				appendHtmlResult(result, config, html);	

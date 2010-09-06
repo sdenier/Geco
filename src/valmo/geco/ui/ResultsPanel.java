@@ -163,7 +163,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 				if( response==JFileChooser.APPROVE_OPTION ) {
 					String filename = filePane.getSelectedFile().getAbsolutePath();
 					try {
-						geco().resultBuilder().exportFile(filename, exportFormat, createResultConfig());
+						geco().resultBuilder().exportFile(filename, exportFormat, createResultConfig(), -1);
 					} catch (IOException ex) {
 						JOptionPane.showMessageDialog(frame(), "Error while saving " + filename + "(" + ex +")",
 								"Export Error", JOptionPane.ERROR_MESSAGE);
@@ -360,7 +360,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	}
 
 	public void refreshResultView() {
-		resultTA.setText(geco().resultBuilder().generateHtmlResults(createResultConfig()));
+		resultTA.setText(geco().resultBuilder().generateHtmlResults(createResultConfig(), -1));
 	}
 	
 	private ResultConfig createResultConfig() {
@@ -391,7 +391,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		autoexportThread = new Thread(new Runnable() {
 			@Override
 			public synchronized void run() {
-				long autoexportDelay = 1000 * ((Integer) autodelayS.getValue()).intValue();
+				int autoexportDelay = ((Integer) autodelayS.getValue()).intValue();
 				if( refreshRB.isSelected() ) {
 					autorefresh(autoexportDelay);
 				} else {
@@ -411,16 +411,17 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 			}					
 		}	
 	}
-	private synchronized void autoexport(long autoexportDelay) {
+	private synchronized void autoexport(int refreshDelay) {
+		long delay = 1000 * refreshDelay;
 		while( true ){
 			String resultFile = geco().getCurrentStagePath() + File.separator + "lastresults";
 			try {
 				try {
-					geco().resultBuilder().exportFile(resultFile, exportFormat, createResultConfig());
+					geco().resultBuilder().exportFile(resultFile, exportFormat, createResultConfig(), refreshDelay);
 				} catch (IOException ex) {
 					geco().logger().debug(ex);
 				}
-				wait(autoexportDelay);
+				wait(delay);
 			} catch (InterruptedException e) {
 				return;
 			}					
