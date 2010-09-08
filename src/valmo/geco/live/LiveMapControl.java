@@ -17,22 +17,22 @@ import valmo.geco.model.Course;
  * @author  Simon Denier
  * @since  Sep 5, 2010
  */
-public class GecoLiveControl {
+public class LiveMapControl {
 
 	public Map<String, ControlCircle> controls;
-	public Map<String, Punch> courses;
+	public Map<String, LivePunch> courses;
 
 	private float xFactor;
 	private float yFactor;
 
 	
-	public GecoLiveControl() {	
+	public LiveMapControl() {	
 		controls = Collections.emptyMap();
 		courses = Collections.emptyMap();
 	}
 	
 	
-	public Map<String, ControlCircle> createMapControlsFrom(Map<String, Float[]> someControls, int dx, int dy) {
+	public Map<String, ControlCircle> createControlsFrom(Map<String, Float[]> someControls, int dx, int dy) {
 		Point mapOrigin = new Point();
 		controls = new HashMap<String, ControlCircle>();
 		for (String controlId : someControls.keySet()) {
@@ -74,14 +74,14 @@ public class GecoLiveControl {
 		return new Point((int) x, (int) y);
 	}
 
-	public Map<String, Punch> createCoursesFrom(Collection<Course> someCourses) {
-		courses = new HashMap<String, Punch>();
+	public Map<String, LivePunch> createCoursesFrom(Collection<Course> someCourses) {
+		courses = new HashMap<String, LivePunch>();
 		for (Course course : someCourses) {
-			Punch previousPunch = createPunch("S1");
+			LivePunch previousPunch = createPunch("S1");
 			courses.put(course.getName(), previousPunch);
 			int i = 1;
 			for (int code : course.getCodes()) {
-				Punch punch = createPunch(Integer.toString(code), i);
+				LivePunch punch = createPunch(Integer.toString(code), i);
 				if( previousPunch!=null ) {
 					previousPunch.setNextPunch(punch);
 				}
@@ -93,12 +93,12 @@ public class GecoLiveControl {
 		return courses;
 	}
 
-	private Punch createPunch(String code) {
-		return new Punch(controls.get(code));
+	private LivePunch createPunch(String code) {
+		return new LivePunch(controls.get(code));
 	}
 
-	private Punch createPunch(String code, int order) {
-		return new Punch(controls.get(code), order);
+	private LivePunch createPunch(String code, int order) {
+		return new LivePunch(controls.get(code), order);
 	}
 	
 	public Collection<ControlCircle> allControls() {
@@ -111,16 +111,16 @@ public class GecoLiveControl {
 		}
 	}
 	
-	public Punch startPunchForCourse(String coursename) {
+	public LivePunch startPunchForCourse(String coursename) {
 		return courses.get(coursename);
 	}
 
-	public Punch createPunchTraceFor(Punch punch, String[] traceString) {
-		Punch startPunch = punch.clone(); // start control
-		Punch previousPunch = startPunch;
+	public LivePunch createPunchTraceFor(LivePunch punch, String[] traceString) {
+		LivePunch startPunch = punch.clone(); // start control
+		LivePunch previousPunch = startPunch;
 		for (String code : traceString) {
 			if( code.startsWith("-") ) {
-				Punch nextPunch = previousPunch.getNextPunch().getNextPunch();
+				LivePunch nextPunch = previousPunch.getNextPunch().getNextPunch();
 				if( !previousPunch.isAdded() ) {
 					previousPunch.nextPunchMissed();
 				} else {
@@ -128,7 +128,7 @@ public class GecoLiveControl {
 				}
 				previousPunch.setNextPunch(nextPunch);
 				if( code.contains("+") ) {
-					Punch addedPunch = createPunch(code.substring(code.indexOf("+") + 1));
+					LivePunch addedPunch = createPunch(code.substring(code.indexOf("+") + 1));
 					addedPunch.beAdded();
 					addedPunch.setNextPunch(previousPunch.getNextPunch());
 					previousPunch.setNextPunch(addedPunch);
@@ -136,7 +136,7 @@ public class GecoLiveControl {
 				}
 			} else {
 				if( code.startsWith("+") ) {
-					Punch addedPunch = createPunch(code.substring(1));
+					LivePunch addedPunch = createPunch(code.substring(1));
 					addedPunch.beAdded();
 					addedPunch.setNextPunch(previousPunch.getNextPunch());
 					previousPunch.setNextPunch(addedPunch);

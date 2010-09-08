@@ -5,20 +5,31 @@
 package valmo.geco.live;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
+import java.awt.GridLayout;
+import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingConstants;
 
 import valmo.geco.model.Course;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.impl.POFactory;
 import valmo.geco.model.xml.CourseSaxImporter;
+import valmo.geco.ui.StartStopButton;
 import valmo.geco.ui.SwingUtils;
 
 /**
@@ -26,20 +37,22 @@ import valmo.geco.ui.SwingUtils;
  * @since Aug 26, 2010
  *
  */
-public class GecoLiveComponent {
+public class LiveComponent {
 
 	public JFrame jFrame;
-	public GecoMapComponent map;
+	public LiveMapComponent map;
 	public RunnerResultPanel runnerP;
 
-	private GecoLiveControl liveControl;
+	private LiveMapControl liveControl;
 
 	private Map<String, Float[]> controlPos;
 	private Collection<Course> courses;
+	private JFormattedTextField portF;
+	private StartStopButton listenB;
 
 
 	public static void main(String[] args) {
-		GecoLiveComponent gecoLive = new GecoLiveComponent().initWindow();
+		LiveComponent gecoLive = new LiveComponent().initWindow();
 //		gecoLive.loadMapImage("hellemmes.jpg");
 //		gecoLive.importCourseData("hellemmes.xml");
 //		float factor = GecoLiveConfig.dpi2dpmmFactor(150);
@@ -47,13 +60,13 @@ public class GecoLiveComponent {
 		gecoLive.openWindow();
 	}
 
-	public GecoLiveComponent() {
+	public LiveComponent() {
 		controlPos = Collections.emptyMap();
 		courses = Collections.emptyList();
-		liveControl = new GecoLiveControl();
+		liveControl = new LiveMapControl();
 	}
 
-	public GecoLiveComponent initWindow() {
+	public LiveComponent initWindow() {
 		jFrame = new JFrame();
 		initGui(jFrame.getContentPane());
 		jFrame.pack();
@@ -72,18 +85,59 @@ public class GecoLiveComponent {
 	public Container initGui(Container mainContainer) {
 		mainContainer.setLayout(new BorderLayout());
 		mainContainer.add(initControlPanel(), BorderLayout.WEST);
-		map = new GecoMapComponent();
+		map = new LiveMapComponent();
 		mainContainer.add(new JScrollPane(map), BorderLayout.CENTER);
 		return mainContainer;
 	}
 	private Container initControlPanel() {
 		JTabbedPane controlPanel = new JTabbedPane();
 		runnerP = new RunnerResultPanel();
-		controlPanel.add("Config", SwingUtils.embed(new GecoLiveConfig(jFrame, this)));
-		controlPanel.add("Runner", SwingUtils.embed(runnerP));
+		controlPanel.add("Config", SwingUtils.embed(new LiveConfigPanel(jFrame, this)));
+		controlPanel.add("Live", initLivePanel());
 		return controlPanel;
 	}
 	
+	private Component initLivePanel() {
+		DecimalFormat format = new DecimalFormat();
+		format.setGroupingUsed(false);
+		portF = new JFormattedTextField(format);
+		portF.setText("4444");
+		portF.setColumns(5);
+		listenB = new StartStopButton() {
+			private Color defaultColor;
+			LiveServer server;
+			@Override
+			public void actionOn() {
+				try {
+					// TODO gecoControl parameter
+					server = new LiveServer(null, Integer.parseInt(portF.getText()), listenB).accept();
+					defaultColor = listenB.getBackground();
+					listenB.setBackground(Color.GREEN);
+				} catch (NumberFormatException e1) {
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}				
+			}
+			@Override
+			public void actionOff() {
+				server.stop();
+				listenB.setBackground(defaultColor);
+			}
+		};
+		listenB.setText("Listen");
+
+		JPanel networkConfigP = new JPanel(new GridLayout(0, 3));
+		networkConfigP.setBorder(BorderFactory.createTitledBorder("Start Live Server"));
+		networkConfigP.add(SwingUtils.embed(listenB));
+		networkConfigP.add(new JLabel("Port:", SwingConstants.RIGHT));
+		networkConfigP.add(SwingUtils.embed(portF));
+
+		JPanel livePanel = new JPanel(new BorderLayout());
+		livePanel.add(SwingUtils.embed(runnerP), BorderLayout.NORTH);
+		livePanel.add(networkConfigP, BorderLayout.SOUTH);
+		return livePanel;
+	}
 
 	public void loadMapImage(String mapfile) {
 		map.loadMapImage(mapfile);
@@ -105,7 +159,7 @@ public class GecoLiveComponent {
 	public void createCourses(float xFactor, float yFactor, int dx, int dy) {
 		liveControl.setXFactor(xFactor);
 		liveControl.setYFactor(yFactor);
-		liveControl.createMapControlsFrom(controlPos, dx, dy);
+		liveControl.createControlsFrom(controlPos, dx, dy);
 		liveControl.createCoursesFrom(courses);
 	}
 	
@@ -127,7 +181,7 @@ public class GecoLiveComponent {
 	}
 	
 	public void displayCourse(String coursename) {
-		Punch course = liveControl.startPunchForCourse(coursename);
+		LivePunch course = liveControl.startPunchForCourse(coursename);
 		if( course!=null ) {
 			liveControl.resetControls();
 			map.showTrace(course);
@@ -142,7 +196,7 @@ public class GecoLiveComponent {
 	}
 
 	private void displayTraceFor(RunnerRaceData runnerData) {
-		Punch course = liveControl.startPunchForCourse(runnerData.getCourse().getName());
+		LivePunch course = liveControl.startPunchForCourse(runnerData.getCourse().getName());
 		if( course!=null ) {
 			liveControl.resetControls();
 			if( runnerData.hasTrace() ) {

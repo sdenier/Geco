@@ -18,13 +18,13 @@ import valmo.geco.model.Trace;
  * @since Aug 27, 2010
  *
  */
-public class Punch implements Trace {
+public class LivePunch implements Trace {
 
 	private ControlCircle mapControl;
 	
-	private Punch nextPunch;
+	private LivePunch nextPunch;
 	
-	private Punch nextMissedPunch;
+	private LivePunch nextMissedPunch;
 	
 	private boolean missed;
 
@@ -32,18 +32,18 @@ public class Punch implements Trace {
 	
 	private String order;
 
-	public Punch(ControlCircle control) {
+	public LivePunch(ControlCircle control) {
 		this.mapControl = control;
 	}
 	
-	public Punch(ControlCircle control, int order) {
+	public LivePunch(ControlCircle control, int order) {
 		this(control);
 		this.order = Integer.toString(order);
 	}
 	
-	public Punch clone() {
+	public LivePunch clone() {
 		try {
-			Punch clone = (Punch) super.clone();
+			LivePunch clone = (LivePunch) super.clone();
 			if( clone.nextPunch!=null ) {
 				clone.setNextPunch(nextPunch.clone());
 			}
@@ -54,11 +54,11 @@ public class Punch implements Trace {
 		return null;
 	}
 
-	public Punch getNextPunch() {
+	public LivePunch getNextPunch() {
 		return nextPunch;
 	}
 	
-	public void setNextPunch(Punch punch) {
+	public void setNextPunch(LivePunch punch) {
 		nextPunch = punch;
 	}
 	
@@ -132,7 +132,7 @@ public class Punch implements Trace {
 		return new BasicStroke(ControlCircle.StrokeWidth, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 10.0f, new float[] {20f, 15f}, 0f);
 	}
 	
-	public void drawLine(Punch start, Punch end, Stroke stroke, Color color, Graphics2D g2) {
+	public void drawLine(LivePunch start, LivePunch end, Stroke stroke, Color color, Graphics2D g2) {
 		g2.setStroke(stroke);				
 		g2.setColor(color);
 		int startX = centerPos(start.getPosition().x);

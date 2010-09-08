@@ -16,7 +16,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowSorter;
@@ -39,10 +38,9 @@ import valmo.geco.ui.GecoLauncher;
 public class GecoLive {
 
 	private GecoControl gecoControl;
-//	private ResultBuilder resultBuilder;
 
 	private JTable runnersTable;
-	private GecoLiveComponent liveComponent;
+	private LiveComponent liveComponent;
 	
 	
 	public static void main(String[] args) {
@@ -63,12 +61,7 @@ public class GecoLive {
 		}
 
 		gecoControl = new GecoControl(startDir);
-		liveComponent = new GecoLiveComponent();
-
-//		stageControl = new StageControl(gecoControl);
-//		runnerControl = new RunnerControl(gecoControl);
-//		resultBuilder = new ResultBuilder(gecoControl);
-//		stats = new RegistryStats(gecoControl);
+		liveComponent = new LiveComponent();
 	}
 	private String launcher() throws Exception {
 		return new GecoLauncher(System.getProperty("user.dir")).open(null);
@@ -89,12 +82,12 @@ public class GecoLive {
 		splitPane.add(liveComponent.initGui(new JPanel()));
 		splitPane.add(initRunnersTable());
 
-		JTabbedPane tabbedPane = new JTabbedPane();
-		tabbedPane.add("Map", splitPane);
-		tabbedPane.add("Results", new JPanel());
-		tabbedPane.add("Stats", null);
+//		JTabbedPane tabbedPane = new JTabbedPane();
+//		tabbedPane.add("Map", splitPane);
+//		tabbedPane.add("Results", new JPanel());
+//		tabbedPane.add("Stats", null);
 
-		jFrame.add(tabbedPane);
+		jFrame.add(splitPane);
 		jFrame.pack();
 		jFrame.setVisible(true);
 	}

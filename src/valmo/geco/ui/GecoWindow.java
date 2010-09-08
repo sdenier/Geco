@@ -27,6 +27,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import valmo.geco.Geco;
 import valmo.geco.core.Announcer;
+import valmo.geco.live.LiveClient;
+import valmo.geco.live.LiveClientDialog;
 import valmo.geco.model.Stage;
 
 
@@ -69,7 +71,9 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 			"quick_restart.png",
 			"cnr.png",
 			"exit.png",
-			"search.png"
+			"search.png",
+			"irkick.png",
+			"irkickflash.png",
 		});
 	}
 	
@@ -196,13 +200,40 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 		
 		toolBar.add(Box.createHorizontalGlue());
 
-		JButton liveMapB = new JButton("Live Map", createIcon(7));
+		JButton liveMapB = new JButton(createIcon(7));
+		liveMapB.setToolTipText("Open LiveMap window");
 		liveMapB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				runnersPanel.openMapWindow();
 			}
 		});
 		toolBar.add(liveMapB);
+		final ImageIcon offliveIcon = createIcon(8);
+		final ImageIcon onliveIcon = createIcon(9);
+		final StartStopButton liveClientB = new StartStopButton() {
+			private LiveClient liveClient;
+			@Override
+			public void actionOn() {
+				liveClient = new LiveClientDialog(GecoWindow.this, this).open();
+				if( liveClient!=null ) {
+					setIcon(onliveIcon);
+					setToolTipText("Stop Live broadcast");
+				} else {
+					setSelected(false);
+				}
+			}
+			@Override
+			public void actionOff() {
+				if( liveClient.isActive() ) {
+					liveClient.stop();
+				}
+				setIcon(offliveIcon);
+				setToolTipText("Start Live broadcast");
+			}
+		};
+		liveClientB.setIcon(offliveIcon);
+		liveClientB.setToolTipText("Start Live broadcast");
+		toolBar.add(liveClientB);
 		toolBar.addSeparator();
 		
 		final ImageIcon startIcon = createIcon(5);

@@ -36,7 +36,7 @@ import javax.swing.table.TableRowSorter;
 import valmo.geco.Geco;
 import valmo.geco.core.Announcer;
 import valmo.geco.core.TimeManager;
-import valmo.geco.live.GecoLiveComponent;
+import valmo.geco.live.LiveComponent;
 import valmo.geco.model.Course;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
@@ -58,7 +58,7 @@ public class RunnersPanel extends TabPanel
 	
 	private JCheckBox liveB;
 	private RunnerPanel runnerPanel;
-	private GecoLiveComponent gecoLiveMap;
+	private LiveComponent gecoLiveMap;
 
 	
 	/**
@@ -328,7 +328,7 @@ public class RunnersPanel extends TabPanel
 	
 	public void openMapWindow() {
 		if( gecoLiveMap==null ) {
-			gecoLiveMap = new GecoLiveComponent().initWindow();
+			gecoLiveMap = new LiveComponent().initWindow();
 		}
 		gecoLiveMap.openWindow();
 	}

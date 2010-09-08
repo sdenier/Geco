@@ -23,15 +23,15 @@ import javax.imageio.ImageIO;
  * @since Aug 26, 2010
  *
  */
-public class GecoMapComponent extends Component {
+public class LiveMapComponent extends Component {
 	
 	private BufferedImage mapImage;
 
 	private Collection<ControlCircle> controls;
 
-	private Punch startPunch;
+	private LivePunch startPunch;
 	
-	public GecoMapComponent() {
+	public LiveMapComponent() {
 		mapImage = new BufferedImage(500, 500, BufferedImage.TYPE_3BYTE_BGR);
 	}
 	
@@ -59,7 +59,7 @@ public class GecoMapComponent extends Component {
 		repaint();
 	}
 	
-	public void showTrace(Punch punch) {
+	public void showTrace(LivePunch punch) {
 		this.controls = null;
 		this.startPunch = punch;
 		repaint();

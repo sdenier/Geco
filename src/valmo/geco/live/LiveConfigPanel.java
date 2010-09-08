@@ -11,7 +11,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.text.DecimalFormat;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -19,12 +18,10 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
-import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -36,10 +33,10 @@ import valmo.geco.ui.SwingUtils;
  * @since Sep 5, 2010
  *
  */
-public class GecoLiveConfig extends JPanel {
+public class LiveConfigPanel extends JPanel {
 
 	private Component frame;
-	private GecoLiveComponent liveComponent;
+	private LiveComponent liveComponent;
 
 	private JButton mapfileB;
 	private JButton coursefileB;
@@ -51,20 +48,24 @@ public class GecoLiveConfig extends JPanel {
 	private JSpinner yfactorS;
 	private JSpinner xtranS;
 	private JSpinner ytranS;
+	private JButton refreshB;
 	
 	private JButton showControlsB;
 	private JButton showMapB;
 	private JComboBox showCourseCB;
 	
-	private JTextField portF;
-	private JButton listenB;
-	private JButton refreshB;
+//	private JTextField portF;
+//	private JButton listenB;
 
+
+	public LiveConfigPanel(JFrame frame, LiveComponent liveComp) {
+		this(frame, liveComp, false);
+	}
 	
-	public GecoLiveConfig(JFrame frame, GecoLiveComponent liveComp) {
+	public LiveConfigPanel(JFrame frame, LiveComponent liveComp, boolean withLiveNetwork) {
 		this.frame = frame;
 		this.liveComponent = liveComp;
-		createComponents();
+		createComponents(withLiveNetwork);
 		initListeners();
 		initConfigPanel();
 	}
@@ -73,7 +74,7 @@ public class GecoLiveConfig extends JPanel {
 		return dpi / 25.4f; // dpi / mm/inch
 	}
 	
-	private void createComponents() {
+	private void createComponents(boolean withLiveNetwork) {
 		// data files
 		mapfileB = new JButton("Map image...");
 		mapfileL = new JLabel();
@@ -96,12 +97,14 @@ public class GecoLiveConfig extends JPanel {
 		showMapB = new JButton("Show map");
 		showCourseCB = new JComboBox();
 		// network config
-		DecimalFormat format = new DecimalFormat();
-		format.setGroupingUsed(false);
-		portF = new JFormattedTextField(format);
-		portF.setText("4444");
-		portF.setColumns(5);
-		listenB = new JButton("Listen");
+//		if( withLiveNetwork ) {
+//			DecimalFormat format = new DecimalFormat();
+//			format.setGroupingUsed(false);
+//			portF = new JFormattedTextField(format);
+//			portF.setText("4444");
+//			portF.setColumns(5);
+//			listenB = new JButton("Listen");
+//		}
 	}
 	
 	private void initListeners() {
@@ -165,6 +168,31 @@ public class GecoLiveConfig extends JPanel {
 				liveComponent.displayCourse((String) showCourseCB.getSelectedItem());
 			}
 		});
+//		if( listenB!=null ) { // live network enabled
+//			listenB.addActionListener(new ActionListener() {
+//				private Color defaultColor;
+//				LiveServer server;
+//				public void actionPerformed(ActionEvent e) {
+//					if( listenB.isSelected() ) {
+//						listenB.setSelected(false);
+//						listenB.setBackground(defaultColor);
+//						server.interrupt();
+//					} else {
+//						try {
+//							// TODO gecoControl parameter
+//							server = new LiveServer(null, Integer.parseInt(portF.getText())).accept();
+//							listenB.setSelected(true);
+//							defaultColor = listenB.getBackground();
+//							listenB.setBackground(Color.GREEN);
+//						} catch (NumberFormatException e1) {
+//							e1.printStackTrace();
+//						} catch (IOException e1) {
+//							e1.printStackTrace();
+//						}
+//					}
+//				}
+//			});
+//		}
 	}
 	
 	private void refreshCourses() {
@@ -179,10 +207,8 @@ public class GecoLiveConfig extends JPanel {
 	private JPanel initConfigPanel() {
 		JPanel datafileP = new JPanel(new GridLayout(0, 2));
 		datafileP.setBorder(BorderFactory.createTitledBorder("1. Load Data"));
-//		addComponent(datafileP, new JLabel("Image file"));
 		addComponent(datafileP, mapfileB);
 		addComponent(datafileP, mapfileL);
-//		addComponent(datafileP, new JLabel("Courses file"));
 		addComponent(datafileP, coursefileB);
 		addComponent(datafileP, coursefileL);
 				
@@ -207,17 +233,19 @@ public class GecoLiveConfig extends JPanel {
 		addComponent(courseConfigP, new JLabel("Show course:"));
 		addComponent(courseConfigP, showCourseCB);
 		
-		JPanel networkConfigP = new JPanel(new GridLayout(0, 2));
-		networkConfigP.setBorder(BorderFactory.createTitledBorder("4. Setup Live Server"));
-		addComponent(networkConfigP, new JLabel("Server port:"));
-		addComponent(networkConfigP, portF);
-		addComponent(networkConfigP, listenB);
-		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		add(datafileP);
 		add(mapConfigP);
 		add(courseConfigP);
-		add(networkConfigP);
+		
+//		if( listenB!=null ) { // live network enabled
+//			JPanel networkConfigP = new JPanel(new GridLayout(0, 3));
+//			networkConfigP.setBorder(BorderFactory.createTitledBorder("4. Setup Live Server"));
+//			addComponent(networkConfigP, listenB);
+//			addComponent(networkConfigP, new JLabel("Port:"));
+//			addComponent(networkConfigP, portF);
+//			add(networkConfigP);
+//		}
 		return this;
 	}
 	
