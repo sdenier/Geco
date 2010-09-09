@@ -105,12 +105,12 @@ public class LiveComponent {
 		portF.setColumns(5);
 		listenB = new StartStopButton() {
 			private Color defaultColor;
-			LiveServer server;
+			LiveServerMulti server;
 			@Override
 			public void actionOn() {
 				try {
 					// TODO gecoControl parameter
-					server = new LiveServer(null, Integer.parseInt(portF.getText()), listenB).accept();
+					server = new LiveServerMulti(null, Integer.parseInt(portF.getText())).accept();
 					defaultColor = listenB.getBackground();
 					listenB.setBackground(Color.GREEN);
 				} catch (NumberFormatException e1) {

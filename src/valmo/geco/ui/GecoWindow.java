@@ -5,9 +5,12 @@
 package valmo.geco.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -15,11 +18,13 @@ import java.net.URL;
 import java.util.Hashtable;
 import java.util.Properties;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.UIManager;
@@ -27,6 +32,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import valmo.geco.Geco;
 import valmo.geco.core.Announcer;
+import valmo.geco.core.Html;
 import valmo.geco.live.LiveClient;
 import valmo.geco.live.LiveClientDialog;
 import valmo.geco.model.Stage;
@@ -210,12 +216,12 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 		toolBar.add(liveMapB);
 		final ImageIcon offliveIcon = createIcon(8);
 		final ImageIcon onliveIcon = createIcon(9);
-		final StartStopButton liveClientB = new StartStopButton() {
+		StartStopButton liveClientB = new StartStopButton() {
 			private LiveClient liveClient;
 			@Override
 			public void actionOn() {
-				liveClient = new LiveClientDialog(GecoWindow.this, this).open();
-				if( liveClient!=null ) {
+				liveClient = new LiveClient(geco, this);
+				if( new LiveClientDialog(GecoWindow.this, liveClient).open() ) {
 					setIcon(onliveIcon);
 					setToolTipText("Stop Live broadcast");
 				} else {
@@ -258,7 +264,35 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 			}
 		});
 		toolBar.add(startB);
-		toolBar.add(new JLabel(" v" + Geco.VERSION));
+		final JLabel versionL = new JLabel(" v" + Geco.VERSION);
+		versionL.setBorder(BorderFactory.createLineBorder(versionL.getBackground()));
+		versionL.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {
+				Html html = new Html();
+				html.open("div", "align=center");
+				html.b("Geco version " + Geco.VERSION).br().br();
+				html.contents("Copyright (c) 2008-2010 Simon Denier.").br();
+				html.contents("Source code released under MIT License.").br();
+				html.contents("See readme.txt for details.");
+				html.close("div");
+				JOptionPane.showMessageDialog(GecoWindow.this, html.close(), "Geco Information", JOptionPane.INFORMATION_MESSAGE);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				versionL.setBorder(BorderFactory.createLineBorder(versionL.getBackground()));
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				versionL.setBorder(BorderFactory.createLineBorder(Color.gray));
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) { }
+		});
+		toolBar.add(versionL);
 		return toolBar;
 	}
 	

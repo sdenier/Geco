@@ -82,7 +82,12 @@ public final class Html {
 		openTag(tag, buffer);
 		return this;
 	}
-	
+
+	public Html open(String tag, String attributes) {
+		openTag(tag, attributes, buffer);
+		return this;
+	}
+
 	public Html close(String tag) {
 		closeTag(tag, buffer);
 		return this;
@@ -105,6 +110,11 @@ public final class Html {
 	
 	public Html contents(String contents) {
 		buffer.append(contents);
+		return this;
+	}
+	
+	public Html br() {
+		buffer.append("<br />");
 		return this;
 	}
 

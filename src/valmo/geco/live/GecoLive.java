@@ -45,7 +45,6 @@ public class GecoLive {
 	
 	public static void main(String[] args) {
 		GecoLive gecoLive = new GecoLive();
-//		gecoLive.importCourseData();
 		gecoLive.guiLaunch();
 		
 	}
@@ -81,11 +80,6 @@ public class GecoLive {
 		splitPane.setOneTouchExpandable(true);
 		splitPane.add(liveComponent.initGui(new JPanel()));
 		splitPane.add(initRunnersTable());
-
-//		JTabbedPane tabbedPane = new JTabbedPane();
-//		tabbedPane.add("Map", splitPane);
-//		tabbedPane.add("Results", new JPanel());
-//		tabbedPane.add("Stats", null);
 
 		jFrame.add(splitPane);
 		jFrame.pack();
@@ -182,39 +176,5 @@ public class GecoLive {
 		}
 		return chip;
 	}
-	
-	
-//	private Punch createPunchTrace(Map<String, ControlCircle> controls) {
-//		Punch start = createPunch("31");
-//		Punch punch2 = createPunch("32");
-//		Punch punch3 = createPunch("33");
-//		Punch punch4 = createPunch("41");
-//		Punch punch5 = createPunch("36");
-//		start.setNextPunch(punch2);
-//		punch2.setNextPunch(punch3);
-//		punch2.nextPunchMissed();
-//		punch2.setNextPunch(punch4);
-//		punch3.setNextPunch(punch5);
-//		punch4.setNextPunch(punch5);
-//		start.beOk();
-//		punch2.beOk();
-//		punch4.beAdded();
-//		punch5.beOk();
-//		return start;
-//	}
-
-	/**
-	 * @param punch
-	 * @return
-	 */
-//	private Punch createPunchTraceA(Punch punch) {
-//		String[] traceString = new String[] {
-//				"31", "+40", "32", "-33+41", "-34", "35", "36", "+38", "37", "38", "39", "-31"
-//		};
-//		return createPunchTraceFor(punch, traceString);
-//	}
-
-
-
 
 }

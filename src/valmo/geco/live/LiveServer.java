@@ -7,14 +7,12 @@ package valmo.geco.live;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 import javax.swing.JOptionPane;
 
 import valmo.geco.control.Control;
 import valmo.geco.control.GecoControl;
-import valmo.geco.ui.StartStopButton;
 
 /**
  * @author Simon Denier
@@ -23,60 +21,53 @@ import valmo.geco.ui.StartStopButton;
  */
 public class LiveServer extends Control {
 
-	private ServerSocket serverSocket;
 	private Socket clientSocket;
-	private Thread serverThread;
-	private StartStopButton listenB;
+	private Thread liveThread;
 
-	public LiveServer(GecoControl gecoControl, int port, StartStopButton listenB) throws IOException {
+	public LiveServer(GecoControl gecoControl, Socket clientSocket) throws IOException {
 		super(gecoControl);
-        serverSocket = new ServerSocket(port);
-        this.listenB = listenB;
+		this.clientSocket = clientSocket;
 	}
 	
-	public LiveServer accept() {
-		serverThread = new Thread() {
+	public LiveServer start(final LiveServerMulti serverMulti) {
+		liveThread = new Thread() {
 			public void run() {
 				System.out.println("start");
-				BufferedReader clientInput;
-//				PrintWriter clientOutput;
 				try {
-					clientSocket = serverSocket.accept();
-			        clientInput = new BufferedReader(
-							new InputStreamReader(
-							clientSocket.getInputStream()));
-//			        clientOutput = new PrintWriter(clientSocket.getOutputStream(), true);
-
+					BufferedReader clientInput = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			        String inputLine = null;
+			        
 			        while (!isInterrupted() && (inputLine = clientInput.readLine()) != null) {
 			        	processData(inputLine);
 			        	if( inputLine.equals("Bye") ) {
-			        		JOptionPane.showMessageDialog(null, "Client has terminated the connection", "No live data", JOptionPane.INFORMATION_MESSAGE);
+			        		JOptionPane.showMessageDialog(null, "Client has terminated the connection", "No live connection", JOptionPane.INFORMATION_MESSAGE);
 			        		break;
 			        	}
 			        }
 			        if( inputLine==null ) {
-			        	JOptionPane.showMessageDialog(null, "No data from client", "Live connection lost", JOptionPane.WARNING_MESSAGE);
+			        	JOptionPane.showMessageDialog(null, "Connection with client lost", "No live connection", JOptionPane.WARNING_MESSAGE);
 			        }
-//				} catch (InterruptedException e) {
-//					clientOutput.println("Bye");
-			        
-//			        clientOutput.close();
-			        clientInput.close();
-			        clientSocket.close();
-			        serverSocket.close();
+			        close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					System.out.println("XXX");
-					e.printStackTrace();
+					System.out.println("Live thread stopped");
 				}
-				listenB.doOffAction();
+				serverMulti.terminated(LiveServer.this);
 				System.out.println("done");
 			}
 		};
 		
-		serverThread.start();
+		liveThread.start();
 		return this;
+	}
+	
+	private void close() {
+        try {
+        	System.out.print("closing");
+			clientSocket.close();
+			System.out.println(" - closed");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	protected String processData(String inputLine) {
@@ -84,18 +75,9 @@ public class LiveServer extends Control {
 		return null;
 	}
 	
-	public boolean isAlive() {
-		return serverThread.isAlive();
-	}
-	
 	public void stop() {
-		serverThread.interrupt();
-//		try {
-//			serverSocket.close();
-//		} catch (IOException e) {
-//			System.out.println("coucou");
-//			e.printStackTrace();
-//		}
+		liveThread.interrupt();
+		close();
 	}
 	
 }

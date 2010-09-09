@@ -20,7 +20,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import valmo.geco.ui.StartStopButton;
 import valmo.geco.ui.SwingUtils;
 
 /**
@@ -32,10 +31,10 @@ public class LiveClientDialog extends JDialog {
 	
 	private JTextField nameF;
 	private JFormattedTextField portF;
-	
-	private LiveClient liveClient;
 
-	public LiveClientDialog(JFrame frame, final StartStopButton serverB) {
+	private boolean started;
+
+	public LiveClientDialog(JFrame frame, final LiveClient liveClient) { //, final StartStopButton serverB) {
 		super(frame, "Connection to Live Server", true);
 		setLocationRelativeTo(frame);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -63,8 +62,9 @@ public class LiveClientDialog extends JDialog {
 		startB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					liveClient = new LiveClient(nameF.getText(), Integer.parseInt(portF.getText()), serverB);
+					liveClient.setupNetworkParameters(nameF.getText(), Integer.parseInt(portF.getText()));
 					liveClient.start();
+					started = true;
 					setVisible(false);
 				} catch (NumberFormatException e1) {
 					JOptionPane.showMessageDialog(LiveClientDialog.this, e1.getLocalizedMessage(), "Bad port number", JOptionPane.WARNING_MESSAGE);
@@ -79,7 +79,7 @@ public class LiveClientDialog extends JDialog {
 		JButton cancelB = new JButton("Cancel");
 		cancelB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				liveClient = null;
+				started = false;
 				setVisible(false);
 			}
 		});
@@ -87,9 +87,9 @@ public class LiveClientDialog extends JDialog {
 		pack();
 	}
 	
-	public LiveClient open() {
+	public boolean open() {
 		setVisible(true);
-		return liveClient;
+		return started;
 	}
 	
 }
