@@ -141,12 +141,14 @@ public class SIReaderHandler extends Control
 			if( runnerData.hasResult() ) {
 				geco().log("READING AGAIN " + card.getSiIdent());
 				requestHandler.requestMergeExistingRunner(handleNewData(card), runner);
+				geco().announcer().announceCardReadAgain(runnerData.getRunner().getChipnumber());
 			} else {
 				handleData(runnerData, card);	
 			}
 		} else {
 			geco().log("READING UNKNOWN " + card.getSiIdent());
 			requestHandler.requestMergeUnknownRunner(handleNewData(card), card.getSiIdent());
+			geco().announcer().announceUnknownCardRead(card.getSiIdent());
 		}
 		
 	}

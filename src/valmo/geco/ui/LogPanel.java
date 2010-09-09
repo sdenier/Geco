@@ -23,14 +23,14 @@ import javax.swing.SpinnerNumberModel;
 
 import valmo.geco.Geco;
 import valmo.geco.control.Generator;
-import valmo.geco.core.Announcer.Logger;
+import valmo.geco.core.Announcer.Logging;
 
 /**
  * @author Simon Denier
  * @since Sep 13, 2009
  *
  */
-public class LogPanel extends TabPanel implements Logger {
+public class LogPanel extends TabPanel implements Logging {
 
 	private JTextArea logArea;
 	

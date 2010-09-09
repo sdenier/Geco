@@ -19,7 +19,7 @@ import valmo.geco.model.Status;
  */
 public class Announcer {
 	
-	public interface Logger {
+	public interface Logging {
 		
 		public void log(String message, boolean warning);
 		
@@ -67,13 +67,6 @@ public class Announcer {
 	public interface RunnerListener {
 		
 		/**
-		 * Signal a card has been read by the handler.
-		 * 
-		 * @param chip
-		 */
-		public void cardRead(String chip);
-		
-		/**
 		 * Signal creation of a new runner in registry.
 		 * 
 		 * @param runner
@@ -107,8 +100,34 @@ public class Announcer {
 		 */
 		public void runnersChanged();
 	}
+	
+	public interface CardListener {
+		
+		/**
+		 * Signal a card has been read by the handler.
+		 * 
+		 * @param chip
+		 */
+		public void cardRead(String chip);
 
-	private Vector<Logger> loggers;
+		
+		/**
+		 * Signal a card with an unregistered number has been read by the handler.
+		 * 
+		 * @param chip
+		 */
+		public void unknownCardRead(String chip);
+
+		/**
+		 * Signal a card with existing data in registry has been read again by the handler.
+		 * 
+		 * @param chip
+		 */
+		public void cardReadAgain(String chip);
+		
+	}
+
+	private Vector<Logging> loggers;
 	
 	private Vector<StageListener> stageListeners;
 	
@@ -116,14 +135,17 @@ public class Announcer {
 	
 	private Vector<RunnerListener> runnerListeners;
 	
+	private Vector<CardListener> cardListeners;
+	
 	public Announcer() {
-		this.loggers = new Vector<Logger>();
+		this.loggers = new Vector<Logging>();
 		this.stageListeners = new Vector<StageListener>();
 		this.stageConfigListeners = new Vector<StageConfigListener>();
 		this.runnerListeners = new Vector<RunnerListener>();
+		this.cardListeners = new Vector<CardListener>();
 	}
 	
-	public void registerLogger(Logger logger) {
+	public void registerLogger(Logging logger) {
 		this.loggers.add(logger);
 	}
 	
@@ -139,23 +161,32 @@ public class Announcer {
 		this.runnerListeners.add(listener);
 	}
 	
+	public void registerCardListener(CardListener listener) {
+		this.cardListeners.add(listener);
+	}
+
+	public void unregisterCardListener(CardListener listener) {
+		this.cardListeners.remove(listener);
+	}
+
+	
 	/*
 	 * Log
 	 */
 	public void log(String message, boolean warning) {
-		for (Logger logger : this.loggers) {
+		for (Logging logger : this.loggers) {
 			logger.log(message, warning);
 		}
 	}
 	
 	public void info(String message, boolean warning) {
-		for (Logger logger : this.loggers) {
+		for (Logging logger : this.loggers) {
 			logger.info(message, warning);
 		}
 	}
 	
 	public void dataInfo(String data) {
-		for (Logger logger : this.loggers) {
+		for (Logging logger : this.loggers) {
 			logger.dataInfo(data);
 		}
 	}
@@ -205,12 +236,6 @@ public class Announcer {
 	/*
 	 * Runner annoucements
 	 */
-	public void announceCardRead(String chip) {
-		for (RunnerListener listener : this.runnerListeners) {
-			listener.cardRead(chip);
-		}
-	}
-	
 	public void announceRunnerCreation(RunnerRaceData runner) {
 		for (RunnerListener listener : this.runnerListeners) {
 			listener.runnerCreated(runner);
@@ -238,6 +263,27 @@ public class Announcer {
 	public void announceRunnersChange() {
 		for (RunnerListener listener : this.runnerListeners) {
 			listener.runnersChanged();
+		}
+	}
+	
+	/*
+	 * Card announcements
+	 */
+	public void announceCardRead(String chip) {
+		for (CardListener listener : this.cardListeners) {
+			listener.cardRead(chip);
+		}
+	}
+
+	public void announceUnknownCardRead(String chip) {
+		for (CardListener listener : this.cardListeners) {
+			listener.unknownCardRead(chip);
+		}
+	}
+
+	public void announceCardReadAgain(String chip) {
+		for (CardListener listener : this.cardListeners) {
+			listener.cardReadAgain(chip);
 		}
 	}
 

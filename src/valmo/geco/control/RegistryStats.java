@@ -235,9 +235,6 @@ public class RegistryStats extends Control
 	}
 
 	@Override
-	public void cardRead(String chip) {}
-
-	@Override
 	public void categoriesChanged() {}
 
 	@Override

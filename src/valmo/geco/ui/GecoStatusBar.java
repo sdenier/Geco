@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import valmo.geco.Geco;
-import valmo.geco.core.Announcer.Logger;
+import valmo.geco.core.Announcer.Logging;
 import valmo.geco.core.Html;
 
 /**
@@ -21,7 +21,7 @@ import valmo.geco.core.Html;
  * @since Jun 2, 2010
  *
  */
-public class GecoStatusBar extends GecoPanel implements Logger {
+public class GecoStatusBar extends GecoPanel implements Logging {
 	
 	JLabel status;
 	

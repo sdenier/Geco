@@ -49,7 +49,7 @@ import valmo.geco.model.Status;
  *
  */
 public class RunnersPanel extends TabPanel
-		implements Announcer.RunnerListener, Announcer.StageConfigListener {
+		implements Announcer.RunnerListener, Announcer.StageConfigListener, Announcer.CardListener {
 	
 	private JTable table;
 	private RunnersTableModel tableModel;
@@ -369,18 +369,6 @@ public class RunnersPanel extends TabPanel
 	}
 
 	@Override
-	public void cardRead(String chip) {
-//		refresh made through statusChanged announcement
-//		refreshTableRunner(registry().findRunnerData(chip));
-		if( liveModeOn() ) {
-			RunnerRaceData data = registry().findRunnerData(chip);
-			tableModel.removeData(data);
-			tableModel.addDataFirst(data);
-			focusTableOnIndex(0);
-		}
-	}
-
-	@Override
 	public void runnersChanged() {
 		refreshRunnersPanel();		
 	}
@@ -397,5 +385,24 @@ public class RunnersPanel extends TabPanel
 	public void clubsChanged() {
 		refreshComboBoxes();
 	}
+
+
+	@Override
+	public void cardRead(String chip) {
+//		refresh made through statusChanged announcement
+//		refreshTableRunner(registry().findRunnerData(chip));
+		if( liveModeOn() ) {
+			RunnerRaceData data = registry().findRunnerData(chip);
+			tableModel.removeData(data);
+			tableModel.addDataFirst(data);
+			focusTableOnIndex(0);
+		}
+	}
+
+	@Override
+	public void unknownCardRead(String chip) {}
+
+	@Override
+	public void cardReadAgain(String chip) {}
 	
 }
