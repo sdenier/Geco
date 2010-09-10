@@ -14,6 +14,10 @@ import javax.swing.JOptionPane;
 
 import valmo.geco.Geco;
 import valmo.geco.core.Announcer;
+import valmo.geco.core.Util;
+import valmo.geco.model.Runner;
+import valmo.geco.model.RunnerRaceData;
+import valmo.geco.model.RunnerResult;
 import valmo.geco.ui.StartStopButton;
 
 /**
@@ -96,21 +100,46 @@ public class LiveClient implements Announcer.CardListener {
 	public void stop() {
 		thread.interrupt();
 	}
-
-	@Override
-	public void cardRead(String chip) {
-		addMessage(geco.registry().findRunnerData(chip).infoString());
-		addMessage(geco.registry().findRunnerData(chip).getResult().formatTrace());
+	
+	public String formatDataForSending(RunnerRaceData data) {
+		Runner runner = data.getRunner();
+		RunnerResult result = data.getResult();
+		return Util.join(new String[]{
+			runner.getChipnumber(),
+			Integer.toString(runner.getStartnumber()),
+			runner.getLastname(),
+			runner.getFirstname(),
+			runner.getCategory().getName(),
+			runner.getClub().getName(),
+			runner.getCourse().getName(),
+			result.getStatus().toString(),
+			Long.toString(result.getRacetime()),
+			Integer.toString(result.getNbMPs()),
+			Long.toString(result.getTimePenalty()),
+			result.formatTrace()
+		}, ",", new StringBuffer());
 	}
 
 	@Override
-	public void unknownCardRead(String chip) {
-		addMessage(chip);
+	public void cardRead(String chip) {
+		addMessage(formatDataForSending(geco.registry().findRunnerData(chip)));
+	}
+
+	@Override
+	public void unknownCardRead(String chip) { 
+		RunnerRaceData data = geco.registry().findRunnerData(chip);
+		if( data!=null ) {
+			addMessage(formatDataForSending(data));
+		}
 	}
 
 	@Override
 	public void cardReadAgain(String chip) {
-		addMessage("Again " + chip);
+		// H: card overwriting. Could use read time to take the last runner updated
+		RunnerRaceData data = geco.registry().findRunnerData(chip);
+		if( data!=null ) {
+			addMessage(formatDataForSending(data));
+		}
 	}
 	
 }

@@ -5,31 +5,20 @@
 package valmo.geco.live;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Container;
-import java.awt.GridLayout;
-import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Vector;
 
-import javax.swing.BorderFactory;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.SwingConstants;
 
 import valmo.geco.model.Course;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.impl.POFactory;
 import valmo.geco.model.xml.CourseSaxImporter;
-import valmo.geco.ui.StartStopButton;
 import valmo.geco.ui.SwingUtils;
 
 /**
@@ -43,12 +32,9 @@ public class LiveComponent {
 	public LiveMapComponent map;
 	public RunnerResultPanel runnerP;
 
-	private LiveMapControl liveControl;
-
+	private LiveMapControl mapControl;
 	private Map<String, Float[]> controlPos;
 	private Collection<Course> courses;
-	private JFormattedTextField portF;
-	private StartStopButton listenB;
 
 
 	public static void main(String[] args) {
@@ -63,7 +49,7 @@ public class LiveComponent {
 	public LiveComponent() {
 		controlPos = Collections.emptyMap();
 		courses = Collections.emptyList();
-		liveControl = new LiveMapControl();
+		mapControl = new LiveMapControl();
 	}
 
 	public LiveComponent initWindow() {
@@ -93,52 +79,11 @@ public class LiveComponent {
 		JTabbedPane controlPanel = new JTabbedPane();
 		runnerP = new RunnerResultPanel();
 		controlPanel.add("Config", SwingUtils.embed(new LiveConfigPanel(jFrame, this)));
-		controlPanel.add("Live", initLivePanel());
+		controlPanel.add("Runner", runnerP);
+//		controlPanel.add("Runner", SwingUtils.embed(runnerP));
 		return controlPanel;
 	}
 	
-	private Component initLivePanel() {
-		DecimalFormat format = new DecimalFormat();
-		format.setGroupingUsed(false);
-		portF = new JFormattedTextField(format);
-		portF.setText("4444");
-		portF.setColumns(5);
-		listenB = new StartStopButton() {
-			private Color defaultColor;
-			LiveServerMulti server;
-			@Override
-			public void actionOn() {
-				try {
-					// TODO gecoControl parameter
-					server = new LiveServerMulti(null, Integer.parseInt(portF.getText())).accept();
-					defaultColor = listenB.getBackground();
-					listenB.setBackground(Color.GREEN);
-				} catch (NumberFormatException e1) {
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}				
-			}
-			@Override
-			public void actionOff() {
-				server.stop();
-				listenB.setBackground(defaultColor);
-			}
-		};
-		listenB.setText("Listen");
-
-		JPanel networkConfigP = new JPanel(new GridLayout(0, 3));
-		networkConfigP.setBorder(BorderFactory.createTitledBorder("Start Live Server"));
-		networkConfigP.add(SwingUtils.embed(listenB));
-		networkConfigP.add(new JLabel("Port:", SwingConstants.RIGHT));
-		networkConfigP.add(SwingUtils.embed(portF));
-
-		JPanel livePanel = new JPanel(new BorderLayout());
-		livePanel.add(SwingUtils.embed(runnerP), BorderLayout.NORTH);
-		livePanel.add(networkConfigP, BorderLayout.SOUTH);
-		return livePanel;
-	}
-
 	public void loadMapImage(String mapfile) {
 		map.loadMapImage(mapfile);
 	}
@@ -157,10 +102,10 @@ public class LiveComponent {
 	}
 
 	public void createCourses(float xFactor, float yFactor, int dx, int dy) {
-		liveControl.setXFactor(xFactor);
-		liveControl.setYFactor(yFactor);
-		liveControl.createControlsFrom(controlPos, dx, dy);
-		liveControl.createCoursesFrom(courses);
+		mapControl.setXFactor(xFactor);
+		mapControl.setYFactor(yFactor);
+		mapControl.createControlsFrom(controlPos, dx, dy);
+		mapControl.createCoursesFrom(courses);
 	}
 	
 	public Vector<String> coursenames() {
@@ -176,14 +121,14 @@ public class LiveComponent {
 	}
 	
 	public void displayAllControls() {
-		liveControl.resetControls();
-		map.showControls(liveControl.allControls());
+		mapControl.resetControls();
+		map.showControls(mapControl.allControls());
 	}
 	
 	public void displayCourse(String coursename) {
-		LivePunch course = liveControl.startPunchForCourse(coursename);
+		LivePunch course = mapControl.startPunchForCourse(coursename);
 		if( course!=null ) {
-			liveControl.resetControls();
+			mapControl.resetControls();
 			map.showTrace(course);
 		}
 	}
@@ -196,11 +141,11 @@ public class LiveComponent {
 	}
 
 	private void displayTraceFor(RunnerRaceData runnerData) {
-		LivePunch course = liveControl.startPunchForCourse(runnerData.getCourse().getName());
+		LivePunch course = mapControl.startPunchForCourse(runnerData.getCourse().getName());
 		if( course!=null ) {
-			liveControl.resetControls();
+			mapControl.resetControls();
 			if( runnerData.hasTrace() ) {
-				map.showTrace( liveControl.createPunchTraceFor(course, runnerData.getResult().formatTrace().split(",")) );
+				map.showTrace( mapControl.createPunchTraceFor(course, runnerData.getResult().formatTrace().split(",")) );
 			} else {
 				map.showTrace(course);
 			}

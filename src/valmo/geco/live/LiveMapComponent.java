@@ -32,7 +32,7 @@ public class LiveMapComponent extends Component {
 	private LivePunch startPunch;
 	
 	public LiveMapComponent() {
-		mapImage = new BufferedImage(500, 500, BufferedImage.TYPE_3BYTE_BGR);
+		mapImage = new BufferedImage(550, 550, BufferedImage.TYPE_3BYTE_BGR);
 	}
 	
 	public void loadMapImage(String filename) {

@@ -54,9 +54,6 @@ public class LiveConfigPanel extends JPanel {
 	private JButton showMapB;
 	private JComboBox showCourseCB;
 	
-//	private JTextField portF;
-//	private JButton listenB;
-
 
 	public LiveConfigPanel(JFrame frame, LiveComponent liveComp) {
 		this(frame, liveComp, false);
@@ -96,15 +93,6 @@ public class LiveConfigPanel extends JPanel {
 		showControlsB = new JButton("Show controls");
 		showMapB = new JButton("Show map");
 		showCourseCB = new JComboBox();
-		// network config
-//		if( withLiveNetwork ) {
-//			DecimalFormat format = new DecimalFormat();
-//			format.setGroupingUsed(false);
-//			portF = new JFormattedTextField(format);
-//			portF.setText("4444");
-//			portF.setColumns(5);
-//			listenB = new JButton("Listen");
-//		}
 	}
 	
 	private void initListeners() {
@@ -168,31 +156,6 @@ public class LiveConfigPanel extends JPanel {
 				liveComponent.displayCourse((String) showCourseCB.getSelectedItem());
 			}
 		});
-//		if( listenB!=null ) { // live network enabled
-//			listenB.addActionListener(new ActionListener() {
-//				private Color defaultColor;
-//				LiveServer server;
-//				public void actionPerformed(ActionEvent e) {
-//					if( listenB.isSelected() ) {
-//						listenB.setSelected(false);
-//						listenB.setBackground(defaultColor);
-//						server.interrupt();
-//					} else {
-//						try {
-//							// TODO gecoControl parameter
-//							server = new LiveServer(null, Integer.parseInt(portF.getText())).accept();
-//							listenB.setSelected(true);
-//							defaultColor = listenB.getBackground();
-//							listenB.setBackground(Color.GREEN);
-//						} catch (NumberFormatException e1) {
-//							e1.printStackTrace();
-//						} catch (IOException e1) {
-//							e1.printStackTrace();
-//						}
-//					}
-//				}
-//			});
-//		}
 	}
 	
 	private void refreshCourses() {
@@ -238,14 +201,6 @@ public class LiveConfigPanel extends JPanel {
 		add(mapConfigP);
 		add(courseConfigP);
 		
-//		if( listenB!=null ) { // live network enabled
-//			JPanel networkConfigP = new JPanel(new GridLayout(0, 3));
-//			networkConfigP.setBorder(BorderFactory.createTitledBorder("4. Setup Live Server"));
-//			addComponent(networkConfigP, listenB);
-//			addComponent(networkConfigP, new JLabel("Port:"));
-//			addComponent(networkConfigP, portF);
-//			add(networkConfigP);
-//		}
 		return this;
 	}
 	

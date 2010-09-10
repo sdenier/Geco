@@ -4,7 +4,12 @@
  */
 package valmo.geco.live;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.FlowLayout;
+import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -12,7 +17,9 @@ import java.util.Vector;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -29,19 +36,23 @@ import valmo.geco.core.TimeManager;
 import valmo.geco.model.Registry;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.ui.GecoLauncher;
+import valmo.geco.ui.StartStopButton;
 
 /**
  * @author Simon Denier
  * @since Aug 26, 2010
  *
  */
-public class GecoLive {
+public class GecoLive implements LiveListener {
 
 	private GecoControl gecoControl;
-
+	private ExtendedRunnersTableModel tableModel;
 	private JTable runnersTable;
+
 	private LiveComponent liveComponent;
-	
+	private JFormattedTextField portF;
+	private StartStopButton listenB;
+
 	
 	public static void main(String[] args) {
 		GecoLive gecoLive = new GecoLive();
@@ -52,8 +63,7 @@ public class GecoLive {
 	public GecoLive() {
 		String startDir = null;
 		try {
-//			startDir = launcher();
-			startDir = "demo/hellemmes";
+			startDir = launcher();
 		} catch (Exception e) {
 			System.out.println(e.getLocalizedMessage());
 			System.exit(0);
@@ -91,7 +101,7 @@ public class GecoLive {
 //	}
 
 	private Component initRunnersTable() {
-		ExtendedRunnersTableModel tableModel = new ExtendedRunnersTableModel();
+		tableModel = new ExtendedRunnersTableModel();
 		runnersTable = new JTable(tableModel);
 //		table.setPreferredScrollableViewportSize(new Dimension(800, 300));
 		tableModel.initCellRenderers(runnersTable);
@@ -106,7 +116,7 @@ public class GecoLive {
 				}
 			}
 		});
-		tableModel.setData(new Vector<RunnerRaceData>(registry().getRunnersData()));
+		refreshTable();
 		
 		JPanel row = new JPanel();
 		row.setLayout(new BoxLayout(row, BoxLayout.LINE_AXIS));
@@ -114,7 +124,54 @@ public class GecoLive {
 		row.add(new JScrollPane(runnersTable));
 		row.add(Box.createHorizontalStrut(100));
 		
-		return new JScrollPane(runnersTable);
+		JScrollPane scrollPane = new JScrollPane(runnersTable);
+		
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.add(scrollPane, BorderLayout.CENTER);
+		panel.add(initNetworkPanel(), BorderLayout.SOUTH);
+		return panel;
+	}
+
+	private void refreshTable() {
+		tableModel.setData(new Vector<RunnerRaceData>(registry().getRunnersData()));
+	}
+	
+	private Component initNetworkPanel() {
+		DecimalFormat format = new DecimalFormat();
+		format.setGroupingUsed(false);
+		portF = new JFormattedTextField(format);
+		portF.setText("4444");
+		portF.setColumns(5);
+		listenB = new StartStopButton() {
+			private Color defaultColor;
+			LiveServerMulti server;
+			@Override
+			public void actionOn() {
+				try {
+					server = new LiveServerMulti(gecoControl, Integer.parseInt(portF.getText())).accept();
+					server.registerListener(GecoLive.this);
+					defaultColor = listenB.getBackground();
+					listenB.setBackground(Color.GREEN);
+				} catch (NumberFormatException e1) {
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}				
+			}
+			@Override
+			public void actionOff() {
+				server.stop();
+				listenB.setBackground(defaultColor);
+			}
+		};
+		listenB.setText("Listen");
+
+		JPanel networkConfigP = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		networkConfigP.add(listenB);
+		networkConfigP.add(Box.createHorizontalStrut(20));
+		networkConfigP.add(new JLabel("Port:"));
+		networkConfigP.add(portF);
+		return networkConfigP;
 	}
 
 	private void enableRowSorting(ExtendedRunnersTableModel tableModel) {
@@ -175,6 +232,24 @@ public class GecoLive {
 			chip = (String) runnersTable.getValueAt(selectedRow, 1);
 		}
 		return chip;
+	}
+
+	@Override
+	public void dataReceived(RunnerRaceData data) {
+		int index = tableModel.getData().indexOf(data);
+		if( index!=-1 ) {
+			int newIndex = runnersTable.convertRowIndexToView(index);
+			runnersTable.getSelectionModel().setSelectionInterval(newIndex, newIndex);
+			runnersTable.scrollRectToVisible(runnersTable.getCellRect(newIndex, 0, true));
+		} else {
+			// TODO: temp check
+			System.err.println("Unregistered data? " + data.infoString());
+		}
+	}
+
+	@Override
+	public void newDataIncoming() {
+		refreshTable();
 	}
 
 }

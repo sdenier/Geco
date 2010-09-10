@@ -9,6 +9,7 @@ import java.net.ServerSocket;
 import java.util.Vector;
 
 import valmo.geco.control.GecoControl;
+import valmo.geco.model.RunnerRaceData;
 
 /**
  * @author Simon Denier
@@ -17,14 +18,18 @@ import valmo.geco.control.GecoControl;
  */
 public class LiveServerMulti {
 
+	private GecoControl gecoControl;
 	private ServerSocket serverSocket;
 	private Thread serverThread;
 
 	private Vector<LiveServer> liveThreads;
+	private Vector<LiveListener> listeners;
 
 	public LiveServerMulti(GecoControl gecoControl, int port) throws IOException {
+		this.gecoControl = gecoControl;
         serverSocket = new ServerSocket(port);
         liveThreads = new Vector<LiveServer>();
+        listeners = new Vector<LiveListener>();
 	}
 	
 	public LiveServerMulti accept() {
@@ -33,7 +38,7 @@ public class LiveServerMulti {
 				System.out.println("listening");
 				try {
 					while( !isInterrupted() ) {
-						liveThreads.add(new LiveServer(null, serverSocket.accept()).start(LiveServerMulti.this));
+						liveThreads.add(new LiveServer(gecoControl, serverSocket.accept(), LiveServerMulti.this).start());
 					}
 				} catch (IOException e) {}
 				System.out.println("not listening");
@@ -58,9 +63,27 @@ public class LiveServerMulti {
 	}
 
 	private void stopAll() {
-		for (LiveServer live : liveThreads) {
+		@SuppressWarnings("unchecked")
+		Vector<LiveServer> copy = (Vector<LiveServer>) liveThreads.clone(); // avoid concurrent modif
+		for (LiveServer live : copy) {
 			live.stop();
 		}
+	}
+
+	public void registerListener(LiveListener listener) {
+		listeners.add(listener);
+	}
+	
+	public void announceData(RunnerRaceData raceData) {
+		for (LiveListener listener : listeners) {
+			listener.dataReceived(raceData);
+		}
+	}
+
+	public void announceNewData() {
+		for (LiveListener listener : listeners) {
+			listener.newDataIncoming();
+		}		
 	}
 	
 }
