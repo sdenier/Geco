@@ -49,6 +49,10 @@ public class MergeRunnerDialog extends JDialog {
 	private Runner existingRunner;
 	private Runner mockRunner;
 	private String chipNumber;
+	/**
+	 * Chipnumber identifying the runner which actually got changed, or null if data was discarded
+	 */
+	private String returnChip;
 	
 	private JLabel chipL;
 	private JLabel punchesL;
@@ -195,21 +199,23 @@ public class MergeRunnerDialog extends JDialog {
 	}
 
 	
-	public void showMergeDialogFor(RunnerRaceData data, String chip) {
+	public String showMergeDialogFor(RunnerRaceData data, String chip) {
 		showDialogFor(data, chip);
 		runnersCB.setSelectedIndex(-1);
 		showMergeInfo();
 		pack();
 		setVisible(true);
+		return returnChip;
 	}
 	
-	public void showOverwriteDialogFor(RunnerRaceData data, Runner target) {
+	public String showOverwriteDialogFor(RunnerRaceData data, Runner target) {
 		showDialogFor(data, target.getChipnumber());
 		courseCB.setSelectedItem(target.getCourse().getName());
 		runnersCB.setSelectedItem(target);
 		showOverwriteInfo();
 		pack();
 		setVisible(true);
+		return returnChip;
 	}
 
 	
@@ -266,12 +272,14 @@ public class MergeRunnerDialog extends JDialog {
 				// do not run checker as it should have been run
 				runnerControl().registerRunner(newRunner, runnerData);
 				geco.log("Creation " + runnerData.infoString());
+				returnChip = uniqueChipnumber;
 				setVisible(false);
 			}
 		});
 		closeB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				returnChip = null;
 				// do nothing, just close the dialog to lose the ref
 				setVisible(false);
 			}
@@ -307,6 +315,7 @@ public class MergeRunnerDialog extends JDialog {
 					}
 				}
 				geco.log("Merge " + getRunnerData(getTargetRunner()).infoString());
+				returnChip = getTargetRunner().getChipnumber();
 				setVisible(false);
 			}
 		});

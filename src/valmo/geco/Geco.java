@@ -284,13 +284,13 @@ public class Geco implements GecoRequestHandler {
 	}
 
 	@Override
-	public void requestMergeUnknownRunner(RunnerRaceData data, String chip) {
-		new MergeRunnerDialog(this, window, "Unknown Chip").showMergeDialogFor(data, chip);		
+	public String requestMergeUnknownRunner(RunnerRaceData data, String chip) {
+		return new MergeRunnerDialog(this, window, "Unknown Chip").showMergeDialogFor(data, chip);		
 	}
 
 	@Override
-	public void requestMergeExistingRunner(RunnerRaceData data,	Runner target) {
-		new MergeRunnerDialog(this, window, "Existing Data for Runner").showOverwriteDialogFor(data, target);
+	public String requestMergeExistingRunner(RunnerRaceData data,	Runner target) {
+		return new MergeRunnerDialog(this, window, "Existing Data for Runner").showOverwriteDialogFor(data, target);
 	}
 	
 }

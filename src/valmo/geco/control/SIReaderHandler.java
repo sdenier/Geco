@@ -140,15 +140,19 @@ public class SIReaderHandler extends Control
 			RunnerRaceData runnerData = registry().findRunnerData(runner);
 			if( runnerData.hasResult() ) {
 				geco().log("READING AGAIN " + card.getSiIdent());
-				requestHandler.requestMergeExistingRunner(handleNewData(card), runner);
-				geco().announcer().announceCardReadAgain(runnerData.getRunner().getChipnumber());
+				String returnedCard = requestHandler.requestMergeExistingRunner(handleNewData(card), runner);
+				if( returnedCard!=null ) {
+					geco().announcer().announceCardReadAgain(returnedCard);
+				}
 			} else {
 				handleData(runnerData, card);	
 			}
 		} else {
 			geco().log("READING UNKNOWN " + card.getSiIdent());
-			requestHandler.requestMergeUnknownRunner(handleNewData(card), card.getSiIdent());
-			geco().announcer().announceUnknownCardRead(card.getSiIdent());
+			String returnedCard = requestHandler.requestMergeUnknownRunner(handleNewData(card), card.getSiIdent());
+			if( returnedCard!=null ) {
+				geco().announcer().announceUnknownCardRead(returnedCard);
+			}
 		}
 		
 	}

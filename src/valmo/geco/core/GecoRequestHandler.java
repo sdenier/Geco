@@ -14,8 +14,8 @@ import valmo.geco.model.RunnerRaceData;
  */
 public interface GecoRequestHandler {
 
-	public void requestMergeUnknownRunner(RunnerRaceData data, String chip);
+	public String requestMergeUnknownRunner(RunnerRaceData data, String chip);
 	
-	public void requestMergeExistingRunner(RunnerRaceData data, Runner target);
+	public String requestMergeExistingRunner(RunnerRaceData data, Runner target);
 	
 }

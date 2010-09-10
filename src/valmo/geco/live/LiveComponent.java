@@ -51,6 +51,8 @@ public class LiveComponent {
 		courses = Collections.emptyList();
 		mapControl = new LiveMapControl();
 	}
+	
+	// TODO: test for live.prop file and use it
 
 	public LiveComponent initWindow() {
 		jFrame = new JFrame();
