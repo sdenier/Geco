@@ -81,7 +81,7 @@ public class RunnerControl extends Control {
 		announcer().announceRunnerCreation(registerRunnerDataFor(runner, runnerData));
 		return runnerData;
 	}
-	private RunnerRaceData registerRunnerDataFor(Runner runner, RunnerRaceData runnerData) {
+	public RunnerRaceData registerRunnerDataFor(Runner runner, RunnerRaceData runnerData) {
 		return builder.registerRunnerDataFor(registry(), runner, runnerData);
 	}
 	

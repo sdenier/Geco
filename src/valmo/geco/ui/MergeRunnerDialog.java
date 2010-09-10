@@ -187,6 +187,8 @@ public class MergeRunnerDialog extends JDialog {
 			// initialize mock object with minimal props for the checker
 			mockRunner.setCourse(this.existingRunner.getCourse());
 			courseCB.setSelectedItem(data.getCourse().getName());
+		} else {
+			courseCB.setSelectedItem("[Unknown]");
 		}
 
 		showCardData(chip, data);
@@ -294,8 +296,10 @@ public class MergeRunnerDialog extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// for simplicity, do not update course here
-				// can still be done outside
+				// can still be done outside 
+				// TODO: well, potential for unpleasant display with MPs while it should not
 				runnerControl().updateRunnerDataFor(getTargetRunner(), runnerData);
+//				runnerControl().validateCourse(runnerData, getSelectedCoursename());
 				if( existingRunner != null ) {// offer to delete previous runner if applicable
 					int confirm = JOptionPane.showConfirmDialog(MergeRunnerDialog.this,
 																"Confirm deletion of " + existingRunner.idString(),

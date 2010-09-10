@@ -94,7 +94,10 @@ public class RunnerResultImpl implements RunnerResult {
 		this.trace = trace;
 	}
 	public String formatTrace() {
-		return Util.join(trace, ",", new StringBuffer());
+		if( trace.length>0 )
+			return Util.join(trace, ",", new StringBuffer());
+		else
+			return "";
 	}
 	
 	
