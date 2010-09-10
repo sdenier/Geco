@@ -99,7 +99,7 @@ public class LiveServer extends Control {
 		// chip, start, last, first, cat, club, course, status, racetime, mps, penalties, trace...
 		Runner runner = registry().findRunnerByChip(data[0]);
 		if( runner==null || Integer.parseInt(data[1])!=runner.getStartnumber() ) {
-			System.err.println("creation " + data[1]);
+			System.err.println("creation " + data[0]);
 			runner = runnerControl.createAnonymousRunner(registry().findCourse(data[6]));
 			runnerControl.validateChipnumber(runner, data[0]);
 			runnerControl.validateStartnumber(runner, data[1]);

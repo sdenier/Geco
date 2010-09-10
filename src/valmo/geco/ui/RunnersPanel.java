@@ -342,14 +342,7 @@ public class RunnersPanel extends TabPanel
 
 	@Override
 	public void courseChanged(Runner runner, Course oldCourse) {
-		// NOTE: for now, only RunnerPanel can change a runner's course and
-		// produce events. We dont need to deal with this kind of event here
-		// since it has already been taken care of.
-//		int index = tableModel.getData().indexOf(registry().findRunnerData(runner));
-//		tableModel.fireTableRowsUpdated(index, index);
-//		if( table.convertRowIndexToView(index) == table.getSelectedRow() ) {
-//			updateRunnerPanel();	
-//		}
+		refreshTableRunner(registry().findRunnerData(runner));
 	}
 
 	@Override

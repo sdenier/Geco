@@ -91,11 +91,12 @@ public class RunnerControl extends Control {
 		announcer().announceRunnerDeletion(data);
 	}
 	
-	public void updateRunnerDataFor(Runner runner, RunnerRaceData newData) {
+	public RunnerRaceData updateRunnerDataFor(Runner runner, RunnerRaceData newData) {
 		RunnerRaceData runnerData = registry().findRunnerData(runner);
 		Status oldStatus = runnerData.getResult().getStatus();
 		runnerData.copyFrom(newData);
 		announcer().announceStatusChange(runnerData, oldStatus);
+		return runnerData;
 	}
 	
 	

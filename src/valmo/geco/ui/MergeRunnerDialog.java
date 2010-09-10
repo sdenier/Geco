@@ -295,11 +295,8 @@ public class MergeRunnerDialog extends JDialog {
 		mergeB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// for simplicity, do not update course here
-				// can still be done outside 
-				// TODO: well, potential for unpleasant display with MPs while it should not
-				runnerControl().updateRunnerDataFor(getTargetRunner(), runnerData);
-//				runnerControl().validateCourse(runnerData, getSelectedCoursename());
+				RunnerRaceData updatedData = runnerControl().updateRunnerDataFor(getTargetRunner(), runnerData);
+				runnerControl().validateCourse(updatedData, getSelectedCoursename());
 				if( existingRunner != null ) {// offer to delete previous runner if applicable
 					int confirm = JOptionPane.showConfirmDialog(MergeRunnerDialog.this,
 																"Confirm deletion of " + existingRunner.idString(),
