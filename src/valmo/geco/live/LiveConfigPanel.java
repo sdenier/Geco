@@ -11,6 +11,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Properties;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -208,5 +209,14 @@ public class LiveConfigPanel extends JPanel {
 		cont.add(SwingUtils.embed(comp));
 	}
 
+	public void setProperties(Properties liveProp) {
+		mapfileL.setText(liveProp.getProperty("MapFile"));
+		coursefileL.setText(liveProp.getProperty("CourseFile"));
+		dpiS.setValue(new Integer(liveProp.getProperty("DPI")));
+		xtranS.setValue(new Integer(liveProp.getProperty("XTrans")));
+		ytranS.setValue(new Integer(liveProp.getProperty("YTrans")));
+		showCourseCB.setModel(new DefaultComboBoxModel(liveComponent.coursenames()));
+		refreshCourses();
+	}
 	
 }

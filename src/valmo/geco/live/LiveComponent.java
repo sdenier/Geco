@@ -6,9 +6,14 @@ package valmo.geco.live;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Vector;
 
 import javax.swing.JFrame;
@@ -35,6 +40,7 @@ public class LiveComponent {
 	private LiveMapControl mapControl;
 	private Map<String, Float[]> controlPos;
 	private Collection<Course> courses;
+	private LiveConfigPanel configP;
 
 
 	public static void main(String[] args) {
@@ -43,6 +49,7 @@ public class LiveComponent {
 //		gecoLive.importCourseData("hellemmes.xml");
 //		float factor = GecoLiveConfig.dpi2dpmmFactor(150);
 //		gecoLive.createCourses(factor, factor, -18, -25);
+		gecoLive.setStartDir("demo/hellemmes");
 		gecoLive.openWindow();
 	}
 
@@ -52,7 +59,21 @@ public class LiveComponent {
 		mapControl = new LiveMapControl();
 	}
 	
-	// TODO: test for live.prop file and use it
+	public void setStartDir(String dir) {
+		File propFile = new File(dir + File.separator + "live.prop");
+		if( propFile.exists() ) {
+			Properties liveProp = new Properties();
+		try {
+			liveProp.load(new BufferedReader(new FileReader(propFile)));
+			loadMapImage(dir + File.separator + liveProp.getProperty("MapFile"));
+			importCourseData(dir + File.separator + liveProp.getProperty("CourseFile"));
+			configP.setProperties(liveProp);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}
+	}
 
 	public LiveComponent initWindow() {
 		jFrame = new JFrame();
@@ -79,8 +100,9 @@ public class LiveComponent {
 	}
 	private Container initControlPanel() {
 		JTabbedPane controlPanel = new JTabbedPane();
+		configP = new LiveConfigPanel(jFrame, this);
+		controlPanel.add("Config", SwingUtils.embed(configP));
 		runnerP = new RunnerResultPanel();
-		controlPanel.add("Config", SwingUtils.embed(new LiveConfigPanel(jFrame, this)));
 		controlPanel.add("Runner", runnerP);
 //		controlPanel.add("Runner", SwingUtils.embed(runnerP));
 		return controlPanel;

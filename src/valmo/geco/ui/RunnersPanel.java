@@ -329,6 +329,7 @@ public class RunnersPanel extends TabPanel
 	public void openMapWindow() {
 		if( gecoLiveMap==null ) {
 			gecoLiveMap = new LiveComponent().initWindow();
+			gecoLiveMap.setStartDir(geco().getCurrentStagePath());
 		}
 		gecoLiveMap.openWindow();
 	}
@@ -336,6 +337,10 @@ public class RunnersPanel extends TabPanel
 
 	@Override
 	public void changed(Stage previous, Stage next) {
+		if( gecoLiveMap!=null ) {
+			gecoLiveMap.closeWindow();
+		}
+		gecoLiveMap = null;
 		refreshRunnersPanel();
 	}
 
