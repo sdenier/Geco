@@ -102,9 +102,9 @@ public class GecoControl {
 	public void openStage(String baseDir) {
 		stopAutosave();
 		RuntimeStage oldStage = current;
+		closeAllStages();
 
 		RuntimeStage newStage = loadStage(baseDir);
-		closeAllStages();
 		current = newStage;
 
 		announcer.announceChange(getStage(oldStage), stage());
