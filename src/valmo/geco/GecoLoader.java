@@ -6,6 +6,7 @@ package valmo.geco;
 
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.util.Arrays;
 
 import com.jdotsoft.jarloader.JarClassLoader;
 
@@ -26,7 +27,11 @@ public class GecoLoader {
 		}
 		JarClassLoader loader = new JarClassLoader();
 		try {
-			loader.invokeMain("valmo.geco.Geco", new String[0]);
+			if( args.length>0 && args[0].startsWith("valmo") ) {
+				loader.invokeMain(args[0], Arrays.copyOfRange(args, 1, args.length));
+			} else {
+				loader.invokeMain("valmo.geco.Geco", args);
+			}
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
