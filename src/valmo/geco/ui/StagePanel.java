@@ -104,7 +104,6 @@ public class StagePanel extends TabPanel {
 		stagenameF.setInputVerifier(new InputVerifier() {
 			@Override
 			public boolean verify(JComponent input) {
-				System.out.println("check");
 				return verifyStagename(stagenameF.getText());
 			}
 			@Override

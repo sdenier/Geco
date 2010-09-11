@@ -123,7 +123,8 @@ public class GecoPools {
 	public void buildHeats() {
 		HeatBuilder heatBuilder = new HeatBuilder(gecoControl, new ResultBuilder(gecoControl));
 		try {
-			heatBuilder.generateCsvHeats("heats.csv", gecoControl.registry().getHeatSets().toArray(new HeatSet[0]));
+			String filepath = StageBuilder.filepath(gecoControl.stage().getBaseDir(), "heat_startlists.csv");
+			heatBuilder.generateCsvHeats(filepath, gecoControl.registry().getHeatSets().toArray(new HeatSet[0]));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

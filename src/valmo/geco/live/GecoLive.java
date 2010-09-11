@@ -57,7 +57,6 @@ public class GecoLive implements LiveListener {
 	public static void main(String[] args) {
 		GecoLive gecoLive = new GecoLive();
 		gecoLive.guiLaunch();
-		
 	}
 
 	public GecoLive() {
@@ -91,6 +90,8 @@ public class GecoLive implements LiveListener {
 		splitPane.add(liveComponent.initGui(new JPanel()));
 		splitPane.add(initRunnersTable());
 
+		liveComponent.setStartDir(gecoControl.stage().getBaseDir());
+		
 		jFrame.add(splitPane);
 		jFrame.pack();
 		jFrame.setVisible(true);

@@ -161,7 +161,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 				try {
 					geco.openStage(new GecoLauncher(new File(geco.getCurrentStagePath()).getParentFile()).open(GecoWindow.this));
 				} catch (Exception e1) {
-					e1.printStackTrace();
+					System.out.println(e1.getLocalizedMessage());
 				}
 			}
 		});
