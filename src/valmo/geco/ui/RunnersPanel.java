@@ -71,6 +71,7 @@ public class RunnersPanel extends TabPanel
 		initRunnersPanel(this);
 		geco().announcer().registerRunnerListener(this);
 		geco().announcer().registerStageConfigListener(this);
+		geco().announcer().registerCardListener(this);
 	}
 
 
@@ -389,6 +390,20 @@ public class RunnersPanel extends TabPanel
 	public void cardRead(String chip) {
 //		refresh made through statusChanged announcement
 //		refreshTableRunner(registry().findRunnerData(chip));
+		focusOnReadCard(chip);
+	}
+
+	@Override
+	public void unknownCardRead(String chip) {
+		focusOnReadCard(chip);
+	}
+
+	@Override
+	public void cardReadAgain(String chip) {
+		focusOnReadCard(chip);
+	}
+
+	private void focusOnReadCard(String chip) {
 		if( liveModeOn() ) {
 			RunnerRaceData data = registry().findRunnerData(chip);
 			tableModel.removeData(data);
@@ -396,11 +411,5 @@ public class RunnersPanel extends TabPanel
 			focusTableOnIndex(0);
 		}
 	}
-
-	@Override
-	public void unknownCardRead(String chip) {}
-
-	@Override
-	public void cardReadAgain(String chip) {}
 	
 }
