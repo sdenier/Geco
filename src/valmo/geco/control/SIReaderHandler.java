@@ -191,7 +191,7 @@ public class SIReaderHandler extends Control
 		runnerData.setControltime(safeTime(card.getCheckTime()));		
 		runnerData.setStarttime(safeTime(card.getStartTime()));
 		runnerData.setFinishtime(safeTime(card.getFinishTime()));
-		checkStartFinishTimes(runnerData);
+		checkStartFinishTimes(runnerData, card.getSiIdent());
 		handlePunches(runnerData, card.getPunches());
 	}
 
@@ -203,15 +203,12 @@ public class SIReaderHandler extends Control
 		}
 	}
 	
-	/**
-	 * @param runnerData
-	 */
-	private void checkStartFinishTimes(RunnerRaceData runnerData) {
+	private void checkStartFinishTimes(RunnerRaceData runnerData, String chipNumber) {
 		if( runnerData.getStarttime().equals(TimeManager.NO_TIME) ) {
-			geco().log("MISSING start time for " + runnerData.getRunner().idString());
+			geco().log("MISSING start time for " + chipNumber);
 		}
 		if( runnerData.getFinishtime().equals(TimeManager.NO_TIME) ) {
-			geco().log("MISSING finish time for " + runnerData.getRunner().idString());
+			geco().log("MISSING finish time for " + chipNumber);
 		}
 	}
 

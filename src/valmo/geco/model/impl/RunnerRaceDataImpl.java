@@ -5,6 +5,7 @@
 package valmo.geco.model.impl;
 
 import java.util.Date;
+import java.util.TimeZone;
 
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.Course;
@@ -133,7 +134,9 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 
 	@Override
 	public Date stampReadtime() {
-		setReadtime(new Date());
+		// Use TimeZone to set the time with the right offset
+		long stamp = System.currentTimeMillis();
+		setReadtime(new Date(stamp + TimeZone.getDefault().getOffset(stamp)));
 		return getReadtime();
 	}
 
