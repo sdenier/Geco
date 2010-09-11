@@ -5,13 +5,13 @@
 package valmo.geco.ui;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
+import java.nio.channels.ReadableByteChannel;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -74,12 +74,10 @@ public class GecoLauncher {
 
 	private void createFile(String baseDir, String filename) {
 		try {
-			URI uri = getClass().getResource("/resources/templates/" + filename).toURI();
-			FileChannel inChannel = new FileInputStream(new File(uri)).getChannel();
+			URL url = getClass().getResource("/resources/templates/" + filename);
+			ReadableByteChannel inChannel = Channels.newChannel(url.openStream());
 			FileChannel outChannel = new FileOutputStream(new File(baseDir + File.separator + filename)).getChannel();
-			inChannel.transferTo(0, inChannel.size(), outChannel);
-		} catch (URISyntaxException e1) {
-			e1.printStackTrace();
+			outChannel.transferFrom(inChannel, 0, url.openConnection().getContentLength());
 		} catch (FileNotFoundException e2) {
 			e2.printStackTrace();
 		} catch (IOException e3) {
