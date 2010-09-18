@@ -151,7 +151,7 @@ public class StagePanel extends TabPanel {
 		panel.add(new JLabel("MP limit:"), c);
 		int mpLimit = geco().checker().getMPLimit();
 		final JSpinner mplimitS = new JSpinner(new SpinnerNumberModel(mpLimit, 0, null, 1));
-		mplimitS.setPreferredSize(new Dimension(100, 20));
+		mplimitS.setPreferredSize(new Dimension(100, SwingUtils.SPINNERHEIGHT));
 		mplimitS.setToolTipText("Number of missing punches authorized before marking the runner as MP");
 		mplimitS.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
@@ -168,7 +168,7 @@ public class StagePanel extends TabPanel {
 		panel.add(new JLabel("Time penalty:"), c);
 		long penalty = geco().checker().getMPPenalty() / 1000;
 		final JSpinner penaltyS = new JSpinner(new SpinnerNumberModel(penalty, 0l, null, 10));
-		penaltyS.setPreferredSize(new Dimension(100, 20));
+		penaltyS.setPreferredSize(new Dimension(100, SwingUtils.SPINNERHEIGHT));
 		penaltyS.setToolTipText("Time penalty per missing punch in seconds");
 		penaltyS.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {

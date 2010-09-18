@@ -80,15 +80,15 @@ public class LiveConfigPanel extends JPanel {
 		coursefileL = new JLabel();
 		// map config
 		dpiS = new JSpinner(new SpinnerNumberModel(150, 0, null, 50));
-		dpiS.setPreferredSize(new Dimension(75, 20));
+		dpiS.setPreferredSize(new Dimension(75, SwingUtils.SPINNERHEIGHT));
 		xfactorS = new JSpinner(new SpinnerNumberModel(150 / 25.4f, 1f, null, 0.1f));
-		xfactorS.setPreferredSize(new Dimension(75, 20));
+		xfactorS.setPreferredSize(new Dimension(75, SwingUtils.SPINNERHEIGHT));
 		yfactorS = new JSpinner(new SpinnerNumberModel(150 / 25.4f, 1f, null, 0.1f));
-		yfactorS.setPreferredSize(new Dimension(75, 20));
+		yfactorS.setPreferredSize(new Dimension(75, SwingUtils.SPINNERHEIGHT));
 		xtranS = new JSpinner(new SpinnerNumberModel(0, null, null, 1));
-		xtranS.setPreferredSize(new Dimension(75, 20));
+		xtranS.setPreferredSize(new Dimension(75, SwingUtils.SPINNERHEIGHT));
 		ytranS = new JSpinner(new SpinnerNumberModel(0, null, null, 1));
-		ytranS.setPreferredSize(new Dimension(75, 20));
+		ytranS.setPreferredSize(new Dimension(75, SwingUtils.SPINNERHEIGHT));
 		refreshB = new JButton("Refresh");
 		// course config
 		showControlsB = new JButton("Show controls");

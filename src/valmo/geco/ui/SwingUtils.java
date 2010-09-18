@@ -8,6 +8,7 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 
 /**
  * @author Simon Denier
@@ -15,6 +16,16 @@ import javax.swing.JPanel;
  *
  */
 public class SwingUtils {
+	
+	public static int SPINNERHEIGHT;
+	
+	static {
+		if( UIManager.getLookAndFeel().getID().equals("Nimbus") ) {
+			SPINNERHEIGHT = 25;
+		} else {
+			SPINNERHEIGHT = 20;
+		}
+	}
 
 	public static JPanel embed(Component comp) {
 		JPanel pan = new JPanel();

@@ -285,7 +285,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 
 		autoexportB = new JButton("Auto");
 		autodelayS = new JSpinner(new SpinnerNumberModel(AutoexportDelay, 1, null, 10));
-		autodelayS.setPreferredSize(new Dimension(75, 20));
+		autodelayS.setPreferredSize(new Dimension(75, SwingUtils.SPINNERHEIGHT));
 		autodelayS.setToolTipText("Auto delay in seconds");
 		autoPanel.add(SwingUtils.embed(autoexportB));
 		autoPanel.add(SwingUtils.embed(autodelayS));

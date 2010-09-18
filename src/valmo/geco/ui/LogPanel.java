@@ -76,17 +76,17 @@ public class LogPanel extends TabPanel implements Logging {
 			simuPanel.setLayout(new BoxLayout(simuPanel, BoxLayout.Y_AXIS));
 
 			final JSpinner nbGeneration = new JSpinner(new SpinnerNumberModel(10, 0, null, 5));
-			nbGeneration.setPreferredSize(new Dimension(75, 20));
+			nbGeneration.setPreferredSize(new Dimension(75, SwingUtils.SPINNERHEIGHT));
 			nbGeneration.setToolTipText("Number of runners to generate");
 			simuPanel.add(SwingUtils.embed(nbGeneration));
 			
 			final JSpinner genDelay = new JSpinner(new SpinnerNumberModel(1, 0, null, 1));
 			genDelay.setToolTipText("Delay in second between two creations");
-			genDelay.setPreferredSize(new Dimension(75, 20));
+			genDelay.setPreferredSize(new Dimension(75, SwingUtils.SPINNERHEIGHT));
 			simuPanel.add(SwingUtils.embed(genDelay));
 
 			final JSpinner mutationS = new JSpinner(new SpinnerNumberModel(40, 0, null, 5));
-			mutationS.setPreferredSize(new Dimension(75, 20));
+			mutationS.setPreferredSize(new Dimension(75, SwingUtils.SPINNERHEIGHT));
 			mutationS.setToolTipText("Mutation factor");
 			simuPanel.add(SwingUtils.embed(mutationS));
 			
