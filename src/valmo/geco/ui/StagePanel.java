@@ -4,8 +4,8 @@
  */
 package valmo.geco.ui;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -61,7 +61,6 @@ public class StagePanel extends TabPanel {
 		
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridBagLayout());
-//		setBorder(BorderFactory.createLineBorder(Color.gray));
 
 		GridBagConstraints c = SwingUtils.compConstraint(	GridBagConstraints.RELATIVE,
 													0,
@@ -77,8 +76,9 @@ public class StagePanel extends TabPanel {
 		panel.add(courseConfigPanel(), c);
 		panel.add(categoryConfigPanel(), c);
 
-		setLayout(new FlowLayout(FlowLayout.LEFT));
-		add(panel);
+//		setLayout(new FlowLayout(FlowLayout.LEFT));
+		setLayout(new BorderLayout());
+		add(panel, BorderLayout.NORTH);
 	}
 
 	private JPanel titlePanel(JPanel panel, String title) {

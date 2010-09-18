@@ -280,8 +280,8 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		autoGroup.add(refreshRB);
 		autoGroup.add(exportRB);
 		refreshRB.setSelected(true);
-		autoPanel.add(refreshRB);
-		autoPanel.add(exportRB);
+		autoPanel.add(SwingUtils.embed(refreshRB));
+		autoPanel.add(SwingUtils.embed(exportRB));
 
 		autoexportB = new JButton("Auto");
 		autodelayS = new JSpinner(new SpinnerNumberModel(AutoexportDelay, 1, null, 10));
