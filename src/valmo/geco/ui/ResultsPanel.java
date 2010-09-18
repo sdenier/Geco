@@ -402,10 +402,11 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		return autoexportThread;
 	}
 	private synchronized void autorefresh(long autoexportDelay) {
+		long delay = 1000 * autoexportDelay;
 		while( true ){
 			try {
 				refreshResultView();
-				wait(autoexportDelay);
+				wait(delay);
 			} catch (InterruptedException e) {
 				return;
 			}					
