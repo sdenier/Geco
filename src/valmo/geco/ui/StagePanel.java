@@ -206,6 +206,18 @@ public class StagePanel extends TabPanel {
 				geco().siHandler().setPortName(stationPortF.getText());
 			}
 		});
+		stationPortF.setInputVerifier(new InputVerifier() {
+			@Override
+			public boolean verify(JComponent input) {
+				return true;
+			}
+			@Override
+			public boolean shouldYieldFocus(JComponent input) {
+				geco().siHandler().setPortName(stationPortF.getText());
+				return true;
+			}
+
+		});
 		
 		c.gridy = 1;
 		panel.add(new JLabel("Zero hour:"), c);
