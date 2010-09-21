@@ -11,6 +11,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -48,6 +50,11 @@ public class HeatSetDialog extends JDialog {
 		return this.currentHeatSet;
 	}
 	
+	private void cancel() {
+		cancelled = true;
+		setVisible(false);
+	}
+
 	public boolean cancelled() {
 		return this.cancelled;
 	}
@@ -55,7 +62,12 @@ public class HeatSetDialog extends JDialog {
 	public HeatSetDialog(JFrame frame) {
 		super(frame, "Heat Set Editor", true);
 		setLocationRelativeTo(frame);
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		setResizable(false);
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				cancel();
+			}
+		});
 		
 		getContentPane().setLayout(new GridBagLayout());
 		getContentPane().add(new JLabel("Heat Set Name"));
@@ -97,8 +109,7 @@ public class HeatSetDialog extends JDialog {
 		cancelB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				cancelled = true;
-				setVisible(false);
+				cancel();
 			}
 		});
 		getContentPane().add(cancelB, SwingUtils.compConstraint(1, 5));

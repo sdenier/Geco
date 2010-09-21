@@ -11,6 +11,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Vector;
@@ -74,7 +76,12 @@ public class MergeRunnerDialog extends JDialog {
 		this.geco = geco;
 		setLocationRelativeTo(frame);
 		setResizable(false);
-//		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				close();
+			}
+		});
+
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		
 		chipL = new JLabel();
@@ -92,6 +99,12 @@ public class MergeRunnerDialog extends JDialog {
 		initCardPanel();
 		initMergePanel();
 		initListeners();
+	}
+
+	private void close() {
+		returnChip = null;
+		// do nothing, just close the dialog to lose the ref
+		setVisible(false);
 	}
 
 	private Vector<String> courseItems(Geco geco) {
@@ -279,9 +292,7 @@ public class MergeRunnerDialog extends JDialog {
 		closeB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				returnChip = null;
-				// do nothing, just close the dialog to lose the ref
-				setVisible(false);
+				close();
 			}
 		});
 		runnersCB.addActionListener(new ActionListener() {

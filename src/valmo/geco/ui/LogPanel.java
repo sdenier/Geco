@@ -48,7 +48,7 @@ public class LogPanel extends TabPanel implements Logging {
 	
 	public void initPanels(JPanel panel) {
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-		splitPane.setOneTouchExpandable(true);
+//		splitPane.setOneTouchExpandable(true);
 		splitPane.add(initLogArea());
 		splitPane.add(initStatsPanel());
 		splitPane.setBorder(BorderFactory.createEmptyBorder());

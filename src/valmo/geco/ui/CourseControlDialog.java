@@ -33,7 +33,8 @@ public class CourseControlDialog extends JDialog {
 	public CourseControlDialog(JFrame frame, final Course course) {
 		super(frame, "Course Editor", true);
 		setLocationRelativeTo(frame);
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		setResizable(false);
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		
 		getContentPane().setLayout(new GridBagLayout());
 		getContentPane().add(new JLabel("Control sequence for course " + course.getName() + " (separated by comma):"));
