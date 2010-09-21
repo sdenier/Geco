@@ -77,28 +77,41 @@ public class LiveMapControl {
 	public Map<String, LivePunch> createCoursesFrom(Collection<Course> someCourses) {
 		courses = new HashMap<String, LivePunch>();
 		for (Course course : someCourses) {
-			LivePunch previousPunch = createPunch("S1");
-			courses.put(course.getName(), previousPunch);
-			int i = 1;
-			for (int code : course.getCodes()) {
-				LivePunch punch = createPunch(Integer.toString(code), i);
-				if( previousPunch!=null ) {
-					previousPunch.setNextPunch(punch);
+			try {
+				LivePunch previousPunch = createPunch("S1");
+				courses.put(course.getName(), previousPunch);
+				int i = 1;
+				for (int code : course.getCodes()) {
+					LivePunch punch = createPunch(Integer.toString(code), i);
+					if( previousPunch!=null ) {
+						previousPunch.setNextPunch(punch);
+					}
+					previousPunch = punch;
+					i++;
 				}
-				previousPunch = punch;
-				i++;
+				previousPunch.setNextPunch(createPunch("F1"));
+			} catch (Exception e) {
+				System.err.println("ill-formed controls");
+				System.err.println(e);
 			}
-			previousPunch.setNextPunch(createPunch("F1"));
 		}
 		return courses;
 	}
 
-	private LivePunch createPunch(String code) {
-		return new LivePunch(controls.get(code));
+	private LivePunch createPunch(String code) throws Exception {
+		ControlCircle control = controls.get(code);
+		if( control==null ) {
+			throw new Exception("Unknown Control " + code);
+		}
+		return new LivePunch(control);
 	}
 
-	private LivePunch createPunch(String code, int order) {
-		return new LivePunch(controls.get(code), order);
+	private LivePunch createPunch(String code, int order) throws Exception {
+		ControlCircle control = controls.get(code);
+		if( control==null ) {
+			throw new Exception("Unknown Control " + code);
+		}
+		return new LivePunch(control, order);
 	}
 	
 	public Collection<ControlCircle> allControls() {
@@ -128,18 +141,26 @@ public class LiveMapControl {
 				}
 				previousPunch.setNextPunch(nextPunch);
 				if( code.contains("+") ) {
-					LivePunch addedPunch = createPunch(code.substring(code.indexOf("+") + 1));
-					addedPunch.beAdded();
-					addedPunch.setNextPunch(previousPunch.getNextPunch());
-					previousPunch.setNextPunch(addedPunch);
-					previousPunch = previousPunch.getNextPunch();
+					try {
+						LivePunch addedPunch = createPunch(code.substring(code.indexOf("+") + 1));
+						addedPunch.beAdded();
+						addedPunch.setNextPunch(previousPunch.getNextPunch());
+						previousPunch.setNextPunch(addedPunch);
+						previousPunch = previousPunch.getNextPunch();
+					} catch (Exception e) {
+						System.err.println(e);
+					}
 				}
 			} else {
 				if( code.startsWith("+") ) {
-					LivePunch addedPunch = createPunch(code.substring(1));
-					addedPunch.beAdded();
-					addedPunch.setNextPunch(previousPunch.getNextPunch());
-					previousPunch.setNextPunch(addedPunch);
+					try {
+						LivePunch addedPunch = createPunch(code.substring(1));
+						addedPunch.beAdded();
+						addedPunch.setNextPunch(previousPunch.getNextPunch());
+						previousPunch.setNextPunch(addedPunch);
+					} catch (Exception e) {
+						System.err.println(e);
+					}
 				} else {
 					previousPunch.getNextPunch().beOk();
 				}
