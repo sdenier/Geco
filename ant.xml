@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project basedir="." default="webgen" name="GecO">
+<project basedir="." default="buildnumber" name="GecO">
 	<property file="src/version.prop"/>
 	<property file="dev.prop"/>
 	
@@ -61,6 +61,19 @@
             </manifest>
             <fileset dir="${geco.dir}/bin"/>
             <fileset file="${sireader.dir}/SIReader.jar"/>
+        </jar>
+    </target>
+
+    <target name="build_livejar" depends="buildnumber">
+        <jar destfile="${geco.dir}/livegeco-${build.num}.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="valmo.geco.live.GecoLive"/>
+                <attribute name="Class-Path" value="."/>
+            	<attribute name="Built-By" value="${dev.username}"/>
+            	<attribute name="Built-Date" value="${TODAY}"/> 
+               	<attribute name="Implementation-Version" value="${version.num}-${build.num}"/>
+            </manifest>
+            <fileset dir="${geco.dir}/bin"/>
         </jar>
     </target>
 	
