@@ -106,7 +106,7 @@ public class ConfigTablePanel<T> extends GecoPanel {
 	}
 
 	public T getSelectedData() {
-		int selectedRow = table.getSelectedRow();
+		int selectedRow = table.convertRowIndexToModel(table.getSelectedRow());
 		if (selectedRow != -1) {
 			return tableModel.getData().get(selectedRow);
 		}
