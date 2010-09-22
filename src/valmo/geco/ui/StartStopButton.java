@@ -17,6 +17,7 @@ import javax.swing.JButton;
 public abstract class StartStopButton extends JButton {
 
 	public StartStopButton() {
+		initialize();
 		addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if( isSelected() ) {
@@ -27,6 +28,8 @@ public abstract class StartStopButton extends JButton {
 			}
 		});
 	}
+
+	protected void initialize() { }
 
 	public void doOnAction() {
 		setSelected(true);

@@ -45,7 +45,7 @@ import valmo.geco.model.Stage;
  * @author Simon Denier
  * @since Jan 23, 2009
  */
-public class GecoWindow extends JFrame implements Announcer.StageListener {
+public class GecoWindow extends JFrame implements Announcer.StageListener, Announcer.StationListener {
 	
 	private Geco geco;
 
@@ -63,9 +63,12 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 
 	private JButton previousB;
 
+	private StartStopButton startB;
+
 	private static final String THEME = "crystal/";
 
 	private static Hashtable<String,String[]> ICONS;
+
 
 	{
 		ICONS = new Hashtable<String, String[]>();
@@ -92,6 +95,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 		this.logPanel = new LogPanel(this.geco, this);
 		this.heatsPanel = new HeatsPanel(this.geco, this);
 		geco.announcer().registerStageListener(this);
+		geco.announcer().registerStationListener(this);
 		guiInit();
 	}
 	
@@ -219,6 +223,11 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 		StartStopButton liveClientB = new StartStopButton() {
 			private LiveClient liveClient;
 			@Override
+			protected void initialize() {
+				setIcon(offliveIcon);
+				setToolTipText("Start Live broadcast");
+			}
+			@Override
 			public void actionOn() {
 				liveClient = new LiveClient(geco, this);
 				if( new LiveClientDialog(GecoWindow.this, liveClient).open() ) {
@@ -233,36 +242,33 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 				if( liveClient.isActive() ) {
 					liveClient.stop();
 				}
-				setIcon(offliveIcon);
-				setToolTipText("Start Live broadcast");
+				initialize();
 			}
 		};
-		liveClientB.setIcon(offliveIcon);
-		liveClientB.setToolTipText("Start Live broadcast");
 		toolBar.add(liveClientB);
 		toolBar.addSeparator();
 		
 		final ImageIcon startIcon = createIcon(5);
 		final ImageIcon stopIcon = createIcon(6);
-		final JButton startB = new JButton("Start reader", startIcon);
-		startB.addActionListener(new ActionListener() {
-			private boolean started = false;
+		startB = new StartStopButton() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				if( started ) {
-					geco.siHandler().stop();
-					startB.setSelected(false);
-					startB.setText("Start reader");
-					startB.setIcon(startIcon);
-				} else {
-					geco.siHandler().start();
-					startB.setSelected(true);
-					startB.setText("Stop reader");
-					startB.setIcon(stopIcon);
-				}
-				started = !started;
+			protected void initialize() {
+				setSelected(false);
+				setText("Start reader");
+				setIcon(startIcon);
 			}
-		});
+			@Override
+			public void actionOn() {
+				geco.siHandler().start();
+				setText("Starting...");
+				setIcon(stopIcon);				
+			}
+			@Override
+			public void actionOff() {
+				geco.siHandler().stop();
+				initialize();
+			}
+		};
 		toolBar.add(startB);
 		final JLabel versionL = new JLabel(" v" + Geco.VERSION);
 		versionL.setBorder(BorderFactory.createLineBorder(versionL.getBackground()));
@@ -306,6 +312,24 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 	}
 
 	@Override
+	public void stationStatus(String status) {
+		if( status.equals("Ready") ) {
+			startB.setText("Stop reader");
+			geco.info("SI Station ready", false);
+			return;
+		}
+		if( status.equals("NotFound") ) {
+			geco.info("Could not open port " + geco.siHandler().getPortName(), false);
+			startB.initialize();
+			return;
+		}
+		if( status.equals("Failed") ) {
+			geco.info("Station " + geco.siHandler().getPortName() + " is offline", false);
+			startB.initialize();
+		}
+	}
+
+	@Override
 	public void changed(Stage previous, Stage next) {
 		updateWindowTitle();
 		checkButtonsStatus();
@@ -331,6 +355,5 @@ public class GecoWindow extends JFrame implements Announcer.StageListener {
 	@Override
 	public void closing(Stage stage) {
 	}
-
 
 }

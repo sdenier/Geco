@@ -102,7 +102,6 @@ public class Announcer {
 	}
 	
 	public interface CardListener {
-		
 		/**
 		 * Signal a card has been read by the handler.
 		 * 
@@ -124,7 +123,10 @@ public class Announcer {
 		 * @param chip
 		 */
 		public void cardReadAgain(String chip);
-		
+	}
+	
+	public interface StationListener {
+		public void stationStatus(String status);
 	}
 
 	private Vector<Logging> loggers;
@@ -137,12 +139,15 @@ public class Announcer {
 	
 	private Vector<CardListener> cardListeners;
 	
+	private Vector<StationListener> stationListeners;
+	
 	public Announcer() {
 		this.loggers = new Vector<Logging>();
 		this.stageListeners = new Vector<StageListener>();
 		this.stageConfigListeners = new Vector<StageConfigListener>();
 		this.runnerListeners = new Vector<RunnerListener>();
 		this.cardListeners = new Vector<CardListener>();
+		this.stationListeners = new Vector<StationListener>();
 	}
 	
 	public void registerLogger(Logging logger) {
@@ -167,6 +172,10 @@ public class Announcer {
 
 	public void unregisterCardListener(CardListener listener) {
 		this.cardListeners.remove(listener);
+	}
+	
+	public void registerStationListener(StationListener listener) {
+		this.stationListeners.add(listener);
 	}
 
 	
@@ -285,6 +294,12 @@ public class Announcer {
 		for (CardListener listener : this.cardListeners) {
 			listener.cardReadAgain(chip);
 		}
+	}
+	
+	public void announceStationStatus(String status) {
+		for (StationListener listener : this.stationListeners) {
+			listener.stationStatus(status);
+		}		
 	}
 
 }

@@ -42,6 +42,10 @@ public class SIReaderHandler extends Control
 	
 	private long zeroTime = 32400000; // 9:00
 	
+	private int nbTry;
+	
+	private boolean starting;
+	
 	/**
 	 * @param factory
 	 * @param stage
@@ -116,6 +120,8 @@ public class SIReaderHandler extends Control
 
 	public void start() {
 		configure();
+		nbTry = 0;
+		starting = true;
 		if (!portHandler.isAlive())
 			portHandler.start();
 		PortMessage m = new PortMessage(SIPortHandler.START);
@@ -132,7 +138,7 @@ public class SIReaderHandler extends Control
 			e.printStackTrace();
 		}
 	}
-
+	
 	@Override
 	public void newCardRead(IResultData<PunchObject,PunchRecordData> card) {
 		Runner runner = registry().findRunnerByChip(card.getSiIdent());
@@ -230,7 +236,21 @@ public class SIReaderHandler extends Control
 
 	@Override
 	public void portStatusChanged(String status) {
-		
+		if( status.equals("     Open      ") && starting ){
+			geco().announcer().announceStationStatus("Ready");
+			starting = false;
+		}
+		if( status.equals("     Connecting") ){
+			nbTry++;
+		}
+		if( nbTry>=2 ) { // catch any tentative to re-connect after a deconnexion
+			portHandler.interrupt(); // one last try, after interruption
+			if( starting ) { // wrong port
+				geco().announcer().announceStationStatus("NotFound");
+			} else { // station was disconnected?
+				geco().announcer().announceStationStatus("Failed");
+			}
+		}
 	}
 	
 	
