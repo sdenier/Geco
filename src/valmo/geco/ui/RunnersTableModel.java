@@ -221,7 +221,9 @@ public class RunnersTableModel extends AbstractTableModel {
 		model.getColumn(3).setCellEditor(new LastnameEditor());
 		updateComboBoxEditors(table);
 		model.getColumn(7).setCellEditor(new RacetimeEditor());
-		model.getColumn(8).setCellEditor(new DefaultCellEditor(new JComboBox(Status.values())));
+		DefaultCellEditor statusEditor = new DefaultCellEditor(new JComboBox(Status.values()));
+		statusEditor.setClickCountToStart(2);
+		model.getColumn(8).setCellEditor(statusEditor);
 
 		// also init some specific cell renderers
 		model.getColumn(7).setCellRenderer(new RacetimeCellRenderer());
@@ -230,9 +232,15 @@ public class RunnersTableModel extends AbstractTableModel {
 
 	protected void updateComboBoxEditors(JTable table) {
 		TableColumnModel model = table.getColumnModel();
-		model.getColumn(4).setCellEditor(new DefaultCellEditor(new JComboBox(registry().getSortedCategorynames())));
-		model.getColumn(5).setCellEditor(new DefaultCellEditor(new JComboBox(registry().getSortedCoursenames())));
-		model.getColumn(6).setCellEditor(new DefaultCellEditor(new JComboBox(registry().getSortedClubnames())));
+		DefaultCellEditor categoryEditor = new DefaultCellEditor(new JComboBox(registry().getSortedCategorynames()));
+		categoryEditor.setClickCountToStart(2);
+		model.getColumn(4).setCellEditor(categoryEditor);
+		DefaultCellEditor courseEditor = new DefaultCellEditor(new JComboBox(registry().getSortedCoursenames()));
+		courseEditor.setClickCountToStart(2);
+		model.getColumn(5).setCellEditor(courseEditor);
+		DefaultCellEditor clubEditor = new DefaultCellEditor(new JComboBox(registry().getSortedClubnames()));
+		clubEditor.setClickCountToStart(2);
+		model.getColumn(6).setCellEditor(clubEditor);
 	}
 
 	@Override
