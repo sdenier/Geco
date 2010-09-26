@@ -61,11 +61,6 @@ public class RunnersPanel extends TabPanel
 	private LiveComponent gecoLiveMap;
 
 	
-	/**
-	 * @param geco
-	 * @param frame 
-	 * @param announcer 
-	 */
 	public RunnersPanel(Geco geco, JFrame frame) {
 		super(geco, frame);
 		initRunnersPanel(this);
@@ -76,18 +71,11 @@ public class RunnersPanel extends TabPanel
 
 
 	public void initRunnersPanel(JPanel panel) {
-//		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-//		splitPane.setOneTouchExpandable(true);
 		JPanel tablePan = new JPanel(new BorderLayout());
 		tablePan.add(initTableScroll(), BorderLayout.CENTER);
 		tablePan.add(initTopPanel(), BorderLayout.NORTH);
 		tablePan.add(initInfoPanel(), BorderLayout.EAST);
 		panel.add(tablePan);
-//		splitPane.add(tablePan);
-//		splitPane.add(initInfoPanel());
-//		panel.add(splitPane);
-//		splitPane.setBorder(BorderFactory.createEmptyBorder());
-//		updateRunnerPanel();
 	}
 	
 	public JTabbedPane initInfoPanel() {
@@ -119,9 +107,10 @@ public class RunnersPanel extends TabPanel
 			public void actionPerformed(ActionEvent e) {
 				RunnerRaceData data = selectedData();
 				if( data!=null ) {
-					int nextSelection = Math.max(0, table.getSelectedRow()-1);
+					int previousSel = table.getSelectedRow();
 					// announce runner deletion and remove from tablemodel
 					geco().runnerControl().deleteRunner(data);
+					int nextSelection = Math.min(table.getModel().getRowCount() - 1, previousSel);
 					table.getSelectionModel().setSelectionInterval(nextSelection, nextSelection);
 				}
 			}
