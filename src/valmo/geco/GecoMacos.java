@@ -5,6 +5,10 @@
 package valmo.geco;
 
 
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
 import com.apple.eawt.Application;
 import com.apple.eawt.ApplicationAdapter;
 import com.apple.eawt.ApplicationEvent;
@@ -15,6 +19,16 @@ import com.apple.eawt.ApplicationEvent;
  *
  */
 public class GecoMacos {
+
+	public static void earlySetup() {
+		System.setProperty("apple.laf.useScreenMenuBar", "true");
+		System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Geco for Orientshow");
+		try {
+			Application.getApplication().setDockIconImage(ImageIO.read(Geco.class.getResource("/resources/icons/crystal/cnr.png")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public static void setupQuitAction(final Geco geco) {
 		Application app = Application.getApplication();

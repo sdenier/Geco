@@ -95,6 +95,10 @@ public class Geco implements GecoRequestHandler {
 		if( args.length > 0 && args[0].equals("--test") ) {
 			testMode = true;
 		}
+		if( platformIsMacOs() ) {
+			GecoMacos.earlySetup();
+		}
+
 		final Geco geco = new Geco();
 		if( platformIsMacOs() ) {
 			GecoMacos.setupQuitAction(geco);
