@@ -14,7 +14,7 @@ import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import valmo.geco.core.Html;
+import valmo.geco.model.Course;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.RunnerResult;
 import valmo.geco.ui.SwingUtils;
@@ -24,17 +24,17 @@ import valmo.geco.ui.SwingUtils;
  * @since Sep 3, 2010
  *
  */
-public class RunnerResultPanel extends ResultPanel {
+public class LeisureResultPanel extends ResultPanel {
 
 	private JLabel nameL;
-	private JLabel clubL;
+//	private JLabel clubL;
 	private JLabel courseL;
-	private JLabel racetimeL;
-	private JLabel mpL;
-	private JLabel penaltiesL;
-	private JLabel categoryL;
+//	private JLabel racetimeL;
+	private JLabel resultL;
+//	private JLabel penaltiesL;
+//	private JLabel categoryL;
 
-	public RunnerResultPanel() {
+	public LeisureResultPanel() {
 		super();
 	}
 
@@ -42,51 +42,32 @@ public class RunnerResultPanel extends ResultPanel {
 		Font largeFont = new Font(Font.SANS_SERIF, Font.PLAIN, 14);
 		Font boldFont = largeFont.deriveFont(Font.BOLD);
 		nameL = new JLabel();
-		nameL.setFont(boldFont.deriveFont(20f));
-		
-		clubL = new JLabel();
-		categoryL = new JLabel();
+		nameL.setFont(boldFont);
 		
 		courseL = new JLabel();
 		courseL.setFont(largeFont);
 		statusL = new JLabel();
 		statusL.setFont(boldFont);
 		
-		racetimeL = new JLabel();
-		racetimeL.setFont(boldFont);
-		mpL = new JLabel();
-		mpL.setFont(boldFont);
-		penaltiesL = new JLabel();
-		penaltiesL.setFont(largeFont);
+		resultL = new JLabel();
+		resultL.setFont(boldFont.deriveFont(20f));
 		
 		JPanel panel = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = SwingUtils.gbConstr(0);
 		gbc.anchor = GridBagConstraints.CENTER;
-		gbc.insets = new Insets(5, 5, 5, 5);
-		
-		gbc.gridwidth = 2;
+		gbc.insets = new Insets(5, 5, 5, 5);		
 		panel.add(nameL, gbc);
 		
 		gbc.gridy = 1;
-		gbc.gridwidth = 1;
-		panel.add(clubL, gbc);
-		panel.add(categoryL, gbc);
+		panel.add(courseL, gbc);
 		
 		gbc.gridy = 2;
-		panel.add(courseL, gbc);
-		panel.add(racetimeL, gbc);
-		
-		gbc.gridy = 3;
-		gbc.gridwidth = 2;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		panel.add(statusL, gbc);
 		
-		gbc.gridy = 4;
-		gbc.gridwidth = 1;
+		gbc.gridy = 3;
 		gbc.fill = GridBagConstraints.NONE;
-		gbc.anchor = GridBagConstraints.CENTER;
-		panel.add(penaltiesL, gbc);
-		panel.add(mpL, gbc);
+		panel.add(resultL, gbc);
 		
 		panel.add(Box.createVerticalStrut(20), SwingUtils.gbConstr(5));
 		add(panel, BorderLayout.NORTH);
@@ -94,25 +75,27 @@ public class RunnerResultPanel extends ResultPanel {
 	
 	public void updateRunnerData(RunnerRaceData raceData) {
 		nameL.setText(raceData.getRunner().getName());
-		clubL.setText(raceData.getRunner().getClub().getName());
-		categoryL.setText(raceData.getRunner().getCategory().getName());
-		courseL.setText(raceData.getCourse().getName());
+//		clubL.setText(raceData.getRunner().getClub().getName());
+//		categoryL.setText(raceData.getRunner().getCategory().getName());
+		Course course = raceData.getCourse();
+		courseL.setText(course.getName());
 		
 		RunnerResult result = raceData.getResult();
-		racetimeL.setText(result.formatRacetime());
+//		racetimeL.setText(result.formatRacetime());
 		updateStatusLabel(result.getStatus());
-		penaltiesL.setText(result.formatTimePenalty());
-		updateMps(result.getNbMPs());
+//		penaltiesL.setText(result.formatTimePenalty());
+		updateMps(result.getNbMPs(), course.getCodes().length);
 		
 		punchP.refreshPunches(raceData);
 	}
 
-	private void updateMps(int mps) {
-		String mpText = Integer.toString(mps) + " MP";
-		if( mps>0 ) {
-			mpText = Html.htmlTag("font", "color=red", mpText);
-		}
-		mpL.setText(mpText);
+	private void updateMps(int mps, int courseSize) {
+		String mpText = Integer.toString(courseSize - mps) + " / " + Integer.toString(courseSize);
+//		if( mps>0 ) {
+//			mpText = Html.htmlTag("font", "color=red", mpText);
+//		}
+		resultL.setText(mpText);
 	}
+
 	
 }

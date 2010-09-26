@@ -35,7 +35,7 @@ public class LiveComponent {
 
 	public JFrame jFrame;
 	public LiveMapComponent map;
-	public RunnerResultPanel runnerP;
+	public ResultPanel runnerP;
 
 	private LiveMapControl mapControl;
 	private Map<String, Float[]> controlPos;
@@ -44,11 +44,7 @@ public class LiveComponent {
 
 
 	public static void main(String[] args) {
-		LiveComponent gecoLive = new LiveComponent().initWindow();
-//		gecoLive.loadMapImage("hellemmes.jpg");
-//		gecoLive.importCourseData("hellemmes.xml");
-//		float factor = GecoLiveConfig.dpi2dpmmFactor(150);
-//		gecoLive.createCourses(factor, factor, -18, -25);
+		LiveComponent gecoLive = new LiveComponent().initWindow(false);
 		gecoLive.setStartDir("demo/hellemmes");
 		gecoLive.openWindow();
 	}
@@ -75,9 +71,9 @@ public class LiveComponent {
 		}
 	}
 
-	public LiveComponent initWindow() {
+	public LiveComponent initWindow(boolean leisureMode) {
 		jFrame = new JFrame();
-		initGui(jFrame.getContentPane());
+		initGui(jFrame.getContentPane(), leisureMode);
 		jFrame.pack();
 		jFrame.setLocationRelativeTo(null);
 		return this;
@@ -92,20 +88,23 @@ public class LiveComponent {
 		return jFrame.isShowing();
 	}
 
-	public Container initGui(Container mainContainer) {
+	public Container initGui(Container mainContainer, boolean leisureMode) {
 		mainContainer.setLayout(new BorderLayout());
-		mainContainer.add(initControlPanel(), BorderLayout.WEST);
+		mainContainer.add(initControlPanel(leisureMode), BorderLayout.WEST);
 		map = new LiveMapComponent();
 		mainContainer.add(new JScrollPane(map), BorderLayout.CENTER);
 		return mainContainer;
 	}
-	private Container initControlPanel() {
+	private Container initControlPanel(boolean leisureMode) {
 		JTabbedPane controlPanel = new JTabbedPane();
 		configP = new LiveConfigPanel(jFrame, this);
 		controlPanel.add("Config", SwingUtils.embed(configP));
-		runnerP = new RunnerResultPanel();
+		if( leisureMode ) {
+			runnerP = new LeisureResultPanel();
+		} else {
+			runnerP = new RunnerResultPanel();
+		}
 		controlPanel.add("Runner", runnerP);
-//		controlPanel.add("Runner", SwingUtils.embed(runnerP));
 		return controlPanel;
 	}
 	

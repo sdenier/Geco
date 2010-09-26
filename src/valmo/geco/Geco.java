@@ -43,6 +43,8 @@ public class Geco implements GecoRequestHandler {
 
 	private static boolean testMode = false;
 	
+	private static boolean leisureMode = false;
+	
 	{
 		Properties prop = new Properties();
 		VERSION = "x.x";
@@ -92,9 +94,7 @@ public class Geco implements GecoRequestHandler {
 
 
 	public static void main(String[] args) {
-		if( args.length > 0 && args[0].equals("--test") ) {
-			testMode = true;
-		}
+		setLaunchOptions(args);
 		if( platformIsMacOs() ) {
 			GecoMacos.earlySetup();
 		}
@@ -105,6 +105,17 @@ public class Geco implements GecoRequestHandler {
 		}
 		geco.window.launchGUI();
 	}
+	
+	private static void setLaunchOptions(String[] args) {
+		for (String arg : args) {
+			if( arg.equals("--test") ) {
+				testMode = true;
+			}
+			if( arg.equals("--leisure") ) {
+				leisureMode = true;
+			}
+		}
+	}
 
 	public static boolean platformIsMacOs() {
 		// See for more: http://oreilly.com/pub/a/mac/2002/09/06/osx_java.html
@@ -113,6 +124,10 @@ public class Geco implements GecoRequestHandler {
 	
 	public static boolean testModeOn() {
 		return testMode;
+	}
+
+	public static boolean leisureModeOn() {
+		return leisureMode;
 	}
 	
 	public void exit() {

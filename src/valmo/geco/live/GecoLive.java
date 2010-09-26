@@ -87,7 +87,7 @@ public class GecoLive implements LiveListener {
 
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		splitPane.setOneTouchExpandable(true);
-		splitPane.add(liveComponent.initGui(new JPanel()));
+		splitPane.add(liveComponent.initGui(new JPanel(), false));
 		splitPane.add(initRunnersTable());
 
 		liveComponent.setStartDir(gecoControl.stage().getBaseDir());
