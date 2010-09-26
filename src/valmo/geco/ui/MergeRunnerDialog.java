@@ -74,7 +74,6 @@ public class MergeRunnerDialog extends JDialog {
 	public MergeRunnerDialog(Geco geco, JFrame frame, String title) {
 		super(frame, title, true);
 		this.geco = geco;
-		setLocationRelativeTo(frame);
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -217,6 +216,7 @@ public class MergeRunnerDialog extends JDialog {
 		runnersCB.setSelectedIndex(-1);
 		showMergeInfo();
 		pack();
+		setLocationRelativeTo(null);
 		setVisible(true);
 		return returnChip;
 	}
@@ -227,6 +227,7 @@ public class MergeRunnerDialog extends JDialog {
 		runnersCB.setSelectedItem(target);
 		showOverwriteInfo();
 		pack();
+		setLocationRelativeTo(null);
 		setVisible(true);
 		return returnChip;
 	}

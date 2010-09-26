@@ -32,7 +32,6 @@ public class CourseControlDialog extends JDialog {
 
 	public CourseControlDialog(JFrame frame, final Course course) {
 		super(frame, "Course Editor", true);
-		setLocationRelativeTo(frame);
 		setResizable(false);
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		
@@ -77,6 +76,7 @@ public class CourseControlDialog extends JDialog {
 		getContentPane().add(cancelB, SwingUtils.compConstraint(1, 2));
 
 		pack();
+		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 

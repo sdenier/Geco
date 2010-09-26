@@ -61,7 +61,6 @@ public class HeatSetDialog extends JDialog {
 	
 	public HeatSetDialog(JFrame frame) {
 		super(frame, "Heat Set Editor", true);
-		setLocationRelativeTo(frame);
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -114,6 +113,7 @@ public class HeatSetDialog extends JDialog {
 		});
 		getContentPane().add(cancelB, SwingUtils.compConstraint(1, 5));
 		pack();
+		setLocationRelativeTo(null);
 	}
 	
 	private void checkSetFields() {

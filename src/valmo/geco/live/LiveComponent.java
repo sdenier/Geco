@@ -79,6 +79,7 @@ public class LiveComponent {
 		jFrame = new JFrame();
 		initGui(jFrame.getContentPane());
 		jFrame.pack();
+		jFrame.setLocationRelativeTo(null);
 		return this;
 	}
 	public void openWindow() {

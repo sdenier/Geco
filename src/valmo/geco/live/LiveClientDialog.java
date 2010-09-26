@@ -38,7 +38,6 @@ public class LiveClientDialog extends JDialog {
 
 	public LiveClientDialog(JFrame frame, final LiveClient liveClient) {
 		super(frame, "Connection to Live Server", true);
-		setLocationRelativeTo(frame);
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -91,6 +90,7 @@ public class LiveClientDialog extends JDialog {
 		});
 		getContentPane().add(cancelB, c);
 		pack();
+		setLocationRelativeTo(null);
 	}
 	
 	public boolean open() {

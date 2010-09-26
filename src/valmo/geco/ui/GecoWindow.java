@@ -151,8 +151,9 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 	}
 
 	public void launchGUI() {
-		setVisible(true);
 		pack();
+		setLocationRelativeTo(null); // center on screen
+		setVisible(true);
 	}
 
 	private JToolBar initToolbar() {

@@ -94,6 +94,7 @@ public class GecoLive implements LiveListener {
 		
 		jFrame.add(splitPane);
 		jFrame.pack();
+		jFrame.setLocationRelativeTo(null);
 		jFrame.setVisible(true);
 	}
 	
