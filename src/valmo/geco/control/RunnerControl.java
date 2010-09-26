@@ -13,6 +13,7 @@ import valmo.geco.core.Announcer;
 import valmo.geco.core.TimeManager;
 import valmo.geco.core.Util;
 import valmo.geco.model.Category;
+import valmo.geco.model.Club;
 import valmo.geco.model.Course;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
@@ -42,25 +43,41 @@ public class RunnerControl extends Control {
 		return runner;		
 	}
 	
-	public Runner buildAnonymousRunner(String chip, Course course) {
+	public Runner buildAnonymousRunner(String chip, Course course) throws RunnerCreationException {
 		Runner runner = factory().createRunner();
 		runner.setStartnumber(registry().detectMaxStartnumber() + 1);
 		runner.setChipnumber(chip);
 		runner.setFirstname("John");
 		runner.setLastname("Doe");
-		runner.setClub(registry().noClub());
-		runner.setCategory(registry().noCategory());
-		runner.setCourse(course);
+		setDefaults(course, runner);
 		return runner;
 	}
+	private void setDefaults(Course course, Runner runner) throws RunnerCreationException {
+		if( course==null )
+			throw new RunnerCreationException("No course defined in stage");
+		Club club = registry().noClub();
+		if( club==null )
+			club = registry().anyClub();
+		if( club==null )
+			throw new RunnerCreationException("No club defined in stage");
+		Category category = registry().noCategory();
+		if( category==null )
+			category = registry().anyCategory();
+		if( category==null )
+			throw new RunnerCreationException("No category defined in stage");
 
-	public Runner createAnonymousRunner(Course course) {
+		runner.setClub(club);
+		runner.setCategory(category);
+		runner.setCourse(course);
+	}
+
+	public Runner createAnonymousRunner(Course course) throws RunnerCreationException {
 		Runner runner = buildAnonymousRunner(newUniqueChipnumber(), course);
 		registerRunner(runner, builder.buildRunnerData());
 		return runner;
 	}
 
-	public Runner createAnonymousRunner() {
+	public Runner createAnonymousRunner() throws RunnerCreationException {
 		return createAnonymousRunner(registry().anyCourse());
 	}
 

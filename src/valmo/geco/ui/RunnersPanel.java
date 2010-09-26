@@ -19,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -33,6 +34,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 
 import valmo.geco.Geco;
+import valmo.geco.control.RunnerCreationException;
 import valmo.geco.core.Announcer;
 import valmo.geco.core.TimeManager;
 import valmo.geco.live.LiveComponent;
@@ -92,9 +94,12 @@ public class RunnersPanel extends TabPanel
 		addButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// announce runner creation and add in tablemodel
-				geco().runnerControl().createAnonymousRunner();
-//				focusTableOnIndex(tableModel.getData().size()-1);
+				try {
+					// announce runner creation and add in tablemodel
+					geco().runnerControl().createAnonymousRunner();
+				} catch (RunnerCreationException e1) {
+					JOptionPane.showMessageDialog(frame(), e1.getMessage(), "Can not create a new runner", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		topPanel.add(addButton);

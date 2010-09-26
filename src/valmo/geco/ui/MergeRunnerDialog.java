@@ -29,6 +29,7 @@ import javax.swing.JPanel;
 
 import valmo.geco.Geco;
 import valmo.geco.control.RunnerControl;
+import valmo.geco.control.RunnerCreationException;
 import valmo.geco.core.Html;
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.Course;
@@ -281,13 +282,19 @@ public class MergeRunnerDialog extends JDialog {
 				Course course = selectedCoursename.equals("[Unknown]") ?
 					registry().anyCourse() :
 					registry().findCourse(selectedCoursename);
-				// Create from scratch a brand new runner
-				Runner newRunner = runnerControl().buildAnonymousRunner(uniqueChipnumber, course);
-				// do not run checker as it should have been run
-				runnerControl().registerRunner(newRunner, runnerData);
-				geco.log("Creation " + runnerData.infoString());
-				returnChip = uniqueChipnumber;
-				setVisible(false);
+				try {
+					// Create from scratch a brand new runner
+					Runner newRunner = runnerControl().buildAnonymousRunner(uniqueChipnumber, course);
+					// do not run checker as it should have been run
+					runnerControl().registerRunner(newRunner, runnerData);
+					geco.log("Creation " + runnerData.infoString());
+					returnChip = uniqueChipnumber;
+					setVisible(false);
+				} catch (RunnerCreationException e1) {
+					// should never happen as we cant open a merge dialog without a runner,
+					// and we cant have a runner without at least one club, course, category
+					e1.printStackTrace();
+				}
 			}
 		});
 		closeB.addActionListener(new ActionListener() {

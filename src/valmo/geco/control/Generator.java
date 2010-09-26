@@ -52,7 +52,7 @@ public class Generator extends Control {
 		this.mutationX = mutationX;
 	}
 	
-	public ResultData generateRunnerData() {
+	public ResultData generateRunnerData() throws RunnerCreationException {
 		random = new Random();
 		Runner runner = generateRunner();
 		ResultData card = generateCardData(runner);
@@ -60,7 +60,7 @@ public class Generator extends Control {
 		return card;
 	}
 	
-	public Runner generateRunner() {
+	public Runner generateRunner() throws RunnerCreationException {
 		Runner runner = runnerControl.createAnonymousRunner(randomCourse());
 		runner.setLastname(runner.getLastname() + runner.getStartnumber());
 		return runner;
@@ -234,11 +234,15 @@ public class Generator extends Control {
 	
 	public static void displayOne(GecoControl c) {
 		Generator generator = new Generator(c, new RunnerControl(c), new SIReaderHandler(c, null));
-		ResultData data = generator.generateRunnerData();
-		RunnerRaceData rData = c.registry().findRunnerData(data.getSiIdent());
-		System.out.println(rData.infoString());
-		System.out.println(rData.getResult().formatTrace());
-		System.out.println();
+		try {
+			ResultData data = generator.generateRunnerData();
+			RunnerRaceData rData = c.registry().findRunnerData(data.getSiIdent());
+			System.out.println(rData.infoString());
+			System.out.println(rData.getResult().formatTrace());
+			System.out.println();
+		} catch (RunnerCreationException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void displayPowerLawRandow() {

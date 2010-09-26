@@ -10,6 +10,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Vector;
 
 
@@ -132,7 +133,11 @@ public class Registry {
 	
 	public Course anyCourse() {
 		synchronized (courses) {
-			return courses.values().iterator().next();
+			try {
+				return courses.values().iterator().next();
+			} catch (NoSuchElementException e) {
+				return null;
+			}
 		}
 	}
 
@@ -196,8 +201,16 @@ public class Registry {
 	}
 	
 	public Club noClub() {
+		return findClub("[None]");
+	}
+
+	public Club anyClub() {
 		synchronized (clubs) {
-			return findClub("[None]");
+			try {
+				return clubs.values().iterator().next();
+			} catch (NoSuchElementException e) {
+				return null;
+			}
 		}
 	}
 
@@ -256,11 +269,6 @@ public class Registry {
 		}
 	}
 
-
-	/**
-	 * @param cat
-	 * @param newName
-	 */
 	public void updateCategoryname(Category cat, String newName) {
 		synchronized (categories) {
 			categories.remove(cat.getShortname());
@@ -271,6 +279,16 @@ public class Registry {
 	
 	public Category noCategory() {
 		return findCategory("[None]");
+	}
+	
+	public Category anyCategory() {
+		synchronized (categories) {
+			try {
+				return categories.values().iterator().next();
+			} catch (NoSuchElementException e) {
+				return null;
+			}
+		}
 	}
 
 

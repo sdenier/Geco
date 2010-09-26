@@ -23,6 +23,7 @@ import javax.swing.SpinnerNumberModel;
 
 import valmo.geco.Geco;
 import valmo.geco.control.Generator;
+import valmo.geco.control.RunnerCreationException;
 import valmo.geco.core.Announcer.Logging;
 
 /**
@@ -136,6 +137,8 @@ public class LogPanel extends TabPanel implements Logging {
 										wait(delay);
 									}
 								} catch (InterruptedException e) {
+								} catch (RunnerCreationException e) {
+									e.printStackTrace();
 								}
 								displayLog("--Stop--");
 								generateB.setBackground(defaultColor);

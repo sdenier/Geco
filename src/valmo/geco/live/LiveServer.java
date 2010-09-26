@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import valmo.geco.control.Control;
 import valmo.geco.control.GecoControl;
 import valmo.geco.control.RunnerControl;
+import valmo.geco.control.RunnerCreationException;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.RunnerResult;
@@ -100,14 +101,18 @@ public class LiveServer extends Control {
 		Runner runner = registry().findRunnerByChip(data[0]);
 		if( runner==null || Integer.parseInt(data[1])!=runner.getStartnumber() ) {
 			System.err.println("creation " + data[0]);
-			runner = runnerControl.createAnonymousRunner(registry().findCourse(data[6]));
-			runnerControl.validateChipnumber(runner, data[0]);
-			runnerControl.validateStartnumber(runner, data[1]);
-			runnerControl.validateLastname(runner, data[2]);
-			runnerControl.validateFirstname(runner, data[3]);
-			runnerControl.validateCategory(runner, data[4]);
-			runnerControl.validateClub(runner, data[5]);
-			serverMulti.announceNewData();
+			try {
+				runner = runnerControl.createAnonymousRunner(registry().findCourse(data[6]));
+				runnerControl.validateChipnumber(runner, data[0]);
+				runnerControl.validateStartnumber(runner, data[1]);
+				runnerControl.validateLastname(runner, data[2]);
+				runnerControl.validateFirstname(runner, data[3]);
+				runnerControl.validateCategory(runner, data[4]);
+				runnerControl.validateClub(runner, data[5]);
+				serverMulti.announceNewData();
+			} catch (RunnerCreationException e) {
+				e.printStackTrace();
+			}
 		} else { // check that course is consistent
 			if( !runner.getCourse().getName().equals(data[6]) ) {
 				System.err.println("inconsistent course " + data[6]);
