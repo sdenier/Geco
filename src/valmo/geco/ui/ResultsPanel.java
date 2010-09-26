@@ -7,6 +7,7 @@ package valmo.geco.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -204,10 +205,8 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	}
 
 	private JPanel initSelectionPanel() {
-		// Options and commands
-		JPanel commandPanel = new JPanel(new GridLayout(0, 2));
-		commandPanel.setBorder(
-				BorderFactory.createTitledBorder("Options"));
+		// Commands: options and buttons
+		JPanel optionsPanel = new JPanel(new GridLayout(0, 2));
 		
 		selectCourseB = new JRadioButton("Courses");
 		selectCatB = new JRadioButton("Categories");
@@ -217,28 +216,28 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		poolGroup.add(selectCatB);
 		poolGroup.add(selectMixedB);
 		poolGroup.setSelected(selectCourseB.getModel(), true);
-		commandPanel.add(selectCatB);
-		commandPanel.add(selectCourseB);
-		commandPanel.add(selectMixedB);
-		commandPanel.add(Box.createHorizontalGlue());
+		optionsPanel.add(selectCatB);
+		optionsPanel.add(selectCourseB);
+		optionsPanel.add(selectMixedB);
+		optionsPanel.add(Box.createHorizontalGlue());
+		optionsPanel.add(Box.createHorizontalGlue());
+		optionsPanel.add(Box.createHorizontalGlue());
 		
 		showNcC = new JCheckBox("Show NC");
 		showOtC = new JCheckBox("Show Others");
 		showPeC = new JCheckBox("Show penalties");
 		showEsC = new JCheckBox("Show empty sets");
-		commandPanel.add(showNcC);
-		commandPanel.add(showOtC);
-		commandPanel.add(showPeC);
-		commandPanel.add(showEsC);
-		
+		optionsPanel.add(showNcC);
+		optionsPanel.add(showOtC);
+		optionsPanel.add(showPeC);
+		optionsPanel.add(showEsC);
+		optionsPanel.add(Box.createHorizontalGlue());
+		optionsPanel.add(Box.createHorizontalGlue());
+
 		refreshB = new JButton("Refresh");
 		refreshB.requestFocusInWindow();
 		exportB = new JButton("Export");
 		JButton printB = new JButton("Print");
-		commandPanel.add(SwingUtils.embed(refreshB));
-		commandPanel.add(Box.createHorizontalGlue());
-		commandPanel.add(SwingUtils.embed(exportB));
-		commandPanel.add(SwingUtils.embed(printB));
 		
 		printB.addActionListener(new ActionListener() {
 			@Override
@@ -252,6 +251,13 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 			}
 		});
 		
+		JPanel commandPanel = new JPanel();
+		commandPanel.setBorder(
+				BorderFactory.createTitledBorder("Commands"));
+		commandPanel.setLayout(new BoxLayout(commandPanel, BoxLayout.Y_AXIS));
+		commandPanel.add(optionsPanel);
+		commandPanel.add(SwingUtils.makeButtonBar(FlowLayout.CENTER, refreshB, exportB, printB));
+
 		
 		// Pool list
 		selectAllB = new JButton("All");
@@ -264,7 +270,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		list = new JList(coursenames);
 		selectAllCourses(list);
 		JScrollPane scrollPane = new JScrollPane(list);
-		scrollPane.setPreferredSize(new Dimension(150, 300));
+		scrollPane.setPreferredSize(new Dimension(150, 250));
 		JPanel listPanel = new JPanel(new BorderLayout());
 		listPanel.add(SwingUtils.embed(scrollPane), BorderLayout.CENTER);
 		listPanel.add(SwingUtils.embed(listButtonsPanel), BorderLayout.EAST);

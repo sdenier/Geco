@@ -5,7 +5,6 @@
 package valmo.geco.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
@@ -170,15 +169,14 @@ public class RunnersPanel extends TabPanel
 			}
 		});
 		filterPanel.add(filterField);
-//		filterPanel.add(Box.createHorizontalStrut(600));
 		return filterPanel;
 	}
 	
 	public JScrollPane initTableScroll() {
 		tableModel = new RunnersTableModel(geco());
 		table = new JTable(tableModel);
-//		table.setPreferredScrollableViewportSize(table.getPreferredSize());
-		table.setPreferredScrollableViewportSize(new Dimension(800, 600));
+		table.setPreferredScrollableViewportSize(table.getPreferredSize());
+//		table.setPreferredScrollableViewportSize(new Dimension(700, 600));
 		tableModel.initCellEditors(table);
 		tableModel.initTableColumnSize(table);
 		enableRowSorting();

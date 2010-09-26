@@ -7,11 +7,13 @@ package valmo.geco.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
 
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -75,10 +77,6 @@ public class RunnerPanel extends GecoPanel {
 		displayTime(cTimeF, runnerData.getControltime());
 		displayTime(sTimeF, runnerData.getStarttime());
 		displayTime(fTimeF, runnerData.getFinishtime());
-//		eTimeF.setText(TimeManager.fullTime(runnerData.getErasetime()));
-//		cTimeF.setText(TimeManager.fullTime(runnerData.getControltime()));
-//		sTimeF.setText(TimeManager.fullTime(runnerData.getStarttime()));
-//		fTimeF.setText(TimeManager.fullTime(runnerData.getFinishtime()));
 		displayRacetime();
 		mpF.setText(Integer.toString(runnerData.getResult().getNbMPs()));
 		penaltyF.setText(runnerData.getResult().formatTimePenalty());
@@ -104,26 +102,31 @@ public class RunnerPanel extends GecoPanel {
 	}
 	
 	public void createComponents() {
-		rTimeF = new JTextField(5);
-		rTimeF.setEditable(false);
-		cTimeF = new JTextField(5);
-		cTimeF.setEditable(false);
-		eTimeF = new JTextField(5);
+		eTimeF = new JTextField(4);
 		eTimeF.setEditable(false);
-		sTimeF = new JTextField(5);
+		cTimeF = new JTextField(4);
+		cTimeF.setEditable(false);
+		sTimeF = new JTextField(4);
 		sTimeF.setEditable(false);
-		fTimeF = new JTextField(5);
+		fTimeF = new JTextField(4);
 		fTimeF.setEditable(false);
-		realTimeF = new JTextField(5);
+		rTimeF = new JTextField(4);
+		rTimeF.setEditable(false);
+		realTimeF = new JTextField(4);
 		realTimeF.setEditable(false);
+		realTimeF.setToolTipText("Real race time, computed as finish - start. "
+				+ "Yellow background indicates official time has been edited.");
 		mpF = new JTextField();
 		mpF.setEditable(false);
 		penaltyF = new JTextField(5);
 		penaltyF.setEditable(false);
 		
 		resetRTimeB = new JButton("Reset Time");
-		recheckStatusB = new JButton("Recheck Runner");
+		resetRTimeB.setToolTipText("Reset official time to real race time + penalty");
+		recheckStatusB = new JButton("Recheck");
+		recheckStatusB.setToolTipText("Recheck runner status and reset race time");
 		mergeDialogB = new JButton("Merge...");
+		mergeDialogB.setToolTipText("Open Merge dialog");
 	}
 	
 	public void createListeners() {
@@ -158,46 +161,45 @@ public class RunnerPanel extends GecoPanel {
 	
 	public JPanel initPanel(JPanel panel) {
 		panel.setLayout(new BorderLayout());
-		panel.add(SwingUtils.embed(initRunnerPanel(new JPanel())), BorderLayout.NORTH);
+		panel.add(SwingUtils.embed(initRunnerPanel()), BorderLayout.NORTH);
 		panel.add(SwingUtils.embed(this.punchPanel), BorderLayout.CENTER);
 		return panel;
 	}
 
 	
-	public JPanel initRunnerPanel(JPanel panel) {
-		panel.setLayout(new GridLayout(0,2));
-//		panel.setBorder(BorderFactory.createTitledBorder("Runner"));
+	public JPanel initRunnerPanel() {
+		JPanel dataPanel = new JPanel();
+		dataPanel.setLayout(new GridLayout(0,4));
 
 		Component[] comps = new Component[] {
-				new JLabel("Read time"),
-				rTimeF,
-				new JLabel("Erase time"),
+				new JLabel("Erase"),
 				eTimeF,
-				new JLabel("Control time"),
+				new JLabel("Control"),
 				cTimeF,
-				new JLabel("Start time"),
+				new JLabel("Start"),
 				sTimeF,
-				new JLabel("Finish time"),
+				new JLabel("Finish"),
 				fTimeF,
-				new JLabel("Real race time"),
+				new JLabel("Read"),
+				rTimeF,
+				new JLabel("Race"),
 				realTimeF,
 				new JLabel("MPs"),
 				mpF,
-				new JLabel("Time penalty"),
+				new JLabel("Penalty"),
 				penaltyF,
-				
-//				Box.createHorizontalGlue(),
-//				Box.createHorizontalGlue(),
-
-				resetRTimeB,
-				recheckStatusB,
-				mergeDialogB
 		};
-		
 		for (int i = 0; i < comps.length; i++) {
-			panel.add(comps[i]);
+			dataPanel.add(comps[i]);
 		}
-		return panel;
+		
+		JPanel runnerPanel = new JPanel(new BorderLayout());
+		runnerPanel.add(dataPanel, BorderLayout.NORTH);
+		runnerPanel.add(Box.createVerticalStrut(10), BorderLayout.CENTER);
+		runnerPanel.add(
+				SwingUtils.makeButtonBar(FlowLayout.CENTER, resetRTimeB, recheckStatusB, mergeDialogB),
+				BorderLayout.SOUTH);
+		return runnerPanel;
 	}
 	
 }

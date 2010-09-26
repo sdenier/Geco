@@ -36,7 +36,7 @@ public class PunchPanel extends JPanel {
 	public JPanel initPunchPanel(JPanel panel) {
 		panel.setLayout(new BorderLayout());
 		JScrollPane scrollPane = new JScrollPane(punchesT);
-		scrollPane.setPreferredSize(new Dimension(300, 300));
+		scrollPane.setPreferredSize(new Dimension(300, 400));
 		panel.add(scrollPane, BorderLayout.CENTER);
 		return panel;
 	}

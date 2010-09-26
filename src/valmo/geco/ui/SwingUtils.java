@@ -5,6 +5,7 @@
 package valmo.geco.ui;
 
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 
 import javax.swing.JPanel;
@@ -30,6 +31,14 @@ public class SwingUtils {
 	public static JPanel embed(Component comp) {
 		JPanel pan = new JPanel();
 		pan.add(comp);
+		return pan;
+	}
+	
+	public static JPanel makeButtonBar(int align, Component... comps) {
+		JPanel pan = new JPanel(new FlowLayout(align));
+		for (Component component : comps) {
+			pan.add(component);
+		}
 		return pan;
 	}
 

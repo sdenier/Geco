@@ -6,7 +6,7 @@ package valmo.geco.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -257,33 +257,28 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 	}
 
 	private JPanel initBuilderPanel() {
-		JPanel heatPanel = new JPanel();
-		heatPanel.setLayout(new BoxLayout(heatPanel, BoxLayout.X_AXIS));
+		// select, new, delete heatset
+		JPanel heatCreationPanel = new JPanel();
+		heatCreationPanel.setLayout(new BoxLayout(heatCreationPanel, BoxLayout.X_AXIS));
+		
+		heatList = new JList(heatlistModel);
+		JScrollPane spane = new JScrollPane(heatList);
+		spane.setPreferredSize(new Dimension(90, 90));
+		heatCreationPanel.add(SwingUtils.embed(spane));
+
 		JPanel butPanel = new JPanel();
 		butPanel.setLayout(new BoxLayout(butPanel, BoxLayout.Y_AXIS));
 		newB = new JButton("New");
 		deleteB = new JButton("Delete");
 		butPanel.add(SwingUtils.embed(newB));
 		butPanel.add(SwingUtils.embed(deleteB));
-		heatPanel.add(butPanel);
-		
-		heatList = new JList(heatlistModel);
-		JScrollPane spane = new JScrollPane(heatList);
-		spane.setPreferredSize(new Dimension(90, 90));
-		heatPanel.add(spane);
+		heatCreationPanel.add(butPanel);
 
-		JPanel selectionPanel = new JPanel(new BorderLayout());
-		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new GridLayout(0, 2));
+		// buttons
 		refreshB = new JButton("Refresh");
 		JButton printB = new JButton("Print");
 		exportB = new JButton("Export");
-		buttonPanel.add(SwingUtils.embed(refreshB));
-		buttonPanel.add(Box.createHorizontalStrut(10));
-		buttonPanel.add(SwingUtils.embed(exportB));
-		buttonPanel.add(SwingUtils.embed(printB));
-		selectionPanel.add(buttonPanel, BorderLayout.NORTH);
-
+		
 		printB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -296,15 +291,25 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 			}
 		});
 
+		// command panel with heatset and buttons
+		JPanel commandPanel = new JPanel(new BorderLayout());
+		commandPanel.add(heatCreationPanel, BorderLayout.NORTH);
+		commandPanel.add(
+				SwingUtils.makeButtonBar(FlowLayout.CENTER, refreshB, exportB, printB),
+				BorderLayout.CENTER);
+		commandPanel.add(Box.createVerticalStrut(10), BorderLayout.SOUTH);
+
+		// selection panel for pools
 		poolList = new JList();
 		poolList.setVisible(false);
 		JScrollPane scrollPane = new JScrollPane(poolList);
-		scrollPane.setPreferredSize(new Dimension(150, 300));
-		JPanel embed = SwingUtils.embed(scrollPane);
-		selectionPanel.add(embed, BorderLayout.CENTER);
+		scrollPane.setPreferredSize(new Dimension(150, 250));
+
+		JPanel selectionPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		selectionPanel.add(scrollPane);
 		
 		JPanel builderPanel = new JPanel(new BorderLayout());
-		builderPanel.add(SwingUtils.embed(heatPanel), BorderLayout.NORTH);
+		builderPanel.add(commandPanel, BorderLayout.NORTH);
 		builderPanel.add(selectionPanel, BorderLayout.CENTER);
 		return builderPanel;
 	}

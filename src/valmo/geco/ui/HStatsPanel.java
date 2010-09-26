@@ -60,8 +60,7 @@ public class HStatsPanel extends StatsPanel {
 	}
 
 	protected void initStatsPanel(JPanel panel) {
-		panel.setLayout(new BorderLayout());
-		
+		// control panel
 		JPanel controlP = new JPanel();
 		controlP.setLayout(new GridBagLayout());
 		GridBagConstraints c = SwingUtils.gbConstr(1);
@@ -98,19 +97,21 @@ public class HStatsPanel extends StatsPanel {
 		});
 		c.gridy = 2;
 		controlP.add(refreshB, c);
-		panel.add( SwingUtils.embed(controlP), BorderLayout.WEST );
 		
+		// Stats table
 		courseTableModel = createCourseTableModel();
 		JTable table = new JTable(courseTableModel);
 		// cant use default sorter with html-formatted content
 //		TableRowSorter<AbstractTableModel> sorter = new TableRowSorter<AbstractTableModel>(courseTableModel);
 //		table.setRowSorter(sorter);
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
-		JScrollPane jsp = new JScrollPane(table);
-		jsp.setPreferredSize(new Dimension(500, 250));
-		panel.add( jsp, BorderLayout.CENTER );
-		
-		panel.add( Box.createHorizontalStrut(200), BorderLayout.EAST );
+		JScrollPane tableSP = new JScrollPane(table);
+		tableSP.setPreferredSize(new Dimension(500, 200));
+
+		panel.setLayout(new BorderLayout());
+		panel.add( tableSP, BorderLayout.CENTER );
+		panel.add( SwingUtils.embed(controlP), BorderLayout.EAST );
+		panel.add( Box.createHorizontalStrut(200), BorderLayout.WEST );
 	}
 	
 	protected AbstractTableModel createCourseTableModel() {

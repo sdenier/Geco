@@ -56,7 +56,7 @@ public class LogPanel extends TabPanel implements Logging {
 	}
 	
 	public JPanel initLogArea() {
-		logArea = new JTextArea(25, 80);
+		logArea = new JTextArea(25, 70);
 		logArea.setEditable(false);
 		logArea.setLineWrap(true);
 		JButton clearB = new JButton("Clear log view");
