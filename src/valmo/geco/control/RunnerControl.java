@@ -117,15 +117,6 @@ public class RunnerControl extends Control {
 	}
 	
 	
-	public boolean verifyStartnumber(Runner runner, String newStartString) {
-		try {
-			return verifyStartnumber(runner, new Integer(newStartString));
-		} catch (NumberFormatException e) {
-			geco().info("Bad format for start number", true);
-			return false;
-		}
-	}
-
 	public boolean verifyStartnumber(Runner runner, int newStart) {
 		int oldStart = runner.getStartnumber();
 		Integer[] startnums = registry().collectStartnumbers();
@@ -233,16 +224,6 @@ public class RunnerControl extends Control {
 	public boolean validateNCStatus(Runner runner, boolean nc) {
 		runner.setNC(nc);
 		return true;
-	}
-	
-	public boolean verifyRaceTime(String raceTime) {
-		try {
-			TimeManager.userParse(raceTime);
-			return true;
-		} catch (ParseException e1) {
-			geco().info("Bad time format", true);
-			return false;
-		}		
 	}
 	
 	public boolean validateRaceTime(RunnerRaceData runnerData, String raceTime) {

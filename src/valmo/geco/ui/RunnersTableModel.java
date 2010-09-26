@@ -15,9 +15,7 @@ import java.util.Vector;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.DefaultCellEditor;
-import javax.swing.InputVerifier;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -53,7 +51,7 @@ public class RunnersTableModel extends AbstractTableModel {
 	public RunnersTableModel(Geco geco) {
 		this.geco = geco;
 		this.headers = new String[] {
-				"Startnumber", "Chip", "First name", "Last name", "Category", "Course", "Club", "Racetime", "Status", "NC" 
+				"Start", "E-card", "First name", "Last name", "Category", "Course", "Club", "Official time", "Status", "NC" 
 		};
 		this.data = new Vector<RunnerRaceData>();
 		unlock();
@@ -154,16 +152,16 @@ public class RunnersTableModel extends AbstractTableModel {
 		for (int i = 0; i < headers.length; i++) {
 			int width = 0;
 			switch (i) {
-			case 0: width = 30 ; break;
-			case 1: width = 50 ;break;
-			case 2: width = 100 ;break;
-			case 3: width = 100 ;break;
-			case 4: width = 50 ;break;
-			case 5: width = 50 ;break;
-			case 6: width = 50 ;break;
-			case 7: width = 50 ;break;
-			case 8: width = 50 ;break;
-			case 9: width = 15 ;break;
+			case 0: width = 50 ; break;
+			case 1: width = 100 ;break;
+			case 2: width = 150 ;break;
+			case 3: width = 150 ;break;
+			case 4: width = 100 ;break;
+			case 5: width = 100 ;break;
+			case 6: width = 100 ;break;
+			case 7: width = 100 ;break;
+			case 8: width = 100 ;break;
+			case 9: width = 50 ;break;
 			default: break;
 			}
 			model.getColumn(i).setPreferredWidth(width);
@@ -307,17 +305,33 @@ public class RunnersTableModel extends AbstractTableModel {
 		
 		public RunnersTableEditor() {
 			editField = new JTextField();
-			editField.addActionListener(getActionListener());
-			editField.setInputVerifier(getInputVerifier());
+			editField.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if( validateInput() ) {
+						fireEditingStopped();
+					} else {
+						editField.setBorder(new LineBorder(Color.red));
+					}
+				}
+			});
 		}
 		
+		@Override
+		public boolean stopCellEditing() {
+			if( validateInput() ) {
+				return super.stopCellEditing();
+			} else {
+				editField.setBorder(new LineBorder(Color.red));
+				return false;
+			}
+		}
+		
+		public abstract boolean validateInput();
+
 		public String getValue() {
 			return editField.getText();
 		}
-		
-		public abstract ActionListener getActionListener();
-
-		public abstract InputVerifier getInputVerifier();
 
 		@Override
 		public Component getTableCellEditorComponent(JTable table, Object value,
@@ -345,30 +359,8 @@ public class RunnersTableModel extends AbstractTableModel {
 			return Integer.toString(selectedRunner.getStartnumber());
 		}
 		@Override
-		public ActionListener getActionListener() {
-			return new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					if( control().validateStartnumber(selectedRunner, getValue())) {
-						fireEditingStopped();
-					} else {
-						editField.setBorder(new LineBorder(Color.red));
-					}
-				}
-			};
-		}
-		@Override
-		public InputVerifier getInputVerifier() {
-			return new InputVerifier() {
-				@Override
-				public boolean shouldYieldFocus(JComponent input) {
-					return control().validateStartnumber(selectedRunner, getValue());	
-				}
-				@Override
-				public boolean verify(JComponent input) {
-					return control().verifyStartnumber(selectedRunner, getValue());
-				}
-			};
+		public boolean validateInput() {
+			return control().validateStartnumber(selectedRunner, getValue());
 		}
 	}
 	
@@ -378,30 +370,8 @@ public class RunnersTableModel extends AbstractTableModel {
 			return selectedRunner.getChipnumber();
 		}
 		@Override
-		public ActionListener getActionListener() {
-			return new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					if( control().validateChipnumber(selectedRunner, getValue())) {
-						fireEditingStopped();
-					} else {
-						editField.setBorder(new LineBorder(Color.red));
-					}			
-				}
-			};
-		}
-		@Override
-		public InputVerifier getInputVerifier() {
-			return new InputVerifier() {
-				@Override
-				public boolean shouldYieldFocus(JComponent input) {
-					return control().validateChipnumber(selectedRunner, getValue());	
-				}
-				@Override
-				public boolean verify(JComponent input) {
-					return control().verifyChipnumber(selectedRunner, getValue());
-				}
-			};
+		public boolean validateInput() {
+			return control().validateChipnumber(selectedRunner, getValue());
 		}
 	}
 	
@@ -411,30 +381,8 @@ public class RunnersTableModel extends AbstractTableModel {
 			return selectedRunner.getLastname();
 		}
 		@Override
-		public ActionListener getActionListener() {
-			return new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					if( control().validateLastname(selectedRunner, getValue()) ) {
-						fireEditingStopped();
-					} else {
-						editField.setBorder(new LineBorder(Color.red));
-					}
-				}
-			};
-		}
-		@Override
-		public InputVerifier getInputVerifier() {
-			return new InputVerifier() {
-				@Override
-				public boolean shouldYieldFocus(JComponent input) {
-					return control().validateLastname(selectedRunner, getValue());
-				}
-				@Override
-				public boolean verify(JComponent input) {
-					return control().verifyLastname(getValue());
-				}
-			};
+		public boolean validateInput() {
+			return control().validateLastname(selectedRunner, getValue());
 		}
 	}
 	
@@ -445,30 +393,8 @@ public class RunnersTableModel extends AbstractTableModel {
 			return selectedData.getResult().formatRacetime();
 		}
 		@Override
-		public ActionListener getActionListener() {
-			return new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					if( control().validateRaceTime(selectedData, getValue()) ){
-						fireEditingStopped();
-					} else {
-						editField.setBorder(new LineBorder(Color.red));
-					}
-				}
-			};
-		}
-		@Override
-		public InputVerifier getInputVerifier() {
-			return  new InputVerifier() {
-				@Override
-				public boolean shouldYieldFocus(JComponent input) {
-					return control().validateRaceTime(selectedData, getValue());
-				}
-				@Override
-				public boolean verify(JComponent input) {
-					return control().verifyRaceTime(getValue());
-				}
-			};
+		public boolean validateInput() {
+			return control().validateRaceTime(selectedData, getValue());
 		}
 		@Override
 		public Component getTableCellEditorComponent(JTable table, Object value,
