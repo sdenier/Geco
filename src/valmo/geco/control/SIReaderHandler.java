@@ -58,6 +58,10 @@ public class SIReaderHandler extends Control
 		changeZeroTime();
 		geco.announcer().registerStageListener(this);
 	}
+	
+	public void setRequestHandler(GecoRequestHandler requestHandler) {
+		this.requestHandler = requestHandler;
+	}
 
 	public static String portNameProperty() {
 		return "SIPortname";

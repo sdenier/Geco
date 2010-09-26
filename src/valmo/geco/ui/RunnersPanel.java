@@ -121,6 +121,20 @@ public class RunnersPanel extends TabPanel
 		});
 		topPanel.add(deleteButton);
 		
+		final JCheckBox autoB = new JCheckBox("Auto");
+		autoB.setToolTipText("Enable auto merge");
+		autoB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if( autoB.isSelected() ) {
+					geco().siHandler().setRequestHandler(geco().autoMergeHandler());
+				} else {
+					geco().siHandler().setRequestHandler(geco().defaultMergeHandler());
+				}
+			}
+		});
+		topPanel.add(autoB);
+		
 		liveB = new JCheckBox("Live");
 		liveB.setToolTipText("Enable live mode");
 		liveB.addActionListener(new ActionListener() {
@@ -149,7 +163,6 @@ public class RunnersPanel extends TabPanel
 		});
 		topPanel.add(lockB);
 
-		//		topPanel.add(new JCheckBox("Auto mode"));
 		topPanel.add(Box.createHorizontalStrut(500));
 		topPanel.add(initFilterPanel());
 		topPanel.setBorder(BorderFactory.createEtchedBorder());

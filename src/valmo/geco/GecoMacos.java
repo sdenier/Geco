@@ -24,7 +24,7 @@ public class GecoMacos {
 		System.setProperty("apple.laf.useScreenMenuBar", "true");
 		System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Geco for Orientshow");
 		try {
-			Application.getApplication().setDockIconImage(ImageIO.read(Geco.class.getResource("/resources/icons/crystal/cnr.png")));
+			Application.getApplication().setDockIconImage(ImageIO.read(Geco.class.getResource("/resources/icons/crystal/cnr128.png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
