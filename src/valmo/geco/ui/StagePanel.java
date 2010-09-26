@@ -433,7 +433,9 @@ public class StagePanel extends TabPanel {
 		ActionListener refreshAction = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Course course = panel.getSelectedData();
-				geco().runnerControl().recheckRunnersFromCourse(course);
+				if( course!=null ) {
+					geco().runnerControl().recheckRunnersFromCourse(course);
+				}
 			}
 		};
 		
