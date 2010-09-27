@@ -109,7 +109,7 @@ public class VStatsPanel extends StatsPanel {
 		jsp1.setPreferredSize(new Dimension(250, 200));
 		listP.add(jsp1, BorderLayout.CENTER);
 		listP.add(controlP, BorderLayout.SOUTH);
-		panel.add(listP, BorderLayout.NORTH);
+		panel.add( SwingUtils.embed(listP), BorderLayout.NORTH);
 		
 		courseTableModel = createCourseTableModel();
 		JTable table = new JTable(courseTableModel);

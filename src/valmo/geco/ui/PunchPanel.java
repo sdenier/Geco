@@ -84,7 +84,7 @@ public class PunchPanel extends JPanel {
 			public String getColumnName(int column) {
 				switch (column) {
 				case 0:
-					return "Nº";
+					return "Num";
 				case 1:
 					return "Course";
 				case 2:

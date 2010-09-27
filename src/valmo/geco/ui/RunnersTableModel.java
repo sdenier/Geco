@@ -160,8 +160,8 @@ public class RunnersTableModel extends AbstractTableModel {
 			case 5: width = 100 ;break;
 			case 6: width = 100 ;break;
 			case 7: width = 100 ;break;
-			case 8: width = 100 ;break;
-			case 9: width = 50 ;break;
+			case 8: width = 75 ;break;
+			case 9: width = 30 ;break;
 			default: break;
 			}
 			model.getColumn(i).setPreferredWidth(width);
