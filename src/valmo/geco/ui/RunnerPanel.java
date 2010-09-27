@@ -118,7 +118,7 @@ public class RunnerPanel extends GecoPanel {
 				+ "Yellow background indicates official time has been edited.");
 		mpF = new JTextField();
 		mpF.setEditable(false);
-		penaltyF = new JTextField(5);
+		penaltyF = new JTextField(4);
 		penaltyF.setEditable(false);
 		
 		resetRTimeB = new JButton("Reset Time");

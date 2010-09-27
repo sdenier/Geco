@@ -154,8 +154,8 @@ public class RunnersTableModel extends AbstractTableModel {
 			switch (i) {
 			case 0: width = 50 ; break;
 			case 1: width = 100 ;break;
-			case 2: width = 150 ;break;
-			case 3: width = 150 ;break;
+			case 2: width = 100 ;break;
+			case 3: width = 100 ;break;
 			case 4: width = 100 ;break;
 			case 5: width = 100 ;break;
 			case 6: width = 100 ;break;

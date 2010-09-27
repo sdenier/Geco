@@ -106,7 +106,7 @@ public class VStatsPanel extends StatsPanel {
 		
 		JPanel listP = new JPanel(new BorderLayout());
 		JScrollPane jsp1 = new JScrollPane(coursesL);
-		jsp1.setPreferredSize(new Dimension(300, 175));
+		jsp1.setPreferredSize(new Dimension(250, 200));
 		listP.add(jsp1, BorderLayout.CENTER);
 		listP.add(controlP, BorderLayout.SOUTH);
 		panel.add(listP, BorderLayout.NORTH);
@@ -115,7 +115,7 @@ public class VStatsPanel extends StatsPanel {
 		JTable table = new JTable(courseTableModel);
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 		JScrollPane jsp = new JScrollPane(table);
-		jsp.setPreferredSize(new Dimension(300, 175));
+		jsp.setPreferredSize(new Dimension(250, 175));
 		panel.add( SwingUtils.embed(jsp), BorderLayout.CENTER );
 	}
 	

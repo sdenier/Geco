@@ -36,7 +36,7 @@ public class PunchPanel extends JPanel {
 	public JPanel initPunchPanel(JPanel panel) {
 		panel.setLayout(new BorderLayout());
 		JScrollPane scrollPane = new JScrollPane(punchesT);
-		scrollPane.setPreferredSize(new Dimension(300, 400));
+		scrollPane.setPreferredSize(new Dimension(250, 350));
 		panel.add(scrollPane, BorderLayout.CENTER);
 		return panel;
 	}
@@ -84,7 +84,7 @@ public class PunchPanel extends JPanel {
 			public String getColumnName(int column) {
 				switch (column) {
 				case 0:
-					return "NÂº";
+					return "Nº";
 				case 1:
 					return "Course";
 				case 2:
