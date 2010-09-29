@@ -5,6 +5,8 @@
 package valmo.geco.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
@@ -17,6 +19,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -87,8 +90,8 @@ public class RunnersPanel extends TabPanel
 		return pane;
 	}
 
-	public Box initTopPanel() {
-		Box topPanel = Box.createHorizontalBox();
+	public Component initTopPanel() {
+		JComponent topPanel = Box.createHorizontalBox();
 		JButton addButton = new JButton("+");
 		addButton.setToolTipText("Create new runner");
 		addButton.addActionListener(new ActionListener() {
@@ -163,17 +166,17 @@ public class RunnersPanel extends TabPanel
 		});
 		topPanel.add(lockB);
 
-		topPanel.add(Box.createHorizontalStrut(500));
-		topPanel.add(initFilterPanel());
+		topPanel.add(Box.createHorizontalGlue());
+		initFilterPanel(topPanel);
 		topPanel.setBorder(BorderFactory.createEtchedBorder());
 		return topPanel;
 	}
 
 	
-	public Box initFilterPanel() {
-		Box filterPanel = Box.createHorizontalBox();
-		filterPanel.add(new JLabel(" Find: "));
-		filterField = new JTextField(20);
+	public void initFilterPanel(JComponent panel) {
+		panel.add(new JLabel(" Find: "));
+		filterField = new JTextField(25);
+		filterField.setMaximumSize(new Dimension(250, SwingUtils.SPINNERHEIGHT));
 		filterField.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -186,8 +189,7 @@ public class RunnersPanel extends TabPanel
 			    }
 			}
 		});
-		filterPanel.add(filterField);
-		return filterPanel;
+		panel.add(filterField);
 	}
 	
 	public JScrollPane initTableScroll() {

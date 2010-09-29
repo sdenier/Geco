@@ -21,6 +21,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -67,6 +68,7 @@ public class HeatSetDialog extends JDialog {
 				cancel();
 			}
 		});
+		((JPanel) getContentPane()).setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		
 		getContentPane().setLayout(new GridBagLayout());
 		getContentPane().add(new JLabel("Heat Set Name"));

@@ -51,7 +51,7 @@ public class RunnersTableModel extends AbstractTableModel {
 	public RunnersTableModel(Geco geco) {
 		this.geco = geco;
 		this.headers = new String[] {
-				"Start", "E-card", "First name", "Last name", "Category", "Course", "Club", "Official time", "Status", "NC" 
+				"Start", "E-card", "First name", "Last name", "Category", "Course", "Club", "Time", "Status", "NC" 
 		};
 		this.data = new Vector<RunnerRaceData>();
 		unlock();
@@ -153,13 +153,13 @@ public class RunnersTableModel extends AbstractTableModel {
 			int width = 0;
 			switch (i) {
 			case 0: width = 50 ; break;
-			case 1: width = 100 ;break;
+			case 1: width = 75 ;break;
 			case 2: width = 100 ;break;
 			case 3: width = 100 ;break;
-			case 4: width = 100 ;break;
-			case 5: width = 100 ;break;
-			case 6: width = 100 ;break;
-			case 7: width = 100 ;break;
+			case 4: width = 75 ;break;
+			case 5: width = 75 ;break;
+			case 6: width = 75 ;break;
+			case 7: width = 75 ;break;
 			case 8: width = 75 ;break;
 			case 9: width = 30 ;break;
 			default: break;

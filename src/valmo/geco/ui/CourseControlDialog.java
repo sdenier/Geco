@@ -10,11 +10,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import valmo.geco.core.Util;
@@ -34,6 +36,7 @@ public class CourseControlDialog extends JDialog {
 		super(frame, "Course Editor", true);
 		setResizable(false);
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
+		((JPanel) getContentPane()).setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		
 		getContentPane().setLayout(new GridBagLayout());
 		getContentPane().add(new JLabel("Control sequence for course " + course.getName() + " (separated by comma):"));

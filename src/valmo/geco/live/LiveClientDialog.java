@@ -14,12 +14,14 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.text.DecimalFormat;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import valmo.geco.ui.SwingUtils;
@@ -45,6 +47,7 @@ public class LiveClientDialog extends JDialog {
 			}
 		});
 		
+		((JPanel) getContentPane()).setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		getContentPane().setLayout(new GridBagLayout());
 		GridBagConstraints c = SwingUtils.gbConstr();
 
