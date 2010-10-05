@@ -2,6 +2,7 @@
 <project basedir="." default="buildnumber" name="GecO">
 	<property file="src/version.prop"/>
 	<property file="dev.prop"/>
+	<property file="webstart/webstart.prop"/>
 	
 	<property name="srcdoc.dir" value="doc" />
 	<property name="wg.dir" value="${srcdoc.dir}/user/wg" />
@@ -63,19 +64,6 @@
             <fileset file="${sireader.dir}/SIReader.jar"/>
         </jar>
     </target>
-
-    <target name="build_livejar" depends="buildnumber">
-        <jar destfile="${geco.dir}/livegeco-${build.num}.jar" filesetmanifest="mergewithoutmain">
-            <manifest>
-                <attribute name="Main-Class" value="valmo.geco.live.GecoLive"/>
-                <attribute name="Class-Path" value="."/>
-            	<attribute name="Built-By" value="${dev.username}"/>
-            	<attribute name="Built-Date" value="${TODAY}"/> 
-               	<attribute name="Implementation-Version" value="${version.num}-${build.num}"/>
-            </manifest>
-            <fileset dir="${geco.dir}/bin"/>
-        </jar>
-    </target>
 	
     <target name="build_distrib" depends="build_jar,userHelp">
     	<zip destfile="${geco.dir}/geco${version.num}-${build.num}.zip">
@@ -103,6 +91,33 @@
     		<fileset dir="${geco.dir}" includes="data/sample_stages.prop"/>
     		<fileset dir="${geco.dir}" includes="demo/"/>
     	</zip>
-	</target>
+	</target>	
+
+    <target name="build_livejar" depends="buildnumber">
+        <jar destfile="${geco.dir}/livegeco-${build.num}.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="valmo.geco.live.GecoLive"/>
+                <attribute name="Class-Path" value="."/>
+            	<attribute name="Built-By" value="${dev.username}"/>
+            	<attribute name="Built-Date" value="${TODAY}"/> 
+               	<attribute name="Implementation-Version" value="${version.num}-${build.num}"/>
+            </manifest>
+            <fileset dir="${geco.dir}/bin"/>
+        </jar>
+    </target>
+
+    <target name="build_webstart" depends="buildnumber">
+        <jar destfile="${geco.dir}/webstart/gecows.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="valmo.geco.live.GecoWebStart"/>
+                <attribute name="Class-Path" value="."/>
+            	<attribute name="Built-By" value="${dev.username}"/>
+            	<attribute name="Built-Date" value="${TODAY}"/> 
+               	<attribute name="Implementation-Version" value="${version.num}-${build.num}"/>
+            </manifest>
+            <fileset dir="${geco.dir}/bin"/>
+            <fileset dir="${webstart.data}"/>
+        </jar>
+    </target>
 
 </project>

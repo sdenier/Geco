@@ -23,3 +23,5 @@ syntax: regexp
 ^data/licencesFFCO_HorsRaid\.csv$
 syntax: regexp
 ^data/licencesFFCO\.csv$
+syntax: regexp
+^webstart/gecows\.jar$

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+" codebase="http://crco.free.fr/gecows" href="gecows.jnlp"> 
+    <information>
+        <title>Geco WS - Finale Orientshow Annecy 2010</title>
+        <vendor>Simon Denier - VALMO</vendor>
+        <offline-allowed/>
+    </information>
+    <resources>
+        <!-- Application Resources -->
+        <j2se version="1.6+"
+              href="http://java.sun.com/products/autodl/j2se"/>
+        <jar href="gecows.jar" main="true" />
+
+    </resources>
+    <application-desc
+         name="Geco WS - Finale Orientshow Annecy 2010"
+         main-class="valmo.geco.live.GecoWebStart">
+     </application-desc>
+     <update check="background"/>
+</jnlp>	
