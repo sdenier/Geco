@@ -4,8 +4,6 @@
  */
 package valmo.geco.model.xml;
 
-import java.io.File;
-import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -18,6 +16,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
+import valmo.geco.core.GecoResources;
 import valmo.geco.model.Course;
 import valmo.geco.model.Factory;
 import valmo.geco.model.impl.POFactory;
@@ -74,12 +73,11 @@ public class CourseSaxImporter extends DefaultHandler {
 		XMLReader xr = XMLReaderFactory.createXMLReader();
 		xr.setContentHandler(this);
 		xr.setErrorHandler(this);
-		if( ! new File("IOFdata.dtd").exists() ) {
+//		if( ! new File("IOFdata.dtd").exists() ) {
 			xr.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
 			xr.setFeature("http://xml.org/sax/features/validation", false);
-		}
-		FileReader r = new FileReader(xmlFile);
-		xr.parse(new InputSource(r));
+//		}
+		xr.parse(new InputSource(GecoResources.getReaderFor(xmlFile)));
 		return courses();
 	}
 	

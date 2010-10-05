@@ -6,6 +6,7 @@ package valmo.geco.control;
 
 import java.io.File;
 
+import valmo.geco.core.GecoResources;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Registry;
 import valmo.geco.model.iocsv.CategoryIO;
@@ -61,7 +62,7 @@ public class RegistryBuilder extends BasicControl{
 			new ResultDataIO(factory(), reader, null, registry).importData();
 		}
 		
-		if( new File(baseDir + File.separator + HeatSetIO.sourceFilename()).exists() ) {
+		if( GecoResources.exists(baseDir + File.separator + HeatSetIO.sourceFilename()) ) {
 			reader.initialize(baseDir, HeatSetIO.sourceFilename());
 			new HeatSetIO(factory(), reader, null, registry).importData();
 		}

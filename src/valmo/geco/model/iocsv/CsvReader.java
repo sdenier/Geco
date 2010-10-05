@@ -6,9 +6,9 @@ package valmo.geco.model.iocsv;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 
+import valmo.geco.core.GecoResources;
 import valmo.geco.core.Util;
 
 
@@ -54,12 +54,7 @@ public class CsvReader {
 	}
 
 	public void open() {
-		try {
-			this.reader = new BufferedReader(new FileReader(filePath()));
-		} catch (IOException e) {
-			e.printStackTrace();
-			close();
-		}
+		this.reader = GecoResources.getReaderFor(filePath());
 	}
 
 	public void close() {

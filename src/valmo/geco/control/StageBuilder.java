@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
@@ -19,6 +18,7 @@ import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import valmo.geco.core.GecoResources;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Stage;
@@ -61,9 +61,9 @@ public class StageBuilder extends BasicControl {
 	}
 	
 	public Stage loadStage(String baseDir, PenaltyChecker checker) {
-		File propFile = propFile(baseDir);
-		if( propFile.exists() ) {
-			return importGecoData(baseDir, propFile, checker);
+		BufferedReader reader = GecoResources.getReaderFor(propName(baseDir));
+		if( reader!=null ) {
+			return importGecoData(baseDir, reader, checker);
 		} else {
 			return importOrData(baseDir, checker);	
 		}		
@@ -71,24 +71,24 @@ public class StageBuilder extends BasicControl {
 
 
 	/**
-	 * @param propFile
+	 * @param props
 	 * @param checker
 	 * @return
 	 */
-	public Stage importGecoData(String baseDir, File propFile, PenaltyChecker checker) {
+	public Stage importGecoData(String baseDir, BufferedReader props, PenaltyChecker checker) {
 		currentStage = factory().createStage();
 		currentStage.initialize(baseDir);
-		loadStageProperties(currentStage, propFile);
+		loadStageProperties(currentStage, props);
 		importDataIntoRegistry(baseDir, true);
 		checker.postInitialize(currentStage); // post initialization
 		new RunnerBuilder(factory()).checkGecoData(currentStage, checker);
 		return currentStage;
 	}
 
-	public void loadStageProperties(Stage stage, File propFile) {
+	public void loadStageProperties(Stage stage, BufferedReader propReader) {
 		try {
 			Properties props = new Properties();
-			props.load(new BufferedReader(new FileReader(propFile)));
+			props.load(propReader);
 			stage.loadProperties(props);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -169,9 +169,13 @@ public class StageBuilder extends BasicControl {
 		}
 		zipStream.closeEntry();
 	}
+
+	public static String propName(String baseDir) {
+		return filepath(baseDir, "geco.prop");
+	}
 	
 	public static File propFile(String baseDir) {
-		return new File(filepath(baseDir, "geco.prop"));
+		return new File(propName(baseDir));
 	}
 
 	public static String filepath(String base, String filename) {

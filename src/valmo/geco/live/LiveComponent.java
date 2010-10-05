@@ -8,7 +8,6 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
@@ -20,6 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
+import valmo.geco.core.GecoResources;
 import valmo.geco.model.Course;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.impl.POFactory;
@@ -45,7 +45,7 @@ public class LiveComponent {
 
 	public static void main(String[] args) {
 		LiveComponent gecoLive = new LiveComponent().initWindow(false);
-		gecoLive.setStartDir("demo/hellemmes");
+		gecoLive.setStartDir("demo/hellemmes_live");
 		gecoLive.openWindow();
 	}
 
@@ -56,11 +56,11 @@ public class LiveComponent {
 	}
 	
 	public void setStartDir(String dir) {
-		File propFile = new File(dir + File.separator + "live.prop");
-		if( propFile.exists() ) {
+		BufferedReader reader = GecoResources.getReaderFor(dir + File.separator + "live.prop");
+		if( reader!=null ) {
 			Properties liveProp = new Properties();
 		try {
-			liveProp.load(new BufferedReader(new FileReader(propFile)));
+			liveProp.load(reader);
 			loadMapImage(dir + File.separator + liveProp.getProperty("MapFile"));
 			importCourseData(dir + File.separator + liveProp.getProperty("CourseFile"));
 			configP.setProperties(liveProp);
@@ -89,16 +89,21 @@ public class LiveComponent {
 	}
 
 	public Container initGui(Container mainContainer, boolean leisureMode) {
+		return initGui(mainContainer, leisureMode, true);
+	}
+	public Container initGui(Container mainContainer, boolean leisureMode, boolean showConfigPanel) {
 		mainContainer.setLayout(new BorderLayout());
-		mainContainer.add(initControlPanel(leisureMode), BorderLayout.WEST);
+		mainContainer.add(initControlPanel(leisureMode, showConfigPanel), BorderLayout.WEST);
 		map = new LiveMapComponent();
 		mainContainer.add(new JScrollPane(map), BorderLayout.CENTER);
 		return mainContainer;
 	}
-	private Container initControlPanel(boolean leisureMode) {
+	private Container initControlPanel(boolean leisureMode, boolean showConfigPanel) {
 		JTabbedPane controlPanel = new JTabbedPane();
 		configP = new LiveConfigPanel(jFrame, this);
-		controlPanel.add("Config", SwingUtils.embed(configP));
+		if( showConfigPanel ) {
+			controlPanel.add("Config", SwingUtils.embed(configP));
+		}
 		if( leisureMode ) {
 			runnerP = new LeisureResultPanel();
 		} else {

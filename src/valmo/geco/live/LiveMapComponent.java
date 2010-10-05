@@ -12,11 +12,12 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 
 import javax.imageio.ImageIO;
+
+import valmo.geco.core.GecoResources;
 
 /**
  * @author Simon Denier
@@ -37,7 +38,8 @@ public class LiveMapComponent extends Component {
 	
 	public void loadMapImage(String filename) {
 		try {
-			mapImage = ImageIO.read(new File(filename));
+			// TODO: check null
+			mapImage = ImageIO.read(GecoResources.getStreamFor(filename));
 			repaint();
 		} catch (IOException e) {
 			e.printStackTrace();
