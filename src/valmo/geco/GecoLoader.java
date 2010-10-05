@@ -5,6 +5,7 @@
 package valmo.geco;
 
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
 
@@ -19,7 +20,7 @@ public class GecoLoader {
 
 	public static void main(String[] args) {
 		try {
-			PrintStream ps = new PrintStream("gecoerror.log");
+			PrintStream ps = new PrintStream(new FileOutputStream("gecoerror.log", true));
 			System.setErr(ps);
 			System.setOut(ps);
 		} catch (FileNotFoundException e) {
