@@ -17,6 +17,8 @@ import java.io.InputStreamReader;
  */
 public class GecoResources {
 	
+	public final static String sep = "/";
+	
 	private static boolean webstart = false;
 
 	public static boolean exists(String name) {

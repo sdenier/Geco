@@ -179,7 +179,7 @@ public class StageBuilder extends BasicControl {
 	}
 
 	public static String filepath(String base, String filename) {
-		return base + File.separator + filename;
+		return base + GecoResources.sep + filename;
 	}
 	
 	public static boolean fileExists(String base, String filename) {

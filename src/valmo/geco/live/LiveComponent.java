@@ -7,7 +7,6 @@ package valmo.geco.live;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
@@ -56,13 +55,13 @@ public class LiveComponent {
 	}
 	
 	public void setStartDir(String dir) {
-		BufferedReader reader = GecoResources.getReaderFor(dir + File.separator + "live.prop");
+		BufferedReader reader = GecoResources.getReaderFor(dir + GecoResources.sep + "live.prop");
 		if( reader!=null ) {
 			Properties liveProp = new Properties();
 		try {
 			liveProp.load(reader);
-			loadMapImage(dir + File.separator + liveProp.getProperty("MapFile"));
-			importCourseData(dir + File.separator + liveProp.getProperty("CourseFile"));
+			loadMapImage(dir + GecoResources.sep + liveProp.getProperty("MapFile"));
+			importCourseData(dir + GecoResources.sep + liveProp.getProperty("CourseFile"));
 			configP.setProperties(liveProp);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

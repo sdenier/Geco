@@ -62,7 +62,7 @@ public class RegistryBuilder extends BasicControl{
 			new ResultDataIO(factory(), reader, null, registry).importData();
 		}
 		
-		if( GecoResources.exists(baseDir + File.separator + HeatSetIO.sourceFilename()) ) {
+		if( GecoResources.exists(baseDir + GecoResources.sep + HeatSetIO.sourceFilename()) ) {
 			reader.initialize(baseDir, HeatSetIO.sourceFilename());
 			new HeatSetIO(factory(), reader, null, registry).importData();
 		}

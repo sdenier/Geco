@@ -5,7 +5,6 @@
 package valmo.geco.model.iocsv;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 
 import valmo.geco.core.GecoResources;
@@ -32,7 +31,7 @@ public class CsvReader {
 	}
 	
 	public CsvReader initialize(String baseDir, String filename) {
-		this.filepath = baseDir + File.separator + filename;
+		this.filepath = baseDir + GecoResources.sep + filename;
 		return this;
 	}
 
