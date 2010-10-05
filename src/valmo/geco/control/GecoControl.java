@@ -70,17 +70,33 @@ public class GecoControl {
 	
 	private RuntimeStage next;
 
-	
-	public GecoControl(String startDir) {
+	/**
+	 * Constructor for a generic GecoControl. See openStage() for the full initialization
+	 */
+	public GecoControl() {
 		factory = new POFactory();
 		announcer = new Announcer();
 
 		// early controls
 		stageBuilder = new StageBuilder(factory);
 		checker = new PenaltyChecker(this);
-		
-		openStage(startDir);
 	}
+
+	/**
+	 * Utility constructor for apps which typically work on a single stage and do not need autosaving enabled by default.
+	 * @param startDir
+	 * @param withLogger 
+	 */
+	public GecoControl(String startDir, boolean withLogger) {
+		this();
+		current = loadStage(startDir, withLogger);
+		announcer.announceChange(null, stage()); // unnecessary? Checker already initialized
+	}
+	
+	public GecoControl(String startDir) {
+		this(startDir, true);
+	}
+
 	
 	public Factory factory() {
 		return this.factory;
@@ -98,23 +114,30 @@ public class GecoControl {
 		return checker;
 	}
 
-	
+	/**
+	 * Open new stage with data in the provided dir. Clean up previous stages and start autosaving.
+	 * 
+	 * @param baseDir
+	 */
 	public void openStage(String baseDir) {
 		stopAutosave();
 		RuntimeStage oldStage = current;
 		closeAllStages();
 
-		RuntimeStage newStage = loadStage(baseDir);
+		RuntimeStage newStage = loadStage(baseDir, true);
 		current = newStage;
 
 		announcer.announceChange(getStage(oldStage), stage());
 		startAutosave();
 	}
-	private RuntimeStage loadStage(String baseDir) {
+	private RuntimeStage loadStage(String baseDir, boolean withLogger) {
 		Stage stage = stageBuilder.loadStage(baseDir, checker);
 //		stageBuilder.backupData(stage.getBaseDir(),
 //								backupFilename( new SimpleDateFormat("yyMMdd-HHmmss'i'").format(new Date()) ));
-		Logger logger = initializeLogger(stage);
+		Logger logger = null;
+		if( withLogger ) {
+			logger = initializeLogger(stage);
+		}
 		return new RuntimeStage(stage, logger);
 	}
 	
@@ -224,7 +247,7 @@ public class GecoControl {
 		stopAutosave();
 		saveCurrentStage();
 		if( previous==null ) {
-			previous = loadStage(previousPath);
+			previous = loadStage(previousPath, true);
 		}
 	}
 
@@ -250,7 +273,7 @@ public class GecoControl {
 		stopAutosave();
 		saveCurrentStage();
 		if( next==null ) {
-			next = loadStage(nextPath);
+			next = loadStage(nextPath, true);
 		}
 	}
 	

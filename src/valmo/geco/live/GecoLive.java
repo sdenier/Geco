@@ -68,7 +68,8 @@ public class GecoLive implements LiveListener {
 			System.exit(0);
 		}
 
-		gecoControl = new GecoControl(startDir);
+		gecoControl = new GecoControl();
+		gecoControl.openStage(startDir);
 		liveComponent = new LiveComponent();
 	}
 	private String launcher() throws Exception {

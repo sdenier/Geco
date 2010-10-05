@@ -146,7 +146,8 @@ public class Geco implements GecoRequestHandler {
 		}
 
 		updateStageList(startDir);
-		gecoControl = new GecoControl(startDir);
+		gecoControl = new GecoControl();
+		gecoControl.openStage(startDir);
 
 		stageControl = new StageControl(gecoControl);
 		runnerControl = new RunnerControl(gecoControl);
