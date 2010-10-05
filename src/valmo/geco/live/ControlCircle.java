@@ -16,14 +16,16 @@ import java.awt.Point;
  */
 public class ControlCircle {
 
-	public static final int StrokeWidth = 4;
+	public static final int StrokeWidth = 3;
 
-	public static final int ControlDiameter = 40;
+	public static final int ControlDiameter = 30;
 
 	private String code;
 
 	private Point position;
 	
+	private Point drawPosition;
+
 	private String status;
 
 	private StringBuilder labelBuffer;
@@ -31,8 +33,8 @@ public class ControlCircle {
 	
 	ControlCircle(String code, Point position) {
 		this.code = code;
-		// TODO: check, is is circle center or bounding box origin?
 		this.position = position;
+		this.drawPosition = new Point(position.x - ControlDiameter / 2, position.y - ControlDiameter / 2);
 		resetStatus();
 	}
 	
@@ -44,11 +46,20 @@ public class ControlCircle {
 		return position;
 	}
 
+	/**
+	 * @param dx
+	 * @param dy
+	 */
+	public void translate(int dx, int dy) {
+		this.position.translate(dx, dy);
+		this.drawPosition.translate(dx, dy);
+	}
+
 	public void drawOn(Graphics2D g2) {
 		g2.setStroke(new BasicStroke(StrokeWidth));
 		g2.setColor(getStatusColor());
-		g2.drawOval(position.x, position.y, ControlDiameter, ControlDiameter);
-		g2.drawString(getLabel(), position.x + ControlDiameter, position.y + ControlDiameter + 20);
+		g2.drawOval(drawPosition.x, drawPosition.y, ControlDiameter, ControlDiameter);
+		g2.drawString(getLabel(), drawPosition.x + ControlDiameter, drawPosition.y + ControlDiameter + 10);
 	}
 
 	private String getLabel() {
@@ -105,5 +116,6 @@ public class ControlCircle {
 			labelBuffer.append("/").append(order);
 		}
 	}
+
 	
 }

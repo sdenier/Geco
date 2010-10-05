@@ -15,6 +15,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
+import valmo.geco.core.TimeManager;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Status;
@@ -33,7 +34,7 @@ public class ExtendedRunnersTableModel extends AbstractTableModel {
 	
 	public ExtendedRunnersTableModel() {
 		this.headers = new String[] {
-				"Startnumber", "Chip", "First name", "Last name", "Category", "Course", "Club", "Racetime", "MP", "Penalties", "Status" 
+				"Startnumber", "E-card", "First name", "Last name", "Category", "Course", "Club", "Racetime", "MP", "Penalties", "Official time", "Status" 
 		};
 		this.data = new Vector<RunnerRaceData>();
 	}
@@ -96,10 +97,11 @@ public class ExtendedRunnersTableModel extends AbstractTableModel {
 		case 4: return runner.getCategory().getShortname();
 		case 5: return runner.getCourse().getName();
 		case 6: return runner.getClub().getName();
-		case 7: return getRunnerData(rowIndex).getResult().formatRacetime();
+		case 7: return TimeManager.time(getRunnerData(rowIndex).realRaceTime());
 		case 8: return getRunnerData(rowIndex).getResult().getNbMPs();
 		case 9: return getRunnerData(rowIndex).getResult().formatTimePenalty();
-		case 10: return getRunnerData(rowIndex).getResult().getStatus();
+		case 10: return getRunnerData(rowIndex).getResult().formatRacetime();
+		case 11: return getRunnerData(rowIndex).getResult().getStatus();
 		default: return "Pbm";
 		}
 	}
@@ -117,7 +119,8 @@ public class ExtendedRunnersTableModel extends AbstractTableModel {
 		case 7: return String.class;
 		case 8: return Integer.class;
 		case 9: return String.class;
-		case 10: return Status.class;
+		case 10: return String.class;
+		case 11: return Status.class;
 		default: return Object.class;
 		}
 	}
@@ -138,6 +141,7 @@ public class ExtendedRunnersTableModel extends AbstractTableModel {
 			case 8: width = 30 ;break;
 			case 9: width = 30 ;break;
 			case 10: width = 50 ;break;
+			case 11: width = 50 ;break;
 			default: break;
 			}
 			model.getColumn(i).setPreferredWidth(width);
@@ -193,7 +197,8 @@ public class ExtendedRunnersTableModel extends AbstractTableModel {
 		// also init some specific cell renderers
 		model.getColumn(7).setCellRenderer(new RacetimeCellRenderer());
 		model.getColumn(9).setCellRenderer(new RacetimeCellRenderer());
-		model.getColumn(10).setCellRenderer(new StatusCellRenderer());
+		model.getColumn(10).setCellRenderer(new RacetimeCellRenderer());
+		model.getColumn(11).setCellRenderer(new StatusCellRenderer());
 	}
 
 }

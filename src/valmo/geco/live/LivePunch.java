@@ -100,7 +100,7 @@ public class LivePunch implements Trace {
 				stroke = missedStroke();
 				color = getColor();
 			} else {
-				stroke = new BasicStroke(5);
+				stroke = new BasicStroke(ControlCircle.StrokeWidth);
 				if( nextMissedPunch!=null || nextPunch.isAdded() ) {
 					color = Color.cyan;
 				} else {
@@ -135,17 +135,17 @@ public class LivePunch implements Trace {
 	public void drawLine(LivePunch start, LivePunch end, Stroke stroke, Color color, Graphics2D g2) {
 		g2.setStroke(stroke);				
 		g2.setColor(color);
-		int startX = centerPos(start.getPosition().x);
-		int endX = centerPos(end.getPosition().x);
+		int startX = start.getPosition().x;
+		int endX = end.getPosition().x;
 		int sX = Math.min(startX, endX);
 		int eX = Math.max(startX, endX);
 		int sY, eY;
 		if( sX==startX ) {
-			sY = centerPos(start.getPosition().y);
-			eY = centerPos(end.getPosition().y);
+			sY = start.getPosition().y;
+			eY = end.getPosition().y;
 		} else {
-			sY = centerPos(end.getPosition().y);
-			eY = centerPos(start.getPosition().y);
+			sY = end.getPosition().y;
+			eY = start.getPosition().y;
 		}
 		double dx = eX - sX;
 		double dy = eY - sY;
@@ -156,10 +156,6 @@ public class LivePunch implements Trace {
 			int diagY = (int) (clip * Math.sin(Math.atan(dy / dx)));
 			g2.drawLine(sX + diagX, sY + diagY, eX - diagX, eY - diagY);
 		}
-	}
-	
-	public static int centerPos(int p) {
-		return p + ControlCircle.ControlDiameter / 2;
 	}
 	
 	/* (non-Javadoc)

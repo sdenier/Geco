@@ -50,7 +50,7 @@ public class LiveMapControl {
 
 	public void translateControls(int dx, int dy) {
 		for (ControlCircle mapControl : controls.values()) {
-			mapControl.getPosition().translate( dx, dy);
+			mapControl.translate( dx, dy);
 		}
 	}
 
