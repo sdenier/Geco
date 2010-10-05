@@ -43,18 +43,28 @@ public class PunchPanel extends JPanel {
 
 	
 	public void refreshPunches(RunnerRaceData runnerData) {
-		final int[] codes = runnerData.getCourse().getCodes();
+//		final int[] codes = runnerData.getCourse().getCodes();
 		final Trace[] trace = runnerData.getResult().getTrace();
+		// TODO: refactor [seq, code]
+		final String[] sequence = new String[trace.length];
+		int seq = 1;
+		for (int i = 0; i < trace.length; i++) {
+			if( trace[i].getCode().startsWith("+") ) {
+				sequence[i] = "";
+			} else {
+				sequence[i] = Integer.toString(seq);
+				seq++;
+			}
+		}
 		punchesT.setModel(new AbstractTableModel() {
 			public Object getValueAt(int rowIndex, int columnIndex) {
 				switch (columnIndex) {
 				case 0:
-					return rowIndex + 1;
+					return sequence[rowIndex];
 				case 1:
-					return (rowIndex < codes.length) ? codes[rowIndex] : "";					
-				case 2:
+//					return "" ; //(rowIndex < codes.length) ? codes[rowIndex] : "";					
 					return traceLabel(trace, rowIndex);
-				case 3:
+				case 2:
 					return traceTime(trace, rowIndex);
 				default:
 					return "";
@@ -78,7 +88,7 @@ public class PunchPanel extends JPanel {
 				return trace.length;
 			}
 			public int getColumnCount() {
-				return 4;
+				return 3;
 			}
 			@Override
 			public String getColumnName(int column) {
@@ -86,10 +96,9 @@ public class PunchPanel extends JPanel {
 				case 0:
 					return "Num";
 				case 1:
-					return "Course";
-				case 2:
+//					return "Course";
 					return "Code";
-				case 3:
+				case 2:
 					return "Time";
 				default:
 					return "";
@@ -98,9 +107,9 @@ public class PunchPanel extends JPanel {
 		});
 		TableColumnModel columnModel = punchesT.getColumnModel();
 		columnModel.getColumn(0).setPreferredWidth(10);
-		columnModel.getColumn(1).setPreferredWidth(10);
+//		columnModel.getColumn(1).setPreferredWidth(10);
+		columnModel.getColumn(1).setPreferredWidth(25);
 		columnModel.getColumn(2).setPreferredWidth(25);
-		columnModel.getColumn(3).setPreferredWidth(25);
 	}
 	
 }
