@@ -9,7 +9,7 @@
         <!-- Application Resources -->
         <j2se version="1.6+"
               href="http://java.sun.com/products/autodl/j2se"/>
-        <jar href="gecows.jar" main="true" />
+        <jar href="gecows_annecy2010.jar" main="true" />
 
     </resources>
     <application-desc
