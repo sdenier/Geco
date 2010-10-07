@@ -58,6 +58,7 @@ public class ControlCircle {
 	public void drawOn(Graphics2D g2) {
 		g2.setStroke(new BasicStroke(StrokeWidth));
 		g2.setColor(getStatusColor());
+		g2.fillOval(position.x - 1, position.y - 1, 3, 3);
 		g2.drawOval(drawPosition.x, drawPosition.y, ControlDiameter, ControlDiameter);
 		g2.drawString(getLabel(), drawPosition.x + ControlDiameter, drawPosition.y + ControlDiameter + 10);
 	}
