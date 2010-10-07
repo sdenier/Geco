@@ -8,6 +8,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -85,6 +87,12 @@ public class GecoLive implements LiveListener {
 //		if( platformIsMacOs() ) {
 //		GecoMacos.setupQuitAction(geco);
 //	}
+		jFrame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);
+			}
+		});
 
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		splitPane.setOneTouchExpandable(true);

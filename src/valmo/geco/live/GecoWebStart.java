@@ -6,6 +6,8 @@ package valmo.geco.live;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -66,6 +68,12 @@ public class GecoWebStart {
 //		if( platformIsMacOs() ) {
 //		GecoMacos.setupQuitAction(geco);
 //	}
+		jFrame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);
+			}
+		});
 
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		splitPane.setOneTouchExpandable(true);

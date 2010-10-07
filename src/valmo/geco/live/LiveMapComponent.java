@@ -75,7 +75,7 @@ public class LiveMapComponent extends Component {
 		
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.6f));
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2.setFont(new Font(Font.DIALOG_INPUT, Font.BOLD, 20));
+		g2.setFont(new Font(Font.DIALOG_INPUT, Font.BOLD, 15));
 		if( controls!=null ) {
 			for (ControlCircle control : controls) {
 				control.drawOn(g2);
