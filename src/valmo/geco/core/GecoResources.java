@@ -5,6 +5,7 @@
 package valmo.geco.core;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -22,7 +23,11 @@ public class GecoResources {
 	private static boolean webstart = false;
 
 	public static boolean exists(String name) {
-		return GecoResources.class.getResource(name) != null;
+		if( webstart ) {
+			return GecoResources.class.getResource(name) != null;
+		} else {
+			return new File(name).exists();
+		}
 	}
 	
 	public static InputStream getStreamFor(String name) {

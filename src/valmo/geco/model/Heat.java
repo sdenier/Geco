@@ -14,6 +14,8 @@ public interface Heat {
 
 	public void addQualifiedRunner(Runner runner);
 
+	public String getHeatSetName();
+
 	public String getName();
 
 	public List<Runner> getQualifiedRunners();
@@ -21,5 +23,7 @@ public interface Heat {
 	public void setName(String name);
 
 	public void setQualifiedRunners(List<Runner> qualifiedRunners);
+	
+	public void setHeatSetName(String name);
 
 }

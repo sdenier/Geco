@@ -15,6 +15,7 @@ public class HeatImpl implements Heat {
 
 	private String name;
 	private List<Runner> qualifiedRunners;
+	private String heatsetName;
 
 	public HeatImpl() {
 		this("");
@@ -47,5 +48,15 @@ public class HeatImpl implements Heat {
 
 	public void setQualifiedRunners(List<Runner> qualifiedRunners) {
 		this.qualifiedRunners = qualifiedRunners;
+	}
+
+	@Override
+	public String getHeatSetName() {
+		return heatsetName;
+	}
+
+	@Override
+	public void setHeatSetName(String name) {
+		this.heatsetName = name;
 	}
 }

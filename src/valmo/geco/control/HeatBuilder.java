@@ -46,11 +46,12 @@ public class HeatBuilder extends Control {
 		return factory().createHeatSet();
 	}
 
-	public List<Heat> buildHeatsFromResults(List<Result> results, String[] heatnames, int qualifyingRank) {
+	public List<Heat> buildHeatsFromResults(List<Result> results, String heatsetName, String[] heatnames, int qualifyingRank) {
 		int nbHeats = heatnames.length;
 		Vector<Heat> heats = new Vector<Heat>(nbHeats);
 		for (String name : heatnames) {
 			Heat h = factory().createHeat();
+			h.setHeatSetName(heatsetName);
 			h.setName(name);
 			heats.add(h);
 		}
@@ -116,7 +117,11 @@ public class HeatBuilder extends Control {
 					heatsetResults.add(resultBuilder.buildResultForCategory((Category) pool));	
 				}				
 			}
-			List<Heat> heatsForCurrentHeatset = buildHeatsFromResults(heatsetResults, heatset.getHeatNames(), heatset.getQualifyingRank());
+			List<Heat> heatsForCurrentHeatset = buildHeatsFromResults(
+					heatsetResults, 
+					heatset.getName(),
+					heatset.getHeatNames(), 
+					heatset.getQualifyingRank());
 			heats.addAll(heatsForCurrentHeatset);
 		}
 		return heats;
@@ -157,7 +162,7 @@ public class HeatBuilder extends Control {
 		return html.close();
 	}
 	private void appendHtmlHeat(Heat heat, Html html) {
-		html.tag("h1", heat.getName());
+		html.tag("h1", heat.getHeatSetName() + " " + heat.getName());
 		html.open("table");
 		int i = 1;
 		for (Runner runner : heat.getQualifiedRunners()) {
