@@ -45,8 +45,11 @@ public class RunnersTableModel extends AbstractTableModel {
 	
 	private List<RunnerRaceData> data;
 
-	private boolean isEditable;
-	
+	private int clickCountToEdit;
+	private DefaultCellEditor categoryEditor;
+	private DefaultCellEditor courseEditor;
+	private DefaultCellEditor clubEditor;
+	private DefaultCellEditor statusEditor;
 	
 	public RunnersTableModel(Geco geco) {
 		this.geco = geco;
@@ -54,7 +57,7 @@ public class RunnersTableModel extends AbstractTableModel {
 				"Start", "E-card", "First name", "Last name", "Category", "Course", "Club", "Time", "Status", "NC" 
 		};
 		this.data = new Vector<RunnerRaceData>();
-		unlock();
+		this.clickCountToEdit = 2;
 	}
 	
 	private RunnerControl control() {
@@ -216,12 +219,12 @@ public class RunnersTableModel extends AbstractTableModel {
 		TableColumnModel model = table.getColumnModel();
 		model.getColumn(0).setCellEditor(new StartnumberEditor());
 		model.getColumn(1).setCellEditor(new ChipnumberEditor());
+		model.getColumn(2).setCellEditor(new FirstnameEditor());
 		model.getColumn(3).setCellEditor(new LastnameEditor());
-		updateComboBoxEditors(table);
 		model.getColumn(7).setCellEditor(new RacetimeEditor());
-		DefaultCellEditor statusEditor = new DefaultCellEditor(new JComboBox(Status.values()));
-		statusEditor.setClickCountToStart(2);
+		statusEditor = new DefaultCellEditor(new JComboBox(Status.values()));
 		model.getColumn(8).setCellEditor(statusEditor);
+		updateComboBoxEditors(table); // init cell clicks to edit
 
 		// also init some specific cell renderers
 		model.getColumn(7).setCellRenderer(new RacetimeCellRenderer());
@@ -230,28 +233,35 @@ public class RunnersTableModel extends AbstractTableModel {
 
 	protected void updateComboBoxEditors(JTable table) {
 		TableColumnModel model = table.getColumnModel();
-		DefaultCellEditor categoryEditor = new DefaultCellEditor(new JComboBox(registry().getSortedCategorynames()));
-		categoryEditor.setClickCountToStart(2);
+		categoryEditor = new DefaultCellEditor(new JComboBox(registry().getSortedCategorynames()));
 		model.getColumn(4).setCellEditor(categoryEditor);
-		DefaultCellEditor courseEditor = new DefaultCellEditor(new JComboBox(registry().getSortedCoursenames()));
-		courseEditor.setClickCountToStart(2);
+		courseEditor = new DefaultCellEditor(new JComboBox(registry().getSortedCoursenames()));
 		model.getColumn(5).setCellEditor(courseEditor);
-		DefaultCellEditor clubEditor = new DefaultCellEditor(new JComboBox(registry().getSortedClubnames()));
-		clubEditor.setClickCountToStart(2);
+		clubEditor = new DefaultCellEditor(new JComboBox(registry().getSortedClubnames()));
 		model.getColumn(6).setCellEditor(clubEditor);
+		// (re)set clicks for new cell editors
+		setClickCountToEdit(clickCountToEdit);
 	}
 
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		return isEditable;
+		return true;
 	}
 	
-	public void lock() {
-		isEditable = false;
+	public void enableFastEdition() {
+		setClickCountToEdit(1);
 	}
 
-	public void unlock() {
-		isEditable = true;
+	public void disableFastEdition() {
+		setClickCountToEdit(2);
+	}
+	
+	private void setClickCountToEdit(int clicks) {
+		clickCountToEdit = clicks;
+		categoryEditor.setClickCountToStart(clicks);
+		courseEditor.setClickCountToStart(clicks);
+		clubEditor.setClickCountToStart(clicks);
+		statusEditor.setClickCountToStart(clicks);
 	}
 	
 
@@ -260,7 +270,7 @@ public class RunnersTableModel extends AbstractTableModel {
 		switch (columnIndex) {
 		case 0: break;
 		case 1: break;
-		case 2: setFirstName(getRunner(rowIndex), (String) aValue); break;
+		case 2: break;
 		case 3: break;
 		case 4: setCategory(getRunner(rowIndex), (String) aValue); break;
 		case 5: setCourse(getRunnerData(rowIndex), (String) aValue); break;
@@ -272,11 +282,6 @@ public class RunnersTableModel extends AbstractTableModel {
 		}
 	}
 
-
-	private void setFirstName(Runner runner, String newName) {
-		control().validateFirstname(runner, newName);
-	}
-	
 	private void setCategory(Runner runner, String newCategory) {
 		control().validateCategory(runner, newCategory);
 	}
@@ -345,7 +350,7 @@ public class RunnersTableModel extends AbstractTableModel {
 		@Override
 		public boolean isCellEditable(EventObject e) {
 		    if (e instanceof MouseEvent) { 
-				return ((MouseEvent) e).getClickCount() >= 2;
+				return ((MouseEvent) e).getClickCount() >= clickCountToEdit;
 			}
 		    return true;
 		}
@@ -372,6 +377,17 @@ public class RunnersTableModel extends AbstractTableModel {
 		@Override
 		public boolean validateInput() {
 			return control().validateChipnumber(selectedRunner, getValue());
+		}
+	}
+
+	public class FirstnameEditor extends RunnersTableEditor {
+		@Override
+		public Object getCellEditorValue() {
+			return selectedRunner.getFirstname();
+		}
+		@Override
+		public boolean validateInput() {
+			return control().validateFirstname(selectedRunner, getValue());
 		}
 	}
 	

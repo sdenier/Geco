@@ -153,18 +153,18 @@ public class RunnersPanel extends TabPanel
 		});
 		topPanel.add(liveB);
 
-		final JCheckBox lockB = new JCheckBox("Lock");
-		lockB.setToolTipText("Lock edition in table");
-		lockB.addActionListener(new ActionListener() {
+		final JCheckBox fastB = new JCheckBox("Fast edit");
+		fastB.setToolTipText("Enable fast edition");
+		fastB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if( lockB.isSelected() )
-					tableModel.lock();
+				if( fastB.isSelected() )
+					tableModel.enableFastEdition();
 				else
-					tableModel.unlock();
+					tableModel.disableFastEdition();
 			}
 		});
-		topPanel.add(lockB);
+		topPanel.add(fastB);
 
 		topPanel.add(Box.createHorizontalGlue());
 		initFilterPanel(topPanel);
