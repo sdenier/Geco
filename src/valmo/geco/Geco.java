@@ -21,6 +21,7 @@ import valmo.geco.control.SIReaderHandler;
 import valmo.geco.control.StageControl;
 import valmo.geco.core.Announcer;
 import valmo.geco.core.GecoRequestHandler;
+import valmo.geco.core.GecoResources;
 import valmo.geco.core.Logger;
 import valmo.geco.core.Util;
 import valmo.geco.model.Registry;
@@ -45,6 +46,8 @@ public class Geco implements GecoRequestHandler {
 	private static boolean testMode = false;
 	
 	private static boolean leisureMode = false;
+
+	private static String startDir = null;
 	
 	{
 		Properties prop = new Properties();
@@ -100,7 +103,7 @@ public class Geco implements GecoRequestHandler {
 			GecoMacos.earlySetup();
 		}
 
-		final Geco geco = new Geco();
+		final Geco geco = new Geco(startDir);
 		if( platformIsMacOs() ) {
 			GecoMacos.setupQuitAction(geco);
 		}
@@ -108,13 +111,26 @@ public class Geco implements GecoRequestHandler {
 	}
 	
 	private static void setLaunchOptions(String[] args) {
-		for (String arg : args) {
+		for (int i = 0; i < args.length; i++) {
+			String arg = args[i];
 			if( arg.equals("--test") ) {
 				testMode = true;
+				continue;
 			}
 			if( arg.equals("--leisure") ) {
 				leisureMode = true;
+				continue;
 			}
+			if( arg.equals("--startdir") ) {
+				if( i < args.length-1 ) {
+					startDir = args[i+1];
+					i++; // skip next arg
+				} else {
+					System.out.println("Missing path after --startdir option");
+				}
+				continue;
+			}
+			System.out.println("Unrecognized option: " + arg);
 		}
 	}
 
@@ -136,13 +152,19 @@ public class Geco implements GecoRequestHandler {
 		System.exit(0);
 	}
 
-	public Geco() {
-		String startDir = null;
-		try {
-			startDir = launcher();
-		} catch (Exception e) {
-			System.out.println(e.getLocalizedMessage());
-			System.exit(0);
+	public Geco(String startDir) {
+		if( startDir!=null ) {
+			if( !GecoResources.exists(startDir) ) {
+				System.out.println("Path does not exist: " + startDir);
+				System.exit(0);
+			}
+		} else {
+			try {
+				startDir = launcher();
+			} catch (Exception e) {
+				System.out.println(e.getLocalizedMessage());
+				System.exit(0);
+			}
 		}
 
 		updateStageList(startDir);
