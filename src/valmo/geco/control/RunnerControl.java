@@ -47,8 +47,8 @@ public class RunnerControl extends Control {
 		Runner runner = factory().createRunner();
 		runner.setStartnumber(registry().detectMaxStartnumber() + 1);
 		runner.setChipnumber(chip);
-		runner.setFirstname("John");
-		runner.setLastname("Doe");
+		runner.setFirstname("");
+		runner.setLastname("X");
 		setDefaults(course, runner);
 		return runner;
 	}

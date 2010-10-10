@@ -41,6 +41,7 @@ public class RunnerIO extends AbstractIO<Runner> {
 		runner.setChipnumber(record[1]);
 		int i = record[2].lastIndexOf(" ");
 		if(i==-1) {
+			runner.setFirstname("");
 			runner.setLastname(record[2]);
 		} else {
 			runner.setFirstname(record[2].substring(0, i));

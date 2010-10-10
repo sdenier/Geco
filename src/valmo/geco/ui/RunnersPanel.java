@@ -7,18 +7,23 @@ package valmo.geco.ui;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.EventObject;
 import java.util.Vector;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -28,6 +33,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.RowSorter;
@@ -189,12 +195,33 @@ public class RunnersPanel extends TabPanel
 			    }
 			}
 		});
+		getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
+				KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+				"focusOnFilter");
+		getActionMap().put("focusOnFilter", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				filterField.requestFocusInWindow();
+			}
+		});
 		panel.add(filterField);
 	}
 	
 	public JScrollPane initTableScroll() {
 		tableModel = new RunnersTableModel(geco());
-		table = new JTable(tableModel);
+		table = new JTable(tableModel) {
+			// Workaround for keyboard activation of JComboBox editors in JTable
+			@Override
+			public boolean editCellAt(int row, int column, EventObject e) {
+				boolean edit = super.editCellAt(row, column, e);
+				Component comp = getEditorComponent();
+				if( edit && e instanceof KeyEvent && comp instanceof JComboBox ) {
+					((JComboBox) comp).setPopupVisible(true);
+					comp.requestFocus();
+				}
+				return edit;
+			}
+		};
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 //		table.setPreferredScrollableViewportSize(new Dimension(700, 600));
 		tableModel.initCellEditors(table);
