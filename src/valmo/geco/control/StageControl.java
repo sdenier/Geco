@@ -197,7 +197,7 @@ public class StageControl extends Control {
 			}
 		}
 		for (HeatSet set : registry().getHeatSets()) {
-			if( set.isCategoryType() ) {
+			if( set.isCategoryType() || set.isMixedType() ) {
 				for (Pool pool : set.getSelectedPools()) {
 					if( pool == cat ) {
 						throw new Exception("Heatsets use category");

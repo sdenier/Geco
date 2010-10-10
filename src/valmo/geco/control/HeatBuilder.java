@@ -12,11 +12,9 @@ import java.util.Random;
 import java.util.Vector;
 
 import valmo.geco.core.Html;
-import valmo.geco.model.Category;
 import valmo.geco.model.Course;
 import valmo.geco.model.Heat;
 import valmo.geco.model.HeatSet;
-import valmo.geco.model.Pool;
 import valmo.geco.model.RankedRunner;
 import valmo.geco.model.Result;
 import valmo.geco.model.Runner;
@@ -46,7 +44,33 @@ public class HeatBuilder extends Control {
 		return factory().createHeatSet();
 	}
 
-	public List<Heat> buildHeatsFromResults(List<Result> results, String heatsetName, String[] heatnames, int qualifyingRank) {
+	private Vector<Heat> getHeats(HeatSet[] selectedHeatsets) {
+		if( heats==null ) {
+			buildHeats(selectedHeatsets);
+		}
+		return heats;
+	}
+
+	private Vector<Heat> buildHeats(HeatSet[] selectedHeatsets) {
+		heats = new Vector<Heat>();
+		for (HeatSet heatset : selectedHeatsets) {
+			List<Result> heatsetResults
+							= resultBuilder.buildResults(heatset.getSelectedPools(), heatset.getSetType());
+			List<Heat> heatsForCurrentHeatset = buildHeatsFromResults(
+					heatsetResults, 
+					heatset.getName(),
+					heatset.getHeatNames(), 
+					heatset.getQualifyingRank());
+			heats.addAll(heatsForCurrentHeatset);
+		}
+		return heats;
+	}
+
+	public List<Heat> buildHeatsFromResults(
+							List<Result> results,
+							String heatsetName,
+							String[] heatnames,
+							int qualifyingRank) {
 		int nbHeats = heatnames.length;
 		Vector<Heat> heats = new Vector<Heat>(nbHeats);
 		for (String name : heatnames) {
@@ -102,37 +126,6 @@ public class HeatBuilder extends Control {
 		return series;
 	}
 
-	
-	private Vector<Heat> buildHeats(HeatSet[] selectedHeatsets) {
-		heats = new Vector<Heat>();
-		for (HeatSet heatset : selectedHeatsets) {
-			List<Result> heatsetResults = new Vector<Result>();
-			Pool[] selectedPools = heatset.getSelectedPools();
-			if( heatset.isCourseType() ) {
-				for (Pool pool : selectedPools) {
-					heatsetResults.add(resultBuilder.buildResultForCourse((Course) pool));	
-				}
-			} else {
-				for (Pool pool : selectedPools) {
-					heatsetResults.add(resultBuilder.buildResultForCategory((Category) pool));	
-				}				
-			}
-			List<Heat> heatsForCurrentHeatset = buildHeatsFromResults(
-					heatsetResults, 
-					heatset.getName(),
-					heatset.getHeatNames(), 
-					heatset.getQualifyingRank());
-			heats.addAll(heatsForCurrentHeatset);
-		}
-		return heats;
-	}
-	
-	private Vector<Heat> getHeats(HeatSet[] selectedHeatsets) {
-		if( heats==null ) {
-			buildHeats(selectedHeatsets);
-		}
-		return heats;
-	}
 	
 	public String refreshHtmlHeats(HeatSet[] selectedHeatsets) {
 		heats = null;

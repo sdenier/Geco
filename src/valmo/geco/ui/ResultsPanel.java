@@ -38,8 +38,8 @@ import javax.swing.SpinnerNumberModel;
 import valmo.geco.Geco;
 import valmo.geco.control.ResultBuilder;
 import valmo.geco.control.ResultBuilder.ResultConfig;
-import valmo.geco.control.ResultBuilder.ResultType;
 import valmo.geco.core.Announcer.StageConfigListener;
+import valmo.geco.model.ResultType;
 import valmo.geco.model.Stage;
 
 /**
@@ -208,9 +208,9 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		// Commands: options and buttons
 		JPanel optionsPanel = new JPanel(new GridLayout(0, 2));
 		
-		selectCourseB = new JRadioButton("Courses");
-		selectCatB = new JRadioButton("Categories");
-		selectMixedB = new JRadioButton("Category/Courses");
+		selectCourseB = new JRadioButton(ResultType.CourseResult.toString());
+		selectCatB = new JRadioButton(ResultType.CategoryResult.toString());
+		selectMixedB = new JRadioButton(ResultType.MixedResult.toString());
 		ButtonGroup poolGroup = new ButtonGroup();
 		poolGroup.add(selectCourseB);
 		poolGroup.add(selectCatB);

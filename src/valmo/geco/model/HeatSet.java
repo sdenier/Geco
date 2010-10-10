@@ -26,13 +26,15 @@ public interface HeatSet {
 
 	public void setQualifyingRank(Integer qualifyingRank);
 
-	public String getSetType();
+	public ResultType getSetType();
 
-	public void setSetType(String type);
+	public void setSetType(ResultType type);
 
 	public boolean isCourseType();
 
 	public boolean isCategoryType();
+	
+	public boolean isMixedType();
 
 	public Pool[] getSelectedPools();
 

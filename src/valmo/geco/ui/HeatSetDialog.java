@@ -15,20 +15,20 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import valmo.geco.core.Util;
 import valmo.geco.model.HeatSet;
 import valmo.geco.model.Pool;
+import valmo.geco.model.ResultType;
 
 
 /**
@@ -44,8 +44,9 @@ public class HeatSetDialog extends JDialog {
 	private JTextField heatSetF;
 	private JTextField qRankF;
 	private JTextArea heatNamesTA;
-	private JRadioButton selectCourseB;
-	private JRadioButton selectCatB;
+	private JComboBox setTypeCB;
+//	private JRadioButton selectCourseB;
+//	private JRadioButton selectCatB;
 
 	public HeatSet getHeatSet() {
 		return this.currentHeatSet;
@@ -90,19 +91,24 @@ public class HeatSetDialog extends JDialog {
 		qRankF = new JTextField(7);
 		getContentPane().add(qRankF, SwingUtils.compConstraint(1, 3));
 		
-		selectCourseB = new JRadioButton("Courses");
-		selectCatB = new JRadioButton("Categories");
-		ButtonGroup group = new ButtonGroup();
-		group.add(selectCourseB);
-		group.add(selectCatB);
-		getContentPane().add(selectCourseB, SwingUtils.compConstraint(0, 4));
-		getContentPane().add(selectCatB, SwingUtils.compConstraint(1, 4));
+		setTypeCB = new JComboBox(ResultType.values());
+//		selectCourseB = new JRadioButton("Courses");
+//		selectCatB = new JRadioButton("Categories");
+//		ButtonGroup group = new ButtonGroup();
+//		group.add(selectCourseB);
+//		group.add(selectCatB);
+		c = SwingUtils.compConstraint(0, 4);
+		c.gridwidth = 2;
+		c.anchor = GridBagConstraints.CENTER;
+		getContentPane().add(setTypeCB, c);
+//		getContentPane().add(selectCourseB, SwingUtils.compConstraint(0, 4));
+//		getContentPane().add(selectCatB, SwingUtils.compConstraint(1, 4));
 		
 		JButton saveB = new JButton("Save");
 		saveB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				checkSetFields();
+				checkAndSetFields();
 			}
 		});
 		getContentPane().add(saveB, SwingUtils.compConstraint(0, 5));
@@ -118,7 +124,7 @@ public class HeatSetDialog extends JDialog {
 		setLocationRelativeTo(null);
 	}
 	
-	private void checkSetFields() {
+	private void checkAndSetFields() {
 		boolean ok = true;
 		String errorMessage = "";
 		
@@ -163,12 +169,8 @@ public class HeatSetDialog extends JDialog {
 		}
 	}
 
-	public String getSelectedSettype() {
-		if (selectCourseB.isSelected() ) {
-			return "course";
-		} else {
-			return "category";
-		}
+	public ResultType getSelectedSettype() {
+		return (ResultType) setTypeCB.getSelectedItem();
 	}
 	
 	public void showHeatSet(HeatSet heatSet) {
@@ -181,11 +183,12 @@ public class HeatSetDialog extends JDialog {
 		heatSetF.setText(heatSet.getName());
 		qRankF.setText(heatSet.getQualifyingRank().toString());
 		heatNamesTA.setText(Util.join(heatSet.getHeatNames(), ",", new StringBuffer()));
-		if( heatSet.isCourseType() ) {
-			selectCourseB.setSelected(true);
-		} else {
-			selectCatB.setSelected(true);
-		}
+		setTypeCB.setSelectedItem(heatSet.getSetType());
+//		if( heatSet.isCourseType() ) {
+//			selectCourseB.setSelected(true);
+//		} else {
+//			selectCatB.setSelected(true);
+//		}
 	}
 	
 }

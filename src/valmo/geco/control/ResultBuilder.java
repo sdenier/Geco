@@ -17,8 +17,10 @@ import valmo.geco.core.TimeManager;
 import valmo.geco.core.Util;
 import valmo.geco.model.Category;
 import valmo.geco.model.Course;
+import valmo.geco.model.Pool;
 import valmo.geco.model.RankedRunner;
 import valmo.geco.model.Result;
+import valmo.geco.model.ResultType;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.RunnerResult;
@@ -30,8 +32,6 @@ import valmo.geco.model.Status;
  *
  */
 public class ResultBuilder extends Control {
-	
-	public enum ResultType { CourseResult, CategoryResult, MixedResult }
 	
 	public static class ResultConfig {
 		private Object[] selectedPools;
@@ -119,26 +119,40 @@ public class ResultBuilder extends Control {
 		return result;
 	}
 
-
-	
-	private Vector<Result> refreshResults(ResultConfig config) {
+	public Vector<Result> buildResults(Pool[] pools, ResultType type) {
 		Vector<Result> results = new Vector<Result>();
-		for (Object selName : config.selectedPools) {
-			switch (config.resultType) {
+		for (Pool pool : pools) {
+			switch (type) {
 			case CourseResult:
 				results.add(
-						buildResultForCourse(registry().findCourse((String) selName)) );
+						buildResultForCourse((Course) pool));
 				break;
 			case CategoryResult:
 				results.add(
-						buildResultForCategory(registry().findCategory((String) selName)) );
+						buildResultForCategory((Category) pool));
 				break;
 			case MixedResult:
 				results.addAll(
-						buildResultForCategoryByCourses(registry().findCategory((String) selName)));
+						buildResultForCategoryByCourses((Category) pool));
 			}
 		}
 		return results;
+	}
+
+	
+	private Vector<Result> refreshResults(ResultConfig config) {
+		Vector<Pool> pools = new Vector<Pool>();
+		for (Object selName : config.selectedPools) {
+			switch (config.resultType) {
+			case CourseResult:
+				pools.add( registry().findCourse((String) selName) );
+				break;
+			case CategoryResult:
+			case MixedResult:
+				pools.add( registry().findCategory((String) selName) );
+			}
+		}
+		return buildResults(pools.toArray(new Pool[0]), config.resultType);
 	}
 
 	public void exportFile(String filename, String format, ResultConfig config, int refreshInterval) throws IOException {

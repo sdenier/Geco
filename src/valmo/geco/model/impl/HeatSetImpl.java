@@ -6,18 +6,19 @@ package valmo.geco.model.impl;
 
 import valmo.geco.model.HeatSet;
 import valmo.geco.model.Pool;
+import valmo.geco.model.ResultType;
 
 public class HeatSetImpl implements HeatSet {
 	private String name;
 	private Integer qualifyingRank;
-	private String type;
+	private ResultType type;
 	private String[] heatNames;
 	private Pool[] selectedPools;
 	
 	public HeatSetImpl() {
 		name = "";
 		qualifyingRank = 0;
-		type = "course";
+		type = ResultType.CourseResult;
 		heatNames = new String[] { "" };
 		selectedPools = new Pool[0];
 	}
@@ -43,19 +44,21 @@ public class HeatSetImpl implements HeatSet {
 	public void setQualifyingRank(Integer qualifyingRank) {
 		this.qualifyingRank = qualifyingRank;
 	}
-	public String getSetType() {
+	public ResultType getSetType() {
 		return type;
 	}
-	public void setSetType(String type) {
+	public void setSetType(ResultType type) {
 		this.type = type;
 	}
 	public boolean isCourseType() {
-		return getSetType().equals("course");
+		return getSetType().equals(ResultType.CourseResult);
 	}
-
 	public boolean isCategoryType() {
-		return getSetType().equals("category");
+		return getSetType().equals(ResultType.CategoryResult);
 	}
+	public boolean isMixedType() {
+		return getSetType().equals(ResultType.MixedResult);
+	}	
 	public Pool[] getSelectedPools() {
 		return selectedPools;
 	}

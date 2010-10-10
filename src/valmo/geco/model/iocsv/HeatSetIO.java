@@ -8,6 +8,7 @@ import valmo.geco.model.Factory;
 import valmo.geco.model.HeatSet;
 import valmo.geco.model.Pool;
 import valmo.geco.model.Registry;
+import valmo.geco.model.ResultType;
 
 
 /**
@@ -33,7 +34,7 @@ public class HeatSetIO extends AbstractIO<HeatSet> {
 		Integer nbHeats = heatset.getNbHeats();
 		String[] values = new String[4 + nbHeats + heatset.getSelectedPools().length];
 		values[0] = heatset.getName();
-		values[1] = heatset.getSetType();
+		values[1] = heatset.getSetType().name();
 		values[2] = heatset.getQualifyingRank().toString();
 		values[3] = nbHeats.toString();
 		for (int i = 0; i < nbHeats; i++) {
@@ -49,7 +50,7 @@ public class HeatSetIO extends AbstractIO<HeatSet> {
 	public HeatSet importTData(String[] record) {
 		HeatSet heatSet = this.factory.createHeatSet();
 		heatSet.setName(record[0]);
-		heatSet.setSetType(record[1]);
+		heatSet.setSetType(ResultType.valueOf(record[1]));
 		heatSet.setQualifyingRank(new Integer(record[2]));
 		int nbHeats = new Integer(record[3]);
 		String[] heatNames = new String[nbHeats];
