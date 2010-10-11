@@ -49,9 +49,10 @@
 	
 	<target name="build_SIReader">
 		<ant dir="${sireader.dir}" target="build_jar" />
+		<copy file="${sireader.dir}/SIReader.jar" tofile="${geco.dir}/SIReader.jar" />
 	</target>
 	
-    <target name="build_jar" depends="build_SIReader,buildnumber">
+    <target name="build_jar" depends="buildnumber">
         <jar destfile="${geco.dir}/geco${version.num}-${build.num}.jar" filesetmanifest="mergewithoutmain">
             <manifest>
                 <attribute name="Main-Class" value="valmo.geco.GecoLoader"/>
@@ -61,7 +62,7 @@
                	<attribute name="Implementation-Version" value="${version.num}-${build.num}"/>
             </manifest>
             <fileset dir="${geco.dir}/bin"/>
-            <fileset file="${sireader.dir}/SIReader.jar"/>
+            <fileset file="${geco.dir}/SIReader.jar"/>
         </jar>
     </target>
 	
@@ -70,7 +71,6 @@
     		<fileset file="${geco.dir}/geco${version.num}-${build.num}.jar"/>
     		<fileset file="${geco.dir}/readme.txt"/>
     		<fileset file="${geco.dir}/LICENSE"/>
-    		<fileset file="${geco.dir}/IOFdata.dtd"/>
     		<fileset dir="${geco.dir}" includes="help/"/>
     		<fileset dir="${geco.dir}" includes="data/template/"/>
     		<fileset dir="${geco.dir}" includes="data/sample_stages.prop"/>
@@ -85,7 +85,6 @@
     		<fileset file="${geco.dir}/geco${version.num}-${build.num}.jar"/>
         	<fileset file="${geco.dir}/readme.txt"/>
         	<fileset file="${geco.dir}/LICENSE"/>
-    		<fileset file="${geco.dir}/IOFdata.dtd"/>
     		<fileset dir="${geco.dir}" includes="help/"/>
     		<fileset dir="${geco.dir}" includes="data/template/"/>
     		<fileset dir="${geco.dir}" includes="data/sample_stages.prop"/>

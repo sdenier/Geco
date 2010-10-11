@@ -12,12 +12,12 @@ Geco is especially geared towards the Orient'Show format:
 Geco UI is also designed to provide a lean user experience: navigate through stage workflow using the top tabs, and access data by direct manipulation.
 
 ----------
-Install: unzip the archive file (should be done if you can read this file).
+Install: unzip the archive file (should be done already if you can read this file).
 
 Geco runs with Java version 6 and above. It might run with Java version 5.
 You can download a JRE (Java Runtime Environment) from http://www.java.com
 
-you need the SportIdent drivers to read SI chips.
+You need the SportIdent drivers to read SI chips.
 – Windows: download available at http://www.sportident.com/
 – Linux: recent kernels recognize the chip used by SI station, so it’s plug’n’play.
 – Mac OS X: nothing out of the box, but it is easy to install some driver and get Mac OS to recognize the station (one line to hack). Contact me for the process.
@@ -36,7 +36,6 @@ _
 |- geco*.jar: application
 |- readme.txt: this file
 |- LICENSE: license info
-|- IOFdata.dtd: dtd file for checking XML course descriptions
 |- data/: folder holding multiple stage folders (stage folders can be in any folder)
 |- data/sample_stages.prop: sample file describing a multi-stage event
 |- data/templates/: sample stage files editable with a spreadsheet application 
