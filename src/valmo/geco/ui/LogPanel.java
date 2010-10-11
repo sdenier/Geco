@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -180,4 +181,9 @@ public class LogPanel extends TabPanel implements Logging {
 		displayLog(data);
 	}
 
+	@Override
+	public void componentShown(ComponentEvent e) {
+		logArea.requestFocusInWindow();
+	}
+	
 }

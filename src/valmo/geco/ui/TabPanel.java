@@ -4,6 +4,8 @@
  */
 package valmo.geco.ui;
 
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.util.Properties;
 
 import javax.swing.JFrame;
@@ -17,7 +19,7 @@ import valmo.geco.model.Stage;
  * @since Sep 26, 2009
  *
  */
-public abstract class TabPanel extends GecoPanel implements StageListener {
+public abstract class TabPanel extends GecoPanel implements StageListener, ComponentListener {
 
 	/**
 	 * @param geco
@@ -25,6 +27,7 @@ public abstract class TabPanel extends GecoPanel implements StageListener {
 	 */
 	public TabPanel(Geco geco, JFrame frame) {
 		super(geco, frame);
+		addComponentListener(this); // panel can react when it gets shown in card layout
 		geco().announcer().registerStageListener(this);
 	}
 
@@ -38,6 +41,22 @@ public abstract class TabPanel extends GecoPanel implements StageListener {
 
 	@Override
 	public void saving(Stage stage, Properties properties) {
+	}
+
+	@Override
+	public void componentResized(ComponentEvent e) {
+	}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {
 	}
 
 }

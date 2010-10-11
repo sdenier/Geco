@@ -11,6 +11,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
 import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.IOException;
@@ -235,7 +236,6 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		optionsPanel.add(Box.createHorizontalGlue());
 
 		refreshB = new JButton("Refresh");
-		refreshB.requestFocusInWindow();
 		exportB = new JButton("Export");
 		JButton printB = new JButton("Print");
 		
@@ -473,5 +473,11 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	public void coursesChanged() {
 		changed(null, null);
 	}
+	
+	@Override
+	public void componentShown(ComponentEvent e) {
+		refreshB.requestFocusInWindow();
+	}
+
 
 }
