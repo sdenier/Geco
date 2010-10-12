@@ -199,12 +199,12 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		toolBar.add(nextB);
 		toolBar.addSeparator();
 		
-		JButton statusB = new JButton("Recheck All", createIcon(4));
-		statusB.setToolTipText("Recheck all OK/MP to update statuses");
+		JButton statusB = new JButton("Recheck OK|MP", createIcon(4));
+		statusB.setToolTipText("Recheck all OK|MP to update results");
 		statusB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				geco.runnerControl().recheckAllRunners();
+				geco.runnerControl().recheckOkMpRunners();
 			}
 		});
 		toolBar.add(statusB);

@@ -274,7 +274,7 @@ public class RunnerControl extends Control {
 		return true;
 	}
 	
-	public void recheckAllRunners() {
+	public void recheckOkMpRunners() {
 		for (RunnerRaceData data: registry().getRunnersData()) {
 			if( ! data.hasManualStatus() ) {
 				geco().checker().check(data);

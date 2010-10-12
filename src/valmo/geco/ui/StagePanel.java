@@ -183,7 +183,7 @@ public class StagePanel extends TabPanel {
 
 		c.gridy = 2;
 		c.gridwidth = 2;
-		String helpL = new Html().open("i").contents("Click ").tag("b", "Recheck All").contents(" if you want to refresh <br />all results with new parameters").close("i").close();
+		String helpL = new Html().open("i").contents("Click ").tag("b", "Recheck OK|MP").contents(" if you want to refresh <br />results with new parameters").close("i").close();
 		panel.add(new JLabel(helpL), c);
 		
 		return titlePanel(panel, "Orientshow");
