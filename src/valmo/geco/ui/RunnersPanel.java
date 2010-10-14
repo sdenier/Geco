@@ -11,6 +11,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.ParseException;
 import java.util.Arrays;
@@ -183,17 +184,26 @@ public class RunnersPanel extends TabPanel
 	public void initFilterPanel(JComponent panel) {
 		panel.add(new JLabel(" Find: "));
 		filterField = new JTextField(25);
+		filterField.setToolTipText("Type a string+Enter to filter table entries. Command+f focus on the field. Escape cancels the filter.");
 		filterField.setMaximumSize(new Dimension(250, SwingUtils.SPINNERHEIGHT));
-		filterField.addActionListener(new ActionListener() {
+		filterField.addKeyListener(new KeyAdapter() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void keyReleased(KeyEvent e) {
 			    try {
 					RowFilter<Object,Object> filter = RowFilter.regexFilter("(?i)" + filterField.getText());
 					sorter.setRowFilter(filter);
 					table.getSelectionModel().setSelectionInterval(0, 0);
 			    } catch (java.util.regex.PatternSyntaxException e1) {
 			        return;
-			    }
+			    }				
+			}
+		});
+		filterField.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancelFilter");
+		filterField.getActionMap().put("cancelFilter", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				filterField.setText("");
+				sorter.setRowFilter(null);
 			}
 		});
 		getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
