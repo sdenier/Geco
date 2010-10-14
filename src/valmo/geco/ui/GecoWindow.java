@@ -6,6 +6,7 @@ package valmo.geco.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -18,15 +19,20 @@ import java.net.URL;
 import java.util.Hashtable;
 import java.util.Properties;
 
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
+import javax.swing.InputMap;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -123,7 +129,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		updateWindowTitle();
 		getContentPane().add(initToolbar(), BorderLayout.NORTH);
 		checkButtonsStatus();
-		JTabbedPane pane = new JTabbedPane();
+		final JTabbedPane pane = new JTabbedPane();
 		pane.addTab("Stage", this.stagePanel);
 		pane.setMnemonicAt(0, KeyEvent.VK_S);
 		pane.addTab("Runners", this.runnersPanel);
@@ -134,6 +140,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		pane.setMnemonicAt(3, KeyEvent.VK_H);
 		pane.addTab("Log", this.logPanel);
 		pane.setMnemonicAt(4, KeyEvent.VK_L);
+		setTabKeybindings(pane);
 		getContentPane().add(pane, BorderLayout.CENTER);
 		
 		getContentPane().add(new GecoStatusBar(this.geco, this), BorderLayout.SOUTH);
@@ -144,6 +151,50 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 				geco.exit();
 			}
 		});
+	}
+
+	private void setTabKeybindings(final JTabbedPane pane) {
+		if( Geco.platformIsMacOs() ) {
+			InputMap inputMap
+				= ((JComponent) getContentPane()).getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+			inputMap.put(
+				KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+				"selectStagePanel");
+			inputMap.put(
+				KeyStroke.getKeyStroke(KeyEvent.VK_R, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+				"selectRunnersPanel");
+			inputMap.put(
+				KeyStroke.getKeyStroke(KeyEvent.VK_E, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+				"selectResultsPanel");
+			inputMap.put(
+				KeyStroke.getKeyStroke(KeyEvent.VK_A, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+				"selectHeatsPanel");
+			inputMap.put(
+				KeyStroke.getKeyStroke(KeyEvent.VK_L, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+				"selectLogPanel");
+
+			ActionMap actionMap = ((JComponent) getContentPane()).getActionMap();
+			actionMap.put("selectStagePanel", new AbstractAction() {
+				@Override public void actionPerformed(ActionEvent e) {
+					pane.setSelectedComponent(stagePanel); }
+				});
+			actionMap.put("selectRunnersPanel", new AbstractAction() {
+				@Override public void actionPerformed(ActionEvent e) {
+					pane.setSelectedComponent(runnersPanel); }
+				});
+			actionMap.put("selectResultsPanel", new AbstractAction() {
+				@Override public void actionPerformed(ActionEvent e) {
+					pane.setSelectedComponent(resultsPanel); }
+				});
+			actionMap.put("selectHeatsPanel", new AbstractAction() {
+				@Override public void actionPerformed(ActionEvent e) {
+					pane.setSelectedComponent(heatsPanel); }
+				});
+			actionMap.put("selectLogPanel", new AbstractAction() {
+				@Override public void actionPerformed(ActionEvent e) {
+					pane.setSelectedComponent(logPanel); }
+			});
+		}
 	}
 
 	public void updateWindowTitle() {
