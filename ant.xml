@@ -71,6 +71,7 @@
     		<fileset file="${geco.dir}/geco${version.num}-${build.num}.jar"/>
     		<fileset file="${geco.dir}/readme.txt"/>
     		<fileset file="${geco.dir}/LICENSE"/>
+    		<fileset file="${geco.dir}/gpl-2.0.txt"/>
     		<fileset dir="${geco.dir}" includes="help/"/>
     		<fileset dir="${geco.dir}" includes="data/template/"/>
     		<fileset dir="${geco.dir}" includes="data/sample_stages.prop"/>
@@ -80,11 +81,13 @@
 	<target name="build_demo" depends="cleanBackups,build_jar,userHelp">
 		<delete>
 			<fileset dir="demo" includes="**/backups/*.zip"/>
+			<fileset dir="demo" includes="**/*.log"/>
 		</delete>
     	<zip destfile="${geco.dir}/geco${version.num}-${build.num}-demo.zip">
     		<fileset file="${geco.dir}/geco${version.num}-${build.num}.jar"/>
         	<fileset file="${geco.dir}/readme.txt"/>
         	<fileset file="${geco.dir}/LICENSE"/>
+    		<fileset file="${geco.dir}/gpl-2.0.txt"/>
     		<fileset dir="${geco.dir}" includes="help/"/>
     		<fileset dir="${geco.dir}" includes="data/template/"/>
     		<fileset dir="${geco.dir}" includes="data/sample_stages.prop"/>
