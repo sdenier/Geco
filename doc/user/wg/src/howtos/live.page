@@ -1,15 +1,73 @@
 ---
-title: Live
+title: LiveMap and Animation
 sort_info: 5
 in_menu: true
 routed_title: How-tos
 ---
 
-## LiveMap and Animation
+# LiveMap and Animation
+
+The toolbar contains two buttons dedicated to live analysis and animation of the race.
+
+<img style="float:none; width:94px" src="../images/animation_toolbar.png" />
+
+The *magnifier* opens the **LiveMap**, a dedicated visualization which provides an easy to understand visualization of traces. The *antenna* opens a dialog to start broadcasting card read to a **GecoLive** server.
+
+*Please note these are still experimental features.*
+
 
 ## LiveMap for on-the-fly visualization and analysis
 
+**LiveMap** complements the trace as it offers an intuitive visualization of missing and added punches on the map. Even in complex cases (involving butterfly loops), the two tools together allows one to understand errors in the race.
+
+Once the view is opened, selecting a runner in the **Runners Panel** will display his trace.
+OK punches are shown in magenta. Missed punches and legs are shown in red and dashed lines. Added punches not on course are shown in blue and cyan.
+
+<img src="../images/livemap_config.png" />
+
+Configuration:
+1. load a map image
+1. load a course file in XML format
+
+It is recommended to export both files from OCAD. There are known problems with other programs.
+
+Now the fun part (to be changed in a future version):
+1. select the DPI of your image, it should roughly set the right X and Y factors to scale controls to your image
+1. play with X Factor, Y Factor, X Translation, and Y Translation
+1. hit refresh to display the course controls and check their positions on the map
+1. repeat steps 2 et 3 until satisfied... or bored
+
+You can then check controls or courses with the last buttons.
+
+Currently Geco *does not save* these parameters. They will be lost next time you open the LiveMap! To save the parameters, you should create a file `live.prop` in the stage directory with the following content (for example):
+
+`MapFile=hellemmes.jpg`  
+`CourseFile=hellemmes.xml`  
+`DPI=150`  
+`XTrans=1`  
+`YTrans=-3`
+
+Good news is that you can reuse the file on any computer using LiveMap or GecoLive for this course.
 
 
 ## GecoLive for animation
+
+**GecoLive** is an application dedicated to animation: it can show the trace of a runner as soon as he downloads his E-card in Geco. The speaker can also browse other runners. GecoLive can reside on a different computer and receive data over the network. 
+
+<img src="../images/gecolive.png" />
+
+Configuration:
+1. launch **GecoLive** from the command line with `java -jar gecoXXX.jar valmo.geco.live.GecoLive`
+1. start the GecoLive server by clicking the *Listen* button in the bottom left corner (check the port number)
+
+Multiple **Geco** instances can push data to **GecoLive**:
+1. open the live dialog by pushing the *antenna* button
+1. give the proper hostname and port number where GecoLive is running
+1. press ok, broadcasting is starting
+
+You can always interrupt broadcasting by clicking again the button.
+
+Further configuration:
+- **Geco** only pushes card reading events and not other changes affecting results; as a consequence, **GecoLive** is not a reliable mean to get results: it just displays traces
+- to display **results** to the speaker, run a web server and use the [autoexport](../guide/results.html) feature from the **Results Panel**
 

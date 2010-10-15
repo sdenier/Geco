@@ -22,7 +22,7 @@ The right pane displays either complementary information about the currently sel
 - *Add/Remove Runner:* add a runner at the end of the startlist; remove the currently selected runner
 - *Sort Runners:* click on a header cell of the table to sort runners according to ascending/descending rank
 - *Filter Runners:* start typing to display only entries matching your search (the search is performed full-text and matches substring in data)
-- *Auto Mode (tickbox):* in this mode, Geco does not open the *Merge dialog* when reading an unknown or duplicate E-card. Instead, it creates a new runner and try to guess the course (*Experimental* feature, the course guessing is very naive). You can then edit the new entry
+- *Auto Mode (tickbox):* in this mode, Geco does not open the *Merge dialog* when reading an unknown or duplicate E-card. Instead, it creates a new runner and try to guess the course (**Experimental** feature, course guessing is very naive). You can then edit the new entry
 - *Live Mode (tickbox):* in this mode, Geco automatically focuses on the last data received from the card reader; runners are dynamically sorted by order of card reading, with most recent on top (other sort options disabled)
 - *Fast edit Mode (tickbox):* start edition with just one click, useful when lots of edition have to be done quickly
 

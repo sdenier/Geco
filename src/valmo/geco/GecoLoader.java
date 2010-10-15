@@ -22,6 +22,8 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
 
+import javax.swing.JOptionPane;
+
 import com.jdotsoft.jarloader.JarClassLoader;
 
 /**
@@ -46,6 +48,12 @@ public class GecoLoader {
 			} else {
 				loader.invokeMain("valmo.geco.Geco", args);
 			}
+		} catch (ClassNotFoundException e) {
+			JOptionPane.showMessageDialog(
+					null, 
+					"Application not found: " + e.getMessage().substring(17), // cut "Failure to load: ".length() 
+					"Launch Error", 
+					JOptionPane.ERROR_MESSAGE);
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
