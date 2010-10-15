@@ -1,6 +1,6 @@
 ---
 title: Command Line
-sort_info: 4
+sort_info: 5
 in_menu: true
 routed_title: How-tos
 ---
@@ -15,5 +15,5 @@ Options:
 - `--leisure`: enable the leisure mode for the LiveMap, showing simplified data and no race time for leisure runners who should not be timed
 
 Other programs accessible from the command line:
-- `java -jar gecoXXX.jar valmo.geco.GecoPools <aDirectoryWithData>`: runs the pool merger in batch mode
-- `java -jar gecoXXX.jar valmo.geco.live.GecoLive`: opens the GecoLive server for animation
+- `java -jar gecoXXX.jar valmo.geco.GecoPools <aDirectoryWithData>`: runs the [pool merger](quals.html) in batch mode
+- `java -jar gecoXXX.jar valmo.geco.live.GecoLive`: opens the GecoLive server for [animation](live.html)

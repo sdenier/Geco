@@ -5,6 +5,21 @@ in_menu: true
 routed_title: How-tos
 ---
 
+
+# Create parallel pools for qualifications
+
+*Experimental feature*
+
+1. Create one stage per pool (each runner has to run in each pool)
+1. Create a merging stage to merge all pool results
+  1. it should define a `pools.prop` file listing all pool stages to merge
+  1. it should define [heatsets](../guide/heats.html) to qualify runners based on merged results
+1. Once pools are finished, run pool merger on the merging stage directory with `java -jar gecoXXX.jar valmo.geco.GecoPools <MergingStageDirectory>`
+1. the batch run generates files `merged_results.html` and `heat_startlists.csv` for the first stage in the knockout series
+
+Notice that only runners having OK results in all pools can be qualified. See *hellemmes\_poolmerge* in the demo samples for an example of merging stage.
+
+
 # Create a series of stages for qualifications
 
 1. Create one stage for each step of the qualification (quarter-finals, semi-finals, finals, ...)
@@ -15,7 +30,6 @@ routed_title: How-tos
 <img style="float:none; width:168px" src="../images/stages.png" />
 
 
-Content of `stages.prop` for the above example (where belfield would be the first stage and mullaghmeen the last):  
-  `belfield`  
-  `belfield2`  
-  `mullaghmeen`  
+Content of `stages.prop` for the above example (where hellemmes\_df would be semi-finals and hellemmes\_f finals):  
+  `hellemmes_df`  
+  `hellemmes_f`  
