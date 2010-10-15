@@ -7,8 +7,13 @@ routed_title: Geco
 ---
 #License
 
+The Geco application is distributed under the GNU General Public License Version 2. See gpl-2.0.txt for details.
+
 Original parts of this program are distributed under the MIT license. See LICENSE file for details.
 Open-source code is available at [http://bitbucket.org/sdenier/geco](http://bitbucket.org/sdenier/geco)
+
+JarClassLoader distributed under the GNU General Public License Version 2.
+See [http://www.jdotsoft.com/JarClassLoader.php](http://www.jdotsoft.com/JarClassLoader.php)
 
 SIReader library kindly provided by Martin Flynn, many thanks to him!
 Visit his software Òr on [http://orienteering.ie/wiki/doku.php?id=or:index](http://orienteering.ie/wiki/doku.php?id=or:index)

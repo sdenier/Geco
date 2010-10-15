@@ -7,6 +7,8 @@ in_menu: true
 
 The stage panel allows one to configure general data for the stage.
 
+Quick access through `modifier + S`.
+
 <a href="../images/stage_panel.png"><img src="../images/stage_panel.png" /></a>
 (Click to zoom in)
 
@@ -19,6 +21,7 @@ The stage panel allows one to configure general data for the stage.
   - Zero hour: give the hour before first start to be safe (used for older SI cards)
 - Course
   - Geco can import courses described with the *[IOF XML](http://www.soenniksen.dk/iof-datastandard/index.shtml)* format. Click the *XML* button to select the course file
-  - The *...* button can be used to edit the course sequence, if necessary
-  
-  Loading/changing course definition does not trigger an automatic check of concerned runners. Use the *Recheck All* button or check status in the runners panel.
+  - You can *Edit* the course sequence by hand, if necessary
+  - You can *Recheck* all runners from a course after a change
+
+Data for clubs, categories, courses can also be edited with a spreadsheet application. See [Registrations](../howtos/register.html).

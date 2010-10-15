@@ -124,7 +124,7 @@ public class RunnerPanel extends GecoPanel {
 		resetRTimeB = new JButton("Reset Time");
 		resetRTimeB.setToolTipText("Reset official time to real race time + penalty");
 		recheckStatusB = new JButton("Recheck");
-		recheckStatusB.setToolTipText("Recheck runner status and reset race time");
+		recheckStatusB.setToolTipText("Recheck runner status and reset official time");
 		mergeDialogB = new JButton("Merge...");
 		mergeDialogB.setToolTipText("Open Merge dialog");
 	}

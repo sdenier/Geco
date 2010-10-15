@@ -8,6 +8,8 @@ in_menu: true
 The log panel is a journal of important events since the beginning of session. It also shows statistics for the stage.
 To see all events captured since the stage was created, scan the `geco.log` file.
 
+Quick access through `modifier + L`.
+
 <a href="../images/log_panel.png"><img src="../images/log_panel.png" /></a>
 
 The statistics pane displays status of runners for each course as well as the total.

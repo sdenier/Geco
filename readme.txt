@@ -43,6 +43,8 @@ _
 |- help/: documentation in html format
 
 ----------
+Many thanks to Julien Thézé, Martin Flynn, and Jannik Laval for their technical help and debugging sessions.
+
 The Geco application is distributed under the GNU General Public License Version 2. See gpl-2.0.txt for details.
 
 Original parts of this program are distributed under the MIT license. See LICENSE file for details.

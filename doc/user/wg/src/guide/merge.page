@@ -16,7 +16,7 @@ You get the merge dialog when:
 - opening it on the selected runner in the runners table
 
 Three commands are available from the merge dialog:
-- *Create* simply creates an 'anonymous' runner (John Doe) with the card data.
+- *Create* simply creates an anonymous runner (X) with the card data.
 - *Close* exits the dialog without further action.
 - *Merge* links card data with the runner selected in the combo box.
 

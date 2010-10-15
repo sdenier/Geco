@@ -7,6 +7,8 @@ in_menu: true
 
 The runners panel is the central place to manage runners data before and during the event.
 
+Quick access through `modifier + R`.
+
 <a href="../images/runners_panel_notes.png"><img src="../images/runners_panel_notes.png" /></a>
 (Click to zoom in)
 
@@ -16,12 +18,13 @@ The right pane displays either complementary information about the currently sel
 
 ## Runners Table
 
-- Click/Double-click in a cell to start edition
+- Double-click in a cell to start edition
 - *Add/Remove Runner:* add a runner at the end of the startlist; remove the currently selected runner
 - *Sort Runners:* click on a header cell of the table to sort runners according to ascending/descending rank
-- *Filter Runners:* enter a text to display only runner matching the text (the search is performed full-text and matches substring in data)
+- *Filter Runners:* start typing to display only entries matching your search (the search is performed full-text and matches substring in data)
+- *Auto Mode (tickbox):* in this mode, Geco does not open the *Merge dialog* when reading an unknown or duplicate E-card. Instead, it creates a new runner and try to guess the course (*Experimental* feature, the course guessing is very naive). You can then edit the new entry
 - *Live Mode (tickbox):* in this mode, Geco automatically focuses on the last data received from the card reader; runners are dynamically sorted by order of card reading, with most recent on top (other sort options disabled)
-- *Lock Mode (tickbox):* prevent accidental edition of data in the table
+- *Fast edit Mode (tickbox):* start edition with just one click, useful when lots of edition have to be done quickly
 
 The table is good for registration/modification on the fly during the event. See [Registrations](../howtos/register.html) for some advice about mass registration.
 
@@ -36,20 +39,31 @@ The table is good for registration/modification on the fly during the event. See
   - DNS: Did Not Start
   - DNF: Did Not Finish
   - DSQ: Disqualified
+  
+### Keyboard navigation
+Geco defines some keybindings to enhance quick navigation in the data.
+- `tab` navigates between widgets
+- `space` starts edition in the table, `enter` to validate (`space` or `tab` work too), `esc` to cancel edition
+- `modifier + F` puts focus in the `Find:` field to filter entries (modifier is the `Control` or `Command` key, depending on your platform)
+- `Esc` cancels the filter
+
 
 <a href="../images/runners_filter.png"><img src="../images/runners_filter.png" /></a>
-(Table with a filter on the 'Short' keyword)
+(Table with a filter on the 'W21' string)
 
 
 ## Runner Data Pane
 
 The *Runner Data* pane shows complementary information about the currently selected runner. It is useful for an analysis of runner race when resolving a problem. In particular, Geco is able to accurately detect and display *missing punches* in the trace view.
 
-- *Real Race Time* always displays *finish - start*, not taking into account time penalties nor the official race time which may have been edited by hand
+- The *Race* field always displays *finish - start* time, not taking into account time penalties nor the official race time which may have been edited by hand
+- Time fields display colors to highlight potential problems:
+  - A **pale red background** in the *Erace/Control/Start/Finish* indicates that no time could be read from the E-card
+  - A **yellow background** in the *Race* field indicates that the official time in the table does not match race time + penalties. This happens when the official time has been edited by hand
 - Some reset buttons can restore computed values after manual modification
   - *Reset Time* computes the official race time based on race time and penalties
-  - *Refresh Status* computes the status based on punches and course
-  - global action *Recheck All* resets any manual modification to computed values, be careful!
+  - *Recheck* computes the status based on punches and course and reset the time
+  - global action *Recheck OK|MP* resets manual modification on official time to runners with OK or MP status, be careful!
 - Click the *Merge...* button for advanced management of data, like merging two runners together. It opens the *[Merge dialog](merge.html)* on the currently selected runner.
 
 
