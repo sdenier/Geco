@@ -1,0 +1,27 @@
+---
+title: À propos
+sort_info: 1
+in_menu: true
+routed_title: Présentation
+
+---
+
+# Geco
+<div class="intro">...est une application Java légère pour la gestion électronique de courses d'orientation. Geco est développé pour le format Orient’Show. Il marche cependant très bien avec les formats standards de la course d'orientation.</div>
+
+## Philosophy
+Geco has three driving forces.
+- Customization for the **Orient’Show** format, which has a number of peculiarities (rules and format) not well supported by other apps. But Geco also supports classical formats out of the box, and leans towards an extensible platform for any format of orienteering.
+- Enhanced **user experience** through simple UI guidelines: Geco favors direct accessibility and manipulation of data through visible panels and actions, making obvious how to interact with the application. Very few capabilities are not visible at first hand.
+- Extensible by and for the **open-source** community, because it's time for everybody to get some good tools for our geeky sport.
+
+
+<img src="../images/runners_panel.png" width="500px" />
+
+
+## Author and contact
+Hi, my name is Simon Denier, I am a O'coholic and you can find more information on my [website](http://www.simondenier.eu).
+
+
+## Thanks
+Many thanks to Julien Thézé, Martin Flynn, and Jannik Laval for their technical help and debugging sessions.
