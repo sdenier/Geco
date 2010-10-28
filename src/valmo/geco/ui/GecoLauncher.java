@@ -17,6 +17,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import valmo.geco.core.Messages;
+
 /**
  * @author Simon Denier
  * @since Jul 17, 2010
@@ -24,14 +26,18 @@ import javax.swing.JOptionPane;
  */
 public class GecoLauncher {
 	
+	{
+		Messages.put("ui", "valmo.geco.ui.messages");
+	}
+	
 	public static final String[] FILES = {
-		"Classes.csv",
-		"Clubs.csv",
-		"Competitors.csv",
-		"Courses.csv",
-		"ResultData.csv",
-		"results.csv",
-		"geco.prop"
+		"Classes.csv", //$NON-NLS-1$
+		"Clubs.csv", //$NON-NLS-1$
+		"Competitors.csv", //$NON-NLS-1$
+		"Courses.csv", //$NON-NLS-1$
+		"ResultData.csv", //$NON-NLS-1$
+		"results.csv", //$NON-NLS-1$
+		"geco.prop" //$NON-NLS-1$
 	};
 
 	private JFileChooser chooser;
@@ -43,26 +49,31 @@ public class GecoLauncher {
 	public GecoLauncher(String currentDir) {
 		chooser = new JFileChooser(currentDir);
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		chooser.setDialogTitle("Select data folder (or create a new one)");
+		chooser.setDialogTitle(Messages.uiGet("GecoLauncher.Title")); //$NON-NLS-1$
 	}
 	
 	public String open(JFrame frame) throws Exception {
-		int returnValue = chooser.showDialog(frame, "Open");
+		int returnValue = chooser.showDialog(frame, Messages.uiGet("GecoLauncher.OpenLabel")); //$NON-NLS-1$
 		if( returnValue==JFileChooser.APPROVE_OPTION ) {
 			File baseFile = chooser.getSelectedFile();
 			String basePath = baseFile.getAbsolutePath();
 			if( ! baseFile.exists() || ! directoryHasData(basePath) ) {
-				int confirm = JOptionPane.showConfirmDialog(chooser, "Create a new stage?", "New stage", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+				int confirm = JOptionPane.showConfirmDialog(
+						chooser, 
+						Messages.uiGet("GecoLauncher.CreateLabel"), //$NON-NLS-1$ 
+						Messages.uiGet("GecoLauncher.CreateTitle"),  //$NON-NLS-2$
+						JOptionPane.OK_CANCEL_OPTION, 
+						JOptionPane.QUESTION_MESSAGE);
 				if( confirm==JOptionPane.OK_OPTION ) {
 					baseFile.mkdir();
 					createDataFiles(basePath);
-					new File(basePath + File.separator + "backups").mkdir();
+					new File(basePath + File.separator + "backups").mkdir(); //$NON-NLS-1$
 				} else 
-					throw new Exception("Cancel creation");
+					throw new Exception(Messages.uiGet("GecoLauncher.CancelCreation")); //$NON-NLS-1$
 			}
 			return basePath;
 		} else {
-			throw new Exception("Cancel import");
+			throw new Exception(Messages.uiGet("GecoLauncher.CancelImport")); //$NON-NLS-1$
 		}
 	}
 
@@ -74,7 +85,7 @@ public class GecoLauncher {
 
 	private void createFile(String baseDir, String filename) {
 		try {
-			URL url = getClass().getResource("/resources/templates/" + filename);
+			URL url = getClass().getResource("/resources/templates/" + filename); //$NON-NLS-1$
 			ReadableByteChannel inChannel = Channels.newChannel(url.openStream());
 			FileChannel outChannel = new FileOutputStream(new File(baseDir + File.separator + filename)).getChannel();
 			outChannel.transferFrom(inChannel, 0, url.openConnection().getContentLength());
@@ -87,9 +98,9 @@ public class GecoLauncher {
 	
 	
 	public static boolean directoryHasData(String baseDir) {
-		return  new File(baseDir + File.separator + "Competition.csv").exists()
+		return  new File(baseDir + File.separator + "Competition.csv").exists() //$NON-NLS-1$
 				||
-				new File(baseDir + File.separator + "geco.prop").exists();
+				new File(baseDir + File.separator + "geco.prop").exists(); //$NON-NLS-1$
 	}
 	
 }
