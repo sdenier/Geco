@@ -3,6 +3,6 @@
 	<classpathentry excluding="valmo/geco/ui/RunnerPanel2.java" kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/SIReader"/>
+	<classpathentry kind="lib" path="SIReader.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
