@@ -46,10 +46,15 @@
 		<echo message="${version.num}" />
 		<echo message="${build.num}" />
 	</target>
-	
+
+	<target name="build_SIReaderDev">
+		<ant dir="${sireader.dir}" target="build_devjar" />
+		<copy file="${sireader.dir}/SIReaderDev.jar" tofile="${geco.dir}/lib/SIReaderDev.jar" />
+	</target>
+
 	<target name="build_SIReader">
 		<ant dir="${sireader.dir}" target="build_jar" />
-		<copy file="${sireader.dir}/SIReader.jar" tofile="${geco.dir}/SIReader.jar" />
+		<copy file="${sireader.dir}/SIReader.jar" tofile="${geco.dir}/lib/SIReader.jar" />
 	</target>
 	
     <target name="build_jar" depends="buildnumber">
@@ -62,7 +67,7 @@
                	<attribute name="Implementation-Version" value="${version.num}-${build.num}"/>
             </manifest>
             <fileset dir="${geco.dir}/bin"/>
-            <fileset file="${geco.dir}/SIReader.jar"/>
+            <fileset file="${geco.dir}/lib/SIReader.jar"/>
         </jar>
     </target>
 	
