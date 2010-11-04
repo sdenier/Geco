@@ -45,4 +45,22 @@ public class TraceImpl implements Trace {
 	public String toString() {
 		return getCode();
 	}
+
+	@Override
+	public boolean isOK() {
+		return !( isMP() || isAdded() );
+	}
+	@Override
+	public boolean isMP() {
+		return code.startsWith("-");
+	}
+	@Override
+	public boolean isAdded() {
+		return code.startsWith("+");
+	}
+	@Override
+	public boolean isSubst() {
+		// Notice that isSub => isMP
+		return code.startsWith("-") && code.contains("+");
+	}
 }

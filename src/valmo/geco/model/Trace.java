@@ -13,4 +13,12 @@ public interface Trace extends Cloneable {
 	public String getCode();
 	
 	public Date getTime();
+	
+	public boolean isOK();
+	
+	public boolean isMP();
+	
+	public boolean isAdded();
+	
+	public boolean isSubst();
 }

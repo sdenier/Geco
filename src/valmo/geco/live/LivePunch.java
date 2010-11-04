@@ -69,14 +69,6 @@ public class LivePunch implements Trace {
 		}
 	}
 	
-	public boolean isMissed() {
-		return missed;
-	}
-	
-	public boolean isAdded() {
-		return added;
-	}
-	
 	public void beMissed() {
 		mapControl.beMissedControl(order);
 		missed = true;
@@ -96,7 +88,7 @@ public class LivePunch implements Trace {
 		if( nextPunch!=null ) {
 			BasicStroke stroke;
 			Color color;
-			if( isMissed() ) {
+			if( isMP() ) {
 				stroke = missedStroke();
 				color = getColor();
 			} else {
@@ -113,7 +105,7 @@ public class LivePunch implements Trace {
 					stroke,
 					color,
 					g2);
-			if( !isMissed() || nextPunch.isMissed() ){
+			if( !isMP() || nextPunch.isMP() ){
 				nextPunch.drawOn(g2);
 			}
 		}
@@ -181,5 +173,23 @@ public class LivePunch implements Trace {
 
 	public Color getColor() {
 		return mapControl.getStatusColor();
+	}
+
+	@Override
+	public boolean isOK() {
+		return !( isMP() || isAdded());
+	}
+	@Override
+	public boolean isMP() {
+		return missed;
+	}
+	@Override
+	public boolean isAdded() {
+		return added;
+	}
+	@Override
+	public boolean isSubst() {
+		// subst should have been split in MP + ADD
+		return false;
 	}
 }
