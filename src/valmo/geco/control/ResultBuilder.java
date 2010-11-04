@@ -34,12 +34,12 @@ import valmo.geco.model.Status;
 public class ResultBuilder extends Control {
 	
 	public static class ResultConfig {
-		private Object[] selectedPools;
-		private ResultType resultType;
-		private boolean showEmptySets;
-		private boolean showNC;
-		private boolean showOthers;
-		private boolean showPenalties;
+		protected Object[] selectedPools;
+		protected ResultType resultType;
+		protected boolean showEmptySets;
+		protected boolean showNC;
+		protected boolean showOthers;
+		protected boolean showPenalties;
 	}
 	
 	public static ResultConfig createResultConfig(
@@ -110,7 +110,7 @@ public class ResultBuilder extends Control {
 					result.addNRRunner(data);
 					break;
 				case DNS:
-				case Unknown:
+				case NDA:
 					result.addOtherRunner(data);
 				}
 			}
@@ -140,7 +140,7 @@ public class ResultBuilder extends Control {
 	}
 
 	
-	private Vector<Result> refreshResults(ResultConfig config) {
+	protected Vector<Result> buildResults(ResultConfig config) {
 		Vector<Pool> pools = new Vector<Pool>();
 		for (Object selName : config.selectedPools) {
 			switch (config.resultType) {
@@ -171,7 +171,7 @@ public class ResultBuilder extends Control {
 
 
 	public String generateHtmlResults(ResultConfig config, int refreshInterval) {
-		Vector<Result> results = refreshResults(config);
+		Vector<Result> results = buildResults(config);
 		Html html = new Html();
 		if( refreshInterval>0 ) {
 			html.open("head");
@@ -249,7 +249,7 @@ public class ResultBuilder extends Control {
 	 */
 	public void generateCsvResult(ResultConfig config, BufferedWriter writer) throws IOException {
 		// TODO: use CsvWriter
-		Vector<Result> results = refreshResults(config);
+		Vector<Result> results = buildResults(config);
 		for (Result result : results) {
 			if( config.showEmptySets || !result.isEmpty()) {
 				appendCsvResult(result, config, writer);

@@ -78,6 +78,10 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	private JSpinner autodelayS;
 	private JRadioButton refreshRB;
 
+	private JRadioButton normalResultB;
+
+	private JRadioButton splitResultB;
+
 	/**
 	 * @param geco
 	 * @param frame 
@@ -235,6 +239,13 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		optionsPanel.add(Box.createHorizontalGlue());
 		optionsPanel.add(Box.createHorizontalGlue());
 
+		normalResultB = new JRadioButton("Normal");
+		splitResultB = new JRadioButton("Splits");
+		ButtonGroup builderGroup = new ButtonGroup();
+		builderGroup.add(normalResultB);
+		builderGroup.add(splitResultB);
+		builderGroup.setSelected(normalResultB.getModel(), true);
+		
 		refreshB = new JButton("Refresh");
 		exportB = new JButton("Export");
 		JButton printB = new JButton("Print");
@@ -257,6 +268,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		commandPanel.setLayout(new BoxLayout(commandPanel, BoxLayout.Y_AXIS));
 		commandPanel.add(optionsPanel);
 		commandPanel.add(SwingUtils.makeButtonBar(FlowLayout.CENTER, refreshB, exportB, printB));
+		commandPanel.add(SwingUtils.makeButtonBar(FlowLayout.CENTER, normalResultB, splitResultB));
 
 		
 		// Pool list
@@ -366,7 +378,13 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	}
 
 	public void refreshResultView() {
-		resultTA.setText(geco().resultBuilder().generateHtmlResults(createResultConfig(), -1));
+		String htmlResults;
+		if( normalResultB.isSelected() ) {
+			htmlResults = geco().resultBuilder().generateHtmlResults(createResultConfig(), -1);
+		} else {
+			htmlResults = geco().splitsBuilder().generateHtmlSplits(createResultConfig());
+		}
+		resultTA.setText(htmlResults);
 	}
 	
 	private ResultConfig createResultConfig() {

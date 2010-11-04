@@ -18,6 +18,7 @@ import valmo.geco.control.RegistryStats;
 import valmo.geco.control.ResultBuilder;
 import valmo.geco.control.RunnerControl;
 import valmo.geco.control.SIReaderHandler;
+import valmo.geco.control.SplitBuilder;
 import valmo.geco.control.StageControl;
 import valmo.geco.core.Announcer;
 import valmo.geco.core.GecoRequestHandler;
@@ -77,7 +78,7 @@ public class Geco implements GecoRequestHandler {
 	
 	private RunnerControl runnerControl;
 	
-	private ResultBuilder resultBuilder;
+	private SplitBuilder resultBuilder;
 	
 	private HeatBuilder heatBuilder;
 	
@@ -173,7 +174,7 @@ public class Geco implements GecoRequestHandler {
 
 		stageControl = new StageControl(gecoControl);
 		runnerControl = new RunnerControl(gecoControl);
-		resultBuilder = new ResultBuilder(gecoControl);
+		resultBuilder = new SplitBuilder(gecoControl);
 		heatBuilder = new HeatBuilder(gecoControl, resultBuilder);
 		stats = new RegistryStats(gecoControl);
 		siHandler = new SIReaderHandler(gecoControl, defaultMergeHandler());
@@ -215,6 +216,9 @@ public class Geco implements GecoRequestHandler {
 		return this.runnerControl;
 	}
 	public ResultBuilder resultBuilder() {
+		return this.resultBuilder;
+	}
+	public SplitBuilder splitsBuilder() {
 		return this.resultBuilder;
 	}
 	public HeatBuilder heatBuilder() {
