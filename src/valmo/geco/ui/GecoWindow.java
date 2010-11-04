@@ -136,15 +136,10 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		checkButtonsStatus();
 		final JTabbedPane pane = new JTabbedPane();
 		pane.addTab(Messages.uiGet("GecoWindow.Stage"), this.stagePanel); //$NON-NLS-1$
-		pane.setMnemonicAt(0, KeyEvent.VK_S);
 		pane.addTab(Messages.uiGet("GecoWindow.Runners"), this.runnersPanel); //$NON-NLS-1$
-		pane.setMnemonicAt(1, KeyEvent.VK_R);
 		pane.addTab(Messages.uiGet("GecoWindow.Results"), this.resultsPanel); //$NON-NLS-1$
-		pane.setMnemonicAt(2, KeyEvent.VK_E);
 		pane.addTab(Messages.uiGet("GecoWindow.Heats"), this.heatsPanel); //$NON-NLS-1$
-		pane.setMnemonicAt(3, KeyEvent.VK_H);
 		pane.addTab(Messages.uiGet("GecoWindow.Log"), this.logPanel); //$NON-NLS-1$
-		pane.setMnemonicAt(4, KeyEvent.VK_L);
 		setTabKeybindings(pane);
 		getContentPane().add(pane, BorderLayout.CENTER);
 		
@@ -159,47 +154,55 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 	}
 
 	private void setTabKeybindings(final JTabbedPane pane) {
-		if( Geco.platformIsMacOs() ) {
-			InputMap inputMap
-				= ((JComponent) getContentPane()).getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-			inputMap.put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+		InputMap inputMap = ((JComponent) getContentPane())
+				.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_1, 
+				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
 				"selectStagePanel"); //$NON-NLS-1$
-			inputMap.put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_R, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_2,
+				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
 				"selectRunnersPanel"); //$NON-NLS-1$
-			inputMap.put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_E, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_3,
+				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
 				"selectResultsPanel"); //$NON-NLS-1$
-			inputMap.put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_A, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_4,
+				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
 				"selectHeatsPanel"); //$NON-NLS-1$
-			inputMap.put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_L, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_5,
+				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
 				"selectLogPanel"); //$NON-NLS-1$
 
-			ActionMap actionMap = ((JComponent) getContentPane()).getActionMap();
-			actionMap.put("selectStagePanel", new AbstractAction() { //$NON-NLS-1$
-				@Override public void actionPerformed(ActionEvent e) {
-					pane.setSelectedComponent(stagePanel); }
+		ActionMap actionMap = ((JComponent) getContentPane()).getActionMap();
+		actionMap.put("selectStagePanel", new AbstractAction() { //$NON-NLS-1$
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						pane.setSelectedComponent(stagePanel);
+					}
 				});
-			actionMap.put("selectRunnersPanel", new AbstractAction() { //$NON-NLS-1$
-				@Override public void actionPerformed(ActionEvent e) {
-					pane.setSelectedComponent(runnersPanel); }
+		actionMap.put("selectRunnersPanel", new AbstractAction() { //$NON-NLS-1$
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						pane.setSelectedComponent(runnersPanel);
+					}
 				});
-			actionMap.put("selectResultsPanel", new AbstractAction() { //$NON-NLS-1$
-				@Override public void actionPerformed(ActionEvent e) {
-					pane.setSelectedComponent(resultsPanel); }
+		actionMap.put("selectResultsPanel", new AbstractAction() { //$NON-NLS-1$
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						pane.setSelectedComponent(resultsPanel);
+					}
 				});
-			actionMap.put("selectHeatsPanel", new AbstractAction() { //$NON-NLS-1$
-				@Override public void actionPerformed(ActionEvent e) {
-					pane.setSelectedComponent(heatsPanel); }
+		actionMap.put("selectHeatsPanel", new AbstractAction() { //$NON-NLS-1$
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						pane.setSelectedComponent(heatsPanel);
+					}
 				});
-			actionMap.put("selectLogPanel", new AbstractAction() { //$NON-NLS-1$
-				@Override public void actionPerformed(ActionEvent e) {
-					pane.setSelectedComponent(logPanel); }
-			});
-		}
+		actionMap.put("selectLogPanel", new AbstractAction() { //$NON-NLS-1$
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						pane.setSelectedComponent(logPanel);
+					}
+				});
 	}
 
 	public void updateWindowTitle() {
