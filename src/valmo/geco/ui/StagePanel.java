@@ -38,6 +38,7 @@ import javax.swing.filechooser.FileFilter;
 import valmo.geco.Geco;
 import valmo.geco.core.Announcer;
 import valmo.geco.core.Html;
+import valmo.geco.core.Messages;
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
 import valmo.geco.model.Course;
@@ -62,7 +63,8 @@ public class StagePanel extends TabPanel {
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridBagLayout());
 
-		GridBagConstraints c = SwingUtils.compConstraint(	GridBagConstraints.RELATIVE,
+		GridBagConstraints c = SwingUtils.compConstraint(
+													GridBagConstraints.RELATIVE,
 													0,
 													GridBagConstraints.BOTH,
 													GridBagConstraints.NORTH);
@@ -76,7 +78,6 @@ public class StagePanel extends TabPanel {
 		panel.add(courseConfigPanel(), c);
 		panel.add(categoryConfigPanel(), c);
 
-//		setLayout(new FlowLayout(FlowLayout.LEFT));
 		setLayout(new BorderLayout());
 		add(panel, BorderLayout.NORTH);
 	}
@@ -92,7 +93,7 @@ public class StagePanel extends TabPanel {
 		GridBagConstraints c = SwingUtils.gbConstr(0);
 		c.insets = new Insets(0, 0, 5, 5);
 		c.fill = GridBagConstraints.HORIZONTAL;
-		panel.add(new JLabel("Stage name:"), c);
+		panel.add(new JLabel(Messages.uiGet("StagePanel.StageNameLabel")), c); //$NON-NLS-1$
 		final JTextField stagenameF = new JTextField(geco().stage().getName());
 		stagenameF.setColumns(12);
 		stagenameF.addActionListener(new ActionListener() {
@@ -113,18 +114,18 @@ public class StagePanel extends TabPanel {
 		});
 		panel.add(stagenameF, c);
 		c.gridy = 1;
-		panel.add(new JLabel("Previous stage:"), c);
+		panel.add(new JLabel(Messages.uiGet("StagePanel.PreviousStageLabel")), c); //$NON-NLS-1$
 		JTextField previousF = new JTextField(geco().getPreviousStageDir());
 		previousF.setEditable(false);
-		previousF.setToolTipText("Edit 'stages.prop' in parent folder to change stage order");
+		previousF.setToolTipText(Messages.uiGet("StagePanel.PreviousStageTooltip")); //$NON-NLS-1$
 		panel.add(previousF, c);
 		c.gridy = 2;
-		panel.add(new JLabel("Next stage:"), c);
+		panel.add(new JLabel(Messages.uiGet("StagePanel.NextStageLabel")), c); //$NON-NLS-1$
 		JTextField nextF = new JTextField(geco().getNextStageDir());
 		nextF.setEditable(false);
-		nextF.setToolTipText("Edit 'stages.prop' in parent folder to change stage order");
+		nextF.setToolTipText(Messages.uiGet("StagePanel.NextStageTooltip")); //$NON-NLS-1$
 		panel.add(nextF, c);
-		return titlePanel(panel, "Stage");
+		return titlePanel(panel, Messages.uiGet("StagePanel.StageConfigTitle")); //$NON-NLS-1$
 	}
 	
 	private boolean verifyStagename(String text) {
@@ -136,7 +137,7 @@ public class StagePanel extends TabPanel {
 			((GecoWindow) frame()).updateWindowTitle();
 			return true;					
 		} else {
-			geco().info("Avoid empty stage name", true);
+			geco().info(Messages.uiGet("StagePanel.StageNameEmptyWarning"), true); //$NON-NLS-1$
 			stagenameF.setText(geco().stage().getName());
 			return false;
 		}	
@@ -148,11 +149,11 @@ public class StagePanel extends TabPanel {
 		GridBagConstraints c = SwingUtils.gbConstr(0);
 		c.insets = new Insets(0, 0, 5, 5);
 		c.fill = GridBagConstraints.HORIZONTAL;
-		panel.add(new JLabel("MP limit:"), c);
+		panel.add(new JLabel(Messages.uiGet("StagePanel.MPLimitLabel")), c); //$NON-NLS-1$
 		int mpLimit = geco().checker().getMPLimit();
 		final JSpinner mplimitS = new JSpinner(new SpinnerNumberModel(mpLimit, 0, null, 1));
 		mplimitS.setPreferredSize(new Dimension(100, SwingUtils.SPINNERHEIGHT));
-		mplimitS.setToolTipText("Number of missing punches authorized before marking the runner as MP");
+		mplimitS.setToolTipText(Messages.uiGet("StagePanel.MPLimitTooltip")); //$NON-NLS-1$
 		mplimitS.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				int oldLimit = geco().checker().getMPLimit();
@@ -165,11 +166,11 @@ public class StagePanel extends TabPanel {
 		panel.add(SwingUtils.embed(mplimitS), c);
 		
 		c.gridy = 1;
-		panel.add(new JLabel("Time penalty:"), c);
+		panel.add(new JLabel(Messages.uiGet("StagePanel.TimePenaltyLabel")), c); //$NON-NLS-1$
 		long penalty = geco().checker().getMPPenalty() / 1000;
 		final JSpinner penaltyS = new JSpinner(new SpinnerNumberModel(penalty, 0l, null, 10));
 		penaltyS.setPreferredSize(new Dimension(100, SwingUtils.SPINNERHEIGHT));
-		penaltyS.setToolTipText("Time penalty per missing punch in seconds");
+		penaltyS.setToolTipText(Messages.uiGet("StagePanel.TimePenaltyTooltip")); //$NON-NLS-1$
 		penaltyS.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				long oldPenalty = geco().checker().getMPPenalty();
@@ -183,10 +184,15 @@ public class StagePanel extends TabPanel {
 
 		c.gridy = 2;
 		c.gridwidth = 2;
-		String helpL = new Html().open("i").contents("Click ").tag("b", "Recheck OK|MP").contents(" if you want to refresh <br />results with new parameters").close("i").close();
+		String helpL = new Html()
+			.open("i") //$NON-NLS-1$
+			.contents(Messages.uiGet("StagePanel.MPConfigHelp1")) //$NON-NLS-1$
+			.tag("b", Messages.uiGet("StagePanel.MPConfigHelp2")) //$NON-NLS-1$ //$NON-NLS-2$
+			.contents(Messages.uiGet("StagePanel.MPConfigHelp3")) //$NON-NLS-1$
+			.close("i").close(); //$NON-NLS-1$
 		panel.add(new JLabel(helpL), c);
 		
-		return titlePanel(panel, "Orientshow");
+		return titlePanel(panel, Messages.uiGet("StagePanel.OrientshowConfigTitle")); //$NON-NLS-1$
 	}
 	
 	
@@ -195,10 +201,10 @@ public class StagePanel extends TabPanel {
 		GridBagConstraints c = SwingUtils.gbConstr(0);
 		c.insets = new Insets(0, 0, 5, 5);
 		c.fill = GridBagConstraints.HORIZONTAL;
-		panel.add(new JLabel("Station port:"), c);
+		panel.add(new JLabel(Messages.uiGet("StagePanel.StationPortLabel")), c); //$NON-NLS-1$
 		final JTextField stationPortF = new JTextField(geco().siHandler().getPortName());
 		stationPortF.setColumns(12);
-		stationPortF.setToolTipText("Serial port for the SI station (COMx on Windows, /dev/ttyX on Linux/Mac)");
+		stationPortF.setToolTipText(Messages.uiGet("StagePanel.StationPortTooltip")); //$NON-NLS-1$
 		panel.add(stationPortF, c);
 		stationPortF.addActionListener(new ActionListener() {
 			@Override
@@ -220,12 +226,12 @@ public class StagePanel extends TabPanel {
 		});
 		
 		c.gridy = 1;
-		panel.add(new JLabel("Zero hour:"), c);
-		final SimpleDateFormat formatter = new SimpleDateFormat("H:mm");
-		formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
+		panel.add(new JLabel(Messages.uiGet("StagePanel.ZeroHourLabel")), c); //$NON-NLS-1$
+		final SimpleDateFormat formatter = new SimpleDateFormat("H:mm"); //$NON-NLS-1$
+		formatter.setTimeZone(TimeZone.getTimeZone("GMT")); //$NON-NLS-1$
 		final JTextField zerohourF = new JTextField(formatter.format(geco().siHandler().getZeroTime()));
 		zerohourF.setColumns(7);
-		zerohourF.setToolTipText("Zero hour of the competition");
+		zerohourF.setToolTipText(Messages.uiGet("StagePanel.ZeroHourTooltip")); //$NON-NLS-1$
 		panel.add(zerohourF, c);
 		zerohourF.addActionListener(new ActionListener() {
 			@Override
@@ -249,7 +255,7 @@ public class StagePanel extends TabPanel {
 			}
 		});
 		
-		return titlePanel(panel, "SI Reader");
+		return titlePanel(panel, Messages.uiGet("StagePanel.SIReaderConfigTitle")); //$NON-NLS-1$
 	}
 	
 	private boolean validateZeroHour(SimpleDateFormat formatter, JTextField zerohourF) {
@@ -258,7 +264,7 @@ public class StagePanel extends TabPanel {
 			geco().siHandler().setNewZeroTime(zeroTime.getTime());
 			return true;
 		} catch (ParseException e1) {
-			geco().info("Bad time format", true);
+			geco().info(Messages.uiGet("StagePanel.ZeroHourBadFormatWarning"), true); //$NON-NLS-1$
 			zerohourF.setText(formatter.format(geco().siHandler().getZeroTime()));
 			return false;
 		}
@@ -269,7 +275,9 @@ public class StagePanel extends TabPanel {
 		final ConfigTablePanel<Club> panel = new ConfigTablePanel<Club>(geco(), frame());
 		
 		final ConfigTableModel<Club> tableModel = 
-			new ConfigTableModel<Club>(new String[] {"Short name", "Long name"}) {
+			new ConfigTableModel<Club>(new String[] {
+											Messages.uiGet("StagePanel.ClubShortNameHeader"), //$NON-NLS-1$
+											Messages.uiGet("StagePanel.ClubLongNameHeader")}) { //$NON-NLS-1$
 				@Override
 				public Object getValueIn(Club club, int columnIndex) {
 					switch (columnIndex) {
@@ -310,15 +318,19 @@ public class StagePanel extends TabPanel {
 					boolean removed = geco().stageControl().removeClub(club);
 					if( !removed ) {
 						JOptionPane.showMessageDialog(frame(),
-							    "This club can not be deleted because some runners are registered with it.",
-							    "Action cancelled",
+							    Messages.uiGet("StagePanel.ClubNoDeletionWarning"), //$NON-NLS-1$
+							    Messages.uiGet("StagePanel.ActionCancelledTitle"), //$NON-NLS-1$
 							    JOptionPane.WARNING_MESSAGE);
 					}
 				}
 			}
 		};
 
-		panel.initialize("Club", tableModel, addAction, removeAction);
+		panel.initialize(
+				Messages.uiGet("StagePanel.ClubConfigTitle"), //$NON-NLS-1$
+				tableModel,
+				addAction,
+				removeAction);
 		return panel;
 	}
 
@@ -326,7 +338,9 @@ public class StagePanel extends TabPanel {
 		final ConfigTablePanel<Course> panel = new ConfigTablePanel<Course>(geco(), frame());
 		
 		final ConfigTableModel<Course> tableModel = 
-			new ConfigTableModel<Course>(new String[] {"Name", "Nb controls"}) {
+			new ConfigTableModel<Course>(new String[] {
+												Messages.uiGet("StagePanel.CourseNameHeader"), //$NON-NLS-1$
+												Messages.uiGet("StagePanel.CourseNbControlsHeader")}) { //$NON-NLS-1$
 				@Override
 				public Object getValueIn(Course course, int columnIndex) {
 					switch (columnIndex) {
@@ -380,8 +394,8 @@ public class StagePanel extends TabPanel {
 						geco().stageControl().removeCourse(course);
 					} catch (Exception e1) {
 						JOptionPane.showMessageDialog(frame(),
-							"This course can not be deleted because " + e1.getMessage(),
-							"Action cancelled",
+							Messages.uiGet("StagePanel.CourseNoDeletionWarning") + e1.getMessage(), //$NON-NLS-1$
+							Messages.uiGet("StagePanel.ActionCancelledTitle"), //$NON-NLS-1$
 							JOptionPane.WARNING_MESSAGE);
 					}
 				}
@@ -405,14 +419,14 @@ public class StagePanel extends TabPanel {
 				chooser.setFileFilter(new FileFilter() {
 					@Override
 					public String getDescription() {
-						return "XML files";
+						return Messages.uiGet("StagePanel.XMLFilesLabel"); //$NON-NLS-1$
 					}
 					@Override
 					public boolean accept(File f) {
-						return f.getName().endsWith(".xml");
+						return f.getName().endsWith(".xml"); //$NON-NLS-1$
 					}
 				});
-				int answer = chooser.showDialog(frame(), "Import");
+				int answer = chooser.showDialog(frame(), Messages.uiGet("StagePanel.CourseImportXMLLabel")); //$NON-NLS-1$
 				if( answer==JFileChooser.APPROVE_OPTION ) {
 					String file = chooser.getSelectedFile().getAbsolutePath();
 					try {
@@ -424,7 +438,7 @@ public class StagePanel extends TabPanel {
 						e1.printStackTrace();
 						JOptionPane.showMessageDialog(frame(),
 								e1.getMessage(),
-								"Error loading XML",
+								Messages.uiGet("StagePanel.XMLLoadError"), //$NON-NLS-1$
 								JOptionPane.ERROR_MESSAGE);
 					}
 				}
@@ -439,19 +453,25 @@ public class StagePanel extends TabPanel {
 			}
 		};
 		
-		JButton editB = new JButton("Edit");
-		editB.setToolTipText("Edit selected course");
+		JButton editB = new JButton(Messages.uiGet("StagePanel.CourseEditLabel")); //$NON-NLS-1$
+		editB.setToolTipText(Messages.uiGet("StagePanel.CourseEditTooltip")); //$NON-NLS-1$
 		editB.addActionListener(editAction);
 		
-		JButton importB = new JButton("XML");
-		importB.setToolTipText("Import courses from XML");
+		JButton importB = new JButton(Messages.uiGet("StagePanel.CourseXMLLabel")); //$NON-NLS-1$
+		importB.setToolTipText(Messages.uiGet("StagePanel.CourseXMLTooltip")); //$NON-NLS-1$
 		importB.addActionListener(importAction);
 
-		JButton refreshB = new JButton("Recheck");
-		refreshB.setToolTipText("Recheck runners from selected course");
+		JButton refreshB = new JButton(Messages.uiGet("StagePanel.CourseRecheckLabel")); //$NON-NLS-1$
+		refreshB.setToolTipText(Messages.uiGet("StagePanel.CourseRecheckTooltip")); //$NON-NLS-1$
 		refreshB.addActionListener(refreshAction);
 
-		panel.initialize("Course", tableModel, addAction, removeAction, editB, importB, refreshB);
+		panel.initialize(
+				Messages.uiGet("StagePanel.CourseConfigTitle"), //$NON-NLS-1$
+				tableModel,
+				addAction,
+				removeAction,
+				editB,
+				importB,refreshB);
 		return panel;
 	}	
 
@@ -460,7 +480,9 @@ public class StagePanel extends TabPanel {
 		final ConfigTablePanel<Category> panel = new ConfigTablePanel<Category>(geco(), frame());
 	
 		final ConfigTableModel<Category> tableModel = 
-			new ConfigTableModel<Category>(new String[] {"Short name", "Long name"}) {
+			new ConfigTableModel<Category>(new String[] {
+												Messages.uiGet("StagePanel.CategoryShortNameHeader"), //$NON-NLS-1$
+												Messages.uiGet("StagePanel.CategoryLongNameHeader")}) { //$NON-NLS-1$
 				@Override
 				public Object getValueIn(Category cat, int columnIndex) {
 					switch (columnIndex) {
@@ -504,15 +526,19 @@ public class StagePanel extends TabPanel {
 						geco().stageControl().removeCategory(cat);	
 					} catch (Exception e2) {
 						JOptionPane.showMessageDialog(frame(),
-								"This category can not be deleted because " + e2.getMessage(),
-								"Action cancelled",
+								Messages.uiGet("StagePanel.CategoryNoDeletionWarning") + e2.getMessage(), //$NON-NLS-1$
+								Messages.uiGet("StagePanel.ActionCancelledTitle"), //$NON-NLS-1$
 								JOptionPane.WARNING_MESSAGE);
 					}
 				}
 			}
 		};
 
-		panel.initialize("Category", tableModel, addAction, removeAction);
+		panel.initialize(
+				Messages.uiGet("StagePanel.CategoryConfigTitle"), //$NON-NLS-1$
+				tableModel,
+				addAction,
+				removeAction);
 		return panel;
 	}
 		

@@ -55,7 +55,7 @@ import valmo.geco.model.Stage;
 public class GecoWindow extends JFrame implements Announcer.StageListener, Announcer.StationListener {
 
 	{ // Just in case
-		Messages.put("ui", "valmo.geco.ui.messages");
+		Messages.put("ui", "valmo.geco.ui.messages"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	private Geco geco;
@@ -395,7 +395,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 			geco.info(
 					Messages.uiGet("GecoWindow.StationOffline1Status") //$NON-NLS-1$
 					+ geco.siHandler().getPortName()
-					+ Messages.uiGet("GecoWindow.StationOffline2Status"), //$NON-NLS-2$
+					+ Messages.uiGet("GecoWindow.StationOffline2Status"), //$NON-NLS-1$
 					false);
 			startB.initialize();
 		}
