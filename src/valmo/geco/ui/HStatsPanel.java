@@ -106,7 +106,7 @@ public class HStatsPanel extends StatsPanel {
 //		table.setRowSorter(sorter);
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 		JScrollPane tableSP = new JScrollPane(table);
-		tableSP.setPreferredSize(new Dimension(500, 150));
+		tableSP.setPreferredSize(new Dimension(550, 150));
 
 		panel.setLayout(new BorderLayout());
 		panel.add( tableSP, BorderLayout.CENTER );

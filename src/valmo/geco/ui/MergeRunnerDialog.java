@@ -196,7 +196,7 @@ public class MergeRunnerDialog extends JDialog {
 		
 		// Only compute new status if initially one of the following
 		Status status = data.getResult().getStatus();
-		updateStatus = status == Status.OK || status == Status.MP || status == Status.Unknown;
+		updateStatus = status == Status.OK || status == Status.MP || status == Status.NDA;
 		
 		this.mockRunner = runnerControl().buildMockRunner();
 		this.runnerData.setRunner(this.mockRunner);
@@ -261,7 +261,7 @@ public class MergeRunnerDialog extends JDialog {
 					String selectedCoursename = getSelectedCoursename();
 					if( selectedCoursename.equals("[Unknown]")) {
 						mockRunner.setCourse(registry().anyCourse());
-						runnerData.getResult().setStatus(Status.Unknown);
+						runnerData.getResult().setStatus(Status.NDA);
 						geco.checker().normalTrace(runnerData);
 					} else {
 						mockRunner.setCourse(registry().findCourse(selectedCoursename));

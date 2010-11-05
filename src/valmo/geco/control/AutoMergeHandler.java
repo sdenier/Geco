@@ -63,7 +63,7 @@ public class AutoMergeHandler extends Control implements GecoRequestHandler {
 			runnerControl.registerRunner(newRunner, runnerData);
 			geco().checker().check(runnerData);
 			geco().log("Creation " + runnerData.infoString());
-			geco().announcer().announceStatusChange(runnerData, Status.Unknown);
+			geco().announcer().announceStatusChange(runnerData, Status.NDA);
 		} catch (RunnerCreationException e1) {
 			e1.printStackTrace();
 		}
