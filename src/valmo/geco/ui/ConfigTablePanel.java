@@ -20,6 +20,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.TableRowSorter;
 
 import valmo.geco.Geco;
+import valmo.geco.core.Messages;
 
 /**
  * @author Simon Denier
@@ -76,13 +77,13 @@ public class ConfigTablePanel<T> extends GecoPanel {
 		JPanel buttonBar = new JPanel(new GridLayout(0, 3));
 		add(buttonBar, BorderLayout.SOUTH);
 		
-		JButton addB = new JButton("+");
-		addB.setToolTipText("Create " + panelTitle);
+		JButton addB = new JButton("+"); //$NON-NLS-1$
+		addB.setToolTipText(Messages.uiGet("ConfigTablePanel.CreateTooltip") + panelTitle); //$NON-NLS-1$
 		addB.addActionListener(addAction);
 		buttonBar.add(addB);
 
-		JButton removeB = new JButton("-");
-		removeB.setToolTipText("Delete " + panelTitle);
+		JButton removeB = new JButton("-"); //$NON-NLS-1$
+		removeB.setToolTipText(Messages.uiGet("ConfigTablePanel.DeleteTooltip") + panelTitle); //$NON-NLS-1$
 		removeB.addActionListener(removeAction);
 		buttonBar.add(removeB);
 		

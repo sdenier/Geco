@@ -27,7 +27,7 @@ import valmo.geco.core.Messages;
 public class GecoLauncher {
 	
 	{
-		Messages.put("ui", "valmo.geco.ui.messages");
+		Messages.put("ui", "valmo.geco.ui.messages"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	public static final String[] FILES = {
@@ -61,7 +61,7 @@ public class GecoLauncher {
 				int confirm = JOptionPane.showConfirmDialog(
 						chooser, 
 						Messages.uiGet("GecoLauncher.CreateLabel"), //$NON-NLS-1$ 
-						Messages.uiGet("GecoLauncher.CreateTitle"),  //$NON-NLS-2$
+						Messages.uiGet("GecoLauncher.CreateTitle"), //$NON-NLS-1$
 						JOptionPane.OK_CANCEL_OPTION, 
 						JOptionPane.QUESTION_MESSAGE);
 				if( confirm==JOptionPane.OK_OPTION ) {

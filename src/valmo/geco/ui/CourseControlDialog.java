@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import valmo.geco.core.Messages;
 import valmo.geco.core.Util;
 import valmo.geco.model.Course;
 
@@ -33,25 +34,27 @@ public class CourseControlDialog extends JDialog {
 	private JTextField controlsF;
 
 	public CourseControlDialog(JFrame frame, final Course course) {
-		super(frame, "Course Editor", true);
+		super(frame, Messages.uiGet("CourseControlDialog.CourseEditorTitle"), true); //$NON-NLS-1$
 		setResizable(false);
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		((JPanel) getContentPane()).setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		
 		getContentPane().setLayout(new GridBagLayout());
-		getContentPane().add(new JLabel("Control sequence for course " + course.getName() + " (separated by comma):"));
+		getContentPane().add(new JLabel(Messages.uiGet("CourseControlDialog.HelpLabel1") //$NON-NLS-1$
+										+ course.getName()
+										+ Messages.uiGet("CourseControlDialog.HelpLabel2"))); //$NON-NLS-1$
 		controlsF = new JTextField(40);
 		String codes = Arrays.toString(course.getCodes());
 		controlsF.setText(codes.substring(1, codes.length() - 1));
 		GridBagConstraints c = SwingUtils.compConstraint(0, 1);
 		c.gridwidth = 2;
 		getContentPane().add(controlsF, c);
-		JButton saveB = new JButton("Save");
+		JButton saveB = new JButton(Messages.uiGet("CourseControlDialog.SaveLabel")); //$NON-NLS-1$
 		saveB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String dataLine = controlsF.getText();
-				String[] data = Util.splitAndTrim(dataLine, ",");
+				String[] data = Util.splitAndTrim(dataLine, ","); //$NON-NLS-1$
 				int[] newCodes = new int[data.length];
 				try {
 					for (int i = 0; i < data.length; i++) {
@@ -63,13 +66,13 @@ public class CourseControlDialog extends JDialog {
 					JOptionPane.showMessageDialog(
 							CourseControlDialog.this,
 							e2.getMessage(), 
-							"Bad code number", 
+							Messages.uiGet("CourseControlDialog.BadCodeNumberWarning"),  //$NON-NLS-1$
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
 		getContentPane().add(saveB, SwingUtils.compConstraint(0, 2));
-		JButton cancelB = new JButton("Cancel");
+		JButton cancelB = new JButton(Messages.uiGet("CourseControlDialog.CancelLabel")); //$NON-NLS-1$
 		cancelB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
