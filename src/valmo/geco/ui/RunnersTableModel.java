@@ -200,15 +200,7 @@ public class RunnersTableModel extends AbstractTableModel {
 		public Component getTableCellRendererComponent(JTable table,
 				Object value, boolean isSelected, boolean hasFocus, int row,
 				int column) {
-			Color bg = Color.white;
-			Status status = (Status) value;
-			switch (status) {
-			case OK: bg = new Color(0.6f, 1, 0.6f); break;
-			case MP: bg = new Color(0.75f, 0.5f, 0.75f); break;
-			case Unknown: bg = new Color(1, 1, 0.5f); break;
-			default: break;
-			}
-			setBackground(bg);
+			setBackground( ((Status) value).color() );
 			setHorizontalAlignment(CENTER);
 			setText(value.toString());
 			return this;

@@ -5,7 +5,6 @@
 package valmo.geco.live;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -36,15 +35,8 @@ public abstract class ResultPanel extends JPanel {
 	public abstract void updateRunnerData(RunnerRaceData runnerData);
 
 	protected void updateStatusLabel(Status status) {
-		Color bg = Color.white;
-		switch (status) {
-		case OK: bg = new Color(0.6f, 1, 0.6f); break;
-		case MP: bg = new Color(0.75f, 0.5f, 0.75f); break;
-		case Unknown: bg = new Color(1, 1, 0.5f); break;
-		default: break;
-		}
 		statusL.setOpaque(true);
-		statusL.setBackground(bg);
+		statusL.setBackground( status.color() );
 		statusL.setHorizontalAlignment(SwingConstants.CENTER);
 		statusL.setText(status.toString());
 	}

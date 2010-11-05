@@ -153,7 +153,7 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 	}
 	
 	public boolean hasResult() {
-		return ! getResult().is(Status.Unknown);
+		return ! getResult().is(Status.NDA);
 	}
 	
 	public boolean hasManualStatus() {
@@ -161,7 +161,7 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 	}
 	
 	public boolean hasTrace() {
-		return ! ( getResult().is(Status.Unknown) || getResult().is(Status.DNS) );
+		return ! ( getResult().is(Status.NDA) || getResult().is(Status.DNS) );
 	}
 
 	public RunnerResult getResult() {
@@ -173,7 +173,7 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 	}
 
 	public boolean isRunning() {
-		return getResult().is(Status.Unknown);
+		return getResult().is(Status.NDA);
 	}
 	
 	public long realRaceTime() {

@@ -34,7 +34,7 @@ public class ResultDataIO extends AbstractIO<RunnerRaceData> {
 		// chip, status, racetime
 		return new String[] {
 				d.getRunner().getChipnumber(),
-				d.getResult().getStatus().toString(),
+				d.getResult().getStatus().name(),
 				TimeManager.fullTime(d.getResult().getRacetime()),
 		};
 	}
@@ -45,7 +45,9 @@ public class ResultDataIO extends AbstractIO<RunnerRaceData> {
 	@Override
 	public RunnerRaceData importTData(String[] record) {
 		RunnerResult result = factory.createRunnerResult();
-		result.setStatus(Enum.valueOf(Status.class, record[1]));
+		// TODO: remove after data migration
+		Status en = ( record[1].equals("Unknown") || record[1].equals("REG") ) ? Status.NDA : Enum.valueOf(Status.class, record[1]);
+		result.setStatus(en);
 		result.setRacetime(TimeManager.safeParse(record[2]).getTime());
 		RunnerRaceData data = registry.findRunnerData(record[0]);
 		data.setResult(result);
