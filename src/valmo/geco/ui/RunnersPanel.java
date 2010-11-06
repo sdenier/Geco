@@ -88,6 +88,7 @@ public class RunnersPanel extends TabPanel
 		tablePan.add(initTopPanel(), BorderLayout.NORTH);
 		tablePan.add(initInfoPanel(), BorderLayout.EAST);
 		panel.add(tablePan);
+		setKeybindings();
 	}
 	
 	public JTabbedPane initInfoPanel() {
@@ -198,12 +199,19 @@ public class RunnersPanel extends TabPanel
 			    }				
 			}
 		});
-		filterField.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancelFilter");
-		filterField.getActionMap().put("cancelFilter", new AbstractAction() {
+		panel.add(filterField);
+	}
+
+
+	public void setKeybindings() {
+		getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
+				KeyStroke.getKeyStroke(KeyEvent.VK_R,
+						Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+				"recheckRunner");
+		getActionMap().put("recheckRunner", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				filterField.setText("");
-				sorter.setRowFilter(null);
+				runnerPanel.recheckRunnerStatus();
 			}
 		});
 		getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
@@ -215,7 +223,14 @@ public class RunnersPanel extends TabPanel
 				filterField.requestFocusInWindow();
 			}
 		});
-		panel.add(filterField);
+		filterField.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancelFilter");
+		filterField.getActionMap().put("cancelFilter", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				filterField.setText("");
+				sorter.setRowFilter(null);
+			}
+		});
 	}
 	
 	public JScrollPane initTableScroll() {

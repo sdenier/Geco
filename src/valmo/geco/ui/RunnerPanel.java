@@ -151,18 +151,29 @@ public class RunnerPanel extends GecoPanel {
 		recheckStatusB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if( runnerData!=null && control().recheckRunner(runnerData) ){
-					parentContainer.refreshSelectionInTable();
-					refreshPanel();
-				}
+				recheckRunnerStatus();
 			}
 		});
+	}
+
+	public void recheckRunnerStatus() {
+		if( runnerData!=null && control().recheckRunner(runnerData) ){
+			parentContainer.refreshSelectionInTable();
+			refreshPanel();
+		}
 	}
 	
 	public JPanel initPanel(JPanel panel) {
 		panel.setLayout(new BorderLayout());
 		panel.add(SwingUtils.embed(initRunnerPanel()), BorderLayout.NORTH);
 		panel.add(SwingUtils.embed(this.punchPanel), BorderLayout.CENTER);
+		
+//		ImageIcon splitPrint = new ImageIcon(getClass().getResource("/resources/icons/crystal/filequickprint.png")); //$NON-NLS-1$
+//		JButton splitPrintB = new JButton(splitPrint);
+//		splitPrintB.setToolTipText("Quickprint runner splits");
+//		panel.add(SwingUtils.embed(splitPrintB), BorderLayout.EAST);
+//		panel.add(Box.createHorizontalStrut(25), BorderLayout.WEST);
+		
 		return panel;
 	}
 
