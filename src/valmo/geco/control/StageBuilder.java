@@ -102,7 +102,12 @@ public class StageBuilder extends BasicControl {
 	 */
 	public Stage importOrData(String baseDir, PenaltyChecker checker) {
 		CsvReader reader = new CsvReader().initialize(baseDir, StageIO.sourceFilename());
-		currentStage = new StageIO(factory(), reader).getStage();
+		try {
+			currentStage = new StageIO(factory(), reader).getStage();
+		} catch (IOException e) {
+			e.printStackTrace();
+			currentStage = factory().createStage();
+		}
 		currentStage.initialize(baseDir);
 		importDataIntoRegistry(baseDir, false);
 		checker.postInitialize(currentStage); // post initialization

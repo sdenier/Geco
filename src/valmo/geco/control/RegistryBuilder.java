@@ -5,6 +5,7 @@
 package valmo.geco.control;
 
 import java.io.File;
+import java.io.IOException;
 
 import valmo.geco.core.GecoResources;
 import valmo.geco.model.Factory;
@@ -42,29 +43,57 @@ public class RegistryBuilder extends BasicControl{
 
 	public Registry importAllData(Registry registry, String baseDir, boolean importResult) {
 		
-		reader.initialize(baseDir, ClubIO.orFilename());
-		new ClubIO(factory(), reader, null, registry).importData();
+		try {
+			reader.initialize(baseDir, ClubIO.orFilename());
+			new ClubIO(factory(), reader, null, registry).importData();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
-		reader.initialize(baseDir, CourseIO.orFilename());
-		new CourseIO(factory(), reader, null, registry).importData();
+		try {
+			reader.initialize(baseDir, CourseIO.orFilename());
+			new CourseIO(factory(), reader, null, registry).importData();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
-		reader.initialize(baseDir, CategoryIO.sourceFilename());
-		new CategoryIO(factory(), reader, null, registry).importData();
+		try {
+			reader.initialize(baseDir, CategoryIO.sourceFilename());
+			new CategoryIO(factory(), reader, null, registry).importData();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
-		reader.initialize(baseDir, RunnerIO.sourceFilename());
-		new RunnerIO(factory(), reader, null, registry).importData();
+		try {
+			reader.initialize(baseDir, RunnerIO.sourceFilename());
+			new RunnerIO(factory(), reader, null, registry).importData();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-		reader.initialize(baseDir, RaceDataIO.sourceFilename());
-		new RaceDataIO(factory(), reader, null, registry).importData();
+		try {
+			reader.initialize(baseDir, RaceDataIO.sourceFilename());
+			new RaceDataIO(factory(), reader, null, registry).importData();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		if( importResult ) {
-			reader.initialize(baseDir, ResultDataIO.sourceFilename());
-			new ResultDataIO(factory(), reader, null, registry).importData();
+			try {
+				reader.initialize(baseDir, ResultDataIO.sourceFilename());
+				new ResultDataIO(factory(), reader, null, registry).importData();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		if( GecoResources.exists(baseDir + GecoResources.sep + HeatSetIO.sourceFilename()) ) {
-			reader.initialize(baseDir, HeatSetIO.sourceFilename());
-			new HeatSetIO(factory(), reader, null, registry).importData();
+			try {
+				reader.initialize(baseDir, HeatSetIO.sourceFilename());
+				new HeatSetIO(factory(), reader, null, registry).importData();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		return registry;
@@ -73,27 +102,55 @@ public class RegistryBuilder extends BasicControl{
 	
 	public void exportAllData(Registry registry, String baseDir) {
 		
-		writer.initialize(baseDir, ClubIO.orFilename());
-		new ClubIO(factory(), null, writer, registry).exportData(registry.getClubs());
+		try {
+			writer.initialize(baseDir, ClubIO.orFilename());
+			new ClubIO(factory(), null, writer, registry).exportData(registry.getClubs());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
-		writer.initialize(baseDir, CourseIO.orFilename());
-		new CourseIO(factory(), null, writer, registry).exportData(registry.getCourses());
+		try {
+			writer.initialize(baseDir, CourseIO.orFilename());
+			new CourseIO(factory(), null, writer, registry).exportData(registry.getCourses());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
-		writer.initialize(baseDir, CategoryIO.sourceFilename());
-		new CategoryIO(factory(), null, writer, registry).exportData(registry.getCategories());
+		try {
+			writer.initialize(baseDir, CategoryIO.sourceFilename());
+			new CategoryIO(factory(), null, writer, registry).exportData(registry.getCategories());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
-		writer.initialize(baseDir, RunnerIO.sourceFilename());
-		new RunnerIO(factory(), null, writer, registry).exportData(registry.getRunners());
+		try {
+			writer.initialize(baseDir, RunnerIO.sourceFilename());
+			new RunnerIO(factory(), null, writer, registry).exportData(registry.getRunners());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-		writer.initialize(baseDir, RaceDataIO.sourceFilename());
-		new RaceDataIO(factory(), null, writer, registry).exportData(registry.getRunnersData());
+		try {
+			writer.initialize(baseDir, RaceDataIO.sourceFilename());
+			new RaceDataIO(factory(), null, writer, registry).exportData(registry.getRunnersData());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-		writer.initialize(baseDir, ResultDataIO.sourceFilename());
-		new ResultDataIO(factory(), null, writer, registry).exportData(registry.getRunnersData());
+		try {
+			writer.initialize(baseDir, ResultDataIO.sourceFilename());
+			new ResultDataIO(factory(), null, writer, registry).exportData(registry.getRunnersData());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		if( registry.getHeatSets().size()>0 ) {
-			writer.initialize(baseDir, HeatSetIO.sourceFilename());
-			new HeatSetIO(factory(), null, writer, registry).exportData(registry.getHeatSets());			
+			try {
+				writer.initialize(baseDir, HeatSetIO.sourceFilename());
+				new HeatSetIO(factory(), null, writer, registry).exportData(registry.getHeatSets());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}			
 		} else {
 			// the file may still exist if heatsets have just been removed, so we delete it now
 			new File(baseDir + File.separator + HeatSetIO.sourceFilename()).delete();

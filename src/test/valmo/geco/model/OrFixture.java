@@ -4,6 +4,8 @@
  */
 package test.valmo.geco.model;
 
+import java.io.IOException;
+
 import valmo.geco.model.Factory;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Runner;
@@ -68,14 +70,17 @@ public class OrFixture {
 	public Registry importAllData() {
 		importConfigData();
 		
-		reader.initialize(baseDir, RunnerIO.sourceFilename());
-		new RunnerIO(factory, reader, null, registry).importData();
+		try {
+			reader.initialize(baseDir, RunnerIO.sourceFilename());
+			new RunnerIO(factory, reader, null, registry).importData();
 
-		reader.initialize(baseDir, RaceDataIO.sourceFilename());
-		new RaceDataIO(factory, reader, null, registry).importData();
+			reader.initialize(baseDir, RaceDataIO.sourceFilename());
+			new RaceDataIO(factory, reader, null, registry).importData();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		checkDNSRunner();
-		
 		return registry;
 	}
 
@@ -95,15 +100,18 @@ public class OrFixture {
 	}
 
 	public Registry importConfigData() {
-		reader.initialize(baseDir, ClubIO.orFilename());
-		new ClubIO(factory, reader, null, registry).importData();
-		
-		reader.initialize(baseDir, CourseIO.orFilename());
-		new CourseIO(factory, reader, null, registry).importData();
-		
-		reader.initialize(baseDir, CategoryIO.sourceFilename());
-		new CategoryIO(factory, reader, null, registry).importData();
-		
+		try {
+			reader.initialize(baseDir, ClubIO.orFilename());
+			new ClubIO(factory, reader, null, registry).importData();
+			
+			reader.initialize(baseDir, CourseIO.orFilename());
+			new CourseIO(factory, reader, null, registry).importData();
+			
+			reader.initialize(baseDir, CategoryIO.sourceFilename());
+			new CategoryIO(factory, reader, null, registry).importData();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return registry;
 	}
 	

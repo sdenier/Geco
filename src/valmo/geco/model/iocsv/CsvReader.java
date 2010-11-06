@@ -48,37 +48,19 @@ public class CsvReader {
 		this.csvSep = csvSep;
 	}
 
-	public BufferedReader reader() {
-		return this.reader;
-	}
-
 	public void open() {
 		this.reader = GecoResources.getReaderFor(filePath());
 	}
 
-	public void close() {
-		try {
-			if (reader() != null) {
-				reader().close();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void close() throws IOException {
+		this.reader.close();
 	}
 
-	public String read() {
-		try {
-			if (reader() != null) {
-				return reader().readLine();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-			close();
-		}
-		return null;
+	public String read() throws IOException {
+		return this.reader.readLine();
 	}
 	
-	public String[] readRecord(String csvSep) {
+	public String[] readRecord(String csvSep) throws IOException {
 		String read = read();
 		if( read==null ) {
 			return null;
@@ -87,7 +69,7 @@ public class CsvReader {
 		}
 	}
 	
-	public String[] readRecord() {
+	public String[] readRecord() throws IOException {
 		return readRecord(this.csvSep);
 	}
 

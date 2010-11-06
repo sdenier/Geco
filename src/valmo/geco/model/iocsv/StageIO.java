@@ -4,6 +4,8 @@
  */
 package valmo.geco.model.iocsv;
 
+import java.io.IOException;
+
 import valmo.geco.model.Factory;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Stage;
@@ -54,7 +56,7 @@ public class StageIO extends AbstractIO<Stage> {
 		return stage;
 	}
 	
-	public Stage getStage() {
+	public Stage getStage() throws IOException {
 		if( this.stage==null ) {
 			importData();
 		}

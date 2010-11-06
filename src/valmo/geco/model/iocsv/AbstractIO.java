@@ -4,6 +4,7 @@
  */
 package valmo.geco.model.iocsv;
 
+import java.io.IOException;
 import java.util.Collection;
 
 import valmo.geco.model.Factory;
@@ -36,7 +37,7 @@ public abstract class AbstractIO<T> {
 		this.registry = registry;
 	}
 	
-	public void importData() {
+	public void importData() throws IOException {
 		this.reader.open();
 		while( true ) {
 			T t = importOne();
@@ -46,7 +47,7 @@ public abstract class AbstractIO<T> {
 		this.reader.close();
 	}
 	
-	public T importOne() {
+	public T importOne() throws IOException {
 		String[] record = this.reader.readRecord();
 		if( record!=null ) {
 			return importTData(record);
@@ -59,7 +60,7 @@ public abstract class AbstractIO<T> {
 	
 	public abstract void register(T data, Registry registry);
 
-	public void exportData(Collection<T> data) {
+	public void exportData(Collection<T> data) throws IOException {
 		this.writer.open();
 		for (T t : data) {
 			this.writer.writeRecord(exportTData(t));
