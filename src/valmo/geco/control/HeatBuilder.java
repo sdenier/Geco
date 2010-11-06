@@ -159,7 +159,7 @@ public class HeatBuilder extends Control {
 		html.open("table");
 		int i = 1;
 		for (Runner runner : heat.getQualifiedRunners()) {
-			html.open("tr").td(i).td(runner.getName()).close("tr");
+			html.open("tr").td(Integer.toString(i)).td(runner.getName()).close("tr");
 			i++;
 		}
 		html.close("table");

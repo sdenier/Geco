@@ -14,7 +14,6 @@ import java.util.Vector;
 
 import valmo.geco.core.Html;
 import valmo.geco.core.TimeManager;
-import valmo.geco.core.Util;
 import valmo.geco.model.Category;
 import valmo.geco.model.Course;
 import valmo.geco.model.Pool;
@@ -23,8 +22,7 @@ import valmo.geco.model.Result;
 import valmo.geco.model.ResultType;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
-import valmo.geco.model.RunnerResult;
-import valmo.geco.model.Status;
+import valmo.geco.model.iocsv.CsvWriter;
 
 /**
  * @author Simon Denier
@@ -155,18 +153,21 @@ public class ResultBuilder extends Control {
 		return buildResults(pools.toArray(new Pool[0]), config.resultType);
 	}
 
-	public void exportFile(String filename, String format, ResultConfig config, int refreshInterval) throws IOException {
+	public void exportFile(String filename, String format, ResultConfig config, int refreshInterval)
+			throws IOException {
 		if( !filename.endsWith(format) ) {
 			filename = filename + "." + format;
 		}
-		BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
 		if( format.equals("html") ) {
-			writer.write(generateHtmlResults(config, refreshInterval));	
+			BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+			writer.write(generateHtmlResults(config, refreshInterval));
+			writer.close();
 		}
 		if( format.equals("csv") ) {
+			CsvWriter writer = new CsvWriter(",", filename);
 			generateCsvResult(config, writer);
+			writer.close();
 		}
-		writer.close();
 	}
 
 
@@ -191,64 +192,81 @@ public class ResultBuilder extends Control {
 	 * @param html
 	 */
 	private void appendHtmlResult(Result result, ResultConfig config, Html html) {
-		html.tag("h1", result.getIdentifier());
+		html.tag("h1", result.getIdentifier()); // add finished / present
 		html.open("table");
 		if( config.showPenalties ){
-			html.open("tr").th("").th("Name").th("Race time").th("MP").th("Time").closeTr();
+			html.open("tr").th("").th("Name").th("Club")
+			.th("Time", "align=\"right\"").th("MP", "align=\"right\"").th("Race time", "align=\"right\"")
+			.closeTr();
 		}
+		// Format: rank, first name + last name, club [, real time, nb mps], time/status
 		for (RankedRunner runner : result.getRanking()) {
 			RunnerRaceData data = runner.getRunnerData();
-			html.openTr();
-			html.td(runner.getRank()).td(data.getRunner().getName());
-			appendHtmlPenalties(config.showPenalties, data, html);
-			html.td(data.getResult().formatRacetime());
-			html.closeTr();
+			writeHtml(
+					data,
+					Integer.toString(runner.getRank()),
+					data.getResult().formatRacetime(),
+					config.showPenalties,
+					html);
 		}
-		html.openTr().td("").td("").td("").closeTr();
+		html.openTr().closeTr(); // jump line
 		for (RunnerRaceData runnerData : result.getNRRunners()) {
 			Runner runner = runnerData.getRunner();
 			if( !runner.isNC() ) {
-				html.openTr();
-				html.td("").td(runner.getName());
-				appendHtmlPenalties(config.showPenalties, runnerData, html);
-				html.td(runnerData.getResult().formatStatus());
-				html.closeTr();
+				writeHtml(
+						runnerData,
+						"",
+						runnerData.getResult().formatStatus(),
+						config.showPenalties,
+						html);
 			} else if( config.showNC ) {
-				RunnerResult runnerResult = runnerData.getResult();
-				html.openTr();
-				html.td("NC").td(runner.getName());
-				appendHtmlPenalties(config.showPenalties, runnerData, html);
-				html.td( runnerResult.shortFormat() );
-				html.closeTr();
+				writeHtml(
+						runnerData,
+						"NC",
+						runnerData.getResult().shortFormat(),
+						config.showPenalties,
+						html);
 			}
 		}
 		if( config.showOthers ) {
-			html.openTr().td("").td("").td("").closeTr();
+			html.openTr().closeTr(); // jump line
 			for (RunnerRaceData runnerData : result.getOtherRunners()) {
-				html.openTr();
-				html.td("").td(runnerData.getRunner().getName());
-				if( config.showPenalties ) {
-					html.td("").td("");
-				}
-				html.td(runnerData.getResult().formatStatus());
-				html.closeTr();
+				writeHtml(
+						runnerData,
+						"",
+						runnerData.getResult().formatStatus(),
+						config.showPenalties,
+						html);
 			}			
 		}
 		html.close("table");
 	}
-
-	private void appendHtmlPenalties(boolean showPenalties, RunnerRaceData data, Html html) {
+	
+	private void writeHtml(RunnerRaceData runnerData, String rank, String timeOrStatus,
+			boolean showPenalties, Html html) {
+		html.openTr();
+		html.td(rank);
+		html.td(runnerData.getRunner().getName());
+		html.td(runnerData.getRunner().getClub().getName());
+		html.th(timeOrStatus, "align=\"right\"");
 		if( showPenalties ){
-			html.td(TimeManager.time(data.realRaceTime())).td(data.getResult().getNbMPs());
+			html.td(Integer.toString(runnerData.getResult().getNbMPs()), "align=\"right\"");
+			html.td(TimeManager.time(runnerData.realRaceTime()), "align=\"right\"");
 		}
+		html.closeTr();
 	}
 
+
+	
+	
+	
+	
+	
 	/**
 	 * @param writer
 	 * @throws IOException 
 	 */
-	public void generateCsvResult(ResultConfig config, BufferedWriter writer) throws IOException {
-		// TODO: use CsvWriter
+	public void generateCsvResult(ResultConfig config, CsvWriter writer) throws IOException {
 		Vector<Result> results = buildResults(config);
 		for (Result result : results) {
 			if( config.showEmptySets || !result.isEmpty()) {
@@ -262,80 +280,73 @@ public class ResultBuilder extends Control {
 	 * @param writer
 	 * @throws IOException 
 	 */
-	private void appendCsvResult(Result result, ResultConfig config, BufferedWriter writer) throws IOException {
+	private void appendCsvResult(Result result, ResultConfig config, CsvWriter writer) throws IOException {
 		String id = result.getIdentifier();
+		// Format: result id, rank/status, first name, last name, club, [, time/status [, real time, nb mps]]
 		for (RankedRunner rRunner : result.getRanking()) {
 			RunnerRaceData runnerData = rRunner.getRunnerData();
-			String[] line = new String[] {
+			writeCsvResult(
 					id,
+					runnerData,
 					Integer.toString(rRunner.getRank()),
-					runnerData.getRunner().getFirstname(),
-					runnerData.getRunner().getLastname(),
 					runnerData.getResult().formatRacetime(),
-			};
-			writer.write(Util.join(line, ",", new StringBuffer()));
-			if( config.showPenalties ){
-				line = new String[] {
-					TimeManager.time(runnerData.realRaceTime()),
-					Integer.toString(runnerData.getResult().getNbMPs()) };
-				writer.write(",");
-				writer.write(Util.join(line, ",", new StringBuffer()));
-			};
-			writer.write("\n");
+					config.showPenalties,
+					writer);
 		}
 		for (RunnerRaceData runnerData : result.getNRRunners()) {
 			Runner runner = runnerData.getRunner();
 			if( !runner.isNC() ) {
-				String[] line = new String[] {
+				writeCsvResult(
 						id,
+						runnerData,
 						runnerData.getResult().formatStatus(),
-						runnerData.getRunner().getFirstname(),
-						runnerData.getRunner().getLastname(),
-				};
-				writer.write(Util.join(line, ",", new StringBuffer()));
-				if( config.showPenalties ){
-					line = new String[] {
-						"",
-						TimeManager.time(runnerData.realRaceTime()),
-						Integer.toString(runnerData.getResult().getNbMPs()) };
-					writer.write(",");
-					writer.write(Util.join(line, ",", new StringBuffer()));
-				};
-				writer.write("\n");
+						runnerData.getResult().formatStatus(),
+						config.showPenalties,
+						writer);
 			} else if( config.showNC ) {
-				String[] line = new String[] {
+				writeCsvResult(
 						id,
+						runnerData,
 						"NC",
-						runnerData.getRunner().getFirstname(),
-						runnerData.getRunner().getLastname(),
-				};
-				writer.write(Util.join(line, ",", new StringBuffer()));
-				if( runnerData.getResult().is(Status.OK) ) {
-					writer.write("," + runnerData.getResult().formatRacetime());
-				} else {
-					writer.write(","); // empty cell for race time
-				}
-				if( config.showPenalties ){
-					line = new String[] {
-						TimeManager.time(runnerData.realRaceTime()),
-						Integer.toString(runnerData.getResult().getNbMPs()) };
-					writer.write(",");
-					writer.write(Util.join(line, ",", new StringBuffer()));
-				};
-				writer.write("\n");
+						runnerData.getResult().shortFormat(), // time or status
+						config.showPenalties,
+						writer);
 			}
 		}
 		if( config.showOthers ) {
 			for (RunnerRaceData runnerData : result.getOtherRunners()) {
-				String[] line = new String[] {
+				writeCsvResult(
 						id,
+						runnerData,
 						runnerData.getResult().formatStatus(),
-						runnerData.getRunner().getFirstname(),
-						runnerData.getRunner().getLastname(),
-				};
-				writer.write(Util.join(line, ",", new StringBuffer()));
-				writer.write("\n");
+						runnerData.getResult().formatStatus(),
+						config.showPenalties,
+						writer);
 			}			
+		}
+	}
+
+	private void writeCsvResult(String id, RunnerRaceData runnerData, String rankOrStatus, String timeOrStatus,
+			boolean showPenalties, CsvWriter writer) throws IOException {
+		Runner runner = runnerData.getRunner();
+		if( showPenalties ){
+			writer.writeRecord(
+				id,
+				rankOrStatus,
+				runner.getFirstname(),
+				runner.getLastname(),
+				runner.getClub().getName(),
+				timeOrStatus,
+				TimeManager.time(runnerData.realRaceTime()),
+				Integer.toString(runnerData.getResult().getNbMPs()));
+		} else {
+			writer.writeRecord(
+				id,
+				rankOrStatus,
+				runner.getFirstname(),
+				runner.getLastname(),
+				runner.getClub().getName(),
+				timeOrStatus);				
 		}
 	}
 	

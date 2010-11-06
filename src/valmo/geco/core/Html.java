@@ -5,6 +5,7 @@
 package valmo.geco.core;
 
 
+
 /**
  * This class implements some very dumb helper methods for html tags. Basically, it does not support nesting.
  * One has to openTag, write contents, closeTag to enable nesting.
@@ -138,13 +139,18 @@ public final class Html {
 		return this;
 	}
 
-	public Html td(int i) {
-		tag("td", Integer.toString(i));
+	public Html td(String contents, String attributes) {
+		tag("td", attributes, contents);
 		return this;
 	}
-	
+
 	public Html th(String contents) {
 		tag("th", contents);
+		return this;
+	}
+
+	public Html th(String contents, String attributes) {
+		tag("th", attributes, contents);
 		return this;
 	}
 	

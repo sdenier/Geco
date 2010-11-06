@@ -23,9 +23,7 @@ import valmo.geco.core.Html;
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.RankedRunner;
 import valmo.geco.model.Result;
-import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
-import valmo.geco.model.RunnerResult;
 import valmo.geco.model.Trace;
 
 /**
@@ -115,87 +113,81 @@ public class SplitBuilder extends ResultBuilder implements Printable {
 
 	
 	
-	public String generateHtmlSplits(ResultConfig config) {
+	public String generateHtmlSplits(ResultConfig config, int nbColumns) {
 		Vector<Result> results = buildResults(config);
 		Html html = new Html();
 		for (Result result : results) {
 			if( config.showEmptySets || !result.isEmpty() ) {
-				appendHtmlResultsWithSplits(result, config, html);	
+				appendHtmlResultsWithSplits(result, config, nbColumns, html);	
 			}
 		}
 		return html.close();
 	}
 	
-	private void appendHtmlResultsWithSplits(Result result, ResultConfig config, Html html) {
+	private void appendHtmlResultsWithSplits(Result result, ResultConfig config, int nbColumns, Html html) {
 		html.tag("h1", result.getIdentifier());
 		html.open("table");
 		for (RankedRunner runner : result.getRanking()) {
 			RunnerRaceData data = runner.getRunnerData();
-			html.openTr();
-			html.th(Integer.toString(runner.getRank()));
-			html.tag("th", "colspan=\"5\"", data.getRunner().getName());
-			html.th(data.getResult().formatRacetime());
-			html.closeTr();
-			appendHtmlSplits(buildNormalSplits(data), html);
+			generateHtmlSplitsFor(data, Integer.toString(runner.getRank()), data.getResult().formatRacetime(), nbColumns, html);
 			html.openTr().closeTr();
 		}
 		html.openTr().td("").td("").td("").closeTr();
 		for (RunnerRaceData runnerData : result.getNRRunners()) {
-			Runner runner = runnerData.getRunner();
-			if( !runner.isNC() ) {
-				html.openTr();
-				html.th("");
-				html.tag("th", "colspan=\"5\"", runner.getName());
-				html.th(runnerData.getResult().formatStatus());
-				html.closeTr();
+			if( ! runnerData.getRunner().isNC() ) {
+				generateHtmlSplitsFor(runnerData, "", runnerData.getResult().formatStatus(), nbColumns, html);
 			} else if( config.showNC ) {
-				RunnerResult runnerResult = runnerData.getResult();
-				html.openTr();
-				html.th("NC");
-				html.tag("th", "colspan=\"5\"", runner.getName());
-				html.th( runnerResult.shortFormat() );
-				html.closeTr();
+				generateHtmlSplitsFor(runnerData, "NC", runnerData.getResult().shortFormat(), nbColumns, html);
 			}
-			appendHtmlSplits(buildNormalSplits(runnerData), html);
 			html.openTr().closeTr();
 		}
 		if( config.showOthers ) {
-			html.openTr().td("").td("").td("").closeTr();
+			html.openTr().closeTr();
 			for (RunnerRaceData runnerData : result.getOtherRunners()) {
-				html.openTr();
-				html.th("");
-				html.tag("th", "colspan=\"5\"", runnerData.getRunner().getName());
-				html.th(runnerData.getResult().formatStatus());
-				html.closeTr();
-				appendHtmlSplits(buildNormalSplits(runnerData), html);
+				generateHtmlSplitsFor(runnerData, "", runnerData.getResult().formatStatus(), nbColumns, html);
 				html.openTr().closeTr();
 			}			
 		}
 		html.close("table");
+	}
+
+	public void generateHtmlSplitsFor(RunnerRaceData data, String rank, String statusTime, Html html) {
+		generateHtmlSplitsFor(data, rank, statusTime, 11, html);
+	}
+	
+	public void generateHtmlSplitsFor(RunnerRaceData data, String rank, String statusTime, int nbColumns, Html html) {
+		html.openTr();
+		html.th(rank);
+		html.th(data.getRunner().getName(), "align=\"left\" colspan=\"3\"");
+		html.th(statusTime);
+		html.closeTr();
+		appendHtmlSplits(buildNormalSplits(data), nbColumns, html);
 	}
 	
 	/**
 	 * @param buildNormalSplits
 	 * @param html
 	 */
-	private void appendHtmlSplits(SplitTime[] splits, Html html) {
-		int nbColumns = 9;
+	private void appendHtmlSplits(SplitTime[] splits, int nbColumns, Html html) {
 		int nbRows = (splits.length / nbColumns) + 1;
 		int rowStart = 0;
 		for (int i = 0; i < nbRows; i++) {
 			// if last line, take the last remaining splits, not a full row
 			int limit = ( i==nbRows-1 ) ? (splits.length % nbColumns) : nbColumns;
+			
+			// first line with seq and control number/code
 			html.openTr().td("");
 			for (int j = 0; j < limit; j++) {
 				SplitTime split = splits[j + rowStart];
 				if( split.trace != null ) {
 					String label = split.seq + " (" + split.trace.getCode() +")";
-					html.tag("th", "align=\"right\"", label);
+					html.th(label, "align=\"right\"");
 				} else {
-					html.tag("td", "align=\"right\"", split.seq);
+					html.td(split.seq, "align=\"right\"");
 				}
 			}
 			html.closeTr();
+			// second line is cumulative split since start
 			html.openTr().td("");
 			for (int j = 0; j < limit; j++) {
 				SplitTime split = splits[j + rowStart];
@@ -203,9 +195,10 @@ public class SplitBuilder extends ResultBuilder implements Printable {
 				if( split.trace!=null && ! split.trace.isOK() ) {
 					label = Html.tag("i", label, new StringBuffer()).toString();
 				}
-				html.tag("td", "align=\"right\"", label);
+				html.td(label, "align=\"right\"");
 			}
 			html.closeTr();
+			// third line is partial split since previous ok punch
 			html.openTr().td("");
 			for (int j = 0; j < limit; j++) {
 				SplitTime split = splits[j + rowStart];
@@ -213,7 +206,7 @@ public class SplitBuilder extends ResultBuilder implements Printable {
 				if( split.trace!=null && ! split.trace.isOK() ) {
 					label = Html.tag("i", label, new StringBuffer()).toString();
 				}
-				html.tag("td", "align=\"right\"", label);
+				html.td(label, "align=\"right\"");
 			}
 			html.closeTr();
 			rowStart += nbColumns;
@@ -226,13 +219,13 @@ public class SplitBuilder extends ResultBuilder implements Printable {
 		System.out.println(service);
 		PrintService[] lookupPrintServices = PrinterJob.lookupPrintServices();
 		for (PrintService printService : lookupPrintServices) {
-			System.out.println(printService);
+			System.out.println(printService.getName());
 		}
 		
 		PrinterJob job = PrinterJob.getPrinterJob();
 		job.setPrintable(new SplitBuilder(new GecoControl()));
-//		boolean ok = job.printDialog();
-		boolean ok = true;
+		boolean ok = job.printDialog();
+//		boolean ok = true;
 		if( ok ){
 			try {
 				job.print();
