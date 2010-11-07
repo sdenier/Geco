@@ -13,7 +13,6 @@ import valmo.geco.model.Punch;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.RunnerResult;
-import valmo.geco.model.Status;
 
 /**
  * @author Simon Denier
@@ -152,16 +151,16 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 		return runner.getCourse();
 	}
 	
-	public boolean hasResult() {
-		return ! getResult().is(Status.NDA);
+	public boolean hasData() {
+		return getResult().getStatus().hasData();
 	}
 	
-	public boolean hasManualStatus() {
-		return ! getResult().is(Status.OK) && ! getResult().is(Status.MP);
+	public boolean statusIsRecheckable() {
+		return getResult().getStatus().isRecheckable();
 	}
 	
 	public boolean hasTrace() {
-		return ! ( getResult().is(Status.NDA) || getResult().is(Status.DNS) );
+		return getResult().getStatus().isTraceable();
 	}
 
 	public RunnerResult getResult() {
@@ -172,10 +171,6 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 		this.result = result;
 	}
 
-	public boolean isRunning() {
-		return getResult().is(Status.NDA);
-	}
-	
 	public long realRaceTime() {
 		if( getFinishtime().equals(TimeManager.NO_TIME) ) {
 			return TimeManager.NO_TIME_l;

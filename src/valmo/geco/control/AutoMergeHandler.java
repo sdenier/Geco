@@ -26,12 +26,12 @@ public class AutoMergeHandler extends Control implements GecoRequestHandler {
 
 	@Override
 	public String requestMergeUnknownRunner(RunnerRaceData data, String chip) {
-		return processData(data, chip);
+		return processData(data, chip, Status.UNK);
 	}
 
 	@Override
 	public String requestMergeExistingRunner(RunnerRaceData data, Runner target) {
-		return processData(data, target.getChipnumber());
+		return processData(data, target.getChipnumber(), Status.DUP);
 	}
 	
 	private Course detectCourse(RunnerRaceData data) {
@@ -52,7 +52,7 @@ public class AutoMergeHandler extends Control implements GecoRequestHandler {
 		return probableCourse;
 	}
 	
-	private String processData(RunnerRaceData runnerData, String ecard) {
+	private String processData(RunnerRaceData runnerData, String ecard, Status status) {
 		String uniqueEcard = runnerControl.deriveUniqueChipnumber(ecard);
 		Course course = detectCourse(runnerData);
 		try {
@@ -61,9 +61,10 @@ public class AutoMergeHandler extends Control implements GecoRequestHandler {
 			newRunner.setFirstname("Loisir");
 			newRunner.setLastname(uniqueEcard);
 			runnerControl.registerRunner(newRunner, runnerData);
-			geco().checker().check(runnerData);
+			geco().checker().check(runnerData); // compute trace
+			runnerData.getResult().setStatus(status);
 			geco().log("Creation " + runnerData.infoString());
-			geco().announcer().announceStatusChange(runnerData, Status.NDA);
+			geco().announcer().announceStatusChange(runnerData, status);
 		} catch (RunnerCreationException e1) {
 			e1.printStackTrace();
 		}

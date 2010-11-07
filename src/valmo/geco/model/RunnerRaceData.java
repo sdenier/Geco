@@ -45,9 +45,9 @@ public interface RunnerRaceData extends Cloneable {
 
 	public Course getCourse();
 	
-	public boolean hasResult();
+	public boolean hasData();
 
-	public boolean hasManualStatus();
+	public boolean statusIsRecheckable();
 
 	public boolean hasTrace();
 	
@@ -55,8 +55,6 @@ public interface RunnerRaceData extends Cloneable {
 
 	public void setResult(RunnerResult result);
 	
-	public boolean isRunning();
-
 	public long realRaceTime();
 
 	public String punchSummary(int sumLength);

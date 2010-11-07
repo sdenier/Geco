@@ -139,7 +139,9 @@ public class RunnerPanel extends GecoPanel {
 							geco(),
 							frame(),
 							Messages.uiGet("RunnerPanel.MergeCardTitle")) //$NON-NLS-1$
-						.showMergeDialogFor(runnerData.clone(), runner.getChipnumber());
+						.showMergeDialogFor(runnerData.clone(),
+											runner.getChipnumber(),
+											runnerData.getResult().getStatus());
 				}
 			}
 		});

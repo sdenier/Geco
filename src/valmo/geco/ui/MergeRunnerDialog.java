@@ -56,6 +56,7 @@ public class MergeRunnerDialog extends JDialog {
 	 * Chipnumber identifying the runner which actually got changed, or null if data was discarded
 	 */
 	private String returnChip;
+	private Status defaultCreationStatus;
 	
 	private JLabel chipL;
 	private JLabel punchesL;
@@ -189,14 +190,15 @@ public class MergeRunnerDialog extends JDialog {
 		statusL.setText(Html.htmlTag("i", runnerData.getResult().getStatus().toString()));
 	}
 	
-	private void showDialogFor(RunnerRaceData data, String chip) {
+	private void showDialogFor(RunnerRaceData data, String chip, Status defaultStatus) {
 		this.runnerData = data;
 		this.chipNumber = chip;
 		this.existingRunner = data.getRunner();
+		this.defaultCreationStatus = defaultStatus;
 		
 		// Only compute new status if initially one of the following
 		Status status = data.getResult().getStatus();
-		updateStatus = status == Status.OK || status == Status.MP || status == Status.NDA;
+		updateStatus = status.isRecheckable() || status.isUnresolved();
 		
 		this.mockRunner = runnerControl().buildMockRunner();
 		this.runnerData.setRunner(this.mockRunner);
@@ -212,8 +214,8 @@ public class MergeRunnerDialog extends JDialog {
 	}
 
 	
-	public String showMergeDialogFor(RunnerRaceData data, String chip) {
-		showDialogFor(data, chip);
+	public String showMergeDialogFor(RunnerRaceData data, String chip, Status defaultStatus) {
+		showDialogFor(data, chip, defaultStatus);
 		runnersCB.setSelectedIndex(-1);
 		showMergeInfo();
 		pack();
@@ -223,7 +225,7 @@ public class MergeRunnerDialog extends JDialog {
 	}
 	
 	public String showOverwriteDialogFor(RunnerRaceData data, Runner target) {
-		showDialogFor(data, target.getChipnumber());
+		showDialogFor(data, target.getChipnumber(), Status.DUP);
 		courseCB.setSelectedItem(target.getCourse().getName());
 		runnersCB.setSelectedItem(target);
 		showOverwriteInfo();
@@ -261,7 +263,7 @@ public class MergeRunnerDialog extends JDialog {
 					String selectedCoursename = getSelectedCoursename();
 					if( selectedCoursename.equals("[Unknown]")) {
 						mockRunner.setCourse(registry().anyCourse());
-						runnerData.getResult().setStatus(Status.NDA);
+						runnerData.getResult().setStatus(defaultCreationStatus);
 						geco.checker().normalTrace(runnerData);
 					} else {
 						mockRunner.setCourse(registry().findCourse(selectedCoursename));
@@ -312,7 +314,7 @@ public class MergeRunnerDialog extends JDialog {
 				}
 				courseCB.setSelectedItem(getTargetRunner().getCourse().getName());
 				mergeB.setEnabled(true);
-				if( hasStatus(getTargetRunner()) ) {
+				if( hasData(getTargetRunner()) ) {
 					showOverwriteInfo();
 				} else {
 					showMergeInfo();
@@ -322,8 +324,13 @@ public class MergeRunnerDialog extends JDialog {
 		mergeB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				// TODO: update chipnumber
 				RunnerRaceData updatedData = runnerControl().updateRunnerDataFor(getTargetRunner(), runnerData);
-				runnerControl().validateCourse(updatedData, getSelectedCoursename());
+				String selectedCoursename = getSelectedCoursename();
+				selectedCoursename = selectedCoursename.equals("[Unknown]") ?
+					registry().anyCourse().getName() :
+					selectedCoursename;
+				runnerControl().validateCourse(updatedData, selectedCoursename);
 				if( existingRunner != null ) {// offer to delete previous runner if applicable
 					int confirm = JOptionPane.showConfirmDialog(MergeRunnerDialog.this,
 																"Confirm deletion of " + existingRunner.idString(),
@@ -357,8 +364,8 @@ public class MergeRunnerDialog extends JDialog {
 		return registry().findRunnerData(runner);
 	}
 	
-	private boolean hasStatus(Runner runner) {
-		return getRunnerData(runner).hasResult();
+	private boolean hasData(Runner runner) {
+		return getRunnerData(runner).hasData();
 	}
 
 	private String getSelectedCoursename() {

@@ -148,7 +148,7 @@ public class SIReaderHandler extends Control
 		Runner runner = registry().findRunnerByChip(card.getSiIdent());
 		if( runner!=null ) {
 			RunnerRaceData runnerData = registry().findRunnerData(runner);
-			if( runnerData.hasResult() ) {
+			if( runnerData.hasData() ) {
 				geco().log("READING AGAIN " + card.getSiIdent());
 				String returnedCard = requestHandler.requestMergeExistingRunner(handleNewData(card), runner);
 				if( returnedCard!=null ) {

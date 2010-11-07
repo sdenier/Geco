@@ -211,7 +211,7 @@ public class RunnerControl extends Control {
 			announcer().announceCourseChange(runner, oldCourse);
 			geco().log("Course change for " + runner.idString() + " from " + oldCourse.getName() + " to " + newCourse);
 			// Proceed by checking the new status
-			if( ! runnerData.hasManualStatus() ) {
+			if( runnerData.statusIsRecheckable() ) {
 				Status oldStatus = runnerData.getResult().getStatus();
 				geco().checker().check(runnerData);
 				announcer().announceStatusChange(runnerData, oldStatus);
@@ -276,7 +276,7 @@ public class RunnerControl extends Control {
 	
 	public void recheckOkMpRunners() {
 		for (RunnerRaceData data: registry().getRunnersData()) {
-			if( ! data.hasManualStatus() ) {
+			if( data.statusIsRecheckable() ) {
 				geco().checker().check(data);
 			}
 		}
@@ -289,7 +289,7 @@ public class RunnerControl extends Control {
 		geco().log("Recheck course " + course.getName());
 		for (Runner runner : runners) {
 			RunnerRaceData runnerData = registry().findRunnerData(runner);
-			if( ! runnerData.hasManualStatus() ) {
+			if( runnerData.statusIsRecheckable() ) {
 				recheckRunner(runnerData);
 			}
 		}

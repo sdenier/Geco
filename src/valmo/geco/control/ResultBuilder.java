@@ -110,6 +110,8 @@ public class ResultBuilder extends Control implements IResultBuilder {
 					break;
 				case DNS:
 				case NDA:
+				case UNK:
+				case DUP:
 					result.addOtherRunner(data);
 				}
 			}

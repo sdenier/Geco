@@ -29,6 +29,7 @@ import valmo.geco.model.Registry;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Stage;
+import valmo.geco.model.Status;
 import valmo.geco.ui.GecoLauncher;
 import valmo.geco.ui.GecoWindow;
 import valmo.geco.ui.MergeRunnerDialog;
@@ -340,7 +341,7 @@ public class Geco implements GecoRequestHandler {
 
 	@Override
 	public String requestMergeUnknownRunner(RunnerRaceData data, String chip) {
-		return new MergeRunnerDialog(this, window, "Unknown Chip").showMergeDialogFor(data, chip);		
+		return new MergeRunnerDialog(this, window, "Unknown Chip").showMergeDialogFor(data, chip, Status.UNK);		
 	}
 
 	@Override

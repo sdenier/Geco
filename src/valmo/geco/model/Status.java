@@ -11,7 +11,7 @@ public enum Status {
 		public Color color() {
 			return new Color(0.6f, 1, 0.6f);
 		}
-		public boolean isEditable() {
+		public boolean isRecheckable() {
 			return true;
 		}
 	},
@@ -19,7 +19,7 @@ public enum Status {
 		public Color color() {
 			return new Color(0.75f, 0.5f, 0.75f);
 		}
-		public boolean isEditable() {
+		public boolean isRecheckable() {
 			return true;
 		}
 	},
@@ -36,17 +36,14 @@ public enum Status {
 		public String toString() {
 			return "No Data";
 		}
-		public boolean  hasNoData() {
-			return true;
+		public boolean  hasData() {
+			return false;
 		}
 		public boolean isUnresolved() {
 			return true;
 		}
 		public boolean isTraceable() {
 			return false;
-		}
-		public boolean isEditable() {
-			return true;
 		}
 	},
 	UNK { 
@@ -76,8 +73,8 @@ public enum Status {
 		return Color.white;
 	}
 	
-	public boolean  hasNoData() {
-		return false;
+	public boolean hasData() {
+		return true;
 	}
 	
 	public boolean isUnresolved() {
@@ -92,7 +89,7 @@ public enum Status {
 		return true;
 	}
 	
-	public boolean isEditable() {
+	public boolean isRecheckable() {
 		return false;
 	}
 	
