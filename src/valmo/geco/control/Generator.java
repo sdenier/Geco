@@ -92,10 +92,13 @@ public class Generator extends Control {
 	public ResultData generateOverwriting() {
 		random = new Random();
 		List<Runner> runnersFromCourse = registry().getRunnersFromCourse(randomCourse());
-		Runner runner = runnersFromCourse.get(random.nextInt(runnersFromCourse.size()));
-		ResultData cardData = generateCardData(runner);
-		siHandler.newCardRead(cardData);
-		return cardData;
+		if( ! runnersFromCourse.isEmpty() ){
+			Runner runner = runnersFromCourse.get(random.nextInt(runnersFromCourse.size()));
+			ResultData cardData = generateCardData(runner);
+			siHandler.newCardRead(cardData);
+			return cardData;
+		}
+		return null;
 	}
 
 

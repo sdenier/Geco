@@ -62,6 +62,7 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 		geco().announcer().registerStageListener(this);
 		geco().announcer().registerCardListener(this);
 		geco().registerService(SplitBuilder.class, this);
+		changed(null, stage());
 	}
 	
 	
