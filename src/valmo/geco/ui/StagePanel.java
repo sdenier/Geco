@@ -22,6 +22,7 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.InputVerifier;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -254,6 +255,22 @@ public class StagePanel extends TabPanel {
 				return validateZeroHour(formatter, zerohourF);
 			}
 		});
+		
+		c.gridy = 2;
+		panel.add(new JLabel("Split printer:"), c);
+		final JComboBox printersCB = new JComboBox(geco().splitsBuilder().listPrinterNames());
+		printersCB.setSelectedItem(geco().splitsBuilder().getSplitPrinterName());
+		panel.add(printersCB, c);
+		printersCB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				geco().splitsBuilder().setSplitPrinterName((String) printersCB.getSelectedItem());
+			}
+		});
+		
+		c.gridy = 3;
+		panel.add(new JLabel("Split format:"), c);
+		panel.add(new JComboBox(new String[] {"ticket", "multi-columns"} ), c);
 		
 		return titlePanel(panel, Messages.uiGet("StagePanel.SIReaderConfigTitle")); //$NON-NLS-1$
 	}

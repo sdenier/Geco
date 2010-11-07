@@ -94,6 +94,8 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 			"search.png", //$NON-NLS-1$
 			"irkick.png", //$NON-NLS-1$
 			"irkickflash.png", //$NON-NLS-1$
+			"fileprint.png", //$NON-NLS-1$
+			"filequickprint.png", //$NON-NLS-1$
 		});
 	}
 	
@@ -309,6 +311,26 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		toolBar.add(liveClientB);
 		toolBar.addSeparator();
 		
+		final ImageIcon splitOff = createIcon(10);
+		final ImageIcon splitOn = createIcon(11);
+		toolBar.add(new StartStopButton() {
+			@Override
+			protected void initialize() {
+				setToolTipText("Auto print split times");
+				doOnAction();
+			}
+			@Override
+			public void actionOn() {
+				setIcon(splitOn);
+				geco.splitsBuilder().enableAutoprint();
+			}
+			@Override
+			public void actionOff() {
+				geco.splitsBuilder().disableAutoprint();
+				setIcon(splitOff);
+			}
+		});
+		
 		final ImageIcon startIcon = createIcon(5);
 		final ImageIcon stopIcon = createIcon(6);
 		startB = new StartStopButton() {
@@ -331,6 +353,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 			}
 		};
 		toolBar.add(startB);
+
 		final JLabel versionL = new JLabel(" v" + Geco.VERSION); //$NON-NLS-1$
 		versionL.setBorder(BorderFactory.createLineBorder(versionL.getBackground()));
 		versionL.addMouseListener(new MouseListener() {
