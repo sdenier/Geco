@@ -25,6 +25,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
 import valmo.geco.Geco;
+import valmo.geco.core.Messages;
 import valmo.geco.model.Stage;
 
 /**
@@ -65,8 +66,8 @@ public class VStatsPanel extends StatsPanel {
 		panel.setLayout(new BorderLayout());
 		
 		JPanel controlP = new JPanel(new FlowLayout());
-		viewCh = new JCheckBox("Short view");
-		viewCh.setToolTipText("Switch between short stats and full stats");
+		viewCh = new JCheckBox(Messages.uiGet("StatsPanel.ShortViewLabel")); //$NON-NLS-1$
+		viewCh.setToolTipText(Messages.uiGet("StatsPanel.ShortViewTooltip")); //$NON-NLS-1$
 		viewCh.setSelected(true);
 		viewCh.addItemListener(new ItemListener() {
 			@Override
@@ -81,8 +82,8 @@ public class VStatsPanel extends StatsPanel {
 		});
 		controlP.add(viewCh);
 		
-		JButton refreshB = new JButton("Refresh");
-		refreshB.setToolTipText("Manually refresh stats");
+		JButton refreshB = new JButton(Messages.uiGet("StatsPanel.RefreshLabel")); //$NON-NLS-1$
+		refreshB.setToolTipText(Messages.uiGet("StatsPanel.RefreshTooltip")); //$NON-NLS-1$
 		refreshB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -143,9 +144,9 @@ public class VStatsPanel extends StatsPanel {
 			@Override
 			public String getColumnName(int column) {
 				if( column==0 )
-					return "Status";
+					return Messages.uiGet("StatsPanel.StatusHeader"); //$NON-NLS-1$
 				else
-					return "Count";
+					return Messages.uiGet("StatsPanel.CountHeader"); //$NON-NLS-1$
 			}
 			@Override
 			public Class<?> getColumnClass(int columnIndex) {
@@ -161,7 +162,7 @@ public class VStatsPanel extends StatsPanel {
 	protected void refreshTableKeys() {
 		statusKeys = stats().shortStatuses();
 		coursesL.setListData(stats().sortedEntries());
-		coursesL.setSelectedValue("Total", true);
+		coursesL.setSelectedValue("Total", true); //$NON-NLS-1$
 //		selectedCourse = "Total"; // courseKeys[courseKeys.length-1];
 	}
 

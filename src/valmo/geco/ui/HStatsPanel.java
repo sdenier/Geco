@@ -25,6 +25,7 @@ import javax.swing.table.AbstractTableModel;
 
 import valmo.geco.Geco;
 import valmo.geco.core.Html;
+import valmo.geco.core.Messages;
 import valmo.geco.model.Stage;
 
 /**
@@ -69,8 +70,8 @@ public class HStatsPanel extends StatsPanel {
 		c.gridy = 0;
 		controlP.add(Box.createRigidArea(new Dimension(200, 20)), c);
 		
-		viewCh = new JCheckBox("Short view");
-		viewCh.setToolTipText("Switch between short stats and full stats");
+		viewCh = new JCheckBox(Messages.uiGet("StatsPanel.ShortViewLabel")); //$NON-NLS-1$
+		viewCh.setToolTipText(Messages.uiGet("StatsPanel.ShortViewTooltip")); //$NON-NLS-1$
 		viewCh.setSelected(true);
 		viewCh.addItemListener(new ItemListener() {
 			@Override
@@ -86,8 +87,8 @@ public class HStatsPanel extends StatsPanel {
 		c.gridy = 1;
 		controlP.add(viewCh, c);
 		
-		JButton refreshB = new JButton("Refresh");
-		refreshB.setToolTipText("Manually refresh stats");
+		JButton refreshB = new JButton(Messages.uiGet("StatsPanel.RefreshLabel")); //$NON-NLS-1$
+		refreshB.setToolTipText(Messages.uiGet("StatsPanel.RefreshTooltip")); //$NON-NLS-1$
 		refreshB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -122,10 +123,10 @@ public class HStatsPanel extends StatsPanel {
 				if( columnIndex==0 )
 					content = courseKeys[rowIndex];
 				else 
-					content = stats().getCourseStatsFor(	courseKeys[rowIndex],
+					content = stats().getCourseStatsFor(courseKeys[rowIndex],
 														statusKeys[columnIndex-1]).toString();
-				if( courseKeys[rowIndex]=="Total" ){
-					return Html.htmlTag("b", content);
+				if( courseKeys[rowIndex]=="Total" ){ //$NON-NLS-1$
+					return Html.htmlTag("b", content); //$NON-NLS-1$
 				} else {
 					return content;
 				}
@@ -142,7 +143,7 @@ public class HStatsPanel extends StatsPanel {
 			@Override
 			public String getColumnName(int column) {
 				if( column==0 )
-					return "Course";
+					return Messages.uiGet("StatsPanel.CourseHeader"); //$NON-NLS-1$
 				else
 					return statusKeys[column-1];
 			}
