@@ -4,26 +4,27 @@
  */
 package valmo.geco.control;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.print.PageFormat;
-import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.Vector;
 
 import javax.print.PrintService;
-import javax.print.PrintServiceLookup;
+import javax.swing.JTextPane;
 
+import valmo.geco.control.ResultBuilder.ResultConfig;
+import valmo.geco.core.Announcer.CardListener;
+import valmo.geco.core.Announcer.StageListener;
 import valmo.geco.core.Html;
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.RankedRunner;
 import valmo.geco.model.Result;
 import valmo.geco.model.RunnerRaceData;
+import valmo.geco.model.Stage;
 import valmo.geco.model.Trace;
 
 /**
@@ -31,7 +32,7 @@ import valmo.geco.model.Trace;
  * @since Oct 15, 2010
  *
  */
-public class SplitBuilder extends ResultBuilder implements Printable {
+public class SplitBuilder extends Control implements IResultBuilder, StageListener, CardListener {
 	
 	public static class SplitTime {
 		public SplitTime(String seq, Trace trace, long time, long split) {
@@ -46,6 +47,8 @@ public class SplitBuilder extends ResultBuilder implements Printable {
 		private long split;
 		
 	}
+	
+	// TODO: listen to "card"/"echip" events and add flag to activate autoprinting
 
 	
 	/**
@@ -53,7 +56,9 @@ public class SplitBuilder extends ResultBuilder implements Printable {
 	 */
 	public SplitBuilder(GecoControl gecoControl) {
 		super(gecoControl);
-		// TODO Auto-generated constructor stub
+		geco().announcer().registerStageListener(this);
+		geco().announcer().registerCardListener(this);
+		geco().registerService(SplitBuilder.class, this);
 	}
 	
 	
@@ -113,17 +118,33 @@ public class SplitBuilder extends ResultBuilder implements Printable {
 
 	
 	
-	public String generateHtmlSplits(ResultConfig config, int nbColumns) {
-		Vector<Result> results = buildResults(config);
+	private ResultBuilder resultBuilder() {
+		return geco().getService(ResultBuilder.class);
+	}
+	
+
+	@Override
+	public void exportFile(String filename, String exportFormat, ResultConfig config, int refreshDelay)
+			throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	
+	@Override
+	public String generateHtmlResults(ResultConfig config, int refreshDelay) {
+		// TODO: add refreshDelay + nbColumns param
+		Vector<Result> results = resultBuilder().buildResults(config);
 		Html html = new Html();
 		for (Result result : results) {
 			if( config.showEmptySets || !result.isEmpty() ) {
-				appendHtmlResultsWithSplits(result, config, nbColumns, html);	
+				appendHtmlResultsWithSplits(result, config, 11, html);	
 			}
 		}
 		return html.close();
 	}
-	
+
 	private void appendHtmlResultsWithSplits(Result result, ResultConfig config, int nbColumns, Html html) {
 		html.tag("h1", result.getIdentifier());
 		html.open("table");
@@ -212,48 +233,138 @@ public class SplitBuilder extends ResultBuilder implements Printable {
 			rowStart += nbColumns;
 		}
 	}
-
-
-	public static void main(String[] args) {
-		PrintService service = PrintServiceLookup.lookupDefaultPrintService();
-		System.out.println(service);
-		PrintService[] lookupPrintServices = PrinterJob.lookupPrintServices();
-		for (PrintService printService : lookupPrintServices) {
-			System.out.println(printService.getName());
-		}
-		
-		PrinterJob job = PrinterJob.getPrinterJob();
-		job.setPrintable(new SplitBuilder(new GecoControl()));
-		boolean ok = job.printDialog();
-//		boolean ok = true;
-		if( ok ){
-			try {
-				job.print();
-			} catch (PrinterException e) {
-				e.printStackTrace();
-			}
+	
+	public void printSingleSplits(RunnerRaceData data) {
+		// TODO: use custom print service
+		// TODO: use custom format for printing
+		Html html = new Html();
+		html.open("table");
+		generateHtmlSplitsFor(data, "", data.getResult().shortFormat(), html);
+		html.close("table");
+		JTextPane area = new JTextPane(); 
+		area.setContentType("text/html");
+		area.setText(html.close());
+		try {
+			area.print(
+					new MessageFormat(geco().stage().getName()),
+					new MessageFormat("Geco for orienteering"),
+					false, null, null, true);
+		} catch (PrinterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
+	
+	public Vector<String> listPrinterNames() {
+		Vector<String> printerNames = new Vector<String>();
+		for (PrintService printer : PrinterJob.lookupPrintServices()) {
+			printerNames.add(printer.getName());
+		}
+		return printerNames;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see valmo.geco.core.Announcer.StageListener#changed(valmo.geco.model.Stage, valmo.geco.model.Stage)
+	 */
+	@Override
+	public void changed(Stage previous, Stage current) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	/* (non-Javadoc)
+	 * @see valmo.geco.core.Announcer.StageListener#saving(valmo.geco.model.Stage, java.util.Properties)
+	 */
+	@Override
+	public void saving(Stage stage, Properties properties) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	/* (non-Javadoc)
+	 * @see valmo.geco.core.Announcer.StageListener#closing(valmo.geco.model.Stage)
+	 */
+	@Override
+	public void closing(Stage stage) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	/* (non-Javadoc)
+	 * @see valmo.geco.core.Announcer.CardListener#cardRead(java.lang.String)
+	 */
+	@Override
+	public void cardRead(String chip) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	/* (non-Javadoc)
+	 * @see valmo.geco.core.Announcer.CardListener#unknownCardRead(java.lang.String)
+	 */
+	@Override
+	public void unknownCardRead(String chip) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	/* (non-Javadoc)
+	 * @see valmo.geco.core.Announcer.CardListener#cardReadAgain(java.lang.String)
+	 */
+	@Override
+	public void cardReadAgain(String chip) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+//	public static void main(String[] args) {
+//		PrintService service = PrintServiceLookup.lookupDefaultPrintService();
+//		System.out.println(service);
+//		PrintService[] lookupPrintServices = PrinterJob.lookupPrintServices();
+//		for (PrintService printService : lookupPrintServices) {
+//			System.out.println(printService.getName());
+//		}
+//		
+//		PrinterJob job = PrinterJob.getPrinterJob();
+//		job.setPrintable(new SplitBuilder(new GecoControl()));
+//		boolean ok = job.printDialog();
+////		boolean ok = true;
+//		if( ok ){
+//			try {
+//				job.print();
+//			} catch (PrinterException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//	}
 
 	/* (non-Javadoc)
 	 * @see java.awt.print.Printable#print(java.awt.Graphics, java.awt.print.PageFormat, int)
 	 */
-	@Override
-	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex)
-			throws PrinterException {
-		if( pageIndex>0 ){
-			return NO_SUCH_PAGE;
-		}
-		Graphics2D g2 = (Graphics2D) graphics;
-		g2.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
-		
-		g2.drawString("Hello World", 100, 100);
-		g2.setColor(Color.red);
-		g2.drawOval(200, 200, 100, 50);
-		g2.setFont(new Font(Font.DIALOG_INPUT, Font.BOLD, 15));
-		g2.drawString("Another day in the world", 100, 100 + g2.getFontMetrics().getHeight());
-		
-		return PAGE_EXISTS;
-	}
+//	@Override
+//	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex)
+//			throws PrinterException {
+//		if( pageIndex>0 ){
+//			return NO_SUCH_PAGE;
+//		}
+//		Graphics2D g2 = (Graphics2D) graphics;
+//		g2.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
+//		
+//		g2.drawString("Hello World", 100, 100);
+//		g2.setColor(Color.red);
+//		g2.drawOval(200, 200, 100, 50);
+//		g2.setFont(new Font(Font.DIALOG_INPUT, Font.BOLD, 15));
+//		g2.drawString("Another day in the world", 100, 100 + g2.getFontMetrics().getHeight());
+//		
+//		return PAGE_EXISTS;
+//	}
 
 }

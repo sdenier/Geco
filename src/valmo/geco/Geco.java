@@ -78,7 +78,7 @@ public class Geco implements GecoRequestHandler {
 	
 	private RunnerControl runnerControl;
 	
-	private SplitBuilder resultBuilder;
+	private ResultBuilder resultBuilder;
 	
 	private HeatBuilder heatBuilder;
 	
@@ -174,7 +174,8 @@ public class Geco implements GecoRequestHandler {
 
 		stageControl = new StageControl(gecoControl);
 		runnerControl = new RunnerControl(gecoControl);
-		resultBuilder = new SplitBuilder(gecoControl);
+		resultBuilder = new ResultBuilder(gecoControl);
+		new SplitBuilder(gecoControl);
 		heatBuilder = new HeatBuilder(gecoControl, resultBuilder);
 		stats = new RegistryStats(gecoControl);
 		siHandler = new SIReaderHandler(gecoControl, defaultMergeHandler());
@@ -216,10 +217,10 @@ public class Geco implements GecoRequestHandler {
 		return this.runnerControl;
 	}
 	public ResultBuilder resultBuilder() {
-		return this.resultBuilder;
+		return this.gecoControl.getService(ResultBuilder.class);
 	}
 	public SplitBuilder splitsBuilder() {
-		return this.resultBuilder;
+		return this.gecoControl.getService(SplitBuilder.class);
 	}
 	public HeatBuilder heatBuilder() {
 		return this.heatBuilder;

@@ -29,7 +29,7 @@ import valmo.geco.model.iocsv.CsvWriter;
  * @since Nov 23, 2008
  *
  */
-public class ResultBuilder extends Control {
+public class ResultBuilder extends Control implements IResultBuilder {
 	
 	public static class ResultConfig {
 		protected Object[] selectedPools;
@@ -59,6 +59,7 @@ public class ResultBuilder extends Control {
 	
 	public ResultBuilder(GecoControl gecoControl) {
 		super(gecoControl);
+		gecoControl.registerService(ResultBuilder.class, this);
 	}
 	
 	public List<Result> buildResultForCategoryByCourses(Category cat) {
@@ -153,6 +154,7 @@ public class ResultBuilder extends Control {
 		return buildResults(pools.toArray(new Pool[0]), config.resultType);
 	}
 
+	@Override
 	public void exportFile(String filename, String format, ResultConfig config, int refreshInterval)
 			throws IOException {
 		if( !filename.endsWith(format) ) {
@@ -170,7 +172,7 @@ public class ResultBuilder extends Control {
 		}
 	}
 
-
+	@Override
 	public String generateHtmlResults(ResultConfig config, int refreshInterval) {
 		Vector<Result> results = buildResults(config);
 		Html html = new Html();

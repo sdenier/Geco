@@ -37,6 +37,7 @@ import javax.swing.JTextPane;
 import javax.swing.SpinnerNumberModel;
 
 import valmo.geco.Geco;
+import valmo.geco.control.IResultBuilder;
 import valmo.geco.control.ResultBuilder;
 import valmo.geco.control.ResultBuilder.ResultConfig;
 import valmo.geco.core.Announcer.StageConfigListener;
@@ -66,6 +67,9 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	private JCheckBox showEsC;
 	private JCheckBox showPeC;
 
+	private JRadioButton normalResultB;
+	private JRadioButton splitResultB;
+
 	private String exportFormat;
 	private JFileChooser filePane;
 
@@ -77,10 +81,6 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	private JButton autoexportB;
 	private JSpinner autodelayS;
 	private JRadioButton refreshRB;
-
-	private JRadioButton normalResultB;
-
-	private JRadioButton splitResultB;
 
 	/**
 	 * @param geco
@@ -121,6 +121,15 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 			}
 		});
 		selectAllCategories(list);
+	}
+	
+	
+	public IResultBuilder resultBuilder() {
+		if( normalResultB.isSelected() ) {
+			return geco().resultBuilder();
+		} else {
+			return geco().splitsBuilder();
+		}
 	}
 
 	/**
@@ -169,7 +178,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 				if( response==JFileChooser.APPROVE_OPTION ) {
 					String filename = filePane.getSelectedFile().getAbsolutePath();
 					try {
-						geco().resultBuilder().exportFile(filename, exportFormat, createResultConfig(), -1);
+						resultBuilder().exportFile(filename, exportFormat, createResultConfig(), -1);
 					} catch (IOException ex) {
 						JOptionPane.showMessageDialog(frame(), "Error while saving " + filename + "(" + ex +")",
 								"Export Error", JOptionPane.ERROR_MESSAGE);
@@ -378,12 +387,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	}
 
 	public void refreshResultView() {
-		String htmlResults;
-		if( normalResultB.isSelected() ) {
-			htmlResults = geco().resultBuilder().generateHtmlResults(createResultConfig(), -1);
-		} else {
-			htmlResults = geco().splitsBuilder().generateHtmlSplits(createResultConfig());
-		}
+		String htmlResults = resultBuilder().generateHtmlResults(createResultConfig(), -1);
 		resultTA.setText(htmlResults);
 	}
 	
@@ -442,7 +446,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 			String resultFile = geco().getCurrentStagePath() + File.separator + "lastresults";
 			try {
 				try {
-					geco().resultBuilder().exportFile(resultFile, exportFormat, createResultConfig(), refreshDelay);
+					resultBuilder().exportFile(resultFile, exportFormat, createResultConfig(), refreshDelay);
 				} catch (IOException ex) {
 					geco().logger().debug(ex);
 				}
