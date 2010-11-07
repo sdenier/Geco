@@ -15,6 +15,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumnModel;
 
 import valmo.geco.core.Html;
+import valmo.geco.core.Messages;
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Trace;
@@ -45,12 +46,11 @@ public class PunchPanel extends JPanel {
 	public void refreshPunches(RunnerRaceData runnerData) {
 //		final int[] codes = runnerData.getCourse().getCodes();
 		final Trace[] trace = runnerData.getResult().getTrace();
-		// TODO: refactor [seq, code]
 		final String[] sequence = new String[trace.length];
 		int seq = 1;
 		for (int i = 0; i < trace.length; i++) {
-			if( trace[i].getCode().startsWith("+") ) {
-				sequence[i] = "";
+			if( trace[i].getCode().startsWith("+") ) { //$NON-NLS-1$
+				sequence[i] = ""; //$NON-NLS-1$
 			} else {
 				sequence[i] = Integer.toString(seq);
 				seq++;
@@ -67,21 +67,21 @@ public class PunchPanel extends JPanel {
 				case 2:
 					return traceTime(trace, rowIndex);
 				default:
-					return "";
+					return ""; //$NON-NLS-1$
 				}
 			}
 			public String traceLabel(final Trace[] trace, int rowIndex) {
 				String code = trace[rowIndex].getCode();
-				if( code.startsWith("-") )
-					return Html.htmlTag("font", "color=red", code);
-				if( code.startsWith("+") )
-					return Html.htmlTag("font", "color=blue", code);
+				if( code.startsWith("-") ) //$NON-NLS-1$
+					return Html.htmlTag("font", "color=red", code); //$NON-NLS-1$ //$NON-NLS-2$
+				if( code.startsWith("+") ) //$NON-NLS-1$
+					return Html.htmlTag("font", "color=blue", code); //$NON-NLS-1$ //$NON-NLS-2$
 				return code;
 			}
 			public String traceTime(final Trace[] trace, int rowIndex) {
 				Date time = trace[rowIndex].getTime();
 				if( time.getTime() == 0)
-					return "";
+					return ""; //$NON-NLS-1$
 				return TimeManager.fullTime(time);
 			}
 			public int getRowCount() {
@@ -94,14 +94,14 @@ public class PunchPanel extends JPanel {
 			public String getColumnName(int column) {
 				switch (column) {
 				case 0:
-					return "Num";
+					return Messages.uiGet("PunchPanel.NumLabel"); //$NON-NLS-1$
 				case 1:
 //					return "Course";
-					return "Code";
+					return Messages.uiGet("PunchPanel.CodeLabel"); //$NON-NLS-1$
 				case 2:
-					return "Time";
+					return Messages.uiGet("PunchPanel.TimeLabel"); //$NON-NLS-1$
 				default:
-					return "";
+					return ""; //$NON-NLS-1$
 				}
 			}
 		});

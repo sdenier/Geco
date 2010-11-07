@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.util.Date;
 
 import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,6 +23,7 @@ import javax.swing.JTextField;
 
 import valmo.geco.Geco;
 import valmo.geco.control.RunnerControl;
+import valmo.geco.core.Messages;
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
@@ -114,28 +116,30 @@ public class RunnerPanel extends GecoPanel {
 		rTimeF.setEditable(false);
 		realTimeF = new JTextField(4);
 		realTimeF.setEditable(false);
-		realTimeF.setToolTipText("Real race time, computed as finish - start. "
-				+ "Yellow background indicates official time has been edited.");
+		realTimeF.setToolTipText(Messages.uiGet("RunnerPanel.RealRacetimeTooltip1") //$NON-NLS-1$
+				+ Messages.uiGet("RunnerPanel.RealRacetimeTooltip2")); //$NON-NLS-1$
 		mpF = new JTextField();
 		mpF.setEditable(false);
 		penaltyF = new JTextField(4);
 		penaltyF.setEditable(false);
 		
-		resetRTimeB = new JButton("Reset Time");
-		resetRTimeB.setToolTipText("Reset official time to real race time + penalty");
-		recheckStatusB = new JButton("Recheck");
-		recheckStatusB.setToolTipText("Recheck runner status and reset official time");
-		mergeDialogB = new JButton("Merge...");
-		mergeDialogB.setToolTipText("Open Merge dialog");
+		resetRTimeB = new JButton(Messages.uiGet("RunnerPanel.ResetTimeLabel")); //$NON-NLS-1$
+		resetRTimeB.setToolTipText(Messages.uiGet("RunnerPanel.ResetTimeTooltip")); //$NON-NLS-1$
+		recheckStatusB = new JButton(Messages.uiGet("RunnerPanel.RecheckLabel")); //$NON-NLS-1$
+		recheckStatusB.setToolTipText(Messages.uiGet("RunnerPanel.RecheckTooltip")); //$NON-NLS-1$
+		mergeDialogB = new JButton(Messages.uiGet("RunnerPanel.MergeLabel")); //$NON-NLS-1$
+		mergeDialogB.setToolTipText(Messages.uiGet("RunnerPanel.MergeTooltip")); //$NON-NLS-1$
 	}
 	
 	public void createListeners() {
 		mergeDialogB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if( runnerData!=null ) {
-					new MergeRunnerDialog(geco(), frame(), "Merge Card Data").showMergeDialogFor(
-														runnerData.clone(), 
-														runner.getChipnumber());
+					new MergeRunnerDialog(
+							geco(),
+							frame(),
+							Messages.uiGet("RunnerPanel.MergeCardTitle")) //$NON-NLS-1$
+						.showMergeDialogFor(runnerData.clone(), runner.getChipnumber());
 				}
 			}
 		});
@@ -167,14 +171,27 @@ public class RunnerPanel extends GecoPanel {
 		panel.setLayout(new BorderLayout());
 		panel.add(SwingUtils.embed(initRunnerPanel()), BorderLayout.NORTH);
 		panel.add(SwingUtils.embed(this.punchPanel), BorderLayout.CENTER);
-		
-//		ImageIcon splitPrint = new ImageIcon(getClass().getResource("/resources/icons/crystal/filequickprint.png")); //$NON-NLS-1$
-//		JButton splitPrintB = new JButton(splitPrint);
-//		splitPrintB.setToolTipText("Quickprint runner splits");
-//		panel.add(SwingUtils.embed(splitPrintB), BorderLayout.EAST);
-//		panel.add(Box.createHorizontalStrut(25), BorderLayout.WEST);
-		
+		panel.add(SwingUtils.embed(initQuickPrintButton()), BorderLayout.EAST);
+		panel.add(Box.createHorizontalStrut(25), BorderLayout.WEST); // balance layout
 		return panel;
+	}
+
+	public JButton initQuickPrintButton() {
+		ImageIcon splitPrint = new ImageIcon(
+				getClass().getResource("/resources/icons/crystal/filequickprint_small.png")); //$NON-NLS-1$
+		JButton splitPrintB = new JButton(splitPrint);
+		splitPrintB.setToolTipText(Messages.uiGet("RunnerPanel.SplitprintTooltip")); //$NON-NLS-1$
+		splitPrintB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				printRunnerSplits();
+			}
+		});
+		return splitPrintB;
+	}
+
+	public void printRunnerSplits() {
+		geco().splitsBuilder().printSingleSplits(runnerData);
 	}
 
 	
@@ -183,21 +200,21 @@ public class RunnerPanel extends GecoPanel {
 		dataPanel.setLayout(new GridLayout(0,4));
 
 		Component[] comps = new Component[] {
-				new JLabel("Erase"),
+				new JLabel(Messages.uiGet("RunnerPanel.EraseLabel")), //$NON-NLS-1$
 				eTimeF,
-				new JLabel("Control"),
+				new JLabel(Messages.uiGet("RunnerPanel.ControlLabel")), //$NON-NLS-1$
 				cTimeF,
-				new JLabel("Start"),
+				new JLabel(Messages.uiGet("RunnerPanel.StartLabel")), //$NON-NLS-1$
 				sTimeF,
-				new JLabel("Finish"),
+				new JLabel(Messages.uiGet("RunnerPanel.FinishLabel")), //$NON-NLS-1$
 				fTimeF,
-				new JLabel("Read"),
+				new JLabel(Messages.uiGet("RunnerPanel.ReadLabel")), //$NON-NLS-1$
 				rTimeF,
-				new JLabel("Race"),
+				new JLabel(Messages.uiGet("RunnerPanel.RaceLabel")), //$NON-NLS-1$
 				realTimeF,
-				new JLabel("MPs"),
+				new JLabel(Messages.uiGet("RunnerPanel.MPLabel")), //$NON-NLS-1$
 				mpF,
-				new JLabel("Penalty"),
+				new JLabel(Messages.uiGet("RunnerPanel.PenaltyLabel")), //$NON-NLS-1$
 				penaltyF,
 		};
 		for (int i = 0; i < comps.length; i++) {

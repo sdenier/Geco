@@ -27,6 +27,7 @@ import javax.swing.table.TableColumnModel;
 
 import valmo.geco.Geco;
 import valmo.geco.control.RunnerControl;
+import valmo.geco.core.Messages;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
@@ -54,7 +55,16 @@ public class RunnersTableModel extends AbstractTableModel {
 	public RunnersTableModel(Geco geco) {
 		this.geco = geco;
 		this.headers = new String[] {
-				"Start", "E-card", "First name", "Last name", "Category", "Course", "Club", "Time", "Status", "NC" 
+				Messages.uiGet("RunnersTableModel.StartHeader"), //$NON-NLS-1$
+				Messages.uiGet("RunnersTableModel.EcardHeader"), //$NON-NLS-1$
+				Messages.uiGet("RunnersTableModel.FirstnameHeader"), //$NON-NLS-1$
+				Messages.uiGet("RunnersTableModel.LastnameHeader"), //$NON-NLS-1$
+				Messages.uiGet("RunnersTableModel.CategoryHeader"), //$NON-NLS-1$
+				Messages.uiGet("RunnersTableModel.CourseHeader"), //$NON-NLS-1$
+				Messages.uiGet("RunnersTableModel.ClubHeader"), //$NON-NLS-1$
+				Messages.uiGet("RunnersTableModel.TimeHeader"), //$NON-NLS-1$
+				Messages.uiGet("RunnersTableModel.StatusHeader"), //$NON-NLS-1$
+				Messages.uiGet("RunnersTableModel.NCHeader")  //$NON-NLS-1$
 		};
 		this.data = new Vector<RunnerRaceData>();
 		this.clickCountToEdit = 2;
@@ -129,7 +139,7 @@ public class RunnersTableModel extends AbstractTableModel {
 		case 7: return getRunnerData(rowIndex).getResult().formatRacetime();
 		case 8: return getRunnerData(rowIndex).getResult().getStatus();
 		case 9: return runner.isNC();
-		default: return "Pbm";
+		default: return "Pbm"; //$NON-NLS-1$
 		}
 	}
 

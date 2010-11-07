@@ -47,6 +47,7 @@ import javax.swing.table.TableRowSorter;
 import valmo.geco.Geco;
 import valmo.geco.control.RunnerCreationException;
 import valmo.geco.core.Announcer;
+import valmo.geco.core.Messages;
 import valmo.geco.core.TimeManager;
 import valmo.geco.live.LiveComponent;
 import valmo.geco.model.Course;
@@ -94,15 +95,15 @@ public class RunnersPanel extends TabPanel
 	public JTabbedPane initInfoPanel() {
 		this.runnerPanel = new RunnerPanel(geco(), frame(), this);
 		JTabbedPane pane = new JTabbedPane();
-		pane.addTab("Runner Data", this.runnerPanel);
-		pane.addTab("Stats", new VStatsPanel(geco(), frame()));
+		pane.addTab(Messages.uiGet("RunnersPanel.RunnerDataTitle"), this.runnerPanel); //$NON-NLS-1$
+		pane.addTab(Messages.uiGet("RunnersPanel.StatsTitle"), new VStatsPanel(geco(), frame())); //$NON-NLS-1$
 		return pane;
 	}
 
 	public Component initTopPanel() {
 		JComponent topPanel = Box.createHorizontalBox();
-		JButton addButton = new JButton("+");
-		addButton.setToolTipText("Create new runner");
+		JButton addButton = new JButton("+"); //$NON-NLS-1$
+		addButton.setToolTipText(Messages.uiGet("RunnersPanel.NewRunnerTooltip")); //$NON-NLS-1$
 		addButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -110,14 +111,14 @@ public class RunnersPanel extends TabPanel
 					// announce runner creation and add in tablemodel
 					geco().runnerControl().createAnonymousRunner();
 				} catch (RunnerCreationException e1) {
-					JOptionPane.showMessageDialog(frame(), e1.getMessage(), "Can not create a new runner", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(frame(), e1.getMessage(), Messages.uiGet("RunnersPanel.NewRunnerWarning"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$
 				}
 			}
 		});
 		topPanel.add(addButton);
 		
-		JButton deleteButton = new JButton("-");
-		deleteButton.setToolTipText("Delete selected runner");
+		JButton deleteButton = new JButton("-"); //$NON-NLS-1$
+		deleteButton.setToolTipText(Messages.uiGet("RunnersPanel.DeleteRunnerTooltip")); //$NON-NLS-1$
 		deleteButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -133,8 +134,8 @@ public class RunnersPanel extends TabPanel
 		});
 		topPanel.add(deleteButton);
 		
-		final JCheckBox autoB = new JCheckBox("Auto");
-		autoB.setToolTipText("Enable auto merge");
+		final JCheckBox autoB = new JCheckBox(Messages.uiGet("RunnersPanel.AutoLabel")); //$NON-NLS-1$
+		autoB.setToolTipText(Messages.uiGet("RunnersPanel.AutoTooltip")); //$NON-NLS-1$
 		autoB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -147,8 +148,8 @@ public class RunnersPanel extends TabPanel
 		});
 		topPanel.add(autoB);
 		
-		liveB = new JCheckBox("Live");
-		liveB.setToolTipText("Enable live mode");
+		liveB = new JCheckBox(Messages.uiGet("RunnersPanel.LiveLabel")); //$NON-NLS-1$
+		liveB.setToolTipText(Messages.uiGet("RunnersPanel.LiveTooltip")); //$NON-NLS-1$
 		liveB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -162,8 +163,8 @@ public class RunnersPanel extends TabPanel
 		});
 		topPanel.add(liveB);
 
-		final JCheckBox fastB = new JCheckBox("Fast edit");
-		fastB.setToolTipText("Enable fast edition");
+		final JCheckBox fastB = new JCheckBox(Messages.uiGet("RunnersPanel.FastEditLabel")); //$NON-NLS-1$
+		fastB.setToolTipText(Messages.uiGet("RunnersPanel.FastEditTooltip")); //$NON-NLS-1$
 		fastB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -183,15 +184,15 @@ public class RunnersPanel extends TabPanel
 
 	
 	public void initFilterPanel(JComponent panel) {
-		panel.add(new JLabel(" Find: "));
+		panel.add(new JLabel(Messages.uiGet("RunnersPanel.FindLabel"))); //$NON-NLS-1$
 		filterField = new JTextField(25);
-		filterField.setToolTipText("Type a string+Enter to filter table entries. Command+f focus on the field. Escape cancels the filter.");
+		filterField.setToolTipText(Messages.uiGet("RunnersPanel.FindTooltip")); //$NON-NLS-1$
 		filterField.setMaximumSize(new Dimension(250, SwingUtils.SPINNERHEIGHT));
 		filterField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
 			    try {
-					RowFilter<Object,Object> filter = RowFilter.regexFilter("(?i)" + filterField.getText());
+					RowFilter<Object,Object> filter = RowFilter.regexFilter("(?i)" + filterField.getText()); //$NON-NLS-1$
 					sorter.setRowFilter(filter);
 					table.getSelectionModel().setSelectionInterval(0, 0);
 			    } catch (java.util.regex.PatternSyntaxException e1) {
@@ -207,27 +208,37 @@ public class RunnersPanel extends TabPanel
 		getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
 				KeyStroke.getKeyStroke(KeyEvent.VK_R,
 						Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
-				"recheckRunner");
-		getActionMap().put("recheckRunner", new AbstractAction() {
+				"recheckRunner"); //$NON-NLS-1$
+		getActionMap().put("recheckRunner", new AbstractAction() { //$NON-NLS-1$
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				runnerPanel.recheckRunnerStatus();
 			}
 		});
 		getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
+				KeyStroke.getKeyStroke(KeyEvent.VK_P,
+						Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+				"printSplits"); //$NON-NLS-1$
+		getActionMap().put("printSplits", new AbstractAction() { //$NON-NLS-1$
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				runnerPanel.printRunnerSplits();
+			}
+		});
+		getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
 				KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
-				"focusOnFilter");
-		getActionMap().put("focusOnFilter", new AbstractAction() {
+				"focusOnFilter"); //$NON-NLS-1$
+		getActionMap().put("focusOnFilter", new AbstractAction() { //$NON-NLS-1$
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				filterField.requestFocusInWindow();
 			}
 		});
-		filterField.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancelFilter");
-		filterField.getActionMap().put("cancelFilter", new AbstractAction() {
+		filterField.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancelFilter"); //$NON-NLS-1$
+		filterField.getActionMap().put("cancelFilter", new AbstractAction() { //$NON-NLS-1$
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				filterField.setText("");
+				filterField.setText(""); //$NON-NLS-1$
 				sorter.setRowFilter(null);
 			}
 		});
@@ -359,7 +370,7 @@ public class RunnersPanel extends TabPanel
 	}
 	
 	private String selectedChip() {
-		String chip = "";
+		String chip = ""; //$NON-NLS-1$
 		int selectedRow = table.getSelectedRow();
 		if( selectedRow!=-1 && table.getRowCount() > 0) {
 			// we have to test the number of displayed rows too.
@@ -372,7 +383,7 @@ public class RunnersPanel extends TabPanel
 
 	public void updateRunnerPanel() {
 		String chip = selectedChip();
-		if( !chip.equals("") ) {
+		if( !chip.equals("") ) { //$NON-NLS-1$
 			runnerPanel.updateRunner(chip);
 			if( gecoLiveMap!=null && gecoLiveMap.isShowing() ) {
 				gecoLiveMap.displayRunnerMap(registry().findRunnerData(chip));
@@ -382,7 +393,7 @@ public class RunnersPanel extends TabPanel
 	
 	private RunnerRaceData selectedData() {
 		String chip = selectedChip();
-		if( !chip.equals("") )
+		if( !chip.equals("") ) //$NON-NLS-1$
 			return registry().findRunnerData(chip);
 		return null;
 	}
