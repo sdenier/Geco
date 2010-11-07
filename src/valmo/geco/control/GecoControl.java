@@ -7,9 +7,12 @@ package valmo.geco.control;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import valmo.geco.core.Announcer;
+import valmo.geco.core.GService;
 import valmo.geco.core.Logger;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Registry;
@@ -18,12 +21,14 @@ import valmo.geco.model.impl.POFactory;
 
 /**
  * @author Simon Denier
+ * @param <T>
+ * @param <H>
  * @since Aug 20, 2010
  *
  */
 public class GecoControl {
 	
-	private class RuntimeStage {
+	private static class RuntimeStage {
 		private Stage stage;
 		
 		private Logger logger;
@@ -50,7 +55,7 @@ public class GecoControl {
 		return ( rstage!=null ) ? rstage.stage() : null;
 	}
 	
-
+	
 	private final Factory factory;
 	
 	private final Announcer announcer;
@@ -70,6 +75,23 @@ public class GecoControl {
 	
 	private RuntimeStage next;
 
+	/*
+	 * Services
+	 */
+	@SuppressWarnings("rawtypes")
+	private Map services = new HashMap();
+
+	@SuppressWarnings("unchecked")
+	public <T extends GService> void registerService(Class<T> clazz, T service) {
+		services.put(clazz, service);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T extends GService> T getService(Class<T> clazz) {
+		return (T) services.get(clazz);
+	}
+	
+	
 	/**
 	 * Constructor for a generic GecoControl. See openStage() for the full initialization
 	 */

@@ -4,6 +4,7 @@
  */
 package valmo.geco.control;
 
+import valmo.geco.core.GService;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Stage;
@@ -17,8 +18,8 @@ import valmo.geco.model.Stage;
  * @author Simon Denier
  * @since Nov 23, 2008
  */
-public abstract class Control {
-	
+public abstract class Control implements GService {
+		
 	private GecoControl gecoControl;
 
 	public Control(GecoControl gecoControl) {

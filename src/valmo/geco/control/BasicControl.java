@@ -4,6 +4,7 @@
  */
 package valmo.geco.control;
 
+import valmo.geco.core.GService;
 import valmo.geco.model.Factory;
 
 
@@ -12,7 +13,7 @@ import valmo.geco.model.Factory;
  * @since Aug 22, 2010
  *
  */
-public abstract class BasicControl {
+public abstract class BasicControl implements GService {
 
 	private Factory factory;
 	
