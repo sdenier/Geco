@@ -45,6 +45,8 @@ public class SIReaderHandler extends Control
 	private int nbTry;
 	
 	private boolean starting;
+
+	private boolean useZeroHourAsDefaultStarttime;
 	
 	/**
 	 * @param factory
@@ -56,6 +58,7 @@ public class SIReaderHandler extends Control
 		this.requestHandler = requestHandler;
 		changePortName();
 		changeZeroTime();
+		changeZeroTimeDefaultStart();
 		geco.announcer().registerStageListener(this);
 	}
 	
@@ -66,9 +69,11 @@ public class SIReaderHandler extends Control
 	public static String portNameProperty() {
 		return "SIPortname";
 	}
-
 	public static String zerotimeProperty() {
 		return "SIZeroTime";
+	}
+	public static String zerotimeDefaultStart() {
+		return "SIZeroTimeDefaultStart";
 	}
 	
 	public String defaultPortName() {
@@ -92,6 +97,11 @@ public class SIReaderHandler extends Control
 		}
 	}
 	
+	private void changeZeroTimeDefaultStart() {
+		useZeroHourAsDefaultStarttime =
+				Boolean.parseBoolean( stage().getProperties().getProperty(zerotimeDefaultStart()) );
+	}
+	
 	public void setNewZeroTime(long newZerotime) {
 		setZeroTime( newZerotime );			
 		if( portHandler!=null )
@@ -112,6 +122,14 @@ public class SIReaderHandler extends Control
 
 	public void setZeroTime(long zeroTime) {
 		this.zeroTime = zeroTime;
+	}
+	
+	public boolean useZeroHourAsDefaultStarttime() {
+		return useZeroHourAsDefaultStarttime;
+	}
+	
+	public void setZeroHourAsDefaultStartime(boolean flag) {
+		useZeroHourAsDefaultStarttime = flag;
 	}
 
 	private void configure() {
@@ -199,12 +217,10 @@ public class SIReaderHandler extends Control
 		runnerData.stampReadtime();
 		runnerData.setErasetime(safeTime(card.getClearTime()));
 		runnerData.setControltime(safeTime(card.getCheckTime()));		
-		runnerData.setStarttime(safeTime(card.getStartTime()));
-		runnerData.setFinishtime(safeTime(card.getFinishTime()));
-		checkStartFinishTimes(runnerData, card.getSiIdent());
+		handleStarttime(runnerData, card);
+		handleFinishtime(runnerData, card);
 		handlePunches(runnerData, card.getPunches());
 	}
-
 	private Date safeTime(long siTime) {
 		if( siTime>PunchObject.INVALID ) {
 			return new Date(siTime);
@@ -212,13 +228,31 @@ public class SIReaderHandler extends Control
 			return TimeManager.NO_TIME;
 		}
 	}
-	
-	private void checkStartFinishTimes(RunnerRaceData runnerData, String chipNumber) {
-		if( runnerData.getStarttime().equals(TimeManager.NO_TIME) ) {
-			geco().log("MISSING start time for " + chipNumber);
+	/*
+	 * Priority: start time on ecard > pre-registered start time > zero hour if enabled or NO_TIME
+	 */
+	private void handleStarttime(RunnerRaceData runnerData, IResultData<PunchObject, PunchRecordData> card) {
+		Date startTime = safeTime(card.getStartTime());
+		if( startTime.equals(TimeManager.NO_TIME) ) { // no start time on card
+			if( runnerData.getStarttime().equals(TimeManager.NO_TIME) ) { // no pre-registered start time
+				if( useZeroHourAsDefaultStarttime() ) {
+					// In practice, can be used as start time for a unique mass start
+					startTime = new Date(getZeroTime()); // TODO: use today midnight 
+				} // else keep NO_TIME as start time
+			} else {
+				startTime = runnerData.getStarttime(); // keep pre-registered start time
+			}
 		}
-		if( runnerData.getFinishtime().equals(TimeManager.NO_TIME) ) {
-			geco().log("MISSING finish time for " + chipNumber);
+		runnerData.setStarttime(startTime);
+		if( startTime.equals(TimeManager.NO_TIME) ) {
+			geco().log("MISSING start time for " + card.getSiIdent());
+		}
+	}
+	private void handleFinishtime(RunnerRaceData runnerData, IResultData<PunchObject, PunchRecordData> card) {
+		Date finishTime = safeTime(card.getFinishTime());
+		runnerData.setFinishtime(finishTime);
+		if( finishTime.equals(TimeManager.NO_TIME) ) {
+			geco().log("MISSING finish time for " + card.getSiIdent());
 		}
 	}
 
@@ -263,12 +297,14 @@ public class SIReaderHandler extends Control
 //		stop();
 		changePortName();
 		changeZeroTime();
+		changeZeroTimeDefaultStart();
 	}
 
 	@Override
 	public void saving(Stage stage, Properties properties) {
 		properties.setProperty(portNameProperty(), getPortName());
 		properties.setProperty(zerotimeProperty(), Long.toString(getZeroTime()));
+		properties.setProperty(zerotimeDefaultStart(), Boolean.toString(useZeroHourAsDefaultStarttime()));
 	}
 
 	@Override

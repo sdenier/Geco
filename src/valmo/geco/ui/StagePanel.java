@@ -22,6 +22,7 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.InputVerifier;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -255,8 +256,23 @@ public class StagePanel extends TabPanel {
 				return validateZeroHour(formatter, zerohourF);
 			}
 		});
-		
+	
 		c.gridy = 2;
+		panel.add(new JLabel("Default start:"), c);
+		final JCheckBox defaultStarttimeB = new JCheckBox();
+		defaultStarttimeB.setToolTipText(
+				"If ecard does not contain a start time and no pre-registered start time is given, "
+				+ "use zero hour as default start time. Can be used to simulate a single mass start");
+		defaultStarttimeB.setSelected(geco().siHandler().useZeroHourAsDefaultStarttime());
+		panel.add(defaultStarttimeB, c);
+		defaultStarttimeB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				geco().siHandler().setZeroHourAsDefaultStartime(defaultStarttimeB.isSelected());
+			}
+		});
+		
+		c.gridy = 3;
 		panel.add(new JLabel("Split printer:"), c);
 		final JComboBox printersCB = new JComboBox(geco().splitsBuilder().listPrinterNames());
 		printersCB.setSelectedItem(geco().splitsBuilder().getSplitPrinterName());
@@ -268,7 +284,7 @@ public class StagePanel extends TabPanel {
 			}
 		});
 		
-		c.gridy = 3;
+		c.gridy = 4;
 		panel.add(new JLabel("Split format:"), c);
 		panel.add(new JComboBox(new String[] {"ticket", "multi-columns"} ), c);
 		

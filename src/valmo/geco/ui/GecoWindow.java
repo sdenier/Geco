@@ -313,11 +313,11 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		
 		final ImageIcon splitOff = createIcon(10);
 		final ImageIcon splitOn = createIcon(11);
-		toolBar.add(new StartStopButton() {
+		final StartStopButton autoSplitB = new StartStopButton() {
 			@Override
 			protected void initialize() {
 				setToolTipText("Auto print split times");
-				doOnAction();
+				doOffAction();
 			}
 			@Override
 			public void actionOn() {
@@ -329,7 +329,8 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 				geco.splitsBuilder().disableAutoprint();
 				setIcon(splitOff);
 			}
-		});
+		};
+		toolBar.add(autoSplitB);
 		
 		final ImageIcon startIcon = createIcon(5);
 		final ImageIcon stopIcon = createIcon(6);
@@ -342,6 +343,16 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 			}
 			@Override
 			public void actionOn() {
+				if( ! autoSplitB.isSelected() ) {
+					int confirm = JOptionPane.showConfirmDialog(
+												GecoWindow.this,
+												"Enable Split autoprinting?",
+												"Split printing disabled",
+												JOptionPane.YES_NO_OPTION);
+					if( confirm==JOptionPane.YES_OPTION ) {
+						autoSplitB.doOnAction();
+					}
+				}
 				geco.siHandler().start();
 				setText(Messages.uiGet("GecoWindow.StartingButton")); //$NON-NLS-1$
 				setIcon(stopIcon);				
