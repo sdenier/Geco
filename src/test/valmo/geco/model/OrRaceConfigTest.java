@@ -81,7 +81,7 @@ public class OrRaceConfigTest {
 		assertEquals(name, course.getName());
 		assertEquals(length, course.getLength());
 		assertEquals(climb, course.getClimb());
-		assertEquals(codes.length, course.getCodes().length);
+		assertEquals(codes.length, course.nbControls());
 		assertArrayEquals(codes, course.getCodes());
 	}
 	

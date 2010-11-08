@@ -46,7 +46,7 @@ public class CourseXMLImporterTest {
 		assertEquals(7600, bane1.getLength());
 		assertEquals(0, bane1.getClimb());
 		int[] codes = bane1.getCodes();
-		assertEquals(17, codes.length);
+		assertEquals(17, bane1.nbControls());
 		assertArrayEquals(
 				new int[] {40, 46, 51, 56, 57, 62, 64, 75, 81, 999, 125, 134, 138, 145, 149, 154, 200}, 
 				codes);
@@ -61,7 +61,7 @@ public class CourseXMLImporterTest {
 		assertEquals(10950, bane2.getLength());
 		assertEquals(0, bane2.getClimb());
 		int[] codes = bane2.getCodes();
-		assertEquals(25, codes.length);
+		assertEquals(25, bane2.nbControls());
 		assertArrayEquals(
 				new int[] {36, 52, 44, 47, 50, 54, 55, 57, 60, 78, 74, 72, 81,
 						999, 102, 91, 93, 99, 110, 135, 138, 145, 148, 154, 200}, 
@@ -89,7 +89,7 @@ public class CourseXMLImporterTest {
 		assertEquals(6625, aaa.getLength());
 		assertEquals(0, aaa.getClimb());
 		int[] codes = aaa.getCodes();
-		assertEquals(15, codes.length);
+		assertEquals(15, aaa.nbControls());
 		assertArrayEquals(
 				new int[] {205, 209, 158, 153, 152, 108, 159, 154, 155, 55,
 							151, 202, 201, 160, 200}, 
@@ -100,7 +100,7 @@ public class CourseXMLImporterTest {
 		assertEquals(6825, ddd.getLength());
 		assertEquals(0, ddd.getClimb());
 		codes = ddd.getCodes();
-		assertEquals(15, codes.length);
+		assertEquals(15, ddd.nbControls());
 		assertArrayEquals(
 				new int[] {208, 209, 158, 39, 54, 162, 159, 154, 155, 53, 151,
 							150, 201, 160, 200}, 

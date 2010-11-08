@@ -249,7 +249,7 @@ public class PenaltyCheckerTest {
 		data.setPunches(new Punch[] { });
 		checker.check(data);
 		assertEquals(Status.MP, data.getResult().getStatus());
-		long maxPenalties = 630000 + checker.timePenalty(data.getCourse().getCodes().length);
+		long maxPenalties = 630000 + checker.timePenalty(data.getCourse().nbControls());
 		assertTrue(data.getResult().getRacetime() == maxPenalties);
 	}
 

@@ -40,6 +40,10 @@ public class CourseImpl implements Course {
 	public String getName() {
 		return name;
 	}
+	
+	public int nbControls() {
+		return codes.length;
+	}
 
 
 	public void setClimb(int climb) {

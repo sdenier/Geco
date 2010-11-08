@@ -26,9 +26,7 @@ public interface Course extends Pool {
 	public int[] getCodes();
 
 	public void setCodes(int[] codes);
-
-//	public StartList getStartlist();
-
-//	public void setStartlist(StartList startlist);
 	
+	public int nbControls();
+
 }

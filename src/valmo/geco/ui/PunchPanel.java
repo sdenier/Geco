@@ -49,7 +49,7 @@ public class PunchPanel extends JPanel {
 		final String[] sequence = new String[trace.length];
 		int seq = 1;
 		for (int i = 0; i < trace.length; i++) {
-			if( trace[i].getCode().startsWith("+") ) { //$NON-NLS-1$
+			if( trace[i].isAdded() ) { //$NON-NLS-1$
 				sequence[i] = ""; //$NON-NLS-1$
 			} else {
 				sequence[i] = Integer.toString(seq);
@@ -72,9 +72,9 @@ public class PunchPanel extends JPanel {
 			}
 			public String traceLabel(final Trace[] trace, int rowIndex) {
 				String code = trace[rowIndex].getCode();
-				if( code.startsWith("-") ) //$NON-NLS-1$
+				if( trace[rowIndex].isMP() ) //$NON-NLS-1$
 					return Html.htmlTag("font", "color=red", code); //$NON-NLS-1$ //$NON-NLS-2$
-				if( code.startsWith("+") ) //$NON-NLS-1$
+				if( trace[rowIndex].isAdded() ) //$NON-NLS-1$
 					return Html.htmlTag("font", "color=blue", code); //$NON-NLS-1$ //$NON-NLS-2$
 				return code;
 			}

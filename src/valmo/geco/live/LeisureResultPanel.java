@@ -84,7 +84,7 @@ public class LeisureResultPanel extends ResultPanel {
 //		racetimeL.setText(result.formatRacetime());
 		updateStatusLabel(result.getStatus());
 //		penaltiesL.setText(result.formatTimePenalty());
-		updateMps(result.getNbMPs(), course.getCodes().length);
+		updateMps(result.getNbMPs(), course.nbControls());
 		
 		punchP.refreshPunches(raceData);
 	}

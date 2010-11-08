@@ -378,7 +378,7 @@ public class StagePanel extends TabPanel {
 				public Object getValueIn(Course course, int columnIndex) {
 					switch (columnIndex) {
 					case 0: return course.getName();
-					case 1: return course.getCodes().length;
+					case 1: return course.nbControls();
 					default: return super.getValueIn(course, columnIndex);
 					}
 				}
