@@ -196,7 +196,19 @@ public class ResultBuilder extends Control implements IResultBuilder {
 	 * @param html
 	 */
 	private void appendHtmlResult(Result result, ResultConfig config, Html html) {
-		html.tag("h1", result.getIdentifier()); // add finished / present
+		// compute basic stats
+		StringBuffer resultLabel = new StringBuffer(result.getIdentifier());
+		int finished = result.getRanking().size() + result.getNRRunners().size();
+		int present = finished;
+		for (RunnerRaceData other : result.getOtherRunners()) {
+			if( other.getResult().getStatus().isUnresolved() ) {
+				present++;
+			}
+		}
+		resultLabel.append(" (").append(Integer.toString(finished)).append("/")
+					.append(Integer.toString(present)).append(")");
+		html.tag("h1", resultLabel.toString());
+		
 		html.open("table");
 		if( config.showPenalties ){
 			html.open("tr").th("").th("Name").th("Club")

@@ -25,6 +25,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -57,30 +58,30 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	private Vector<String> categorynames;
 	private JTextPane resultTA;
 	
-	private JRadioButton selectCourseB;
-	private JRadioButton selectCatB;
-	private JRadioButton selectMixedB;
+	private JComboBox resultTypeCB;
+	private JRadioButton rankingResultRB;
+	private JRadioButton splitResultRB;
+
 	private JButton refreshB;
 	private JButton exportB;
+
 	private JCheckBox showNcC;
 	private JCheckBox showOtC;
 	private JCheckBox showEsC;
 	private JCheckBox showPeC;
-
-	private JRadioButton normalResultB;
-	private JRadioButton splitResultB;
 
 	private String exportFormat;
 	private JFileChooser filePane;
 
 	private JButton selectAllB;
 	private JButton selectNoneB;
-	private JList list;
+	private JList poolList;
 	
 	private Thread autoexportThread;
 	private JButton autoexportB;
 	private JSpinner autodelayS;
 	private JRadioButton refreshRB;
+
 
 	/**
 	 * @param geco
@@ -101,68 +102,80 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		categorynames = registry().getSortedCategorynames();
 	}
 	private void updateCourseList() {
-		list.setModel(new AbstractListModel() {
+		poolList.setModel(new AbstractListModel() {
 			public int getSize() {
-				return nbCourses();
+				return coursenames.size();
 			}
 			public Object getElementAt(int index) {
 				return coursenames.get(index);
 			}
 		});
-		selectAllCourses(list);
+		selectAllPools();
 	}
 	private void updateCategoryList() {
-		list.setModel(new AbstractListModel() {
+		poolList.setModel(new AbstractListModel() {
 			public int getSize() {
-				return nbCategories();
+				return categorynames.size();
 			}
 			public Object getElementAt(int index) {
 				return categorynames.get(index);
 			}
 		});
-		selectAllCategories(list);
+		selectAllPools();
 	}
-	
-	
+	private void selectAllPools() {
+		poolList.setSelectionInterval(0, poolList.getModel().getSize() - 1);
+	}
+	private void selectNoPool() {
+		poolList.clearSelection();
+	}
+	private ResultType getResultType() {
+		return (ResultType) resultTypeCB.getSelectedItem();
+	}
+	private boolean showCourses() {
+		return getResultType() == ResultType.CourseResult;
+	}
+	private ResultConfig createResultConfig() {
+		return ResultBuilder.createResultConfig(
+				poolList.getSelectedValues(), 
+				getResultType(),
+				showEsC.isSelected(),
+				showNcC.isSelected(),
+				showOtC.isSelected(),
+				showPeC.isSelected());
+	}
+
 	public IResultBuilder resultBuilder() {
-		if( normalResultB.isSelected() ) {
+		if( rankingResultRB.isSelected() ) {
 			return geco().resultBuilder();
 		} else {
 			return geco().splitsBuilder();
 		}
 	}
 
-	/**
-	 * 
-	 */
 	public void createListeners() {
-		selectCourseB.addActionListener(new ActionListener() {
+		resultTypeCB.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				updateCourseList();
-			}
-		});
-		selectCatB.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				updateCategoryList();
-			}
-		});
-		selectMixedB.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				updateCategoryList();
+				switch (getResultType()) {
+				case CourseResult:
+					updateCourseList();
+					break;
+				case CategoryResult:
+				case MixedResult:
+					updateCategoryList();
+					break;
+				}
 			}
 		});
 		selectAllB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if( showCourses() ) {
-					selectAllCourses(list);
-				} else {
-					selectAllCategories(list);
-				}
+				selectAllPools();
 			}
 		});
 		selectNoneB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				selectNone(list);
+				selectNoPool();
 			}
 		});
 		refreshB.addActionListener(new ActionListener() {
@@ -219,41 +232,26 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	}
 
 	private JPanel initSelectionPanel() {
-		// Commands: options and buttons
-		JPanel optionsPanel = new JPanel(new GridLayout(0, 2));
-		
-		selectCourseB = new JRadioButton(ResultType.CourseResult.toString());
-		selectCatB = new JRadioButton(ResultType.CategoryResult.toString());
-		selectMixedB = new JRadioButton(ResultType.MixedResult.toString());
-		ButtonGroup poolGroup = new ButtonGroup();
-		poolGroup.add(selectCourseB);
-		poolGroup.add(selectCatB);
-		poolGroup.add(selectMixedB);
-		poolGroup.setSelected(selectCourseB.getModel(), true);
-		optionsPanel.add(selectCatB);
-		optionsPanel.add(selectCourseB);
-		optionsPanel.add(selectMixedB);
-		optionsPanel.add(Box.createHorizontalGlue());
-		optionsPanel.add(Box.createHorizontalGlue());
-		optionsPanel.add(Box.createHorizontalGlue());
+
+		// Commands: options and actions
+		resultTypeCB = new JComboBox(ResultType.values());
+
+		rankingResultRB = new JRadioButton("Ranking");
+		splitResultRB = new JRadioButton("Splits");
+		ButtonGroup builderGroup = new ButtonGroup();
+		builderGroup.add(rankingResultRB);
+		builderGroup.add(splitResultRB);
+		builderGroup.setSelected(rankingResultRB.getModel(), true);
 		
 		showNcC = new JCheckBox("Show NC");
 		showOtC = new JCheckBox("Show Others");
-		showPeC = new JCheckBox("Show penalties");
-		showEsC = new JCheckBox("Show empty sets");
+		showPeC = new JCheckBox("Show Penalties");
+		showEsC = new JCheckBox("Show Empty Sets");
+		JPanel optionsPanel = new JPanel(new GridLayout(0, 2));
 		optionsPanel.add(showNcC);
 		optionsPanel.add(showOtC);
 		optionsPanel.add(showPeC);
 		optionsPanel.add(showEsC);
-		optionsPanel.add(Box.createHorizontalGlue());
-		optionsPanel.add(Box.createHorizontalGlue());
-
-		normalResultB = new JRadioButton("Normal");
-		splitResultB = new JRadioButton("Splits");
-		ButtonGroup builderGroup = new ButtonGroup();
-		builderGroup.add(normalResultB);
-		builderGroup.add(splitResultB);
-		builderGroup.setSelected(normalResultB.getModel(), true);
 		
 		refreshB = new JButton("Refresh");
 		exportB = new JButton("Export");
@@ -271,13 +269,16 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 			}
 		});
 		
+		// Layout of Command panel
 		JPanel commandPanel = new JPanel();
-		commandPanel.setBorder(
-				BorderFactory.createTitledBorder("Commands"));
+		commandPanel.setBorder(BorderFactory.createTitledBorder("Commands"));
 		commandPanel.setLayout(new BoxLayout(commandPanel, BoxLayout.Y_AXIS));
+		commandPanel.add(SwingUtils.embed(resultTypeCB));
+		commandPanel.add(SwingUtils.makeButtonBar(FlowLayout.CENTER, rankingResultRB, splitResultRB));
+		commandPanel.add(Box.createVerticalStrut(10));
 		commandPanel.add(optionsPanel);
+		commandPanel.add(Box.createVerticalStrut(10));
 		commandPanel.add(SwingUtils.makeButtonBar(FlowLayout.CENTER, refreshB, exportB, printB));
-		commandPanel.add(SwingUtils.makeButtonBar(FlowLayout.CENTER, normalResultB, splitResultB));
 
 		
 		// Pool list
@@ -288,9 +289,9 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		listButtonsPanel.add(SwingUtils.embed(selectAllB));
 		listButtonsPanel.add(SwingUtils.embed(selectNoneB));
 
-		list = new JList(coursenames);
-		selectAllCourses(list);
-		JScrollPane scrollPane = new JScrollPane(list);
+		poolList = new JList(coursenames);
+		selectAllPools();
+		JScrollPane scrollPane = new JScrollPane(poolList);
 		scrollPane.setPreferredSize(new Dimension(150, 250));
 		JPanel listPanel = new JPanel(new BorderLayout());
 		listPanel.add(SwingUtils.embed(scrollPane), BorderLayout.CENTER);
@@ -362,56 +363,10 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		filePane.setAccessory(fileFormatRB);
 	}
 
-	private boolean showCourses() {
-		return selectCourseB.isSelected();
-	}
-
-	private void selectAllCourses(JList list) {
-		list.setSelectionInterval(0, nbCourses() -1);
-	}
-
-	private int nbCourses() {
-		return coursenames.size();
-	}
-
-	private void selectAllCategories(JList list) {
-		list.setSelectionInterval(0, nbCategories() -1);
-	}
-
-	private int nbCategories() {
-		return categorynames.size();
-	}
-	
-	private void selectNone(JList list) {
-		list.clearSelection();
-	}
 
 	public void refreshResultView() {
 		String htmlResults = resultBuilder().generateHtmlResults(createResultConfig(), -1);
 		resultTA.setText(htmlResults);
-	}
-	
-	private ResultConfig createResultConfig() {
-		return ResultBuilder.createResultConfig(
-				list.getSelectedValues(), 
-				getResultType(),
-				showEsC.isSelected(),
-				showNcC.isSelected(),
-				showOtC.isSelected(),
-				showPeC.isSelected());
-	}
-	
-	private ResultType getResultType() {
-		if( selectCourseB.isSelected() ) {
-			return ResultType.CourseResult;
-		}
-		if( selectCatB.isSelected() ) {
-			return ResultType.CategoryResult;
-		}
-		if( selectMixedB.isSelected() ) {
-			return ResultType.MixedResult;
-		}
-		return null;
 	}
 
 	
