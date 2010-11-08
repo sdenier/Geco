@@ -31,6 +31,7 @@ import valmo.geco.Geco;
 import valmo.geco.control.RunnerControl;
 import valmo.geco.control.RunnerCreationException;
 import valmo.geco.core.Html;
+import valmo.geco.core.Messages;
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.Course;
 import valmo.geco.model.Registry;
@@ -51,14 +52,14 @@ public class MergeRunnerDialog extends JDialog {
 	private RunnerRaceData runnerData;
 	private Runner existingRunner;
 	private Runner mockRunner;
-	private String chipNumber;
+	private String ecard;
 	/**
-	 * Chipnumber identifying the runner which actually got changed, or null if data was discarded
+	 * E-card identifying the runner which actually got changed, or null if data was discarded
 	 */
-	private String returnChip;
+	private String returnCard;
 	private Status defaultCreationStatus;
 	
-	private JLabel chipL;
+	private JLabel ecardL;
 	private JLabel punchesL;
 	private JLabel timeL;
 	private JLabel statusL;
@@ -85,16 +86,16 @@ public class MergeRunnerDialog extends JDialog {
 
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		
-		chipL = new JLabel();
+		ecardL = new JLabel();
 		punchesL = new JLabel();
 		timeL = new JLabel();
 		statusL = new JLabel();
 		courseCB = new JComboBox(courseItems(geco));
-		createB = new JButton("Create");
-		closeB = new JButton("Close");
+		createB = new JButton(Messages.uiGet("MergeRunnerDialog.CreateLabel")); //$NON-NLS-1$
+		closeB = new JButton(Messages.uiGet("MergeRunnerDialog.CloseLabel")); //$NON-NLS-1$
 		
 		runnersCB = new JComboBox(runnerItems(geco));
-		mergeB = new JButton("Merge");
+		mergeB = new JButton(Messages.uiGet("MergeRunnerDialog.MergeLabel")); //$NON-NLS-1$
 		mergeInfoL = new JLabel();
 
 		initCardPanel();
@@ -103,14 +104,14 @@ public class MergeRunnerDialog extends JDialog {
 	}
 
 	private void close() {
-		returnChip = null;
+		returnCard = null;
 		// do nothing, just close the dialog to lose the ref
 		setVisible(false);
 	}
 
 	private Vector<String> courseItems(Geco geco) {
 		Vector<String> items = new Vector<String>();
-		items.add("[Unknown]");
+		items.add(Messages.uiGet("MergeRunnerDialog.UnknownCourseItem")); //$NON-NLS-1$
 		items.addAll(geco.registry().getSortedCoursenames());
 		return items;
 	}
@@ -129,20 +130,20 @@ public class MergeRunnerDialog extends JDialog {
 	private void initCardPanel() {
 		JPanel cardPanel = new JPanel(new GridBagLayout());
 		Insets insets = new Insets(0, 10, 0, 0);
-		cardPanel.add(new JLabel("Chip number:"), SwingUtils.gbConstr(0));
+		cardPanel.add(new JLabel(Messages.uiGet("MergeRunnerDialog.EcardLabel")), SwingUtils.gbConstr(0)); //$NON-NLS-1$
 		GridBagConstraints c = SwingUtils.gbConstr(0);
 		c.insets = insets;
-		cardPanel.add(chipL, c);
-		cardPanel.add(new JLabel("Punches:"), SwingUtils.gbConstr(1));
+		cardPanel.add(ecardL, c);
+		cardPanel.add(new JLabel(Messages.uiGet("MergeRunnerDialog.PunchLabel")), SwingUtils.gbConstr(1)); //$NON-NLS-1$
 		c = SwingUtils.gbConstr(1);
 		c.gridwidth = 2;
 		c.insets = insets;
 		cardPanel.add(punchesL, c);
-		cardPanel.add(new JLabel("Race time:"), SwingUtils.gbConstr(2));
+		cardPanel.add(new JLabel(Messages.uiGet("MergeRunnerDialog.RacetimeLabel")), SwingUtils.gbConstr(2)); //$NON-NLS-1$
 		c = SwingUtils.gbConstr(2);
 		c.insets = insets;
 		cardPanel.add(timeL, c);
-		cardPanel.add(new JLabel("Status:"), SwingUtils.gbConstr(3));
+		cardPanel.add(new JLabel(Messages.uiGet("MergeRunnerDialog.StatusLabel")), SwingUtils.gbConstr(3)); //$NON-NLS-1$
 		c = SwingUtils.gbConstr(3);
 		c.insets = new Insets(0, 10, 0, 10);
 		cardPanel.add(statusL, c);
@@ -154,21 +155,21 @@ public class MergeRunnerDialog extends JDialog {
 		c = SwingUtils.gbConstr(5);
 		c.gridwidth = 2;
 		c.insets = insets;
-		cardPanel.add(new JLabel("Create new runner with above card data"), c);
+		cardPanel.add(new JLabel(Messages.uiGet("MergeRunnerDialog.CreateHelp")), c); //$NON-NLS-1$
 		cardPanel.add(closeB, SwingUtils.gbConstr(6));
 		c = SwingUtils.gbConstr(6);
 		c.gridwidth = 2;
 		c.insets = insets;
-		cardPanel.add(new JLabel("Do nothing (discard card data if new)"), c);
+		cardPanel.add(new JLabel(Messages.uiGet("MergeRunnerDialog.CloseHelp")), c); //$NON-NLS-1$
 		
 		JPanel embed = SwingUtils.embed(cardPanel);
-		embed.setBorder(BorderFactory.createTitledBorder("Card data"));
+		embed.setBorder(BorderFactory.createTitledBorder(Messages.uiGet("MergeRunnerDialog.CardDataTitle"))); //$NON-NLS-1$
 		getContentPane().add(embed);
 	}
 
 	private void initMergePanel() {
 		JPanel mergePanel = new JPanel(new BorderLayout());
-		mergePanel.setBorder(BorderFactory.createTitledBorder("Merge"));
+		mergePanel.setBorder(BorderFactory.createTitledBorder(Messages.uiGet("MergeRunnerDialog.MergeTitle"))); //$NON-NLS-1$
 		mergePanel.add(runnersCB, BorderLayout.CENTER);
 		JPanel south = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		south.add(mergeB);
@@ -178,21 +179,21 @@ public class MergeRunnerDialog extends JDialog {
 	}
 
 	
-	private void showCardData(String chip, RunnerRaceData runnerData) {
-		chipL.setText(Html.htmlTag("i", chip));
-		punchesL.setText(Html.htmlTag("i", runnerData.getPunches().length
-										+ " starting with " + runnerData.punchSummary(5)));
-		timeL.setText(Html.htmlTag("i", TimeManager.time(runnerData.realRaceTime())));
+	private void showCardData(String ecard, RunnerRaceData runnerData) {
+		ecardL.setText(Html.htmlTag("i", ecard)); //$NON-NLS-1$
+		punchesL.setText(Html.htmlTag("i", runnerData.getPunches().length //$NON-NLS-1$
+										+ Messages.uiGet("MergeRunnerDialog.StartingPunchesLabel") + runnerData.punchSummary(5))); //$NON-NLS-1$
+		timeL.setText(Html.htmlTag("i", TimeManager.time(runnerData.realRaceTime()))); //$NON-NLS-1$
 		updateStatusLabel();
 	}
 
 	private void updateStatusLabel() {
-		statusL.setText(Html.htmlTag("i", runnerData.getResult().getStatus().toString()));
+		statusL.setText(Html.htmlTag("i", runnerData.getResult().getStatus().toString())); //$NON-NLS-1$
 	}
 	
-	private void showDialogFor(RunnerRaceData data, String chip, Status defaultStatus) {
+	private void showDialogFor(RunnerRaceData data, String ecard, Status defaultStatus) {
 		this.runnerData = data;
-		this.chipNumber = chip;
+		this.ecard = ecard;
 		this.existingRunner = data.getRunner();
 		this.defaultCreationStatus = defaultStatus;
 		
@@ -207,21 +208,21 @@ public class MergeRunnerDialog extends JDialog {
 			mockRunner.setCourse(this.existingRunner.getCourse());
 			courseCB.setSelectedItem(data.getCourse().getName());
 		} else {
-			courseCB.setSelectedItem("[Unknown]");
+			courseCB.setSelectedItem(Messages.uiGet("MergeRunnerDialog.UnknownCourseItem")); //$NON-NLS-1$
 		}
 
-		showCardData(chip, data);
+		showCardData(ecard, data);
 	}
 
 	
-	public String showMergeDialogFor(RunnerRaceData data, String chip, Status defaultStatus) {
-		showDialogFor(data, chip, defaultStatus);
+	public String showMergeDialogFor(RunnerRaceData data, String ecard, Status defaultStatus) {
+		showDialogFor(data, ecard, defaultStatus);
 		runnersCB.setSelectedIndex(-1);
 		showMergeInfo();
 		pack();
 		setLocationRelativeTo(null);
 		setVisible(true);
-		return returnChip;
+		return returnCard;
 	}
 	
 	public String showOverwriteDialogFor(RunnerRaceData data, Runner target) {
@@ -232,26 +233,30 @@ public class MergeRunnerDialog extends JDialog {
 		pack();
 		setLocationRelativeTo(null);
 		setVisible(true);
-		return returnChip;
+		return returnCard;
 	}
 
 	
 	public void showMergeInfo() {
-		mergeInfoL.setText("Merge card data into above runner");
-		mergeB.setText("Merge");
+		mergeInfoL.setText(Messages.uiGet("MergeRunnerDialog.MergeHelp")); //$NON-NLS-1$
+		mergeB.setText(Messages.uiGet("MergeRunnerDialog.MergeLabel")); //$NON-NLS-1$
 		repaint();
 	}
 
 	public void showOverwriteInfo() {
 //		mergeInfoL.setText("Override runner result with card data.");
 		RunnerResult result = registry().findRunnerData(getTargetRunner()).getResult();
-		mergeInfoL.setText("Overwrite " + printResult(result) + " with " + printResult(runnerData.getResult()));
-		mergeB.setText("Overwrite");
+		mergeInfoL.setText(
+				Messages.uiGet("MergeRunnerDialog.OverwriteHelp1") //$NON-NLS-1$
+				+ printResult(result)
+				+ Messages.uiGet("MergeRunnerDialog.OverwriteHelp2") //$NON-NLS-1$
+				+ printResult(runnerData.getResult()));
+		mergeB.setText(Messages.uiGet("MergeRunnerDialog.OverwriteLabel")); //$NON-NLS-1$
 		repaint();
 	}
 	
 	private String printResult(RunnerResult result) {
-		return result.getStatus() + " in " + result.formatRacetime();
+		return result.getStatus() + Messages.uiGet("MergeRunnerDialog.InLabel") + result.formatRacetime(); //$NON-NLS-1$
 	}
 
 	
@@ -261,7 +266,7 @@ public class MergeRunnerDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				if( updateStatus ) {
 					String selectedCoursename = getSelectedCoursename();
-					if( selectedCoursename.equals("[Unknown]")) {
+					if( selectedCoursename.equals(Messages.uiGet("MergeRunnerDialog.UnknownCourseItem"))) { //$NON-NLS-1$
 						mockRunner.setCourse(registry().anyCourse());
 						runnerData.getResult().setStatus(defaultCreationStatus);
 						geco.checker().normalTrace(runnerData);
@@ -277,20 +282,20 @@ public class MergeRunnerDialog extends JDialog {
 		createB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// always assert we use a unique chipnumber (in particular if creating a new runner
-				// when one exists with the same chip)
-				String uniqueChipnumber = runnerControl().deriveUniqueChipnumber(chipNumber);
+				// always assert we use a unique e-card (in particular if creating a new runner
+				// when one exists with the same e-card)
+				String uniqueEcardNumber = runnerControl().deriveUniqueChipnumber(ecard);
 				String selectedCoursename = getSelectedCoursename();
-				Course course = selectedCoursename.equals("[Unknown]") ?
+				Course course = selectedCoursename.equals(Messages.uiGet("MergeRunnerDialog.UnknownCourseItem")) ? //$NON-NLS-1$
 					registry().anyCourse() :
 					registry().findCourse(selectedCoursename);
 				try {
 					// Create from scratch a brand new runner
-					Runner newRunner = runnerControl().buildAnonymousRunner(uniqueChipnumber, course);
+					Runner newRunner = runnerControl().buildAnonymousRunner(uniqueEcardNumber, course);
 					// do not run checker as it should have been run
 					runnerControl().registerRunner(newRunner, runnerData);
-					geco.log("Creation " + runnerData.infoString());
-					returnChip = uniqueChipnumber;
+					geco.log("Creation " + runnerData.infoString()); //$NON-NLS-1$
+					returnCard = uniqueEcardNumber;
 					setVisible(false);
 				} catch (RunnerCreationException e1) {
 					// should never happen as we cant open a merge dialog without a runner,
@@ -324,24 +329,25 @@ public class MergeRunnerDialog extends JDialog {
 		mergeB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO: update chipnumber
+				// TODO: update e-card
 				RunnerRaceData updatedData = runnerControl().updateRunnerDataFor(getTargetRunner(), runnerData);
 				String selectedCoursename = getSelectedCoursename();
-				selectedCoursename = selectedCoursename.equals("[Unknown]") ?
+				selectedCoursename = selectedCoursename.equals(Messages.uiGet("MergeRunnerDialog.UnknownCourseItem")) ? //$NON-NLS-1$
 					registry().anyCourse().getName() :
 					selectedCoursename;
 				runnerControl().validateCourse(updatedData, selectedCoursename);
 				if( existingRunner != null ) {// offer to delete previous runner if applicable
-					int confirm = JOptionPane.showConfirmDialog(MergeRunnerDialog.this,
-																"Confirm deletion of " + existingRunner.idString(),
-																"Delete original runner",
-																JOptionPane.YES_NO_OPTION);
+					int confirm = JOptionPane.showConfirmDialog(
+										MergeRunnerDialog.this,
+										Messages.uiGet("MergeRunnerDialog.RunnerDeletionLabel") + existingRunner.idString(), //$NON-NLS-1$
+										Messages.uiGet("MergeRunnerDialog.RunnerDeletionTitle"), //$NON-NLS-1$
+										JOptionPane.YES_NO_OPTION);
 					if( confirm == JOptionPane.YES_OPTION ) {
 						runnerControl().deleteRunner(getRunnerData(existingRunner));
 					}
 				}
-				geco.log("Merge " + getRunnerData(getTargetRunner()).infoString());
-				returnChip = getTargetRunner().getChipnumber();
+				geco.log("Merge " + getRunnerData(getTargetRunner()).infoString()); //$NON-NLS-1$
+				returnCard = getTargetRunner().getChipnumber();
 				setVisible(false);
 			}
 		});
