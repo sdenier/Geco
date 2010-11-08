@@ -13,6 +13,7 @@ import valmo.geco.model.Punch;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.RunnerResult;
+import valmo.geco.model.Status;
 
 /**
  * @author Simon Denier
@@ -155,12 +156,20 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 		return getResult().getStatus().hasData();
 	}
 	
-	public boolean statusIsRecheckable() {
-		return getResult().getStatus().isRecheckable();
+	public boolean hasResult() {
+		return getResult().getStatus().isResolved() && getResult().getStatus().isTraceable();
 	}
 	
 	public boolean hasTrace() {
 		return getResult().getStatus().isTraceable();
+	}
+	
+	public boolean statusIsRecheckable() {
+		return getResult().getStatus().isRecheckable();
+	}
+	
+	public Status getStatus() {
+		return getResult().getStatus();
 	}
 
 	public RunnerResult getResult() {

@@ -351,13 +351,23 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 				exportFormat = "csv";
 			}
 		});
+		JRadioButton selectCNCsvB = new JRadioButton("CN CSV");
+		selectCNCsvB.setToolTipText("CSV format for french CN (Classement National)");
+		selectCNCsvB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				exportFormat = "cn.csv";
+			}
+		});
 		ButtonGroup group = new ButtonGroup();
 		group.add(selectHtmlB);
 		group.add(selectCsvB);
+		group.add(selectCNCsvB);
 		group.setSelected(selectHtmlB.getModel(), true);
 		exportFormat = "html";
 		fileFormatRB.add(selectHtmlB);
 		fileFormatRB.add(selectCsvB);
+		fileFormatRB.add(selectCNCsvB);
 		
 		filePane = new JFileChooser();
 		filePane.setAccessory(fileFormatRB);

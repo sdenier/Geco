@@ -7,6 +7,7 @@ package valmo.geco.control;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -15,6 +16,7 @@ import java.util.Vector;
 import valmo.geco.core.Html;
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.Category;
+import valmo.geco.model.Club;
 import valmo.geco.model.Course;
 import valmo.geco.model.Pool;
 import valmo.geco.model.RankedRunner;
@@ -22,6 +24,7 @@ import valmo.geco.model.Result;
 import valmo.geco.model.ResultType;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
+import valmo.geco.model.Status;
 import valmo.geco.model.iocsv.CsvWriter;
 
 /**
@@ -170,6 +173,11 @@ public class ResultBuilder extends Control implements IResultBuilder {
 		if( format.equals("csv") ) {
 			CsvWriter writer = new CsvWriter(",", filename);
 			generateCsvResult(config, writer);
+			writer.close();
+		}
+		if( format.equals("cn.csv") ) {
+			CsvWriter writer = new CsvWriter(";", filename);
+			generateOECsvResult(config, writer);
 			writer.close();
 		}
 	}
@@ -363,6 +371,78 @@ public class ResultBuilder extends Control implements IResultBuilder {
 				runner.getLastname(),
 				runner.getClub().getName(),
 				timeOrStatus);				
+		}
+	}
+	
+	
+	public void generateOECsvResult(ResultConfig config, CsvWriter writer) throws IOException {
+		writer.write("N° dép.;Puce;Ident. base de données;Nom;Prénom;Né;S;Plage;nc;Départ;Arrivée;Temps;");
+		writer.write("Evaluation;N° club;Nom;Ville;Nat;N° cat.;Court;Long;Num1;Num2;Num3;Text1;Text2;Text3;");
+		writer.write("Adr. nom;Rue;Ligne2;Code Post.;Ville;Tél.;Fax;E-mail;Id/Club;Louée;Engagement;Payé;");
+		writer.write("Circuit N°;Circuit;km;m;Postes du circuit;Pl");
+		writer.write("\n");
+		
+		Vector<String> clubnames = registry().getClubnames();
+		Vector<String> categorynames = registry().getCategorynames();
+		Vector<String> coursenames = registry().getCoursenames();
+		
+		for (RunnerRaceData runnerData : registry().getRunnersData()) {
+			if( runnerData.hasResult() ) {				// TODO: only export if runner in archive
+				Runner runner = runnerData.getRunner();
+				Club club = runner.getClub();
+				Category category = runner.getCategory();
+				Course course = runner.getCourse();
+
+				writer.writeRecord(
+						Integer.toString(runner.getStartnumber()),
+						runner.getChipnumber(),
+						Integer.toString(runner.getStartnumber()),// TODO baseid retrieve from archive
+						runner.getLastname(),
+						runner.getFirstname(),
+						"", //TODO: year retrieve from archive
+						"", //TODO: sex retrieve from archive
+						"",
+						( runner.isNC() ) ? "X" : "0",
+						oeTime(runnerData.getStarttime()),
+						oeTime(runnerData.getFinishtime()),
+						oeTime(new Date(runnerData.getResult().getRacetime())),
+						oeEvaluationCode(runnerData.getStatus()),
+						Integer.toString(clubnames.indexOf(club.getName())),
+						club.getShortname(),
+						club.getName(),
+						"",
+						Integer.toString(categorynames.indexOf(category.getName())),
+						category.getShortname(),
+						category.getLongname(),
+						"", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+						"0",
+						"0",
+						"0",
+						Integer.toString(coursenames.indexOf(course.getName())),
+						course.getName(),
+						Integer.toString(course.getLength()),
+						Integer.toString(course.getClimb()),
+						"1",
+						"1"
+						);
+				
+			}
+		}
+	}
+	
+	private String oeTime(Date time) {
+		if( time.equals(TimeManager.NO_TIME) ) {
+			return "";
+		} else {
+			return TimeManager.fullTime(time);
+		}
+	}
+
+	private String oeEvaluationCode(Status status) {
+		if( status==Status.OK ) {
+			return "0";
+		} else {
+			return "1";
 		}
 	}
 	
