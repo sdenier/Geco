@@ -185,7 +185,12 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		});
 		exportB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String resultFile = geco().getCurrentStagePath() + File.separator + "ranking";
+				String resultFile;
+				if( rankingResultRB.isSelected() ) {
+					resultFile = geco().getCurrentStagePath() + File.separator + "ranking";
+				} else {
+					resultFile = geco().getCurrentStagePath() + File.separator + "splits";
+				}
 				filePane.setSelectedFile(new File(resultFile).getAbsoluteFile());
 				int response = filePane.showSaveDialog(frame());
 				if( response==JFileChooser.APPROVE_OPTION ) {

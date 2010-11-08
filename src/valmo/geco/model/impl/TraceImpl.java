@@ -38,6 +38,13 @@ public class TraceImpl implements Trace {
 	public String getCode() {
 		return code;
 	}
+	public String getBasicCode() {
+		if( isOK() ) {
+			return code;
+		} else {
+			return code.substring(1); // works dumbly with subst trace
+		}
+	}
 	public Date getTime() {
 		return time;
 	}

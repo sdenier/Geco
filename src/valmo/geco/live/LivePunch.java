@@ -157,6 +157,14 @@ public class LivePunch implements Trace {
 	public String getCode() {
 		return mapControl.getCode();
 	}
+	@Override
+	public String getBasicCode() {
+		if( isOK() ) {
+			return mapControl.getCode();
+		} else {
+			return mapControl.getCode().substring(1); // works dumbly with subst trace
+		}
+	}
 
 	/* (non-Javadoc)
 	 * @see valmo.geco.model.Trace#getTime()
