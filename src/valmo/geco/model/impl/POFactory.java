@@ -6,6 +6,7 @@ package valmo.geco.model.impl;
 
 import java.util.Date;
 
+import valmo.geco.model.ArchiveRunner;
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
 import valmo.geco.model.Course;
@@ -42,17 +43,9 @@ public class POFactory implements Factory {
 		return new CourseImpl();
 	}
 	
-//	public Event createEvent() {
-//		return new EventImpl();
-//	}
-	
 	public Punch createPunch() {
 		return new PunchImpl();
 	}
-	
-//	public Race createRace() {
-//		return new Race();
-//	}
 	
 	public Runner createRunner() {
 		return new RunnerImpl();
@@ -82,10 +75,6 @@ public class POFactory implements Factory {
 	public Stage createStage() {
 		return new StageImpl();
 	}
-	
-//	public StartList createStartList() {
-//		return new StartList();
-//	}
 
 	@Override
 	public HeatSet createHeatSet() {
@@ -95,6 +84,11 @@ public class POFactory implements Factory {
 	@Override
 	public Heat createHeat() {
 		return new HeatImpl();
+	}
+
+	@Override
+	public ArchiveRunner createArchiveRunner() {
+		return new ArchiveRunnerImpl();
 	}
 	
 }

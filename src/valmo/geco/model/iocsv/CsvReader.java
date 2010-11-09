@@ -25,6 +25,21 @@ public class CsvReader {
 	private String csvSep;
 
 
+	public CsvReader() {
+		this(",");
+	}
+
+	public CsvReader(String csvSep) {
+		this.csvSep = csvSep;
+	}
+	
+	public CsvReader(String csvSep, String filePath) throws IOException {
+		this(csvSep);
+		initialize(filePath);
+		open();
+	}
+
+	
 	public CsvReader initialize(String filePath) {
 		this.filepath = filePath;
 		return this;

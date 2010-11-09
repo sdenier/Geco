@@ -22,11 +22,7 @@ public interface Factory {
 
 	public Course createCourse();
 
-//	public Event createEvent();
-
 	public Punch createPunch();
-
-//	public Race createRace();
 
 	public Runner createRunner();
 
@@ -41,11 +37,11 @@ public interface Factory {
 	public Result createResult();
 
 	public Stage createStage();
-
-//	public StartList createStartList();
 	
 	public HeatSet createHeatSet();
 	
 	public Heat createHeat();
+	
+	public ArchiveRunner createArchiveRunner();
 
 }
