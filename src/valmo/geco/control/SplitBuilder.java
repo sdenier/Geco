@@ -53,12 +53,16 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 		
 	}
 	
+	public static enum SplitFormat { MultiColumns, Ticket }
+	
 	
 	private PrintService splitPrinter;
 	
 	private boolean autoPrint;
 	
 	private int nbColumns = 10;
+
+	private SplitFormat splitFormat = SplitFormat.MultiColumns;
 
 	
 	/**
@@ -294,7 +298,6 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 	}
 
 	public void generateHtmlSplitsFor(RunnerRaceData data, String rank, String statusTime, ResultConfig config, Html html) {
-		// TODO: use custom format for printing
 		html.openTr();
 		html.th(rank);
 		html.th(data.getRunner().getName(), "align=\"left\" colspan=\"3\"");
@@ -353,32 +356,83 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 		}
 	}
 	
-	public void printSingleSplits(RunnerRaceData data) {
-		// TODO: use custom format for printing
+	public String printSingleSplits(RunnerRaceData data) {
 		if( getSplitPrinter()!=null ) {
 			Html html = new Html();
-			html.tag("h2", "align=\"center\"", geco().stage().getName());
-			html.b(data.getRunner().getName() + " - "
-					+ data.getCourse().getName() + " - "
-					+ data.getResult().shortFormat());
-			html.open("table");
-			appendHtmlSplitsInColumns(buildNormalSplits(data), nbColumns, html);
-			html.close("table");
-			html.tag("div",
-					"align=\"center\"",
-					"Geco for orienteering - http://bitbucket.org/sdenier/geco");
+			if( splitFormat==SplitFormat.Ticket ) {
+				printSingleSplitsInLine(data, html);
+			} else {
+				printSingleSplitsInColumns(data, html);
+			}
 		
 			JTextPane ticket = new JTextPane(); 
 			ticket.setContentType("text/html");
-			ticket.setText(html.close());
+			String content = html.close();
+			ticket.setText(content);
 			try {
 				ticket.print(null, null, false, getSplitPrinter(), null, true);
 			} catch (PrinterException e) {
 				geco().debug(e.getLocalizedMessage());
 			}
+			return content;
+		}
+		return "";
+	}
+
+	private void printSingleSplitsInColumns(RunnerRaceData data, Html html) {
+		html.tag("h2", "align=\"center\"", geco().stage().getName());
+		html.b(data.getRunner().getName() + " - "
+				+ geco().stage().getName() + " - "
+				+ data.getCourse().getName() + " - "
+				+ data.getResult().shortFormat());
+		html.open("table");
+		appendHtmlSplitsInColumns(buildNormalSplits(data), nbColumns, html);
+		html.close("table");
+		html.tag("div",
+				"align=\"center\"",
+				"Geco for orienteering - http://bitbucket.org/sdenier/geco");
+	}
+
+	private void printSingleSplitsInLine(RunnerRaceData data, Html html) {
+		html.tag("p", "align=\"center\"", geco().stage().getName());
+		html.open("p", "align=\"center\"").b(data.getRunner().getName()).close("p");
+		html.b(data.getCourse().getName() + " - "
+				+ data.getResult().shortFormat());
+		html.open("table");
+		appendHtmlSplitsInLine(buildLinearSplits(data), html);
+		html.close("table");
+		html.tag("div", "align=\"center\"", "Geco for orienteering");
+		html.tag("div",	"align=\"center\"",	"http://bitbucket.org/sdenier/geco");
+	}
+
+	private void appendHtmlSplitsInLine(SplitTime[] linearSplits, Html html) {
+		for (SplitTime splitTime : linearSplits) {
+			html.openTr();
+			Trace trace = splitTime.trace;
+			String time = TimeManager.time(splitTime.time);
+			if( trace!=null ) {
+				html.td(splitTime.seq);
+				html.td(splitTime.trace.getCode());
+				if( trace.isOK() ) {
+					html.th(time, "align=\"right\"");
+				} else {
+					if( trace.isAdded() || trace.isSubst() ) {
+						time = Html.tag("i", time, new StringBuffer()).toString();
+					}
+					html.td(time, "align=\"right\"");
+				}
+				html.td(TimeManager.time(splitTime.split), "align=\"right\"");
+			} else {
+				html.td(splitTime.seq);
+				html.td("");
+				html.th(time, "align=\"right\"");
+				html.td(TimeManager.time(splitTime.split), "align=\"right\"");				
+			}
+			html.closeTr();
 		}
 	}
-	
+
+
 	public Vector<String> listPrinterNames() {
 		Vector<String> printerNames = new Vector<String>();
 		for (PrintService printer : PrinterJob.lookupPrintServices()) {
@@ -422,6 +476,14 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 	public void disableAutoprint() {
 		this.autoPrint = false;
 	}
+	
+	public SplitFormat getSplitFormat() {
+		return this.splitFormat;
+	}
+	
+	public void setSplitFormat(SplitFormat format) {
+		this.splitFormat = format;
+	}
 
 	@Override
 	public void cardRead(String chip) {
@@ -437,16 +499,22 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 
 	@Override
 	public void changed(Stage previous, Stage current) {
-		setSplitPrinterName(stage().getProperties().getProperty(splitPrinterProperty()));
-		String nbCol = stage().getProperties().getProperty(splitNbColumnsProperty());
+		Properties props = stage().getProperties();
+		setSplitPrinterName(props.getProperty(splitPrinterProperty()));
+		String nbCol = props.getProperty(splitNbColumnsProperty());
 		if( nbCol!=null ){
 			nbColumns = Integer.parseInt(nbCol);
+		}
+		String format = props.getProperty(splitFormatProperty());
+		if( format!=null ) {
+			setSplitFormat(SplitFormat.valueOf(format));
 		}
 	}
 	@Override
 	public void saving(Stage stage, Properties properties) {
 		properties.setProperty(splitPrinterProperty(), getSplitPrinterName());
 		properties.setProperty(splitNbColumnsProperty(), Integer.toString(nbColumns));
+		properties.setProperty(splitFormatProperty(), getSplitFormat().name());
 	}
 	@Override
 	public void closing(Stage stage) {	}
@@ -456,6 +524,9 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 	}
 	public static String splitNbColumnsProperty() {
 		return "SplitNbColumns";
+	}
+	public static String splitFormatProperty() {
+		return "SplitFormat";
 	}
 
 }

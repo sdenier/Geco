@@ -38,6 +38,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 
 import valmo.geco.Geco;
+import valmo.geco.control.SplitBuilder;
 import valmo.geco.core.Announcer;
 import valmo.geco.core.Html;
 import valmo.geco.core.Messages;
@@ -286,7 +287,15 @@ public class StagePanel extends TabPanel {
 		
 		c.gridy = 4;
 		panel.add(new JLabel("Split format:"), c);
-		panel.add(new JComboBox(new String[] {"ticket", "multi-columns"} ), c);
+		final JComboBox splitFormatCB = new JComboBox(SplitBuilder.SplitFormat.values());
+		splitFormatCB.setSelectedItem(geco().splitsBuilder().getSplitFormat());
+		panel.add(splitFormatCB, c);
+		splitFormatCB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				geco().splitsBuilder().setSplitFormat((SplitBuilder.SplitFormat) splitFormatCB.getSelectedItem());
+			}
+		});
 		
 		return titlePanel(panel, Messages.uiGet("StagePanel.SIReaderConfigTitle")); //$NON-NLS-1$
 	}
