@@ -8,7 +8,7 @@ package valmo.geco.model;
  * @since Jun 30, 2009
  *
  */
-public interface Runner extends IRunner {
+public interface Runner extends AbstractRunner {
 
 	public int getStartnumber();
 

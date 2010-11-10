@@ -12,23 +12,11 @@ import valmo.geco.model.ArchiveRunner;
  *
  */
 public class ArchiveRunnerImpl extends AbstractRunnerImpl implements ArchiveRunner {
-
-	private Integer archiveId;
 	
 	private String birthYear;
 	
 	private String sex;
 	
-
-	@Override
-	public Integer getArchiveId() {
-		return archiveId;
-	}
-
-	@Override
-	public void setArchiveId(Integer id) {
-		this.archiveId = id;
-	}
 
 	@Override
 	public String getBirthYear() {

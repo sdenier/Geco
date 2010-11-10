@@ -15,6 +15,7 @@ import java.util.Vector;
 
 import valmo.geco.core.Html;
 import valmo.geco.core.TimeManager;
+import valmo.geco.model.ArchiveRunner;
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
 import valmo.geco.model.Course;
@@ -387,8 +388,9 @@ public class ResultBuilder extends Control implements IResultBuilder {
 		Vector<String> coursenames = registry().getCoursenames();
 		
 		for (RunnerRaceData runnerData : registry().getRunnersData()) {
-			if( runnerData.hasResult() ) {				// TODO: only export if runner in archive
-				Runner runner = runnerData.getRunner();
+			Runner runner = runnerData.getRunner();
+			if( runner.getArchiveId()!=null && runnerData.hasResult() ) {
+				ArchiveRunner ark = null; // TODO = archive.findRunner(runner.getArchiveId());
 				Club club = runner.getClub();
 				Category category = runner.getCategory();
 				Course course = runner.getCourse();
@@ -396,11 +398,11 @@ public class ResultBuilder extends Control implements IResultBuilder {
 				writer.writeRecord(
 						Integer.toString(runner.getStartnumber()),
 						runner.getChipnumber(),
-						Integer.toString(runner.getStartnumber()),// TODO baseid retrieve from archive
+						ark.getArchiveId().toString(),
 						runner.getLastname(),
 						runner.getFirstname(),
-						"", //TODO: year retrieve from archive
-						"", //TODO: sex retrieve from archive
+						ark.getBirthYear(),
+						ark.getSex(),
 						"",
 						( runner.isNC() ) ? "X" : "0",
 						oeTime(runnerData.getStarttime()),

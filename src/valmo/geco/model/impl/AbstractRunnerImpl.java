@@ -6,7 +6,7 @@ package valmo.geco.model.impl;
 
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
-import valmo.geco.model.IRunner;
+import valmo.geco.model.AbstractRunner;
 
 
 /**
@@ -14,8 +14,10 @@ import valmo.geco.model.IRunner;
  * @since Nov 22, 2008
  *
  */
-public abstract class AbstractRunnerImpl implements IRunner {
-	
+public abstract class AbstractRunnerImpl implements AbstractRunner {
+
+	private Integer archiveId;
+
 	private String firstname;
 	
 	private String lastname;
@@ -26,7 +28,17 @@ public abstract class AbstractRunnerImpl implements IRunner {
 	
 	private Category category;
 
-	
+
+	@Override
+	public Integer getArchiveId() {
+		return archiveId;
+	}
+
+	@Override
+	public void setArchiveId(Integer id) {
+		this.archiveId = id;
+	}
+
 	public String getName() {
 		return firstname + " " + lastname;
 	}

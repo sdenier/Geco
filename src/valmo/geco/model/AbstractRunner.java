@@ -9,8 +9,12 @@ package valmo.geco.model;
  * @since Nov 9, 2010
  *
  */
-public interface IRunner {
+public interface AbstractRunner {
+
+	public Integer getArchiveId();
 	
+	public void setArchiveId(Integer id);
+
 	public String getName();
 
 	public String getNameR();

@@ -9,11 +9,7 @@ package valmo.geco.model;
  * @since Nov 9, 2010
  *
  */
-public interface ArchiveRunner extends IRunner {
-
-	public Integer getArchiveId();
-	
-	public void setArchiveId(Integer id);
+public interface ArchiveRunner extends AbstractRunner {
 	
 	public String getBirthYear();
 	
