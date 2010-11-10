@@ -53,7 +53,7 @@ public class ArchiveTableModel extends AbstractTableModel {
 		return data.length;
 	}
 	
-	private ArchiveRunner getRunner(int index) {
+	public ArchiveRunner getRunner(int index) {
 		return data[index];
 	}
 

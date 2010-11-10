@@ -15,6 +15,7 @@ import valmo.geco.model.Archive;
 import valmo.geco.model.ArchiveRunner;
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
+import valmo.geco.model.Runner;
 import valmo.geco.model.Stage;
 import valmo.geco.model.iocsv.CsvReader;
 
@@ -72,6 +73,18 @@ public class ArchiveManager extends Control implements StageListener {
 	public String archiveLastModified() {
 		return ( archiveFile==null )? "" : 
 									DateFormat.getDateInstance().format(new Date(archiveFile.lastModified()));
+	}
+	
+	public Runner insertRunner(ArchiveRunner runner) {
+		return null; // TODO: new ecard
+	}
+	
+	public Runner findAndInsertRunner(String ecard) {
+		ArchiveRunner arkRunner = archive().findRunner(ecard);
+		if( arkRunner==null ){
+			return null;
+		}
+		return insertRunner(arkRunner);
 	}
 	
 	private void importInArchive(String[] record) {

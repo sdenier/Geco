@@ -7,6 +7,7 @@ package valmo.geco.ui;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -14,22 +15,24 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.table.TableRowSorter;
 
 import valmo.geco.Geco;
 import valmo.geco.control.ArchiveManager;
-import valmo.geco.control.GecoControl;
 import valmo.geco.core.Messages;
 import valmo.geco.model.ArchiveRunner;
 
@@ -55,19 +58,13 @@ public class ArchiveViewer extends JFrame {
 	private JLabel nbEntriesL;
 
 	
-	
-	private ArchiveManager archiveManager;
-
-	
-
 	public ArchiveViewer(Geco geco) {
 		this.geco = geco;
-		this.archiveManager = new ArchiveManager(new GecoControl()); // TODO remove
 		guiInit();
 	}
 
 	private ArchiveManager archiveManager() {
-		return this.archiveManager;
+		return geco.archiveManager();
 	}
 	
 	public void open() {
@@ -79,10 +76,10 @@ public class ArchiveViewer extends JFrame {
 		setVisible(false);
 	}
 
-	private void refreshTableData() {
-		tableModel.setData(archiveManager().archive().runners().toArray(new ArchiveRunner[0]));
+	private ArchiveRunner getSelectedRunner() {
+		return tableModel.getRunner( table.convertRowIndexToModel(table.getSelectedRow()) );
 	}
-	
+
 	public void loadArchive(File archiveFile) {
 		try {
 			archiveManager().loadArchiveFrom(archiveFile);
@@ -97,6 +94,10 @@ public class ArchiveViewer extends JFrame {
 		archiveFileL.setText(archiveManager().getArchiveName());
 		archiveDateL.setText(archiveManager().archiveLastModified());
 		showRowCount();
+	}
+
+	private void refreshTableData() {
+		tableModel.setData(archiveManager().archive().runners().toArray(new ArchiveRunner[0]));
 	}
 
 	private void showRowCount() {
@@ -134,6 +135,12 @@ public class ArchiveViewer extends JFrame {
 		panel.add(Box.createHorizontalGlue());
 		
 		JButton insertB = new JButton("Insert");
+		insertB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				archiveManager().insertRunner(getSelectedRunner());
+			}
+		});
 		panel.add(insertB);
 		panel.add(new JLabel("Find:"));
 		filterField = new JTextField(20);
@@ -141,7 +148,7 @@ public class ArchiveViewer extends JFrame {
 		filterField.setMaximumSize(new Dimension(50, SwingUtils.SPINNERHEIGHT));
 		filterField.requestFocusInWindow();
 		panel.add(filterField);
-		
+				
 		return panel;
 	}
 	
@@ -167,6 +174,25 @@ public class ArchiveViewer extends JFrame {
 				}				
 			}
 		});
+		
+		((JComponent) getContentPane()).getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
+				KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+				"focusOnFilter"); //$NON-NLS-1$
+		((JComponent) getContentPane()).getActionMap().put("focusOnFilter", new AbstractAction() { //$NON-NLS-1$
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				filterField.requestFocusInWindow();
+			}
+		});
+		filterField.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancelFilter"); //$NON-NLS-1$
+		filterField.getActionMap().put("cancelFilter", new AbstractAction() { //$NON-NLS-1$
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				filterField.setText(""); //$NON-NLS-1$
+				sorter.setRowFilter(null);
+			}
+		});
+
 		return new JScrollPane(table);
 	}
 	

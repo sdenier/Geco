@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.Vector;
 
+import valmo.geco.control.ArchiveManager;
 import valmo.geco.control.AutoMergeHandler;
 import valmo.geco.control.GecoControl;
 import valmo.geco.control.Generator;
@@ -180,6 +181,7 @@ public class Geco implements GecoRequestHandler {
 		heatBuilder = new HeatBuilder(gecoControl, resultBuilder);
 		stats = new RegistryStats(gecoControl);
 		siHandler = new SIReaderHandler(gecoControl, defaultMergeHandler());
+		new ArchiveManager(gecoControl);
 			
 		window = new GecoWindow(this);
 	}
@@ -231,6 +233,9 @@ public class Geco implements GecoRequestHandler {
 	}
 	public SIReaderHandler siHandler() {
 		return this.siHandler;
+	}
+	public ArchiveManager archiveManager() {
+		return this.gecoControl.getService(ArchiveManager.class);
 	}
 	
 	public GecoRequestHandler defaultMergeHandler() {
