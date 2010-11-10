@@ -27,6 +27,7 @@ public class ArchiveTableModel extends AbstractTableModel {
 				Messages.uiGet("RunnersTableModel.FirstnameHeader"), //$NON-NLS-1$
 				Messages.uiGet("RunnersTableModel.LastnameHeader"), //$NON-NLS-1$
 				Messages.uiGet("RunnersTableModel.CategoryHeader"), //$NON-NLS-1$
+				"Club ID",
 				Messages.uiGet("RunnersTableModel.ClubHeader"), //$NON-NLS-1$
 				"Year",
 				"Sex"
@@ -65,9 +66,10 @@ public class ArchiveTableModel extends AbstractTableModel {
 		case 2: return runner.getFirstname();
 		case 3: return runner.getLastname();
 		case 4: return runner.getCategory().getShortname();
-		case 5: return runner.getClub().getName();
-		case 6: return runner.getBirthYear();
-		case 7: return runner.getSex();
+		case 5: return runner.getClub().getShortname();
+		case 6: return runner.getClub().getName();
+		case 7: return runner.getBirthYear();
+		case 8: return runner.getSex();
 		default: return "Pbm"; //$NON-NLS-1$
 		}
 	}
@@ -83,6 +85,7 @@ public class ArchiveTableModel extends AbstractTableModel {
 		case 5: return String.class;
 		case 6: return String.class;
 		case 7: return String.class;
+		case 8: return String.class;
 		default: return Object.class;
 		}
 	}

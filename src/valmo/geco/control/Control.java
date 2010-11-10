@@ -26,6 +26,12 @@ public abstract class Control implements GService {
 		this.gecoControl = gecoControl;
 	}
 	
+	public Control(Class<? extends Control> clazz, GecoControl gecoControl) {
+		this(gecoControl);
+		gecoControl.registerService(clazz, this);
+	}
+
+	
 	protected GecoControl geco() {
 		return this.gecoControl;
 	}

@@ -82,7 +82,7 @@ public class GecoControl {
 	private Map services = new HashMap();
 
 	@SuppressWarnings("unchecked")
-	public <T extends GService> void registerService(Class<T> clazz, T service) {
+	public <T extends GService, U extends T> void registerService(Class<U> clazz, T service) {
 		services.put(clazz, service);
 	}
 	

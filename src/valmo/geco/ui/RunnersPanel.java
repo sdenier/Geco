@@ -23,6 +23,7 @@ import java.util.Vector;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -134,6 +135,18 @@ public class RunnersPanel extends TabPanel
 		});
 		topPanel.add(deleteButton);
 		
+		ImageIcon archiveOpen = new ImageIcon(
+				getClass().getResource("/resources/icons/crystal/db.png")); //$NON-NLS-1$
+		JButton archiveB = new JButton(archiveOpen);
+		archiveB.setToolTipText("Import Runner from Archive");
+		archiveB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new ArchiveViewer(geco()).open();
+			}
+		});
+		topPanel.add(archiveB);
+		
 		final JCheckBox autoB = new JCheckBox(Messages.uiGet("RunnersPanel.AutoLabel")); //$NON-NLS-1$
 		autoB.setToolTipText(Messages.uiGet("RunnersPanel.AutoTooltip")); //$NON-NLS-1$
 		autoB.addActionListener(new ActionListener() {
@@ -194,7 +207,7 @@ public class RunnersPanel extends TabPanel
 			    try {
 					RowFilter<Object,Object> filter = RowFilter.regexFilter("(?i)" + filterField.getText()); //$NON-NLS-1$
 					sorter.setRowFilter(filter);
-					table.getSelectionModel().setSelectionInterval(0, 0);
+//					table.getSelectionModel().setSelectionInterval(0, 0);
 			    } catch (java.util.regex.PatternSyntaxException e1) {
 			        return;
 			    }				
