@@ -142,7 +142,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		pane.addTab(Messages.uiGet("GecoWindow.Results"), this.resultsPanel); //$NON-NLS-1$
 		pane.addTab(Messages.uiGet("GecoWindow.Heats"), this.heatsPanel); //$NON-NLS-1$
 		pane.addTab(Messages.uiGet("GecoWindow.Log"), this.logPanel); //$NON-NLS-1$
-		setTabKeybindings(pane);
+		setKeybindings(pane);
 		getContentPane().add(pane, BorderLayout.CENTER);
 		
 		getContentPane().add(new GecoStatusBar(this.geco, this), BorderLayout.SOUTH);
@@ -155,56 +155,34 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		});
 	}
 
-	private void setTabKeybindings(final JTabbedPane pane) {
+	private void setKeybindings(final JTabbedPane pane) {
 		InputMap inputMap = ((JComponent) getContentPane())
 				.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_1, 
-				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
-				"selectStagePanel"); //$NON-NLS-1$
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_2,
-				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
-				"selectRunnersPanel"); //$NON-NLS-1$
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_3,
-				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
-				"selectResultsPanel"); //$NON-NLS-1$
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_4,
-				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
-				"selectHeatsPanel"); //$NON-NLS-1$
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_5,
-				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
-				"selectLogPanel"); //$NON-NLS-1$
-
 		ActionMap actionMap = ((JComponent) getContentPane()).getActionMap();
-		actionMap.put("selectStagePanel", new AbstractAction() { //$NON-NLS-1$
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						pane.setSelectedComponent(stagePanel);
-					}
-				});
-		actionMap.put("selectRunnersPanel", new AbstractAction() { //$NON-NLS-1$
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						pane.setSelectedComponent(runnersPanel);
-					}
-				});
-		actionMap.put("selectResultsPanel", new AbstractAction() { //$NON-NLS-1$
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						pane.setSelectedComponent(resultsPanel);
-					}
-				});
-		actionMap.put("selectHeatsPanel", new AbstractAction() { //$NON-NLS-1$
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						pane.setSelectedComponent(heatsPanel);
-					}
-				});
-		actionMap.put("selectLogPanel", new AbstractAction() { //$NON-NLS-1$
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						pane.setSelectedComponent(logPanel);
-					}
-				});
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_0,
+				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+				"focusReaderButton"); //$NON-NLS-1$
+		actionMap.put("focusReaderButton", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				startB.requestFocusInWindow();
+			}
+		});
+
+		for( int i=1; i<=pane.getTabCount() && i<=9; i++ ) {
+			String focusCmd = "focusTab" + i;
+			inputMap.put(KeyStroke.getKeyStroke(Character.forDigit(i, 10),
+					Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+					focusCmd);
+			AbstractAction action = new AbstractAction() {
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					pane.setSelectedIndex((Integer) getValue("index"));
+				}
+			};
+			action.putValue("index", i-1);
+			actionMap.put(focusCmd, action);
+		}
 	}
 
 	public void updateWindowTitle() {
