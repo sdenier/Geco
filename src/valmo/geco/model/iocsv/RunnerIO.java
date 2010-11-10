@@ -69,26 +69,24 @@ public class RunnerIO extends AbstractIO<Runner> {
 			runner.setCategory(cat);	
 		}
 		runner.setNC(new Boolean(record[10]));
-//		runner.setStarttime(record[7]);
+		if( record[11].equals("") ) {
+			runner.setArchiveId(null);
+		} else {
+			runner.setArchiveId(new Integer(record[11]));
+		}
 		return runner;
 	}
 
-	/* (non-Javadoc)
-	 * @see valmo.geco.csv.AbstractImporter#register(java.lang.Object, valmo.geco.csv.Registry)
-	 */
 	@Override
 	public void register(Runner data, Registry registry) {
 		registry.addRunner(data);
 	}
 
-	/* (non-Javadoc)
-	 * @see valmo.geco.csv.AbstractIO#exportTData(java.lang.Object)
-	 */
 	@Override
 	public String[] exportTData(Runner r) {
 		/*
 		 * id,SI card,Name,Club,Course,Rented,Class,Start time,Finish Time,
-		 * Status,NC,IOA,bonus
+		 * Status,NC,IOA,bonus,archiveid
 		 */
 		return new String[] {
 				Integer.toString(r.getStartnumber()),
@@ -101,8 +99,9 @@ public class RunnerIO extends AbstractIO<Runner> {
 				"", "",
 				"1",//				0=not started,1=started,2=ok,3=dnf,4=mp,5=disq
 				new Boolean(r.isNC()).toString(),
-				"","0","",
-//				61;11211;Mark Young;CNOC;Short Course;true;M14;36000000;-2;2;false;;0;
+				(r.getArchiveId()==null) ? "" : r.getArchiveId().toString(),
+				"0","",
+//				61;11211;Mark Young;CNOC;Short Course;true;M14;36000000;-2;2;false;;0;;
 		};
 	}
 

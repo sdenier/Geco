@@ -62,6 +62,10 @@ public class Archive {
 			runnersByECard.put(ecard, runner);
 		}
 	}
+
+	public ArchiveRunner findRunner(Integer id) {
+		return runnersById.get(id);
+	}
 	
 	public ArchiveRunner findRunner(String ecard) {
 		return runnersByECard.get(ecard);
