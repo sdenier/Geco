@@ -37,7 +37,7 @@ public class StageControl extends Control {
 	}
 
 	public void updateName(Club club, String newName) {
-		if( !club.getName().equals(newName) ) {
+		if( !club.getName().equals(newName) && registry().findClub(newName)==null ) {
 			registry().updateClubname(club, newName);
 			announcer().announceClubsChanged();
 		}
@@ -154,7 +154,7 @@ public class StageControl extends Control {
 	 * @param value
 	 */
 	public void updateName(Course course, String newName) {
-		if( !course.getName().equals(newName) ) {
+		if( !course.getName().equals(newName) && registry().findCourse(newName)==null ) {
 			registry().updateCoursename(course, newName);
 			announcer().announceCoursesChanged();
 		}		
@@ -213,7 +213,7 @@ public class StageControl extends Control {
 	 * @param value
 	 */
 	public void updateShortname(Category cat, String newName) {
-		if( !cat.getShortname().equals(newName) ) {
+		if( !cat.getShortname().equals(newName) && registry().findCategory(newName)==null ) {
 			registry().updateCategoryname(cat, newName);
 			announcer().announceCategoriesChanged();
 		}		
