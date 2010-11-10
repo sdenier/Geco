@@ -8,6 +8,7 @@ import valmo.geco.core.TimeManager;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Punch;
 import valmo.geco.model.Registry;
+import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 
 /**
@@ -46,7 +47,13 @@ public class RaceDataIO extends AbstractIO<RunnerRaceData> {
 		data.setControltime(TimeManager.safeParse(record[2]));
 		data.setStarttime(TimeManager.safeParse(record[3]));
 		data.setFinishtime(TimeManager.safeParse(record[4]));
-		data.setRunner(this.registry.findRunnerByChip(record[0]));
+		Runner runner = this.registry.findRunnerByChip(record[0]);
+		if( runner==null ){
+			throw new Error("Error in race data " + sourceFilename() +"! "
+							+ "Can't find runner with e-card " + record[0]
+							+ ". Use a backup");
+		}
+		data.setRunner(runner);
 		
 		Punch[] punches = new Punch[(record.length - 5) / 2];
 		for (int i = 0; i < punches.length; i++) {

@@ -50,6 +50,11 @@ public class ResultDataIO extends AbstractIO<RunnerRaceData> {
 		result.setStatus(en);
 		result.setRacetime(TimeManager.safeParse(record[2]).getTime());
 		RunnerRaceData data = registry.findRunnerData(record[0]);
+		if( data==null ) {
+			throw new Error("Error in race data " + sourceFilename() +"! "
+					+ "Can't find runner with e-card " + record[0]
+					+ ". Use a backup");	
+		}
 		data.setResult(result);
 		return data;
 	}
