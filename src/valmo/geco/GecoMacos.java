@@ -9,9 +9,10 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import com.apple.eawt.AppEvent.QuitEvent;
 import com.apple.eawt.Application;
-import com.apple.eawt.ApplicationAdapter;
-import com.apple.eawt.ApplicationEvent;
+import com.apple.eawt.QuitHandler;
+import com.apple.eawt.QuitResponse;
 
 /**
  * @author Simon Denier
@@ -32,12 +33,13 @@ public class GecoMacos {
 
 	public static void setupQuitAction(final Geco geco) {
 		Application app = Application.getApplication();
-		app.addApplicationListener(new ApplicationAdapter() {
+		app.setQuitHandler(new QuitHandler() {
 			@Override
-			public void handleQuit(ApplicationEvent arg0) {
-				geco.exit();
+			public void handleQuitRequestWith(QuitEvent e, QuitResponse response) {
+				geco.shutdown();
+				response.performQuit();
 			}
-		});			
+		});
 	}
 	
 }

@@ -151,8 +151,12 @@ public class Geco implements GecoRequestHandler {
 	}
 	
 	public void exit() {
-		gecoControl.closeAllStages();
+		shutdown();
 		System.exit(0);
+	}
+
+	public void shutdown() {
+		gecoControl.closeAllStages();
 	}
 
 	public Geco(String startDir) {
