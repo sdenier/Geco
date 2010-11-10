@@ -20,20 +20,24 @@ import valmo.geco.model.Runner;
 public class StageControl extends Control {
 	
 	public StageControl(GecoControl gecoControl) {
-		super(gecoControl);
+		super(StageControl.class, gecoControl);
 	}
 	
 	private Announcer announcer() {
 		return geco().announcer();
 	}
 	
-	public Club createClub() {
+	public Club createClub(String name, String shortName) {
 		Club club = factory().createClub();
-		club.setName("Club" + (registry().getClubs().size() + 1));
-		club.setShortname("");
+		club.setName(name);
+		club.setShortname(shortName);
 		registry().addClub(club);
 		announcer().announceClubsChanged();
 		return club;
+	}
+	
+	public Club createClub() {
+		return createClub("Club" + (registry().getClubs().size() + 1), "");
 	}
 
 	public void updateName(Club club, String newName) {
@@ -67,9 +71,6 @@ public class StageControl extends Control {
 		return !clubHasRunners;
 	}
 
-	/**
-	 * 
-	 */
 	public Course createCourse() {
 		Course course = factory().createCourse();
 		course.setName("Course" + (registry().getCourses().size() + 1));
@@ -112,11 +113,6 @@ public class StageControl extends Control {
 		}
 	}
 
-	/**
-	 * @param course
-	 * @return
-	 * @throws Exception 
-	 */
 	public boolean removeCourse(Course course) throws Exception {
 		if( canRemoveCourse(course) ) {
 			stage().registry().removeCourse(course);
@@ -149,27 +145,25 @@ public class StageControl extends Control {
 		return true;
 	}
 	
-	/**
-	 * @param course
-	 * @param value
-	 */
 	public void updateName(Course course, String newName) {
 		if( !course.getName().equals(newName) && registry().findCourse(newName)==null ) {
 			registry().updateCoursename(course, newName);
 			announcer().announceCoursesChanged();
 		}		
 	}
+	
 
-
-	/**
-	 * 
-	 */
-	public Category createCategory() {
+	public Category createCategory(String shortName, String longName) {
 		Category cat = factory().createCategory();
-		cat.setShortname("Category" + (registry().getCategories().size() + 1));
+		cat.setShortname(shortName);
+		cat.setLongname(longName);
 		registry().addCategory(cat);
 		announcer().announceCategoriesChanged();
 		return cat;		
+	}
+
+	public Category createCategory() {
+		return createCategory("Category" + (registry().getCategories().size() + 1), "");
 	}
 
 	/**

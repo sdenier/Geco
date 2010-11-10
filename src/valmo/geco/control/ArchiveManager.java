@@ -75,10 +75,6 @@ public class ArchiveManager extends Control implements StageListener {
 									DateFormat.getDateInstance().format(new Date(archiveFile.lastModified()));
 	}
 	
-	public Runner insertRunner(ArchiveRunner runner) {
-		return null; // TODO: new ecard
-	}
-	
 	public Runner findAndInsertRunner(String ecard) {
 		ArchiveRunner arkRunner = archive().findRunner(ecard);
 		if( arkRunner==null ){
@@ -87,6 +83,45 @@ public class ArchiveManager extends Control implements StageListener {
 		return insertRunner(arkRunner);
 	}
 	
+	public Runner insertRunner(ArchiveRunner arkRunner) {
+		Club rClub = ensureClubInRegistry(arkRunner.getClub());
+		Category rCat = ensureCategoryInRegistry(arkRunner.getCategory());
+		RunnerControl runnerC = geco().getService(RunnerControl.class);
+		String ecard = arkRunner.getChipnumber();
+		if( ecard.equals("") ){
+			geco().log("No E-Card in archive for " + arkRunner.getName());
+			ecard = runnerC.newUniqueChipnumber();
+			// TODO: an e-card is required for the registry, however it would be good to get past that REQ
+			// part of the move to startnumber as id
+		}
+		Runner runner = runnerC.buildBasicRunner(ecard); // ensure unique ecard
+		runner.setArchiveId(arkRunner.getArchiveId());
+		runner.setFirstname(arkRunner.getFirstname());
+		runner.setLastname(arkRunner.getLastname());
+		runner.setClub(rClub);
+		runner.setCategory(rCat);
+		runner.setCourse(registry().anyCourse());
+		runnerC.registerNewRunner(runner);
+		return runner;
+	}
+	private Club ensureClubInRegistry(Club club) {
+		Club rClub = registry().findClub(club.getName());
+		if( rClub==null ) {
+			rClub = stageControl().createClub(club.getName(), club.getShortname());
+		}
+		return rClub;
+	}
+	private Category ensureCategoryInRegistry(Category category) {
+		Category rCat = registry().findCategory(category.getName());
+		if( rCat==null ){
+			rCat = stageControl().createCategory(category.getShortname(), category.getLongname());
+		}
+		return rCat;
+	}
+	private StageControl stageControl() {
+		return geco().getService(StageControl.class);
+	}
+
 	private void importInArchive(String[] record) {
 //		[0-5] Ident. base de données;Puce;Nom;Prénom;Né;S;
 //		[6-9] N° club;Nom;Ville;Nat;

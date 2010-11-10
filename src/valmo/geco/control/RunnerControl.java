@@ -29,7 +29,7 @@ public class RunnerControl extends Control {
 	private RunnerBuilder builder;
 	
 	public RunnerControl(GecoControl gecoControl) {
-		super(gecoControl);
+		super(RunnerControl.class, gecoControl);
 		builder = new RunnerBuilder(geco().factory());
 	}
 	
@@ -42,13 +42,18 @@ public class RunnerControl extends Control {
 		runner.setCourse(registry().anyCourse());
 		return runner;		
 	}
-	
-	public Runner buildAnonymousRunner(String chip, Course course) throws RunnerCreationException {
+
+	public Runner buildBasicRunner(String chip) {
 		Runner runner = factory().createRunner();
 		runner.setStartnumber(registry().detectMaxStartnumber() + 1);
-		runner.setChipnumber(chip);
+		runner.setChipnumber(deriveUniqueChipnumber(chip));
 		runner.setFirstname("");
 		runner.setLastname("X");
+		return runner;
+	}
+	
+	public Runner buildAnonymousRunner(String chip, Course course) throws RunnerCreationException {
+		Runner runner = buildBasicRunner(chip);
 		setDefaults(course, runner);
 		return runner;
 	}
@@ -93,13 +98,15 @@ public class RunnerControl extends Control {
 			return deriveUniqueChipnumber(chipnumber + "a");
 	}
 
+	public RunnerRaceData registerNewRunner(Runner runner) {
+		return registerRunner(runner, builder.buildRunnerData());
+	}
+	
 	public RunnerRaceData registerRunner(Runner runner, RunnerRaceData runnerData) {
 		registry().addRunner(runner);
-		announcer().announceRunnerCreation(registerRunnerDataFor(runner, runnerData));
+		builder.registerRunnerDataFor(registry(), runner, runnerData);
+		announcer().announceRunnerCreation(runnerData);
 		return runnerData;
-	}
-	public RunnerRaceData registerRunnerDataFor(Runner runner, RunnerRaceData runnerData) {
-		return builder.registerRunnerDataFor(registry(), runner, runnerData);
 	}
 	
 	public void deleteRunner(RunnerRaceData data) {
