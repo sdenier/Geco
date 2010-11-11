@@ -210,7 +210,7 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 	}
 	
 	public String toString() {
-		return infoString();
+		return getRunner().toString();
 	}
 
 }

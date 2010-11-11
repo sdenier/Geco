@@ -367,6 +367,7 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 	
 	@Override
 	public void changed(Stage previous, Stage next) {
+		heatsTA.setText("");
 		refresh();
 	}
 	private void refresh() {
@@ -378,13 +379,13 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 	}
 	@Override
 	public void categoriesChanged() {
-		changed(null, null);
+		refresh();
 	}
 	@Override
 	public void clubsChanged() {}
 	@Override
 	public void coursesChanged() {
-		changed(null, null);
+		refresh();
 	}
 	@Override
 	public void componentShown(ComponentEvent e) {

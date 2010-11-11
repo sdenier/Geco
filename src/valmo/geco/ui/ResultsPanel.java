@@ -452,8 +452,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		}
 	}
 
-	@Override
-	public void changed(Stage previous, Stage next) {
+	private void refresh() {
 		updateNames();
 		if( showCourses() ) {
 			updateCourseList();
@@ -461,6 +460,12 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 			updateCategoryList();
 		}
 		repaint();
+	}
+
+	@Override
+	public void changed(Stage previous, Stage next) {
+		resultTA.setText("");
+		refresh();
 	}
 
 	@Override
@@ -474,7 +479,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	
 	@Override
 	public void categoriesChanged() {
-		changed(null, null);
+		refresh();
 	}
 
 	@Override
@@ -482,7 +487,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 
 	@Override
 	public void coursesChanged() {
-		changed(null, null);
+		refresh();
 	}
 	
 	@Override
