@@ -19,6 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import valmo.geco.Geco;
+import valmo.geco.core.Messages;
 import valmo.geco.functions.GecoFunction;
 
 /**
@@ -43,7 +44,7 @@ public class FunctionsPanel extends GecoPanel {
 		Vector<GecoFunction> functions = GecoFunction.functions();
 		final JComboBox gecoFunctionsCB = new JComboBox(functions);
 
-		final JButton execB = new JButton("Execute");
+		final JButton execB = new JButton(Messages.uiGet("FunctionsPanel.ExecuteLabel")); //$NON-NLS-1$
 		execB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -56,7 +57,8 @@ public class FunctionsPanel extends GecoPanel {
 		execB.setAlignmentX(Component.LEFT_ALIGNMENT);
 		clearLogB.setAlignmentX(Component.LEFT_ALIGNMENT);
 		Box commandBox = Box.createVerticalBox();
-		commandBox.setBorder(BorderFactory.createTitledBorder("Function"));
+		commandBox.setBorder(
+			BorderFactory.createTitledBorder(Messages.uiGet("FunctionsPanel.FunctionTitle"))); //$NON-NLS-1$
 		commandBox.add(gecoFunctionsCB);
 		commandBox.add(Box.createVerticalGlue());
 		commandBox.add(execB);

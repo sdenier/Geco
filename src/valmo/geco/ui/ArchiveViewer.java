@@ -33,6 +33,7 @@ import javax.swing.table.TableRowSorter;
 
 import valmo.geco.Geco;
 import valmo.geco.control.ArchiveManager;
+import valmo.geco.core.Messages;
 import valmo.geco.model.ArchiveRunner;
 
 /**
@@ -114,12 +115,12 @@ public class ArchiveViewer extends JFrame {
 
 	private Component initToolbar() {
 		Box panel = Box.createHorizontalBox();
-		JButton loadFileB = new JButton("Load Archive");
+		JButton loadFileB = new JButton(Messages.uiGet("ArchiveViewer.LoadArchiveLabel")); //$NON-NLS-1$
 		loadFileB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
-				fileChooser.setDialogTitle("Select archive file");
+				JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir")); //$NON-NLS-1$
+				fileChooser.setDialogTitle(Messages.uiGet("ArchiveViewer.SelectArchiveLabel")); //$NON-NLS-1$
 				int answer = fileChooser.showOpenDialog(ArchiveViewer.this);
 				if( answer==JFileChooser.APPROVE_OPTION ) {
 					loadArchive(fileChooser.getSelectedFile());
@@ -133,7 +134,7 @@ public class ArchiveViewer extends JFrame {
 		
 		panel.add(Box.createHorizontalGlue());
 		
-		JButton insertB = new JButton("Insert");
+		JButton insertB = new JButton(Messages.uiGet("ArchiveViewer.InsertLabel")); //$NON-NLS-1$
 		insertB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -141,9 +142,9 @@ public class ArchiveViewer extends JFrame {
 			}
 		});
 		panel.add(insertB);
-		panel.add(new JLabel("Find:"));
+		panel.add(new JLabel(Messages.uiGet("ArchiveViewer.FindLabel"))); //$NON-NLS-1$
 		filterField = new JTextField(20);
-//		filterField.setToolTipText(Messages.uiGet("RunnersPanel.FindTooltip")); //$NON-NLS-1$
+		filterField.setToolTipText(Messages.uiGet("RunnersPanel.FindTooltip")); //$NON-NLS-1$
 		filterField.setMaximumSize(new Dimension(50, SwingUtils.SPINNERHEIGHT));
 		filterField.requestFocusInWindow();
 		panel.add(filterField);
@@ -197,13 +198,13 @@ public class ArchiveViewer extends JFrame {
 	
 	private Component initStatusbar() {
 		Box panel = Box.createHorizontalBox();
-		panel.add(new JLabel("Archive from "));
-		archiveDateL = new JLabel("");
+		panel.add(new JLabel(Messages.uiGet("ArchiveViewer.ArchiveDateLabel"))); //$NON-NLS-1$
+		archiveDateL = new JLabel(""); //$NON-NLS-1$
 		panel.add(archiveDateL);
-		panel.add(new JLabel(" - "));
-		nbEntriesL = new JLabel("0");
+		panel.add(new JLabel(" - ")); //$NON-NLS-1$
+		nbEntriesL = new JLabel("0"); //$NON-NLS-1$
 		panel.add(nbEntriesL);
-		panel.add(new JLabel(" entries"));
+		panel.add(new JLabel(Messages.uiGet("ArchiveViewer.NbEntriesLabel"))); //$NON-NLS-1$
 		return panel;
 	}
 	

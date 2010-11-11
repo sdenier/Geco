@@ -22,15 +22,15 @@ public class ArchiveTableModel extends AbstractTableModel {
 
 	public ArchiveTableModel() {
 		this.headers = new String[] {
-				"Id",
+				Messages.uiGet("ArchiveTableModel.IdHeader"), //$NON-NLS-1$
 				Messages.uiGet("RunnersTableModel.EcardHeader"), //$NON-NLS-1$
 				Messages.uiGet("RunnersTableModel.FirstnameHeader"), //$NON-NLS-1$
 				Messages.uiGet("RunnersTableModel.LastnameHeader"), //$NON-NLS-1$
 				Messages.uiGet("RunnersTableModel.CategoryHeader"), //$NON-NLS-1$
-				"Club ID",
+				Messages.uiGet("ArchiveTableModel.ClubIdHeader"), //$NON-NLS-1$
 				Messages.uiGet("RunnersTableModel.ClubHeader"), //$NON-NLS-1$
-				"Year",
-				"Sex"
+				Messages.uiGet("ArchiveTableModel.YearHeader"), //$NON-NLS-1$
+				Messages.uiGet("ArchiveTableModel.SexHeader") //$NON-NLS-1$
 		};
 		this.data = new ArchiveRunner[0];
 	}

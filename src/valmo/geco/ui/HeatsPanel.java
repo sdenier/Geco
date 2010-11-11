@@ -367,7 +367,7 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 	
 	@Override
 	public void changed(Stage previous, Stage next) {
-		heatsTA.setText("");
+		heatsTA.setText(""); //$NON-NLS-1$
 		refresh();
 	}
 	private void refresh() {

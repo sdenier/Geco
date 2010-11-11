@@ -73,7 +73,7 @@ public abstract class ConfigTableModel<T> extends AbstractTableModel {
 	}
 
 	public Object getValueIn(T t, int columnIndex) {
-		return "Pbm";
+		return "Pbm"; //$NON-NLS-1$
 	}
 	
 	@Override

@@ -162,7 +162,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_0,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
 				"focusReaderButton"); //$NON-NLS-1$
-		actionMap.put("focusReaderButton", new AbstractAction() {
+		actionMap.put("focusReaderButton", new AbstractAction() { //$NON-NLS-1$
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				startB.requestFocusInWindow();
@@ -170,17 +170,17 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		});
 
 		for( int i=1; i<=pane.getTabCount() && i<=9; i++ ) {
-			String focusCmd = "focusTab" + i;
+			String focusCmd = "focusTab" + i; //$NON-NLS-1$
 			inputMap.put(KeyStroke.getKeyStroke(Character.forDigit(i, 10),
 					Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
 					focusCmd);
 			AbstractAction action = new AbstractAction() {
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					pane.setSelectedIndex((Integer) getValue("index"));
+					pane.setSelectedIndex((Integer) getValue("index")); //$NON-NLS-1$
 				}
 			};
-			action.putValue("index", i-1);
+			action.putValue("index", i-1); //$NON-NLS-1$
 			actionMap.put(focusCmd, action);
 		}
 	}
@@ -294,7 +294,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		final StartStopButton autoSplitB = new StartStopButton() {
 			@Override
 			protected void initialize() {
-				setToolTipText("Auto print split times");
+				setToolTipText(Messages.uiGet("GecoWindow.AutoprintTooltip")); //$NON-NLS-1$
 				doOffAction();
 			}
 			@Override
@@ -324,8 +324,8 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 				if( ! autoSplitB.isSelected() ) {
 					int confirm = JOptionPane.showConfirmDialog(
 												GecoWindow.this,
-												"Enable Split autoprinting?",
-												"Split printing disabled",
+												Messages.uiGet("GecoWindow.AutoprintConfirm1"), //$NON-NLS-1$
+												Messages.uiGet("GecoWindow.AutoprintConfirm2"), //$NON-NLS-1$
 												JOptionPane.YES_NO_OPTION);
 					if( confirm==JOptionPane.YES_OPTION ) {
 						autoSplitB.doOnAction();

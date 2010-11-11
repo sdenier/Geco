@@ -28,10 +28,10 @@ public class GecoStatusBar extends GecoPanel implements Logging {
 	public GecoStatusBar(Geco geco, JFrame frame) {
 		super(geco, frame);
 		setLayout(new FlowLayout(FlowLayout.LEFT));
-		status = new JLabel(" ");
+		status = new JLabel(" "); //$NON-NLS-1$
 		addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				status.setText(" ");
+				status.setText(" "); //$NON-NLS-1$
 			}
 		});
 		add(status);
@@ -41,7 +41,7 @@ public class GecoStatusBar extends GecoPanel implements Logging {
 
 	private void display(String message, boolean warning) {
 		if( warning )
-			message = Html.htmlTag("font", "color=red", message);
+			message = Html.htmlTag("font", "color=red", message); //$NON-NLS-1$ //$NON-NLS-2$
 		status.setText(message);
 		status.repaint();
 	}

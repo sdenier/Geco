@@ -258,7 +258,7 @@ public class StagePanel extends TabPanel {
 		});
 	
 		c.gridy = 2;
-		panel.add(new JLabel("Split printer:"), c);
+		panel.add(new JLabel(Messages.uiGet("StagePanel.SplitPrinterLabel")), c); //$NON-NLS-1$
 		final JComboBox printersCB = new JComboBox(geco().splitsBuilder().listPrinterNames());
 		printersCB.setSelectedItem(geco().splitsBuilder().getSplitPrinterName());
 		panel.add(printersCB, c);
@@ -270,7 +270,7 @@ public class StagePanel extends TabPanel {
 		});
 		
 		c.gridy = 3;
-		panel.add(new JLabel("Split format:"), c);
+		panel.add(new JLabel(Messages.uiGet("StagePanel.SplitFormatLabel")), c); //$NON-NLS-1$
 		final JComboBox splitFormatCB = new JComboBox(SplitBuilder.SplitFormat.values());
 		splitFormatCB.setSelectedItem(geco().splitsBuilder().getSplitFormat());
 		panel.add(splitFormatCB, c);

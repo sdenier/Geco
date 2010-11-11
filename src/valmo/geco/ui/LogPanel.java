@@ -18,6 +18,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 
 import valmo.geco.Geco;
+import valmo.geco.core.Messages;
 import valmo.geco.core.Announcer.Logging;
 import valmo.geco.model.Stage;
 
@@ -58,7 +59,7 @@ public class LogPanel extends TabPanel implements Logging {
 	}
 
 	private JButton initClearLogButton() {
-		JButton clearB = new JButton("Clear log view");
+		JButton clearB = new JButton(Messages.uiGet("LogPanel.ClearLogLabel")); //$NON-NLS-1$
 		clearB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -81,7 +82,7 @@ public class LogPanel extends TabPanel implements Logging {
 	}
 
 	private void clear() {
-		logArea.setText("");
+		logArea.setText(""); //$NON-NLS-1$
 	}
 
 	private JPanel initStatsPanel() {
@@ -89,7 +90,7 @@ public class LogPanel extends TabPanel implements Logging {
 	}
 	
 	public void displayLog(String message) {
-		logArea.append("\n");
+		logArea.append("\n"); //$NON-NLS-1$
 		logArea.append(message);
 		logArea.setCaretPosition(logArea.getDocument().getLength());
 	}

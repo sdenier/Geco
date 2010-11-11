@@ -464,7 +464,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 
 	@Override
 	public void changed(Stage previous, Stage next) {
-		resultTA.setText("");
+		resultTA.setText(""); //$NON-NLS-1$
 		refresh();
 	}
 

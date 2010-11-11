@@ -21,7 +21,7 @@ public class SwingUtils {
 	public static int SPINNERHEIGHT;
 	
 	static {
-		if( UIManager.getLookAndFeel().getID().equals("Nimbus") ) {
+		if( UIManager.getLookAndFeel().getID().equals("Nimbus") ) { //$NON-NLS-1$
 			SPINNERHEIGHT = 25;
 		} else {
 			SPINNERHEIGHT = 20;
