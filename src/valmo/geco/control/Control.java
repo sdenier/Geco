@@ -47,5 +47,9 @@ public abstract class Control implements GService {
 	public Registry registry() {
 		return stage().registry();
 	}
+	
+	public <T extends GService> T getService(Class<T> clazz) {
+		return gecoControl.getService(clazz);
+	}
 
 }

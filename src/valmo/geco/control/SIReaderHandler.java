@@ -54,7 +54,7 @@ public class SIReaderHandler extends Control
 	 * @param announcer
 	 */
 	public SIReaderHandler(GecoControl geco, GecoRequestHandler requestHandler) {
-		super(geco);
+		super(SIReaderHandler.class, geco);
 		this.requestHandler = requestHandler;
 		changePortName();
 		changeZeroTime();
