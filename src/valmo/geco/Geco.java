@@ -184,6 +184,7 @@ public class Geco implements GecoRequestHandler {
 		new SplitBuilder(gecoControl);
 		heatBuilder = new HeatBuilder(gecoControl, resultBuilder);
 		stats = new RegistryStats(gecoControl);
+		new AutoMergeHandler(gecoControl);
 		siHandler = new SIReaderHandler(gecoControl, defaultMergeHandler());
 		new ArchiveManager(gecoControl);
 			
@@ -246,7 +247,7 @@ public class Geco implements GecoRequestHandler {
 		return this;
 	}
 	public GecoRequestHandler autoMergeHandler() {
-		return new AutoMergeHandler(gecoControl, runnerControl);
+		return this.gecoControl.getService(AutoMergeHandler.class);
 	}
 	
 	public Generator generator() {

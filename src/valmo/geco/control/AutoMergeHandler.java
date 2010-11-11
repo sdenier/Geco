@@ -4,10 +4,14 @@
  */
 package valmo.geco.control;
 
+import java.util.Collections;
+import java.util.Vector;
+
 import valmo.geco.core.GecoRequestHandler;
 import valmo.geco.model.Course;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
+import valmo.geco.model.RunnerResult;
 import valmo.geco.model.Status;
 
 /**
@@ -17,54 +21,96 @@ import valmo.geco.model.Status;
  */
 public class AutoMergeHandler extends Control implements GecoRequestHandler {
 
-	private RunnerControl runnerControl;
-
-	public AutoMergeHandler(GecoControl gecoControl, RunnerControl runnerControl) {
-		super(gecoControl);
-		this.runnerControl = runnerControl;
+	public AutoMergeHandler(GecoControl gecoControl) {
+		super(AutoMergeHandler.class, gecoControl);
 	}
-
-	@Override
-	public String requestMergeUnknownRunner(RunnerRaceData data, String chip) {
-		return processData(data, chip, Status.UNK);
+	
+	private RunnerControl runnerControl() {
+		return geco().getService(RunnerControl.class);
 	}
 
 	@Override
 	public String requestMergeExistingRunner(RunnerRaceData data, Runner target) {
-		return processData(data, target.getChipnumber(), Status.DUP);
+		return processData(data, target.getChipnumber(), detectCourse(data), Status.DUP);
+	}
+
+	@Override
+	public String requestMergeUnknownRunner(RunnerRaceData data, String chip) {
+		Course course = detectCourse(data);
+		Runner r = detectArchiveRunner(data, chip, course);
+		if( r!=null ){
+			return r.getChipnumber();
+		} else {
+			return processData(data, chip, course, Status.UNK);
+		}
 	}
 	
+	private static class CourseResult implements Comparable<CourseResult> {
+		CourseResult(int dist, Course course) {
+			this.course = course;
+			this.dist = dist;
+		}
+		private Course course;
+		private int dist;
+		private RunnerResult result;
+		@Override
+		public int compareTo(CourseResult o) {
+			return dist - o.dist;
+		}
+	}
+
 	private Course detectCourse(RunnerRaceData data) {
-		// Dummy heuristics based on number of punches on card, compared to expected punches for courses
-		// take the nearest course, above or below
-		// TODO: a bit more clever heuristics is to use set intersection/difference, matching the lowest diff
-		// next one is to use the checker
-		Course probableCourse = null;
-		int dist = 1000;
+		Vector<CourseResult> distances = new Vector<CourseResult>();
 		int nbPunches = data.getPunches().length;
 		for (Course course : registry().getCourses()) {
-			int dist2 = Math.abs(nbPunches - course.getCodes().length);
-			if( dist2 < dist ) {
-				dist = dist2;
-				probableCourse = course;
+			distances.add(new CourseResult(Math.abs(nbPunches - course.nbControls()), course));
+		}
+		Collections.sort(distances);
+		
+		int minMps = Integer.MAX_VALUE;
+		CourseResult bestResult = null;
+		data.setRunner(runnerControl().buildMockRunner());
+		for (CourseResult cResult : distances) {
+			data.getRunner().setCourse(cResult.course);
+			geco().checker().check(data);
+			if( data.getStatus()==Status.OK ){
+				// in the case of an orient'show, we may be ok with mps. However unlikely to have 2 courses
+				// ok with the same trace
+				return cResult.course;
+			}
+			int nbMPs = data.getResult().getNbMPs();
+			if( nbMPs<minMps ){
+				minMps = nbMPs;
+				bestResult = cResult;
+				bestResult.result = data.getResult(); // memoize result so we don't have to compute it again
 			}
 		}
-		return probableCourse;
+		data.setResult(bestResult.result);
+		return bestResult.course;
+	}
+
+	private Runner detectArchiveRunner(RunnerRaceData data, String chip, Course course) {
+		ArchiveManager archive = geco().getService(ArchiveManager.class);
+		Runner newRunner = archive.findAndCreateRunner(chip, course);
+		if( newRunner==null ){
+			return null;
+		} else {
+			runnerControl().registerRunner(newRunner, data);
+			geco().log("Insertion " + data.infoString());
+			return newRunner;
+		}
 	}
 	
-	private String processData(RunnerRaceData runnerData, String ecard, Status status) {
-		String uniqueEcard = runnerControl.deriveUniqueChipnumber(ecard);
-		Course course = detectCourse(runnerData);
+	private String processData(RunnerRaceData runnerData, String ecard, Course course, Status status) {
+		String uniqueEcard = runnerControl().deriveUniqueChipnumber(ecard);
 		try {
 			// Create from scratch a brand new runner
-			Runner newRunner = runnerControl.buildAnonymousRunner(uniqueEcard, course);
-			newRunner.setFirstname("Loisir");
-			newRunner.setLastname(uniqueEcard);
-			runnerControl.registerRunner(newRunner, runnerData);
-			geco().checker().check(runnerData); // compute trace
-			runnerData.getResult().setStatus(status);
+			Runner newRunner = runnerControl().buildAnonymousRunner(uniqueEcard, course);
+//			newRunner.setFirstname("Loisir");
+//			newRunner.setLastname(uniqueEcard);
+			runnerData.getResult().setStatus(status); // set custom (unresolved) status
+			runnerControl().registerRunner(newRunner, runnerData);
 			geco().log("Creation " + runnerData.infoString());
-			geco().announcer().announceStatusChange(runnerData, status);
 		} catch (RunnerCreationException e1) {
 			e1.printStackTrace();
 		}

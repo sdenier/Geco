@@ -15,6 +15,7 @@ import valmo.geco.model.Archive;
 import valmo.geco.model.ArchiveRunner;
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
+import valmo.geco.model.Course;
 import valmo.geco.model.Runner;
 import valmo.geco.model.Stage;
 import valmo.geco.model.iocsv.CsvReader;
@@ -27,8 +28,6 @@ import valmo.geco.model.iocsv.CsvReader;
 public class ArchiveManager extends Control implements StageListener {
 	
 	private Archive archive;
-	
-//	private String archiveFilename;
 	
 	private File archiveFile;
 	
@@ -75,33 +74,36 @@ public class ArchiveManager extends Control implements StageListener {
 									DateFormat.getDateInstance().format(new Date(archiveFile.lastModified()));
 	}
 	
-	public Runner findAndInsertRunner(String ecard) {
+	public Runner findAndCreateRunner(String ecard, Course course) {
 		ArchiveRunner arkRunner = archive().findRunner(ecard);
 		if( arkRunner==null ){
 			return null;
 		}
-		return insertRunner(arkRunner);
+		return createRunner(arkRunner, course);
 	}
 	
 	public Runner insertRunner(ArchiveRunner arkRunner) {
+		Runner runner = createRunner(arkRunner, registry().anyCourse());
+		runnerControl().registerNewRunner(runner);
+		return runner;
+	}
+	private Runner createRunner(ArchiveRunner arkRunner, Course course) {
 		Club rClub = ensureClubInRegistry(arkRunner.getClub());
 		Category rCat = ensureCategoryInRegistry(arkRunner.getCategory());
-		RunnerControl runnerC = geco().getService(RunnerControl.class);
 		String ecard = arkRunner.getChipnumber();
 		if( ecard.equals("") ){
 			geco().log("No E-Card in archive for " + arkRunner.getName());
-			ecard = runnerC.newUniqueChipnumber();
+			ecard = runnerControl().newUniqueChipnumber();
 			// TODO: an e-card is required for the registry, however it would be good to get past that REQ
 			// part of the move to startnumber as id
 		}
-		Runner runner = runnerC.buildBasicRunner(ecard); // ensure unique ecard
+		Runner runner = runnerControl().buildBasicRunner(ecard); // ensure unique ecard
 		runner.setArchiveId(arkRunner.getArchiveId());
 		runner.setFirstname(arkRunner.getFirstname());
 		runner.setLastname(arkRunner.getLastname());
 		runner.setClub(rClub);
 		runner.setCategory(rCat);
-		runner.setCourse(registry().anyCourse());
-		runnerC.registerNewRunner(runner);
+		runner.setCourse(course);
 		return runner;
 	}
 	private Club ensureClubInRegistry(Club club) {
@@ -117,6 +119,9 @@ public class ArchiveManager extends Control implements StageListener {
 			rCat = stageControl().createCategory(category.getShortname(), category.getLongname());
 		}
 		return rCat;
+	}
+	private RunnerControl runnerControl() {
+		return geco().getService(RunnerControl.class);
 	}
 	private StageControl stageControl() {
 		return geco().getService(StageControl.class);
