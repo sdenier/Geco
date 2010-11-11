@@ -199,7 +199,7 @@ public class MergeRunnerDialog extends JDialog {
 		
 		// Only compute new status if initially one of the following
 		Status status = data.getResult().getStatus();
-		updateStatus = status.isRecheckable() || status.isUnresolved();
+		updateStatus = status.isRecheckable() || status.isUnresolved();  // TODO: we should not recheck when manual mod
 		
 		this.mockRunner = runnerControl().buildMockRunner();
 		this.runnerData.setRunner(this.mockRunner);

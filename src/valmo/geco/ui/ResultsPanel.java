@@ -42,6 +42,7 @@ import valmo.geco.control.IResultBuilder;
 import valmo.geco.control.ResultBuilder;
 import valmo.geco.control.ResultBuilder.ResultConfig;
 import valmo.geco.core.Announcer.StageConfigListener;
+import valmo.geco.core.Messages;
 import valmo.geco.model.ResultType;
 import valmo.geco.model.Stage;
 
@@ -187,9 +188,13 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 			public void actionPerformed(ActionEvent e) {
 				String resultFile;
 				if( rankingResultRB.isSelected() ) {
-					resultFile = geco().getCurrentStagePath() + File.separator + "ranking";
+					resultFile = geco().getCurrentStagePath()
+								+ File.separator
+								+ Messages.uiGet("ResultsPanel.RankingFilename"); //$NON-NLS-1$
 				} else {
-					resultFile = geco().getCurrentStagePath() + File.separator + "splits";
+					resultFile = geco().getCurrentStagePath()
+								+ File.separator
+								+ Messages.uiGet("ResultsPanel.SplitsFilename"); //$NON-NLS-1$
 				}
 				filePane.setSelectedFile(new File(resultFile).getAbsoluteFile());
 				int response = filePane.showSaveDialog(frame());
@@ -198,8 +203,13 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 					try {
 						resultBuilder().exportFile(filename, exportFormat, createResultConfig(), -1);
 					} catch (IOException ex) {
-						JOptionPane.showMessageDialog(frame(), "Error while saving " + filename + "(" + ex +")",
-								"Export Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(
+								frame(),
+								Messages.uiGet("ResultsPanel.FileSaveWarning1")//$NON-NLS-1$ 
+									+ filename
+									+ "(" + ex +")", //$NON-NLS-1$ //$NON-NLS-2$
+								Messages.uiGet("ResultsPanel.FileSaveWarning2"), //$NON-NLS-1$
+								JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
@@ -241,26 +251,26 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		// Commands: options and actions
 		resultTypeCB = new JComboBox(ResultType.values());
 
-		rankingResultRB = new JRadioButton("Ranking");
-		splitResultRB = new JRadioButton("Splits");
+		rankingResultRB = new JRadioButton(Messages.uiGet("ResultsPanel.RankingLabel")); //$NON-NLS-1$
+		splitResultRB = new JRadioButton(Messages.uiGet("ResultsPanel.SplitsLabel")); //$NON-NLS-1$
 		ButtonGroup builderGroup = new ButtonGroup();
 		builderGroup.add(rankingResultRB);
 		builderGroup.add(splitResultRB);
 		builderGroup.setSelected(rankingResultRB.getModel(), true);
 		
-		showNcC = new JCheckBox("Show NC");
-		showOtC = new JCheckBox("Show Others");
-		showPeC = new JCheckBox("Show Penalties");
-		showEsC = new JCheckBox("Show Empty Sets");
+		showNcC = new JCheckBox(Messages.uiGet("ResultsPanel.ShowNCLabel")); //$NON-NLS-1$
+		showOtC = new JCheckBox(Messages.uiGet("ResultsPanel.ShowOthersLabel")); //$NON-NLS-1$
+		showPeC = new JCheckBox(Messages.uiGet("ResultsPanel.ShowPenaltiesLabel")); //$NON-NLS-1$
+		showEsC = new JCheckBox(Messages.uiGet("ResultsPanel.ShowESLabel")); //$NON-NLS-1$
 		JPanel optionsPanel = new JPanel(new GridLayout(0, 2));
 		optionsPanel.add(showNcC);
 		optionsPanel.add(showOtC);
 		optionsPanel.add(showPeC);
 		optionsPanel.add(showEsC);
 		
-		refreshB = new JButton("Refresh");
-		exportB = new JButton("Export");
-		JButton printB = new JButton("Print");
+		refreshB = new JButton(Messages.uiGet("ResultsPanel.RefreshLabel")); //$NON-NLS-1$
+		exportB = new JButton(Messages.uiGet("ResultsPanel.ExportLabel")); //$NON-NLS-1$
+		JButton printB = new JButton(Messages.uiGet("ResultsPanel.PrintLabel")); //$NON-NLS-1$
 		
 		printB.addActionListener(new ActionListener() {
 			@Override
@@ -269,14 +279,19 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 					refreshResultView();
 					resultTA.print();
 				} catch (PrinterException e1) {
-					JOptionPane.showMessageDialog(frame(), "Fail to print", "Printing Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(
+							frame(),
+							Messages.uiGet("ResultsPanel.PrintWarning1"), //$NON-NLS-1$
+							Messages.uiGet("ResultsPanel.PrintWarning2"), //$NON-NLS-1$
+							JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
 		
 		// Layout of Command panel
 		JPanel commandPanel = new JPanel();
-		commandPanel.setBorder(BorderFactory.createTitledBorder("Commands"));
+		commandPanel.setBorder(
+				BorderFactory.createTitledBorder(Messages.uiGet("ResultsPanel.CommandTitle"))); //$NON-NLS-1$
 		commandPanel.setLayout(new BoxLayout(commandPanel, BoxLayout.Y_AXIS));
 		commandPanel.add(SwingUtils.embed(resultTypeCB));
 		commandPanel.add(SwingUtils.makeButtonBar(FlowLayout.CENTER, rankingResultRB, splitResultRB));
@@ -287,8 +302,8 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 
 		
 		// Pool list
-		selectAllB = new JButton("All");
-		selectNoneB = new JButton("None");
+		selectAllB = new JButton(Messages.uiGet("ResultsPanel.SelectAllLabel")); //$NON-NLS-1$
+		selectNoneB = new JButton(Messages.uiGet("ResultsPanel.SelectNoneLabel")); //$NON-NLS-1$
 		JPanel listButtonsPanel = new JPanel();
 		listButtonsPanel.setLayout(new BoxLayout(listButtonsPanel, BoxLayout.Y_AXIS));
 		listButtonsPanel.add(SwingUtils.embed(selectAllB));
@@ -305,21 +320,22 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		
 		// Automode
 		JPanel autoPanel = new JPanel(new GridLayout(0, 2));
-		autoPanel.setBorder(BorderFactory.createTitledBorder("Automode"));
+		autoPanel.setBorder(
+				BorderFactory.createTitledBorder(Messages.uiGet("ResultsPanel.AutomodeTitle"))); //$NON-NLS-1$
 
 		ButtonGroup autoGroup = new ButtonGroup();
-		refreshRB = new JRadioButton("Refresh");
-		JRadioButton exportRB = new JRadioButton("Export");
+		refreshRB = new JRadioButton(Messages.uiGet("ResultsPanel.RefreshLabel")); //$NON-NLS-1$
+		JRadioButton exportRB = new JRadioButton(Messages.uiGet("ResultsPanel.ExportLabel")); //$NON-NLS-1$
 		autoGroup.add(refreshRB);
 		autoGroup.add(exportRB);
 		refreshRB.setSelected(true);
 		autoPanel.add(SwingUtils.embed(refreshRB));
 		autoPanel.add(SwingUtils.embed(exportRB));
 
-		autoexportB = new JButton("Auto");
+		autoexportB = new JButton(Messages.uiGet("ResultsPanel.AutoLabel")); //$NON-NLS-1$
 		autodelayS = new JSpinner(new SpinnerNumberModel(AutoexportDelay, 1, null, 10));
 		autodelayS.setPreferredSize(new Dimension(75, SwingUtils.SPINNERHEIGHT));
-		autodelayS.setToolTipText("Auto delay in seconds");
+		autodelayS.setToolTipText(Messages.uiGet("ResultsPanel.AutoTooltip")); //$NON-NLS-1$
 		autoPanel.add(SwingUtils.embed(autoexportB));
 		autoPanel.add(SwingUtils.embed(autodelayS));
 
@@ -333,7 +349,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	
 	private JTextPane initResultPanel() {
 		resultTA = new JTextPane();
-		resultTA.setContentType("text/html");
+		resultTA.setContentType("text/html"); //$NON-NLS-1$
 		resultTA.setEditable(false);
 		return resultTA;
 	}
@@ -341,27 +357,28 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	public void initFileDialog() {
 		JPanel fileFormatRB = new JPanel();
 		fileFormatRB.setLayout(new BoxLayout(fileFormatRB, BoxLayout.Y_AXIS));
-		fileFormatRB.setBorder(BorderFactory.createTitledBorder("Format"));
-		JRadioButton selectHtmlB = new JRadioButton("HTML");
+		fileFormatRB.setBorder(
+			BorderFactory.createTitledBorder(Messages.uiGet("ResultsPanel.FileFormatTitle"))); //$NON-NLS-1$
+		JRadioButton selectHtmlB = new JRadioButton("HTML"); //$NON-NLS-1$
 		selectHtmlB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				exportFormat = "html";
+				exportFormat = "html"; //$NON-NLS-1$
 			}
 		});
-		JRadioButton selectCsvB = new JRadioButton("CSV");
+		JRadioButton selectCsvB = new JRadioButton("CSV"); //$NON-NLS-1$
 		selectCsvB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				exportFormat = "csv";
+				exportFormat = "csv"; //$NON-NLS-1$
 			}
 		});
-		JRadioButton selectCNCsvB = new JRadioButton("CN CSV");
-		selectCNCsvB.setToolTipText("CSV format for french CN (Classement National)");
+		JRadioButton selectCNCsvB = new JRadioButton("CN CSV"); //$NON-NLS-1$
+		selectCNCsvB.setToolTipText(Messages.uiGet("ResultsPanel.CNCSVTooltip")); //$NON-NLS-1$
 		selectCNCsvB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				exportFormat = "cn.csv";
+				exportFormat = "cn.csv"; //$NON-NLS-1$
 			}
 		});
 		ButtonGroup group = new ButtonGroup();
@@ -369,7 +386,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		group.add(selectCsvB);
 		group.add(selectCNCsvB);
 		group.setSelected(selectHtmlB.getModel(), true);
-		exportFormat = "html";
+		exportFormat = "html"; //$NON-NLS-1$
 		fileFormatRB.add(selectHtmlB);
 		fileFormatRB.add(selectCsvB);
 		fileFormatRB.add(selectCNCsvB);
@@ -413,7 +430,9 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	private synchronized void autoexport(int refreshDelay) {
 		long delay = 1000 * refreshDelay;
 		while( true ){
-			String resultFile = geco().getCurrentStagePath() + File.separator + "lastresults";
+			String resultFile = geco().getCurrentStagePath()
+								+ File.separator
+								+ Messages.uiGet("ResultsPanel.LastresultsLabel"); //$NON-NLS-1$
 			try {
 				try {
 					resultBuilder().exportFile(resultFile, exportFormat, createResultConfig(), refreshDelay);
@@ -448,7 +467,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	public void saving(Stage stage, Properties properties) {
 		File selectedFile = filePane.getSelectedFile();
 		if( selectedFile!=null ){
-			properties.setProperty("LastResultFile", selectedFile.getName());
+			properties.setProperty("LastResultFile", selectedFile.getName()); //$NON-NLS-1$
 		}
 	}
 

@@ -38,6 +38,7 @@ import javax.swing.event.ListSelectionListener;
 
 import valmo.geco.Geco;
 import valmo.geco.core.Announcer;
+import valmo.geco.core.Messages;
 import valmo.geco.model.HeatSet;
 import valmo.geco.model.Pool;
 import valmo.geco.model.Stage;
@@ -67,11 +68,6 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 	private String exportFormat;
 
 	
-	/**
-	 * @param geco
-	 * @param frame 
-	 * @param announcer 
-	 */
 	public HeatsPanel(Geco geco, JFrame frame) {
 		super(geco, frame);
 		heatlistModel = new DefaultListModel();
@@ -228,7 +224,9 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 				if( geco().hasNextStage() ) {
 					heatFile = geco().getNextStagePath() + File.separator + RunnerIO.sourceFilename();
 				} else {
-					heatFile = geco().getCurrentStagePath() + File.separator + "heats";
+					heatFile = geco().getCurrentStagePath()
+								+ File.separator
+								+ Messages.uiGet("HeatsPanel.HeatsFilename"); //$NON-NLS-1$
 				}
 				filePane.setSelectedFile(new File(heatFile).getAbsoluteFile());
 				int response = filePane.showSaveDialog(frame());
@@ -237,8 +235,13 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 					try {
 						geco().heatBuilder().exportFile(filename, exportFormat, getSelectedHeatsets());
 					} catch (IOException e1) {
-						JOptionPane.showMessageDialog(frame(), "Error while saving " + filename + "(" + e +")",
-								"Export Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(
+								frame(),
+								Messages.uiGet("HeatsPanel.FileSaveWarning1") //$NON-NLS-1$
+									+ filename
+									+ "(" + e +")", //$NON-NLS-1$ //$NON-NLS-2$
+								Messages.uiGet("HeatsPanel.FileSaveWarning2"), //$NON-NLS-1$
+								JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
@@ -269,16 +272,16 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 
 		JPanel butPanel = new JPanel();
 		butPanel.setLayout(new BoxLayout(butPanel, BoxLayout.Y_AXIS));
-		newB = new JButton("New");
-		deleteB = new JButton("Delete");
+		newB = new JButton(Messages.uiGet("HeatsPanel.NewLabel")); //$NON-NLS-1$
+		deleteB = new JButton(Messages.uiGet("HeatsPanel.DeleteLabel")); //$NON-NLS-1$
 		butPanel.add(SwingUtils.embed(newB));
 		butPanel.add(SwingUtils.embed(deleteB));
 		heatCreationPanel.add(butPanel);
 
 		// buttons
-		refreshB = new JButton("Refresh");
-		JButton printB = new JButton("Print");
-		exportB = new JButton("Export");
+		refreshB = new JButton(Messages.uiGet("HeatsPanel.RefreshLabel")); //$NON-NLS-1$
+		JButton printB = new JButton(Messages.uiGet("HeatsPanel.PrintLabel")); //$NON-NLS-1$
+		exportB = new JButton(Messages.uiGet("HeatsPanel.ExportLabel")); //$NON-NLS-1$
 		
 		printB.addActionListener(new ActionListener() {
 			@Override
@@ -287,7 +290,11 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 					refreshHeatView();
 					heatsTA.print();
 				} catch (PrinterException e1) {
-					JOptionPane.showMessageDialog(frame(), "Fail to print", "Printing Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(
+							frame(),
+							Messages.uiGet("HeatsPanel.PrintWarning1"), //$NON-NLS-1$
+							Messages.uiGet("HeatsPanel.PrintWarning2"), //$NON-NLS-1$
+							JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -317,7 +324,7 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 	
 	private JTextPane initHeatViewPanel() {
 		heatsTA = new JTextPane();
-		heatsTA.setContentType("text/html");
+		heatsTA.setContentType("text/html"); //$NON-NLS-1$
 		heatsTA.setEditable(false);
 		return heatsTA;
 	}
@@ -325,26 +332,27 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 	public void initFileDialog() {
 		JPanel fileFormatRB = new JPanel();
 		fileFormatRB.setLayout(new BoxLayout(fileFormatRB, BoxLayout.Y_AXIS));
-		fileFormatRB.setBorder(BorderFactory.createTitledBorder("Format"));
-		JRadioButton selectHtmlB = new JRadioButton("HTML");
+		fileFormatRB.setBorder(
+				BorderFactory.createTitledBorder(Messages.uiGet("HeatsPanel.FileFormatLabel"))); //$NON-NLS-1$
+		JRadioButton selectHtmlB = new JRadioButton("HTML"); //$NON-NLS-1$
 		selectHtmlB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				exportFormat = "html";
+				exportFormat = "html"; //$NON-NLS-1$
 			}
 		});
-		JRadioButton selectCsvB = new JRadioButton("CSV");
+		JRadioButton selectCsvB = new JRadioButton("CSV"); //$NON-NLS-1$
 		selectCsvB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				exportFormat = "csv";
+				exportFormat = "csv"; //$NON-NLS-1$
 			}
 		});
 		ButtonGroup group = new ButtonGroup();
 		group.add(selectHtmlB);
 		group.add(selectCsvB);
 		group.setSelected(selectCsvB.getModel(), true);
-		exportFormat = "csv";
+		exportFormat = "csv"; //$NON-NLS-1$
 		fileFormatRB.add(selectHtmlB);
 		fileFormatRB.add(selectCsvB);
 		
@@ -357,14 +365,10 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 	}
 
 	
-	/* (non-Javadoc)
-	 * @see valmo.geco.ui.EventRegistry.Listener#changed(java.lang.Object, java.lang.Object)
-	 */
 	@Override
 	public void changed(Stage previous, Stage next) {
 		refresh();
 	}
-
 	private void refresh() {
 		updatePoolnames();
 		heatlistModel.clear();
@@ -372,21 +376,16 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 			heatlistModel.addElement(heatset);	
 		}
 	}
-	
-	
 	@Override
 	public void categoriesChanged() {
 		changed(null, null);
 	}
-
 	@Override
 	public void clubsChanged() {}
-
 	@Override
 	public void coursesChanged() {
 		changed(null, null);
 	}
-
 	@Override
 	public void componentShown(ComponentEvent e) {
 		refreshB.requestFocusInWindow();

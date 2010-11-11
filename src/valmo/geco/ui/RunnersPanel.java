@@ -112,7 +112,11 @@ public class RunnersPanel extends TabPanel
 					// announce runner creation and add in tablemodel
 					geco().runnerControl().createAnonymousRunner();
 				} catch (RunnerCreationException e1) {
-					JOptionPane.showMessageDialog(frame(), e1.getMessage(), Messages.uiGet("RunnersPanel.NewRunnerWarning"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$
+					JOptionPane.showMessageDialog(
+							frame(),
+							e1.getMessage(),
+							Messages.uiGet("RunnersPanel.NewRunnerWarning"), //$NON-NLS-1$
+							JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -138,7 +142,7 @@ public class RunnersPanel extends TabPanel
 		ImageIcon archiveOpen = new ImageIcon(
 				getClass().getResource("/resources/icons/crystal/db.png")); //$NON-NLS-1$
 		JButton archiveB = new JButton(archiveOpen);
-		archiveB.setToolTipText("Import Runner from Archive");
+		archiveB.setToolTipText(Messages.uiGet("RunnersPanel.ImportArchiveTooltip")); //$NON-NLS-1$
 		archiveB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -265,7 +269,8 @@ public class RunnersPanel extends TabPanel
 			public boolean editCellAt(int row, int column, EventObject e) {
 				boolean edit = super.editCellAt(row, column, e);
 				Component comp = getEditorComponent();
-				if( edit && e instanceof KeyEvent && comp instanceof JComboBox ) {
+				if( edit && e instanceof KeyEvent && ((KeyEvent) e).getModifiers()==0
+						&& comp instanceof JComboBox ) {
 					((JComboBox) comp).setPopupVisible(true);
 					comp.requestFocusInWindow();
 				}

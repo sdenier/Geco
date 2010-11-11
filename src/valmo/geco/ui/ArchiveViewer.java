@@ -33,7 +33,6 @@ import javax.swing.table.TableRowSorter;
 
 import valmo.geco.Geco;
 import valmo.geco.control.ArchiveManager;
-import valmo.geco.core.Messages;
 import valmo.geco.model.ArchiveRunner;
 
 /**
@@ -208,10 +207,4 @@ public class ArchiveViewer extends JFrame {
 		return panel;
 	}
 	
-	public static void main(String[] args) {
-		Messages.put("ui", "valmo.geco.ui.messages"); //$NON-NLS-1$ //$NON-NLS-2$
-		ArchiveViewer viewer = new ArchiveViewer(null);
-		viewer.open();
-	}
-
 }

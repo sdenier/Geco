@@ -25,6 +25,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import valmo.geco.core.Messages;
 import valmo.geco.core.Util;
 import valmo.geco.model.HeatSet;
 import valmo.geco.model.Pool;
@@ -45,8 +46,6 @@ public class HeatSetDialog extends JDialog {
 	private JTextField qRankF;
 	private JTextArea heatNamesTA;
 	private JComboBox setTypeCB;
-//	private JRadioButton selectCourseB;
-//	private JRadioButton selectCatB;
 
 	public HeatSet getHeatSet() {
 		return this.currentHeatSet;
@@ -62,7 +61,7 @@ public class HeatSetDialog extends JDialog {
 	}
 	
 	public HeatSetDialog(JFrame frame) {
-		super(frame, "Heat Set Editor", true);
+		super(frame, Messages.uiGet("HeatSetDialog.EditorTitle"), true); //$NON-NLS-1$
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -72,12 +71,12 @@ public class HeatSetDialog extends JDialog {
 		((JPanel) getContentPane()).setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		
 		getContentPane().setLayout(new GridBagLayout());
-		getContentPane().add(new JLabel("Heat Set Name"));
+		getContentPane().add(new JLabel(Messages.uiGet("HeatSetDialog.HeatSetNameLabel"))); //$NON-NLS-1$
 		heatSetF = new JTextField(7);
 		getContentPane().add(heatSetF, SwingUtils.compConstraint(1, 0));
 		GridBagConstraints c = SwingUtils.compConstraint(0, 1);
 		c.gridwidth = 2;
-		getContentPane().add(new JLabel("Heat Names: heat1, heat2, ..."), c);
+		getContentPane().add(new JLabel(Messages.uiGet("HeatSetDialog.HeatNamesLabel")), c); //$NON-NLS-1$
 		heatNamesTA = new JTextArea();
 		heatNamesTA.setLineWrap(true);
 		heatNamesTA.setPreferredSize(new Dimension(200,40));
@@ -87,24 +86,18 @@ public class HeatSetDialog extends JDialog {
 		heatNamesTA.setBorder(BorderFactory.createLineBorder(Color.gray));
 		getContentPane().add(heatNamesTA, c);
 
-		getContentPane().add(new JLabel("Qualifying Rank"), SwingUtils.compConstraint(0, 3));
+		getContentPane().add(new JLabel(Messages.uiGet("HeatSetDialog.QualifyingRankLabel")), //$NON-NLS-1$
+							SwingUtils.compConstraint(0, 3));
 		qRankF = new JTextField(7);
 		getContentPane().add(qRankF, SwingUtils.compConstraint(1, 3));
 		
 		setTypeCB = new JComboBox(ResultType.values());
-//		selectCourseB = new JRadioButton("Courses");
-//		selectCatB = new JRadioButton("Categories");
-//		ButtonGroup group = new ButtonGroup();
-//		group.add(selectCourseB);
-//		group.add(selectCatB);
 		c = SwingUtils.compConstraint(0, 4);
 		c.gridwidth = 2;
 		c.anchor = GridBagConstraints.CENTER;
 		getContentPane().add(setTypeCB, c);
-//		getContentPane().add(selectCourseB, SwingUtils.compConstraint(0, 4));
-//		getContentPane().add(selectCatB, SwingUtils.compConstraint(1, 4));
 		
-		JButton saveB = new JButton("Save");
+		JButton saveB = new JButton(Messages.uiGet("HeatSetDialog.SaveLabel")); //$NON-NLS-1$
 		saveB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -112,7 +105,7 @@ public class HeatSetDialog extends JDialog {
 			}
 		});
 		getContentPane().add(saveB, SwingUtils.compConstraint(0, 5));
-		JButton cancelB = new JButton("Cancel");
+		JButton cancelB = new JButton(Messages.uiGet("HeatSetDialog.CancelLabel")); //$NON-NLS-1$
 		cancelB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -126,25 +119,25 @@ public class HeatSetDialog extends JDialog {
 	
 	private void checkAndSetFields() {
 		boolean ok = true;
-		String errorMessage = "";
+		String errorMessage = ""; //$NON-NLS-1$
 		
-		String newName = "";
+		String newName = ""; //$NON-NLS-1$
 		Integer newQRank = 0;
 		String[] newHeatNames = new String[0];
 		
 		try {
-			errorMessage = "Qualifying Rank: Bad Number Format";
+			errorMessage = Messages.uiGet("HeatSetDialog.QualifyingRankWarning"); //$NON-NLS-1$
 			newQRank = new Integer(qRankF.getText());
 				
-			newHeatNames = heatNamesTA.getText().split(",");
+			newHeatNames = heatNamesTA.getText().split(","); //$NON-NLS-1$
 			if( !Util.allDifferent(newHeatNames) ) {
 				ok = false;
-				errorMessage = "Heat names should be all different";
+				errorMessage = Messages.uiGet("HeatSetDialog.HeatNamesWarning"); //$NON-NLS-1$
 			}
 			newName = heatSetF.getText();
-			if( newName.isEmpty() || newName.matches("^\\s*$") ) {
+			if( newName.isEmpty() || newName.matches("^\\s*$") ) { //$NON-NLS-1$
 				ok = false;
-				errorMessage = "HeatSet should have a name";
+				errorMessage = Messages.uiGet("HeatSetDialog.HeatSetNameWarning"); //$NON-NLS-1$
 			}
 		} catch (NumberFormatException ex) {
 			ok = false;
@@ -164,7 +157,7 @@ public class HeatSetDialog extends JDialog {
 			JOptionPane.showMessageDialog(
 					HeatSetDialog.this,
 					errorMessage, 
-					"Invalid Entry", 
+					Messages.uiGet("HeatSetDialog.WarningTitle"),  //$NON-NLS-1$
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -182,13 +175,8 @@ public class HeatSetDialog extends JDialog {
 	private void refreshFields(HeatSet heatSet) {
 		heatSetF.setText(heatSet.getName());
 		qRankF.setText(heatSet.getQualifyingRank().toString());
-		heatNamesTA.setText(Util.join(heatSet.getHeatNames(), ",", new StringBuffer()));
+		heatNamesTA.setText(Util.join(heatSet.getHeatNames(), ",", new StringBuffer())); //$NON-NLS-1$
 		setTypeCB.setSelectedItem(heatSet.getSetType());
-//		if( heatSet.isCourseType() ) {
-//			selectCourseB.setSelected(true);
-//		} else {
-//			selectCatB.setSelected(true);
-//		}
 	}
 	
 }
