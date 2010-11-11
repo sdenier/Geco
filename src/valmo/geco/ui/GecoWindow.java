@@ -54,7 +54,7 @@ import valmo.geco.model.Stage;
  */
 public class GecoWindow extends JFrame implements Announcer.StageListener, Announcer.StationListener {
 
-	{ // Just in case
+	static { // Just in case
 		Messages.put("ui", "valmo.geco.ui.messages"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 

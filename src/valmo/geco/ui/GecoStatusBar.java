@@ -23,7 +23,7 @@ import valmo.geco.core.Html;
  */
 public class GecoStatusBar extends GecoPanel implements Logging {
 	
-	JLabel status;
+	private JLabel status;
 	
 	public GecoStatusBar(Geco geco, JFrame frame) {
 		super(geco, frame);

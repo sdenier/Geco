@@ -26,7 +26,7 @@ import valmo.geco.core.Messages;
  */
 public class GecoLauncher {
 	
-	{
+	static {
 		Messages.put("ui", "valmo.geco.ui.messages"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	

@@ -208,5 +208,9 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 		buffer.append(" in " + getResult().formatRacetime());
 		return buffer.toString();
 	}
+	
+	public String toString() {
+		return infoString();
+	}
 
 }

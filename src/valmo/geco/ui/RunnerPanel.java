@@ -174,7 +174,7 @@ public class RunnerPanel extends GecoPanel {
 		panel.add(SwingUtils.embed(initRunnerPanel()), BorderLayout.NORTH);
 		panel.add(SwingUtils.embed(this.punchPanel), BorderLayout.CENTER);
 		panel.add(SwingUtils.embed(initQuickPrintButton()), BorderLayout.EAST);
-		panel.add(Box.createHorizontalStrut(25), BorderLayout.WEST); // balance layout
+//		panel.add(Box.createHorizontalStrut(25), BorderLayout.WEST); // balance layout
 		return panel;
 	}
 
