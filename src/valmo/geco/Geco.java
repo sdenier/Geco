@@ -12,7 +12,6 @@ import java.util.Vector;
 import valmo.geco.control.ArchiveManager;
 import valmo.geco.control.AutoMergeHandler;
 import valmo.geco.control.GecoControl;
-import valmo.geco.control.Generator;
 import valmo.geco.control.HeatBuilder;
 import valmo.geco.control.PenaltyChecker;
 import valmo.geco.control.RegistryStats;
@@ -26,6 +25,9 @@ import valmo.geco.core.GecoRequestHandler;
 import valmo.geco.core.GecoResources;
 import valmo.geco.core.Logger;
 import valmo.geco.core.Util;
+import valmo.geco.functions.GeneratorFunction;
+import valmo.geco.functions.StartTimeFunction;
+import valmo.geco.functions.RecheckFunction;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
@@ -46,8 +48,6 @@ public class Geco implements GecoRequestHandler {
 	
 	public static String VERSION;
 
-	private static boolean testMode = false;
-	
 	private static boolean leisureMode = false;
 
 	private static String startDir = null;
@@ -116,10 +116,6 @@ public class Geco implements GecoRequestHandler {
 	private static void setLaunchOptions(String[] args) {
 		for (int i = 0; i < args.length; i++) {
 			String arg = args[i];
-			if( arg.equals("--test") ) {
-				testMode = true;
-				continue;
-			}
 			if( arg.equals("--leisure") ) {
 				leisureMode = true;
 				continue;
@@ -142,10 +138,6 @@ public class Geco implements GecoRequestHandler {
 		return System.getProperty("mrj.version")!=null;
 	}
 	
-	public static boolean testModeOn() {
-		return testMode;
-	}
-
 	public static boolean leisureModeOn() {
 		return leisureMode;
 	}
@@ -187,6 +179,10 @@ public class Geco implements GecoRequestHandler {
 		new AutoMergeHandler(gecoControl);
 		siHandler = new SIReaderHandler(gecoControl, defaultMergeHandler());
 		new ArchiveManager(gecoControl);
+		
+		new StartTimeFunction(gecoControl);
+		new RecheckFunction(gecoControl);
+		new GeneratorFunction(gecoControl, runnerControl, siHandler);
 			
 		window = new GecoWindow(this);
 	}
@@ -248,10 +244,6 @@ public class Geco implements GecoRequestHandler {
 	}
 	public GecoRequestHandler autoMergeHandler() {
 		return this.gecoControl.getService(AutoMergeHandler.class);
-	}
-	
-	public Generator generator() {
-		return new Generator(gecoControl, runnerControl, siHandler).withRegistryControls();
 	}
 	
 	public Logger logger() {

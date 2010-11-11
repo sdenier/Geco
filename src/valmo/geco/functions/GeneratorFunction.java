@@ -2,8 +2,13 @@
  * Copyright (c) 2010 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package valmo.geco.control;
+package valmo.geco.functions;
 
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -12,20 +17,33 @@ import java.util.Random;
 import java.util.Set;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+
 import org.martin.sireader.common.PunchObject;
 import org.martin.sireader.common.ResultData;
 
+import valmo.geco.control.GecoControl;
+import valmo.geco.control.RunnerControl;
+import valmo.geco.control.RunnerCreationException;
+import valmo.geco.control.SIReaderHandler;
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.Course;
 import valmo.geco.model.Runner;
-import valmo.geco.model.RunnerRaceData;
+import valmo.geco.ui.SwingUtils;
 
 /**
  * @author Simon Denier
  * @since Aug 23, 2010
  *
  */
-public class Generator extends Control {
+public class GeneratorFunction extends GecoFunction {
 
 	private static final int NoTimeFactor = 100;
 	private static final int TimeDispersion = 5;
@@ -35,18 +53,118 @@ public class Generator extends Control {
 	private RunnerControl runnerControl;
 	private SIReaderHandler siHandler;
 
+	private Integer[] allControls;
 	private Random random;
 	private int mutationX;
 
-	private Integer[] allControls;
+	private Thread genThread;
+	private JSpinner nbGeneration;
+	private JSpinner genDelay;
 
 
-	public Generator(GecoControl gecoControl, RunnerControl runnerControl, SIReaderHandler siHandler) {
+	public GeneratorFunction(GecoControl gecoControl, RunnerControl runnerControl, SIReaderHandler siHandler){
 		super(gecoControl);
 		this.runnerControl = runnerControl;
 		this.siHandler = siHandler;
 		this.mutationX = 40;
 	}
+
+	@Override
+	public String toString() {
+		return "Random generator";
+	}
+
+	@Override
+	public void execute() {
+		if (genThread != null && genThread.isAlive()) {
+			genThread.interrupt();
+		} else {
+			withRegistryControls();
+			final int nb = ((Integer) nbGeneration.getValue()).intValue();
+			final int delay = 1000 * ((Integer) genDelay.getValue()).intValue();
+			genThread = new Thread(new Runnable() {
+				public synchronized void run() {
+					geco().log("--Generating " + nb + " runners--");
+					try {
+//						setMutationX(((Integer) mutationS.getValue()).intValue());
+						for (int i = 1; i <= nb; i++) {
+							if (i % 10 == 0) {
+								geco().log(Integer.toString(i));
+							}
+							generateRunnerData();
+							wait(delay);
+						}
+					} catch (InterruptedException e) {
+					} catch (RunnerCreationException e) {
+						e.printStackTrace();
+					}
+					geco().log("--Stop--");
+				}
+			});
+			genThread.start();
+		}
+	}
+
+	@Override
+	public String executeTooltip() {
+		return "Generate the given number of random card data. Click to start, click again to interrupt";
+	}
+
+	@Override
+	public JComponent getParametersConfig() {
+		
+		nbGeneration = new JSpinner(new SpinnerNumberModel(10, 0, null, 5));
+		nbGeneration.setToolTipText("Number of runners to generate");
+		nbGeneration.setPreferredSize(new Dimension(75, SwingUtils.SPINNERHEIGHT));
+		nbGeneration.setMaximumSize(nbGeneration.getPreferredSize());
+		
+		genDelay = new JSpinner(new SpinnerNumberModel(1, 0, null, 1));
+		genDelay.setToolTipText("Delay in second between two creations");
+		genDelay.setPreferredSize(new Dimension(75, SwingUtils.SPINNERHEIGHT));
+		genDelay.setMaximumSize(genDelay.getPreferredSize());
+
+		JPanel paramP = new JPanel(new GridLayout(2, 4, 5, 10));
+		paramP.add(new JLabel("Number:"));
+		paramP.add(nbGeneration);
+		paramP.add(new JLabel("Delay:"));
+		paramP.add(genDelay);
+		
+//		final JSpinner mutationS = new JSpinner(new SpinnerNumberModel(40, 0, null, 5));
+//		mutationS.setPreferredSize(new Dimension(75, SwingUtils.SPINNERHEIGHT));
+//		mutationS.setToolTipText("Mutation factor");
+		
+		JButton cUnknownB = new JButton("Create One Unknown");
+		cUnknownB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				generateUnknownData();
+			}
+		});
+		JButton cOverwriteB = new JButton("Create One Overwriting");
+		cOverwriteB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				generateOverwriting();
+			}
+		});
+		
+		Box vBoxButtons = Box.createVerticalBox();
+		vBoxButtons.add(cUnknownB);
+		vBoxButtons.add(cOverwriteB);
+
+		paramP.setMaximumSize(paramP.getPreferredSize());
+		paramP.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
+		paramP.setAlignmentY(Component.TOP_ALIGNMENT);
+		vBoxButtons.setAlignmentY(Component.TOP_ALIGNMENT);
+		Box hBox = Box.createHorizontalBox();
+		hBox.add(paramP);
+		hBox.add(Box.createHorizontalStrut(50));
+		hBox.add(vBoxButtons);
+		
+		return hBox;
+	}
+
+	@Override
+	public void updateUI() { }
+	
 	
 	public void setMutationX(int mutationX) {
 		this.mutationX = mutationX;
@@ -84,6 +202,7 @@ public class Generator extends Control {
 	
 	public ResultData generateUnknownData() {
 		random = new Random();
+		withRegistryControls();
 		ResultData cardData = generateCardData(runnerControl.newUniqueChipnumber(), randomCourse());
 		siHandler.newCardRead(cardData);
 		return cardData;
@@ -91,6 +210,7 @@ public class Generator extends Control {
 	
 	public ResultData generateOverwriting() {
 		random = new Random();
+		withRegistryControls();
 		List<Runner> runnersFromCourse = registry().getRunnersFromCourse(randomCourse());
 		if( ! runnersFromCourse.isEmpty() ){
 			Runner runner = runnersFromCourse.get(random.nextInt(runnersFromCourse.size()));
@@ -187,7 +307,7 @@ public class Generator extends Control {
 		}
 	}
 	
-	public Generator withRegistryControls() {
+	public GeneratorFunction withRegistryControls() {
 		Set<Integer> controls = new HashSet<Integer>();
 		for (Course c : registry().getCourses()) {
 			for (int i : c.getCodes()) {
@@ -216,53 +336,52 @@ public class Generator extends Control {
 	}
 	
 	
-	public static void main(String[] args) {
-		testRandomTime(new GecoControl("demo/belfield"));
+//	public static void main(String[] args) {
+//		testRandomTime(new GecoControl("demo/belfield"));
 //		displayPowerLawRandow();
 //		GecoControl c = new GecoControl("demo/belfield");
 //		for (int i = 0; i < 20; i++) {
 //			displayOne(c);
 //		}
-		System.exit(0);
-	}
+//		System.exit(0);
+//	}
 
-	public static void testRandomTime(GecoControl c) {
-		Generator generator = new Generator(c, new RunnerControl(c), new SIReaderHandler(c, null));
-		generator.random = new Random();
-		for (int i = 0; i < 20; i++) {
-			long time = generator.randomTime(30, 60, 10, 100);
-			System.out.println(time + " --> " + TimeManager.time(time));
-		}
-	}
+//	public static void testRandomTime(GecoControl c) {
+//		Generator generator = new Generator(c, new RunnerControl(c), new SIReaderHandler(c, null));
+//		generator.random = new Random();
+//		for (int i = 0; i < 20; i++) {
+//			long time = generator.randomTime(30, 60, 10, 100);
+//			System.out.println(time + " --> " + TimeManager.time(time));
+//		}
+//	}
 	
-	public static void displayOne(GecoControl c) {
-		Generator generator = new Generator(c, new RunnerControl(c), new SIReaderHandler(c, null));
-		try {
-			ResultData data = generator.generateRunnerData();
-			RunnerRaceData rData = c.registry().findRunnerData(data.getSiIdent());
-			System.out.println(rData.infoString());
-			System.out.println(rData.getResult().formatTrace());
-			System.out.println();
-		} catch (RunnerCreationException e) {
-			e.printStackTrace();
-		}
-	}
+//	public static void displayOne(GecoControl c) {
+//		Generator generator = new Generator(c, new RunnerControl(c), new SIReaderHandler(c, null));
+//		try {
+//			ResultData data = generator.generateRunnerData();
+//			RunnerRaceData rData = c.registry().findRunnerData(data.getSiIdent());
+//			System.out.println(rData.infoString());
+//			System.out.println(rData.getResult().formatTrace());
+//			System.out.println();
+//		} catch (RunnerCreationException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
-	public static void displayPowerLawRandow() {
-		int y0 = 0;
-		int y1 = 0;
-		int m = 0;
-		for (int i = 0; i < 20; i++) {
-			int x = (int) randomByPowerLaw(50, 0, 50, new Random());
-			if( x==0 ) y0++;
-			if( x==1 ) y1++;
-			m = Math.max(m, x);
+//	public static void displayPowerLawRandow() {
+//		int y0 = 0;
+//		int y1 = 0;
+//		int m = 0;
+//		for (int i = 0; i < 20; i++) {
+//			int x = (int) randomByPowerLaw(50, 0, 50, new Random());
+//			if( x==0 ) y0++;
+//			if( x==1 ) y1++;
+//			m = Math.max(m, x);
 //			System.out.println(x);
-		}
-		System.out.println(y0);
-		System.out.println(y1);
-		System.out.println(m);
-	}
-
+//		}
+//		System.out.println(y0);
+//		System.out.println(y1);
+//		System.out.println(m);
+//	}
 
 }
