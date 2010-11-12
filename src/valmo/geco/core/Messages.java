@@ -39,6 +39,10 @@ public class Messages {
 		return get("ui", key); //$NON-NLS-1$
 	}
 	
+	public static String liveGet(String key) {
+		return get("live", key); //$NON-NLS-1$
+	}
+	
 	public static String getString(String key) {
 		return get(DEFAULT_BUNDLEKEY, key);
 	}

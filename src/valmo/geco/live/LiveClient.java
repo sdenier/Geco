@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 
 import valmo.geco.Geco;
 import valmo.geco.core.Announcer;
+import valmo.geco.core.Messages;
 import valmo.geco.core.Util;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
@@ -61,16 +62,20 @@ public class LiveClient implements Announcer.CardListener {
 	}
 
 	private synchronized void sendLoop() throws InterruptedException {
-		server.println("Hi");
+		server.println("Hi"); //$NON-NLS-1$
 		while( !Thread.interrupted() && !server.checkError() ) {
 			while( !messages.isEmpty() ) {
 				server.println(messages.remove(0));
 			}
 			wait(15000);
-			server.println("Idle"); // testing if socket is still active
+			server.println("Idle"); // testing if socket is still active //$NON-NLS-1$
 		}
 		if( server.checkError() ) {
-			JOptionPane.showMessageDialog(null, "Could not send data to Live server. Stopping", "Live connection lost", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(
+							null,
+							Messages.liveGet("LiveClient.ConnectionLostMessage"), //$NON-NLS-1$
+							Messages.liveGet("LiveClient.ConnectionLostTitle"), //$NON-NLS-1$
+							JOptionPane.WARNING_MESSAGE);
 		}
 	}
 	
@@ -82,7 +87,7 @@ public class LiveClient implements Announcer.CardListener {
 	private void close() {
 		geco.announcer().unregisterCardListener(this);
 		if( !socket.isClosed() ) {
-			server.println("Bye");
+			server.println("Bye"); //$NON-NLS-1$
 			server.close();
 			try {
 				socket.close();
@@ -117,7 +122,7 @@ public class LiveClient implements Announcer.CardListener {
 			Integer.toString(result.getNbMPs()),
 			Long.toString(result.getTimePenalty()),
 			result.formatTrace()
-		}, ",", new StringBuffer());
+		}, ",", new StringBuffer()); //$NON-NLS-1$
 	}
 
 	@Override

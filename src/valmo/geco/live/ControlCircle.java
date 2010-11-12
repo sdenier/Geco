@@ -67,46 +67,46 @@ public class ControlCircle {
 		if( labelBuffer==null ) {
 			return code;
 		} else {
-			return labelBuffer + "-" + code;
+			return labelBuffer + "-" + code; //$NON-NLS-1$
 		}
 	}
 	
 	public Color getStatusColor() {
-		if (status == "missed") {
+		if (status == "missed") { //$NON-NLS-1$
 			return Color.red;
 		}
-		if (status == "ok") {
+		if (status == "ok") { //$NON-NLS-1$
 			return Color.magenta;
 		}
-		if (status == "added") {
+		if (status == "added") { //$NON-NLS-1$
 			return Color.blue;
 		}
 		return Color.magenta;
 	}
 
 	public void resetStatus() {
-		this.status = "default";
+		this.status = "default"; //$NON-NLS-1$
 		this.labelBuffer = null;
 	}
 	
 	public void beOkControl(String order) {
 		// default < added < ok < missed
-		if( this.status!="missed" ) {
-			this.status = "ok";
+		if( this.status!="missed" ) { //$NON-NLS-1$
+			this.status = "ok"; //$NON-NLS-1$
 		}
 		addLabel(order);
 	}
 	
 	public void beMissedControl(String order) {
 		// default < added < ok < missed
-		this.status = "missed";
+		this.status = "missed"; //$NON-NLS-1$
 		addLabel(order);
 	}
 
 	public void beAddedControl() {
 		// default < added < ok < missed
-		if( this.status=="default" ) {
-			this.status = "added";
+		if( this.status=="default" ) { //$NON-NLS-1$
+			this.status = "added"; //$NON-NLS-1$
 		}
 	}
 	
@@ -114,7 +114,7 @@ public class ControlCircle {
 		if( labelBuffer==null ) {
 			labelBuffer = new StringBuilder(order);
 		} else {
-			labelBuffer.append("/").append(order);
+			labelBuffer.append("/").append(order); //$NON-NLS-1$
 		}
 	}
 

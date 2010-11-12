@@ -38,7 +38,7 @@ public class LiveMapControl {
 		for (String controlId : someControls.keySet()) {
 			Float[] origin = someControls.get(controlId);
 			 Point position = createPointFrom(origin);
-			if( controlId.equals("Map") ) {
+			if( controlId.equals("Map") ) { //$NON-NLS-1$
 				mapOrigin = position;
 			} else {
 				controls.put(controlId, new ControlCircle(controlId, position));
@@ -78,7 +78,7 @@ public class LiveMapControl {
 		courses = new HashMap<String, LivePunch>();
 		for (Course course : someCourses) {
 			try {
-				LivePunch previousPunch = createPunch("S1");
+				LivePunch previousPunch = createPunch("S1"); //$NON-NLS-1$
 				courses.put(course.getName(), previousPunch);
 				int i = 1;
 				for (int code : course.getCodes()) {
@@ -89,9 +89,9 @@ public class LiveMapControl {
 					previousPunch = punch;
 					i++;
 				}
-				previousPunch.setNextPunch(createPunch("F1"));
+				previousPunch.setNextPunch(createPunch("F1")); //$NON-NLS-1$
 			} catch (Exception e) {
-				System.err.println("ill-formed controls");
+				System.err.println("ill-formed controls"); //$NON-NLS-1$
 				System.err.println(e);
 			}
 		}
@@ -101,7 +101,7 @@ public class LiveMapControl {
 	private LivePunch createPunch(String code) throws Exception {
 		ControlCircle control = controls.get(code);
 		if( control==null ) {
-			throw new Exception("Unknown Control " + code);
+			throw new Exception("Unknown Control " + code); //$NON-NLS-1$
 		}
 		return new LivePunch(control);
 	}
@@ -109,7 +109,7 @@ public class LiveMapControl {
 	private LivePunch createPunch(String code, int order) throws Exception {
 		ControlCircle control = controls.get(code);
 		if( control==null ) {
-			throw new Exception("Unknown Control " + code);
+			throw new Exception("Unknown Control " + code); //$NON-NLS-1$
 		}
 		return new LivePunch(control, order);
 	}
@@ -132,7 +132,7 @@ public class LiveMapControl {
 		LivePunch startPunch = punch.clone(); // start control
 		LivePunch previousPunch = startPunch;
 		for (String code : traceString) {
-			if( code.startsWith("-") ) {
+			if( code.startsWith("-") ) { //$NON-NLS-1$
 				LivePunch nextPunch = previousPunch.getNextPunch().getNextPunch();
 				if( !previousPunch.isAdded() ) {
 					previousPunch.nextPunchMissed();
@@ -140,9 +140,9 @@ public class LiveMapControl {
 					previousPunch.getNextPunch().beMissed();
 				}
 				previousPunch.setNextPunch(nextPunch);
-				if( code.contains("+") ) {
+				if( code.contains("+") ) { //$NON-NLS-1$
 					try {
-						LivePunch addedPunch = createPunch(code.substring(code.indexOf("+") + 1));
+						LivePunch addedPunch = createPunch(code.substring(code.indexOf("+") + 1)); //$NON-NLS-1$
 						addedPunch.beAdded();
 						addedPunch.setNextPunch(previousPunch.getNextPunch());
 						previousPunch.setNextPunch(addedPunch);
@@ -152,7 +152,7 @@ public class LiveMapControl {
 					}
 				}
 			} else {
-				if( code.startsWith("+") ) {
+				if( code.startsWith("+") ) { //$NON-NLS-1$
 					try {
 						LivePunch addedPunch = createPunch(code.substring(1));
 						addedPunch.beAdded();

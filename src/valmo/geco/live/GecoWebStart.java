@@ -29,6 +29,7 @@ import javax.swing.table.TableRowSorter;
 
 import valmo.geco.control.GecoControl;
 import valmo.geco.core.GecoResources;
+import valmo.geco.core.Messages;
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.Registry;
 import valmo.geco.model.RunnerRaceData;
@@ -48,6 +49,7 @@ public class GecoWebStart {
 
 	
 	public static void main(String[] args) {
+		Messages.put("live", "valmo.geco.live.messages"); //$NON-NLS-1$ //$NON-NLS-2$
 		GecoResources.forWebstart();
 		GecoWebStart gecows = new GecoWebStart();
 		gecows.guiLaunch();
@@ -55,7 +57,7 @@ public class GecoWebStart {
 	}
 
 	public GecoWebStart() {
-		gecoControl = new GecoControl("", false);
+		gecoControl = new GecoControl("", false); //$NON-NLS-1$
 		liveComponent = new LiveComponent();
 	}
 
@@ -170,7 +172,7 @@ public class GecoWebStart {
 	}
 
 	private String selectedChip() {
-		String chip = "";
+		String chip = ""; //$NON-NLS-1$
 		int selectedRow = runnersTable.getSelectedRow();
 		if( selectedRow!=-1 && runnersTable.getRowCount() > 0) {
 			// we have to test the number of displayed rows too.

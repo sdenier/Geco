@@ -17,6 +17,7 @@ import valmo.geco.control.Control;
 import valmo.geco.control.GecoControl;
 import valmo.geco.control.RunnerControl;
 import valmo.geco.control.RunnerCreationException;
+import valmo.geco.core.Messages;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.RunnerResult;
@@ -45,26 +46,34 @@ public class LiveServer extends Control {
 	public LiveServer start() {
 		liveThread = new Thread() {
 			public void run() {
-				System.out.println("start");
+				System.out.println("start"); //$NON-NLS-1$
 				try {
 					BufferedReader clientInput = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			        String inputLine = null;
 			        
 			        while (!isInterrupted() && (inputLine = clientInput.readLine()) != null) {
 			        	processData(inputLine);
-			        	if( inputLine.equals("Bye") ) {
-			        		JOptionPane.showMessageDialog(null, "Client has terminated the connection", "No live connection", JOptionPane.INFORMATION_MESSAGE);
+			        	if( inputLine.equals("Bye") ) { //$NON-NLS-1$
+			        		JOptionPane.showMessageDialog(
+			        						null,
+			        						Messages.liveGet("LiveServer.ConnectionTerminatedMessage"), //$NON-NLS-1$
+			        						Messages.liveGet("LiveServer.ConnectionTerminatedTitle"), //$NON-NLS-1$
+			        						JOptionPane.INFORMATION_MESSAGE);
 			        		break;
 			        	}
 			        }
 			        if( inputLine==null ) {
-			        	JOptionPane.showMessageDialog(null, "Connection with client lost", "No live connection", JOptionPane.WARNING_MESSAGE);
+			        	JOptionPane.showMessageDialog(
+			        					null,
+			        					Messages.liveGet("LiveServer.ConnectionLostMessage"), //$NON-NLS-1$
+			        					Messages.liveGet("LiveServer.ConnectionLostTitle"), //$NON-NLS-1$
+			        					JOptionPane.WARNING_MESSAGE);
 			        }
 			        close();
 				} catch (IOException e) {
-					System.out.println("Live thread stopped");
+					System.out.println("Live thread stopped"); //$NON-NLS-1$
 				}
-				System.out.println("done");
+				System.out.println("done"); //$NON-NLS-1$
 			}
 		};
 		
@@ -74,9 +83,9 @@ public class LiveServer extends Control {
 	
 	private void close() {
         try {
-        	System.out.print("closing");
+        	System.out.print("closing"); //$NON-NLS-1$
 			clientSocket.close();
-			System.out.println(" - closed");
+			System.out.println(" - closed"); //$NON-NLS-1$
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -89,18 +98,18 @@ public class LiveServer extends Control {
 	}
 
 	private String processData(String input) {
-		if( input.equals("Hi") ||
-			input.equals("Idle") ||
-			input.equals("Bye") )
+		if( input.equals("Hi") || //$NON-NLS-1$
+			input.equals("Idle") || //$NON-NLS-1$
+			input.equals("Bye") ) //$NON-NLS-1$
 			return input;
-		return processData(input.split(","));
+		return processData(input.split(",")); //$NON-NLS-1$
 	}
 	
 	private String processData(String[] data) {
 		// chip, start, last, first, cat, club, course, status, racetime, mps, penalties, trace...
 		Runner runner = registry().findRunnerByChip(data[0]);
 		if( runner==null || Integer.parseInt(data[1])!=runner.getStartnumber() ) {
-			System.err.println("creation " + data[0]);
+			System.err.println("creation " + data[0]); //$NON-NLS-1$
 			try {
 				runner = runnerControl.createAnonymousRunner(registry().findCourse(data[6]));
 				runnerControl.validateChipnumber(runner, data[0]);
@@ -115,7 +124,7 @@ public class LiveServer extends Control {
 			}
 		} else { // check that course is consistent
 			if( !runner.getCourse().getName().equals(data[6]) ) {
-				System.err.println("inconsistent course " + data[6]);
+				System.err.println("inconsistent course " + data[6]); //$NON-NLS-1$
 				runnerControl.validateCourse(registry().findRunnerData(runner), data[6]);
 			}
 		}
@@ -130,7 +139,7 @@ public class LiveServer extends Control {
 		RunnerRaceData runnerData = registry().findRunnerData(runner);
 		runnerData.setResult(result);
 		serverMulti.announceData(runnerData);
-		return "ok";
+		return "ok"; //$NON-NLS-1$
 	}
 
 	/**

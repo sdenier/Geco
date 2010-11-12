@@ -24,6 +24,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import valmo.geco.core.Messages;
 import valmo.geco.ui.SwingUtils;
 
 /**
@@ -39,7 +40,7 @@ public class LiveClientDialog extends JDialog {
 	private boolean started;
 
 	public LiveClientDialog(JFrame frame, final LiveClient liveClient) {
-		super(frame, "Connection to Live Server", true);
+		super(frame, Messages.liveGet("LiveClientDialog.DialogTitle"), true); //$NON-NLS-1$
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -51,22 +52,22 @@ public class LiveClientDialog extends JDialog {
 		getContentPane().setLayout(new GridBagLayout());
 		GridBagConstraints c = SwingUtils.gbConstr();
 
-		getContentPane().add(new JLabel("Server Name"), c);
-		nameF = new JTextField("localhost");
+		getContentPane().add(new JLabel(Messages.liveGet("LiveClientDialog.ServernameLabel")), c); //$NON-NLS-1$
+		nameF = new JTextField("localhost"); //$NON-NLS-1$
 		nameF.setColumns(7);
 		getContentPane().add(nameF, c);
 		
 		c.gridy = 1;
-		getContentPane().add(new JLabel("Server Port"), c);
+		getContentPane().add(new JLabel(Messages.liveGet("LiveClientDialog.ServerportLabel")), c); //$NON-NLS-1$
 		DecimalFormat format = new DecimalFormat();
 		format.setGroupingUsed(false);
 		portF = new JFormattedTextField(format);
-		portF.setText("4444");
+		portF.setText("4444"); //$NON-NLS-1$
 		portF.setColumns(5);
 		getContentPane().add(portF, c);
 		
 		c.gridy = 2;
-		JButton startB = new JButton("Start");
+		JButton startB = new JButton(Messages.liveGet("LiveClientDialog.StartLabel")); //$NON-NLS-1$
 		startB.requestFocusInWindow();
 		startB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -76,16 +77,28 @@ public class LiveClientDialog extends JDialog {
 					started = true;
 					setVisible(false);
 				} catch (NumberFormatException e1) {
-					JOptionPane.showMessageDialog(LiveClientDialog.this, e1.getLocalizedMessage(), "Bad port number", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(
+									LiveClientDialog.this,
+									e1.getLocalizedMessage(),
+									Messages.liveGet("LiveClientDialog.BadPortNumberWarning"), //$NON-NLS-1$
+									JOptionPane.WARNING_MESSAGE);
 				} catch (UnknownHostException e1) {
-					JOptionPane.showMessageDialog(LiveClientDialog.this, e1.getLocalizedMessage(), "Can't connect to " + nameF.getText(), JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(
+									LiveClientDialog.this,
+									e1.getLocalizedMessage(),
+									Messages.liveGet("LiveClientDialog.NoConnectionWarning") + nameF.getText(), //$NON-NLS-1$
+									JOptionPane.ERROR_MESSAGE);
 				} catch (IOException e1) {
-					JOptionPane.showMessageDialog(LiveClientDialog.this, e1.getLocalizedMessage(), "IO Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(
+									LiveClientDialog.this,
+									e1.getLocalizedMessage(),
+									Messages.liveGet("LiveClientDialog.IOError"), //$NON-NLS-1$
+									JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
 		getContentPane().add(startB, c);
-		JButton cancelB = new JButton("Cancel");
+		JButton cancelB = new JButton(Messages.liveGet("LiveClientDialog.CancelLabel")); //$NON-NLS-1$
 		cancelB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cancel();

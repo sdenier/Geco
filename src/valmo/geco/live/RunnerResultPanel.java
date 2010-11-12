@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import valmo.geco.core.Html;
+import valmo.geco.core.Messages;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.RunnerResult;
 import valmo.geco.ui.SwingUtils;
@@ -108,9 +109,9 @@ public class RunnerResultPanel extends ResultPanel {
 	}
 
 	private void updateMps(int mps) {
-		String mpText = Integer.toString(mps) + " MP";
+		String mpText = Integer.toString(mps) + Messages.liveGet("RunnerResultPanel.MPLabel"); //$NON-NLS-1$
 		if( mps>0 ) {
-			mpText = Html.htmlTag("font", "color=red", mpText);
+			mpText = Html.htmlTag("font", "color=red", mpText); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		mpL.setText(mpText);
 	}

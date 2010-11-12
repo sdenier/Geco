@@ -19,6 +19,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
 import valmo.geco.core.GecoResources;
+import valmo.geco.core.Messages;
 import valmo.geco.model.Course;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.impl.POFactory;
@@ -32,6 +33,10 @@ import valmo.geco.ui.SwingUtils;
  */
 public class LiveComponent {
 
+	static {
+		Messages.put("live", "valmo.geco.live.messages"); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	
 	public JFrame jFrame;
 	public LiveMapComponent map;
 	public ResultPanel runnerP;
@@ -44,7 +49,7 @@ public class LiveComponent {
 
 	public static void main(String[] args) {
 		LiveComponent gecoLive = new LiveComponent().initWindow(false);
-		gecoLive.setStartDir("demo/hellemmes_live");
+		gecoLive.setStartDir("demo/hellemmes_live"); //$NON-NLS-1$
 		gecoLive.openWindow();
 	}
 
@@ -55,13 +60,13 @@ public class LiveComponent {
 	}
 	
 	public void setStartDir(String dir) {
-		BufferedReader reader = GecoResources.getReaderFor(dir + GecoResources.sep + "live.prop");
+		BufferedReader reader = GecoResources.getReaderFor(dir + GecoResources.sep + "live.prop"); //$NON-NLS-1$
 		if( reader!=null ) {
 			Properties liveProp = new Properties();
 		try {
 			liveProp.load(reader);
-			loadMapImage(dir + GecoResources.sep + liveProp.getProperty("MapFile"));
-			importCourseData(dir + GecoResources.sep + liveProp.getProperty("CourseFile"));
+			loadMapImage(dir + GecoResources.sep + liveProp.getProperty("MapFile")); //$NON-NLS-1$
+			importCourseData(dir + GecoResources.sep + liveProp.getProperty("CourseFile")); //$NON-NLS-1$
 			configP.setProperties(liveProp);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -101,14 +106,14 @@ public class LiveComponent {
 		JTabbedPane controlPanel = new JTabbedPane();
 		configP = new LiveConfigPanel(jFrame, this);
 		if( showConfigPanel ) {
-			controlPanel.add("Config", SwingUtils.embed(configP));
+			controlPanel.add(Messages.liveGet("LiveComponent.ConfigTitle"), SwingUtils.embed(configP)); //$NON-NLS-1$
 		}
 		if( leisureMode ) {
 			runnerP = new LeisureResultPanel();
 		} else {
 			runnerP = new RunnerResultPanel();
 		}
-		controlPanel.add("Runner", runnerP);
+		controlPanel.add(Messages.liveGet("LiveComponent.RunnerTitle"), runnerP); //$NON-NLS-1$
 		return controlPanel;
 	}
 	
@@ -173,7 +178,7 @@ public class LiveComponent {
 		if( course!=null ) {
 			mapControl.resetControls();
 			if( runnerData.hasTrace() ) {
-				map.showTrace( mapControl.createPunchTraceFor(course, runnerData.getResult().formatTrace().split(",")) );
+				map.showTrace( mapControl.createPunchTraceFor(course, runnerData.getResult().formatTrace().split(",")) ); //$NON-NLS-1$
 			} else {
 				map.showTrace(course);
 			}

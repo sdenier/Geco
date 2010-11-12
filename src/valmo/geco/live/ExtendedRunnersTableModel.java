@@ -14,6 +14,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
+import valmo.geco.core.Messages;
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
@@ -33,7 +34,18 @@ public class ExtendedRunnersTableModel extends AbstractTableModel {
 	
 	public ExtendedRunnersTableModel() {
 		this.headers = new String[] {
-				"Startnumber", "E-card", "First name", "Last name", "Category", "Course", "Club", "Racetime", "MP", "Penalties", "Official time", "Status" 
+				Messages.uiGet("RunnersTableModel.StartHeader"), //$NON-NLS-1$
+				Messages.uiGet("RunnersTableModel.EcardHeader"), //$NON-NLS-1$
+				Messages.uiGet("RunnersTableModel.FirstnameHeader"), //$NON-NLS-1$
+				Messages.uiGet("RunnersTableModel.LastnameHeader"), //$NON-NLS-1$
+				Messages.uiGet("RunnersTableModel.CategoryHeader"), //$NON-NLS-1$
+				Messages.uiGet("RunnersTableModel.CourseHeader"), //$NON-NLS-1$
+				Messages.uiGet("RunnersTableModel.ClubHeader"), //$NON-NLS-1$
+				Messages.liveGet("ExtendedRunnersTableModel.RacetimeHeader"), //$NON-NLS-1$
+				Messages.liveGet("ExtendedRunnersTableModel.MPHeader"), //$NON-NLS-1$
+				Messages.liveGet("ExtendedRunnersTableModel.PenaltyHeader"), //$NON-NLS-1$
+				Messages.liveGet("ExtendedRunnersTableModel.OfficialtimeHeader"), //$NON-NLS-1$
+				Messages.uiGet("RunnersTableModel.StatusHeader"), //$NON-NLS-1$
 		};
 		this.data = new Vector<RunnerRaceData>();
 	}
@@ -101,7 +113,7 @@ public class ExtendedRunnersTableModel extends AbstractTableModel {
 		case 9: return getRunnerData(rowIndex).getResult().formatTimePenalty();
 		case 10: return getRunnerData(rowIndex).getResult().formatRacetime();
 		case 11: return getRunnerData(rowIndex).getResult().getStatus();
-		default: return "Pbm";
+		default: return "Pbm"; //$NON-NLS-1$
 		}
 	}
 

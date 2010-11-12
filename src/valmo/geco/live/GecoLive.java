@@ -34,6 +34,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 
 import valmo.geco.control.GecoControl;
+import valmo.geco.core.Messages;
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.Registry;
 import valmo.geco.model.RunnerRaceData;
@@ -57,6 +58,7 @@ public class GecoLive implements LiveListener {
 
 	
 	public static void main(String[] args) {
+		Messages.put("live", "valmo.geco.live.messages"); //$NON-NLS-1$ //$NON-NLS-2$
 		GecoLive gecoLive = new GecoLive();
 		gecoLive.guiLaunch();
 	}
@@ -75,7 +77,7 @@ public class GecoLive implements LiveListener {
 		liveComponent = new LiveComponent();
 	}
 	private String launcher() throws Exception {
-		return new GecoLauncher(System.getProperty("user.dir")).open(null);
+		return new GecoLauncher(System.getProperty("user.dir")).open(null); //$NON-NLS-1$
 	}
 
 	private Registry registry() {
@@ -151,7 +153,7 @@ public class GecoLive implements LiveListener {
 		DecimalFormat format = new DecimalFormat();
 		format.setGroupingUsed(false);
 		portF = new JFormattedTextField(format);
-		portF.setText("4444");
+		portF.setText("4444"); //$NON-NLS-1$
 		portF.setColumns(5);
 		listenB = new StartStopButton() {
 			private Color defaultColor;
@@ -175,12 +177,12 @@ public class GecoLive implements LiveListener {
 				listenB.setBackground(defaultColor);
 			}
 		};
-		listenB.setText("Listen");
+		listenB.setText(Messages.liveGet("GecoLive.ListenLabel")); //$NON-NLS-1$
 
 		JPanel networkConfigP = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		networkConfigP.add(listenB);
 		networkConfigP.add(Box.createHorizontalStrut(20));
-		networkConfigP.add(new JLabel("Port:"));
+		networkConfigP.add(new JLabel(Messages.liveGet("GecoLive.PortLabel"))); //$NON-NLS-1$
 		networkConfigP.add(portF);
 		return networkConfigP;
 	}
@@ -234,7 +236,7 @@ public class GecoLive implements LiveListener {
 	}
 
 	private String selectedChip() {
-		String chip = "";
+		String chip = ""; //$NON-NLS-1$
 		int selectedRow = runnersTable.getSelectedRow();
 		if( selectedRow!=-1 && runnersTable.getRowCount() > 0) {
 			// we have to test the number of displayed rows too.
@@ -254,7 +256,7 @@ public class GecoLive implements LiveListener {
 			runnersTable.scrollRectToVisible(runnersTable.getCellRect(newIndex, 0, true));
 		} else {
 			// TODO: temp check
-			System.err.println("Unregistered data? " + data.infoString());
+			System.err.println(Messages.liveGet("GecoLive.UnregisteredWarning") + data.infoString()); //$NON-NLS-1$
 		}
 	}
 

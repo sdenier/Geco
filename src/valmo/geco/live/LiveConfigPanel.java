@@ -27,6 +27,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import valmo.geco.core.Messages;
 import valmo.geco.ui.SwingUtils;
 
 /**
@@ -74,9 +75,9 @@ public class LiveConfigPanel extends JPanel {
 	
 	private void createComponents(boolean withLiveNetwork) {
 		// data files
-		mapfileB = new JButton("Map image...");
+		mapfileB = new JButton(Messages.liveGet("LiveConfigPanel.MapImageLabel")); //$NON-NLS-1$
 		mapfileL = new JLabel();
-		coursefileB = new JButton("Course file...");
+		coursefileB = new JButton(Messages.liveGet("LiveConfigPanel.CourseFileLabel")); //$NON-NLS-1$
 		coursefileL = new JLabel();
 		// map config
 		dpiS = new JSpinner(new SpinnerNumberModel(150, 0, null, 50));
@@ -89,18 +90,18 @@ public class LiveConfigPanel extends JPanel {
 		xtranS.setPreferredSize(new Dimension(75, SwingUtils.SPINNERHEIGHT));
 		ytranS = new JSpinner(new SpinnerNumberModel(0, null, null, 1));
 		ytranS.setPreferredSize(new Dimension(75, SwingUtils.SPINNERHEIGHT));
-		refreshB = new JButton("Refresh");
+		refreshB = new JButton(Messages.liveGet("LiveConfigPanel.RefreshLabel")); //$NON-NLS-1$
 		// course config
-		showControlsB = new JButton("Show controls");
-		showMapB = new JButton("Show map");
+		showControlsB = new JButton(Messages.liveGet("LiveConfigPanel.ShowControlsLabel")); //$NON-NLS-1$
+		showMapB = new JButton(Messages.liveGet("LiveConfigPanel.ShowMapLabel")); //$NON-NLS-1$
 		showCourseCB = new JComboBox();
 	}
 	
 	private void initListeners() {
 		mapfileB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
-				fileChooser.setDialogTitle("Select image file for map");
+				JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir")); //$NON-NLS-1$
+				fileChooser.setDialogTitle(Messages.liveGet("LiveConfigPanel.ImageDialogTitle")); //$NON-NLS-1$
 				int answer = fileChooser.showOpenDialog(frame);
 				if( answer==JFileChooser.APPROVE_OPTION ) {
 					try {
@@ -115,8 +116,8 @@ public class LiveConfigPanel extends JPanel {
 		});
 		coursefileB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
-				fileChooser.setDialogTitle("Select xml file with course descriptions");
+				JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir")); //$NON-NLS-1$
+				fileChooser.setDialogTitle(Messages.liveGet("LiveConfigPanel.XmlDialogTitle")); //$NON-NLS-1$
 				int answer = fileChooser.showOpenDialog(frame);
 				if( answer==JFileChooser.APPROVE_OPTION ) {
 					try {
@@ -170,31 +171,31 @@ public class LiveConfigPanel extends JPanel {
 
 	private JPanel initConfigPanel() {
 		JPanel datafileP = new JPanel(new GridLayout(0, 2));
-		datafileP.setBorder(BorderFactory.createTitledBorder("1. Load Data"));
+		datafileP.setBorder(BorderFactory.createTitledBorder(Messages.liveGet("LiveConfigPanel.LoadDataLabel"))); //$NON-NLS-1$
 		addComponent(datafileP, mapfileB);
 		addComponent(datafileP, mapfileL);
 		addComponent(datafileP, coursefileB);
 		addComponent(datafileP, coursefileL);
 				
 		JPanel mapConfigP = new JPanel(new GridLayout(0, 2));
-		mapConfigP.setBorder(BorderFactory.createTitledBorder("2. Setup Map Parameters"));
-		addComponent(mapConfigP, new JLabel("Image DPI:"));
+		mapConfigP.setBorder(BorderFactory.createTitledBorder(Messages.liveGet("LiveConfigPanel.SetupLabel"))); //$NON-NLS-1$
+		addComponent(mapConfigP, new JLabel(Messages.liveGet("LiveConfigPanel.ImageDpiLabel"))); //$NON-NLS-1$
 		addComponent(mapConfigP, dpiS);
-		addComponent(mapConfigP, new JLabel("X factor"));
-		addComponent(mapConfigP, new JLabel("Y factor"));
+		addComponent(mapConfigP, new JLabel(Messages.liveGet("LiveConfigPanel.XFactorLabel"))); //$NON-NLS-1$
+		addComponent(mapConfigP, new JLabel(Messages.liveGet("LiveConfigPanel.YFactorLabel"))); //$NON-NLS-1$
 		addComponent(mapConfigP, xfactorS);
 		addComponent(mapConfigP, yfactorS);
-		addComponent(mapConfigP, new JLabel("X translation"));
-		addComponent(mapConfigP, new JLabel("Y translation"));
+		addComponent(mapConfigP, new JLabel(Messages.liveGet("LiveConfigPanel.XTranslationLabel"))); //$NON-NLS-1$
+		addComponent(mapConfigP, new JLabel(Messages.liveGet("LiveConfigPanel.YTranslationLabel"))); //$NON-NLS-1$
 		addComponent(mapConfigP, xtranS);
 		addComponent(mapConfigP, ytranS);
 		addComponent(mapConfigP, refreshB);
 		
 		JPanel courseConfigP = new JPanel(new GridLayout(0, 2));
-		courseConfigP.setBorder(BorderFactory.createTitledBorder("3. Check Courses"));		
+		courseConfigP.setBorder(BorderFactory.createTitledBorder(Messages.liveGet("LiveConfigPanel.CheckCoursesLabel"))); //$NON-NLS-1$
 		addComponent(courseConfigP, showControlsB);
 		addComponent(courseConfigP, showMapB);
-		addComponent(courseConfigP, new JLabel("Show course:"));
+		addComponent(courseConfigP, new JLabel(Messages.liveGet("LiveConfigPanel.ShowCourseLabel"))); //$NON-NLS-1$
 		addComponent(courseConfigP, showCourseCB);
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -210,11 +211,11 @@ public class LiveConfigPanel extends JPanel {
 	}
 
 	public void setProperties(Properties liveProp) {
-		mapfileL.setText(liveProp.getProperty("MapFile"));
-		coursefileL.setText(liveProp.getProperty("CourseFile"));
-		dpiS.setValue(new Integer(liveProp.getProperty("DPI")));
-		xtranS.setValue(new Integer(liveProp.getProperty("XTrans")));
-		ytranS.setValue(new Integer(liveProp.getProperty("YTrans")));
+		mapfileL.setText(liveProp.getProperty("MapFile")); //$NON-NLS-1$
+		coursefileL.setText(liveProp.getProperty("CourseFile")); //$NON-NLS-1$
+		dpiS.setValue(new Integer(liveProp.getProperty("DPI"))); //$NON-NLS-1$
+		xtranS.setValue(new Integer(liveProp.getProperty("XTrans"))); //$NON-NLS-1$
+		ytranS.setValue(new Integer(liveProp.getProperty("YTrans"))); //$NON-NLS-1$
 		showCourseCB.setModel(new DefaultComboBoxModel(liveComponent.coursenames()));
 		refreshCourses();
 	}

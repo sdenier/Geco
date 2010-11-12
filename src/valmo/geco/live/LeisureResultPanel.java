@@ -90,7 +90,7 @@ public class LeisureResultPanel extends ResultPanel {
 	}
 
 	private void updateMps(int mps, int courseSize) {
-		String mpText = Integer.toString(courseSize - mps) + " / " + Integer.toString(courseSize);
+		String mpText = Integer.toString(courseSize - mps) + " / " + Integer.toString(courseSize); //$NON-NLS-1$
 //		if( mps>0 ) {
 //			mpText = Html.htmlTag("font", "color=red", mpText);
 //		}

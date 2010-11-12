@@ -35,13 +35,15 @@ public class LiveServerMulti {
 	public LiveServerMulti accept() {
 		serverThread = new Thread() {
 			public void run() {
-				System.out.println("listening");
+				System.out.println("listening"); //$NON-NLS-1$
 				try {
 					while( !isInterrupted() ) {
-						liveThreads.add(new LiveServer(gecoControl, serverSocket.accept(), LiveServerMulti.this).start());
+						liveThreads.add(new LiveServer(	gecoControl,
+														serverSocket.accept(),
+														LiveServerMulti.this).start());
 					}
 				} catch (IOException e) {}
-				System.out.println("not listening");
+				System.out.println("not listening"); //$NON-NLS-1$
 			}
 		};
 		serverThread.start();
