@@ -19,7 +19,7 @@ import valmo.geco.model.Status;
 public class ResultDataIO extends AbstractIO<RunnerRaceData> {
 
 	public static String sourceFilename() {
-		return "ResultData.csv";
+		return "ResultData.csv"; //$NON-NLS-1$
 	}
 
 	public ResultDataIO(Factory factory, CsvReader reader, CsvWriter writer, Registry registry) {
@@ -46,14 +46,16 @@ public class ResultDataIO extends AbstractIO<RunnerRaceData> {
 	public RunnerRaceData importTData(String[] record) {
 		RunnerResult result = factory.createRunnerResult();
 		// TODO: remove after data migration
-		Status en = ( record[1].equals("Unknown") || record[1].equals("REG") ) ? Status.NDA : Enum.valueOf(Status.class, record[1]);
+		Status en = ( record[1].equals("Unknown") || record[1].equals("REG") ) ? //$NON-NLS-1$ //$NON-NLS-2$
+				Status.NDA :
+				Enum.valueOf(Status.class, record[1]);
 		result.setStatus(en);
 		result.setRacetime(TimeManager.safeParse(record[2]).getTime());
 		RunnerRaceData data = registry.findRunnerData(record[0]);
 		if( data==null ) {
-			throw new Error("Error in race data " + sourceFilename() +"! "
-					+ "Can't find runner with e-card " + record[0]
-					+ ". Use a backup");	
+			throw new Error("Error in race data " + sourceFilename() +"! " //$NON-NLS-1$ //$NON-NLS-2$
+					+ "Can't find runner with e-card " + record[0] //$NON-NLS-1$
+					+ ". Use a backup");	 //$NON-NLS-1$
 		}
 		data.setResult(result);
 		return data;

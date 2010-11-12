@@ -19,15 +19,15 @@ import valmo.geco.model.RunnerRaceData;
 public class RaceDataIO extends AbstractIO<RunnerRaceData> {
 	
 	public static String sourceFilename() {
-		return "results.csv";
+		return "results.csv"; //$NON-NLS-1$
 	}
 
 	public RaceDataIO(Factory factory, CsvReader reader, CsvWriter writer, Registry registry) {
 		super(factory, reader, writer, registry);
 		if( this.reader!=null )
-			this.reader.setCsvSep(";");
+			this.reader.setCsvSep(";"); //$NON-NLS-1$
 		if( this.writer!=null )
-			this.writer.setCsvSep(";");
+			this.writer.setCsvSep(";"); //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
@@ -49,9 +49,9 @@ public class RaceDataIO extends AbstractIO<RunnerRaceData> {
 		data.setFinishtime(TimeManager.safeParse(record[4]));
 		Runner runner = this.registry.findRunnerByChip(record[0]);
 		if( runner==null ){
-			throw new Error("Error in race data " + sourceFilename() +"! "
-							+ "Can't find runner with e-card " + record[0]
-							+ ". Use a backup");
+			throw new Error("Error in race data " + sourceFilename() +"! " //$NON-NLS-1$ //$NON-NLS-2$
+							+ "Can't find runner with e-card " + record[0] //$NON-NLS-1$
+							+ ". Use a backup"); //$NON-NLS-1$
 		}
 		data.setRunner(runner);
 		

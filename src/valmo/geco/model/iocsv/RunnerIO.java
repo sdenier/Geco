@@ -19,15 +19,15 @@ import valmo.geco.model.Runner;
 public class RunnerIO extends AbstractIO<Runner> {
 	
 	public static String sourceFilename() {
-		return "Competitors.csv";
+		return "Competitors.csv"; //$NON-NLS-1$
 	}
 	
 	public RunnerIO(Factory factory, CsvReader reader, CsvWriter writer, Registry registry) {
 		super(factory, reader, writer, registry);
 		if( this.reader!=null )
-			this.reader.setCsvSep(";");
+			this.reader.setCsvSep(";"); //$NON-NLS-1$
 		if( this.writer!=null )
-			this.writer.setCsvSep(";");
+			this.writer.setCsvSep(";"); //$NON-NLS-1$
 	}
 
 	@Override
@@ -39,9 +39,9 @@ public class RunnerIO extends AbstractIO<Runner> {
 		Runner runner = this.factory.createRunner();
 		runner.setStartnumber(new Integer(record[0]));
 		runner.setChipnumber(record[1]);
-		int i = record[2].lastIndexOf(" ");
+		int i = record[2].lastIndexOf(" "); //$NON-NLS-1$
 		if(i==-1) {
-			runner.setFirstname("");
+			runner.setFirstname(""); //$NON-NLS-1$
 			runner.setLastname(record[2]);
 		} else {
 			runner.setFirstname(record[2].substring(0, i));
@@ -50,26 +50,26 @@ public class RunnerIO extends AbstractIO<Runner> {
 		Club club = registry.findClub(record[3]);
 		if( club == null ) {
 			runner.setClub(registry.noClub());
-			System.err.println("Unknown club " + record[3] + " for runner " + runner.idString());
+			System.err.println("Unknown club " + record[3] + " for runner " + runner.idString()); //$NON-NLS-1$ //$NON-NLS-2$
 		} else {
 			runner.setClub(club);
 		}
 		Course course = registry.findCourse(record[4]);
 		if( course == null ) {
 			runner.setCourse(registry.anyCourse());
-			System.err.println("Unknown course " + record[4] + " for runner " + runner.idString());
+			System.err.println("Unknown course " + record[4] + " for runner " + runner.idString()); //$NON-NLS-1$ //$NON-NLS-2$
 		} else {
 			runner.setCourse(course);
 		}
 		Category cat = registry.findCategory(record[6]);
 		if( cat == null ) {
 			runner.setCategory(registry.noCategory());
-			System.err.println("Unknown category " + record[6] + " for runner " + runner.idString());
+			System.err.println("Unknown category " + record[6] + " for runner " + runner.idString()); //$NON-NLS-1$ //$NON-NLS-2$
 		} else {
 			runner.setCategory(cat);	
 		}
 		runner.setNC(new Boolean(record[10]));
-		if( record[11].equals("") ) {
+		if( record[11].equals("") ) { //$NON-NLS-1$
 			runner.setArchiveId(null);
 		} else {
 			runner.setArchiveId(new Integer(record[11]));
@@ -94,13 +94,13 @@ public class RunnerIO extends AbstractIO<Runner> {
 				r.getName(),
 				r.getClub().getName(),
 				r.getCourse().getName(),
-				"false",
+				"false", //$NON-NLS-1$
 				r.getCategory().getShortname(),
-				"", "",
-				"1",//				0=not started,1=started,2=ok,3=dnf,4=mp,5=disq
+				"", "", //$NON-NLS-1$ //$NON-NLS-2$
+				"1",//				0=not started,1=started,2=ok,3=dnf,4=mp,5=disq //$NON-NLS-1$
 				new Boolean(r.isNC()).toString(),
-				(r.getArchiveId()==null) ? "" : r.getArchiveId().toString(),
-				"0","",
+				(r.getArchiveId()==null) ? "" : r.getArchiveId().toString(), //$NON-NLS-1$
+				"0","", //$NON-NLS-1$ //$NON-NLS-2$
 //				61;11211;Mark Young;CNOC;Short Course;true;M14;36000000;-2;2;false;;0;;
 		};
 	}
