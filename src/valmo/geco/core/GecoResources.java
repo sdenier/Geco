@@ -18,7 +18,7 @@ import java.io.InputStreamReader;
  */
 public class GecoResources {
 	
-	public final static String sep = "/";
+	public final static String sep = "/"; //$NON-NLS-1$
 	
 	private static boolean webstart = false;
 

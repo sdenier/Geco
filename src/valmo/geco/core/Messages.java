@@ -34,19 +34,20 @@ public class Messages {
 	/*
 	 * direct accessors for common bundles
 	 */
+	
 	public static String uiGet(String key) {
-		return get("ui", key);
+		return get("ui", key); //$NON-NLS-1$
+	}
+	
+	public static String getString(String key) {
+		return get(DEFAULT_BUNDLEKEY, key);
 	}
 
-//	private static final String DEFAULT_KEY = "default"; //$NON-NLS-1$
-//	private static final String DEFAULT_BUNDLE = "valmo.geco.messages"; //$NON-NLS-1$
-//
-//	{
-//		put(DEFAULT_KEY, DEFAULT_BUNDLE); //$NON-NLS-1$
-//	}
-//	
-//	public static String get(String key) {
-//		return get(DEFAULT_KEY, key);
-//	}
+	private static final String DEFAULT_BUNDLEKEY = "default"; //$NON-NLS-1$
+	private static final String DEFAULT_BUNDLE = "valmo.geco.messages"; //$NON-NLS-1$
+
+	static {
+		put(DEFAULT_BUNDLEKEY, DEFAULT_BUNDLE); //$NON-NLS-1$
+	}
 	
 }

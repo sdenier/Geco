@@ -31,7 +31,6 @@ public class Logger {
 		this(basedir, filename, true);
 	}
 
-	//perhaps should generate one log file per session
 	public void initLogFile(String filename) {
 		if( writer!=null ) {
 			close();
@@ -56,17 +55,19 @@ public class Logger {
 	}
 
 	public void logWithTime(String text) {
-		log(new Date().toString() + " - " + text);	
+		log(new Date().toString() + " - " + text);	 //$NON-NLS-1$
 	}
 	
 	public void initSessionLog(String header) {
-		log("*** Log Session for " + header + " started at " + new Date().toString() + " ***");
+		log("*** Log Session for " + header //$NON-NLS-1$
+				+ " started at " + new Date().toString() //$NON-NLS-1$
+				+ " ***"); //$NON-NLS-1$
 	}
 
 	public void close() {
 		if( writer!=null ) {
 			try {
-				log("*** Log Session closed at " + new Date().toString() + "\n");
+				log("*** Log Session closed at " + new Date().toString() + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
 				this.writer.close();
 			} catch (IOException e) {
 				debug(e);
@@ -85,7 +86,7 @@ public class Logger {
 		if( fileDebug ) {
 			try {
 				initDebugFile();
-				this.debug.write(new Date().toString() + " - " + text + "\n");
+				this.debug.write(new Date().toString() + " - " + text + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
 			} catch (IOException e) {
 				System.err.println(text);
 				e.printStackTrace();
@@ -111,19 +112,20 @@ public class Logger {
 
 	private void initDebugFile() throws IOException {
 		if( debug==null ) {
-			debug = new BufferedWriter(new FileWriter(this.baseDir + File.separator + "debug.log", true));
+			debug = new BufferedWriter(
+						new FileWriter(this.baseDir + File.separator + "debug.log", true)); //$NON-NLS-1$
 		}
 	}
 	
     private void printStackTrace(Exception e) throws IOException {
-		this.debug.write(new Date().toString() + " - " + e.toString() + "\n");
+		this.debug.write(new Date().toString() + " - " + e.toString() + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		StackTraceElement[] trace = e.getStackTrace();
 		for (StackTraceElement el : trace) {
-			this.debug.write("\t" + el + "\n");
+			this.debug.write("\t" + el + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		Throwable cause = e.getCause();
 		if( cause!=null ) {
-			this.debug.write("Caused by " + cause.toString() + "\n");
+			this.debug.write("Caused by " + cause.toString() + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
     }
 	

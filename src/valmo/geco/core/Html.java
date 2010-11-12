@@ -21,7 +21,7 @@ public final class Html {
 	
 	public Html() {
 		buffer = new StringBuffer();
-		open("html");
+		open("html"); //$NON-NLS-1$
 	}
 	
 	public static StringBuffer openTag(String tag, StringBuffer buffer) {
@@ -64,17 +64,17 @@ public final class Html {
 	
 	public static String htmlTag(String tag, String contents) {
 		StringBuffer buf = new StringBuffer();
-		openTag("html", buf);
+		openTag("html", buf); //$NON-NLS-1$
 		tag(tag, contents, buf);
-		closeTag("html", buf);
+		closeTag("html", buf); //$NON-NLS-1$
 		return buf.toString();
 	}
 
 	public static String htmlTag(String tag, String attributes, String contents) {
 		StringBuffer buf = new StringBuffer();
-		openTag("html", buf);
+		openTag("html", buf); //$NON-NLS-1$
 		tag(tag, attributes, contents, buf);
-		closeTag("html", buf);
+		closeTag("html", buf); //$NON-NLS-1$
 		return buf.toString();
 	}
 
@@ -105,7 +105,7 @@ public final class Html {
 	}
 	
 	public String close() {
-		close("html");
+		close("html"); //$NON-NLS-1$
 		return buffer.toString();
 	}	
 	
@@ -115,59 +115,59 @@ public final class Html {
 	}
 	
 	public Html br() {
-		buffer.append("<br />");
+		buffer.append("<br />"); //$NON-NLS-1$
 		return this;
 	}
 
 	public Html i(String contents) {
-		tag("i", contents);
+		tag("i", contents); //$NON-NLS-1$
 		return this;
 	}
 
 	public Html b(String contents) {
-		tag("b", contents);
+		tag("b", contents); //$NON-NLS-1$
 		return this;
 	}
 
 	public Html em(String contents) {
-		tag("em", contents);
+		tag("em", contents); //$NON-NLS-1$
 		return this;
 	}
 	
 	public Html td(String contents) {
-		tag("td", contents);
+		tag("td", contents); //$NON-NLS-1$
 		return this;
 	}
 
 	public Html td(String contents, String attributes) {
-		tag("td", attributes, contents);
+		tag("td", attributes, contents); //$NON-NLS-1$
 		return this;
 	}
 
 	public Html th(String contents) {
-		tag("th", contents);
+		tag("th", contents); //$NON-NLS-1$
 		return this;
 	}
 
 	public Html th(String contents, String attributes) {
-		tag("th", attributes, contents);
+		tag("th", attributes, contents); //$NON-NLS-1$
 		return this;
 	}
 	
 	public Html openTr() {
-		open("tr");
+		open("tr"); //$NON-NLS-1$
 		return this;
 	}
 	
 	public Html closeTr() {
-		close("tr");
-		buffer.append("\n");
+		close("tr"); //$NON-NLS-1$
+		buffer.append("\n"); //$NON-NLS-1$
 		return this;
 	}
 	
 	public Html p(String contents) {
-		tag("p", contents);
-		buffer.append("\n");
+		tag("p", contents); //$NON-NLS-1$
+		buffer.append("\n"); //$NON-NLS-1$
 		return this;
 	}
 

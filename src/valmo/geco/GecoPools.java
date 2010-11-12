@@ -18,6 +18,7 @@ import valmo.geco.control.PoolMerger;
 import valmo.geco.control.ResultBuilder;
 import valmo.geco.control.StageBuilder;
 import valmo.geco.core.Html;
+import valmo.geco.core.Messages;
 import valmo.geco.core.Util;
 import valmo.geco.model.HeatSet;
 import valmo.geco.model.RankedRunner;
@@ -44,12 +45,12 @@ public class GecoPools {
 	public void run(String baseDir) {
 		gecoControl = new GecoControl(baseDir);
 		try {
-			importStages(Util.readLines(StageBuilder.filepath(baseDir, "pools.prop")));
+			importStages(Util.readLines(StageBuilder.filepath(baseDir, "pools.prop"))); //$NON-NLS-1$
 			mergePools();
 			gecoControl.saveCurrentStage();
 			exportMergedResults();
 			buildHeats();
-			System.out.println("Merge OK");
+			System.out.println(Messages.getString("GecoPools.MergeOkLabel")); //$NON-NLS-1$
 			System.exit(0);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -76,7 +77,7 @@ public class GecoPools {
 			exportMergedResult(cat, resultBuilder, html);
 		}
 		try {
-			String filepath = StageBuilder.filepath(gecoControl.stage().getBaseDir(), "merged_results.html");
+			String filepath = StageBuilder.filepath(gecoControl.stage().getBaseDir(), "merged_results.html"); //$NON-NLS-1$
 			BufferedWriter writer = new BufferedWriter(new FileWriter(filepath));
 			writer.write(html.close());
 			writer.close();
@@ -88,22 +89,22 @@ public class GecoPools {
 	private void exportMergedResult(String category, ResultBuilder resultBuilder, Html html) {
 		List<Result> results = resultBuilder.buildResultForCategoryByCourses(gecoControl.registry().findCategory(category));
 		for (Result result : results) {
-			html.tag("h1", result.getIdentifier());
-			html.open("table");
+			html.tag("h1", result.getIdentifier()); //$NON-NLS-1$
+			html.open("table"); //$NON-NLS-1$
 			for (RankedRunner runner : result.getRanking()) {
 				writeResult(runner.getRunnerData(), Integer.toString(runner.getRank()), html);
 			}
-			html.openTr().td("").td("").td("").closeTr();
+			html.openTr().closeTr();
 		
 			for (RunnerRaceData runnerData : result.getNRRunners()) {
-				writeResult(runnerData, "", html);
+				writeResult(runnerData, "", html); //$NON-NLS-1$
 			}
-			html.openTr().td("").td("").td("").closeTr();
+			html.openTr().closeTr();
 		
 			for (RunnerRaceData runnerData : result.getOtherRunners()) {
-				writeResult(runnerData, "", html);
+				writeResult(runnerData, "", html); //$NON-NLS-1$
 			}
-			html.close("table");
+			html.close("table"); //$NON-NLS-1$
 		}
 	}
 
@@ -123,7 +124,7 @@ public class GecoPools {
 	public void buildHeats() {
 		HeatBuilder heatBuilder = new HeatBuilder(gecoControl, new ResultBuilder(gecoControl));
 		try {
-			String filepath = StageBuilder.filepath(gecoControl.stage().getBaseDir(), "heat_startlists.csv");
+			String filepath = StageBuilder.filepath(gecoControl.stage().getBaseDir(), "heat_startlists.csv"); //$NON-NLS-1$
 			heatBuilder.generateCsvHeats(filepath, gecoControl.registry().getHeatSets().toArray(new HeatSet[0]));
 		} catch (IOException e) {
 			e.printStackTrace();

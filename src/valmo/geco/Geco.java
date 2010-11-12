@@ -24,10 +24,11 @@ import valmo.geco.core.Announcer;
 import valmo.geco.core.GecoRequestHandler;
 import valmo.geco.core.GecoResources;
 import valmo.geco.core.Logger;
+import valmo.geco.core.Messages;
 import valmo.geco.core.Util;
 import valmo.geco.functions.GeneratorFunction;
-import valmo.geco.functions.StartTimeFunction;
 import valmo.geco.functions.RecheckFunction;
+import valmo.geco.functions.StartTimeFunction;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
@@ -54,10 +55,10 @@ public class Geco implements GecoRequestHandler {
 	
 	{
 		Properties prop = new Properties();
-		VERSION = "x.x";
+		VERSION = "x.x"; //$NON-NLS-1$
 		try {
-			prop.load(getClass().getResourceAsStream("/version.prop"));
-			VERSION = prop.getProperty("version.num");
+			prop.load(getClass().getResourceAsStream("/version.prop")); //$NON-NLS-1$
+			VERSION = prop.getProperty("version.num"); //$NON-NLS-1$
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -116,26 +117,26 @@ public class Geco implements GecoRequestHandler {
 	private static void setLaunchOptions(String[] args) {
 		for (int i = 0; i < args.length; i++) {
 			String arg = args[i];
-			if( arg.equals("--leisure") ) {
+			if( arg.equals("--leisure") ) { //$NON-NLS-1$
 				leisureMode = true;
 				continue;
 			}
-			if( arg.equals("--startdir") ) {
+			if( arg.equals("--startdir") ) { //$NON-NLS-1$
 				if( i < args.length-1 ) {
 					startDir = args[i+1];
 					i++; // skip next arg
 				} else {
-					System.out.println("Missing path after --startdir option");
+					System.out.println(Messages.getString("Geco.MissingStartdirOptionWarning")); //$NON-NLS-1$
 				}
 				continue;
 			}
-			System.out.println("Unrecognized option: " + arg);
+			System.out.println(Messages.getString("Geco.UnrecognizedOptionWarning") + arg); //$NON-NLS-1$
 		}
 	}
 
 	public static boolean platformIsMacOs() {
 		// See for more: http://oreilly.com/pub/a/mac/2002/09/06/osx_java.html
-		return System.getProperty("mrj.version")!=null;
+		return System.getProperty("mrj.version")!=null; //$NON-NLS-1$
 	}
 	
 	public static boolean leisureModeOn() {
@@ -154,7 +155,7 @@ public class Geco implements GecoRequestHandler {
 	public Geco(String startDir) {
 		if( startDir!=null ) {
 			if( !GecoResources.exists(startDir) ) {
-				System.out.println("Path does not exist: " + startDir);
+				System.out.println(Messages.getString("Geco.NoPathWarning") + startDir); //$NON-NLS-1$
 				System.exit(0);
 			}
 		} else {
@@ -188,7 +189,7 @@ public class Geco implements GecoRequestHandler {
 	}
 
 	private String launcher() throws Exception {
-		return new GecoLauncher(System.getProperty("user.dir")).open(null);
+		return new GecoLauncher(System.getProperty("user.dir")).open(null); //$NON-NLS-1$
 	}
 	
 	public void openStage(String startDir) {
@@ -262,7 +263,7 @@ public class Geco implements GecoRequestHandler {
 	
 	private void updateStageList(String baseDir) {
 		parentDir = new File(baseDir).getParent();
-		String stageFile = fileInParentDir("stages.prop");
+		String stageFile = fileInParentDir("stages.prop"); //$NON-NLS-1$
 		if( !stageFile.equals(this.stageListFile) ) {
 			this.stageListFile = stageFile;
 			this.stageList = new Vector<String>();
@@ -301,7 +302,7 @@ public class Geco implements GecoRequestHandler {
 		if( hasPreviousStage() ) {
 			return this.stageList.get(this.stageIndex - 1);
 		} else {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 	}
 	
@@ -317,7 +318,7 @@ public class Geco implements GecoRequestHandler {
 		if( hasNextStage() ) {
 			return this.stageList.get(this.stageIndex + 1);
 		} else {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 	}
 	
@@ -343,12 +344,20 @@ public class Geco implements GecoRequestHandler {
 
 	@Override
 	public String requestMergeUnknownRunner(RunnerRaceData data, String chip) {
-		return new MergeRunnerDialog(this, window, "Unknown Chip").showMergeDialogFor(data, chip, Status.UNK);		
+		return new MergeRunnerDialog(
+					this,
+					window,
+					Messages.getString("Geco.UnknownEcardTitle")) //$NON-NLS-1$
+						.showMergeDialogFor(data, chip, Status.UNK);
 	}
 
 	@Override
 	public String requestMergeExistingRunner(RunnerRaceData data,	Runner target) {
-		return new MergeRunnerDialog(this, window, "Existing Data for Runner").showOverwriteDialogFor(data, target);
+		return new MergeRunnerDialog(
+					this,
+					window,
+					Messages.getString("Geco.ExistingRunnerDataTitle")) //$NON-NLS-1$
+						.showOverwriteDialogFor(data, target);
 	}
 	
 }

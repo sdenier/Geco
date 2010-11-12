@@ -24,6 +24,8 @@ import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 
+import valmo.geco.core.Messages;
+
 import com.jdotsoft.jarloader.JarClassLoader;
 
 /**
@@ -35,24 +37,26 @@ public class GecoLoader {
 
 	public static void main(String[] args) {
 		try {
-			PrintStream ps = new PrintStream(new FileOutputStream("gecoerror.log", true));
+			PrintStream ps = new PrintStream(new FileOutputStream("gecoerror.log", true)); //$NON-NLS-1$
 			System.setErr(ps);
 			System.setOut(ps);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+		
 		JarClassLoader loader = new JarClassLoader();
 		try {
-			if( args.length>0 && args[0].startsWith("valmo") ) {
+			if( args.length>0 && args[0].startsWith("valmo") ) { //$NON-NLS-1$
 				loader.invokeMain(args[0], Arrays.copyOfRange(args, 1, args.length));
 			} else {
-				loader.invokeMain("valmo.geco.Geco", args);
+				loader.invokeMain("valmo.geco.Geco", args); //$NON-NLS-1$
 			}
 		} catch (ClassNotFoundException e) {
 			JOptionPane.showMessageDialog(
 					null, 
-					"Application not found: " + e.getMessage().substring(17), // cut "Failure to load: ".length() 
-					"Launch Error", 
+					Messages.getString("GecoLoader.AppNotFoundWarning")  //$NON-NLS-1$
+					+ e.getMessage().substring(17), // cut "Failure to load: ".length()
+					Messages.getString("GecoLoader.LaunchErrorTitle"),  //$NON-NLS-1$
 					JOptionPane.ERROR_MESSAGE);
 		} catch (Throwable e) {
 			e.printStackTrace();

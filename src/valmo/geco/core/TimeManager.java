@@ -17,16 +17,16 @@ public class TimeManager {
 	
 	public static final Date NO_TIME = new Date(90000000000L);
 	public static final long NO_TIME_l = NO_TIME.getTime();
-	public static final String NO_TIME_STRING = "--:--";
+	public static final String NO_TIME_STRING = "--:--"; //$NON-NLS-1$
 
 	private static SimpleDateFormat FORMATTER;
 	private static SimpleDateFormat FORMATTER60;
 
 	static { // have to set GMT time zone to avoid TZ offset in race time computation
-		FORMATTER = new SimpleDateFormat("H:mm:ss");
-		FORMATTER.setTimeZone(TimeZone.getTimeZone("GMT"));
-		FORMATTER60 = new SimpleDateFormat("m:ss");
-		FORMATTER60.setTimeZone(TimeZone.getTimeZone("GMT"));
+		FORMATTER = new SimpleDateFormat("H:mm:ss"); //$NON-NLS-1$
+		FORMATTER.setTimeZone(TimeZone.getTimeZone("GMT")); //$NON-NLS-1$
+		FORMATTER60 = new SimpleDateFormat("m:ss"); //$NON-NLS-1$
+		FORMATTER60.setTimeZone(TimeZone.getTimeZone("GMT")); //$NON-NLS-1$
 	}
 	
 

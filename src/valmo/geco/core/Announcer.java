@@ -31,7 +31,8 @@ public class Announcer {
 	public interface StageListener {
 		
 		/**
-		 * Signal a change in the current stage, either of internal data or a switching from previous stage to current.
+		 * Signal a change in the current stage, either of internal data or a switching 
+		 * from previous stage to current.
 		 * 
 		 * @param previous
 		 * @param next
@@ -39,8 +40,8 @@ public class Announcer {
 		public void changed(Stage previous, Stage current);
 		
 		/**
-		 * Signal a save request for the stage. Components can store their persistent properties in the passing object, which will be
-		 * synchronized and saved. 
+		 * Signal a save request for the stage. Components can store their persistent properties 
+		 * in the passing object, which will be synchronized and saved. 
 		 * 
 		 * @param stage
 		 * @param properties
@@ -48,7 +49,8 @@ public class Announcer {
 		public void saving(Stage stage, Properties properties);
 		
 		/**
-		 * Signal that the application is about to quit, indicating that any resource should be cleanly released.
+		 * Signal that the application is about to quit, indicating that any resource should be 
+		 * cleanly released.
 		 * 
 		 * @param stage
 		 */
