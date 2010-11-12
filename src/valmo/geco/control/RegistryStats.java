@@ -4,7 +4,6 @@
  */
 package valmo.geco.control;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +18,8 @@ import valmo.geco.model.Stage;
 import valmo.geco.model.Status;
 
 /**
+ * Compute statistics on registry after initial upload and keep numbers up to date by following events.
+ * 
  * @author Simon Denier
  * @since Sep 13, 2009
  *
@@ -26,22 +27,38 @@ import valmo.geco.model.Status;
 public class RegistryStats extends Control
 	implements Announcer.StageListener, Announcer.RunnerListener, Announcer.StageConfigListener {
 
-	/*
-	 * compute stats on registry after initial upload and keep numbers up to date by following
-	 * events
-	 */
-	
 	public static enum StatItem {
-		Registered, Present, Unresolved, Finished, OK, MP, DNS, DNF, DSQ, NDA, UNK, DUP
+		Registered {
+			@Override
+			public String toString() {
+				return "Registered";
+			}},
+		Present {
+			@Override
+			public String toString() {
+				return "Present";
+			}},
+		Unresolved {
+			@Override
+			public String toString() {
+				return "Unresolved";
+			}},
+		Finished {
+			@Override
+			public String toString() {
+				return "Finished";
+			}},
+		OK, MP, DNS, DNF, DSQ, NDA, UNK, DUP;
 	}
 
-	public static final String[] shortStatusList = new String[] {
-		"Present", "Unresolved", "Finished", "OK", "MP", "NDA"
+	public static final StatItem[] shortStatusList = new StatItem[] {
+		StatItem.Present, StatItem.Unresolved, StatItem.Finished, StatItem.OK, StatItem.MP, StatItem.NDA,
 	};
 	
 	// Courses stats
-	private Map<String, Map<String, Integer>> stats;
-	// Total stats
+	private Map<String, Map<StatItem, Integer>> stats;
+
+	// Memo fields for computing total stats
 	private int totalOk;
 	private int totalMp;
 	private int totalDns;
@@ -60,20 +77,12 @@ public class RegistryStats extends Control
 		fullUpdate();
 	}
 	
-	public String[] longStatuses() {
-		String[] statusKeys = new String[StatItem.values().length];
-		for (int i = 0; i < StatItem.values().length; i++) {
-			statusKeys[i] = StatItem.values()[i].toString();			
-		}
-		return statusKeys;
+	public StatItem[] longStatuses() {
+		return StatItem.values();
 	}
 	
-	public String[] shortStatuses() {
+	public StatItem[] shortStatuses() {
 		return shortStatusList;
-	}
-	
-	public Collection<String> entries() {
-		return stats.keySet();
 	}
 	
 	public String[] sortedEntries() {
@@ -86,30 +95,35 @@ public class RegistryStats extends Control
 		return "Total";
 	}
 
-	public Map<String, Integer> getCourseStatsFor(String coursename) {
+	public Map<StatItem, Integer> getCourseStatsFor(String coursename) {
 		return stats.get(coursename);
 	}
 
-	public Map<String, Integer> getTotalCourse() {
+	public Map<StatItem, Integer> getTotalCourse() {
 		return stats.get(totalName());
 	}
 	
-	public Integer getCourseStatsFor(String course, String status) {
-		return getCourseStatsFor(course).get(status);
+	public Integer getCourseStatsFor(String course, StatItem item) {
+		return getCourseStatsFor(course).get(item);
 	}
 	
 	public void fullUpdate() {
 		initStatMaps();
 		for (Course course : registry().getCourses()) {
-			stats.put(course.getName(), new HashMap<String, Integer>());
+			stats.put(course.getName(), new HashMap<StatItem, Integer>());
 			computeCourseStats(course);
 		}
 		computeTotalStats();
 	}
 	
+	public StatItem convertStatus(Status status) {
+		return StatItem.valueOf(status.name());
+	}
+	
+	
 	private void initStatMaps() {
-		stats = new HashMap<String, Map<String,Integer>>();
-		stats.put(totalName(), new HashMap<String, Integer>());
+		stats = new HashMap<String, Map<StatItem,Integer>>();
+		stats.put(totalName(), new HashMap<StatItem, Integer>());
 		totalOk = 0;
 		totalMp = 0;
 		totalDns = 0;
@@ -137,7 +151,7 @@ public class RegistryStats extends Control
 			case DUP: courseDup++; totalDup++; break;
 			}
 		}
-		Map<String, Integer> courseStats = stats.get(course.getName());
+		Map<StatItem, Integer> courseStats = stats.get(course.getName());
 		storeStats(courseOk, courseMp, courseDns, courseDnf, courseDsq, courseNda, courseUnk, courseDup,
 					total, courseStats);
 	}
@@ -149,100 +163,89 @@ public class RegistryStats extends Control
 	}
 	
 	private void storeStats(int ok, int mp, int dns, int dnf, int dsq, int nda, int unk, int dup, 
-			int total, Map<String, Integer> courseStats) {
-		courseStats.put(StatItem.OK.name(), ok);
-		courseStats.put(StatItem.MP.name(), mp);
-		courseStats.put(StatItem.DNS.name(), dns);
-		courseStats.put(StatItem.DNF.name(), dnf);
-		courseStats.put(StatItem.DSQ.name(), dsq);
-		courseStats.put(StatItem.NDA.name(), nda);
-		courseStats.put(StatItem.UNK.name(), unk);
-		courseStats.put(StatItem.DUP.name(), dup);
+			int total, Map<StatItem, Integer> courseStats) {
+		courseStats.put(StatItem.OK, ok);
+		courseStats.put(StatItem.MP, mp);
+		courseStats.put(StatItem.DNS, dns);
+		courseStats.put(StatItem.DNF, dnf);
+		courseStats.put(StatItem.DSQ, dsq);
+		courseStats.put(StatItem.NDA, nda);
+		courseStats.put(StatItem.UNK, unk);
+		courseStats.put(StatItem.DUP, dup);
 		int unresolved = nda + unk + dup;
-		courseStats.put(StatItem.Registered.name(), total);
-		courseStats.put(StatItem.Present.name(), (total - dns));
-		courseStats.put(StatItem.Unresolved.name(), unresolved);
-		courseStats.put(StatItem.Finished.name(), (total - dns - unresolved));
+		courseStats.put(StatItem.Registered, total);
+		courseStats.put(StatItem.Present, (total - dns));
+		courseStats.put(StatItem.Unresolved, unresolved);
+		courseStats.put(StatItem.Finished, (total - dns - unresolved));
 	}
 
-	
-	private void updateCourseStats(Map<String, Integer> courseStats, int total) {
-		int dns = courseStats.get(StatItem.DNS.name());
-		int nda = courseStats.get(StatItem.NDA.name());
-		int unk = courseStats.get(StatItem.UNK.name());
-		int dup = courseStats.get(StatItem.DUP.name());
+	private void updateCourseStats(Map<StatItem, Integer> courseStats, int total) {
+		int dns = courseStats.get(StatItem.DNS);
+		int nda = courseStats.get(StatItem.NDA);
+		int unk = courseStats.get(StatItem.UNK);
+		int dup = courseStats.get(StatItem.DUP);
 		int unresolved = nda + unk + dup;
-		courseStats.put(StatItem.Registered.toString(), total);
-		courseStats.put(StatItem.Present.toString(), (total - dns));
-		courseStats.put(StatItem.Unresolved.name(), unresolved);
-		courseStats.put(StatItem.Finished.toString(), (total - dns - unresolved));
+		courseStats.put(StatItem.Registered, total);
+		courseStats.put(StatItem.Present, (total - dns));
+		courseStats.put(StatItem.Unresolved, unresolved);
+		courseStats.put(StatItem.Finished, (total - dns - unresolved));
 	}
 
-	private int inc(String status, Map<String, Integer> map) {
-		int value = map.get(status) + 1;
-		map.put(status, value);
+	private int inc(StatItem item, Map<StatItem, Integer> map) {
+		int value = map.get(item) + 1;
+		map.put(item, value);
 		return value;
 	}
 
-	private int dec(String status, Map<String, Integer> map) {
-		int value = map.get(status) - 1;
-		map.put(status, value);
+	private int dec(StatItem item, Map<StatItem, Integer> map) {
+		int value = map.get(item) - 1;
+		map.put(item, value);
 		return value;
 	}
 
 
-	/* (non-Javadoc)
-	 * @see valmo.geco.ui.Announcer.RunnerListener#runnerCreated(valmo.geco.model.Runner)
-	 */
 	@Override
 	public void runnerCreated(RunnerRaceData data) {
-		String status = data.getResult().getStatus().name();
+		StatItem item = convertStatus(data.getStatus());
 		
-		Map<String, Integer> courseStats = getCourseStatsFor(data.getCourse().getName());
-		inc(status, courseStats);
-		int courseTotal = inc(StatItem.Registered.name(), courseStats);
+		Map<StatItem, Integer> courseStats = getCourseStatsFor(data.getCourse().getName());
+		inc(item, courseStats);
+		int courseTotal = inc(StatItem.Registered, courseStats);
 		updateCourseStats(courseStats, courseTotal);
 		
-		inc(status, getTotalCourse());
-		int total = inc(StatItem.Registered.name(), getTotalCourse());
+		inc(item, getTotalCourse());
+		int total = inc(StatItem.Registered, getTotalCourse());
 		updateCourseStats(getTotalCourse(), total);
 	}
 
-
-	/* (non-Javadoc)
-	 * @see valmo.geco.ui.Announcer.RunnerListener#runnerDeleted(valmo.geco.model.Runner)
-	 */
 	@Override
 	public void runnerDeleted(RunnerRaceData data) {
-		String status = data.getResult().getStatus().name();
+		StatItem item = convertStatus(data.getStatus());
 		
-		Map<String, Integer> courseStats = getCourseStatsFor(data.getCourse().getName());
-		dec(status, courseStats);
-		int courseTotal = dec(StatItem.Registered.name(), courseStats);
+		Map<StatItem, Integer> courseStats = getCourseStatsFor(data.getCourse().getName());
+		dec(item, courseStats);
+		int courseTotal = dec(StatItem.Registered, courseStats);
 		updateCourseStats(courseStats, courseTotal);
 		
-		dec(status, getTotalCourse());
-		int total = dec(StatItem.Registered.name(), getTotalCourse());
+		dec(item, getTotalCourse());
+		int total = dec(StatItem.Registered, getTotalCourse());
 		updateCourseStats(getTotalCourse(), total);
 	}
 
-
-	/* (non-Javadoc)
-	 * @see valmo.geco.ui.Announcer.RunnerListener#statusChanged(valmo.geco.model.RunnerRaceData, valmo.geco.model.Status)
-	 */
 	@Override
 	public void statusChanged(RunnerRaceData data, Status oldStatus) {
-		String status = data.getResult().getStatus().name();
-
-		Map<String, Integer> courseStats = getCourseStatsFor(data.getCourse().getName());
-		inc(status, courseStats);
-		dec(oldStatus.name(), courseStats);
-		int courseTotal = getCourseStatsFor(data.getCourse().getName(), StatItem.Registered.name());
+		StatItem item = convertStatus(data.getStatus());
+		StatItem oldItem = convertStatus(oldStatus);
+		
+		Map<StatItem, Integer> courseStats = getCourseStatsFor(data.getCourse().getName());
+		inc(item, courseStats);
+		dec(oldItem, courseStats);
+		int courseTotal = getCourseStatsFor(data.getCourse().getName(), StatItem.Registered);
 		updateCourseStats(courseStats, courseTotal);
 		
-		inc(status, getTotalCourse());
-		dec(oldStatus.name(), getTotalCourse());
-		int total = getCourseStatsFor(totalName(), StatItem.Registered.name());
+		inc(item, getTotalCourse());
+		dec(oldItem, getTotalCourse());
+		int total = getCourseStatsFor(totalName(), StatItem.Registered);
 		updateCourseStats(getTotalCourse(), total);
 	}
 

@@ -25,6 +25,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
 import valmo.geco.Geco;
+import valmo.geco.control.RegistryStats.StatItem;
 import valmo.geco.core.Messages;
 import valmo.geco.model.Stage;
 
@@ -37,7 +38,7 @@ public class VStatsPanel extends StatsPanel {
 
 	private AbstractTableModel courseTableModel;
 	
-	private String[] statusKeys = new String[0];
+	private StatItem[] statusKeys = new StatItem[0];
 
 	private JCheckBox viewCh;
 
@@ -126,7 +127,7 @@ public class VStatsPanel extends StatsPanel {
 			public Object getValueAt(int rowIndex, int columnIndex) {
 				String content;
 				if( columnIndex==0 )
-					content = statusKeys[rowIndex];
+					content = statusKeys[rowIndex].toString();
 				else 
 					content = stats().getCourseStatsFor(selectedCourse,
 														statusKeys[rowIndex]).toString();
@@ -163,7 +164,6 @@ public class VStatsPanel extends StatsPanel {
 		statusKeys = stats().shortStatuses();
 		coursesL.setListData(stats().sortedEntries());
 		coursesL.setSelectedValue("Total", true); //$NON-NLS-1$
-//		selectedCourse = "Total"; // courseKeys[courseKeys.length-1];
 	}
 
 	@Override

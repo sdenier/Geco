@@ -24,6 +24,7 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
 import valmo.geco.Geco;
+import valmo.geco.control.RegistryStats.StatItem;
 import valmo.geco.core.Html;
 import valmo.geco.core.Messages;
 import valmo.geco.model.Stage;
@@ -39,7 +40,7 @@ public class HStatsPanel extends StatsPanel {
 
 	private String[] courseKeys;
 	
-	private String[] statusKeys;
+	private StatItem[] statusKeys;
 
 	private JCheckBox viewCh;
 	
@@ -145,7 +146,7 @@ public class HStatsPanel extends StatsPanel {
 				if( column==0 )
 					return Messages.uiGet("StatsPanel.CourseHeader"); //$NON-NLS-1$
 				else
-					return statusKeys[column-1];
+					return statusKeys[column-1].toString();
 			}
 			@Override
 			public Class<?> getColumnClass(int columnIndex) {
