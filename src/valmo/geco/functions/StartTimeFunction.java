@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 import valmo.geco.control.GecoControl;
 import valmo.geco.control.SIReaderHandler;
 import valmo.geco.core.Html;
+import valmo.geco.core.Messages;
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.RunnerRaceData;
 
@@ -38,12 +39,12 @@ public class StartTimeFunction extends AbstractRunnerFunction {
 
 	@Override
 	public String toString() {
-		return "Set start times";
+		return Messages.uiGet("StartTimeFunction.StarttimeTitle"); //$NON-NLS-1$
 	}
 
 	@Override
 	public String executeTooltip() {
-		return "Set given start time for runners in selection";
+		return Messages.uiGet("StartTimeFunction.ExecuteTooltip"); //$NON-NLS-1$
 	}
 
 	@Override
@@ -56,10 +57,10 @@ public class StartTimeFunction extends AbstractRunnerFunction {
 					Date oldStart = runner.getStarttime();
 					runner.setStarttime(startTime);
 					if( ! oldStart.equals(TimeManager.NO_TIME) ){
-						geco().log("Start time change " + start + " for " + runner.toString()
-								+ " (was " + TimeManager.time(oldStart) + ")");
+						geco().log(Messages.uiGet("StartTimeFunction.StarttimeChangeMessage1") + start + Messages.uiGet("StartTimeFunction.StarttimeChangeMessage2") + runner.toString() //$NON-NLS-1$ //$NON-NLS-2$
+								+ Messages.uiGet("StartTimeFunction.StarttimeChangeMessage3") + TimeManager.time(oldStart) + ")"); //$NON-NLS-1$ //$NON-NLS-2$
 					} else {
-						geco().log("Start time " + start + " for " + runner.infoString());
+						geco().log(Messages.uiGet("StartTimeFunction.StarttimeSetMessage1") + start + Messages.uiGet("StartTimeFunction.StarttimeSetMessage2") + runner.infoString()); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 				}
 			}			
@@ -79,10 +80,10 @@ public class StartTimeFunction extends AbstractRunnerFunction {
 
 	@Override
 	public JComponent getParametersConfig() {
-		resetAllRunnersC = new JCheckBox("Reset all runners start time");
+		resetAllRunnersC = new JCheckBox(Messages.uiGet("StartTimeFunction.ResetStarttimeLabel")); //$NON-NLS-1$
 		resetAllRunnersC.setToolTipText(
-				"If enabled, reset all selected runners even if they already have a start time."
-				+ " Otherwise, only set runners without a start time.");
+				Messages.uiGet("StartTimeFunction.ResetStarttimeTooltip1") //$NON-NLS-1$
+				+ Messages.uiGet("StartTimeFunction.ResetStarttimeTooltip2")); //$NON-NLS-1$
 		starttimeF = new JTextField(6);
 		starttimeF.setText(getDefaultStarttime());
 
@@ -91,10 +92,10 @@ public class StartTimeFunction extends AbstractRunnerFunction {
 		starttimeF.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
 		final JCheckBox defaultStarttimeB = new JCheckBox(
-										Html.htmlTag("i", "[Global] Use Zero Hour as default start time"));
+										Html.htmlTag("i", Messages.uiGet("StartTimeFunction.DefaultStarttimeLabel"))); //$NON-NLS-1$ //$NON-NLS-2$
 		defaultStarttimeB.setToolTipText(
-				"If ecard does not contain a start time and no pre-registered start time is given, "
-				+ "use SI zero hour as default start time. Can be used to simulate a single mass start");
+				Messages.uiGet("StartTimeFunction.DefaultStarttimeTooltip1") //$NON-NLS-1$
+				+ Messages.uiGet("StartTimeFunction.DefaultStarttimeTooltip2")); //$NON-NLS-1$
 		defaultStarttimeB.setSelected(siHandler().useZeroHourAsDefaultStarttime());
 		defaultStarttimeB.addActionListener(new ActionListener() {
 			@Override

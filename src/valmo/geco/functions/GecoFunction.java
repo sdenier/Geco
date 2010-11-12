@@ -11,6 +11,7 @@ import javax.swing.JComponent;
 
 import valmo.geco.control.Control;
 import valmo.geco.control.GecoControl;
+import valmo.geco.core.Messages;
 
 /**
  * @author Simon Denier
@@ -58,7 +59,7 @@ public abstract class GecoFunction extends Control {
 //		layout.setBorder(BorderFactory.createTitledBorder("Parameters"));
 //		return layout;
 		JComponent parametersConfig = getParametersConfig();
-		parametersConfig.setBorder(BorderFactory.createTitledBorder("Parameters"));
+		parametersConfig.setBorder(BorderFactory.createTitledBorder(Messages.uiGet("GecoFunction.ParameterLabel"))); //$NON-NLS-1$
 		return parametersConfig;
 	}
 	

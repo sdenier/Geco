@@ -33,6 +33,7 @@ import valmo.geco.control.GecoControl;
 import valmo.geco.control.RunnerControl;
 import valmo.geco.control.RunnerCreationException;
 import valmo.geco.control.SIReaderHandler;
+import valmo.geco.core.Messages;
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.Course;
 import valmo.geco.model.Runner;
@@ -71,7 +72,7 @@ public class GeneratorFunction extends GecoFunction {
 
 	@Override
 	public String toString() {
-		return "Random generator";
+		return Messages.uiGet("GeneratorFunction.GeneratorTitle"); //$NON-NLS-1$
 	}
 
 	@Override
@@ -84,7 +85,7 @@ public class GeneratorFunction extends GecoFunction {
 			final int delay = 1000 * ((Integer) genDelay.getValue()).intValue();
 			genThread = new Thread(new Runnable() {
 				public synchronized void run() {
-					geco().log("--Generating " + nb + " runners--");
+					geco().log(Messages.uiGet("GeneratorFunction.GeneratingMessage1") + nb + Messages.uiGet("GeneratorFunction.GeneratingMessage2")); //$NON-NLS-1$ //$NON-NLS-2$
 					try {
 //						setMutationX(((Integer) mutationS.getValue()).intValue());
 						for (int i = 1; i <= nb; i++) {
@@ -98,7 +99,7 @@ public class GeneratorFunction extends GecoFunction {
 					} catch (RunnerCreationException e) {
 						e.printStackTrace();
 					}
-					geco().log("--Stop--");
+					geco().log(Messages.uiGet("GeneratorFunction.GeneratingStopMessage")); //$NON-NLS-1$
 				}
 			});
 			genThread.start();
@@ -107,39 +108,39 @@ public class GeneratorFunction extends GecoFunction {
 
 	@Override
 	public String executeTooltip() {
-		return "Generate the given number of random card data. Click to start, click again to interrupt";
+		return Messages.uiGet("GeneratorFunction.ExecuteTooltip"); //$NON-NLS-1$
 	}
 
 	@Override
 	public JComponent getParametersConfig() {
 		
 		nbGeneration = new JSpinner(new SpinnerNumberModel(10, 0, null, 5));
-		nbGeneration.setToolTipText("Number of runners to generate");
+		nbGeneration.setToolTipText(Messages.uiGet("GeneratorFunction.GenerationNumberTooltip")); //$NON-NLS-1$
 		nbGeneration.setPreferredSize(new Dimension(75, SwingUtils.SPINNERHEIGHT));
 		nbGeneration.setMaximumSize(nbGeneration.getPreferredSize());
 		
 		genDelay = new JSpinner(new SpinnerNumberModel(1, 0, null, 1));
-		genDelay.setToolTipText("Delay in second between two creations");
+		genDelay.setToolTipText(Messages.uiGet("GeneratorFunction.GenerationDelayTooltip")); //$NON-NLS-1$
 		genDelay.setPreferredSize(new Dimension(75, SwingUtils.SPINNERHEIGHT));
 		genDelay.setMaximumSize(genDelay.getPreferredSize());
 
 		JPanel paramP = new JPanel(new GridLayout(2, 4, 5, 10));
-		paramP.add(new JLabel("Number:"));
+		paramP.add(new JLabel(Messages.uiGet("GeneratorFunction.GenerationNumberLabel"))); //$NON-NLS-1$
 		paramP.add(nbGeneration);
-		paramP.add(new JLabel("Delay:"));
+		paramP.add(new JLabel(Messages.uiGet("GeneratorFunction.GenerationDelayLabel"))); //$NON-NLS-1$
 		paramP.add(genDelay);
 		
 //		final JSpinner mutationS = new JSpinner(new SpinnerNumberModel(40, 0, null, 5));
 //		mutationS.setPreferredSize(new Dimension(75, SwingUtils.SPINNERHEIGHT));
 //		mutationS.setToolTipText("Mutation factor");
 		
-		JButton cUnknownB = new JButton("Create One Unknown");
+		JButton cUnknownB = new JButton(Messages.uiGet("GeneratorFunction.CreateUnknownLabel")); //$NON-NLS-1$
 		cUnknownB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				generateUnknownData();
 			}
 		});
-		JButton cOverwriteB = new JButton("Create One Overwriting");
+		JButton cOverwriteB = new JButton(Messages.uiGet("GeneratorFunction.CreateOverwritingLabel")); //$NON-NLS-1$
 		cOverwriteB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				generateOverwriting();
@@ -240,7 +241,7 @@ public class GeneratorFunction extends GecoFunction {
 		double nextGaussian = random.nextGaussian() / (meanTime / timeDis);
 		int minutes = (int) ((nextGaussian + 1) * meanTime);
 		try {
-			return TimeManager.userParse(minutes + ":" + random.nextInt(60)).getTime();
+			return TimeManager.userParse(minutes + ":" + random.nextInt(60)).getTime(); //$NON-NLS-1$
 		} catch (ParseException e) {
 			e.printStackTrace();
 			return PunchObject.INVALID;

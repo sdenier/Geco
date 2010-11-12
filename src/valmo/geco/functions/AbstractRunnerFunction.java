@@ -21,6 +21,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 import valmo.geco.control.GecoControl;
+import valmo.geco.core.Messages;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 
@@ -46,9 +47,9 @@ public abstract class AbstractRunnerFunction extends GecoFunction {
 
 	@Override
 	public JComponent getParametersConfig() {
-		coursesRB = new JRadioButton("Course");
-		categoriesRB = new JRadioButton("Categories");
-		runnersRB = new JRadioButton("Runners");		
+		coursesRB = new JRadioButton(Messages.uiGet("AbstractRunnerFunction.CourseLabel")); //$NON-NLS-1$
+		categoriesRB = new JRadioButton(Messages.uiGet("AbstractRunnerFunction.CategoryLabel")); //$NON-NLS-1$
+		runnersRB = new JRadioButton(Messages.uiGet("AbstractRunnerFunction.RunnerLabel"));		 //$NON-NLS-1$
 		coursesRB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

@@ -4,10 +4,9 @@
  */
 package valmo.geco.functions;
 
-import java.util.Collection;
-
 import valmo.geco.control.GecoControl;
 import valmo.geco.control.RunnerControl;
+import valmo.geco.core.Messages;
 import valmo.geco.model.RunnerRaceData;
 
 /**
@@ -23,12 +22,12 @@ public class RecheckFunction extends AbstractRunnerFunction {
 
 	@Override
 	public String toString() {
-		return "Recheck runners";
+		return Messages.uiGet("RecheckFunction.RecheckTitle"); //$NON-NLS-1$
 	}
 
 	@Override
 	public String executeTooltip() {
-		return "Recheck status and time for OK|MP runners in selection";
+		return Messages.uiGet("RecheckFunction.ExecuteTooltip"); //$NON-NLS-1$
 	}
 
 	@Override
