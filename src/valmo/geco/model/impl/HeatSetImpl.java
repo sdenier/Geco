@@ -16,10 +16,10 @@ public class HeatSetImpl implements HeatSet {
 	private Pool[] selectedPools;
 	
 	public HeatSetImpl() {
-		name = "";
+		name = ""; //$NON-NLS-1$
 		qualifyingRank = 0;
 		type = ResultType.CourseResult;
-		heatNames = new String[] { "" };
+		heatNames = new String[] { "" }; //$NON-NLS-1$
 		selectedPools = new Pool[0];
 	}
 	

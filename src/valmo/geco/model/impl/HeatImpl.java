@@ -18,7 +18,7 @@ public class HeatImpl implements Heat {
 	private String heatsetName;
 
 	public HeatImpl() {
-		this("");
+		this(""); //$NON-NLS-1$
 	}
 	
 	public HeatImpl(String name) {

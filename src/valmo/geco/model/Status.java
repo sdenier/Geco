@@ -5,6 +5,8 @@ package valmo.geco.model;
 
 import java.awt.Color;
 
+import valmo.geco.core.Messages;
+
 public enum Status {
 	
 	OK {
@@ -34,7 +36,7 @@ public enum Status {
 			return new Color(1, 1, 0.5f);
 		}
 		public String toString() {
-			return "No Data";
+			return Messages.getString("Status.NoDataLabel"); //$NON-NLS-1$
 		}
 		public boolean  hasData() {
 			return false;
@@ -51,7 +53,7 @@ public enum Status {
 			return new Color(1.0f, 0.5f, 0.5f);
 		}
 		public String toString() {
-			return "Unknown";
+			return Messages.getString("Status.UnknownLabel"); //$NON-NLS-1$
 		}
 		public boolean isUnresolved() {
 			return true;
@@ -62,7 +64,7 @@ public enum Status {
 			return new Color(1.0f, 0.5f, 0.5f);
 		}
 		public String toString() {
-			return "Duplicate";
+			return Messages.getString("Status.DuplicateLabel"); //$NON-NLS-1$
 		}
 		public boolean isUnresolved() {
 			return true;

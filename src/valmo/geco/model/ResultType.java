@@ -4,15 +4,20 @@
  */
 package valmo.geco.model;
 
+import valmo.geco.core.Messages;
+
 public enum ResultType { 
 	
 	CourseResult() {
-		@Override public String toString() { return "Courses"; }},
+		@Override public String toString() {
+			return Messages.getString("ResultType.CourseLabel"); }}, //$NON-NLS-1$
 		
 	CategoryResult() {
-		@Override public String toString() { return "Categories"; }},
+		@Override public String toString() {
+			return Messages.getString("ResultType.CategoryLabel"); }}, //$NON-NLS-1$
 		
 	MixedResult() {
-		@Override public String toString() { return "Category/Courses"; }}
+		@Override public String toString() {
+			return Messages.getString("ResultType.MixedLabel"); }} //$NON-NLS-1$
 
 }

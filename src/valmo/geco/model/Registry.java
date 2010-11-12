@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Vector;
 
+import valmo.geco.core.Messages;
+
 
 /**
  * Registry holds all data related to the stage itself and provides a facade to access them. It does not
@@ -201,7 +203,7 @@ public class Registry {
 	}
 	
 	public Club noClub() {
-		return findClub("[None]");
+		return findClub(Messages.getString("Registry.NoClubLabel")); //$NON-NLS-1$
 	}
 
 	public Club anyClub() {
@@ -278,7 +280,7 @@ public class Registry {
 	}
 	
 	public Category noCategory() {
-		return findCategory("[None]");
+		return findCategory(Messages.getString("Registry.NoCategoryLabel")); //$NON-NLS-1$
 	}
 	
 	public Category anyCategory() {

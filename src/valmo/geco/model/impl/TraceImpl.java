@@ -59,15 +59,15 @@ public class TraceImpl implements Trace {
 	}
 	@Override
 	public boolean isMP() {
-		return code.startsWith("-");
+		return code.startsWith("-"); //$NON-NLS-1$
 	}
 	@Override
 	public boolean isAdded() {
-		return code.startsWith("+");
+		return code.startsWith("+"); //$NON-NLS-1$
 	}
 	@Override
 	public boolean isSubst() {
 		// Notice that isSub => isMP
-		return code.startsWith("-") && code.contains("+");
+		return code.startsWith("-") && code.contains("+"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

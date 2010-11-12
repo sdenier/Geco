@@ -6,6 +6,7 @@ package valmo.geco.model.impl;
 
 import java.util.Arrays;
 
+import valmo.geco.core.Messages;
 import valmo.geco.model.Course;
 
 
@@ -64,7 +65,11 @@ public class CourseImpl implements Course {
 
 	@Override
 	public String toString() {
-		return "Course " + name + ", " + codes.length + "p (" + length +"m, " + climb + "m): "
+		return Messages.getString("CourseImpl.CourseLabel")	 //$NON-NLS-1$
+				+ name + ", "			 //$NON-NLS-1$
+				+ codes.length + "p ("	 //$NON-NLS-1$
+				+ length +"m, "			 //$NON-NLS-1$
+				+ climb + "m): "		 //$NON-NLS-1$
 				+ Arrays.toString(codes);
 	} 
 

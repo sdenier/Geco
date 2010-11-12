@@ -40,11 +40,11 @@ public abstract class AbstractRunnerImpl implements AbstractRunner {
 	}
 
 	public String getName() {
-		return firstname + " " + lastname;
+		return firstname + " " + lastname; //$NON-NLS-1$
 	}
 	
 	public String getNameR() {
-		return lastname + " " + firstname;
+		return lastname + " " + firstname; //$NON-NLS-1$
 	}
 	
 	public String getFirstname() {

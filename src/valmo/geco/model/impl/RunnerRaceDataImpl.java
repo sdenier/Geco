@@ -7,6 +7,7 @@ package valmo.geco.model.impl;
 import java.util.Date;
 import java.util.TimeZone;
 
+import valmo.geco.core.Messages;
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.Course;
 import valmo.geco.model.Punch;
@@ -191,21 +192,21 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 	}
 	
 	public String punchSummary(int sumLength) {
-		StringBuffer buf = new StringBuffer("(");
+		StringBuffer buf = new StringBuffer("("); //$NON-NLS-1$
 		int i = 0;
 		while( i<sumLength && i<punches.length ) {
 			buf.append(punches[i].getCode());
-			buf.append(",");
+			buf.append(","); //$NON-NLS-1$
 			i++;
 		}
-		buf.append("...)");
+		buf.append("...)"); //$NON-NLS-1$
 		return buf.toString();
 	}
 	
 	public String infoString() {
 		StringBuffer buffer = new StringBuffer(getRunner().idString());
-		buffer.append(", " + getCourse().getName() + " " + getResult().formatStatus());
-		buffer.append(" in " + getResult().formatRacetime());
+		buffer.append(", " + getCourse().getName() + " " + getResult().formatStatus()); //$NON-NLS-1$ //$NON-NLS-2$
+		buffer.append(Messages.getString("RunnerRaceDataImpl.InTimeLabel") + getResult().formatRacetime()); //$NON-NLS-1$
 		return buffer.toString();
 	}
 	

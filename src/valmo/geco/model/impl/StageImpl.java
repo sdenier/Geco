@@ -28,7 +28,7 @@ public class StageImpl implements Stage {
 	}
 
 	protected void initializeDefault() {
-		name = "";
+		name = ""; //$NON-NLS-1$
 		nbBackups = 9;
 		autosaveDelay = 2;
 	}
@@ -93,6 +93,7 @@ public class StageImpl implements Stage {
 	private void setProperties(Properties properties) {
 		this.properties = properties;
 	}
+	
 	/**
 	 * Update stage attributes with given properties.
 	 * 
@@ -100,14 +101,13 @@ public class StageImpl implements Stage {
 	 */
 	public void loadProperties(Properties properties) {
 		setProperties(properties);
-//		initializeDefault();
 		
-		String prop = properties.getProperty("name");
+		String prop = properties.getProperty(nameProperty());
 		if( prop!=null ) {
 			setName(prop);
 		}
 
-		prop = properties.getProperty("AutosaveDelay");
+		prop = properties.getProperty(autosaveDelayProperty());
 		if( prop!=null ) {
 			try {
 				setAutosaveDelay(new Integer(prop));				
@@ -117,7 +117,7 @@ public class StageImpl implements Stage {
 			}
 		}
 		
-		prop = properties.getProperty("NbAutoBackups");
+		prop = properties.getProperty(nbAutoBackupsProperty());
 		if( prop!=null ) {
 			try {
 				setNbAutoBackups(new Integer(prop));				
@@ -135,10 +135,22 @@ public class StageImpl implements Stage {
 	 * @param properties
 	 */
 	public void saveProperties(Properties properties) {
-		properties.setProperty("name", getName());
-		properties.setProperty("AutosaveDelay", new Integer(getAutosaveDelay()).toString());
-		properties.setProperty("NbAutoBackups", new Integer(getNbAutoBackups()).toString());
+		properties.setProperty(nameProperty(), getName());
+		properties.setProperty(autosaveDelayProperty(), new Integer(getAutosaveDelay()).toString());
+		properties.setProperty(nbAutoBackupsProperty(), new Integer(getNbAutoBackups()).toString());
 		setProperties(properties);
+	}
+
+	public static String nameProperty() {
+		return "name"; //$NON-NLS-1$
+	}
+
+	public static String autosaveDelayProperty() {
+		return "AutosaveDelay"; //$NON-NLS-1$
+	}
+
+	public static String nbAutoBackupsProperty() {
+		return "NbAutoBackups"; //$NON-NLS-1$
 	}
 
 }
