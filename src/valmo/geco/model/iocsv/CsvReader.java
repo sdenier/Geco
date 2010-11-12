@@ -26,7 +26,7 @@ public class CsvReader {
 
 
 	public CsvReader() {
-		this(",");
+		this(","); //$NON-NLS-1$
 	}
 
 	public CsvReader(String csvSep) {

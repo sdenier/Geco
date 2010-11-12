@@ -16,7 +16,7 @@ import valmo.geco.model.Registry;
 public class ClubIO extends AbstractIO<Club> {
 
 	public static String orFilename() {
-		return "Clubs.csv";
+		return "Clubs.csv"; //$NON-NLS-1$
 	}
 	
 	public ClubIO(Factory factory, CsvReader reader, CsvWriter writer, Registry registry) {
@@ -27,21 +27,15 @@ public class ClubIO extends AbstractIO<Club> {
 	public Club importTData(String[] record) {
 		Club club = this.factory.createClub();
 		club.setName(record[0]);
-		club.setShortname("");
+		club.setShortname(""); //$NON-NLS-1$
 		return club;
 	}
 
-	/* (non-Javadoc)
-	 * @see valmo.geco.csv.AbstractImporter#register(java.lang.Object, valmo.geco.csv.Registry)
-	 */
 	@Override
 	public void register(Club data, Registry registry) {
 		registry.addClub(data);
 	}
 
-	/* (non-Javadoc)
-	 * @see valmo.geco.csv.AbstractIO#exportTData(java.lang.Object)
-	 */
 	@Override
 	public String[] exportTData(Club c) {
 		return new String[] {

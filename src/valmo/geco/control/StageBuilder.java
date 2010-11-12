@@ -30,7 +30,7 @@ import valmo.geco.model.iocsv.HeatSetIO;
 import valmo.geco.model.iocsv.RaceDataIO;
 import valmo.geco.model.iocsv.ResultDataIO;
 import valmo.geco.model.iocsv.RunnerIO;
-import valmo.geco.model.iocsv.StageIO;
+import valmo.geco.model.iocsv.OrStageIO;
 
 /**
  * StageBuilder is currently responsible for persistence of Stage and its data. It provides functions to
@@ -101,9 +101,9 @@ public class StageBuilder extends BasicControl {
 	 * @return
 	 */
 	public Stage importOrData(String baseDir, PenaltyChecker checker) {
-		CsvReader reader = new CsvReader().initialize(baseDir, StageIO.sourceFilename());
+		CsvReader reader = new CsvReader().initialize(baseDir, OrStageIO.sourceFilename());
 		try {
-			currentStage = new StageIO(factory(), reader).getStage();
+			currentStage = new OrStageIO(factory(), reader).getStage();
 		} catch (IOException e) {
 			e.printStackTrace();
 			currentStage = factory().createStage();

@@ -16,7 +16,7 @@ import valmo.geco.model.Registry;
 public class CategoryIO extends AbstractIO<Category> {
 
 	public static String sourceFilename() {
-		return "Classes.csv";
+		return "Classes.csv"; //$NON-NLS-1$
 	}
 	
 	public CategoryIO(Factory factory, CsvReader reader, CsvWriter writer, Registry registry) {
@@ -27,24 +27,18 @@ public class CategoryIO extends AbstractIO<Category> {
 	public Category importTData(String[] record) {
 		Category cat = this.factory.createCategory();
 		cat.setShortname(record[0]);
-		cat.setLongname("");
+		cat.setLongname(""); //$NON-NLS-1$
 		if( record.length==2 ) {
 			cat.setCourse(registry.findCourse(record[1]));
 		}
 		return cat;
 	}
 
-	/* (non-Javadoc)
-	 * @see valmo.geco.csv.AbstractImporter#register(java.lang.Object, valmo.geco.csv.Registry)
-	 */
 	@Override
 	public void register(Category data, Registry registry) {
 		registry.addCategory(data);
 	}
 
-	/* (non-Javadoc)
-	 * @see valmo.geco.csv.AbstractIO#exportTData(java.lang.Object)
-	 */
 	@Override
 	public String[] exportTData(Category c) {
 		if( c.getCourse()!=null ) {

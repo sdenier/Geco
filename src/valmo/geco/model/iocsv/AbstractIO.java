@@ -30,10 +30,10 @@ public abstract class AbstractIO<T> {
 		this.factory = factory;
 		this.reader = reader;
 		if( this.reader!=null )
-			this.reader.setCsvSep(",");
+			this.reader.setCsvSep(","); //$NON-NLS-1$
 		this.writer = writer;
 		if( this.writer!=null )
-			this.writer.setCsvSep(",");
+			this.writer.setCsvSep(","); //$NON-NLS-1$
 		this.registry = registry;
 	}
 	

@@ -18,7 +18,7 @@ import valmo.geco.model.Registry;
 public class CourseIO extends AbstractIO<Course> {
 
 	public static String orFilename() {
-		return "Courses.csv";
+		return "Courses.csv"; //$NON-NLS-1$
 	}
 
 	public CourseIO(Factory factory, CsvReader reader, CsvWriter writer, Registry registry) {
@@ -55,15 +55,19 @@ public class CourseIO extends AbstractIO<Course> {
 	@Override
 	public String[] exportTData(Course c) {
 		/*
-		 * course name, length, climb, type, start code, finish code,
-		 * time limit, time penalty, default start time, spare, spare, spare
+		 * course name, length, climb,
+		 * type, start code, finish code,
+		 * time limit, time penalty, default start time,
+		 * spare, spare, spare,
 		 * control codes....
 		 */
 		String[] record = new String[] {
 				c.getName(),
 				new Float(c.getLength() / 1000.0).toString(),
 				Integer.toString(c.getClimb()),
-				"Cross Country", "1", "1001", "60", "10", "36000000", "", "", ""
+				"Cross Country", "1", "1001", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				"60", "10", "36000000", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				"", "", "" 				//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		};
 		int offset = record.length;
 		int[] codes = c.getCodes();

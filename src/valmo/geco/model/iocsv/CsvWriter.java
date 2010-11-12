@@ -27,7 +27,7 @@ public class CsvWriter {
 
 	
 	public CsvWriter() {
-		this(",");
+		this(","); //$NON-NLS-1$
 	}
 
 	public CsvWriter(String csvSep) {

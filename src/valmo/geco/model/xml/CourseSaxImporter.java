@@ -45,7 +45,7 @@ public class CourseSaxImporter extends DefaultHandler {
 
 	public static void main(String args[]) throws Exception {
 //		importFromXml("testData/IOFdata-2.0.3/CourseData_example1.xml", new POFactory());
-		importFromXml("hellemmes.xml", new POFactory());
+		importFromXml("hellemmes.xml", new POFactory()); //$NON-NLS-1$
 	}
 	
 	public CourseSaxImporter(Factory factory) {
@@ -74,8 +74,8 @@ public class CourseSaxImporter extends DefaultHandler {
 		xr.setContentHandler(this);
 		xr.setErrorHandler(this);
 //		if( ! new File("IOFdata.dtd").exists() ) {
-			xr.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-			xr.setFeature("http://xml.org/sax/features/validation", false);
+			xr.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false); //$NON-NLS-1$
+			xr.setFeature("http://xml.org/sax/features/validation", false); //$NON-NLS-1$
 //		}
 		xr.parse(new InputSource(GecoResources.getReaderFor(xmlFile)));
 		return courses();
@@ -112,13 +112,13 @@ public class CourseSaxImporter extends DefaultHandler {
 	
 	
 	public void startElement(String uri, String name, String qName, Attributes atts) {
-		if( "MapPosition".equals(name) ) {
+		if( "MapPosition".equals(name) ) { //$NON-NLS-1$
 			coord = new Float[] {
-						new Float(atts.getValue("x")).floatValue(),
-						new Float(atts.getValue("y")).floatValue() };
+						new Float(atts.getValue("x")).floatValue(), //$NON-NLS-1$
+						new Float(atts.getValue("y")).floatValue() }; //$NON-NLS-1$
 			return;
 		}
-		if( "StartPoint".equals(name) ) {
+		if( "StartPoint".equals(name) ) { //$NON-NLS-1$
 			resetBuffer();
 			return;
 		}
@@ -127,84 +127,84 @@ public class CourseSaxImporter extends DefaultHandler {
 //			resetBuffer();
 //			return;
 //		}
-		if( "FinishPoint".equals(name) ) {
+		if( "FinishPoint".equals(name) ) { //$NON-NLS-1$
 			resetBuffer();
 			return;
 		}
 
-		if( "CourseName".equals(name) ) {
+		if( "CourseName".equals(name) ) { //$NON-NLS-1$
 			resetBuffer();
 			return;
 		}
-		if( "CourseVariationId".equals(name) ) {
+		if( "CourseVariationId".equals(name) ) { //$NON-NLS-1$
 			resetBuffer();
 			return;
 		}
-		if( "Name".equals(name) ) {
+		if( "Name".equals(name) ) { //$NON-NLS-1$
 			resetBuffer();
 			return;
 		}
-		if( "CourseLength".equals(name) ) {
+		if( "CourseLength".equals(name) ) { //$NON-NLS-1$
 			resetBuffer();
 			return;
 		}
-		if( "Sequence".equals(name) ) {
+		if( "Sequence".equals(name) ) { //$NON-NLS-1$
 			resetBuffer();
 			return;
 		}
-		if( "ControlCode".equals(name) ) {
+		if( "ControlCode".equals(name) ) { //$NON-NLS-1$
 			resetBuffer();
 			return;
 		}
 	}
 
 	public void endElement(String uri, String name, String qName) {
-		if( "Map".equals(name) ) {
-			controls.put("Map", coord );
+		if( "Map".equals(name) ) { //$NON-NLS-1$
+			controls.put("Map", coord ); //$NON-NLS-1$
 			return;
 		}
-		if( "StartPoint".equals(name) ) {
+		if( "StartPoint".equals(name) ) { //$NON-NLS-1$
 			controls.put(buffer(), coord );
 			return;
 		}
-		if( "Control".equals(name) ) {
+		if( "Control".equals(name) ) { //$NON-NLS-1$
 			controls.put(buffer(), coord );
 			return;
 		}
-		if( "FinishPoint".equals(name) ) {
+		if( "FinishPoint".equals(name) ) { //$NON-NLS-1$
 			controls.put(buffer(), coord );
 			return;
 		}
 		
-		if( "Course".equals(name) ) {
+		if( "Course".equals(name) ) { //$NON-NLS-1$
 			registerCourses();
 			return;
 		}
-		if( "CourseName".equals(name) ) {
+		if( "CourseName".equals(name) ) { //$NON-NLS-1$
 			saveNamePrefix();
 			return;
 		}
-		if( "CourseVariation".equals(name) ) {
+		if( "CourseVariation".equals(name) ) { //$NON-NLS-1$
 			saveCourseVariation();
 			return;
 		}
-		if( "CourseVariationId".equals(name) ) {
+		if( "CourseVariationId".equals(name) ) { //$NON-NLS-1$
 			saveCourseId();
 			return;
 		}
-		if( "Name".equals(name) ) {
+		if( "Name".equals(name) ) { //$NON-NLS-1$
 			saveVariationName();
 			return;
 		}
-		if( "CourseLength".equals(name) ) {
+		if( "CourseLength".equals(name) ) { //$NON-NLS-1$
 			saveCourseLength();
 			return;
 		}
-		if( "Sequence".equals(name) ) {
+		if( "Sequence".equals(name) ) { //$NON-NLS-1$
 			saveSeqNumber();
 			return;
 		}
-		if( "ControlCode".equals(name) ) {
+		if( "ControlCode".equals(name) ) { //$NON-NLS-1$
 			saveControlCode();
 			return;
 		}
@@ -269,7 +269,7 @@ public class CourseSaxImporter extends DefaultHandler {
 		} else {
 			for (String id : variations.keySet()) {
 				c = variations.get(id);
-				c.setName(namePrefix + " " + id);
+				c.setName(namePrefix + " " + id); //$NON-NLS-1$
 				courses.add(c);
 			}
 		}

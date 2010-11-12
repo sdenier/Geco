@@ -16,10 +16,10 @@ import valmo.geco.model.Stage;
  * @author Simon Denier
  * @since Feb 9, 2009
  */
-public class StageIO extends AbstractIO<Stage> {
+public class OrStageIO extends AbstractIO<Stage> {
 
 	public static String sourceFilename() {
-		return "Competition.csv";
+		return "Competition.csv"; //$NON-NLS-1$
 	}
 	
 	private Stage stage;
@@ -29,17 +29,14 @@ public class StageIO extends AbstractIO<Stage> {
 	 * @param reader
 	 * @param registry
 	 */
-	public StageIO(Factory factory, CsvReader reader) {
+	public OrStageIO(Factory factory, CsvReader reader) {
 		super(factory, reader, null, null);
 		if( this.reader!=null )
-			this.reader.setCsvSep(";");
+			this.reader.setCsvSep(";"); //$NON-NLS-1$
 		if( this.writer!=null )
-			this.writer.setCsvSep(";");
+			this.writer.setCsvSep(";"); //$NON-NLS-1$
 	}
 
-	/* (non-Javadoc)
-	 * @see valmo.geco.csv.AbstractImporter#importTData(java.lang.String[])
-	 */
 	@Override
 	public Stage importTData(String[] record) {
 		// 94;"LL Mullagmmeen 12 Oct 2008";-1;1;36000000;true;true;true;true;"";"";
@@ -49,7 +46,7 @@ public class StageIO extends AbstractIO<Stage> {
 		// result dir,result file,split dir,split file,SI port,csv dir,csv file,string,string,
 		// subheading,spool split,spool port,Map DPI,GPS offset time,auto-enter,send server, server address, time format
 		Stage stage = factory.createStage();
-		stage.setName(record[1].replace("\"", ""));
+		stage.setName(record[1].replace("\"", "")); //$NON-NLS-1$ //$NON-NLS-2$
 //		stage.setDate(record[]);
 //		stage.setDefaultStartTime(record[]);
 		this.stage = stage;
@@ -63,17 +60,11 @@ public class StageIO extends AbstractIO<Stage> {
 		return this.stage;
 	}
 
-	/* (non-Javadoc)
-	 * @see valmo.geco.csv.AbstractImporter#register(java.lang.Object, valmo.geco.model.Registry)
-	 */
 	@Override
 	public void register(Stage data, Registry registry) {
 		// do nothing
 	}
 
-	/* (non-Javadoc)
-	 * @see valmo.geco.csv.AbstractIO#exportTData(java.lang.Object)
-	 */
 	@Override
 	public String[] exportTData(Stage t) {
 		return null;

@@ -12,7 +12,8 @@ import valmo.geco.model.ResultType;
 
 
 /**
- * Line format: heatset name, heatset type, qualifyingRank, nbHeats, heatname1, heatname2, ..., set1, set2, ...
+ * Line format:
+ * heatset name, heatset type, qualifyingRank, nbHeats, heatname1, heatname2, ..., set1, set2, ...
  * 
  * @author Simon Denier
  * @since Jun 23, 2009
@@ -21,7 +22,7 @@ import valmo.geco.model.ResultType;
 public class HeatSetIO extends AbstractIO<HeatSet> {
 	
 	public static String sourceFilename() {
-		return "Heatsets.csv";
+		return "Heatsets.csv"; //$NON-NLS-1$
 	}
 
 	public HeatSetIO(Factory factory, CsvReader reader, CsvWriter writer,
