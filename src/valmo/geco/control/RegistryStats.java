@@ -11,6 +11,7 @@ import java.util.Properties;
 import java.util.Vector;
 
 import valmo.geco.core.Announcer;
+import valmo.geco.core.Messages;
 import valmo.geco.model.Course;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
@@ -31,22 +32,22 @@ public class RegistryStats extends Control
 		Registered {
 			@Override
 			public String toString() {
-				return "Registered";
+				return Messages.getString("RegistryStats.RegisteredLabel"); //$NON-NLS-1$
 			}},
 		Present {
 			@Override
 			public String toString() {
-				return "Present";
+				return Messages.getString("RegistryStats.PresentLabel"); //$NON-NLS-1$
 			}},
 		Unresolved {
 			@Override
 			public String toString() {
-				return "Unresolved";
+				return Messages.getString("RegistryStats.UnresolvedLabel"); //$NON-NLS-1$
 			}},
 		Finished {
 			@Override
 			public String toString() {
-				return "Finished";
+				return Messages.getString("RegistryStats.FinishedLabel"); //$NON-NLS-1$
 			}},
 		OK, MP, DNS, DNF, DSQ, NDA, UNK, DUP;
 	}
@@ -92,7 +93,7 @@ public class RegistryStats extends Control
 	}
 	
 	private String totalName() {
-		return "Total";
+		return Messages.getString("RegistryStats.TotalLabel"); //$NON-NLS-1$
 	}
 
 	public Map<StatItem, Integer> getCourseStatsFor(String coursename) {
