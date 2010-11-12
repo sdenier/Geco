@@ -27,10 +27,10 @@ import valmo.geco.model.iocsv.ClubIO;
 import valmo.geco.model.iocsv.CourseIO;
 import valmo.geco.model.iocsv.CsvReader;
 import valmo.geco.model.iocsv.HeatSetIO;
+import valmo.geco.model.iocsv.OrStageIO;
 import valmo.geco.model.iocsv.RaceDataIO;
 import valmo.geco.model.iocsv.ResultDataIO;
 import valmo.geco.model.iocsv.RunnerIO;
-import valmo.geco.model.iocsv.OrStageIO;
 
 /**
  * StageBuilder is currently responsible for persistence of Stage and its data. It provides functions to
@@ -131,7 +131,7 @@ public class StageBuilder extends BasicControl {
 		stage.saveProperties(properties);
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(propFile(stage.getBaseDir())));
-			properties.store(writer, "Geco " + new Date(System.currentTimeMillis()).toString());
+			properties.store(writer, "Geco " + new Date(System.currentTimeMillis()).toString()); //$NON-NLS-1$
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -142,7 +142,8 @@ public class StageBuilder extends BasicControl {
 	 */
 	public void backupData(String basedir, String backupname) {
 		try {
-			ZipOutputStream zipStream = new ZipOutputStream(new FileOutputStream(filepath(basedir, backupname)));
+			ZipOutputStream zipStream = 
+								new ZipOutputStream(new FileOutputStream(filepath(basedir, backupname)));
 			for (String datafile : datafiles) {
 				writeZipEntry(zipStream, datafile, basedir);	
 			}
@@ -153,7 +154,7 @@ public class StageBuilder extends BasicControl {
 				writeZipEntry(zipStream, HeatSetIO.sourceFilename(), basedir);
 			}
 			if( propFile(basedir).exists() ) {
-				writeZipEntry(zipStream, "geco.prop", basedir);
+				writeZipEntry(zipStream, "geco.prop", basedir); //$NON-NLS-1$
 			}
 			zipStream.close();
 		} catch (FileNotFoundException e) {
@@ -163,11 +164,13 @@ public class StageBuilder extends BasicControl {
 		}
 	}
 
-	private void writeZipEntry(ZipOutputStream zipStream, String filename, String basedir) throws IOException, FileNotFoundException {
+	private void writeZipEntry(ZipOutputStream zipStream, String filename, String basedir)
+					throws IOException, FileNotFoundException {
 		ZipEntry zipEntry = new ZipEntry(filename);
 		zipStream.putNextEntry(zipEntry);
 		byte[] buffer = new byte[4096];
-		BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(filepath(basedir, filename)));
+		BufferedInputStream inputStream =
+								new BufferedInputStream(new FileInputStream(filepath(basedir, filename)));
 		int len;
 		while( (len = inputStream.read(buffer)) != -1 ) {
 			zipStream.write(buffer, 0, len);
@@ -176,7 +179,7 @@ public class StageBuilder extends BasicControl {
 	}
 
 	public static String propName(String baseDir) {
-		return filepath(baseDir, "geco.prop");
+		return filepath(baseDir, "geco.prop"); //$NON-NLS-1$
 	}
 	
 	public static File propFile(String baseDir) {

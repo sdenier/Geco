@@ -14,6 +14,7 @@ import java.util.Map.Entry;
 import java.util.Vector;
 
 import valmo.geco.core.Html;
+import valmo.geco.core.Messages;
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.ArchiveRunner;
 import valmo.geco.model.Category;
@@ -71,7 +72,7 @@ public class ResultBuilder extends Control implements IResultBuilder {
 		List<Result> results = new Vector<Result>();
 		for (Entry<Course, List<Runner>> entry : runnersMap.entrySet()) {
 			Result result = factory().createResult();
-			result.setIdentifier(cat.getShortname() + " - " + entry.getKey().getName());
+			result.setIdentifier(cat.getShortname() + " - " + entry.getKey().getName()); //$NON-NLS-1$
 			results.add(sortResult(result, entry.getValue()));
 		}
 		return results;
@@ -164,20 +165,20 @@ public class ResultBuilder extends Control implements IResultBuilder {
 	public void exportFile(String filename, String format, ResultConfig config, int refreshInterval)
 			throws IOException {
 		if( !filename.endsWith(format) ) {
-			filename = filename + "." + format;
+			filename = filename + "." + format; //$NON-NLS-1$
 		}
-		if( format.equals("html") ) {
+		if( format.equals("html") ) { //$NON-NLS-1$
 			BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
 			writer.write(generateHtmlResults(config, refreshInterval));
 			writer.close();
 		}
-		if( format.equals("csv") ) {
-			CsvWriter writer = new CsvWriter(",", filename);
+		if( format.equals("csv") ) { //$NON-NLS-1$
+			CsvWriter writer = new CsvWriter(",", filename); //$NON-NLS-1$
 			generateCsvResult(config, writer);
 			writer.close();
 		}
-		if( format.equals("cn.csv") ) {
-			CsvWriter writer = new CsvWriter(";", filename);
+		if( format.equals("cn.csv") ) { //$NON-NLS-1$
+			CsvWriter writer = new CsvWriter(";", filename); //$NON-NLS-1$
 			generateOECsvResult(config, writer);
 			writer.close();
 		}
@@ -188,9 +189,10 @@ public class ResultBuilder extends Control implements IResultBuilder {
 		Vector<Result> results = buildResults(config);
 		Html html = new Html();
 		if( refreshInterval>0 ) {
-			html.open("head");
-			html.contents("<meta http-equiv=\"refresh\" content=\"" + refreshInterval + "\" />");
-			html.close("head");
+			html.open("head"); //$NON-NLS-1$
+			html.contents("<meta http-equiv=\"refresh\" content=\"" //$NON-NLS-1$
+							+ refreshInterval + "\" />"); //$NON-NLS-1$
+			html.close("head"); //$NON-NLS-1$
 		}
 		for (Result result : results) {
 			if( config.showEmptySets || !result.isEmpty()) {
@@ -214,15 +216,20 @@ public class ResultBuilder extends Control implements IResultBuilder {
 				present++;
 			}
 		}
-		resultLabel.append(" (").append(Integer.toString(finished)).append("/")
-					.append(Integer.toString(present)).append(")");
-		html.tag("h1", resultLabel.toString());
+		resultLabel.append(" (").append(Integer.toString(finished)).append("/") //$NON-NLS-1$ //$NON-NLS-2$
+					.append(Integer.toString(present)).append(")"); //$NON-NLS-1$
+		html.tag("h1", resultLabel.toString()); //$NON-NLS-1$
 		
-		html.open("table");
+		html.open("table"); //$NON-NLS-1$
 		if( config.showPenalties ){
-			html.open("tr").th("").th("Name").th("Club")
-			.th("Time", "align=\"right\"").th("MP", "align=\"right\"").th("Race time", "align=\"right\"")
-			.closeTr();
+			html.open("tr") //$NON-NLS-1$
+				.th("") //$NON-NLS-1$
+				.th(Messages.getString("ResultBuilder.NameHeader")) //$NON-NLS-1$
+				.th(Messages.getString("ResultBuilder.ClubHeader")) //$NON-NLS-1$
+				.th(Messages.getString("ResultBuilder.TimeHeader"), "align=\"right\"") //$NON-NLS-1$ //$NON-NLS-2$
+				.th(Messages.getString("ResultBuilder.MPHeader"), "align=\"right\"") //$NON-NLS-1$ //$NON-NLS-2$
+				.th(Messages.getString("ResultBuilder.RacetimeHeader"), "align=\"right\"") //$NON-NLS-1$ //$NON-NLS-2$
+				.closeTr();
 		}
 		// Format: rank, first name + last name, club [, real time, nb mps], time/status
 		for (RankedRunner runner : result.getRanking()) {
@@ -240,14 +247,14 @@ public class ResultBuilder extends Control implements IResultBuilder {
 			if( !runner.isNC() ) {
 				writeHtml(
 						runnerData,
-						"",
+						"", //$NON-NLS-1$
 						runnerData.getResult().formatStatus(),
 						config.showPenalties,
 						html);
 			} else if( config.showNC ) {
 				writeHtml(
 						runnerData,
-						"NC",
+						"NC", //$NON-NLS-1$
 						runnerData.getResult().shortFormat(),
 						config.showPenalties,
 						html);
@@ -258,13 +265,13 @@ public class ResultBuilder extends Control implements IResultBuilder {
 			for (RunnerRaceData runnerData : result.getOtherRunners()) {
 				writeHtml(
 						runnerData,
-						"",
+						"", //$NON-NLS-1$
 						runnerData.getResult().formatStatus(),
 						config.showPenalties,
 						html);
 			}			
 		}
-		html.close("table");
+		html.close("table"); //$NON-NLS-1$
 	}
 	
 	private void writeHtml(RunnerRaceData runnerData, String rank, String timeOrStatus,
@@ -273,10 +280,10 @@ public class ResultBuilder extends Control implements IResultBuilder {
 		html.td(rank);
 		html.td(runnerData.getRunner().getName());
 		html.td(runnerData.getRunner().getClub().getName());
-		html.th(timeOrStatus, "align=\"right\"");
+		html.th(timeOrStatus, "align=\"right\""); //$NON-NLS-1$
 		if( showPenalties ){
-			html.td(Integer.toString(runnerData.getResult().getNbMPs()), "align=\"right\"");
-			html.td(TimeManager.time(runnerData.realRaceTime()), "align=\"right\"");
+			html.td(Integer.toString(runnerData.getResult().getNbMPs()), "align=\"right\""); //$NON-NLS-1$
+			html.td(TimeManager.time(runnerData.realRaceTime()), "align=\"right\""); //$NON-NLS-1$
 		}
 		html.closeTr();
 	}
@@ -332,7 +339,7 @@ public class ResultBuilder extends Control implements IResultBuilder {
 				writeCsvResult(
 						id,
 						runnerData,
-						"NC",
+						"NC", //$NON-NLS-1$
 						runnerData.getResult().shortFormat(), // time or status
 						config.showPenalties,
 						writer);
@@ -377,11 +384,11 @@ public class ResultBuilder extends Control implements IResultBuilder {
 	
 	
 	public void generateOECsvResult(ResultConfig config, CsvWriter writer) throws IOException {
-		writer.write("N° dép.;Puce;Ident. base de données;Nom;Prénom;Né;S;Plage;nc;Départ;Arrivée;Temps;");
-		writer.write("Evaluation;N° club;Nom;Ville;Nat;N° cat.;Court;Long;Num1;Num2;Num3;Text1;Text2;Text3;");
-		writer.write("Adr. nom;Rue;Ligne2;Code Post.;Ville;Tél.;Fax;E-mail;Id/Club;Louée;Engagement;Payé;");
-		writer.write("Circuit N°;Circuit;km;m;Postes du circuit;Pl");
-		writer.write("\n");
+		writer.write("N° dép.;Puce;Ident. base de données;Nom;Prénom;Né;S;Plage;nc;Départ;Arrivée;Temps;"); //$NON-NLS-1$
+		writer.write("Evaluation;N° club;Nom;Ville;Nat;N° cat.;Court;Long;Num1;Num2;Num3;Text1;Text2;Text3;"); //$NON-NLS-1$
+		writer.write("Adr. nom;Rue;Ligne2;Code Post.;Ville;Tél.;Fax;E-mail;Id/Club;Louée;Engagement;Payé;"); //$NON-NLS-1$
+		writer.write("Circuit N°;Circuit;km;m;Postes du circuit;Pl"); //$NON-NLS-1$
+		writer.write("\n"); //$NON-NLS-1$
 		
 		Vector<String> clubnames = registry().getClubnames();
 		Vector<String> categorynames = registry().getCategorynames();
@@ -405,8 +412,8 @@ public class ResultBuilder extends Control implements IResultBuilder {
 						runner.getFirstname(),
 						ark.getBirthYear(),
 						ark.getSex(),
-						"",
-						( runner.isNC() ) ? "X" : "0",
+						"", //$NON-NLS-1$
+						( runner.isNC() ) ? "X" : "0", //$NON-NLS-1$ //$NON-NLS-2$
 						oeTime(runnerData.getStarttime()),
 						oeTime(runnerData.getFinishtime()),
 						oeTime(new Date(runnerData.getResult().getRacetime())),
@@ -414,20 +421,23 @@ public class ResultBuilder extends Control implements IResultBuilder {
 						Integer.toString(clubnames.indexOf(club.getName())),
 						club.getShortname(),
 						club.getName(),
-						"",
+						"", //$NON-NLS-1$
 						Integer.toString(categorynames.indexOf(category.getName())),
 						category.getShortname(),
 						category.getLongname(),
-						"", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-						"0",
-						"0",
-						"0",
+						"", "", "", "", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+						"", "", "", "", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+						"", "", "", "", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+						"", "", "",  	//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						"0", //$NON-NLS-1$
+						"0", //$NON-NLS-1$
+						"0", //$NON-NLS-1$
 						Integer.toString(coursenames.indexOf(course.getName())),
 						course.getName(),
 						Integer.toString(course.getLength()),
 						Integer.toString(course.getClimb()),
-						"1",
-						"1"
+						"1", //$NON-NLS-1$
+						"1" //$NON-NLS-1$
 						);
 				}
 				
@@ -437,7 +447,7 @@ public class ResultBuilder extends Control implements IResultBuilder {
 	
 	private String oeTime(Date time) {
 		if( time.equals(TimeManager.NO_TIME) ) {
-			return "";
+			return ""; //$NON-NLS-1$
 		} else {
 			return TimeManager.fullTime(time);
 		}
@@ -445,9 +455,9 @@ public class ResultBuilder extends Control implements IResultBuilder {
 
 	private String oeEvaluationCode(Status status) {
 		if( status==Status.OK ) {
-			return "0";
+			return "0"; //$NON-NLS-1$
 		} else {
-			return "1";
+			return "1"; //$NON-NLS-1$
 		}
 	}
 	

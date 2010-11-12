@@ -106,11 +106,11 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 			} else if( trace.isSubst() ) {
 				if( cutSubst ) {
 					String code = trace.getCode();
-					int cut = code.indexOf("+");
+					int cut = code.indexOf("+"); //$NON-NLS-1$
 					Trace mpTrace = factory().createTrace(code.substring(0, cut), TimeManager.NO_TIME);
 					splits.add(createSplit(Integer.toString(control), mpTrace, startTime, TimeManager.NO_TIME_l, TimeManager.NO_TIME_l));
 					Trace addedTrace = factory().createTrace(code.substring(cut), trace.getTime());
-					added.add(createSplit("", addedTrace, startTime, TimeManager.NO_TIME_l, time));
+					added.add(createSplit("", addedTrace, startTime, TimeManager.NO_TIME_l, time)); //$NON-NLS-1$
 				} else {
 					splits.add(createSplit(Integer.toString(control), trace, startTime, TimeManager.NO_TIME_l, time));
 				}
@@ -119,10 +119,10 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 				splits.add(createSplit(Integer.toString(control), trace, startTime, TimeManager.NO_TIME_l, TimeManager.NO_TIME_l));
 				control++;
 			} else { // added trace
-				added.add(createSplit("", trace, startTime, TimeManager.NO_TIME_l, time));
+				added.add(createSplit("", trace, startTime, TimeManager.NO_TIME_l, time)); //$NON-NLS-1$
 			}
 		} // TODO: remove the null value and consequent checks
-		splits.add(createSplit("F", null, startTime, previousTime, data.getFinishtime().getTime()));
+		splits.add(createSplit("F", null, startTime, previousTime, data.getFinishtime().getTime())); //$NON-NLS-1$
 	}
 
 	private SplitTime createSplit(String seq, Trace trace, long startTime, long previousTime, long time) {
@@ -151,19 +151,19 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 	public void exportFile(String filename, String format, ResultConfig config, int refreshInterval)
 			throws IOException {
 		if( !filename.endsWith(format) ) {
-			filename = filename + "." + format;
+			filename = filename + "." + format; //$NON-NLS-1$
 		}
-		if( format.equals("html") ) {
+		if( format.equals("html") ) { //$NON-NLS-1$
 			BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
 			writer.write(generateHtmlResults(config, refreshInterval));
 			writer.close();
 		}
-		if( format.equals("csv") ) {
-			CsvWriter writer = new CsvWriter(";", filename);
+		if( format.equals("csv") ) { //$NON-NLS-1$
+			CsvWriter writer = new CsvWriter(";", filename); //$NON-NLS-1$
 			generateCsvResult(config, writer);
 			writer.close();
 		}
-		if( format.equals("cn.csv") ) { // delegate
+		if( format.equals("cn.csv") ) { // delegate //$NON-NLS-1$
 			resultBuilder().exportFile(filename, format, config, refreshInterval);
 		}
 	}
@@ -204,7 +204,7 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 				writeCsvResult(
 						id,
 						runnerData,
-						"NC",
+						"NC", //$NON-NLS-1$
 						runnerData.getResult().shortFormat(), // time or status
 						config.showPenalties,
 						writer);
@@ -234,8 +234,8 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 					runner.getLastname(),
 					runner.getClub().getName(),
 					timeOrStatus,
-					( showPenalties) ? TimeManager.time(runnerData.realRaceTime()) : "",
-					( showPenalties) ? Integer.toString(runnerData.getResult().getNbMPs()) : "",
+					( showPenalties) ? TimeManager.time(runnerData.realRaceTime()) : "", //$NON-NLS-1$
+					( showPenalties) ? Integer.toString(runnerData.getResult().getNbMPs()) : "", //$NON-NLS-1$
 					TimeManager.fullTime(runnerData.getStarttime()),
 					TimeManager.fullTime(runnerData.getFinishtime()),
 					Integer.toString(runner.getCourse().nbControls())
@@ -258,9 +258,9 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 		Vector<Result> results = resultBuilder().buildResults(config);
 		Html html = new Html();
 		if( refreshInterval>0 ) {
-			html.open("head");
-			html.contents("<meta http-equiv=\"refresh\" content=\"" + refreshInterval + "\" />");
-			html.close("head");
+			html.open("head"); //$NON-NLS-1$
+			html.contents("<meta http-equiv=\"refresh\" content=\"" + refreshInterval + "\" />"); //$NON-NLS-1$ //$NON-NLS-2$
+			html.close("head"); //$NON-NLS-1$
 		}
 		for (Result result : results) {
 			if( config.showEmptySets || !result.isEmpty() ) {
@@ -271,8 +271,8 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 	}
 
 	private void appendHtmlResultsWithSplits(Result result, ResultConfig config, Html html) {
-		html.tag("h1", result.getIdentifier());
-		html.open("table");
+		html.tag("h1", result.getIdentifier()); //$NON-NLS-1$
+		html.open("table"); //$NON-NLS-1$
 		for (RankedRunner runner : result.getRanking()) {
 			RunnerRaceData data = runner.getRunnerData();
 			generateHtmlSplitsFor(data, Integer.toString(runner.getRank()), data.getResult().formatRacetime(), config, html);
@@ -281,26 +281,26 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 		html.openTr().closeTr();
 		for (RunnerRaceData runnerData : result.getNRRunners()) {
 			if( ! runnerData.getRunner().isNC() ) {
-				generateHtmlSplitsFor(runnerData, "", runnerData.getResult().formatStatus(), config, html);
+				generateHtmlSplitsFor(runnerData, "", runnerData.getResult().formatStatus(), config, html); //$NON-NLS-1$
 			} else if( config.showNC ) {
-				generateHtmlSplitsFor(runnerData, "NC", runnerData.getResult().shortFormat(), config, html);
+				generateHtmlSplitsFor(runnerData, "NC", runnerData.getResult().shortFormat(), config, html); //$NON-NLS-1$
 			}
 			html.openTr().closeTr();
 		}
 		if( config.showOthers ) {
 			html.openTr().closeTr();
 			for (RunnerRaceData runnerData : result.getOtherRunners()) {
-				generateHtmlSplitsFor(runnerData, "", runnerData.getResult().formatStatus(), config, html);
+				generateHtmlSplitsFor(runnerData, "", runnerData.getResult().formatStatus(), config, html); //$NON-NLS-1$
 				html.openTr().closeTr();
 			}			
 		}
-		html.close("table");
+		html.close("table"); //$NON-NLS-1$
 	}
 
 	public void generateHtmlSplitsFor(RunnerRaceData data, String rank, String statusTime, ResultConfig config, Html html) {
 		html.openTr();
 		html.th(rank);
-		html.th(data.getRunner().getName(), "align=\"left\" colspan=\"3\"");
+		html.th(data.getRunner().getName(), "align=\"left\" colspan=\"3\""); //$NON-NLS-1$
 		html.th(statusTime);
 		html.closeTr();
 		appendHtmlSplitsInColumns(buildNormalSplits(data), nbColumns, html);
@@ -318,38 +318,38 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 			int limit = ( i==nbRows-1 ) ? (splits.length % nbColumns) : nbColumns;
 			
 			// first line with seq and control number/code
-			html.openTr().td("");
+			html.openTr().td(""); //$NON-NLS-1$
 			for (int j = 0; j < limit; j++) {
 				SplitTime split = splits[j + rowStart];
 				if( split.trace != null ) {
-					String label = split.seq + " (" + split.trace.getBasicCode() +")";
-					html.th(label, "align=\"right\"");
+					String label = split.seq + " (" + split.trace.getBasicCode() +")"; //$NON-NLS-1$ //$NON-NLS-2$
+					html.th(label, "align=\"right\""); //$NON-NLS-1$
 				} else {
-					html.td(split.seq, "align=\"right\"");
+					html.td(split.seq, "align=\"right\""); //$NON-NLS-1$
 				}
 			}
 			html.closeTr();
 			// second line is cumulative split since start
-			html.openTr().td("");
+			html.openTr().td(""); //$NON-NLS-1$
 			for (int j = 0; j < limit; j++) {
 				SplitTime split = splits[j + rowStart];
 				String label = TimeManager.time(split.time);
 //				if( split.trace!=null && ! split.trace.isOK() ) {
 //					label = Html.tag("i", label, new StringBuffer()).toString();
 //				}
-				html.td(label, "align=\"right\"");
+				html.td(label, "align=\"right\""); //$NON-NLS-1$
 			}
 			html.closeTr();
 			// third line is partial split since previous ok punch
-			html.openTr().td("");
+			html.openTr().td(""); //$NON-NLS-1$
 			for (int j = 0; j < limit; j++) {
 				SplitTime split = splits[j + rowStart];
 				String label = TimeManager.time(split.split);
 				if( split.trace!=null && ! split.trace.isOK() ) {
-					label = "&nbsp;";
+					label = "&nbsp;"; //$NON-NLS-1$
 //					label = Html.tag("i", label, new StringBuffer()).toString();
 				}
-				html.td(label, "align=\"right\"");
+				html.td(label, "align=\"right\""); //$NON-NLS-1$
 			}
 			html.closeTr();
 			rowStart += nbColumns;
@@ -366,7 +366,7 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 			}
 		
 			JTextPane ticket = new JTextPane(); 
-			ticket.setContentType("text/html");
+			ticket.setContentType("text/html"); //$NON-NLS-1$
 			String content = html.close();
 			ticket.setText(content);
 			try {
@@ -376,33 +376,33 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 			}
 			return content;
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	private void printSingleSplitsInColumns(RunnerRaceData data, Html html) {
-		html.tag("h2", "align=\"center\"", geco().stage().getName());
-		html.b(data.getRunner().getName() + " - "
-				+ geco().stage().getName() + " - "
-				+ data.getCourse().getName() + " - "
+		html.tag("h2", "align=\"center\"", geco().stage().getName()); //$NON-NLS-1$ //$NON-NLS-2$
+		html.b(data.getRunner().getName() + " - " //$NON-NLS-1$
+				+ geco().stage().getName() + " - " //$NON-NLS-1$
+				+ data.getCourse().getName() + " - " //$NON-NLS-1$
 				+ data.getResult().shortFormat());
-		html.open("table");
+		html.open("table"); //$NON-NLS-1$
 		appendHtmlSplitsInColumns(buildNormalSplits(data), nbColumns, html);
-		html.close("table");
-		html.tag("div",
-				"align=\"center\"",
-				"Geco for orienteering - http://bitbucket.org/sdenier/geco");
+		html.close("table"); //$NON-NLS-1$
+		html.tag("div", //$NON-NLS-1$
+				"align=\"center\"", //$NON-NLS-1$
+				"Geco for orienteering - http://bitbucket.org/sdenier/geco"); //$NON-NLS-1$
 	}
 
 	private void printSingleSplitsInLine(RunnerRaceData data, Html html) {
-		html.tag("p", "align=\"center\"", geco().stage().getName());
-		html.open("p", "align=\"center\"").b(data.getRunner().getName()).close("p");
-		html.b(data.getCourse().getName() + " - "
+		html.tag("p", "align=\"center\"", geco().stage().getName()); //$NON-NLS-1$ //$NON-NLS-2$
+		html.open("p", "align=\"center\"").b(data.getRunner().getName()).close("p"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		html.b(data.getCourse().getName() + " - " //$NON-NLS-1$
 				+ data.getResult().shortFormat());
-		html.open("table");
+		html.open("table"); //$NON-NLS-1$
 		appendHtmlSplitsInLine(buildLinearSplits(data), html);
-		html.close("table");
-		html.tag("div", "align=\"center\"", "Geco for orienteering");
-		html.tag("div",	"align=\"center\"",	"http://bitbucket.org/sdenier/geco");
+		html.close("table"); //$NON-NLS-1$
+		html.tag("div", "align=\"center\"", "Geco for orienteering"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		html.tag("div",	"align=\"center\"",	"http://bitbucket.org/sdenier/geco"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	private void appendHtmlSplitsInLine(SplitTime[] linearSplits, Html html) {
@@ -414,19 +414,19 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 				html.td(splitTime.seq);
 				html.td(splitTime.trace.getCode());
 				if( trace.isOK() ) {
-					html.th(time, "align=\"right\"");
+					html.th(time, "align=\"right\""); //$NON-NLS-1$
 				} else {
 					if( trace.isAdded() || trace.isSubst() ) {
-						time = Html.tag("i", time, new StringBuffer()).toString();
+						time = Html.tag("i", time, new StringBuffer()).toString(); //$NON-NLS-1$
 					}
-					html.td(time, "align=\"right\"");
+					html.td(time, "align=\"right\""); //$NON-NLS-1$
 				}
-				html.td(TimeManager.time(splitTime.split), "align=\"right\"");
+				html.td(TimeManager.time(splitTime.split), "align=\"right\""); //$NON-NLS-1$
 			} else {
 				html.td(splitTime.seq);
-				html.td("");
-				html.th(time, "align=\"right\"");
-				html.td(TimeManager.time(splitTime.split), "align=\"right\"");				
+				html.td(""); //$NON-NLS-1$
+				html.th(time, "align=\"right\""); //$NON-NLS-1$
+				html.td(TimeManager.time(splitTime.split), "align=\"right\"");				 //$NON-NLS-1$
 			}
 			html.closeTr();
 		}
@@ -449,12 +449,12 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 	}
 	
 	public String getSplitPrinterName() {
-		return ( getSplitPrinter()==null ) ? "" : getSplitPrinter().getName();
+		return ( getSplitPrinter()==null ) ? "" : getSplitPrinter().getName(); //$NON-NLS-1$
 	}
 	
 	public String getDefaultPrinterName() {
 		PrintService defaultService = PrintServiceLookup.lookupDefaultPrintService();
-		return ( defaultService==null ) ? "" : defaultService.getName();
+		return ( defaultService==null ) ? "" : defaultService.getName(); //$NON-NLS-1$
 	}
 	
 	public boolean setSplitPrinterName(String name) {
@@ -520,13 +520,13 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 	public void closing(Stage stage) {	}
 
 	public static String splitPrinterProperty() {
-		return "SplitPrinter";
+		return "SplitPrinter"; //$NON-NLS-1$
 	}
 	public static String splitNbColumnsProperty() {
-		return "SplitNbColumns";
+		return "SplitNbColumns"; //$NON-NLS-1$
 	}
 	public static String splitFormatProperty() {
-		return "SplitFormat";
+		return "SplitFormat"; //$NON-NLS-1$
 	}
 
 }

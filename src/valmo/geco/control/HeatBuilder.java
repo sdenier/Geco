@@ -134,14 +134,14 @@ public class HeatBuilder extends Control {
 	
 	public void exportFile(String filename, String format, HeatSet[] selectedHeatsets) throws IOException {
 		if( !filename.endsWith(format) ) {
-			filename = filename + "." + format;
+			filename = filename + "." + format; //$NON-NLS-1$
 		}
-		if( format.equals("html") ) {
+		if( format.equals("html") ) { //$NON-NLS-1$
 			BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
 			writer.write(generateHtmlHeats(selectedHeatsets));	
 			writer.close();
 		}
-		if( format.equals("csv") ) {
+		if( format.equals("csv") ) { //$NON-NLS-1$
 			generateCsvHeats(filename, selectedHeatsets);
 		}
 	}
@@ -155,14 +155,14 @@ public class HeatBuilder extends Control {
 		return html.close();
 	}
 	private void appendHtmlHeat(Heat heat, Html html) {
-		html.tag("h1", heat.getHeatSetName() + " " + heat.getName());
-		html.open("table");
+		html.tag("h1", heat.getHeatSetName() + " " + heat.getName()); //$NON-NLS-1$ //$NON-NLS-2$
+		html.open("table"); //$NON-NLS-1$
 		int i = 1;
 		for (Runner runner : heat.getQualifiedRunners()) {
-			html.open("tr").td(Integer.toString(i)).td(runner.getName()).close("tr");
+			html.open("tr").td(Integer.toString(i)).td(runner.getName()).close("tr"); //$NON-NLS-1$ //$NON-NLS-2$
 			i++;
 		}
-		html.close("table");
+		html.close("table"); //$NON-NLS-1$
 	}
 	
 	public void generateCsvHeats(String filename, HeatSet[] selectedHeatsets) throws IOException {

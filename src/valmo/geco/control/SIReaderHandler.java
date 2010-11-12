@@ -67,17 +67,17 @@ public class SIReaderHandler extends Control
 	}
 
 	public static String portNameProperty() {
-		return "SIPortname";
+		return "SIPortname"; //$NON-NLS-1$
 	}
 	public static String zerotimeProperty() {
-		return "SIZeroTime";
+		return "SIZeroTime"; //$NON-NLS-1$
 	}
 	public static String zerotimeDefaultStart() {
-		return "SIZeroTimeDefaultStart";
+		return "SIZeroTimeDefaultStart"; //$NON-NLS-1$
 	}
 	
 	public String defaultPortName() {
-		return "/dev/tty.SLAB_USBtoUART";
+		return "/dev/tty.SLAB_USBtoUART"; //$NON-NLS-1$
 	}
 
 	private void changePortName() {
@@ -167,7 +167,7 @@ public class SIReaderHandler extends Control
 		if( runner!=null ) {
 			RunnerRaceData runnerData = registry().findRunnerData(runner);
 			if( runnerData.hasData() ) {
-				geco().log("READING AGAIN " + card.getSiIdent());
+				geco().log("READING AGAIN " + card.getSiIdent()); //$NON-NLS-1$
 				String returnedCard = requestHandler.requestMergeExistingRunner(handleNewData(card), runner);
 				if( returnedCard!=null ) {
 					geco().announcer().announceCardReadAgain(returnedCard);
@@ -176,7 +176,7 @@ public class SIReaderHandler extends Control
 				handleData(runnerData, card);	
 			}
 		} else {
-			geco().log("READING UNKNOWN " + card.getSiIdent());
+			geco().log("READING UNKNOWN " + card.getSiIdent()); //$NON-NLS-1$
 			String returnedCard = requestHandler.requestMergeUnknownRunner(handleNewData(card), card.getSiIdent());
 			if( returnedCard!=null ) {
 				geco().announcer().announceUnknownCardRead(returnedCard);
@@ -201,9 +201,9 @@ public class SIReaderHandler extends Control
 		updateRaceDataWith(runnerData, card);
 		Status oldStatus = runnerData.getResult().getStatus();
 		geco().checker().check(runnerData);
-		geco().log("READING " + runnerData.infoString());
+		geco().log("READING " + runnerData.infoString()); //$NON-NLS-1$
 		if( runnerData.getResult().is(Status.MP) ) {
-			geco().announcer().dataInfo(runnerData.getResult().formatTrace() + " (" + runnerData.getResult().getNbMPs() + " MP)");
+			geco().announcer().dataInfo(runnerData.getResult().formatTrace() + " (" + runnerData.getResult().getNbMPs() + " MP)"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		geco().announcer().announceCardRead(runnerData.getRunner().getChipnumber());
 		geco().announcer().announceStatusChange(runnerData, oldStatus);
@@ -245,14 +245,14 @@ public class SIReaderHandler extends Control
 		}
 		runnerData.setStarttime(startTime);
 		if( startTime.equals(TimeManager.NO_TIME) ) {
-			geco().log("MISSING start time for " + card.getSiIdent());
+			geco().log("MISSING start time for " + card.getSiIdent()); //$NON-NLS-1$
 		}
 	}
 	private void handleFinishtime(RunnerRaceData runnerData, IResultData<PunchObject, PunchRecordData> card) {
 		Date finishTime = safeTime(card.getFinishTime());
 		runnerData.setFinishtime(finishTime);
 		if( finishTime.equals(TimeManager.NO_TIME) ) {
-			geco().log("MISSING finish time for " + card.getSiIdent());
+			geco().log("MISSING finish time for " + card.getSiIdent()); //$NON-NLS-1$
 		}
 	}
 
@@ -274,19 +274,19 @@ public class SIReaderHandler extends Control
 
 	@Override
 	public void portStatusChanged(String status) {
-		if( status.equals("     Open      ") && starting ){
-			geco().announcer().announceStationStatus("Ready");
+		if( status.equals("     Open      ") && starting ){ //$NON-NLS-1$
+			geco().announcer().announceStationStatus("Ready"); //$NON-NLS-1$
 			starting = false;
 		}
-		if( status.equals("     Connecting") ){
+		if( status.equals("     Connecting") ){ //$NON-NLS-1$
 			nbTry++;
 		}
 		if( nbTry>=2 ) { // catch any tentative to re-connect after a deconnexion
 			portHandler.interrupt(); // one last try, after interruption
 			if( starting ) { // wrong port
-				geco().announcer().announceStationStatus("NotFound");
+				geco().announcer().announceStationStatus("NotFound"); //$NON-NLS-1$
 			} else { // station was disconnected?
-				geco().announcer().announceStationStatus("Failed");
+				geco().announcer().announceStationStatus("Failed"); //$NON-NLS-1$
 			}
 		}
 	}

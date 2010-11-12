@@ -105,7 +105,8 @@ public class GecoControl {
 	}
 
 	/**
-	 * Utility constructor for apps which typically work on a single stage and do not need autosaving enabled by default.
+	 * Utility constructor for apps which typically work on a single stage 
+	 * and do not need autosaving enabled by default.
 	 * @param startDir
 	 * @param withLogger 
 	 */
@@ -155,7 +156,7 @@ public class GecoControl {
 	private RuntimeStage loadStage(String baseDir, boolean withLogger) {
 		Stage stage = stageBuilder.loadStage(baseDir, checker);
 //		stageBuilder.backupData(stage.getBaseDir(),
-//								backupFilename( new SimpleDateFormat("yyMMdd-HHmmss'i'").format(new Date()) ));
+//							backupFilename( new SimpleDateFormat("yyMMdd-HHmmss'i'").format(new Date()) ));
 		Logger logger = null;
 		if( withLogger ) {
 			logger = initializeLogger(stage);
@@ -164,7 +165,7 @@ public class GecoControl {
 	}
 	
 	private Logger initializeLogger(Stage stage) {
-		Logger logger = new Logger(stage.getBaseDir(), "geco.log");
+		Logger logger = new Logger(stage.getBaseDir(), "geco.log"); //$NON-NLS-1$
 		logger.initSessionLog(stage.getName());
 		return logger;
 	}
@@ -218,7 +219,7 @@ public class GecoControl {
 	}
 
 	private String backupFilename(String id) {
-		return "backups" + File.separator + "backup" + id + ".zip";
+		return "backups" + File.separator + "backup" + id + ".zip"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 	
 	private void saveStage(String backupName) {
@@ -230,7 +231,7 @@ public class GecoControl {
 	}
 
 	public void saveCurrentStage() {
-		saveStage( backupFilename( new SimpleDateFormat("yyMMdd-HHmmss").format(new Date()) ));
+		saveStage( backupFilename( new SimpleDateFormat("yyMMdd-HHmmss").format(new Date()) )); //$NON-NLS-1$
 	}
 	
 	public void closeStage(RuntimeStage runStage) {

@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Properties;
 
+import valmo.geco.core.Messages;
 import valmo.geco.core.Announcer.StageListener;
 import valmo.geco.model.Archive;
 import valmo.geco.model.ArchiveRunner;
@@ -56,7 +57,7 @@ public class ArchiveManager extends Control implements StageListener {
 	public void loadArchiveFrom(File archiveFile) throws IOException {
 		this.archiveFile = archiveFile;
 		archive = new Archive();
-		CsvReader reader = new CsvReader(";", archiveFile.getAbsolutePath());
+		CsvReader reader = new CsvReader(";", archiveFile.getAbsolutePath()); //$NON-NLS-1$
 		String[] record = reader.readRecord(); // bypass first line with headers
 		record = reader.readRecord();
 		while( record!=null ) {
@@ -66,11 +67,11 @@ public class ArchiveManager extends Control implements StageListener {
 	}
 	
 	public String getArchiveName() {
-		return ( archiveFile==null )? " " : archiveFile.getName();
+		return ( archiveFile==null )? " " : archiveFile.getName(); //$NON-NLS-1$
 	}
 	
 	public String archiveLastModified() {
-		return ( archiveFile==null )? "" : 
+		return ( archiveFile==null )? "" :  //$NON-NLS-1$
 									DateFormat.getDateInstance().format(new Date(archiveFile.lastModified()));
 	}
 	
@@ -91,8 +92,8 @@ public class ArchiveManager extends Control implements StageListener {
 		Club rClub = ensureClubInRegistry(arkRunner.getClub());
 		Category rCat = ensureCategoryInRegistry(arkRunner.getCategory());
 		String ecard = arkRunner.getChipnumber();
-		if( ecard.equals("") ){
-			geco().log("No E-Card in archive for " + arkRunner.getName());
+		if( ecard.equals("") ){ //$NON-NLS-1$
+			geco().log(Messages.getString("ArchiveManager.NoMatchingEcardWarning") + arkRunner.getName()); //$NON-NLS-1$
 			ecard = runnerControl().newUniqueChipnumber();
 			// TODO: an e-card is required for the registry, however it would be good to get past that REQ
 			// part of the move to startnumber as id
@@ -198,7 +199,7 @@ public class ArchiveManager extends Control implements StageListener {
 	public void closing(Stage stage) {	}
 	
 	public static String archiveFileProperty() {
-		return "ArchiveFile";
+		return "ArchiveFile"; //$NON-NLS-1$
 	}
 	
 }

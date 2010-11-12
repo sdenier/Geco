@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import valmo.geco.core.Announcer;
+import valmo.geco.core.Messages;
 import valmo.geco.core.TimeManager;
 import valmo.geco.core.Util;
 import valmo.geco.model.Category;
@@ -47,8 +48,8 @@ public class RunnerControl extends Control {
 		Runner runner = factory().createRunner();
 		runner.setStartnumber(registry().detectMaxStartnumber() + 1);
 		runner.setChipnumber(deriveUniqueChipnumber(chip));
-		runner.setFirstname("");
-		runner.setLastname("X");
+		runner.setFirstname(""); //$NON-NLS-1$
+		runner.setLastname("X"); //$NON-NLS-1$
 		return runner;
 	}
 	
@@ -59,17 +60,17 @@ public class RunnerControl extends Control {
 	}
 	private void setDefaults(Course course, Runner runner) throws RunnerCreationException {
 		if( course==null )
-			throw new RunnerCreationException("No course defined in stage");
+			throw new RunnerCreationException(Messages.getString("RunnerControl.NoCourseWarning")); //$NON-NLS-1$
 		Club club = registry().noClub();
 		if( club==null )
 			club = registry().anyClub();
 		if( club==null )
-			throw new RunnerCreationException("No club defined in stage");
+			throw new RunnerCreationException(Messages.getString("RunnerControl.NoClubWarning")); //$NON-NLS-1$
 		Category category = registry().noCategory();
 		if( category==null )
 			category = registry().anyCategory();
 		if( category==null )
-			throw new RunnerCreationException("No category defined in stage");
+			throw new RunnerCreationException(Messages.getString("RunnerControl.NoCategoryWarning")); //$NON-NLS-1$
 
 		runner.setClub(club);
 		runner.setCategory(category);
@@ -95,7 +96,7 @@ public class RunnerControl extends Control {
 		if( Util.different(chipnumber, -1, chips) ) {
 			return chipnumber;
 		} else 
-			return deriveUniqueChipnumber(chipnumber + "a");
+			return deriveUniqueChipnumber(chipnumber + "a"); //$NON-NLS-1$
 	}
 
 	public RunnerRaceData registerNewRunner(Runner runner) {
@@ -129,7 +130,7 @@ public class RunnerControl extends Control {
 		Integer[] startnums = registry().collectStartnumbers();
 		boolean ok = Util.different(newStart, Arrays.binarySearch(startnums, oldStart), startnums);
 		if( !ok )
-			geco().info("Start number already used", true);
+			geco().info(Messages.getString("RunnerControl.StartnumberUsedWarning"), true); //$NON-NLS-1$
 		return ok;
 	}
 	
@@ -141,7 +142,7 @@ public class RunnerControl extends Control {
 				return true;
 			}
 		} catch (NumberFormatException e) {
-			geco().info("Bad format for start number", true);
+			geco().info(Messages.getString("RunnerControl.StartnumberFormatWarning"), true); //$NON-NLS-1$
 		}
 		return false;
 	}
@@ -149,14 +150,14 @@ public class RunnerControl extends Control {
 	public boolean verifyChipnumber(Runner runner, String newChipString) {
 		String newChip = newChipString.trim();
 		if( newChip.isEmpty() ) {
-			geco().info("Chip number can not be empty", true);
+			geco().info(Messages.getString("RunnerControl.EcardEmptyWarning"), true); //$NON-NLS-1$
 			return false;
 		}
 		String oldChip = runner.getChipnumber();
 		String[] chips = registry().collectChipnumbers();
 		boolean ok = Util.different(newChip, Arrays.binarySearch(chips, oldChip), chips);
 		if( !ok )
-			geco().info("Chip number already used", true);
+			geco().info(Messages.getString("RunnerControl.EcardUsedWarning"), true); //$NON-NLS-1$
 		return ok;
 	}
 
@@ -179,7 +180,7 @@ public class RunnerControl extends Control {
 	public boolean verifyLastname(String newName) {
 		boolean ok = ! newName.trim().isEmpty();
 		if( !ok ) {
-			geco().info("Last name can not be empty", true);
+			geco().info(Messages.getString("RunnerControl.LastnameEmptyWarning"), true); //$NON-NLS-1$
 		}
 		return ok;
 	}
@@ -203,7 +204,10 @@ public class RunnerControl extends Control {
 		if( !oldCat.getShortname().equals(newCat) ) {
 			runner.setCategory(registry().findCategory(newCat));
 			registry().updateRunnerCategory(oldCat, runner);
-			geco().log("Category change for " + runner.idString() + " from " + oldCat.getShortname() + " to " + newCat);
+			geco().log(Messages.getString("RunnerControl.CategoryChangeMessage1") //$NON-NLS-1$
+						+ runner.idString() + Messages.getString("RunnerControl.FromMessage") //$NON-NLS-1$
+						+ oldCat.getShortname() + Messages.getString("RunnerControl.ToMessage") //$NON-NLS-1$
+						+ newCat);
 			return true;
 		}
 		return false;
@@ -216,7 +220,10 @@ public class RunnerControl extends Control {
 			runner.setCourse(registry().findCourse(newCourse));
 			registry().updateRunnerCourse(oldCourse, runner);
 			announcer().announceCourseChange(runner, oldCourse);
-			geco().log("Course change for " + runner.idString() + " from " + oldCourse.getName() + " to " + newCourse);
+			geco().log(Messages.getString("RunnerControl.CourseChangeMessage") //$NON-NLS-1$
+						+ runner.idString() + Messages.getString("RunnerControl.FromMessage") //$NON-NLS-1$
+						+ oldCourse.getName() + Messages.getString("RunnerControl.ToMessage") //$NON-NLS-1$
+						+ newCourse);
 			// Proceed by checking the new status
 			if( runnerData.statusIsRecheckable() ) {
 				Status oldStatus = runnerData.getResult().getStatus();
@@ -239,11 +246,14 @@ public class RunnerControl extends Control {
 			Date newTime = TimeManager.userParse(raceTime);
 			if( oldTime!=newTime.getTime() ) {
 				runnerData.getResult().setRacetime(newTime.getTime());
-				geco().log("Race time change for " + runnerData.getRunner().idString() + " from " + TimeManager.fullTime(oldTime) + " to " + TimeManager.fullTime(newTime));
+				geco().log(Messages.getString("RunnerControl.RacetimeChangeMessage") //$NON-NLS-1$
+						+ runnerData.getRunner().idString() + Messages.getString("RunnerControl.FromMessage") //$NON-NLS-1$
+						+ TimeManager.fullTime(oldTime) + Messages.getString("RunnerControl.ToMessage") //$NON-NLS-1$
+						+ TimeManager.fullTime(newTime));
 			}
 			return true;
 		} catch (ParseException e1) {
-			geco().info("Bad time format", true);
+			geco().info(Messages.getString("RunnerControl.RacetimeFormatMessage"), true); //$NON-NLS-1$
 			return false;
 		}
 	}
@@ -253,7 +263,10 @@ public class RunnerControl extends Control {
 		geco().checker().resetRaceTime(runnerData);
 		long newTime = runnerData.getResult().getRacetime();
 		if( oldTime!=newTime ) {
-			geco().log("Race time reset for " + runnerData.getRunner().idString() + " from " + TimeManager.fullTime(oldTime) + " to " + TimeManager.fullTime(newTime));
+			geco().log(Messages.getString("RunnerControl.RacetimeResetMessage") //$NON-NLS-1$
+						+ runnerData.getRunner().idString() + Messages.getString("RunnerControl.FromMessage") //$NON-NLS-1$
+						+ TimeManager.fullTime(oldTime) + Messages.getString("RunnerControl.ToMessage") //$NON-NLS-1$
+						+ TimeManager.fullTime(newTime));
 		}
 		return true;
 	}
@@ -262,7 +275,10 @@ public class RunnerControl extends Control {
 		Status oldStatus = runnerData.getResult().getStatus();
 		if( !newStatus.equals(oldStatus) ) {
 			runnerData.getResult().setStatus(newStatus);
-			geco().log("Status change for " + runnerData.getRunner().idString() + " from " + oldStatus + " to " + newStatus);
+			geco().log(Messages.getString("RunnerControl.StatusChangeMessage") //$NON-NLS-1$
+						+ runnerData.getRunner().idString() + Messages.getString("RunnerControl.FromMessage") //$NON-NLS-1$
+						+ oldStatus + Messages.getString("RunnerControl.ToMessage") //$NON-NLS-1$
+						+ newStatus);
 			announcer().announceStatusChange(runnerData, oldStatus);
 			return true;
 		}
@@ -274,7 +290,10 @@ public class RunnerControl extends Control {
 		geco().checker().check(runnerData);
 		Status newStatus = runnerData.getResult().getStatus();
 		if( !oldStatus.equals(newStatus) ) {
-			geco().log("Recheck for " + runnerData.getRunner().idString() + " from " + oldStatus + " to " + newStatus);
+			geco().log(Messages.getString("RunnerControl.RecheckMessage") //$NON-NLS-1$
+						+ runnerData.getRunner().idString() + Messages.getString("RunnerControl.FromMessage") //$NON-NLS-1$
+						+ oldStatus + Messages.getString("RunnerControl.ToMessage") //$NON-NLS-1$
+						+ newStatus);
 			announcer().announceStatusChange(runnerData, oldStatus);
 //			return true;
 		}
@@ -288,12 +307,12 @@ public class RunnerControl extends Control {
 			}
 		}
 		announcer().announceRunnersChange();
-		geco().log("Recheck all OK|MP data");
+		geco().log(Messages.getString("RunnerControl.RecheckAllMessage")); //$NON-NLS-1$
 	}
 
 	public void recheckRunnersFromCourse(Course course) {
 		List<Runner> runners = registry().getRunnersFromCourse(course);
-		geco().log("Recheck course " + course.getName());
+		geco().log(Messages.getString("RunnerControl.RecheckCourseMessage") + course.getName()); //$NON-NLS-1$
 		for (Runner runner : runners) {
 			RunnerRaceData runnerData = registry().findRunnerData(runner);
 			if( runnerData.statusIsRecheckable() ) {

@@ -96,7 +96,7 @@ public class AutoMergeHandler extends Control implements GecoRequestHandler {
 			return null;
 		} else {
 			runnerControl().registerRunner(newRunner, data);
-			geco().log("Insertion " + data.infoString());
+			geco().log("Insertion " + data.infoString()); //$NON-NLS-1$
 			return newRunner;
 		}
 	}
@@ -110,7 +110,7 @@ public class AutoMergeHandler extends Control implements GecoRequestHandler {
 //			newRunner.setLastname(uniqueEcard);
 			runnerData.getResult().setStatus(status); // set custom (unresolved) status
 			runnerControl().registerRunner(newRunner, runnerData);
-			geco().log("Creation " + runnerData.infoString());
+			geco().log("Creation " + runnerData.infoString()); //$NON-NLS-1$
 		} catch (RunnerCreationException e1) {
 			e1.printStackTrace();
 		}

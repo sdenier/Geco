@@ -5,6 +5,7 @@
 package valmo.geco.control;
 
 import valmo.geco.core.Announcer;
+import valmo.geco.core.Messages;
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
 import valmo.geco.model.Course;
@@ -37,7 +38,7 @@ public class StageControl extends Control {
 	}
 	
 	public Club createClub() {
-		return createClub("Club" + (registry().getClubs().size() + 1), "");
+		return createClub("Club" + (registry().getClubs().size() + 1), ""); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void updateName(Club club, String newName) {
@@ -73,7 +74,7 @@ public class StageControl extends Control {
 
 	public Course createCourse() {
 		Course course = factory().createCourse();
-		course.setName("Course" + (registry().getCourses().size() + 1));
+		course.setName("Course" + (registry().getCourses().size() + 1)); //$NON-NLS-1$
 		course.setCodes(new int[0]);
 		registry().addCourse(course);
 		announcer().announceCoursesChanged();
@@ -125,19 +126,19 @@ public class StageControl extends Control {
 	public boolean canRemoveCourse(Course course) throws Exception {
 		for (Category cat : registry().getCategories()) {
 			if( cat.getCourse() == course ) {
-				throw new Exception("Categories use course");
+				throw new Exception(Messages.getString("StageControl.CategoryUseCourseWarning")); //$NON-NLS-1$
 			}
 		}
 		for (Runner runner : registry().getRunners()) {
 			if( runner.getCourse() == course ) {
-				throw new Exception("Runners use course");
+				throw new Exception(Messages.getString("StageControl.RunnerUseCourseWarning")); //$NON-NLS-1$
 			}
 		}
 		for (HeatSet set : registry().getHeatSets()) {
 			if( set.isCourseType() ) {
 				for (Pool pool : set.getSelectedPools()) {
 					if( pool == course ) {
-						throw new Exception("Heatsets use course");
+						throw new Exception(Messages.getString("StageControl.HeatsetUseCourseWarning")); //$NON-NLS-1$
 					}
 				}
 			}
@@ -163,7 +164,7 @@ public class StageControl extends Control {
 	}
 
 	public Category createCategory() {
-		return createCategory("Category" + (registry().getCategories().size() + 1), "");
+		return createCategory("Category" + (registry().getCategories().size() + 1), ""); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -187,14 +188,14 @@ public class StageControl extends Control {
 	private boolean canRemoveCategory(Category cat) throws Exception {
 		for (Runner runner : registry().getRunners()) {
 			if( runner.getCategory() == cat ) {
-				throw new Exception("Runners use category");
+				throw new Exception(Messages.getString("StageControl.RunnerUseCategoryWarning")); //$NON-NLS-1$
 			}
 		}
 		for (HeatSet set : registry().getHeatSets()) {
 			if( set.isCategoryType() || set.isMixedType() ) {
 				for (Pool pool : set.getSelectedPools()) {
 					if( pool == cat ) {
-						throw new Exception("Heatsets use category");
+						throw new Exception(Messages.getString("StageControl.HeatsetUseCategoryWarning")); //$NON-NLS-1$
 					}
 				}
 			}

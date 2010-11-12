@@ -153,20 +153,20 @@ public class PenaltyChecker extends PunchChecker implements StageListener {
 	}
 
 	private void showMatrix(int[] codes, Punch[] punches, int[][] matrix) {
-		String f = "%4d";
-		System.out.print("\n        ");
+		String f = "%4d"; //$NON-NLS-1$
+		System.out.print("\n        "); //$NON-NLS-1$
 		for (int i = 0; i < codes.length; i++) {
 			System.out.format(f, codes[i]);
 		}
 		System.out.println();
-		System.out.print("    ");
+		System.out.print("    "); //$NON-NLS-1$
 
 		for (int i = 0; i < matrix.length; i++) {
 			for (int j = 0; j < matrix[0].length; j++) {
 				System.out.format(f, matrix[i][j]);				
 			}
 			if( i < matrix.length -1 ) {
-				System.out.format("\n%4s", punches[i].getCode());
+				System.out.format("\n%4s", punches[i].getCode()); //$NON-NLS-1$
 			}
 		}
 		System.out.println();
@@ -182,7 +182,7 @@ public class PenaltyChecker extends PunchChecker implements StageListener {
 
 		String[] path = trace(codes, punches, matrix);
 		for (int i = 0; i < path.length; i++) {
-			System.out.format(":%4s", path[i]);
+			System.out.format(":%4s", path[i]); //$NON-NLS-1$
 		}
 		System.out.println();
 		return path;
@@ -203,35 +203,35 @@ public class PenaltyChecker extends PunchChecker implements StageListener {
 				int max = max(matrix[j][i], matrix[j+1][i], matrix[j][i+1]);
 				choice: {
 					if( max==matrix[j][i] ) {
-						path.insert(0, "-" + codes[i] + "+" + punches[j].getCode());
+						path.insert(0, "-" + codes[i] + "+" + punches[j].getCode()); //$NON-NLS-1$ //$NON-NLS-2$
 						i--;
 						j--;
 						break choice;
 					}
 					if( max==matrix[j][i+1] ) {
-						path.insert(0, "+" + punches[j].getCode());
+						path.insert(0, "+" + punches[j].getCode()); //$NON-NLS-1$
 						j--;
 						break choice;
 					}
 					if( max==matrix[j+1][i] ) {
-						path.insert(0, "-" + codes[i]);
+						path.insert(0, "-" + codes[i]); //$NON-NLS-1$
 						i--;
 						break choice;
 					}
 				}
 			}
-			path.insert(0, ",");
+			path.insert(0, ","); //$NON-NLS-1$
 		}
 		while( i>=0 ) {
-			path.insert(0, ",-" + codes[i]);
+			path.insert(0, ",-" + codes[i]); //$NON-NLS-1$
 			i--;			
 		}
 		while( j>=0 ) {
-			path.insert(0, ",+" + punches[j].getCode());
+			path.insert(0, ",+" + punches[j].getCode()); //$NON-NLS-1$
 			j--;
 		}
 		
-		return path.substring(1).split(",");
+		return path.substring(1).split(","); //$NON-NLS-1$
 	}
 
 	public Vector<Trace> trace2(int[] codes, Punch[] punches, int[][] matrix) {
@@ -248,7 +248,7 @@ public class PenaltyChecker extends PunchChecker implements StageListener {
 				int max = max(matrix[j][i], matrix[j+1][i], matrix[j][i+1]);
 				choice: {
 					if( max==matrix[j][i] ) {
-						Trace t = factory().createTrace("-" + codes[i] + "+" + punches[j].getCode(),
+						Trace t = factory().createTrace("-" + codes[i] + "+" + punches[j].getCode(), //$NON-NLS-1$ //$NON-NLS-2$
 															punches[j].getTime());
 						path.add(0, t);
 						i--;
@@ -256,13 +256,13 @@ public class PenaltyChecker extends PunchChecker implements StageListener {
 						break choice;
 					}
 					if( max==matrix[j][i+1] ) {
-						path.add(0, factory().createTrace("+" + punches[j].getCode(), 
+						path.add(0, factory().createTrace("+" + punches[j].getCode(),  //$NON-NLS-1$
 															punches[j].getTime()));
 						j--;
 						break choice;
 					}
 					if( max==matrix[j+1][i] ) {
-						path.add(0, factory().createTrace("-" + codes[i], new Date(0)));
+						path.add(0, factory().createTrace("-" + codes[i], new Date(0))); //$NON-NLS-1$
 						i--;
 						break choice;
 					}
@@ -270,11 +270,11 @@ public class PenaltyChecker extends PunchChecker implements StageListener {
 			}
 		}
 		while( i>=0 ) {
-			path.add(0, factory().createTrace("-" + codes[i], new Date(0)));
+			path.add(0, factory().createTrace("-" + codes[i], new Date(0))); //$NON-NLS-1$
 			i--;			
 		}
 		while( j>=0 ) {
-			path.add(0, factory().createTrace("+" + punches[j].getCode(), punches[j].getTime()));
+			path.add(0, factory().createTrace("+" + punches[j].getCode(), punches[j].getTime())); //$NON-NLS-1$
 			j--;
 		}
 		return path;
@@ -306,7 +306,7 @@ public class PenaltyChecker extends PunchChecker implements StageListener {
 	}
 
 	protected void setNewProperties(Stage stage) {
-		String limit = stage.getProperties().getProperty("MPLimit");
+		String limit = stage.getProperties().getProperty(mpLimitProperty());
 		if( limit!=null ) {
 			try {
 				setMPLimit(new Integer(limit));				
@@ -317,7 +317,7 @@ public class PenaltyChecker extends PunchChecker implements StageListener {
 		} else {
 			setMPLimit(defaultMPLimit());
 		}
-		String penalty = stage.getProperties().getProperty("MPPenalty");
+		String penalty = stage.getProperties().getProperty(mpPenaltyProperty());
 		if( penalty!=null ) {
 			try {
 				setMPPenalty(new Long(penalty));				
@@ -337,8 +337,16 @@ public class PenaltyChecker extends PunchChecker implements StageListener {
 
 	@Override
 	public void saving(Stage stage, Properties properties) {
-		properties.setProperty("MPLimit", new Integer(getMPLimit()).toString());
-		properties.setProperty("MPPenalty", new Long(getMPPenalty()).toString());
+		properties.setProperty(mpLimitProperty(), new Integer(getMPLimit()).toString());
+		properties.setProperty(mpPenaltyProperty(), new Long(getMPPenalty()).toString());
+	}
+
+	public static String mpLimitProperty() {
+		return "MPLimit"; //$NON-NLS-1$
+	}
+
+	public static String mpPenaltyProperty() {
+		return "MPPenalty"; //$NON-NLS-1$
 	}
 
 	@Override
