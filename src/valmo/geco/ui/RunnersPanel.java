@@ -163,6 +163,7 @@ public class RunnersPanel extends TabPanel
 				}
 			}
 		});
+		autoB.setSelected(true);
 		topPanel.add(autoB);
 		
 		liveB = new JCheckBox(Messages.uiGet("RunnersPanel.LiveLabel")); //$NON-NLS-1$

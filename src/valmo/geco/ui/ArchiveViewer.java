@@ -134,7 +134,7 @@ public class ArchiveViewer extends JFrame {
 		
 		panel.add(Box.createHorizontalGlue());
 		
-		JButton insertB = new JButton(Messages.uiGet("ArchiveViewer.InsertLabel")); //$NON-NLS-1$
+		final JButton insertB = new JButton(Messages.uiGet("ArchiveViewer.InsertLabel")); //$NON-NLS-1$
 		insertB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -142,6 +142,18 @@ public class ArchiveViewer extends JFrame {
 			}
 		});
 		panel.add(insertB);
+		
+		((JComponent) getContentPane()).getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
+				KeyStroke.getKeyStroke(KeyEvent.VK_I, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+				"insertRunner"); //$NON-NLS-1$
+		((JComponent) getContentPane()).getActionMap().put("insertRunner", new AbstractAction() { //$NON-NLS-1$
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				insertB.doClick();
+			}
+		});
+
+		
 		panel.add(new JLabel(Messages.uiGet("ArchiveViewer.FindLabel"))); //$NON-NLS-1$
 		filterField = new JTextField(20);
 		filterField.setToolTipText(Messages.uiGet("RunnersPanel.FindTooltip")); //$NON-NLS-1$

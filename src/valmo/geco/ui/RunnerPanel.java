@@ -48,7 +48,6 @@ public class RunnerPanel extends GecoPanel {
 	private JTextField realTimeF;
 	private JTextField mpF;
 	private JTextField penaltyF;
-	private JButton resetRTimeB;
 	private JButton recheckStatusB;
 	
 	private JButton mergeDialogB;
@@ -123,8 +122,6 @@ public class RunnerPanel extends GecoPanel {
 		penaltyF = new JTextField(4);
 		penaltyF.setEditable(false);
 		
-		resetRTimeB = new JButton(Messages.uiGet("RunnerPanel.ResetTimeLabel")); //$NON-NLS-1$
-		resetRTimeB.setToolTipText(Messages.uiGet("RunnerPanel.ResetTimeTooltip")); //$NON-NLS-1$
 		recheckStatusB = new JButton(Messages.uiGet("RunnerPanel.RecheckLabel")); //$NON-NLS-1$
 		recheckStatusB.setToolTipText(Messages.uiGet("RunnerPanel.RecheckTooltip")); //$NON-NLS-1$
 		mergeDialogB = new JButton(Messages.uiGet("RunnerPanel.MergeLabel")); //$NON-NLS-1$
@@ -142,15 +139,6 @@ public class RunnerPanel extends GecoPanel {
 						.showMergeDialogFor(runnerData.clone(),
 											runner.getChipnumber(),
 											runnerData.getResult().getStatus());
-				}
-			}
-		});
-		resetRTimeB.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if( runnerData!=null && control().resetRaceTime(runnerData) ){
-					parentContainer.refreshSelectionInTable();
-					refreshPanel();
 				}
 			}
 		});
@@ -173,11 +161,26 @@ public class RunnerPanel extends GecoPanel {
 		panel.setLayout(new BorderLayout());
 		panel.add(SwingUtils.embed(initRunnerPanel()), BorderLayout.NORTH);
 		panel.add(SwingUtils.embed(this.punchPanel), BorderLayout.CENTER);
-		panel.add(SwingUtils.embed(initQuickPrintButton()), BorderLayout.EAST);
-//		panel.add(Box.createHorizontalStrut(25), BorderLayout.WEST); // balance layout
 		return panel;
 	}
 
+	public JButton initResetTimeButton() {
+		ImageIcon time = new ImageIcon(
+				getClass().getResource("/resources/icons/crystal/history.png")); //$NON-NLS-1$
+		JButton resetTimeB = new JButton(time);
+		resetTimeB.setToolTipText(Messages.uiGet("RunnerPanel.ResetTimeTooltip")); //$NON-NLS-1$
+		resetTimeB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if( runnerData!=null && control().resetRaceTime(runnerData) ){
+					parentContainer.refreshSelectionInTable();
+					refreshPanel();
+				}
+			}
+		});
+		return resetTimeB;
+	}
+	
 	public JButton initQuickPrintButton() {
 		ImageIcon splitPrint = new ImageIcon(
 				getClass().getResource("/resources/icons/crystal/filequickprint_small.png")); //$NON-NLS-1$
@@ -227,7 +230,8 @@ public class RunnerPanel extends GecoPanel {
 		runnerPanel.add(dataPanel, BorderLayout.NORTH);
 		runnerPanel.add(Box.createVerticalStrut(10), BorderLayout.CENTER);
 		runnerPanel.add(
-				SwingUtils.makeButtonBar(FlowLayout.CENTER, resetRTimeB, recheckStatusB, mergeDialogB),
+				SwingUtils.makeButtonBar(FlowLayout.CENTER,
+							recheckStatusB, mergeDialogB, initResetTimeButton(), initQuickPrintButton()),
 				BorderLayout.SOUTH);
 		return runnerPanel;
 	}
