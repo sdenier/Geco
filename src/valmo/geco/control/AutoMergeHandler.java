@@ -35,13 +35,16 @@ public class AutoMergeHandler extends Control implements GecoRequestHandler {
 	}
 
 	@Override
-	public String requestMergeUnknownRunner(RunnerRaceData data, String chip) {
+	public String requestMergeUnknownRunner(RunnerRaceData data, String ecard) {
 		Course course = detectCourse(data);
-		Runner r = detectArchiveRunner(data, chip, course);
+		Runner r = detectArchiveRunner(data, ecard, course);
 		if( r!=null ){
-			return r.getChipnumber();
+			// TODO: rethink this part with SIReaderHandler. We return null because detectArchiveRunner
+			// already handled the case and announced CardRead (autoprinting).
+			// Returning the e-card would led SIReaderHandler to announce an unknown card.
+			return null;
 		} else {
-			return processData(data, chip, course, Status.UNK);
+			return processData(data, ecard, course, Status.UNK);
 		}
 	}
 	
@@ -89,13 +92,14 @@ public class AutoMergeHandler extends Control implements GecoRequestHandler {
 		return bestResult.course;
 	}
 
-	private Runner detectArchiveRunner(RunnerRaceData data, String chip, Course course) {
+	private Runner detectArchiveRunner(RunnerRaceData data, String ecard, Course course) {
 		ArchiveManager archive = geco().getService(ArchiveManager.class);
-		Runner newRunner = archive.findAndCreateRunner(chip, course);
+		Runner newRunner = archive.findAndCreateRunner(ecard, course);
 		if( newRunner==null ){
 			return null;
 		} else {
 			runnerControl().registerRunner(newRunner, data);
+			geco().announcer().announceCardRead(newRunner.getChipnumber());
 			geco().log("Insertion " + data.infoString()); //$NON-NLS-1$
 			return newRunner;
 		}
