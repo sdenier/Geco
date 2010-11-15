@@ -377,7 +377,8 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 			html.open("head");
 			html.open("style", "type=\"text/css\"");
 			html.contents(
-					"body { font-size: " + splitFontSize() + " }\n" +
+					"body { font-size: " + splitFontSize() + "; background-color:white }\n" +
+//					"table { border-width: 1px } \n" +
 					"td, th { padding: 0px 0px 0px 10px; margin: 0px }");
 			html.close("style");
 			html.close("head");
@@ -404,7 +405,7 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 				}
 			};
 			
-			if( ! DEBUGMODE ) { // TODO: remove afer trial
+			if( ! DEBUGMODE ) {
 				ExecutorService pool = Executors.newCachedThreadPool();
 				pool.submit(callable);
 			} else {
@@ -510,19 +511,21 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 				"Geco for orienteering - http://bitbucket.org/sdenier/geco"); //$NON-NLS-1$
 	}
 
-	private void printSingleSplitsInLine(RunnerRaceData data, Html html) {		
+	private void printSingleSplitsInLine(RunnerRaceData data, Html html) {
+//		char[] chars = Character.toChars(0x2B15); // control flag char :)
+//		html.contents(new String(chars));
 		html.open("div", "align=\"center\"");
 		html.contents(geco().stage().getName()).br();
 		html.b(data.getRunner().getName()).br();
 		html.br();
 		html.b(data.getCourse().getName() + " - " //$NON-NLS-1$
 				+ data.getResult().shortFormat());
+		html.close("div"); // don't center table, it wastes too much space for some formats.
 		html.open("table", "width=\"75%\""); //$NON-NLS-1$
 		appendHtmlSplitsInLine(buildLinearSplits(data), html);
 		html.close("table").br(); //$NON-NLS-1$
 		html.contents("Geco for orienteering").br();
 		html.contents("http://bitbucket.org/sdenier/geco");
-		html.close("div");
 	}
 
 	private void appendHtmlSplitsInLine(SplitTime[] linearSplits, Html html) {
