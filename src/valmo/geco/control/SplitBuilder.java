@@ -64,6 +64,9 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 	}
 	
 	public static enum SplitFormat { MultiColumns, Ticket }
+
+
+	private static final boolean DEBUGMODE = false;
 	
 	
 	private PrintService splitPrinter;
@@ -401,7 +404,7 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 				}
 			};
 			
-			if( autoPrint ) { // TODO: remove afer trial
+			if( ! DEBUGMODE ) { // TODO: remove afer trial
 				ExecutorService pool = Executors.newCachedThreadPool();
 				pool.submit(callable);
 			} else {
@@ -427,41 +430,56 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 		Dimension preferredSize = ticket.getPreferredSize();
 		int dpi = Toolkit.getDefaultToolkit().getScreenResolution();
 		float height = ((float) preferredSize.height) / dpi;
-//				float width = ((float) preferredSize.width) / dpi;
-		float width = 2.76f;
+		float width = ((float) preferredSize.width) / dpi;
+//		float width = 2.76f;
 
-//				System.out.println(height);
-		System.out.println(height * 25.4);
-//				System.out.println(width * 25.4);
+		if( DEBUGMODE ){
+			System.out.println("Font size: " + splitFontSize());
+			System.out.print("Request: ");
+			System.out.print(height * 25.4);
+			System.out.print("x");
+			System.out.print(width * 25.4);
+			System.out.println(" mm");
+		}
 
 		MediaSizeName bestMedia = null;
 		float bestFit = Float.MAX_VALUE;
 		for (MediaSizeName media : getSplitMedia()) {
 			MediaSize mediaSize = MediaSize.getMediaSizeForName(media);
 			if( mediaSize!=null ){
+				if( DEBUGMODE ){
+					System.out.print(mediaSize.toString(MediaSize.MM, "mm"));
+					System.out.println(" - " + media);
+				}
 				float dy = mediaSize.getY(MediaSize.INCH) - height;
 				float dx = mediaSize.getY(MediaSize.INCH) - width;
-				float fit = dy * dy + dx * dx;
-				if( dy >= 0 && fit <= bestFit ){
+				float fit = dy + dx;
+				if( dy >= 0 && dx >= 0 && fit <= bestFit ){
 					bestFit = fit;
 					bestMedia = media;
 				}
 			}
 		}
-		System.out.println(bestMedia);
 		if( bestMedia==null ){
 			bestMedia = MediaSize.findMedia(width, height, MediaSize.INCH);
-			System.out.println("Request default size for ticket");
 			geco().debug("Ticket size may be too small");
+			if( DEBUGMODE ){
+				System.out.print("Found: ");
+			}			
+		} else {
+			if( DEBUGMODE ){
+				System.out.print("Chosen: ");
+			}			
 		}
 		if( bestMedia!=null ){
 			attributes.add(bestMedia);
 			MediaSize fitSize = MediaSize.getMediaSizeForName(bestMedia);
-			System.out.println(fitSize.toString(MediaSize.MM, "mm"));
+			if( DEBUGMODE ){
+				System.out.println(fitSize.toString(MediaSize.MM, "mm"));
+			}
 		} else {
 			geco().log("Can't find a matching size for ticket");
 		}
-		System.out.println();
 	}
 
 
