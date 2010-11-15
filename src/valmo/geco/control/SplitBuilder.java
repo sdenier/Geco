@@ -74,6 +74,8 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 
 	private SplitFormat splitFormat = SplitFormat.MultiColumns;
 
+	private MediaSizeName[] splitMedia;
+
 	
 	/**
 	 * @param gecoControl
@@ -432,18 +434,17 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 		System.out.println(height * 25.4);
 //				System.out.println(width * 25.4);
 
-		Media[] values = (Media[]) getSplitPrinter().getSupportedAttributeValues(Media.class, null, null);
 		MediaSizeName bestMedia = null;
 		float bestFit = Float.MAX_VALUE;
-		for (Media media : values) {
-			MediaSize mediaSize = MediaSize.getMediaSizeForName((MediaSizeName) media);
+		for (MediaSizeName media : getSplitMedia()) {
+			MediaSize mediaSize = MediaSize.getMediaSizeForName(media);
 			if( mediaSize!=null ){
 				float dy = mediaSize.getY(MediaSize.INCH) - height;
 				float dx = mediaSize.getY(MediaSize.INCH) - width;
 				float fit = dy * dy + dx * dx;
 				if( dy >= 0 && fit <= bestFit ){
 					bestFit = fit;
-					bestMedia = (MediaSizeName) media;
+					bestMedia = media;
 				}
 			}
 		}
@@ -461,6 +462,21 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 			geco().log("Can't find a matching size for ticket");
 		}
 		System.out.println();
+	}
+
+
+	private MediaSizeName[] getSplitMedia() {
+		if( splitMedia==null ) {
+			Vector<MediaSizeName> mediaSizenames = new Vector<MediaSizeName>();
+			Media[] media = (Media[]) getSplitPrinter().getSupportedAttributeValues(Media.class, null, null);
+			for (Media m : media) {
+				if( m!=null && m instanceof MediaSizeName ){
+					mediaSizenames.add((MediaSizeName) m);
+				}
+			}
+			splitMedia = mediaSizenames.toArray(new MediaSizeName[0]);
+		}
+		return splitMedia;
 	}
 
 	private void printSingleSplitsInColumns(RunnerRaceData data, Html html) {
@@ -544,6 +560,7 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 	}
 	
 	public boolean setSplitPrinterName(String name) {
+		splitMedia = null; // reset cache
 		for (PrintService printer : PrinterJob.lookupPrintServices()) {
 			if( printer.getName().equals(name) ) {
 				splitPrinter = printer;
