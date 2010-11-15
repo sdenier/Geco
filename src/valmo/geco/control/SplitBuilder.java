@@ -4,7 +4,8 @@
  */
 package valmo.geco.control;
 
-import java.awt.print.PrinterException;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.print.PrinterJob;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -14,9 +15,18 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.standard.Media;
+import javax.print.attribute.standard.MediaSize;
+import javax.print.attribute.standard.MediaSizeName;
+import javax.swing.JFrame;
 import javax.swing.JTextPane;
 
 import valmo.geco.control.ResultBuilder.ResultConfig;
@@ -359,28 +369,101 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 	public String printSingleSplits(RunnerRaceData data) {
 		if( getSplitPrinter()!=null ) {
 			Html html = new Html();
+			html.open("head");
+			html.open("style", "type=\"text/css\"");
+			html.contents(
+					"body { font-size: " + splitFontSize() + " }\n" +
+					"td, th { padding: 0px 0px 0px 10px; margin: 0px }");
+			html.close("style");
+			html.close("head");
 			if( splitFormat==SplitFormat.Ticket ) {
 				printSingleSplitsInLine(data, html);
 			} else {
 				printSingleSplitsInColumns(data, html);
 			}
 		
-			JTextPane ticket = new JTextPane(); 
+			final JTextPane ticket = new JTextPane(); 
 			ticket.setContentType("text/html"); //$NON-NLS-1$
 			String content = html.close();
 			ticket.setText(content);
-			try {
-				ticket.print(null, null, false, getSplitPrinter(), null, true);
-			} catch (PrinterException e) {
-				geco().debug(e.getLocalizedMessage());
+			
+			final PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
+			if( splitFormat==SplitFormat.Ticket ) {
+				computeMediaForTicket(ticket, attributes);
 			}
+			
+			Callable<Boolean> callable = new Callable<Boolean>() {
+				@Override
+				public Boolean call() throws Exception {
+					return ticket.print(null, null, false, getSplitPrinter(), attributes, false);
+				}
+			};
+			
+			if( autoPrint ) { // TODO: remove afer trial
+				ExecutorService pool = Executors.newCachedThreadPool();
+				pool.submit(callable);
+			} else {
+				JFrame jFrame = new JFrame();
+				jFrame.add(ticket);
+				jFrame.pack();
+				jFrame.setVisible(true);
+			}
+			
+//			try {
+//				ticket.print(null, null, false, getSplitPrinter(), attributes, true);
+//			} catch (PrinterException e) {
+//				geco().debug(e.getLocalizedMessage());
+//			}
 			return content;
 		}
 		return ""; //$NON-NLS-1$
 	}
 
+
+	private void computeMediaForTicket(final JTextPane ticket,
+			final PrintRequestAttributeSet attributes) {
+		Dimension preferredSize = ticket.getPreferredSize();
+		int dpi = Toolkit.getDefaultToolkit().getScreenResolution();
+		float height = ((float) preferredSize.height) / dpi;
+//				float width = ((float) preferredSize.width) / dpi;
+		float width = 2.76f;
+
+//				System.out.println(height);
+		System.out.println(height * 25.4);
+//				System.out.println(width * 25.4);
+
+		Media[] values = (Media[]) getSplitPrinter().getSupportedAttributeValues(Media.class, null, null);
+		MediaSizeName bestMedia = null;
+		float bestFit = Float.MAX_VALUE;
+		for (Media media : values) {
+			MediaSize mediaSize = MediaSize.getMediaSizeForName((MediaSizeName) media);
+			if( mediaSize!=null ){
+				float dy = mediaSize.getY(MediaSize.INCH) - height;
+				float dx = mediaSize.getY(MediaSize.INCH) - width;
+				float fit = dy * dy + dx * dx;
+				if( dy >= 0 && fit <= bestFit ){
+					bestFit = fit;
+					bestMedia = (MediaSizeName) media;
+				}
+			}
+		}
+		System.out.println(bestMedia);
+		if( bestMedia==null ){
+			bestMedia = MediaSize.findMedia(width, height, MediaSize.INCH);
+			System.out.println("Request default size for ticket");
+			geco().debug("Ticket size may be too small");
+		}
+		if( bestMedia!=null ){
+			attributes.add(bestMedia);
+			MediaSize fitSize = MediaSize.getMediaSizeForName(bestMedia);
+			System.out.println(fitSize.toString(MediaSize.MM, "mm"));
+		} else {
+			geco().log("Can't find a matching size for ticket");
+		}
+		System.out.println();
+	}
+
 	private void printSingleSplitsInColumns(RunnerRaceData data, Html html) {
-		html.tag("h2", "align=\"center\"", geco().stage().getName()); //$NON-NLS-1$ //$NON-NLS-2$
 		html.b(data.getRunner().getName() + " - " //$NON-NLS-1$
 				+ geco().stage().getName() + " - " //$NON-NLS-1$
 				+ data.getCourse().getName() + " - " //$NON-NLS-1$
@@ -393,16 +476,19 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 				"Geco for orienteering - http://bitbucket.org/sdenier/geco"); //$NON-NLS-1$
 	}
 
-	private void printSingleSplitsInLine(RunnerRaceData data, Html html) {
-		html.tag("p", "align=\"center\"", geco().stage().getName()); //$NON-NLS-1$ //$NON-NLS-2$
-		html.open("p", "align=\"center\"").b(data.getRunner().getName()).close("p"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	private void printSingleSplitsInLine(RunnerRaceData data, Html html) {		
+		html.open("div", "align=\"center\"");
+		html.contents(geco().stage().getName()).br();
+		html.b(data.getRunner().getName()).br();
+		html.br();
 		html.b(data.getCourse().getName() + " - " //$NON-NLS-1$
 				+ data.getResult().shortFormat());
-		html.open("table"); //$NON-NLS-1$
+		html.open("table", "width=\"75%\""); //$NON-NLS-1$
 		appendHtmlSplitsInLine(buildLinearSplits(data), html);
-		html.close("table"); //$NON-NLS-1$
-		html.tag("div", "align=\"center\"", "Geco for orienteering"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		html.tag("div",	"align=\"center\"",	"http://bitbucket.org/sdenier/geco"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		html.close("table").br(); //$NON-NLS-1$
+		html.contents("Geco for orienteering").br();
+		html.contents("http://bitbucket.org/sdenier/geco");
+		html.close("div");
 	}
 
 	private void appendHtmlSplitsInLine(SplitTime[] linearSplits, Html html) {
@@ -426,7 +512,7 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 				html.td(splitTime.seq);
 				html.td(""); //$NON-NLS-1$
 				html.th(time, "align=\"right\""); //$NON-NLS-1$
-				html.td(TimeManager.time(splitTime.split), "align=\"right\"");				 //$NON-NLS-1$
+				html.td(TimeManager.time(splitTime.split), "align=\"right\""); //$NON-NLS-1$
 			}
 			html.closeTr();
 		}
@@ -484,6 +570,11 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 	public void setSplitFormat(SplitFormat format) {
 		this.splitFormat = format;
 	}
+
+	public int splitFontSize() {
+		return 10; // 8 for race with more than 30+ punches
+	}
+
 
 	@Override
 	public void cardRead(String chip) {
