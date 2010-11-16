@@ -30,26 +30,53 @@ public class RegistryStats extends Control
 
 	public static enum StatItem {
 		Registered {
-			@Override
 			public String toString() {
 				return Messages.getString("RegistryStats.RegisteredLabel"); //$NON-NLS-1$
 			}},
 		Present {
-			@Override
 			public String toString() {
 				return Messages.getString("RegistryStats.PresentLabel"); //$NON-NLS-1$
 			}},
 		Unresolved {
-			@Override
 			public String toString() {
 				return Messages.getString("RegistryStats.UnresolvedLabel"); //$NON-NLS-1$
 			}},
 		Finished {
-			@Override
 			public String toString() {
 				return Messages.getString("RegistryStats.FinishedLabel"); //$NON-NLS-1$
 			}},
-		OK, MP, DNS, DNF, DSQ, NDA, UNK, DUP;
+		OK {
+			public String toString() {
+				return Messages.getString("Status.OKLabel"); //$NON-NLS-1$
+			}},
+		MP {
+			public String toString() {
+				return Messages.getString("Status.MPLabel"); //$NON-NLS-1$
+			}},
+		DNS {
+			public String toString() {
+				return Messages.getString("Status.DNSLabel"); //$NON-NLS-1$
+			}},
+		DNF {
+			public String toString() {
+				return Messages.getString("Status.DNFLabel"); //$NON-NLS-1$
+			}},
+		DSQ {
+			public String toString() {
+				return Messages.getString("Status.DSQLabel"); //$NON-NLS-1$
+			}},
+		NDA {
+			public String toString() {
+				return Messages.getString("Status.NoDataLabel"); //$NON-NLS-1$
+			}},
+		UNK {
+			public String toString() {
+				return Messages.getString("Status.UnknownLabel"); //$NON-NLS-1$
+			}},
+		DUP {
+			public String toString() {
+				return Messages.getString("Status.DuplicateLabel"); //$NON-NLS-1$
+			}};
 	}
 
 	public static final StatItem[] shortStatusList = new StatItem[] {

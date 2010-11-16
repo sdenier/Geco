@@ -13,6 +13,9 @@ public enum Status {
 		public Color color() {
 			return new Color(0.6f, 1, 0.6f);
 		}
+		public String toString() {
+			return Messages.getString("Status.OKLabel"); //$NON-NLS-1$
+		}
 		public boolean isRecheckable() {
 			return true;
 		}
@@ -21,16 +24,31 @@ public enum Status {
 		public Color color() {
 			return new Color(0.75f, 0.5f, 0.75f);
 		}
+		public String toString() {
+			return Messages.getString("Status.MPLabel"); //$NON-NLS-1$
+		}
 		public boolean isRecheckable() {
 			return true;
 		}
 	},
 	DNS {
+		public String toString() {
+			return Messages.getString("Status.DNSLabel"); //$NON-NLS-1$
+		}
 		public boolean isTraceable() {
 			return false;
 		}
 	},
-	DNF, DSQ,
+	DNF {
+		public String toString() {
+			return Messages.getString("Status.DNFLabel"); //$NON-NLS-1$
+		}
+	},
+	DSQ {
+		public String toString() {
+			return Messages.getString("Status.DSQLabel"); //$NON-NLS-1$
+		}
+	},
 	NDA { 
 		public Color color() {
 			return new Color(1, 1, 0.5f);
