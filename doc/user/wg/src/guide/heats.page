@@ -1,6 +1,6 @@
 ---
 title: Heats
-sort_info: 7
+sort_info: 8
 in_menu: true
 ---
 # Heats Panel
@@ -8,8 +8,6 @@ in_menu: true
 The heats panel lets you define how runners in the current stage got qualified for the next stage in knockout qualifications.
 Geco takes care of building pools of qualified runners based on results and your specifications.
 Pools can be exported directly as start lists for the next stage.
-
-Quick access through `modifier + A`.
 
 <a href="../images/heats_panel_dialog.png"><img src="../images/heats_panel_dialog.png" /></a>
 

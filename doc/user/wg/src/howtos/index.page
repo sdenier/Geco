@@ -22,7 +22,7 @@ All data relating to a stage are stored in the same directory. This page explain
 See [Registrations](register.html) for detailed information about the internal format of each file.
 
 
-When you save or quit Geco, data are saved on disk in the above files. Geco automatically performs a backup right after the save in the `backups` subfolder of the folder.
+When you *save or quit* Geco, data are saved on disk in the above files. Geco automatically performs a backup right after the save in the `backups` subfolder of the folder.
 They are named `backupXXXXX.zip` following their creation timestamp. In case of problems, you can directly restore data by unzipping the last backup. Such backups are never deleted by Geco.
 
 Geco also saves data on disk every 2 minutes (this parameter `AutosaveDelay` can be changed in the `geco.prop` file). Autosave performs a backup using a circular set of files named `backupX.zip`. Geco uses 9 backups so that the last 18 minutes of activity are always on disk.

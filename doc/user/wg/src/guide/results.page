@@ -1,13 +1,11 @@
 ---
 title: Results
-sort_info: 6
+sort_info: 7
 in_menu: true
 ---
 # Results Panel
 
 The results panel can generate results from current data at any time during a race.
-
-Quick access through `modifier + E`.
 
 <a href="../images/results_panel.png"><img src="../images/results_panel.png" /></a>
 
