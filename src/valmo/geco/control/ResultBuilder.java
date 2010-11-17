@@ -16,7 +16,6 @@ import java.util.Vector;
 import valmo.geco.core.Html;
 import valmo.geco.core.Messages;
 import valmo.geco.core.TimeManager;
-import valmo.geco.model.ArchiveRunner;
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
 import valmo.geco.model.Course;
@@ -397,21 +396,21 @@ public class ResultBuilder extends Control implements IResultBuilder {
 		for (RunnerRaceData runnerData : registry().getRunnersData()) {
 			Runner runner = runnerData.getRunner();
 			if( runner.getArchiveId()!=null && runnerData.hasResult() ) {
-				ArchiveRunner ark = 
-					geco().getService(ArchiveManager.class).archive().findRunner(runner.getArchiveId());
-				if( ark!=null ){
-					Club club = runner.getClub();
-					Category category = runner.getCategory();
-					Course course = runner.getCourse();
+//				ArchiveRunner ark = 
+//					geco().getService(ArchiveManager.class).archive().findRunner(runner.getArchiveId());
+//				if( ark!=null ){
+				Club club = runner.getClub();
+				Category category = runner.getCategory();
+				Course course = runner.getCourse();
 
-					writer.writeRecord(
+				writer.writeRecord(
 						Integer.toString(runner.getStartnumber()),
 						runner.getChipnumber(),
-						ark.getArchiveId().toString(),
+						runner.getArchiveId().toString(),
 						runner.getLastname(),
 						runner.getFirstname(),
-						ark.getBirthYear(),
-						ark.getSex(),
+						"", //$NON-NLS-1$ // ark.getBirthYear(),
+						"", //$NON-NLS-1$ // ark.getSex(),
 						"", //$NON-NLS-1$
 						( runner.isNC() ) ? "X" : "0", //$NON-NLS-1$ //$NON-NLS-2$
 						oeTime(runnerData.getStarttime()),
@@ -439,8 +438,6 @@ public class ResultBuilder extends Control implements IResultBuilder {
 						"1", //$NON-NLS-1$
 						"1" //$NON-NLS-1$
 						);
-				}
-				
 			}
 		}
 	}
