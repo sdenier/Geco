@@ -45,7 +45,7 @@ public class ResultDataIO extends AbstractIO<RunnerRaceData> {
 	@Override
 	public RunnerRaceData importTData(String[] record) {
 		RunnerResult result = factory.createRunnerResult();
-		// TODO: remove after data migration
+		// MIGR11
 		Status en = ( record[1].equals("Unknown") || record[1].equals("REG") ) ? //$NON-NLS-1$ //$NON-NLS-2$
 				Status.NDA :
 				Enum.valueOf(Status.class, record[1]);
