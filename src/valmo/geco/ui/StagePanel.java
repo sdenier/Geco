@@ -20,6 +20,8 @@ import java.util.TimeZone;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.InputVerifier;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -495,17 +497,19 @@ public class StagePanel extends TabPanel {
 	
 	private JPanel categoryConfigPanel() {
 		final ConfigTablePanel<Category> panel = new ConfigTablePanel<Category>(geco(), frame());
-	
+		final JComboBox coursesCB = new JComboBox();
+		
 		final ConfigTableModel<Category> tableModel = 
 			new ConfigTableModel<Category>(new String[] {
 												Messages.uiGet("StagePanel.CategoryShortNameHeader"), //$NON-NLS-1$
-												Messages.uiGet("StagePanel.CategoryLongNameHeader")}) { //$NON-NLS-1$
+												Messages.uiGet("StagePanel.CategoryLongNameHeader"), //$NON-NLS-1$
+												"Course" }) {
 				@Override
 				public Object getValueIn(Category cat, int columnIndex) {
 					switch (columnIndex) {
 					case 0: return cat.getShortname();
 					case 1: return cat.getLongname();
-//					case 2: return (cat.getCourse()==null) ? "" : cat.getCourse().getName();
+					case 2: return (cat.getCourse()==null) ? "" : cat.getCourse().getName();
 					default: return super.getValueIn(cat, columnIndex);
 					}
 				}
@@ -514,14 +518,24 @@ public class StagePanel extends TabPanel {
 					switch (col) {
 					case 0: geco().stageControl().updateShortname(cat, (String) value); break;
 					case 1: geco().stageControl().updateName(cat, (String) value); break;
+					case 2: setCourse(cat, (String) value); break;
 					default: break;
+					}
+				}
+				private void setCourse(Category cat, String coursename) {
+					if( coursename.equals("") ){
+						cat.setCourse(null);
+					} else {
+						cat.setCourse(registry().findCourse(coursename));
 					}
 				}
 		};
 		tableModel.setData(registry().getSortedCategories());
 		
 		geco().announcer().registerStageConfigListener( new Announcer.StageConfigListener() {
-			public void coursesChanged() {}
+			public void coursesChanged() {
+				updateCoursesCBforCategories(coursesCB);
+			}
 			public void clubsChanged() {}
 			public void categoriesChanged() {
 				tableModel.setData(registry().getSortedCategories());
@@ -556,7 +570,15 @@ public class StagePanel extends TabPanel {
 				tableModel,
 				addAction,
 				removeAction);
+		updateCoursesCBforCategories(coursesCB);
+		panel.table().getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(coursesCB));
 		return panel;
+	}
+
+	private void updateCoursesCBforCategories(final JComboBox coursesCB) {
+		Vector<String> sortedCoursenames = new Vector<String>( registry().getSortedCoursenames() );
+		sortedCoursenames.add(0, "");
+		coursesCB.setModel(new DefaultComboBoxModel(sortedCoursenames));
 	}
 		
 	@Override
@@ -568,7 +590,6 @@ public class StagePanel extends TabPanel {
 	@Override
 	public void saving(Stage stage, Properties properties) {
 		super.saving(stage, properties);
-	}
-	
+	}	
 
 }

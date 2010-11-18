@@ -194,6 +194,16 @@ public class RunnersPanel extends TabPanel
 		});
 		topPanel.add(fastB);
 
+		final JCheckBox defaultCourseB = new JCheckBox("Default course");
+		defaultCourseB.setToolTipText("When changing runner category, also update runner course with the default course for the category");
+		defaultCourseB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tableModel.enableDefaultCourseForCategory(defaultCourseB.isSelected());
+			}
+		});
+		topPanel.add(defaultCourseB);
+		
 		topPanel.add(Box.createHorizontalGlue());
 		initFilterPanel(topPanel);
 		topPanel.setBorder(BorderFactory.createEtchedBorder());

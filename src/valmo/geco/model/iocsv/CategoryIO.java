@@ -27,9 +27,15 @@ public class CategoryIO extends AbstractIO<Category> {
 	public Category importTData(String[] record) {
 		Category cat = this.factory.createCategory();
 		cat.setShortname(record[0]);
-		cat.setLongname(""); //$NON-NLS-1$
-		if( record.length==2 ) {
-			cat.setCourse(registry.findCourse(record[1]));
+		 // MIGR11
+		if( record.length==3 ){
+			cat.setLongname(record[1]); //$NON-NLS-1$
+			cat.setCourse(registry.findCourse(record[2]));
+		} else 
+		if( record.length==2 ){
+			cat.setLongname(record[1]); //$NON-NLS-1$
+		} else {
+			cat.setLongname(""); //$NON-NLS-1$
 		}
 		return cat;
 	}
@@ -44,11 +50,13 @@ public class CategoryIO extends AbstractIO<Category> {
 		if( c.getCourse()!=null ) {
 			return new String[] {
 					c.getShortname(),
+					c.getLongname(),
 					c.getCourse().getName()
 			};
 		} else {
 			return new String[] {
 					c.getShortname(),
+					c.getLongname()
 			};
 		}
 	}

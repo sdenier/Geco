@@ -28,6 +28,7 @@ import javax.swing.table.TableColumnModel;
 import valmo.geco.Geco;
 import valmo.geco.control.RunnerControl;
 import valmo.geco.core.Messages;
+import valmo.geco.model.Course;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
@@ -47,10 +48,12 @@ public class RunnersTableModel extends AbstractTableModel {
 	private List<RunnerRaceData> data;
 
 	private int clickCountToEdit;
+	private boolean useDefaultCourseForCategory;
 	private DefaultCellEditor categoryEditor;
 	private DefaultCellEditor courseEditor;
 	private DefaultCellEditor clubEditor;
 	private DefaultCellEditor statusEditor;
+
 	
 	public RunnersTableModel(Geco geco) {
 		this.geco = geco;
@@ -68,6 +71,7 @@ public class RunnersTableModel extends AbstractTableModel {
 		};
 		this.data = new Vector<RunnerRaceData>();
 		this.clickCountToEdit = 2;
+		this.useDefaultCourseForCategory = false;
 	}
 	
 	private RunnerControl control() {
@@ -266,6 +270,10 @@ public class RunnersTableModel extends AbstractTableModel {
 		statusEditor.setClickCountToStart(clicks);
 	}
 	
+	public void enableDefaultCourseForCategory(boolean flag){
+		useDefaultCourseForCategory = flag;
+	}
+	
 
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
@@ -274,7 +282,7 @@ public class RunnersTableModel extends AbstractTableModel {
 		case 1: break;
 		case 2: break;
 		case 3: break;
-		case 4: setCategory(getRunner(rowIndex), (String) aValue); break;
+		case 4: setCategory(getRunnerData(rowIndex), (String) aValue); break;
 		case 5: setCourse(getRunnerData(rowIndex), (String) aValue); break;
 		case 6: setClub(getRunner(rowIndex), (String) aValue); break;
 		case 7: break;
@@ -284,8 +292,16 @@ public class RunnersTableModel extends AbstractTableModel {
 		}
 	}
 
-	private void setCategory(Runner runner, String newCategory) {
+	private void setCategory(RunnerRaceData runnerData, String newCategory) {
+		Runner runner = runnerData.getRunner();
 		control().validateCategory(runner, newCategory);
+		// check course even if no change in category
+		if( useDefaultCourseForCategory ){
+			Course catCourse = runner.getCategory().getCourse();
+			if( catCourse!=null ){
+				control().validateCourse(runnerData, catCourse.getName());
+			}
+		}
 	}
 
 	private void setCourse(RunnerRaceData runnerData, String newCourse) {

@@ -10,8 +10,8 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Properties;
 
-import valmo.geco.core.Messages;
 import valmo.geco.core.Announcer.StageListener;
+import valmo.geco.core.Messages;
 import valmo.geco.model.Archive;
 import valmo.geco.model.ArchiveRunner;
 import valmo.geco.model.Category;
@@ -84,7 +84,12 @@ public class ArchiveManager extends Control implements StageListener {
 	}
 	
 	public Runner insertRunner(ArchiveRunner arkRunner) {
-		Runner runner = createRunner(arkRunner, registry().anyCourse());
+		Category rCat = ensureCategoryInRegistry(arkRunner.getCategory());
+		Course course =
+			( rCat.getCourse()==null ) ?
+					registry().anyCourse() :
+					rCat.getCourse();
+		Runner runner = createRunner(arkRunner, course);
 		runnerControl().registerNewRunner(runner);
 		return runner;
 	}

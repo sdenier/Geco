@@ -113,5 +113,9 @@ public class ConfigTablePanel<T> extends GecoPanel {
 		}
 		return null;
 	}
+	
+	protected JTable table() {
+		return table;
+	}
 
 }
