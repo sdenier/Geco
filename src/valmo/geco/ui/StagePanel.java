@@ -205,35 +205,16 @@ public class StagePanel extends TabPanel {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		panel.add(new JLabel(Messages.uiGet("StagePanel.StationPortLabel")), c); //$NON-NLS-1$
 		final JComboBox stationPortCB = new JComboBox(geco().siHandler().listPorts());
-//		final JTextField stationPortF = new JTextField(geco().siHandler().getPortName());
-//		stationPortF.setColumns(12);
+		stationPortCB.setPreferredSize(new Dimension(170, stationPortCB.getPreferredSize().height));
 		stationPortCB.setToolTipText(Messages.uiGet("StagePanel.StationPortTooltip")); //$NON-NLS-1$
 		panel.add(stationPortCB, c);
+		stationPortCB.setSelectedItem(geco().siHandler().getPortName());
 		stationPortCB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				geco().siHandler().setPortName( (String) stationPortCB.getSelectedItem() );
 			}
 		});
-		stationPortCB.setSelectedItem(geco().siHandler().detectSIPort());
-//		stationPortF.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				geco().siHandler().setPortName(stationPortF.getText());
-//			}
-//		});
-//		stationPortF.setInputVerifier(new InputVerifier() {
-//			@Override
-//			public boolean verify(JComponent input) {
-//				return true;
-//			}
-//			@Override
-//			public boolean shouldYieldFocus(JComponent input) {
-//				geco().siHandler().setPortName(stationPortF.getText());
-//				return true;
-//			}
-//
-//		});
 		
 		c.gridy = 1;
 		panel.add(new JLabel(Messages.uiGet("StagePanel.ZeroHourLabel")), c); //$NON-NLS-1$
@@ -268,6 +249,7 @@ public class StagePanel extends TabPanel {
 		c.gridy = 2;
 		panel.add(new JLabel(Messages.uiGet("StagePanel.SplitPrinterLabel")), c); //$NON-NLS-1$
 		final JComboBox printersCB = new JComboBox(geco().splitsBuilder().listPrinterNames());
+		printersCB.setPreferredSize(new Dimension(170, stationPortCB.getPreferredSize().height));
 		printersCB.setSelectedItem(geco().splitsBuilder().getSplitPrinterName());
 		panel.add(printersCB, c);
 		printersCB.addActionListener(new ActionListener() {
@@ -280,6 +262,7 @@ public class StagePanel extends TabPanel {
 		c.gridy = 3;
 		panel.add(new JLabel(Messages.uiGet("StagePanel.SplitFormatLabel")), c); //$NON-NLS-1$
 		final JComboBox splitFormatCB = new JComboBox(SplitBuilder.SplitFormat.values());
+		splitFormatCB.setPreferredSize(new Dimension(170, stationPortCB.getPreferredSize().height));
 		splitFormatCB.setSelectedItem(geco().splitsBuilder().getSplitFormat());
 		panel.add(splitFormatCB, c);
 		splitFormatCB.addActionListener(new ActionListener() {

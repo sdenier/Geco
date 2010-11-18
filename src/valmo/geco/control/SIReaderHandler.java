@@ -61,8 +61,7 @@ public class SIReaderHandler extends Control
 	public SIReaderHandler(GecoControl geco, GecoRequestHandler requestHandler) {
 		super(SIReaderHandler.class, geco);
 		this.requestHandler = requestHandler;
-		setPortName(defaultPortName());
-//		changePortName();
+		changePortName();
 		changeZeroTime();
 		changeZeroTimeDefaultStart();
 		geco.announcer().registerStageListener(this);
@@ -72,9 +71,9 @@ public class SIReaderHandler extends Control
 		this.requestHandler = requestHandler;
 	}
 
-//	public static String portNameProperty() {
-//		return "SIPortname"; //$NON-NLS-1$
-//	}
+	public static String portNameProperty() {
+		return "SIPortname"; //$NON-NLS-1$
+	}
 	public static String zerotimeProperty() {
 		return "SIZeroTime"; //$NON-NLS-1$
 	}
@@ -82,18 +81,14 @@ public class SIReaderHandler extends Control
 		return "SIZeroTimeDefaultStart"; //$NON-NLS-1$
 	}
 	
-	public String defaultPortName() {
-		return "/dev/tty.SLAB_USBtoUART"; //$NON-NLS-1$
+	private void changePortName() {
+		String port = stage().getProperties().getProperty(portNameProperty());
+		if( port!=null ) {
+			setPortName(port);
+		} else {
+			setPortName(detectSIPort());
+		}
 	}
-
-//	private void changePortName() {
-//		String port = stage().getProperties().getProperty(portNameProperty());
-//		if( port!=null ) {
-//			setPortName(port);
-//		} else {
-//			setPortName(defaultPortName());
-//		}
-//	}
 	
 	private void changeZeroTime() {
 		try {
@@ -122,7 +117,6 @@ public class SIReaderHandler extends Control
 			CommPortIdentifier port = (CommPortIdentifier) portIdentifiers.nextElement();
 			if( port.getPortType()==CommPortIdentifier.PORT_SERIAL ){
 				serialPorts.add(port.getName());
-				System.out.println(port.getName());
 			}
 		}
 		return serialPorts;
@@ -331,14 +325,14 @@ public class SIReaderHandler extends Control
 	@Override
 	public void changed(Stage previous, Stage next) {
 //		stop();
-//		changePortName();
+		changePortName();
 		changeZeroTime();
 		changeZeroTimeDefaultStart();
 	}
 
 	@Override
 	public void saving(Stage stage, Properties properties) {
-//		properties.setProperty(portNameProperty(), getPortName());
+		properties.setProperty(portNameProperty(), getPortName());
 		properties.setProperty(zerotimeProperty(), Long.toString(getZeroTime()));
 		properties.setProperty(zerotimeDefaultStart(), Boolean.toString(useZeroHourAsDefaultStarttime()));
 	}
