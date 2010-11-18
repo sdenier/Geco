@@ -4,6 +4,8 @@
  */
 package valmo.geco.control;
 
+import java.util.Date;
+
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
@@ -16,9 +18,12 @@ import valmo.geco.model.Runner;
  *
  */
 public class StartlistImporter extends OEImporter {
+	
+	private SIReaderHandler siHandler;
 
 	public StartlistImporter(GecoControl gecoControl) {
 		super(StartlistImporter.class, gecoControl);
+		siHandler = getService(SIReaderHandler.class);
 	}
 
 	@Override
@@ -45,19 +50,18 @@ public class StartlistImporter extends OEImporter {
 			runner.setStartnumber(new Integer(record[0])); // we do not ensure unique start number here
 		}
 		runner.setArchiveId(new Integer(record[2]));
-		runner.setChipnumber(ecard);
 		runner.setLastname(lastName);
 		runner.setFirstname(firstName);
 		runner.setNC(record[8].equals("X"));
 		
-		// TODO: import registered start time
-		TimeManager.safeParse(record[9]); // ! Time since zero jour
+		Date relativeTime = TimeManager.safeParse(record[9]); // ! Time since zero hour
+		runner.setRegisteredStarttime( TimeManager.absoluteTime(relativeTime, siHandler.getZeroTime()) );
 
 		Club club = ensureClubInRegistry(record[15], record[14]);
 		Category cat = ensureCategoryInRegistry(record[18], record[19]);
 		runner.setClub(club);
 		runner.setCategory(cat);
-		runner.setCourse(registry().anyCourse());
+		runner.setCourse(registry().anyCourse()); // TODO: use a category->course assoc?
 		
 		runnerControl().registerNewRunner(runner);
 	}

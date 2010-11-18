@@ -4,6 +4,7 @@
  */
 package valmo.geco.model.iocsv;
 
+import valmo.geco.core.TimeManager;
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
 import valmo.geco.model.Course;
@@ -21,13 +22,16 @@ public class RunnerIO extends AbstractIO<Runner> {
 	public static String sourceFilename() {
 		return "Competitors.csv"; //$NON-NLS-1$
 	}
+
+	private long zeroTime;
 	
-	public RunnerIO(Factory factory, CsvReader reader, CsvWriter writer, Registry registry) {
+	public RunnerIO(Factory factory, CsvReader reader, CsvWriter writer, Registry registry, long zeroTime) {
 		super(factory, reader, writer, registry);
 		if( this.reader!=null )
 			this.reader.setCsvSep(";"); //$NON-NLS-1$
 		if( this.writer!=null )
 			this.writer.setCsvSep(";"); //$NON-NLS-1$
+		this.zeroTime = zeroTime;
 	}
 
 	@Override
@@ -68,6 +72,7 @@ public class RunnerIO extends AbstractIO<Runner> {
 		} else {
 			runner.setCategory(cat);	
 		}
+		runner.setRegisteredStarttime( TimeManager.absoluteTime(TimeManager.safeParse(record[7]), zeroTime) );
 		runner.setNC(new Boolean(record[10]));
 		if( record[11].equals("") ) { //$NON-NLS-1$
 			runner.setArchiveId(null);
@@ -96,7 +101,11 @@ public class RunnerIO extends AbstractIO<Runner> {
 				r.getCourse().getName(),
 				"false", //$NON-NLS-1$
 				r.getCategory().getShortname(),
-				"", "", //$NON-NLS-1$ //$NON-NLS-2$
+				( r.getRegisteredStarttime().equals(TimeManager.NO_TIME) ) ?
+						"" :													 //$NON-NLS-1$
+						TimeManager.fullTime(
+								TimeManager.relativeTime(r.getRegisteredStarttime(), zeroTime) ),
+				"", //$NON-NLS-1$
 				"1",//				0=not started,1=started,2=ok,3=dnf,4=mp,5=disq //$NON-NLS-1$
 				new Boolean(r.isNC()).toString(),
 				(r.getArchiveId()==null) ? "" : r.getArchiveId().toString(), //$NON-NLS-1$

@@ -72,7 +72,7 @@ public class OrFixture {
 		
 		try {
 			reader.initialize(baseDir, RunnerIO.sourceFilename());
-			new RunnerIO(factory, reader, null, registry).importData();
+			new RunnerIO(factory, reader, null, registry, 0).importData();
 
 			reader.initialize(baseDir, RaceDataIO.sourceFilename());
 			new RaceDataIO(factory, reader, null, registry).importData();

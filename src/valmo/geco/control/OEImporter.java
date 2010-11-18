@@ -59,7 +59,11 @@ public abstract class OEImporter extends Control {
 	}
 
 	protected String trimQuotes(String record) { // remove " in "record"
-		return record.substring(1, record.length() - 1);
+		if( record.charAt(0)=='"' ){
+			return record.substring(1, record.length() - 1);
+		} else {
+			return record;
+		}
 	}
 
 }
