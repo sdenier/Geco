@@ -204,28 +204,36 @@ public class StagePanel extends TabPanel {
 		c.insets = new Insets(0, 0, 5, 5);
 		c.fill = GridBagConstraints.HORIZONTAL;
 		panel.add(new JLabel(Messages.uiGet("StagePanel.StationPortLabel")), c); //$NON-NLS-1$
-		final JTextField stationPortF = new JTextField(geco().siHandler().getPortName());
-		stationPortF.setColumns(12);
-		stationPortF.setToolTipText(Messages.uiGet("StagePanel.StationPortTooltip")); //$NON-NLS-1$
-		panel.add(stationPortF, c);
-		stationPortF.addActionListener(new ActionListener() {
+		final JComboBox stationPortCB = new JComboBox(geco().siHandler().listPorts());
+//		final JTextField stationPortF = new JTextField(geco().siHandler().getPortName());
+//		stationPortF.setColumns(12);
+		stationPortCB.setToolTipText(Messages.uiGet("StagePanel.StationPortTooltip")); //$NON-NLS-1$
+		panel.add(stationPortCB, c);
+		stationPortCB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				geco().siHandler().setPortName(stationPortF.getText());
+				geco().siHandler().setPortName( (String) stationPortCB.getSelectedItem() );
 			}
 		});
-		stationPortF.setInputVerifier(new InputVerifier() {
-			@Override
-			public boolean verify(JComponent input) {
-				return true;
-			}
-			@Override
-			public boolean shouldYieldFocus(JComponent input) {
-				geco().siHandler().setPortName(stationPortF.getText());
-				return true;
-			}
-
-		});
+		stationPortCB.setSelectedItem(geco().siHandler().detectSIPort());
+//		stationPortF.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				geco().siHandler().setPortName(stationPortF.getText());
+//			}
+//		});
+//		stationPortF.setInputVerifier(new InputVerifier() {
+//			@Override
+//			public boolean verify(JComponent input) {
+//				return true;
+//			}
+//			@Override
+//			public boolean shouldYieldFocus(JComponent input) {
+//				geco().siHandler().setPortName(stationPortF.getText());
+//				return true;
+//			}
+//
+//		});
 		
 		c.gridy = 1;
 		panel.add(new JLabel(Messages.uiGet("StagePanel.ZeroHourLabel")), c); //$NON-NLS-1$
