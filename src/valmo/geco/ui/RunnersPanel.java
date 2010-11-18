@@ -108,16 +108,7 @@ public class RunnersPanel extends TabPanel
 		addButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
-					// announce runner creation and add in tablemodel
-					geco().runnerControl().createAnonymousRunner();
-				} catch (RunnerCreationException e1) {
-					JOptionPane.showMessageDialog(
-							frame(),
-							e1.getMessage(),
-							Messages.uiGet("RunnersPanel.NewRunnerWarning"), //$NON-NLS-1$
-							JOptionPane.ERROR_MESSAGE);
-				}
+				insertNewRunner();
 			}
 		});
 		topPanel.add(addButton);
@@ -209,7 +200,6 @@ public class RunnersPanel extends TabPanel
 		topPanel.setBorder(BorderFactory.createEtchedBorder());
 		return topPanel;
 	}
-
 	
 	public void initFilterPanel(JComponent panel) {
 		panel.add(new JLabel(Messages.uiGet("RunnersPanel.FindLabel"))); //$NON-NLS-1$
@@ -231,8 +221,30 @@ public class RunnersPanel extends TabPanel
 		panel.add(filterField);
 	}
 
+	private void insertNewRunner() {
+		try {
+			// announce runner creation and add in tablemodel
+			geco().runnerControl().createAnonymousRunner();
+		} catch (RunnerCreationException e1) {
+			JOptionPane.showMessageDialog(
+					frame(),
+					e1.getMessage(),
+					Messages.uiGet("RunnersPanel.NewRunnerWarning"), //$NON-NLS-1$
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
 
 	public void setKeybindings() {
+		getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
+				KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS,
+						Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+				"addRunner"); //$NON-NLS-1$
+		getActionMap().put("addRunner", new AbstractAction() { //$NON-NLS-1$
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				insertNewRunner();
+			}
+		});
 		getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
 				KeyStroke.getKeyStroke(KeyEvent.VK_R,
 						Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
