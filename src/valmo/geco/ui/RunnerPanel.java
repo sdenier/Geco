@@ -76,7 +76,7 @@ public class RunnerPanel extends GecoPanel {
 		rTimeF.setText(TimeManager.fullTime(runnerData.getReadtime()));
 		displayTime(eTimeF, runnerData.getErasetime());
 		displayTime(cTimeF, runnerData.getControltime());
-		displayTime(sTimeF, runnerData.getStarttime());
+		displayStarttime(sTimeF, runnerData.getOfficialStarttime());
 		displayTime(fTimeF, runnerData.getFinishtime());
 		displayRacetime();
 		mpF.setText(Integer.toString(runnerData.getResult().getNbMPs()));
@@ -90,6 +90,13 @@ public class RunnerPanel extends GecoPanel {
 			timeF.setBackground(new Color(1.0f, 0.9f, 0.9f));
 		} else {
 			timeF.setBackground(Color.white);
+		}
+	}
+
+	private void displayStarttime(JTextField timeF, Date time) {
+		displayTime(timeF, time);
+		if( runnerData.useRegisteredStarttime() && ! time.equals(TimeManager.NO_TIME) ) {
+			timeF.setBackground(new Color(0.9f, 0.9f, 1.0f));
 		}
 	}
 

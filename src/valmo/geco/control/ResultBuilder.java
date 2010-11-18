@@ -413,7 +413,7 @@ public class ResultBuilder extends Control implements IResultBuilder {
 						"", //$NON-NLS-1$ // ark.getSex(),
 						"", //$NON-NLS-1$
 						( runner.isNC() ) ? "X" : "0", //$NON-NLS-1$ //$NON-NLS-2$
-						oeTime(runnerData.getStarttime()),
+						oeTime(runnerData.getOfficialStarttime()),
 						oeTime(runnerData.getFinishtime()),
 						oeTime(new Date(runnerData.getResult().getRacetime())),
 						oeEvaluationCode(runnerData.getStatus()),

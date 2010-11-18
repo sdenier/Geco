@@ -4,6 +4,9 @@
  */
 package valmo.geco.model.impl;
 
+import java.util.Date;
+
+import valmo.geco.core.TimeManager;
 import valmo.geco.model.Course;
 import valmo.geco.model.Runner;
 
@@ -17,10 +20,16 @@ public class RunnerImpl extends AbstractRunnerImpl implements Runner {
 	
 	private int startnumber;
 	
+	private Date starttime;
+	
 	private Course course;
 	
 	private boolean NC;
 
+	
+	public RunnerImpl() {
+		this.starttime = TimeManager.NO_TIME;
+	}
 	
 	public int getStartnumber() {
 		return startnumber;
@@ -28,6 +37,14 @@ public class RunnerImpl extends AbstractRunnerImpl implements Runner {
 
 	public void setStartnumber(int startnumber) {
 		this.startnumber = startnumber;
+	}
+
+	public Date getRegisteredStarttime() {
+		return starttime;
+	}
+
+	public void setRegisteredStarttime(Date time) {
+		this.starttime = time;
 	}
 
 	public Course getCourse() {
@@ -56,6 +73,5 @@ public class RunnerImpl extends AbstractRunnerImpl implements Runner {
 	public String idString() {
 		return getNameR() + ", " + getStartnumber() + ", " + getChipnumber();   //$NON-NLS-1$ //$NON-NLS-2$
 	}
-	
 	
 }

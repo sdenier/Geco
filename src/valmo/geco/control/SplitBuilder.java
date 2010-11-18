@@ -109,7 +109,7 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 	}
 
 	private void buildSplits(RunnerRaceData data, List<SplitTime> splits, List<SplitTime> added, boolean cutSubst) {
-		long startTime = data.getStarttime().getTime();
+		long startTime = data.getOfficialStarttime().getTime();
 		long previousTime = startTime;
 		int control = 1;
 		for (Trace trace : data.getResult().getTrace()) {
@@ -251,7 +251,7 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 					timeOrStatus,
 					( showPenalties) ? TimeManager.time(runnerData.realRaceTime()) : "", //$NON-NLS-1$
 					( showPenalties) ? Integer.toString(runnerData.getResult().getNbMPs()) : "", //$NON-NLS-1$
-					TimeManager.fullTime(runnerData.getStarttime()),
+					TimeManager.fullTime(runnerData.getOfficialStarttime()),
 					TimeManager.fullTime(runnerData.getFinishtime()),
 					Integer.toString(runner.getCourse().nbControls())
 				}));

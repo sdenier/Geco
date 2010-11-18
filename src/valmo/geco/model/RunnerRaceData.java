@@ -20,6 +20,10 @@ public interface RunnerRaceData extends Cloneable {
 	public Date getStarttime();
 
 	public void setStarttime(Date starttime);
+	
+	public Date getOfficialStarttime();
+	
+	public boolean useRegisteredStarttime();
 
 	public Date getFinishtime();
 

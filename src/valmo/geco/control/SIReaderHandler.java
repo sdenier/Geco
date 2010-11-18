@@ -34,19 +34,21 @@ import valmo.geco.model.Status;
 public class SIReaderHandler extends Control
 	implements Announcer.StageListener, SIReaderListener<PunchObject,PunchRecordData> {
 
+	// 9:00
+	private static final int DEFAULT_ZEROTIME = 32400000;
+
 	private GecoRequestHandler requestHandler;
 	
 	private SIPortHandler portHandler;
 
 	private String portName;
 	
-	private long zeroTime = 32400000; // 9:00
+	private long zeroTime = DEFAULT_ZEROTIME;
 	
 	private int nbTry;
 	
 	private boolean starting;
 
-	private boolean useZeroHourAsDefaultStarttime;
 	
 	/**
 	 * @param factory
@@ -58,7 +60,6 @@ public class SIReaderHandler extends Control
 		this.requestHandler = requestHandler;
 		changePortName();
 		changeZeroTime();
-		changeZeroTimeDefaultStart();
 		geco.announcer().registerStageListener(this);
 	}
 	
@@ -71,9 +72,6 @@ public class SIReaderHandler extends Control
 	}
 	public static String zerotimeProperty() {
 		return "SIZeroTime"; //$NON-NLS-1$
-	}
-	public static String zerotimeDefaultStart() {
-		return "SIZeroTimeDefaultStart"; //$NON-NLS-1$
 	}
 	
 	public String defaultPortName() {
@@ -89,17 +87,16 @@ public class SIReaderHandler extends Control
 		}
 	}
 	
-	private void changeZeroTime() {
+	public static long readZeroTime(Stage stage) {
 		try {
-			setNewZeroTime( Long.parseLong(stage().getProperties().getProperty(zerotimeProperty())) );			
+			return Long.parseLong(stage.getProperties().getProperty(zerotimeProperty()));
 		} catch (NumberFormatException e) {
-			setNewZeroTime(32400000);
-		}
+			return DEFAULT_ZEROTIME;
+		}		
 	}
 	
-	private void changeZeroTimeDefaultStart() {
-		useZeroHourAsDefaultStarttime =
-				Boolean.parseBoolean( stage().getProperties().getProperty(zerotimeDefaultStart()) );
+	private void changeZeroTime() {
+		setNewZeroTime( readZeroTime(stage()) );			
 	}
 	
 	public void setNewZeroTime(long newZerotime) {
@@ -120,18 +117,10 @@ public class SIReaderHandler extends Control
 		return zeroTime;
 	}
 
-	public void setZeroTime(long zeroTime) {
+	private void setZeroTime(long zeroTime) {
 		this.zeroTime = zeroTime;
 	}
 	
-	public boolean useZeroHourAsDefaultStarttime() {
-		return useZeroHourAsDefaultStarttime;
-	}
-	
-	public void setZeroHourAsDefaultStartime(boolean flag) {
-		useZeroHourAsDefaultStarttime = flag;
-	}
-
 	private void configure() {
 		portHandler = new SIPortHandler(new ResultData());
 		portHandler.addListener(this);
@@ -228,22 +217,14 @@ public class SIReaderHandler extends Control
 			return TimeManager.NO_TIME;
 		}
 	}
-	/*
-	 * Priority: start time on ecard > pre-registered start time > zero hour if enabled or NO_TIME
-	 */
 	private void handleStarttime(RunnerRaceData runnerData, IResultData<PunchObject, PunchRecordData> card) {
 		Date startTime = safeTime(card.getStartTime());
-		if( startTime.equals(TimeManager.NO_TIME) ) { // no start time on card
-			if( runnerData.getStarttime().equals(TimeManager.NO_TIME) ) { // no pre-registered start time
-				if( useZeroHourAsDefaultStarttime() ) {
-					// In practice, can be used as start time for a unique mass start
-					startTime = new Date(getZeroTime()); // TODO: use today midnight 
-				} // else keep NO_TIME as start time
-			} else {
-				startTime = runnerData.getStarttime(); // keep pre-registered start time
-			}
+		runnerData.setStarttime(startTime); // raw time
+		if( startTime.equals(TimeManager.NO_TIME) // no start time on card
+				&& runnerData.getRunner()!=null ){
+			// retrieve registered start time for next check to be accurate
+			startTime = runnerData.getRunner().getRegisteredStarttime();
 		}
-		runnerData.setStarttime(startTime);
 		if( startTime.equals(TimeManager.NO_TIME) ) {
 			geco().log("MISSING start time for " + card.getSiIdent()); //$NON-NLS-1$
 		}
@@ -297,14 +278,12 @@ public class SIReaderHandler extends Control
 //		stop();
 		changePortName();
 		changeZeroTime();
-		changeZeroTimeDefaultStart();
 	}
 
 	@Override
 	public void saving(Stage stage, Properties properties) {
 		properties.setProperty(portNameProperty(), getPortName());
 		properties.setProperty(zerotimeProperty(), Long.toString(getZeroTime()));
-		properties.setProperty(zerotimeDefaultStart(), Boolean.toString(useZeroHourAsDefaultStarttime()));
 	}
 
 	@Override
