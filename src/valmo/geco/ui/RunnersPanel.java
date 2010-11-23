@@ -299,8 +299,9 @@ public class RunnersPanel extends TabPanel
 			}
 		});
 		getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,
-						Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+				KeyStroke.getKeyStroke(KeyEvent.VK_F,
+						Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() |
+						KeyEvent.SHIFT_DOWN_MASK),
 				"cancelFilter"); //$NON-NLS-1$
 		getActionMap().put("cancelFilter", new AbstractAction() { //$NON-NLS-1$
 			@Override
