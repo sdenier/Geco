@@ -99,6 +99,18 @@ public class RunnerResultImpl implements RunnerResult {
 		else
 			return ""; //$NON-NLS-1$
 	}
+	public String formatMpTrace() {
+		if( nbMPs==0 ){
+			return ""; //$NON-NLS-1$
+		}
+		StringBuffer mpTrace = new StringBuffer();
+		for (Trace t : trace) {
+			if( t.isMP() ){
+				mpTrace.append(t.getCode()).append(","); //$NON-NLS-1$
+			}
+		}
+		return mpTrace.substring(0, mpTrace.length() - 1); // remove last ","
+	}
 	
 	
 }

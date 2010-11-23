@@ -42,6 +42,8 @@ public interface RunnerResult extends Cloneable {
 	public void setTrace(Trace[] trace);
 	
 	public String formatTrace();
+	
+	public String formatMpTrace();
 
 	public RunnerResult clone();
 
