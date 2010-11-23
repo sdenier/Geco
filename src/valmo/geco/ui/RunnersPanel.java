@@ -236,7 +236,7 @@ public class RunnersPanel extends TabPanel
 
 	public void setKeybindings() {
 		getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS,
+				KeyStroke.getKeyStroke(KeyEvent.VK_I,
 						Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
 				"addRunner"); //$NON-NLS-1$
 		getActionMap().put("addRunner", new AbstractAction() { //$NON-NLS-1$
@@ -271,11 +271,15 @@ public class RunnersPanel extends TabPanel
 		getActionMap().put("focusOnFilter", new AbstractAction() { //$NON-NLS-1$
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				filterField.selectAll();
 				filterField.requestFocusInWindow();
 			}
 		});
-		filterField.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancelFilter"); //$NON-NLS-1$
-		filterField.getActionMap().put("cancelFilter", new AbstractAction() { //$NON-NLS-1$
+		getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
+				KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,
+						Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+				"cancelFilter"); //$NON-NLS-1$
+		getActionMap().put("cancelFilter", new AbstractAction() { //$NON-NLS-1$
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				filterField.setText(""); //$NON-NLS-1$
@@ -328,8 +332,7 @@ public class RunnersPanel extends TabPanel
 					Integer n2 = new Integer(o2);
 					return n1.compareTo(n2);
 				} catch (NumberFormatException e) {
-					// TODO: hackish dealing with xxxxaa chip numbers
-					return 0;
+					return o1.compareTo(o2); // for XXXXaa ecards (hack)
 				}
 			}
 		});

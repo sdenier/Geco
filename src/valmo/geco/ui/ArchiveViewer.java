@@ -23,6 +23,7 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -34,6 +35,7 @@ import javax.swing.table.TableRowSorter;
 import valmo.geco.Geco;
 import valmo.geco.control.ArchiveManager;
 import valmo.geco.core.Messages;
+import valmo.geco.model.Archive;
 import valmo.geco.model.ArchiveRunner;
 
 /**
@@ -97,7 +99,22 @@ public class ArchiveViewer extends JFrame {
 	}
 
 	private void refreshTableData() {
-		tableModel.setData(archiveManager().archive().runners().toArray(new ArchiveRunner[0]));
+		Archive archive = null;
+		try {
+			archive = archiveManager().archive();
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(
+					this,
+					e.getLocalizedMessage(),
+					"Error loading archive",
+					JOptionPane.ERROR_MESSAGE);
+			try {
+				archive = archiveManager().archive();
+			} catch (IOException e1) {
+				geco.debug(e1.getLocalizedMessage());
+			}
+		}
+		tableModel.setData(archive.runners().toArray(new ArchiveRunner[0]));
 	}
 
 	private void showRowCount() {
@@ -193,15 +210,19 @@ public class ArchiveViewer extends JFrame {
 		((JComponent) getContentPane()).getActionMap().put("focusOnFilter", new AbstractAction() { //$NON-NLS-1$
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				filterField.selectAll();
 				filterField.requestFocusInWindow();
 			}
 		});
-		filterField.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancelFilter"); //$NON-NLS-1$
-		filterField.getActionMap().put("cancelFilter", new AbstractAction() { //$NON-NLS-1$
+		((JComponent) getContentPane()).getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
+				KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+				"cancelFilter"); //$NON-NLS-1$
+		((JComponent) getContentPane()).getActionMap().put("cancelFilter", new AbstractAction() { //$NON-NLS-1$
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				filterField.setText(""); //$NON-NLS-1$
 				sorter.setRowFilter(null);
+				showRowCount();
 			}
 		});
 

@@ -5,6 +5,7 @@
 package valmo.geco.model.iocsv;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import valmo.geco.core.GecoResources;
@@ -63,7 +64,7 @@ public class CsvReader {
 		this.csvSep = csvSep;
 	}
 
-	public void open() {
+	public void open() throws FileNotFoundException {
 		this.reader = GecoResources.getReaderFor(filePath());
 	}
 

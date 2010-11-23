@@ -30,19 +30,15 @@ public class GecoResources {
 		}
 	}
 	
-	public static InputStream getStreamFor(String name) {
+	public static InputStream getStreamFor(String name) throws FileNotFoundException {
 		if( webstart ) {
 			return GecoResources.class.getResourceAsStream(name);
 		} else {
-			try {
-				return new FileInputStream(name);
-			} catch (FileNotFoundException e) {
-				return null;
-			}
+			return new FileInputStream(name);
 		}
 	}
 	
-	public static BufferedReader getReaderFor(String name) {
+	public static BufferedReader getReaderFor(String name) throws FileNotFoundException {
 		InputStream stream = getStreamFor(name);
 		if( stream!=null ) {
 			return new BufferedReader(new InputStreamReader(stream));

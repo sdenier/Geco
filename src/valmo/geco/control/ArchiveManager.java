@@ -38,7 +38,7 @@ public class ArchiveManager extends Control implements StageListener {
 		changed(null, null);
 	}
 	
-	public Archive archive() {
+	public Archive archive() throws IOException {
 		if( archive==null ) {
 			if( archiveFile==null ) {
 				archive = new Archive();
@@ -46,8 +46,8 @@ public class ArchiveManager extends Control implements StageListener {
 				try {
 					loadArchiveFrom(archiveFile);
 				} catch (IOException e) {
-					geco().debug(e.getLocalizedMessage());
 					archive = new Archive();
+					throw e;
 				}
 			}
 		}
@@ -76,11 +76,16 @@ public class ArchiveManager extends Control implements StageListener {
 	}
 	
 	public Runner findAndCreateRunner(String ecard, Course course) {
-		ArchiveRunner arkRunner = archive().findRunner(ecard);
-		if( arkRunner==null ){
+		try {
+			ArchiveRunner arkRunner = archive().findRunner(ecard);
+			if( arkRunner==null ){
+				return null;
+			}
+			return createRunner(arkRunner, course);			
+		} catch (IOException e) {
+			geco().log(e.getLocalizedMessage());
 			return null;
 		}
-		return createRunner(arkRunner, course);
 	}
 	
 	public Runner insertRunner(ArchiveRunner arkRunner) {

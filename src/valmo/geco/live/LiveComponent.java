@@ -6,7 +6,7 @@ package valmo.geco.live;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
@@ -60,19 +60,18 @@ public class LiveComponent {
 	}
 	
 	public void setStartDir(String dir) {
-		BufferedReader reader = GecoResources.getReaderFor(dir + GecoResources.sep + "live.prop"); //$NON-NLS-1$
-		if( reader!=null ) {
-			Properties liveProp = new Properties();
 		try {
-			liveProp.load(reader);
+			Properties liveProp = new Properties();
+			liveProp.load(GecoResources.getReaderFor(dir + GecoResources.sep + "live.prop")); //$NON-NLS-1$
 			loadMapImage(dir + GecoResources.sep + liveProp.getProperty("MapFile")); //$NON-NLS-1$
 			importCourseData(dir + GecoResources.sep + liveProp.getProperty("CourseFile")); //$NON-NLS-1$
 			configP.setProperties(liveProp);
+		} catch (FileNotFoundException e) {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		}
+
 	}
 
 	public LiveComponent initWindow(boolean leisureMode) {

@@ -61,12 +61,12 @@ public class StageBuilder extends BasicControl {
 	}
 	
 	public Stage loadStage(String baseDir, PenaltyChecker checker) {
-		BufferedReader reader = GecoResources.getReaderFor(propName(baseDir));
-		if( reader!=null ) {
+		try {
+			BufferedReader reader = GecoResources.getReaderFor(propName(baseDir));
 			return importGecoData(baseDir, reader, checker);
-		} else {
-			return importOrData(baseDir, checker);	
-		}		
+		} catch (FileNotFoundException e) {
+			return importOrData(baseDir, checker);
+		}
 	}
 
 
