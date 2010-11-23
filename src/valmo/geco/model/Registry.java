@@ -292,6 +292,12 @@ public class Registry {
 			}
 		}
 	}
+	
+	public Course getDefaultCourseOrAnyFor(Category cat) {
+		return ( cat.getCourse()!=null ) ?
+				cat.getCourse() :
+				anyCourse();
+	}
 
 
 	public Collection<Runner> getRunners() {

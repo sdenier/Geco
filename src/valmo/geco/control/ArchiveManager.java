@@ -132,10 +132,7 @@ public class ArchiveManager extends OEImporter implements StageListener {
 	
 	public Runner insertRunner(ArchiveRunner arkRunner) {
 		Category rCat = ensureCategoryInRegistry(arkRunner.getCategory());
-		Course course =
-			( rCat.getCourse()==null ) ?
-					registry().anyCourse() :
-					rCat.getCourse();
+		Course course = registry().getDefaultCourseOrAnyFor(rCat);
 		Runner runner = createRunner(arkRunner, course);
 		runnerControl().registerNewRunner(runner);
 		return runner;

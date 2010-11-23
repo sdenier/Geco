@@ -61,7 +61,7 @@ public class StartlistImporter extends OEImporter {
 		Category cat = ensureCategoryInRegistry(record[18], record[19]);
 		runner.setClub(club);
 		runner.setCategory(cat);
-		runner.setCourse(registry().anyCourse()); // TODO: use a category->course assoc?
+		runner.setCourse(registry().getDefaultCourseOrAnyFor(cat));
 		
 		runnerControl().registerNewRunner(runner);
 	}
