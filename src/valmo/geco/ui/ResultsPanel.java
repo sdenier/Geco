@@ -373,8 +373,8 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 				exportFormat = "csv"; //$NON-NLS-1$
 			}
 		});
-		JRadioButton selectCNCsvB = new JRadioButton("CN CSV"); //$NON-NLS-1$
-		selectCNCsvB.setToolTipText(Messages.uiGet("ResultsPanel.CNCSVTooltip")); //$NON-NLS-1$
+		JRadioButton selectCNCsvB = new JRadioButton("OE CSV"); //$NON-NLS-1$
+		selectCNCsvB.setToolTipText(Messages.uiGet("ResultsPanel.OECSVTooltip")); //$NON-NLS-1$
 		selectCNCsvB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

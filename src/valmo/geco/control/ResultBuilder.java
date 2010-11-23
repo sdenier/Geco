@@ -395,7 +395,7 @@ public class ResultBuilder extends Control implements IResultBuilder {
 		
 		for (RunnerRaceData runnerData : registry().getRunnersData()) {
 			Runner runner = runnerData.getRunner();
-			if( runner.getArchiveId()!=null && runnerData.hasResult() ) {
+			if( runnerData.hasResult() ) {
 //				ArchiveRunner ark = 
 //					geco().getService(ArchiveManager.class).archive().findRunner(runner.getArchiveId());
 //				if( ark!=null ){
@@ -403,10 +403,13 @@ public class ResultBuilder extends Control implements IResultBuilder {
 				Category category = runner.getCategory();
 				Course course = runner.getCourse();
 
+				String archiveId = ( runner.getArchiveId()!=null ) ?
+						runner.getArchiveId().toString() :
+						""; //$NON-NLS-1$
 				writer.writeRecord(
 						Integer.toString(runner.getStartnumber()),
 						runner.getChipnumber(),
-						runner.getArchiveId().toString(),
+						archiveId,
 						runner.getLastname(),
 						runner.getFirstname(),
 						"", //$NON-NLS-1$ // ark.getBirthYear(),
