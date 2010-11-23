@@ -4,12 +4,16 @@
  */
 package valmo.geco.core;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+
+import com.ibm.icu.text.CharsetDetector;
 
 /**
  * @author Simon Denier
@@ -42,6 +46,23 @@ public class GecoResources {
 		InputStream stream = getStreamFor(name);
 		if( stream!=null ) {
 			return new BufferedReader(new InputStreamReader(stream));
+		} else {
+			return null;
+		}
+	}
+
+	public static BufferedReader getSafeReaderFor(String name) throws FileNotFoundException {
+		InputStream stream = getStreamFor(name);
+		if( stream!=null ) {		
+			Charset charset;
+			try {
+				CharsetDetector detector = new CharsetDetector();
+				detector.setText(new BufferedInputStream(stream));
+				charset = Charset.forName( detector.detect().getName() );
+			} catch (Exception e) {
+				charset = Charset.defaultCharset();
+			}
+			return new BufferedReader(new InputStreamReader(getStreamFor(name), charset));
 		} else {
 			return null;
 		}

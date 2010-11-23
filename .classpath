@@ -9,5 +9,6 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="GecO/lib"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/icu4j-charsetdetector-4_4_2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

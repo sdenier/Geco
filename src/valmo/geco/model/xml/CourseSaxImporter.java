@@ -77,7 +77,7 @@ public class CourseSaxImporter extends DefaultHandler {
 			xr.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false); //$NON-NLS-1$
 			xr.setFeature("http://xml.org/sax/features/validation", false); //$NON-NLS-1$
 //		}
-		xr.parse(new InputSource(GecoResources.getReaderFor(xmlFile)));
+		xr.parse(new InputSource(GecoResources.getSafeReaderFor(xmlFile)));
 		return courses();
 	}
 	
