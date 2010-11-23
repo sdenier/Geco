@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -28,6 +29,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -129,6 +131,27 @@ public class RunnersPanel extends TabPanel
 			}
 		});
 		topPanel.add(deleteButton);
+		
+		ImageIcon importCsv = new ImageIcon(
+				getClass().getResource("/resources/icons/crystal/fileimport.png")); //$NON-NLS-1$
+		JButton importCsvB = new JButton(importCsv);
+		importCsvB.setToolTipText("Import runners from CSV (OE format)");
+		importCsvB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir")); //$NON-NLS-1$
+				fileChooser.setDialogTitle("Import Startlist in OE CSV format"); //$NON-NLS-1$
+				int answer = fileChooser.showOpenDialog(frame());
+				if( answer==JFileChooser.APPROVE_OPTION ) {
+					try {
+						geco().startlistImporter().loadArchiveFrom(fileChooser.getSelectedFile());
+					} catch (IOException e1) {
+						geco().debug(e1.getLocalizedMessage());
+					}
+				}
+			}
+		});
+		topPanel.add(importCsvB);
 		
 		ImageIcon archiveOpen = new ImageIcon(
 				getClass().getResource("/resources/icons/crystal/db.png")); //$NON-NLS-1$

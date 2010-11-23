@@ -177,7 +177,8 @@ public class HeatBuilder extends Control {
 		writer.close();
 	}
 	private void appendCsvHeat(Heat heat, CsvWriter writer) throws IOException {
-		RunnerIO runnerIO = new RunnerIO(null, null, writer, null);
+		RunnerIO runnerIO = new RunnerIO(null, null, writer, null,
+											getService(SIReaderHandler.class).getZeroTime());
 		Course heatCourse = factory().createCourse();
 		heatCourse.setName(heat.getName());
 		for (Runner runner : heat.getQualifiedRunners()) {

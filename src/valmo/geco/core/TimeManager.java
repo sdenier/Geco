@@ -72,6 +72,22 @@ public class TimeManager {
 	public static String time(long timestamp) {
 		return time(new Date(timestamp));
 	}
+	
+	public static Date absoluteTime(Date relativeTime, long zeroTime) {
+		if( relativeTime.equals(NO_TIME) ){
+			return relativeTime;
+		} else {
+			return new Date(zeroTime + relativeTime.getTime());
+		}
+	}
+	
+	public static Date relativeTime(Date absoluteTime, long zeroTime) {
+		if( absoluteTime.equals(NO_TIME) ){
+			return NO_TIME;
+		} else {
+			return new Date(absoluteTime.getTime() - zeroTime);
+		}
+	}
 
 
 //	Calendar day = Calendar.getInstance();

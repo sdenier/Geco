@@ -92,11 +92,13 @@ public class RunnerControl extends Control {
 	}
 	
 	public String deriveUniqueChipnumber(String chipnumber) {
-		String[] chips = registry().collectChipnumbers();
-		if( Util.different(chipnumber, -1, chips) ) {
-			return chipnumber;
-		} else 
-			return deriveUniqueChipnumber(chipnumber + "a"); //$NON-NLS-1$
+		return prvDeriveUniqueEcard(chipnumber, registry().collectChipnumbers());
+	}
+	private String prvDeriveUniqueEcard(String newEcard, String[] ecards) {
+		if( Util.different(newEcard, -1, ecards) )
+			return newEcard;
+		else 
+			return prvDeriveUniqueEcard(newEcard + "a", ecards); //$NON-NLS-1$		
 	}
 
 	public RunnerRaceData registerNewRunner(Runner runner) {
@@ -318,6 +320,13 @@ public class RunnerControl extends Control {
 			if( runnerData.statusIsRecheckable() ) {
 				recheckRunner(runnerData);
 			}
+		}
+	}
+
+	public void updateRegisteredStarttimes(long zeroTime, long oldTime) {
+		for (Runner runner : registry().getRunners()) {
+			Date relativeTime = TimeManager.relativeTime(runner.getRegisteredStarttime(), oldTime);
+			runner.setRegisteredStarttime(TimeManager.absoluteTime(relativeTime, zeroTime));
 		}
 	}
 

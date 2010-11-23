@@ -20,6 +20,7 @@ import valmo.geco.control.RunnerControl;
 import valmo.geco.control.SIReaderHandler;
 import valmo.geco.control.SplitBuilder;
 import valmo.geco.control.StageControl;
+import valmo.geco.control.StartlistImporter;
 import valmo.geco.core.Announcer;
 import valmo.geco.core.GecoRequestHandler;
 import valmo.geco.core.GecoResources;
@@ -180,6 +181,7 @@ public class Geco implements GecoRequestHandler {
 		new AutoMergeHandler(gecoControl);
 		siHandler = new SIReaderHandler(gecoControl, defaultMergeHandler());
 		new ArchiveManager(gecoControl);
+		new StartlistImporter(gecoControl);
 		
 		new StartTimeFunction(gecoControl);
 		new RecheckFunction(gecoControl);
@@ -238,6 +240,9 @@ public class Geco implements GecoRequestHandler {
 	}
 	public ArchiveManager archiveManager() {
 		return this.gecoControl.getService(ArchiveManager.class);
+	}
+	public StartlistImporter startlistImporter() {
+		return this.gecoControl.getService(StartlistImporter.class);
 	}
 	
 	public GecoRequestHandler defaultMergeHandler() {

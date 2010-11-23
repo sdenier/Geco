@@ -118,13 +118,19 @@ public class StageBuilder extends BasicControl {
 	private void importDataIntoRegistry(String baseDir, boolean importResult) {
 		Registry registry = new Registry();
 		currentStage.setRegistry(registry);
-		this.registryBuilder.importAllData(registry, baseDir, importResult);
+		this.registryBuilder.importAllData(registry, baseDir, importResult,
+											getZerotimeFromProperties(currentStage));
 	}
 	
 	public void save(Stage stage, Properties props, String backupname) {
 		saveStageProperties(stage, props);
-		registryBuilder.exportAllData(stage.registry(), stage.getBaseDir());
+		registryBuilder.exportAllData(stage.registry(), stage.getBaseDir(),
+											getZerotimeFromProperties(currentStage));
 		backupData(stage.getBaseDir(), backupname);
+	}
+	
+	private static long getZerotimeFromProperties(Stage stage) {
+		return SIReaderHandler.readZeroTime(stage);
 	}
 	
 	private void saveStageProperties(Stage stage, Properties properties) {

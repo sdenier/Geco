@@ -19,14 +19,13 @@ import valmo.geco.model.Club;
 import valmo.geco.model.Course;
 import valmo.geco.model.Runner;
 import valmo.geco.model.Stage;
-import valmo.geco.model.iocsv.CsvReader;
 
 /**
  * @author Simon Denier
  * @since Nov 9, 2010
  *
  */
-public class ArchiveManager extends Control implements StageListener {
+public class ArchiveManager extends OEImporter implements StageListener {
 	
 	private Archive archive;
 	
@@ -57,13 +56,7 @@ public class ArchiveManager extends Control implements StageListener {
 	public void loadArchiveFrom(File archiveFile) throws IOException {
 		this.archiveFile = archiveFile;
 		archive = new Archive();
-		CsvReader reader = new CsvReader(";", archiveFile.getAbsolutePath()); //$NON-NLS-1$
-		String[] record = reader.readRecord(); // bypass first line with headers
-		record = reader.readRecord();
-		while( record!=null ) {
-			importInArchive(record);
-			record = reader.readRecord();
-		}
+		super.loadArchiveFrom(archiveFile);
 	}
 	
 	public String getArchiveName() {
@@ -74,6 +67,55 @@ public class ArchiveManager extends Control implements StageListener {
 		return ( archiveFile==null )? "" :  //$NON-NLS-1$
 									DateFormat.getDateInstance().format(new Date(archiveFile.lastModified()));
 	}
+	
+	@Override
+	protected void importRunnerRecord(String[] record) {
+//		[0-5] Ident. base de données;Puce;Nom;Prénom;Né;S;
+//		[6-9] N° club;Nom;Ville;Nat;
+//		[10-15] N° cat.;Court;Long;Num1;Num2;Num3;
+//		E_Mail;Texte1;Texte2;Texte3;Adr. nom;Rue;Ligne2;Code Post.;Ville;Tél.;Fax;E-mail;Id/Club;Louée
+		Club club = ensureClubInArchive(record[7], record[8]);
+		Category cat = ensureCategoryInArchive(record[11], record[12]);
+		importRunner(record, club, cat);
+	}
+
+	private void importRunner(String[] record, Club club, Category cat) {
+//		[0-5] Ident. base de données;Puce;Nom;Prénom;Né;S;
+		ArchiveRunner runner = geco().factory().createArchiveRunner();
+		runner.setArchiveId(new Integer(record[0]));
+		runner.setChipnumber(record[1]);
+		runner.setLastname(trimQuotes(record[2]));
+		runner.setFirstname(trimQuotes(record[3]));
+		runner.setBirthYear(record[4]);
+		runner.setSex(record[5]);
+		runner.setClub(club);
+		runner.setCategory(cat);
+		archive.addRunner(runner);
+	}
+
+
+	private Club ensureClubInArchive(String shortName, String longName) {
+		Club club = archive.findClub(longName);
+		if( club==null ) {
+			club = geco().factory().createClub();
+			club.setName(trimQuotes(longName));
+			club.setShortname(shortName);
+			archive.addClub(club);
+		}
+		return club;
+	}
+
+	private Category ensureCategoryInArchive(String shortName, String longName) {
+		Category cat = archive.findCategory(shortName);
+		if( cat==null ) {
+			cat = geco().factory().createCategory();
+			cat.setShortname(shortName);
+			cat.setLongname(longName);
+			archive.addCategory(cat);
+		}
+		return cat;
+	}
+	
 	
 	public Runner findAndCreateRunner(String ecard, Course course) {
 		try {
@@ -98,9 +140,16 @@ public class ArchiveManager extends Control implements StageListener {
 		runnerControl().registerNewRunner(runner);
 		return runner;
 	}
+	
+	private Category ensureCategoryInRegistry(Category category) {
+		return ensureCategoryInRegistry(category.getName(), category.getLongname());
+	}
+
 	private Runner createRunner(ArchiveRunner arkRunner, Course course) {
-		Club rClub = ensureClubInRegistry(arkRunner.getClub());
-		Category rCat = ensureCategoryInRegistry(arkRunner.getCategory());
+		Club club = arkRunner.getClub();
+		Club rClub = ensureClubInRegistry(club.getName(), club.getShortname());
+		Category category = arkRunner.getCategory();
+		Category rCat = ensureCategoryInRegistry(category.getName(), category.getLongname());
 		String ecard = arkRunner.getChipnumber();
 		if( ecard.equals("") ){ //$NON-NLS-1$
 			geco().log(Messages.getString("ArchiveManager.NoMatchingEcardWarning") + arkRunner.getName()); //$NON-NLS-1$
@@ -117,79 +166,7 @@ public class ArchiveManager extends Control implements StageListener {
 		runner.setCourse(course);
 		return runner;
 	}
-	private Club ensureClubInRegistry(Club club) {
-		Club rClub = registry().findClub(club.getName());
-		if( rClub==null ) {
-			rClub = stageControl().createClub(club.getName(), club.getShortname());
-		}
-		return rClub;
-	}
-	private Category ensureCategoryInRegistry(Category category) {
-		Category rCat = registry().findCategory(category.getName());
-		if( rCat==null ){
-			rCat = stageControl().createCategory(category.getShortname(), category.getLongname());
-		}
-		return rCat;
-	}
-	private RunnerControl runnerControl() {
-		return geco().getService(RunnerControl.class);
-	}
-	private StageControl stageControl() {
-		return geco().getService(StageControl.class);
-	}
-
-	private void importInArchive(String[] record) {
-//		[0-5] Ident. base de données;Puce;Nom;Prénom;Né;S;
-//		[6-9] N° club;Nom;Ville;Nat;
-//		[10-15] N° cat.;Court;Long;Num1;Num2;Num3;
-//		E_Mail;Texte1;Texte2;Texte3;Adr. nom;Rue;Ligne2;Code Post.;Ville;Tél.;Fax;E-mail;Id/Club;Louée
-		Club club = ensureClub(record[7], record[8]);
-		Category cat = ensureCategory(record[11], record[12]);
-		importRunner(record, club, cat);
-	}
-
-	private void importRunner(String[] record, Club club, Category cat) {
-//		[0-5] Ident. base de données;Puce;Nom;Prénom;Né;S;
-		ArchiveRunner runner = geco().factory().createArchiveRunner();
-		runner.setArchiveId(new Integer(record[0]));
-		runner.setChipnumber(record[1]);
-		runner.setLastname(trimQuotes(record[2]));
-		runner.setFirstname(trimQuotes(record[3]));
-		runner.setBirthYear(record[4]);
-		runner.setSex(record[5]);
-		runner.setClub(club);
-		runner.setCategory(cat);
-		archive.addRunner(runner);
-	}
-
-
-	private String trimQuotes(String record) { // remove " in "record"
-		return record.substring(1, record.length() - 1);
-	}
-
-
-	private Club ensureClub(String shortName, String longName) {
-		Club club = archive.findClub(longName);
-		if( club==null ) {
-			club = geco().factory().createClub();
-			club.setName(trimQuotes(longName));
-			club.setShortname(shortName);
-			archive.addClub(club);
-		}
-		return club;
-	}
-
-	private Category ensureCategory(String shortName, String longName) {
-		Category cat = archive.findCategory(shortName);
-		if( cat==null ) {
-			cat = geco().factory().createCategory();
-			cat.setShortname(shortName);
-			cat.setLongname(longName);
-			archive.addCategory(cat);
-		}
-		return cat;
-	}
-
+	
 	@Override
 	public void changed(Stage previous, Stage current) {
 		archive = null; // discard old archive

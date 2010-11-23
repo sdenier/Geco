@@ -14,7 +14,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Properties;
 import java.util.TimeZone;
 import java.util.Vector;
@@ -279,8 +278,10 @@ public class StagePanel extends TabPanel {
 	
 	private boolean validateZeroHour(SimpleDateFormat formatter, JTextField zerohourF) {
 		try {
-			Date zeroTime = formatter.parse(zerohourF.getText());
-			geco().siHandler().setNewZeroTime(zeroTime.getTime());
+			long oldTime = geco().siHandler().getZeroTime();
+			long zeroTime = formatter.parse(zerohourF.getText()).getTime();
+			geco().siHandler().setNewZeroTime(zeroTime);
+			geco().runnerControl().updateRegisteredStarttimes(zeroTime, oldTime);
 			return true;
 		} catch (ParseException e1) {
 			geco().info(Messages.uiGet("StagePanel.ZeroHourBadFormatWarning"), true); //$NON-NLS-1$

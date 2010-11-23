@@ -41,7 +41,7 @@ public class RegistryBuilder extends BasicControl{
 	}
 	
 
-	public Registry importAllData(Registry registry, String baseDir, boolean importResult) {
+	public Registry importAllData(Registry registry, String baseDir, boolean importResult, long zeroTime) {
 		
 		try {
 			reader.initialize(baseDir, ClubIO.orFilename());
@@ -66,7 +66,7 @@ public class RegistryBuilder extends BasicControl{
 		
 		try {
 			reader.initialize(baseDir, RunnerIO.sourceFilename());
-			new RunnerIO(factory(), reader, null, registry).importData();
+			new RunnerIO(factory(), reader, null, registry, zeroTime).importData();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -100,7 +100,7 @@ public class RegistryBuilder extends BasicControl{
 	}
 	
 	
-	public void exportAllData(Registry registry, String baseDir) {
+	public void exportAllData(Registry registry, String baseDir, long zeroTime) {
 		
 		try {
 			writer.initialize(baseDir, ClubIO.orFilename());
@@ -125,7 +125,7 @@ public class RegistryBuilder extends BasicControl{
 		
 		try {
 			writer.initialize(baseDir, RunnerIO.sourceFilename());
-			new RunnerIO(factory(), null, writer, registry).exportData(registry.getRunners());
+			new RunnerIO(factory(), null, writer, registry, zeroTime).exportData(registry.getRunners());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -98,6 +98,17 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 	public void setStarttime(Date starttime) {
 		this.starttime = starttime;
 	}
+	
+	public Date getOfficialStarttime() {
+		return ( starttime.equals(TimeManager.NO_TIME) ) ?
+				getRunner().getRegisteredStarttime() : // return NO_TIME if no registered start time
+				starttime;
+	}
+	
+	public boolean useRegisteredStarttime() {
+		return this.starttime.equals(TimeManager.NO_TIME)
+			&& ! getRunner().getRegisteredStarttime().equals(TimeManager.NO_TIME);
+	}
 
 	public Date getFinishtime() {
 		return finishtime;
@@ -185,7 +196,7 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 		if( getFinishtime().equals(TimeManager.NO_TIME) ) {
 			return TimeManager.NO_TIME_l;
 		}
-		if( getStarttime().equals(TimeManager.NO_TIME) ) {
+		if( getOfficialStarttime().equals(TimeManager.NO_TIME) ) {
 			return TimeManager.NO_TIME_l;
 		}
 		return getFinishtime().getTime() - getStarttime().getTime();
