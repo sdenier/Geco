@@ -261,24 +261,13 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 	}
 
 	private JPanel initBuilderPanel() {
-		// select, new, delete heatset
-		JPanel heatCreationPanel = new JPanel();
-		heatCreationPanel.setLayout(new BoxLayout(heatCreationPanel, BoxLayout.X_AXIS));
-		
 		heatList = new JList(heatlistModel);
 		JScrollPane spane = new JScrollPane(heatList);
 		spane.setPreferredSize(new Dimension(90, 90));
-		heatCreationPanel.add(SwingUtils.embed(spane));
 
-		JPanel butPanel = new JPanel();
-		butPanel.setLayout(new BoxLayout(butPanel, BoxLayout.Y_AXIS));
 		newB = new JButton(Messages.uiGet("HeatsPanel.NewLabel")); //$NON-NLS-1$
 		deleteB = new JButton(Messages.uiGet("HeatsPanel.DeleteLabel")); //$NON-NLS-1$
-		butPanel.add(SwingUtils.embed(newB));
-		butPanel.add(SwingUtils.embed(deleteB));
-		heatCreationPanel.add(butPanel);
 
-		// buttons
 		refreshB = new JButton(Messages.uiGet("HeatsPanel.RefreshLabel")); //$NON-NLS-1$
 		JButton printB = new JButton(Messages.uiGet("HeatsPanel.PrintLabel")); //$NON-NLS-1$
 		exportB = new JButton(Messages.uiGet("HeatsPanel.ExportLabel")); //$NON-NLS-1$
@@ -298,6 +287,16 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 				}
 			}
 		});
+		
+		JPanel buttonBox = new JPanel();
+		buttonBox.setLayout(new BoxLayout(buttonBox, BoxLayout.Y_AXIS));
+		buttonBox.add(SwingUtils.embed(newB));
+		buttonBox.add(SwingUtils.embed(deleteB));
+		
+		JPanel heatCreationPanel = new JPanel();
+		heatCreationPanel.setLayout(new BoxLayout(heatCreationPanel, BoxLayout.X_AXIS));
+		heatCreationPanel.add(SwingUtils.embed(spane));
+		heatCreationPanel.add(buttonBox);
 
 		// command panel with heatset and buttons
 		JPanel commandPanel = new JPanel(new BorderLayout());
@@ -306,6 +305,7 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 				SwingUtils.makeButtonBar(FlowLayout.CENTER, refreshB, exportB, printB),
 				BorderLayout.CENTER);
 		commandPanel.add(Box.createVerticalStrut(10), BorderLayout.SOUTH);
+		commandPanel.setBorder(BorderFactory.createTitledBorder("Commands"));
 
 		// selection panel for pools
 		poolList = new JList();
