@@ -18,6 +18,7 @@ import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.EventObject;
 import java.util.Vector;
 
@@ -97,9 +98,31 @@ public class RunnersPanel extends TabPanel
 	
 	public JTabbedPane initInfoPanel() {
 		this.runnerPanel = new RunnerPanel(geco(), frame(), this);
-		JTabbedPane pane = new JTabbedPane();
+		final JTabbedPane pane = new JTabbedPane();
 		pane.addTab(Messages.uiGet("RunnersPanel.RunnerDataTitle"), this.runnerPanel); //$NON-NLS-1$
 		pane.addTab(Messages.uiGet("RunnersPanel.StatsTitle"), new VStatsPanel(geco(), frame())); //$NON-NLS-1$
+		
+		getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
+				KeyStroke.getKeyStroke(KeyEvent.VK_D,
+						Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+				"focusData"); //$NON-NLS-1$
+		getActionMap().put("focusData", new AbstractAction() { //$NON-NLS-1$
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				pane.setSelectedIndex(0);
+			}
+		});
+		getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
+				KeyStroke.getKeyStroke(KeyEvent.VK_S,
+						Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+				"focusStats"); //$NON-NLS-1$
+		getActionMap().put("focusStats", new AbstractAction() { //$NON-NLS-1$
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				pane.setSelectedIndex(2);
+			}
+		});
+		
 		return pane;
 	}
 
@@ -348,25 +371,36 @@ public class RunnersPanel extends TabPanel
 
 	private void enableRowSorting() {
 		sorter = new TableRowSorter<RunnersTableModel>(tableModel);
-		sorter.setComparator(1, new Comparator<String>() { // Chip column
+		sorter.setComparator(1, new Comparator<String>() { // Ecard column
 			@Override
 			public int compare(String o1, String o2) {
+				Integer n1 = null;
 				try {
-					Integer n1 = new Integer(o1);
+					n1 = new Integer(o1);
 					Integer n2 = new Integer(o2);
 					return n1.compareTo(n2);
 				} catch (NumberFormatException e) {
-					return o1.compareTo(o2); // for XXXXaa ecards (hack)
+					if( n1==null ){ // n1 is XXXXaa ecard
+						return 1;
+					} else {		// n2 is XXXXaa ecard
+						return -1;
+					}
 				}
 			}
 		});
 		sorter.setComparator(7, new Comparator<String>() { // Date column
 			@Override
 			public int compare(String o1, String o2) {
+				Date t1 = null;
 				try {
-					return TimeManager.userParse(o1).compareTo(TimeManager.userParse(o2));
+					t1 = TimeManager.userParse(o1);
+					return t1.compareTo(TimeManager.userParse(o2));
 				} catch (ParseException e) {
-					return 0;
+					if( t1==null ){ // t1 NO_TIME or user mistake
+						return 1;
+					} else {		// t2 NO_TIME or user mistake
+						return -1;
+					}
 				}
 			}
 		});
@@ -407,7 +441,6 @@ public class RunnersPanel extends TabPanel
 	public void refreshRunnersPanel() {
 		refreshTableData();
 		table.getSelectionModel().setSelectionInterval(0, 0);
-//		runnerPanel.updateStageData();
 	}
 
 	
@@ -437,32 +470,33 @@ public class RunnersPanel extends TabPanel
 		this.tableModel.fireTableRowsUpdated(modelRow, modelRow);
 	}
 	
-	private String selectedChip() {
-		String chip = ""; //$NON-NLS-1$
+	private String selectedEcard() {
+		String ecard = ""; //$NON-NLS-1$
 		int selectedRow = table.getSelectedRow();
 		if( selectedRow!=-1 && table.getRowCount() > 0) {
 			// we have to test the number of displayed rows too.
 			// If user inputs a filter which matches nothins,
 			// there is no row to show but table still points to the 0-index.
-			chip = (String) table.getValueAt(selectedRow, 1);
+			ecard = (String) table.getValueAt(selectedRow, 1);
 		}
-		return chip;
+		return ecard;
 	}
 
 	public void updateRunnerPanel() {
-		String chip = selectedChip();
-		if( !chip.equals("") ) { //$NON-NLS-1$
-			runnerPanel.updateRunner(chip);
+		String ecard = selectedEcard();
+		if( !ecard.equals("") ) { //$NON-NLS-1$
+			RunnerRaceData runnerData = registry().findRunnerData(ecard);
+			runnerPanel.updateRunner(ecard);
 			if( gecoLiveMap!=null && gecoLiveMap.isShowing() ) {
-				gecoLiveMap.displayRunnerMap(registry().findRunnerData(chip));
+				gecoLiveMap.displayRunnerMap(runnerData);
 			}
 		}
 	}
 	
 	private RunnerRaceData selectedData() {
-		String chip = selectedChip();
-		if( !chip.equals("") ) //$NON-NLS-1$
-			return registry().findRunnerData(chip);
+		String ecard = selectedEcard();
+		if( !ecard.equals("") ) //$NON-NLS-1$
+			return registry().findRunnerData(ecard);
 		return null;
 	}
 	
@@ -526,25 +560,25 @@ public class RunnersPanel extends TabPanel
 
 
 	@Override
-	public void cardRead(String chip) {
+	public void cardRead(String ecard) {
 //		refresh made through statusChanged announcement
-//		refreshTableRunner(registry().findRunnerData(chip));
-		focusOnReadCard(chip);
+//		refreshTableRunner(registry().findRunnerData(ecard));
+		focusOnReadCard(ecard);
 	}
 
 	@Override
-	public void unknownCardRead(String chip) {
-		focusOnReadCard(chip);
+	public void unknownCardRead(String ecard) {
+		focusOnReadCard(ecard);
 	}
 
 	@Override
-	public void cardReadAgain(String chip) {
-		focusOnReadCard(chip);
+	public void cardReadAgain(String ecard) {
+		focusOnReadCard(ecard);
 	}
 
-	private void focusOnReadCard(String chip) {
+	private void focusOnReadCard(String ecard) {
 		if( liveModeOn() ) {
-			RunnerRaceData data = registry().findRunnerData(chip);
+			RunnerRaceData data = registry().findRunnerData(ecard);
 			tableModel.removeData(data);
 			tableModel.addDataFirst(data);
 			focusTableOnIndex(0);
