@@ -96,6 +96,8 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 			"irkickflash.png", //$NON-NLS-1$
 			"fileprint.png", //$NON-NLS-1$
 			"filequickprint.png", //$NON-NLS-1$
+			"advanced.png", //$NON-NLS-1$
+			"restart.png", //$NON-NLS-1$
 		});
 	}
 	
@@ -104,8 +106,8 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		setLookAndFeel();
 		this.stagePanel = new StagePanel(this.geco, this);
 		this.runnersPanel = new RunnersPanel(this.geco, this);
-		this.resultsPanel = new ResultsPanel(this.geco, this);
 		this.logPanel = new LogPanel(this.geco, this);
+		this.resultsPanel = new ResultsPanel(this.geco, this);
 		this.heatsPanel = new HeatsPanel(this.geco, this);
 		geco.announcer().registerStageListener(this);
 		geco.announcer().registerStationListener(this);
@@ -139,9 +141,9 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		final JTabbedPane pane = new JTabbedPane();
 		pane.addTab(Messages.uiGet("GecoWindow.Stage"), this.stagePanel); //$NON-NLS-1$
 		pane.addTab(Messages.uiGet("GecoWindow.Runners"), this.runnersPanel); //$NON-NLS-1$
+		pane.addTab(Messages.uiGet("GecoWindow.Log"), this.logPanel); //$NON-NLS-1$
 		pane.addTab(Messages.uiGet("GecoWindow.Results"), this.resultsPanel); //$NON-NLS-1$
 		pane.addTab(Messages.uiGet("GecoWindow.Heats"), this.heatsPanel); //$NON-NLS-1$
-		pane.addTab(Messages.uiGet("GecoWindow.Log"), this.logPanel); //$NON-NLS-1$
 		setKeybindings(pane);
 		getContentPane().add(pane, BorderLayout.CENTER);
 		
@@ -288,6 +290,28 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		};
 		toolBar.add(liveClientB);
 		toolBar.addSeparator();
+		
+		final ImageIcon autoOff = createIcon(12);
+		final ImageIcon autoOn = createIcon(13);
+		final StartStopButton autoModeB = new StartStopButton() {
+			@Override
+			protected void initialize() {
+				doOnAction();
+			}
+			@Override
+			public void actionOn() {
+				geco.siHandler().setRequestHandler(geco.autoMergeHandler());
+				setIcon(autoOn);
+				setToolTipText("Auto merge mode"); //$NON-NLS-1$
+			}
+			@Override
+			public void actionOff() {
+				geco.siHandler().setRequestHandler(geco.defaultMergeHandler());
+				setIcon(autoOff);
+				setToolTipText("Manual merge mode"); //$NON-NLS-1$
+			}
+		};
+		toolBar.add(autoModeB);
 		
 		final ImageIcon splitOff = createIcon(10);
 		final ImageIcon splitOn = createIcon(11);

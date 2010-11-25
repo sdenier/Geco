@@ -44,6 +44,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
@@ -66,7 +68,8 @@ import valmo.geco.model.Status;
  *
  */
 public class RunnersPanel extends TabPanel
-		implements Announcer.RunnerListener, Announcer.StageConfigListener, Announcer.CardListener {
+		implements Announcer.RunnerListener, Announcer.StageConfigListener, Announcer.CardListener,
+					HyperlinkListener {
 	
 	private JTable table;
 	private RunnersTableModel tableModel;
@@ -91,9 +94,11 @@ public class RunnersPanel extends TabPanel
 	public void initRunnersPanel(JPanel panel) {
 		JPanel tablePan = new JPanel(new BorderLayout());
 		tablePan.add(initTableScroll(), BorderLayout.CENTER);
-		tablePan.add(initTopPanel(), BorderLayout.NORTH);
-		tablePan.add(initInfoPanel(), BorderLayout.EAST);
-		panel.add(tablePan);
+		tablePan.add(SwingUtils.embed(new HyperLog(geco(), this)), BorderLayout.SOUTH);
+		panel.setLayout(new BorderLayout());
+		panel.add(tablePan, BorderLayout.CENTER);
+		panel.add(initTopPanel(), BorderLayout.NORTH);
+		panel.add(initInfoPanel(), BorderLayout.EAST);
 		setKeybindings();
 	}
 	
@@ -200,36 +205,6 @@ public class RunnersPanel extends TabPanel
 			}
 		});
 		topPanel.add(archiveB);
-		
-		final JCheckBox autoB = new JCheckBox(Messages.uiGet("RunnersPanel.AutoLabel")); //$NON-NLS-1$
-		autoB.setToolTipText(Messages.uiGet("RunnersPanel.AutoTooltip")); //$NON-NLS-1$
-		autoB.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if( autoB.isSelected() ) {
-					geco().siHandler().setRequestHandler(geco().autoMergeHandler());
-				} else {
-					geco().siHandler().setRequestHandler(geco().defaultMergeHandler());
-				}
-			}
-		});
-		autoB.doClick();
-		topPanel.add(autoB);
-		
-		liveB = new JCheckBox(Messages.uiGet("RunnersPanel.LiveLabel")); //$NON-NLS-1$
-		liveB.setToolTipText(Messages.uiGet("RunnersPanel.LiveTooltip")); //$NON-NLS-1$
-		liveB.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if( liveModeOn() ) {
-					disableRowSorting();
-					sortRunnersByReadOrder();
-				}
-				else
-					enableRowSorting();
-			}
-		});
-		topPanel.add(liveB);
 
 		final JCheckBox fastB = new JCheckBox(Messages.uiGet("RunnersPanel.FastEditLabel")); //$NON-NLS-1$
 		fastB.setToolTipText(Messages.uiGet("RunnersPanel.FastEditTooltip")); //$NON-NLS-1$
@@ -253,6 +228,21 @@ public class RunnersPanel extends TabPanel
 			}
 		});
 		topPanel.add(defaultCourseB);
+		
+		liveB = new JCheckBox(Messages.uiGet("RunnersPanel.LiveLabel")); //$NON-NLS-1$
+		liveB.setToolTipText(Messages.uiGet("RunnersPanel.LiveTooltip")); //$NON-NLS-1$
+		liveB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if( liveModeOn() ) {
+					disableRowSorting();
+					sortRunnersByReadOrder();
+				}
+				else
+					enableRowSorting();
+			}
+		});
+		topPanel.add(liveB);
 		
 		topPanel.add(Box.createHorizontalGlue());
 		initFilterPanel(topPanel);
@@ -364,8 +354,8 @@ public class RunnersPanel extends TabPanel
 				return edit;
 			}
 		};
-		table.setPreferredScrollableViewportSize(table.getPreferredSize());
-//		table.setPreferredScrollableViewportSize(new Dimension(700, 600));
+//		table.setPreferredScrollableViewportSize(table.getPreferredSize());
+		table.setPreferredScrollableViewportSize(new Dimension(400, 300));
 		tableModel.initCellEditors(table);
 		tableModel.initTableColumnSize(table);
 		enableRowSorting();
@@ -612,6 +602,16 @@ public class RunnersPanel extends TabPanel
 	@Override
 	public void componentShown(ComponentEvent e) {
 		table.requestFocusInWindow();
+	}
+
+	@Override
+	public void hyperlinkUpdate(HyperlinkEvent e) {
+		if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+			RunnerRaceData runnerData = registry().findRunnerData(e.getDescription());
+			if( runnerData!=null ){
+				focusTableOnRunner(runnerData);
+			}
+		}
 	}
 	
 }
