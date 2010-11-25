@@ -75,6 +75,7 @@ public class RunnersPanel extends TabPanel
 	
 	private JCheckBox liveB;
 	private RunnerPanel runnerPanel;
+	private PunchPanel tracePanel;
 	private LiveComponent gecoLiveMap;
 
 	
@@ -98,8 +99,10 @@ public class RunnersPanel extends TabPanel
 	
 	public JTabbedPane initInfoPanel() {
 		this.runnerPanel = new RunnerPanel(geco(), frame(), this);
+		this.tracePanel = new PunchPanel();
 		final JTabbedPane pane = new JTabbedPane();
 		pane.addTab(Messages.uiGet("RunnersPanel.RunnerDataTitle"), this.runnerPanel); //$NON-NLS-1$
+		pane.addTab("Runner Trace", tracePanel);
 		pane.addTab(Messages.uiGet("RunnersPanel.StatsTitle"), new VStatsPanel(geco(), frame())); //$NON-NLS-1$
 		
 		getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
@@ -110,6 +113,16 @@ public class RunnersPanel extends TabPanel
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				pane.setSelectedIndex(0);
+			}
+		});
+		getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
+				KeyStroke.getKeyStroke(KeyEvent.VK_T,
+						Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+				"focusTrace"); //$NON-NLS-1$
+		getActionMap().put("focusTrace", new AbstractAction() { //$NON-NLS-1$
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				pane.setSelectedIndex(1);
 			}
 		});
 		getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
@@ -357,11 +370,15 @@ public class RunnersPanel extends TabPanel
 		tableModel.initTableColumnSize(table);
 		enableRowSorting();
 		table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.getSelectionModel().setSelectionInterval(0, 0);
+//		table.getSelectionModel().setSelectionInterval(0, 0);
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				if (!e.getValueIsAdjusting() ) {
-					updateRunnerPanel();
+					if( table.getSelectedRow()==-1 ){
+						runnerPanel.enablePanel(false);
+					} else {
+						updateRunnerPanel();
+					}
 				}
 			}
 		});
@@ -440,7 +457,7 @@ public class RunnersPanel extends TabPanel
 	
 	public void refreshRunnersPanel() {
 		refreshTableData();
-		table.getSelectionModel().setSelectionInterval(0, 0);
+		table.getSelectionModel().setSelectionInterval(-1, -1);
 	}
 
 	
@@ -487,6 +504,7 @@ public class RunnersPanel extends TabPanel
 		if( !ecard.equals("") ) { //$NON-NLS-1$
 			RunnerRaceData runnerData = registry().findRunnerData(ecard);
 			runnerPanel.updateRunner(ecard);
+			tracePanel.refreshPunches(runnerData);
 			if( gecoLiveMap!=null && gecoLiveMap.isShowing() ) {
 				gecoLiveMap.displayRunnerMap(runnerData);
 			}

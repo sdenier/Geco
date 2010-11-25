@@ -67,7 +67,6 @@ public class RunnersTableModel extends AbstractTableModel {
 				Messages.uiGet("RunnersTableModel.ClubHeader"), //$NON-NLS-1$
 				Messages.uiGet("RunnersTableModel.TimeHeader"), //$NON-NLS-1$
 				Messages.uiGet("RunnersTableModel.StatusHeader"), //$NON-NLS-1$
-				Messages.uiGet("RunnersTableModel.NCHeader")  //$NON-NLS-1$
 		};
 		this.data = new Vector<RunnerRaceData>();
 		this.clickCountToEdit = 2;
@@ -142,7 +141,6 @@ public class RunnersTableModel extends AbstractTableModel {
 		case 6: return runner.getClub().getName();
 		case 7: return getRunnerData(rowIndex).getResult().formatRacetime();
 		case 8: return getRunnerData(rowIndex).getResult().getStatus();
-		case 9: return runner.isNC();
 		default: return "Pbm"; //$NON-NLS-1$
 		}
 	}
@@ -159,7 +157,6 @@ public class RunnersTableModel extends AbstractTableModel {
 		case 6: return String.class;
 		case 7: return String.class;
 		case 8: return Status.class;
-		case 9: return Boolean.class;
 		default: return Object.class;
 		}
 	}
@@ -173,12 +170,11 @@ public class RunnersTableModel extends AbstractTableModel {
 			case 1: width = 75 ;break;
 			case 2: width = 100 ;break;
 			case 3: width = 100 ;break;
-			case 4: width = 75 ;break;
-			case 5: width = 75 ;break;
-			case 6: width = 75 ;break;
-			case 7: width = 75 ;break;
-			case 8: width = 75 ;break;
-			case 9: width = 30 ;break;
+			case 4: width = 70 ;break;
+			case 5: width = 70 ;break;
+			case 6: width = 70 ;break;
+			case 7: width = 70 ;break;
+			case 8: width = 70 ;break;
 			default: break;
 			}
 			model.getColumn(i).setPreferredWidth(width);
@@ -287,7 +283,6 @@ public class RunnersTableModel extends AbstractTableModel {
 		case 6: setClub(getRunner(rowIndex), (String) aValue); break;
 		case 7: break;
 		case 8: setStatus(getRunnerData(rowIndex), (Status) aValue); break;
-		case 9: setNC(getRunner(rowIndex), ((Boolean) aValue).booleanValue() ); break;
 		default: break;
 		}
 	}
@@ -314,10 +309,6 @@ public class RunnersTableModel extends AbstractTableModel {
 	
 	private void setStatus(RunnerRaceData runnerData, Status newStatus) {
 		control().validateStatus(runnerData, newStatus);
-	}
-	
-	private void setNC(Runner runner, boolean nc) {
-		control().validateNCStatus(runner, nc);
 	}
 	
 

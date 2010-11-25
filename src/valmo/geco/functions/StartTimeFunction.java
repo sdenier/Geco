@@ -64,7 +64,7 @@ public class StartTimeFunction extends AbstractRunnerFunction {
 				}
 			}			
 		} catch (ParseException e) {
-			geco().debug(e.getLocalizedMessage());
+			geco().info(e.getLocalizedMessage(), true);
 		}
 	}
 

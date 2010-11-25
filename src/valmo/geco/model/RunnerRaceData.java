@@ -64,6 +64,8 @@ public interface RunnerRaceData extends Cloneable {
 	public void setResult(RunnerResult result);
 	
 	public long realRaceTime();
+	
+	public long officialRaceTime();
 
 	public String punchSummary(int sumLength);
 	

@@ -202,6 +202,15 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 		return getFinishtime().getTime() - getStarttime().getTime();
 	}
 	
+	public long officialRaceTime() {
+		long realRaceTime = realRaceTime();
+		if( realRaceTime==TimeManager.NO_TIME_l ){
+			return TimeManager.NO_TIME_l;
+		} else {
+			return realRaceTime + getResult().getTimePenalty();
+		}
+	}
+	
 	public String punchSummary(int sumLength) {
 		StringBuffer buf = new StringBuffer("("); //$NON-NLS-1$
 		int i = 0;

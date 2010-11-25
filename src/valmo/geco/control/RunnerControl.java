@@ -322,6 +322,24 @@ public class RunnerControl extends Control {
 			}
 		}
 	}
+	
+	public boolean validateRegisteredStartTime(Runner runner, String startTime) {
+		try {
+			Date oldTime = runner.getRegisteredStarttime();
+			Date newTime = TimeManager.userParse(startTime);
+			if( ! oldTime.equals(newTime) ) {
+				runner.setRegisteredStarttime(newTime);
+				geco().log("Registered start time change "
+						+ runner.idString() + Messages.getString("RunnerControl.FromMessage") //$NON-NLS-1$
+						+ TimeManager.fullTime(oldTime) + Messages.getString("RunnerControl.ToMessage") //$NON-NLS-1$
+						+ TimeManager.fullTime(newTime));
+			}
+			return true;
+		} catch (ParseException e1) {
+			geco().info("Bad format for registered start time", true);
+			return false;
+		}
+	}
 
 	public void updateRegisteredStarttimes(long zeroTime, long oldTime) {
 		for (Runner runner : registry().getRunners()) {
