@@ -26,6 +26,8 @@ public class RunnerImpl extends AbstractRunnerImpl implements Runner {
 	
 	private boolean NC;
 
+	private boolean rented;
+
 	
 	public RunnerImpl() {
 		this.starttime = TimeManager.NO_TIME;
@@ -63,6 +65,14 @@ public class RunnerImpl extends AbstractRunnerImpl implements Runner {
 		NC = nc;
 	}
 	
+	public boolean rentedEcard() {
+		return rented;
+	}
+
+	public void setRentedEcard(boolean rented) {
+		this.rented = rented;
+	}
+
 	@Override
 	public String toString() {
 		return getNameR() + ", " + getChipnumber() + ", " + getCourse().getName(); //$NON-NLS-1$ //$NON-NLS-2$

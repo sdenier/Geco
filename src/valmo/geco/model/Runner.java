@@ -27,5 +27,9 @@ public interface Runner extends AbstractRunner {
 	public boolean isNC();
 
 	public void setNC(boolean nc);
+	
+	public boolean rentedEcard();
+	
+	public void setRentedEcard(boolean rented);
 
 }

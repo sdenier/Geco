@@ -139,6 +139,7 @@ public class RunnerPanel extends GecoPanel {
 	
 	protected void refreshRegistrationPanel() {
 		displayRegTime(regStartF, runner.getRegisteredStarttime());
+		rentedBx.setSelected(runner.rentedEcard());
 		ncBx.setSelected(runner.isNC());
 	}
 
@@ -248,8 +249,7 @@ public class RunnerPanel extends GecoPanel {
 		rentedBx.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
+				runner.setRentedEcard(rentedBx.isSelected());
 			}
 		});
 		ncBx.addActionListener(new ActionListener() {

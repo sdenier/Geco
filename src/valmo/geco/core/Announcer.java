@@ -125,6 +125,12 @@ public class Announcer {
 		 * @param chip
 		 */
 		public void cardReadAgain(String chip);
+
+
+		/**
+		 * @param siIdent
+		 */
+		public void rentedCard(String siIdent);
 	}
 	
 	public interface StationListener {
@@ -296,6 +302,12 @@ public class Announcer {
 		for (CardListener listener : this.cardListeners) {
 			listener.cardReadAgain(chip);
 		}
+	}
+
+	public void announceRentedCard(String siIdent) {
+		for (CardListener listener : this.cardListeners) {
+			listener.rentedCard(siIdent);
+		}		
 	}
 	
 	public void announceStationStatus(String status) {

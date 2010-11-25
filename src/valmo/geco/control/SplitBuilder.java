@@ -624,6 +624,8 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 	public void unknownCardRead(String chip) {	}
 	@Override
 	public void cardReadAgain(String chip) {	}
+	@Override
+	public void rentedCard(String siIdent) {	}
 
 
 	@Override

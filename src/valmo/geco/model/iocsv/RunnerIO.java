@@ -73,6 +73,7 @@ public class RunnerIO extends AbstractIO<Runner> {
 			runner.setCategory(cat);	
 		}
 		runner.setRegisteredStarttime( TimeManager.absoluteTime(TimeManager.safeParse(record[7]), zeroTime) );
+		runner.setRentedEcard(new Boolean(record[5]));
 		runner.setNC(new Boolean(record[10]));
 		if( record[11].equals("") ) { //$NON-NLS-1$
 			runner.setArchiveId(null);
@@ -99,7 +100,7 @@ public class RunnerIO extends AbstractIO<Runner> {
 				r.getName(),
 				r.getClub().getName(),
 				r.getCourse().getName(),
-				"false", //$NON-NLS-1$
+				new Boolean(r.rentedEcard()).toString(),
 				r.getCategory().getShortname(),
 				( r.getRegisteredStarttime().equals(TimeManager.NO_TIME) ) ?
 						"" :													 //$NON-NLS-1$

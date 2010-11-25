@@ -593,6 +593,12 @@ public class RunnersPanel extends TabPanel
 	public void cardReadAgain(String ecard) {
 		focusOnReadCard(ecard);
 	}
+	
+	@Override
+	public void rentedCard(String siIdent) {
+		JOptionPane.showMessageDialog(frame(), "Rented E-card " + siIdent);
+	}
+
 
 	private void focusOnReadCard(String ecard) {
 		if( liveModeOn() ) {

@@ -146,5 +146,9 @@ public class LiveClient implements Announcer.CardListener {
 			addMessage(formatDataForSending(data));
 		}
 	}
+
+	@Override
+	public void rentedCard(String siIdent) {	}
+	
 	
 }

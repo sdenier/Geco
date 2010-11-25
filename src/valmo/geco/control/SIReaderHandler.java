@@ -192,7 +192,10 @@ public class SIReaderHandler extends Control
 					geco().announcer().announceCardReadAgain(returnedCard);
 				}
 			} else {
-				handleData(runnerData, card);	
+				handleData(runnerData, card);
+				if( runner.rentedEcard() ){
+					geco().announcer().announceRentedCard(card.getSiIdent());
+				}
 			}
 		} else {
 			geco().log("READING UNKNOWN " + card.getSiIdent()); //$NON-NLS-1$
