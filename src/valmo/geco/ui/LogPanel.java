@@ -15,11 +15,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 
 import valmo.geco.Geco;
-import valmo.geco.core.Messages;
 import valmo.geco.core.Announcer.Logging;
+import valmo.geco.core.Messages;
 import valmo.geco.model.Stage;
 
 /**
@@ -41,36 +42,27 @@ public class LogPanel extends TabPanel implements Logging {
 	}
 
 	public void initPanels(JPanel panel) {
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.BOTTOM);
+		tabbedPane.add("Stats", initStatsPanel());
+		tabbedPane.add("Functions", initFunctionsPanel());
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-//		splitPane.setOneTouchExpandable(true);
-//		splitPane.add(initLogArea());
-		splitPane.add(initFunctionLogPanel());
-		splitPane.add(initStatsPanel());
+		splitPane.add(tabbedPane);
+		splitPane.add(initLogArea());
 		splitPane.setBorder(BorderFactory.createEmptyBorder());
 		panel.add(splitPane);
 	}
 	
-	public JPanel initFunctionLogPanel() {
-		JPanel fPanel = new JPanel(new BorderLayout());
-		funtionsPanel = new FunctionsPanel(geco(), frame(), initClearLogButton());
-		fPanel.add(funtionsPanel, BorderLayout.NORTH);
-		fPanel.add(initLogArea(), BorderLayout.CENTER);
-		return fPanel;
+	private FunctionsPanel initFunctionsPanel() {
+		funtionsPanel = new FunctionsPanel(geco(), frame(), createClearLogButton());
+		return funtionsPanel;
 	}
 
-	private JButton initClearLogButton() {
-		JButton clearB = new JButton(Messages.uiGet("LogPanel.ClearLogLabel")); //$NON-NLS-1$
-		clearB.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				clear();
-			}
-		});
-		return clearB;
+	private JPanel initStatsPanel() {
+		return new HStatsPanel(geco(), frame(), createClearLogButton());
 	}
 
 	public JPanel initLogArea() {
-		logArea = new JTextArea(20, 70);
+		logArea = new JTextArea(22, 70);
 		logArea.setEditable(false);
 		logArea.setLineWrap(true);
 
@@ -81,14 +73,21 @@ public class LogPanel extends TabPanel implements Logging {
 		return logPanel;
 	}
 
+	private JButton createClearLogButton() {
+		JButton clearB = new JButton(Messages.uiGet("LogPanel.ClearLogLabel")); //$NON-NLS-1$
+		clearB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				clear();
+			}
+		});
+		return clearB;
+	}
+
 	private void clear() {
 		logArea.setText(""); //$NON-NLS-1$
 	}
 
-	private JPanel initStatsPanel() {
-		return new HStatsPanel(geco(), frame());
-	}
-	
 	public void displayLog(String message) {
 		logArea.append("\n"); //$NON-NLS-1$
 		logArea.append(message);

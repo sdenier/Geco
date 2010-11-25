@@ -36,6 +36,10 @@ import valmo.geco.model.Stage;
  */
 public class HStatsPanel extends StatsPanel {
 
+	private static final int STATS_HEIGHT = 120;
+	private static final int STATS_WIDTH = 600;
+	private static final int MARGIN = (800 - STATS_WIDTH) / 2;
+
 	private AbstractTableModel courseTableModel;
 
 	private String[] courseKeys;
@@ -47,11 +51,12 @@ public class HStatsPanel extends StatsPanel {
 	/**
 	 * @param geco
 	 * @param frame
+	 * @param clearLogB 
 	 */
-	public HStatsPanel(Geco geco, JFrame frame) {
+	public HStatsPanel(Geco geco, JFrame frame, JButton clearLogB) {
 		super(geco, frame);
 		refreshTableKeys();
-		initStatsPanel(this);
+		initStatsPanel(this, clearLogB);
 		startAutoUpdate();
 	}
 
@@ -61,15 +66,13 @@ public class HStatsPanel extends StatsPanel {
 		courseTableModel.fireTableDataChanged();
 	}
 
-	protected void initStatsPanel(JPanel panel) {
+	protected void initStatsPanel(JPanel panel, JButton clearLogB) {
 		// control panel
 		JPanel controlP = new JPanel();
 		controlP.setLayout(new GridBagLayout());
-		GridBagConstraints c = SwingUtils.gbConstr(1);
-		c.insets = new Insets(0, 0, 10, 0);
-		c.anchor = GridBagConstraints.CENTER;
-		c.gridy = 0;
-		controlP.add(Box.createRigidArea(new Dimension(200, 20)), c);
+		GridBagConstraints c = SwingUtils.gbConstr();
+		c.insets = new Insets(0, 10, 0, 0);
+		controlP.add(Box.createRigidArea(new Dimension(MARGIN, 30)), c);
 		
 		viewCh = new JCheckBox(Messages.uiGet("StatsPanel.ShortViewLabel")); //$NON-NLS-1$
 		viewCh.setToolTipText(Messages.uiGet("StatsPanel.ShortViewTooltip")); //$NON-NLS-1$
@@ -88,6 +91,9 @@ public class HStatsPanel extends StatsPanel {
 		c.gridy = 1;
 		controlP.add(viewCh, c);
 		
+		c.gridy = 2;
+		controlP.add(Box.createVerticalStrut(15), c);
+		
 		JButton refreshB = new JButton(Messages.uiGet("StatsPanel.RefreshLabel")); //$NON-NLS-1$
 		refreshB.setToolTipText(Messages.uiGet("StatsPanel.RefreshTooltip")); //$NON-NLS-1$
 		refreshB.addActionListener(new ActionListener() {
@@ -97,8 +103,11 @@ public class HStatsPanel extends StatsPanel {
 				updateTable();
 			}
 		});
-		c.gridy = 2;
+		c.gridy = 3;
 		controlP.add(refreshB, c);
+		
+		c.gridy = 4;
+		controlP.add(clearLogB, c);
 		
 		// Stats table
 		courseTableModel = createCourseTableModel();
@@ -108,12 +117,12 @@ public class HStatsPanel extends StatsPanel {
 //		table.setRowSorter(sorter);
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 		JScrollPane tableSP = new JScrollPane(table);
-		tableSP.setPreferredSize(new Dimension(550, 120));
+		tableSP.setPreferredSize(new Dimension(STATS_WIDTH, STATS_HEIGHT));
 
 		panel.setLayout(new BorderLayout());
 		panel.add( tableSP, BorderLayout.CENTER );
-		panel.add( SwingUtils.embed(controlP), BorderLayout.EAST );
-		panel.add( Box.createHorizontalStrut(200), BorderLayout.WEST );
+		panel.add( SwingUtils.embed(controlP), BorderLayout.WEST );
+		panel.add( Box.createHorizontalStrut(MARGIN), BorderLayout.EAST );
 	}
 	
 	protected AbstractTableModel createCourseTableModel() {
@@ -168,7 +177,6 @@ public class HStatsPanel extends StatsPanel {
 	public void changed(Stage previous, Stage next) {
 		refreshTableKeys();
 		viewCh.setSelected(true);
-//		courseTableModel.fireTableStructureChanged(); // called by viewCh item listener
 	}
 
 

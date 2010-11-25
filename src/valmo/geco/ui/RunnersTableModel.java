@@ -41,10 +41,12 @@ import valmo.geco.model.Status;
  */
 public class RunnersTableModel extends AbstractTableModel {
 
-	private Geco geco;
+	private static final int NUMBER_WIDTH = 50;
+	private static final int FIELD_WIDTH = 70;
+	private static final int NAME_WIDTH = 100;
 
+	private Geco geco;
 	private String[] headers;
-	
 	private List<RunnerRaceData> data;
 
 	private int clickCountToEdit;
@@ -166,15 +168,15 @@ public class RunnersTableModel extends AbstractTableModel {
 		for (int i = 0; i < headers.length; i++) {
 			int width = 0;
 			switch (i) {
-			case 0: width = 50 ; break;
-			case 1: width = 75 ;break;
-			case 2: width = 100 ;break;
-			case 3: width = 100 ;break;
-			case 4: width = 70 ;break;
-			case 5: width = 70 ;break;
-			case 6: width = 70 ;break;
-			case 7: width = 70 ;break;
-			case 8: width = 70 ;break;
+			case 0: width = NUMBER_WIDTH ; break;
+			case 1: width = FIELD_WIDTH ;break;
+			case 2: width = NAME_WIDTH ;break;
+			case 3: width = NAME_WIDTH ;break;
+			case 4: width = FIELD_WIDTH ;break;
+			case 5: width = FIELD_WIDTH ;break;
+			case 6: width = FIELD_WIDTH ;break;
+			case 7: width = FIELD_WIDTH ;break;
+			case 8: width = FIELD_WIDTH ;break;
 			default: break;
 			}
 			model.getColumn(i).setPreferredWidth(width);
