@@ -496,7 +496,7 @@ public class Registry {
 			int max = 0;
 			for (String chip : runnersByChip.keySet()) {
 				try {
-					Integer chipi = new Integer(chip);					
+					Integer chipi = Integer.valueOf(chip);					
 					max = Math.max(max, chipi);
 				} catch (NumberFormatException e) {
 					// bypass chip number xxxxa (cloned entries)

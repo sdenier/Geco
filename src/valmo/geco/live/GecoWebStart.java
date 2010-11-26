@@ -129,8 +129,8 @@ public class GecoWebStart {
 			@Override
 			public int compare(String o1, String o2) {
 				try {
-					Integer n1 = new Integer(o1);
-					Integer n2 = new Integer(o2);
+					Integer n1 = Integer.valueOf(o1);
+					Integer n2 = Integer.valueOf(o2);
 					return n1.compareTo(n2);
 				} catch (NumberFormatException e) {
 					// TODO: hackish dealing with xxxxaa chip numbers
