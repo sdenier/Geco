@@ -38,8 +38,8 @@ import javax.swing.event.ListSelectionListener;
 
 import valmo.geco.Geco;
 import valmo.geco.core.Announcer;
-import valmo.geco.core.Messages;
 import valmo.geco.model.HeatSet;
+import valmo.geco.model.Messages;
 import valmo.geco.model.Pool;
 import valmo.geco.model.Stage;
 import valmo.geco.model.iocsv.RunnerIO;

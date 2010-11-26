@@ -17,7 +17,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import valmo.geco.core.Messages;
+import valmo.geco.model.Messages;
 
 /**
  * @author Simon Denier

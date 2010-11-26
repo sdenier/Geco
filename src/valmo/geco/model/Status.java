@@ -5,7 +5,6 @@ package valmo.geco.model;
 
 import java.awt.Color;
 
-import valmo.geco.core.Messages;
 
 public enum Status {
 	

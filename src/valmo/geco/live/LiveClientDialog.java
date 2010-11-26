@@ -24,7 +24,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import valmo.geco.core.Messages;
+import valmo.geco.model.Messages;
 import valmo.geco.ui.SwingUtils;
 
 /**

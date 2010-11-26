@@ -27,7 +27,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import valmo.geco.core.Messages;
+import valmo.geco.model.Messages;
 import valmo.geco.ui.SwingUtils;
 
 /**

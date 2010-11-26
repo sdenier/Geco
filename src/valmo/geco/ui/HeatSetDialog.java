@@ -25,9 +25,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import valmo.geco.core.Messages;
 import valmo.geco.core.Util;
 import valmo.geco.model.HeatSet;
+import valmo.geco.model.Messages;
 import valmo.geco.model.Pool;
 import valmo.geco.model.ResultType;
 

@@ -20,7 +20,7 @@ import javax.swing.JTextArea;
 
 import valmo.geco.Geco;
 import valmo.geco.core.Announcer.Logging;
-import valmo.geco.core.Messages;
+import valmo.geco.model.Messages;
 import valmo.geco.model.Stage;
 
 /**

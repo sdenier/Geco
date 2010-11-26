@@ -21,7 +21,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 import valmo.geco.control.GecoControl;
-import valmo.geco.core.Messages;
+import valmo.geco.model.Messages;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 

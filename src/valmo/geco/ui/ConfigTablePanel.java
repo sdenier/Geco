@@ -20,7 +20,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.TableRowSorter;
 
 import valmo.geco.Geco;
-import valmo.geco.core.Messages;
+import valmo.geco.model.Messages;
 
 /**
  * @author Simon Denier

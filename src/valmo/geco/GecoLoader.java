@@ -24,7 +24,7 @@ import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 
-import valmo.geco.core.Messages;
+import valmo.geco.model.Messages;
 
 import com.jdotsoft.jarloader.JarClassLoader;
 

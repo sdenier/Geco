@@ -11,7 +11,7 @@ import javax.swing.JComponent;
 
 import valmo.geco.control.Control;
 import valmo.geco.control.GecoControl;
-import valmo.geco.core.Messages;
+import valmo.geco.model.Messages;
 
 /**
  * @author Simon Denier

@@ -6,7 +6,7 @@ package valmo.geco.functions;
 
 import valmo.geco.control.GecoControl;
 import valmo.geco.control.RunnerControl;
-import valmo.geco.core.Messages;
+import valmo.geco.model.Messages;
 import valmo.geco.model.RunnerRaceData;
 
 /**

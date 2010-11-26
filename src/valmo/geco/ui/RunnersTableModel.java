@@ -27,8 +27,8 @@ import javax.swing.table.TableColumnModel;
 
 import valmo.geco.Geco;
 import valmo.geco.control.RunnerControl;
-import valmo.geco.core.Messages;
 import valmo.geco.model.Course;
+import valmo.geco.model.Messages;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;

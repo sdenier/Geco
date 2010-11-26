@@ -19,9 +19,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import valmo.geco.core.Messages;
 import valmo.geco.core.Util;
 import valmo.geco.model.Course;
+import valmo.geco.model.Messages;
 
 
 /**

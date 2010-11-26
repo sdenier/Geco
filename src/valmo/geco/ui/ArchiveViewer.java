@@ -34,9 +34,9 @@ import javax.swing.table.TableRowSorter;
 
 import valmo.geco.Geco;
 import valmo.geco.control.ArchiveManager;
-import valmo.geco.core.Messages;
 import valmo.geco.model.Archive;
 import valmo.geco.model.ArchiveRunner;
+import valmo.geco.model.Messages;
 
 /**
  * @author Simon Denier

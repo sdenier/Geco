@@ -26,7 +26,7 @@ import javax.swing.table.AbstractTableModel;
 import valmo.geco.Geco;
 import valmo.geco.control.RegistryStats.StatItem;
 import valmo.geco.core.Html;
-import valmo.geco.core.Messages;
+import valmo.geco.model.Messages;
 import valmo.geco.model.Stage;
 
 /**

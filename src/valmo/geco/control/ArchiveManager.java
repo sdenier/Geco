@@ -11,12 +11,12 @@ import java.util.Date;
 import java.util.Properties;
 
 import valmo.geco.core.Announcer.StageListener;
-import valmo.geco.core.Messages;
 import valmo.geco.model.Archive;
 import valmo.geco.model.ArchiveRunner;
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
 import valmo.geco.model.Course;
+import valmo.geco.model.Messages;
 import valmo.geco.model.Runner;
 import valmo.geco.model.Stage;
 

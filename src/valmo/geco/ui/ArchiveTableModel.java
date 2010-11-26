@@ -6,8 +6,8 @@ package valmo.geco.ui;
 
 import javax.swing.table.AbstractTableModel;
 
-import valmo.geco.core.Messages;
 import valmo.geco.model.ArchiveRunner;
+import valmo.geco.model.Messages;
 
 /**
  * @author Simon Denier

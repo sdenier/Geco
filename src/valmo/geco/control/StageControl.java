@@ -5,11 +5,11 @@
 package valmo.geco.control;
 
 import valmo.geco.core.Announcer;
-import valmo.geco.core.Messages;
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
 import valmo.geco.model.Course;
 import valmo.geco.model.HeatSet;
+import valmo.geco.model.Messages;
 import valmo.geco.model.Pool;
 import valmo.geco.model.Runner;
 

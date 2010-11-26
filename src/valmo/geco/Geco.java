@@ -26,11 +26,11 @@ import valmo.geco.core.Announcer;
 import valmo.geco.core.GecoRequestHandler;
 import valmo.geco.core.GecoResources;
 import valmo.geco.core.Logger;
-import valmo.geco.core.Messages;
 import valmo.geco.core.Util;
 import valmo.geco.functions.GeneratorFunction;
 import valmo.geco.functions.RecheckFunction;
 import valmo.geco.functions.StartTimeFunction;
+import valmo.geco.model.Messages;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
@@ -105,12 +105,12 @@ public class Geco implements GecoRequestHandler {
 
 	public static void main(String[] args) {
 		setLaunchOptions(args);
-		if( platformIsMacOs() ) {
+		if( GecoResources.platformIsMacOs() ) {
 			GecoMacos.earlySetup();
 		}
 
 		final Geco geco = new Geco(startDir);
-		if( platformIsMacOs() ) {
+		if( GecoResources.platformIsMacOs() ) {
 			GecoMacos.setupQuitAction(geco);
 		}
 		geco.window.launchGUI();
@@ -136,11 +136,6 @@ public class Geco implements GecoRequestHandler {
 		}
 	}
 
-	public static boolean platformIsMacOs() {
-		// See for more: http://oreilly.com/pub/a/mac/2002/09/06/osx_java.html
-		return System.getProperty("mrj.version")!=null; //$NON-NLS-1$
-	}
-	
 	public static boolean leisureModeOn() {
 		return leisureMode;
 	}

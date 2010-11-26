@@ -11,8 +11,8 @@ import java.util.Properties;
 import java.util.Vector;
 
 import valmo.geco.core.Announcer;
-import valmo.geco.core.Messages;
 import valmo.geco.model.Course;
+import valmo.geco.model.Messages;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Stage;

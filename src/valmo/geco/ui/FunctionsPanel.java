@@ -19,8 +19,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import valmo.geco.Geco;
-import valmo.geco.core.Messages;
 import valmo.geco.functions.GecoFunction;
+import valmo.geco.model.Messages;
 
 /**
  * @author Simon Denier

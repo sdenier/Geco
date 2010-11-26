@@ -21,9 +21,9 @@ import org.martin.sireader.server.PortMessage;
 import org.martin.sireader.server.SIPortHandler;
 import org.martin.sireader.server.SIReaderListener;
 
-import valmo.geco.Geco;
 import valmo.geco.core.Announcer;
 import valmo.geco.core.GecoRequestHandler;
+import valmo.geco.core.GecoResources;
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.Punch;
 import valmo.geco.model.Runner;
@@ -121,7 +121,7 @@ public class SIReaderHandler extends Control
 	
 	public String detectSIPort() {
 		String match;
-		if( Geco.platformIsMacOs() ){
+		if( GecoResources.platformIsMacOs() ){
 			match = "/dev/tty.SLAB_USBtoUART"; // TODO: Linux ? 
 		} else {
 			match = "SPORTident";

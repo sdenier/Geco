@@ -19,8 +19,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
 import valmo.geco.core.GecoResources;
-import valmo.geco.core.Messages;
 import valmo.geco.model.Course;
+import valmo.geco.model.Messages;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.impl.POFactory;
 import valmo.geco.model.xml.CourseSaxImporter;

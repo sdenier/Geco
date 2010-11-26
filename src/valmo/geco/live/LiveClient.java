@@ -14,8 +14,8 @@ import javax.swing.JOptionPane;
 
 import valmo.geco.Geco;
 import valmo.geco.core.Announcer;
-import valmo.geco.core.Messages;
 import valmo.geco.core.Util;
+import valmo.geco.model.Messages;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.RunnerResult;

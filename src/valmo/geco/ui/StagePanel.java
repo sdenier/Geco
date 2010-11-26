@@ -41,10 +41,10 @@ import valmo.geco.Geco;
 import valmo.geco.control.SingleSplitPrinter;
 import valmo.geco.core.Announcer;
 import valmo.geco.core.Html;
-import valmo.geco.core.Messages;
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
 import valmo.geco.model.Course;
+import valmo.geco.model.Messages;
 import valmo.geco.model.Stage;
 import valmo.geco.model.xml.CourseSaxImporter;
 

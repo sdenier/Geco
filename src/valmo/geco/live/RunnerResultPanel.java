@@ -15,7 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import valmo.geco.core.Html;
-import valmo.geco.core.Messages;
+import valmo.geco.model.Messages;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.RunnerResult;
 import valmo.geco.ui.SwingUtils;

@@ -14,11 +14,11 @@ import java.util.Map.Entry;
 import java.util.Vector;
 
 import valmo.geco.core.Html;
-import valmo.geco.core.Messages;
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
 import valmo.geco.model.Course;
+import valmo.geco.model.Messages;
 import valmo.geco.model.Pool;
 import valmo.geco.model.RankedRunner;
 import valmo.geco.model.Result;

@@ -10,12 +10,12 @@ import java.util.Date;
 import java.util.List;
 
 import valmo.geco.core.Announcer;
-import valmo.geco.core.Messages;
 import valmo.geco.core.TimeManager;
 import valmo.geco.core.Util;
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
 import valmo.geco.model.Course;
+import valmo.geco.model.Messages;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Status;

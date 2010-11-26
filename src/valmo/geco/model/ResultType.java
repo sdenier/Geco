@@ -4,7 +4,6 @@
  */
 package valmo.geco.model;
 
-import valmo.geco.core.Messages;
 
 public enum ResultType { 
 	

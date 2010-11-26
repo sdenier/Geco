@@ -6,8 +6,8 @@ package valmo.geco.model.impl;
 
 import java.util.Arrays;
 
-import valmo.geco.core.Messages;
 import valmo.geco.model.Course;
+import valmo.geco.model.Messages;
 
 
 /**

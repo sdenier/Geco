@@ -42,7 +42,7 @@ import valmo.geco.control.IResultBuilder;
 import valmo.geco.control.ResultBuilder;
 import valmo.geco.control.ResultBuilder.ResultConfig;
 import valmo.geco.core.Announcer.StageConfigListener;
-import valmo.geco.core.Messages;
+import valmo.geco.model.Messages;
 import valmo.geco.model.ResultType;
 import valmo.geco.model.Stage;
 

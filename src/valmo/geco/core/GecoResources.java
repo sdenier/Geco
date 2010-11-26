@@ -74,6 +74,11 @@ public class GecoResources {
 	
 	public static void forDesktop() {
 		webstart = false;
+	}
+
+	public static boolean platformIsMacOs() {
+		// See for more: http://oreilly.com/pub/a/mac/2002/09/06/osx_java.html
+		return System.getProperty("mrj.version")!=null; //$NON-NLS-1$
 	}	
 
 }

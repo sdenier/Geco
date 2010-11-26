@@ -33,9 +33,9 @@ import valmo.geco.control.GecoControl;
 import valmo.geco.control.RunnerControl;
 import valmo.geco.control.RunnerCreationException;
 import valmo.geco.control.SIReaderHandler;
-import valmo.geco.core.Messages;
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.Course;
+import valmo.geco.model.Messages;
 import valmo.geco.model.Runner;
 import valmo.geco.ui.SwingUtils;
 

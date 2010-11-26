@@ -9,7 +9,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import valmo.geco.core.Messages;
+import valmo.geco.model.Messages;
 
 import com.apple.eawt.AppEvent.QuitEvent;
 import com.apple.eawt.Application;
