@@ -18,6 +18,7 @@ import valmo.geco.control.RegistryStats;
 import valmo.geco.control.ResultBuilder;
 import valmo.geco.control.RunnerControl;
 import valmo.geco.control.SIReaderHandler;
+import valmo.geco.control.SingleSplitPrinter;
 import valmo.geco.control.SplitBuilder;
 import valmo.geco.control.StageControl;
 import valmo.geco.control.StartlistImporter;
@@ -163,8 +164,9 @@ public class Geco implements GecoRequestHandler {
 			try {
 				startDir = launcher();
 			} catch (Exception e) {
-				System.out.println(e.getLocalizedMessage());
-				System.exit(0);
+				System.err.println("Error loading stage. Data may be corrupted?");
+				e.printStackTrace();
+				System.exit(-1);
 			}
 		}
 
@@ -176,6 +178,7 @@ public class Geco implements GecoRequestHandler {
 		runnerControl = new RunnerControl(gecoControl);
 		resultBuilder = new ResultBuilder(gecoControl);
 		new SplitBuilder(gecoControl);
+		new SingleSplitPrinter(gecoControl);
 		heatBuilder = new HeatBuilder(gecoControl, resultBuilder);
 		stats = new RegistryStats(gecoControl);
 		new AutoMergeHandler(gecoControl);
@@ -228,6 +231,9 @@ public class Geco implements GecoRequestHandler {
 	}
 	public SplitBuilder splitsBuilder() {
 		return this.gecoControl.getService(SplitBuilder.class);
+	}
+	public SingleSplitPrinter splitPrinter() {
+		return this.gecoControl.getService(SingleSplitPrinter.class);
 	}
 	public HeatBuilder heatBuilder() {
 		return this.heatBuilder;

@@ -208,7 +208,13 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 					geco.openStage(new GecoLauncher(
 							new File(geco.getCurrentStagePath()).getParentFile()).open(GecoWindow.this));
 				} catch (Exception e1) {
-					System.out.println(e1.getLocalizedMessage());
+					JOptionPane.showMessageDialog(
+							GecoWindow.this,
+							e1.toString() + "\nData may be corrupted?\n\nGeco will close now.",
+							"Error loading stage ",
+							JOptionPane.ERROR_MESSAGE);
+					e1.printStackTrace();
+					System.exit(-1);
 				}
 			}
 		});
@@ -324,11 +330,11 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 			@Override
 			public void actionOn() {
 				setIcon(splitOn);
-				geco.splitsBuilder().enableAutoprint();
+				geco.splitPrinter().enableAutoprint();
 			}
 			@Override
 			public void actionOff() {
-				geco.splitsBuilder().disableAutoprint();
+				geco.splitPrinter().disableAutoprint();
 				setIcon(splitOff);
 			}
 		};

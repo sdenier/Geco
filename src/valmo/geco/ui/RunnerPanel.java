@@ -373,7 +373,7 @@ public class RunnerPanel extends GecoPanel {
 	}
 
 	public void printRunnerSplits() {
-		geco().splitsBuilder().printSingleSplits(runnerData);
+		geco().splitPrinter().printSingleSplits(runnerData);
 	}
 
 	private JButton createRecheckStatusButton() {

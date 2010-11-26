@@ -38,7 +38,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 
 import valmo.geco.Geco;
-import valmo.geco.control.SplitBuilder;
+import valmo.geco.control.SingleSplitPrinter;
 import valmo.geco.core.Announcer;
 import valmo.geco.core.Html;
 import valmo.geco.core.Messages;
@@ -249,27 +249,27 @@ public class StagePanel extends TabPanel {
 	
 		c.gridy = 2;
 		panel.add(new JLabel(Messages.uiGet("StagePanel.SplitPrinterLabel")), c); //$NON-NLS-1$
-		final JComboBox printersCB = new JComboBox(geco().splitsBuilder().listPrinterNames());
+		final JComboBox printersCB = new JComboBox(geco().splitPrinter().listPrinterNames());
 		printersCB.setPreferredSize(new Dimension(170, stationPortCB.getPreferredSize().height));
-		printersCB.setSelectedItem(geco().splitsBuilder().getSplitPrinterName());
+		printersCB.setSelectedItem(geco().splitPrinter().getSplitPrinterName());
 		panel.add(printersCB, c);
 		printersCB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				geco().splitsBuilder().setSplitPrinterName((String) printersCB.getSelectedItem());
+				geco().splitPrinter().setSplitPrinterName((String) printersCB.getSelectedItem());
 			}
 		});
 		
 		c.gridy = 3;
 		panel.add(new JLabel(Messages.uiGet("StagePanel.SplitFormatLabel")), c); //$NON-NLS-1$
-		final JComboBox splitFormatCB = new JComboBox(SplitBuilder.SplitFormat.values());
+		final JComboBox splitFormatCB = new JComboBox(SingleSplitPrinter.SplitFormat.values());
 		splitFormatCB.setPreferredSize(new Dimension(170, stationPortCB.getPreferredSize().height));
-		splitFormatCB.setSelectedItem(geco().splitsBuilder().getSplitFormat());
+		splitFormatCB.setSelectedItem(geco().splitPrinter().getSplitFormat());
 		panel.add(splitFormatCB, c);
 		splitFormatCB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				geco().splitsBuilder().setSplitFormat((SplitBuilder.SplitFormat) splitFormatCB.getSelectedItem());
+				geco().splitPrinter().setSplitFormat((SingleSplitPrinter.SplitFormat) splitFormatCB.getSelectedItem());
 			}
 		});
 		
