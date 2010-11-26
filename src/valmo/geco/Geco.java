@@ -11,6 +11,7 @@ import java.util.Vector;
 
 import valmo.geco.control.ArchiveManager;
 import valmo.geco.control.AutoMergeHandler;
+import valmo.geco.control.CNCalculator;
 import valmo.geco.control.GecoControl;
 import valmo.geco.control.HeatBuilder;
 import valmo.geco.control.PenaltyChecker;
@@ -180,6 +181,7 @@ public class Geco implements GecoRequestHandler {
 		siHandler = new SIReaderHandler(gecoControl, defaultMergeHandler());
 		new ArchiveManager(gecoControl);
 		new StartlistImporter(gecoControl);
+		new CNCalculator(gecoControl);
 		
 		new StartTimeFunction(gecoControl);
 		new RecheckFunction(gecoControl);
@@ -244,6 +246,9 @@ public class Geco implements GecoRequestHandler {
 	}
 	public StartlistImporter startlistImporter() {
 		return this.gecoControl.getService(StartlistImporter.class);
+	}
+	public CNCalculator cnCalculator() {
+		return this.gecoControl.getService(CNCalculator.class);
 	}
 	
 	public GecoRequestHandler defaultMergeHandler() {

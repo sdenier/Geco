@@ -62,6 +62,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	private JComboBox resultTypeCB;
 	private JRadioButton rankingResultRB;
 	private JRadioButton splitResultRB;
+	private JRadioButton cnScoreRB;
 
 	private JButton refreshB;
 	private JButton exportB;
@@ -149,8 +150,11 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	public IResultBuilder resultBuilder() {
 		if( rankingResultRB.isSelected() ) {
 			return geco().resultBuilder();
-		} else {
+		} else
+		if( splitResultRB.isSelected() ) {
 			return geco().splitsBuilder();
+		} else {
+			return geco().cnCalculator();
 		}
 	}
 
@@ -253,9 +257,11 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 
 		rankingResultRB = new JRadioButton(Messages.uiGet("ResultsPanel.RankingLabel")); //$NON-NLS-1$
 		splitResultRB = new JRadioButton(Messages.uiGet("ResultsPanel.SplitsLabel")); //$NON-NLS-1$
+		cnScoreRB = new JRadioButton("CN");
 		ButtonGroup builderGroup = new ButtonGroup();
 		builderGroup.add(rankingResultRB);
 		builderGroup.add(splitResultRB);
+		builderGroup.add(cnScoreRB);
 		builderGroup.setSelected(rankingResultRB.getModel(), true);
 		
 		showNcC = new JCheckBox(Messages.uiGet("ResultsPanel.ShowNCLabel")); //$NON-NLS-1$
@@ -294,7 +300,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 				BorderFactory.createTitledBorder(Messages.uiGet("ResultsPanel.CommandTitle"))); //$NON-NLS-1$
 		commandPanel.setLayout(new BoxLayout(commandPanel, BoxLayout.Y_AXIS));
 		commandPanel.add(SwingUtils.embed(resultTypeCB));
-		commandPanel.add(SwingUtils.makeButtonBar(FlowLayout.CENTER, rankingResultRB, splitResultRB));
+		commandPanel.add(SwingUtils.makeButtonBar(FlowLayout.CENTER, rankingResultRB, splitResultRB, cnScoreRB));
 		commandPanel.add(Box.createVerticalStrut(10));
 		commandPanel.add(optionsPanel);
 		commandPanel.add(Box.createVerticalStrut(10));
