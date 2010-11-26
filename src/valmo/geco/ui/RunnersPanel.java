@@ -187,7 +187,7 @@ public class RunnersPanel extends TabPanel
 					try {
 						geco().startlistImporter().loadArchiveFrom(fileChooser.getSelectedFile());
 					} catch (IOException e1) {
-						geco().debug(e1.getLocalizedMessage());
+						geco().debug(e1.toString());
 					}
 				}
 			}

@@ -87,7 +87,7 @@ public class ArchiveViewer extends JFrame {
 			archiveManager().loadArchiveFrom(archiveFile);
 			refresh();
 		} catch (IOException e1) {
-			geco.debug(e1.getLocalizedMessage());
+			geco.debug(e1.toString());
 		}
 	}
 	
@@ -105,13 +105,13 @@ public class ArchiveViewer extends JFrame {
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(
 					this,
-					e.getLocalizedMessage(),
+					e.toString(),
 					"Error loading archive",
 					JOptionPane.ERROR_MESSAGE);
 			try {
 				archive = archiveManager().archive();
 			} catch (IOException e1) {
-				geco.debug(e1.getLocalizedMessage());
+				geco.debug(e1.toString());
 			}
 		}
 		tableModel.setData(archive.runners().toArray(new ArchiveRunner[0]));

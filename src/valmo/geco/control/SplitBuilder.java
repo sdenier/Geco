@@ -4,38 +4,24 @@
  */
 package valmo.geco.control;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.awt.print.PrinterJob;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import javax.print.PrintService;
-import javax.print.PrintServiceLookup;
-import javax.print.attribute.HashPrintRequestAttributeSet;
-import javax.print.attribute.PrintRequestAttributeSet;
-import javax.print.attribute.standard.Media;
-import javax.print.attribute.standard.MediaSize;
-import javax.print.attribute.standard.MediaSizeName;
-import javax.swing.JFrame;
-import javax.swing.JTextPane;
 
 import valmo.geco.control.ResultBuilder.ResultConfig;
-import valmo.geco.core.Announcer.CardListener;
 import valmo.geco.core.Announcer.StageListener;
 import valmo.geco.core.Html;
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.RankedRunner;
 import valmo.geco.model.Result;
+import valmo.geco.model.ResultType;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Stage;
@@ -47,7 +33,9 @@ import valmo.geco.model.iocsv.CsvWriter;
  * @since Oct 15, 2010
  *
  */
-public class SplitBuilder extends Control implements IResultBuilder, StageListener, CardListener {
+public class SplitBuilder extends Control implements IResultBuilder, StageListener {
+	
+	private int nbColumns = 12;
 	
 	public static class SplitTime {
 		public SplitTime(String seq, Trace trace, long time, long split) {
@@ -56,28 +44,13 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 			this.time = time;
 			this.split = split;
 		}
-		private String seq;
-		private Trace trace;
-		private long time;
-		private long split;
+		String seq;
+		Trace trace;
+		long time;
+		long split;
 		
 	}
-	
-	public static enum SplitFormat { MultiColumns, Ticket }
 
-
-	private static final boolean DEBUGMODE = false;
-	
-	
-	private PrintService splitPrinter;
-	
-	private boolean autoPrint;
-	
-	private int nbColumns = 10;
-
-	private SplitFormat splitFormat = SplitFormat.MultiColumns;
-
-	private MediaSizeName[] splitMedia;
 
 	
 	/**
@@ -86,17 +59,19 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 	public SplitBuilder(GecoControl gecoControl) {
 		super(gecoControl);
 		geco().announcer().registerStageListener(this);
-		geco().announcer().registerCardListener(this);
 		geco().registerService(SplitBuilder.class, this);
-		changed(null, stage());
 	}
 	
 	
-	public SplitTime[] buildNormalSplits(RunnerRaceData data) {
+	public int nbColumns() {
+		return nbColumns;
+	}
+	
+	public SplitTime[] buildNormalSplits(RunnerRaceData data, SplitTime[] bestSplits) {
 		ArrayList<SplitTime> splits = new ArrayList<SplitTime>(data.getResult().getTrace().length);
 		ArrayList<SplitTime> added = new ArrayList<SplitTime>(data.getResult().getTrace().length);
 		// in normal mode, added splits appear after normal splits
-		buildSplits(data, splits, added, true);
+		buildSplits(data, splits, added, bestSplits, true);
 		splits.addAll(added);
 		return splits.toArray(new SplitTime[0]);
 	}	
@@ -104,19 +79,25 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 	public SplitTime[] buildLinearSplits(RunnerRaceData data) {
 		ArrayList<SplitTime> splits = new ArrayList<SplitTime>(data.getResult().getTrace().length);
 		// in linear mode, added splits are kept in place with others
-		buildSplits(data, splits, splits, false);
+		buildSplits(data, splits, splits, null, false);
 		return splits.toArray(new SplitTime[0]);
 	}
 
-	private void buildSplits(RunnerRaceData data, List<SplitTime> splits, List<SplitTime> added, boolean cutSubst) {
+	private void buildSplits(RunnerRaceData data, List<SplitTime> splits, List<SplitTime> added, SplitTime[] bestSplits, boolean cutSubst) {
 		long startTime = data.getOfficialStarttime().getTime();
 		long previousTime = startTime;
 		int control = 1;
 		for (Trace trace : data.getResult().getTrace()) {
 			long time = trace.getTime().getTime();
 			if( trace.isOK() ) {
-				splits.add(createSplit(Integer.toString(control), trace, startTime, previousTime, time));
+				SplitTime split = createSplit(Integer.toString(control), trace, startTime, previousTime, time);
+				splits.add(split);
 				previousTime = time;
+				if( bestSplits!=null ){
+					SplitTime bestSplit = bestSplits[control - 1];
+					bestSplit.time = Math.min(bestSplit.time, split.time);
+					bestSplit.split = Math.min(bestSplit.split, split.split);
+				}
 				control++;
 			} else if( trace.isSubst() ) {
 				if( cutSubst ) {
@@ -136,8 +117,15 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 			} else { // added trace
 				added.add(createSplit("", trace, startTime, TimeManager.NO_TIME_l, time)); //$NON-NLS-1$
 			}
-		} // TODO: remove the null value and consequent checks
-		splits.add(createSplit("F", null, startTime, previousTime, data.getFinishtime().getTime())); //$NON-NLS-1$
+		}
+		SplitTime fSplit = createSplit("F", null, startTime, previousTime, data.getFinishtime().getTime());
+		splits.add(fSplit); //$NON-NLS-1$
+		if( bestSplits!=null ){
+			SplitTime bestSplit = bestSplits[bestSplits.length - 1];
+			bestSplit.time = Math.min(bestSplit.time, fSplit.time);
+			bestSplit.split = Math.min(bestSplit.split, fSplit.split);
+		}
+
 	}
 
 	private SplitTime createSplit(String seq, Trace trace, long startTime, long previousTime, long time) {
@@ -153,6 +141,29 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 				return TimeManager.NO_TIME_l;
 			}
 		}		
+	}
+	
+	public SplitTime[] buildAllNormalSplits(Result result, ResultConfig config, Map<RunnerRaceData, SplitTime[]> allSplits) {
+		SplitTime[] bestSplits = null;
+		if( config.resultType==ResultType.CourseResult ) {
+			int nbControls = registry().findCourse(result.getIdentifier()).nbControls();
+			bestSplits = new SplitTime[nbControls + 1];
+			for (int i = 0; i < bestSplits.length; i++) {
+				bestSplits[i] = new SplitTime("", null, TimeManager.NO_TIME_l, TimeManager.NO_TIME_l);
+			}
+		}
+		for (RunnerRaceData runnerData : result.getRankedRunners()) {
+			allSplits.put(runnerData, buildNormalSplits(runnerData, bestSplits));
+		}
+		for (RunnerRaceData runnerData : result.getNRRunners()) {
+			allSplits.put(runnerData, buildNormalSplits(runnerData, bestSplits));
+		}
+		
+		if( config.resultType==ResultType.CourseResult ) {
+			return bestSplits;
+		} else {
+			return new SplitTime[0]; // do not care about best splits
+		}
 	}
 
 	
@@ -256,7 +267,7 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 					Integer.toString(runner.getCourse().nbControls())
 				}));
 		
-		for (SplitTime split: buildNormalSplits(runnerData)) {
+		for (SplitTime split: buildNormalSplits(runnerData, null)) {
 			if( split.trace!=null ) { // finish split handled above
 				csvData.add(split.trace.getBasicCode());
 				csvData.add(TimeManager.fullTime(split.time));
@@ -279,58 +290,90 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 		}
 		for (Result result : results) {
 			if( config.showEmptySets || !result.isEmpty() ) {
-				appendHtmlResultsWithSplits(result, config, html);
+				Map<RunnerRaceData, SplitTime[]> allSplits = new HashMap<RunnerRaceData, SplitBuilder.SplitTime[]>(); 
+				SplitTime[] bestSplit = buildAllNormalSplits(result, config, allSplits);
+				appendHtmlResultsWithSplits(result, allSplits, bestSplit, config, html);
 			}
 		}
 		return html.close();
 	}
 
-	private void appendHtmlResultsWithSplits(Result result, ResultConfig config, Html html) {
+	private void appendHtmlResultsWithSplits(Result result, Map<RunnerRaceData, SplitTime[]> allSplits,
+													SplitTime[] bestSplit, ResultConfig config, Html html) {
 		html.tag("h1", result.getIdentifier()); //$NON-NLS-1$
 		html.open("table"); //$NON-NLS-1$
 		for (RankedRunner runner : result.getRanking()) {
 			RunnerRaceData data = runner.getRunnerData();
-			generateHtmlSplitsFor(data, Integer.toString(runner.getRank()), data.getResult().formatRacetime(), config, html);
+			generateHtmlSplitsFor(
+					data,
+					Integer.toString(runner.getRank()),
+					data.getResult().formatRacetime(),
+					allSplits.get(data),
+					bestSplit,
+					html);
 			html.openTr().closeTr();
 		}
 		html.openTr().closeTr();
 		for (RunnerRaceData runnerData : result.getNRRunners()) {
 			if( ! runnerData.getRunner().isNC() ) {
-				generateHtmlSplitsFor(runnerData, "", runnerData.getResult().formatStatus(), config, html); //$NON-NLS-1$
+				generateHtmlSplitsFor(
+						runnerData,
+						"",
+						runnerData.getResult().formatStatus(),
+						allSplits.get(runnerData),
+						bestSplit,
+						html); //$NON-NLS-1$
 			} else if( config.showNC ) {
-				generateHtmlSplitsFor(runnerData, "NC", runnerData.getResult().shortFormat(), config, html); //$NON-NLS-1$
+				generateHtmlSplitsFor(
+						runnerData,
+						"NC",
+						runnerData.getResult().shortFormat(),
+						allSplits.get(runnerData),
+						bestSplit,
+						html); //$NON-NLS-1$
 			}
 			html.openTr().closeTr();
 		}
 		if( config.showOthers ) {
 			html.openTr().closeTr();
 			for (RunnerRaceData runnerData : result.getOtherRunners()) {
-				generateHtmlSplitsFor(runnerData, "", runnerData.getResult().formatStatus(), config, html); //$NON-NLS-1$
+				generateHtmlSplitsFor(
+						runnerData,
+						"",
+						runnerData.getResult().formatStatus(),
+						buildNormalSplits(runnerData, null),
+						bestSplit,
+						html); //$NON-NLS-1$
 				html.openTr().closeTr();
 			}			
 		}
 		html.close("table"); //$NON-NLS-1$
 	}
 
-	public void generateHtmlSplitsFor(RunnerRaceData data, String rank, String statusTime, ResultConfig config, Html html) {
+	public void generateHtmlSplitsFor(RunnerRaceData data, String rank, String statusTime,
+													SplitTime[] splits, SplitTime[] bestSplits, Html html) {
 		html.openTr();
 		html.th(rank);
 		html.th(data.getRunner().getName(), "align=\"left\" colspan=\"3\""); //$NON-NLS-1$
 		html.th(statusTime);
 		html.closeTr();
-		appendHtmlSplitsInColumns(buildNormalSplits(data), nbColumns, html);
+		appendHtmlSplitsInColumns(splits, bestSplits, nbColumns(), html);
 	}
 	
 	/**
 	 * @param buildNormalSplits
 	 * @param html
 	 */
-	private void appendHtmlSplitsInColumns(SplitTime[] splits, int nbColumns, Html html) {
+	protected void appendHtmlSplitsInColumns(SplitTime[] splits, SplitTime[] bestSplits, int nbColumns,
+																								Html html) {
 		int nbRows = (splits.length / nbColumns) + 1;
 		int rowStart = 0;
 		for (int i = 0; i < nbRows; i++) {
 			// if last line, take the last remaining splits, not a full row
 			int limit = ( i==nbRows-1 ) ? (splits.length % nbColumns) : nbColumns;
+			
+			if( limit==0 )
+				break; // in case we have splits.length a multiple of nbColumns, we can stop now
 			
 			// first line with seq and control number/code
 			html.openTr().td(""); //$NON-NLS-1$
@@ -338,7 +381,7 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 				SplitTime split = splits[j + rowStart];
 				if( split.trace != null ) {
 					String label = split.seq + " (" + split.trace.getBasicCode() +")"; //$NON-NLS-1$ //$NON-NLS-2$
-					html.th(label, "align=\"right\""); //$NON-NLS-1$
+					html.td(label, "align=\"right\""); //$NON-NLS-1$
 				} else {
 					html.td(split.seq, "align=\"right\""); //$NON-NLS-1$
 				}
@@ -347,188 +390,49 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 			// second line is cumulative split since start
 			html.openTr().td(""); //$NON-NLS-1$
 			for (int j = 0; j < limit; j++) {
-				SplitTime split = splits[j + rowStart];
+				int k = j + rowStart;
+				SplitTime split = splits[k];
 				String label = TimeManager.time(split.time);
 //				if( split.trace!=null && ! split.trace.isOK() ) {
 //					label = Html.tag("i", label, new StringBuffer()).toString();
 //				}
-				html.td(label, "align=\"right\""); //$NON-NLS-1$
+				long best = 0;
+				if( k < bestSplits.length ){
+					best = bestSplits[k].time; 
+				}
+				showWithBestSplit(label, split.time, best, html);
 			}
 			html.closeTr();
 			// third line is partial split since previous ok punch
 			html.openTr().td(""); //$NON-NLS-1$
 			for (int j = 0; j < limit; j++) {
-				SplitTime split = splits[j + rowStart];
+				int k = j + rowStart;
+				SplitTime split = splits[k];
 				String label = TimeManager.time(split.split);
 				if( split.trace!=null && ! split.trace.isOK() ) {
 					label = "&nbsp;"; //$NON-NLS-1$
 //					label = Html.tag("i", label, new StringBuffer()).toString();
 				}
-				html.td(label, "align=\"right\""); //$NON-NLS-1$
+				long best = 0;
+				if( k < bestSplits.length ){
+					best = bestSplits[k].split;
+				}
+				showWithBestSplit(label, split.split, best, html);
 			}
 			html.closeTr();
 			rowStart += nbColumns;
 		}
 	}
 	
-	public String printSingleSplits(RunnerRaceData data) {
-		if( getSplitPrinter()!=null ) {
-			Html html = new Html();
-			html.open("head");
-			html.open("style", "type=\"text/css\"");
-			html.contents(
-					"body { font-size: " + splitFontSize() + "; background-color:white }\n" +
-//					"table { border-width: 1px } \n" +
-					"td, th { padding: 0px 0px 0px 10px; margin: 0px }");
-			html.close("style");
-			html.close("head");
-			if( splitFormat==SplitFormat.Ticket ) {
-				printSingleSplitsInLine(data, html);
-			} else {
-				printSingleSplitsInColumns(data, html);
-			}
-		
-			final JTextPane ticket = new JTextPane(); 
-			ticket.setContentType("text/html"); //$NON-NLS-1$
-			String content = html.close();
-			ticket.setText(content);
-			
-			final PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
-			if( splitFormat==SplitFormat.Ticket ) {
-				computeMediaForTicket(ticket, attributes);
-			}
-			
-			Callable<Boolean> callable = new Callable<Boolean>() {
-				@Override
-				public Boolean call() throws Exception {
-					return ticket.print(null, null, false, getSplitPrinter(), attributes, false);
-				}
-			};
-			
-			if( ! DEBUGMODE ) {
-				ExecutorService pool = Executors.newCachedThreadPool();
-				pool.submit(callable);
-			} else {
-				JFrame jFrame = new JFrame();
-				jFrame.add(ticket);
-				jFrame.pack();
-				jFrame.setVisible(true);
-			}
-			
-//			try {
-//				ticket.print(null, null, false, getSplitPrinter(), attributes, true);
-//			} catch (PrinterException e) {
-//				geco().debug(e.getLocalizedMessage());
-//			}
-			return content;
-		}
-		return ""; //$NON-NLS-1$
-	}
-
-
-	private void computeMediaForTicket(final JTextPane ticket,
-			final PrintRequestAttributeSet attributes) {
-		Dimension preferredSize = ticket.getPreferredSize();
-		int dpi = Toolkit.getDefaultToolkit().getScreenResolution();
-		float height = ((float) preferredSize.height) / dpi;
-		float width = ((float) preferredSize.width) / dpi;
-//		float width = 2.76f;
-
-		if( DEBUGMODE ){
-			System.out.println("Font size: " + splitFontSize());
-			System.out.print("Request: ");
-			System.out.print(height * 25.4);
-			System.out.print("x");
-			System.out.print(width * 25.4);
-			System.out.println(" mm");
-		}
-
-		MediaSizeName bestMedia = null;
-		float bestFit = Float.MAX_VALUE;
-		for (MediaSizeName media : getSplitMedia()) {
-			MediaSize mediaSize = MediaSize.getMediaSizeForName(media);
-			if( mediaSize!=null ){
-				if( DEBUGMODE ){
-					System.out.print(mediaSize.toString(MediaSize.MM, "mm"));
-					System.out.println(" - " + media);
-				}
-				float dy = mediaSize.getY(MediaSize.INCH) - height;
-				float dx = mediaSize.getY(MediaSize.INCH) - width;
-				float fit = dy + dx;
-				if( dy >= 0 && dx >= 0 && fit <= bestFit ){
-					bestFit = fit;
-					bestMedia = media;
-				}
-			}
-		}
-		if( bestMedia==null ){
-			bestMedia = MediaSize.findMedia(width, height, MediaSize.INCH);
-			geco().debug("Ticket size may be too small");
-			if( DEBUGMODE ){
-				System.out.print("Found: ");
-			}			
+	private void showWithBestSplit(String label, long split, long best, Html html) {
+		if( split==best ){
+			html.th(label, "align=\"right\""); //$NON-NLS-1$
 		} else {
-			if( DEBUGMODE ){
-				System.out.print("Chosen: ");
-			}			
-		}
-		if( bestMedia!=null ){
-			attributes.add(bestMedia);
-			MediaSize fitSize = MediaSize.getMediaSizeForName(bestMedia);
-			if( DEBUGMODE ){
-				System.out.println(fitSize.toString(MediaSize.MM, "mm"));
-			}
-		} else {
-			geco().log("Can't find a matching size for ticket");
+			html.td(label, "align=\"right\""); //$NON-NLS-1$
 		}
 	}
-
-
-	private MediaSizeName[] getSplitMedia() {
-		if( splitMedia==null ) {
-			Vector<MediaSizeName> mediaSizenames = new Vector<MediaSizeName>();
-			Media[] media = (Media[]) getSplitPrinter().getSupportedAttributeValues(Media.class, null, null);
-			for (Media m : media) {
-				if( m!=null && m instanceof MediaSizeName ){
-					mediaSizenames.add((MediaSizeName) m);
-				}
-			}
-			splitMedia = mediaSizenames.toArray(new MediaSizeName[0]);
-		}
-		return splitMedia;
-	}
-
-	private void printSingleSplitsInColumns(RunnerRaceData data, Html html) {
-		html.b(data.getRunner().getName() + " - " //$NON-NLS-1$
-				+ geco().stage().getName() + " - " //$NON-NLS-1$
-				+ data.getCourse().getName() + " - " //$NON-NLS-1$
-				+ data.getResult().shortFormat());
-		html.open("table"); //$NON-NLS-1$
-		appendHtmlSplitsInColumns(buildNormalSplits(data), nbColumns, html);
-		html.close("table"); //$NON-NLS-1$
-		html.tag("div", //$NON-NLS-1$
-				"align=\"center\"", //$NON-NLS-1$
-				"Geco for orienteering - http://bitbucket.org/sdenier/geco"); //$NON-NLS-1$
-	}
-
-	private void printSingleSplitsInLine(RunnerRaceData data, Html html) {
-//		char[] chars = Character.toChars(0x2B15); // control flag char :)
-//		html.contents(new String(chars));
-		html.open("div", "align=\"center\"");
-		html.contents(geco().stage().getName()).br();
-		html.b(data.getRunner().getName()).br();
-		html.br();
-		html.b(data.getCourse().getName() + " - " //$NON-NLS-1$
-				+ data.getResult().shortFormat());
-		html.close("div"); // don't center table, it wastes too much space for some formats.
-		html.open("table", "width=\"75%\""); //$NON-NLS-1$
-		appendHtmlSplitsInLine(buildLinearSplits(data), html);
-		html.close("table").br(); //$NON-NLS-1$
-		html.contents("Geco for orienteering").br();
-		html.contents("http://bitbucket.org/sdenier/geco");
-	}
-
-	private void appendHtmlSplitsInLine(SplitTime[] linearSplits, Html html) {
+	
+	protected void appendHtmlSplitsInLine(SplitTime[] linearSplits, Html html) {
 		for (SplitTime splitTime : linearSplits) {
 			html.openTr();
 			Trace trace = splitTime.trace;
@@ -540,7 +444,7 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 					html.th(time, "align=\"right\""); //$NON-NLS-1$
 				} else {
 					if( trace.isAdded() || trace.isSubst() ) {
-						time = Html.tag("i", time, new StringBuffer()).toString(); //$NON-NLS-1$
+						time = Html.tag("i", time, new StringBuilder()).toString(); //$NON-NLS-1$
 					}
 					html.td(time, "align=\"right\""); //$NON-NLS-1$
 				}
@@ -554,110 +458,24 @@ public class SplitBuilder extends Control implements IResultBuilder, StageListen
 			html.closeTr();
 		}
 	}
-
-
-	public Vector<String> listPrinterNames() {
-		Vector<String> printerNames = new Vector<String>();
-		for (PrintService printer : PrinterJob.lookupPrintServices()) {
-			printerNames.add(printer.getName());
-		}
-		return printerNames;
-	}
 	
-	protected PrintService getSplitPrinter() {
-		if( splitPrinter==null ) {
-			splitPrinter = PrintServiceLookup.lookupDefaultPrintService();
-		}
-		return splitPrinter;
-	}
-	
-	public String getSplitPrinterName() {
-		return ( getSplitPrinter()==null ) ? "" : getSplitPrinter().getName(); //$NON-NLS-1$
-	}
-	
-	public String getDefaultPrinterName() {
-		PrintService defaultService = PrintServiceLookup.lookupDefaultPrintService();
-		return ( defaultService==null ) ? "" : defaultService.getName(); //$NON-NLS-1$
-	}
-	
-	public boolean setSplitPrinterName(String name) {
-		splitMedia = null; // reset cache
-		for (PrintService printer : PrinterJob.lookupPrintServices()) {
-			if( printer.getName().equals(name) ) {
-				splitPrinter = printer;
-				return true;
-			}
-		}
-		splitPrinter = null;
-		return false;
-	}
-
-	
-	public void enableAutoprint() {
-		this.autoPrint = true;
-	}
-	
-	public void disableAutoprint() {
-		this.autoPrint = false;
-	}
-	
-	public SplitFormat getSplitFormat() {
-		return this.splitFormat;
-	}
-	
-	public void setSplitFormat(SplitFormat format) {
-		this.splitFormat = format;
-	}
-
-	public int splitFontSize() {
-		return 10; // 8 for race with more than 30+ punches
-	}
-
-
-	@Override
-	public void cardRead(String chip) {
-		if( autoPrint ) {
-			printSingleSplits(registry().findRunnerData(chip));
-		}
-	}
-	@Override
-	public void unknownCardRead(String chip) {	}
-	@Override
-	public void cardReadAgain(String chip) {	}
-	@Override
-	public void rentedCard(String siIdent) {	}
-
-
 	@Override
 	public void changed(Stage previous, Stage current) {
 		Properties props = stage().getProperties();
-		setSplitPrinterName(props.getProperty(splitPrinterProperty()));
 		String nbCol = props.getProperty(splitNbColumnsProperty());
 		if( nbCol!=null ){
 			nbColumns = Integer.parseInt(nbCol);
 		}
-		String format = props.getProperty(splitFormatProperty());
-		if( format!=null ) {
-			setSplitFormat(SplitFormat.valueOf(format));
-		}
 	}
 	@Override
 	public void saving(Stage stage, Properties properties) {
-		properties.setProperty(splitPrinterProperty(), getSplitPrinterName());
 		properties.setProperty(splitNbColumnsProperty(), Integer.toString(nbColumns));
-		properties.setProperty(splitFormatProperty(), getSplitFormat().name());
 	}
 	@Override
 	public void closing(Stage stage) {	}
 
-	public static String splitPrinterProperty() {
-		return "SplitPrinter"; //$NON-NLS-1$
-	}
 	public static String splitNbColumnsProperty() {
 		return "SplitNbColumns"; //$NON-NLS-1$
-	}
-	public static String splitFormatProperty() {
-		return "SplitFormat"; //$NON-NLS-1$
 	}
 
 }

@@ -125,7 +125,7 @@ public class ArchiveManager extends OEImporter implements StageListener {
 			}
 			return createRunner(arkRunner, course);			
 		} catch (IOException e) {
-			geco().log(e.getLocalizedMessage());
+			geco().log(e.toString());
 			return null;
 		}
 	}

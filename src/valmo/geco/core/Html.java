@@ -17,21 +17,27 @@ package valmo.geco.core;
  */
 public final class Html {
 
-	private StringBuffer buffer;
+	private StringBuilder buffer;
 	
 	public Html() {
-		buffer = new StringBuffer();
-		open("html"); //$NON-NLS-1$
+		this(true);
 	}
 	
-	public static StringBuffer openTag(String tag, StringBuffer buffer) {
+	public Html(boolean openHtml) {
+		buffer = new StringBuilder();
+		if( openHtml )
+			open("html"); //$NON-NLS-1$
+	}
+
+	
+	public static StringBuilder openTag(String tag, StringBuilder buffer) {
 		buffer.append('<');
 		buffer.append(tag);
 		buffer.append('>');
 		return buffer;
 	}
 
-	public static StringBuffer openTag(String tag, String attributes, StringBuffer buffer) {
+	public static StringBuilder openTag(String tag, String attributes, StringBuilder buffer) {
 		buffer.append('<');
 		buffer.append(tag);
 		buffer.append(' ');
@@ -40,7 +46,7 @@ public final class Html {
 		return buffer;
 	}
 	
-	public static StringBuffer closeTag(String tag, StringBuffer buffer) {
+	public static StringBuilder closeTag(String tag, StringBuilder buffer) {
 		buffer.append('<');
 		buffer.append('/');
 		buffer.append(tag);
@@ -48,14 +54,14 @@ public final class Html {
 		return buffer;
 	}
 	
-	public static StringBuffer tag(String tag, String contents, StringBuffer buffer) {
+	public static StringBuilder tag(String tag, String contents, StringBuilder buffer) {
 		openTag(tag, buffer);
 		buffer.append(contents);
 		closeTag(tag, buffer);
 		return buffer;
 	}
 
-	public static StringBuffer tag(String tag, String attributes, String contents, StringBuffer buffer) {
+	public static StringBuilder tag(String tag, String attributes, String contents, StringBuilder buffer) {
 		openTag(tag, attributes, buffer);
 		buffer.append(contents);
 		closeTag(tag, buffer);
@@ -63,7 +69,7 @@ public final class Html {
 	}
 	
 	public static String htmlTag(String tag, String contents) {
-		StringBuffer buf = new StringBuffer();
+		StringBuilder buf = new StringBuilder();
 		openTag("html", buf); //$NON-NLS-1$
 		tag(tag, contents, buf);
 		closeTag("html", buf); //$NON-NLS-1$
@@ -71,7 +77,7 @@ public final class Html {
 	}
 
 	public static String htmlTag(String tag, String attributes, String contents) {
-		StringBuffer buf = new StringBuffer();
+		StringBuilder buf = new StringBuilder();
 		openTag("html", buf); //$NON-NLS-1$
 		tag(tag, attributes, contents, buf);
 		closeTag("html", buf); //$NON-NLS-1$
@@ -106,8 +112,12 @@ public final class Html {
 	
 	public String close() {
 		close("html"); //$NON-NLS-1$
+		return toString();
+	}
+	
+	public String toString() {
 		return buffer.toString();
-	}	
+	}
 	
 	public Html contents(String contents) {
 		buffer.append(contents);

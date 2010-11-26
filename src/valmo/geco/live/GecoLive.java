@@ -68,7 +68,8 @@ public class GecoLive implements LiveListener {
 		try {
 			startDir = launcher();
 		} catch (Exception e) {
-			System.out.println(e.getLocalizedMessage());
+			System.out.println(e.toString());
+			e.printStackTrace();
 			System.exit(0);
 		}
 

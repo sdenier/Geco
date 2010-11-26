@@ -79,19 +79,19 @@ public class LiveClientDialog extends JDialog {
 				} catch (NumberFormatException e1) {
 					JOptionPane.showMessageDialog(
 									LiveClientDialog.this,
-									e1.getLocalizedMessage(),
+									e1.toString(),
 									Messages.liveGet("LiveClientDialog.BadPortNumberWarning"), //$NON-NLS-1$
 									JOptionPane.WARNING_MESSAGE);
 				} catch (UnknownHostException e1) {
 					JOptionPane.showMessageDialog(
 									LiveClientDialog.this,
-									e1.getLocalizedMessage(),
+									e1.toString(),
 									Messages.liveGet("LiveClientDialog.NoConnectionWarning") + nameF.getText(), //$NON-NLS-1$
 									JOptionPane.ERROR_MESSAGE);
 				} catch (IOException e1) {
 					JOptionPane.showMessageDialog(
 									LiveClientDialog.this,
-									e1.getLocalizedMessage(),
+									e1.toString(),
 									Messages.liveGet("LiveClientDialog.IOError"), //$NON-NLS-1$
 									JOptionPane.ERROR_MESSAGE);
 				}
