@@ -75,7 +75,7 @@ public class FunctionsPanel extends GecoPanel {
 				execB.setToolTipText(gFunction.executeTooltip());
 				functionUI = gFunction.getFunctionUI();
 				add(functionUI, BorderLayout.CENTER);
-				revalidate();
+				((JComponent) frame().getContentPane()).revalidate();
 			}
 		});
 		gecoFunctionsCB.setSelectedIndex(0);
