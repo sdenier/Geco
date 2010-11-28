@@ -324,6 +324,8 @@ public class RunnerControl extends Control {
 	}
 	
 	public boolean validateRegisteredStartTime(Runner runner, String startTime) {
+		if( startTime.equals("") )
+			return false;
 		try {
 			Date oldTime = runner.getRegisteredStarttime();
 			Date newTime = TimeManager.userParse(startTime);
@@ -345,6 +347,19 @@ public class RunnerControl extends Control {
 		for (Runner runner : registry().getRunners()) {
 			Date relativeTime = TimeManager.relativeTime(runner.getRegisteredStarttime(), oldTime);
 			runner.setRegisteredStarttime(TimeManager.absoluteTime(relativeTime, zeroTime));
+		}
+	}
+
+	public boolean validateArchiveId(Runner runner, String archiveId) {
+		if( archiveId.equals("") )
+			return false;
+		try {
+			// TODO: check unicity of archive id
+			runner.setArchiveId(Integer.parseInt(archiveId));
+			return true;
+		} catch (NumberFormatException e) {
+			geco().info("Bad format for archive id", true);
+			return false;
 		}
 	}
 

@@ -14,7 +14,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -49,6 +48,7 @@ public class RunnerPanel extends GecoPanel {
 
 	// Registration
 	private JTextField regStartF;
+	private JTextField archiveF;
 	private JCheckBox rentedBx;
 	private JCheckBox ncBx;
 
@@ -117,6 +117,7 @@ public class RunnerPanel extends GecoPanel {
 		setEnabled(enabled,
 				this,
 				regStartF,
+				archiveF,
 				rentedBx,
 				ncBx,
 				recheckStatusB,
@@ -139,6 +140,7 @@ public class RunnerPanel extends GecoPanel {
 	
 	protected void refreshRegistrationPanel() {
 		displayRegTime(regStartF, runner.getRegisteredStarttime());
+		archiveF.setText( ( runner.getArchiveId() != null ) ? runner.getArchiveId().toString() : "");
 		rentedBx.setSelected(runner.rentedEcard());
 		ncBx.setSelected(runner.isNC());
 	}
@@ -218,6 +220,7 @@ public class RunnerPanel extends GecoPanel {
 	
 	public JPanel initRegistrationPanel() {
 		regStartF = new JTextField(FIELDSIZE);
+		archiveF = new JTextField(FIELDSIZE);
 		rentedBx = new JCheckBox("Rented E-card");
 		ncBx = new JCheckBox("NC");
 		
@@ -231,20 +234,27 @@ public class RunnerPanel extends GecoPanel {
 		regStartF.setInputVerifier(new InputVerifier() {
 			@Override
 			public boolean verify(JComponent input) {
-				try {
-					TimeManager.userParse(regStartF.getText());
-					return true;
-				} catch (ParseException e) {
-					return false;
-				}
-			}
-			@Override
-			public boolean shouldYieldFocus(JComponent input) {
-				boolean ret = control().validateRegisteredStartTime(runner, regStartF.getText());
+				control().validateRegisteredStartTime(runner, regStartF.getText());
 				refreshRegistrationPanel();
-				return ret;
+				return true; // always yield focus
 			}
 		});
+		
+		archiveF.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				control().validateArchiveId(runner, archiveF.getText());
+				refreshRegistrationPanel();
+			}
+		});
+		archiveF.setInputVerifier(new InputVerifier() {
+			@Override
+			public boolean verify(JComponent input) {
+				control().validateArchiveId(runner, archiveF.getText());
+				refreshRegistrationPanel();
+				return true; // always yield focus
+			}
+		});	
 
 		rentedBx.addActionListener(new ActionListener() {
 			@Override
@@ -265,6 +275,8 @@ public class RunnerPanel extends GecoPanel {
 		GridBagConstraints c = buildGBConstraint();
 		addRow(regPanel, c, new JLabel("Registered Start"), regStartF);
 		c.gridy = 1;
+		addRow(regPanel, c, new JLabel("Archive Id"), archiveF);
+		c.gridy = 2;
 		addRow(regPanel, c, rentedBx, ncBx);
 		
 		regPanel.setBorder(BorderFactory.createTitledBorder("Registration"));
