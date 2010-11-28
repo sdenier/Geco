@@ -113,7 +113,8 @@ public class ResultBuilder extends Control implements IResultBuilder {
 					result.addNRRunner(data);
 					break;
 				case DNS:
-				case NDA:
+				case NOS:
+				case RUN:
 				case UNK:
 				case DUP:
 					result.addOtherRunner(data);

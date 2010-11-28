@@ -46,8 +46,8 @@ public class ResultDataIO extends AbstractIO<RunnerRaceData> {
 	public RunnerRaceData importTData(String[] record) {
 		RunnerResult result = factory.createRunnerResult();
 		// MIGR11
-		Status en = ( record[1].equals("Unknown") || record[1].equals("REG") ) ? //$NON-NLS-1$ //$NON-NLS-2$
-				Status.NDA :
+		Status en = ( record[1].equals("NDA") || record[1].equals("Unknown") || record[1].equals("REG") ) ? //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				Status.NOS :
 				Enum.valueOf(Status.class, record[1]);
 		result.setStatus(en);
 		result.setRacetime(TimeManager.safeParse(record[2]).getTime());

@@ -41,6 +41,14 @@ public class RegistryStats extends Control
 			public String toString() {
 				return Messages.getString("RegistryStats.UnresolvedLabel"); //$NON-NLS-1$
 			}},
+		NOS {
+			public String toString() {
+				return Messages.getString("Status.NotStartedLabel"); //$NON-NLS-1$
+			}},
+		RUN {
+			public String toString() {
+				return Messages.getString("Status.RunningLabel"); //$NON-NLS-1$
+			}},
 		Finished {
 			public String toString() {
 				return Messages.getString("RegistryStats.FinishedLabel"); //$NON-NLS-1$
@@ -65,10 +73,6 @@ public class RegistryStats extends Control
 			public String toString() {
 				return Messages.getString("Status.DSQLabel"); //$NON-NLS-1$
 			}},
-		NDA {
-			public String toString() {
-				return Messages.getString("Status.NoDataLabel"); //$NON-NLS-1$
-			}},
 		UNK {
 			public String toString() {
 				return Messages.getString("Status.UnknownLabel"); //$NON-NLS-1$
@@ -80,7 +84,7 @@ public class RegistryStats extends Control
 	}
 
 	public static final StatItem[] shortStatusList = new StatItem[] {
-		StatItem.Present, StatItem.Unresolved, StatItem.Finished, StatItem.OK, StatItem.MP, StatItem.NDA,
+		StatItem.Present, StatItem.Unresolved, StatItem.NOS, StatItem.Finished, StatItem.OK, StatItem.MP,
 	};
 	
 	// Courses stats
@@ -92,7 +96,8 @@ public class RegistryStats extends Control
 	private int totalDns;
 	private int totalDnf;
 	private int totalDsq;
-	private int totalNda;
+	private int totalNos;
+	private int totalRun;
 	private int totalUnk;
 	private int totalDup;
 	
@@ -157,14 +162,15 @@ public class RegistryStats extends Control
 		totalDns = 0;
 		totalDnf = 0;
 		totalDsq = 0;
-		totalNda = 0;
+		totalNos = 0;
+		totalRun = 0;
 		totalUnk = 0;
 		totalDup = 0;
 	}
 	
 	private void computeCourseStats(Course course) {
 		int courseOk = 0, courseMp = 0, courseDns = 0, courseDnf = 0, courseDsq = 0;
-		int courseNda = 0, courseUnk = 0, courseDup = 0;
+		int courseNos = 0, courseRun = 0, courseUnk = 0, courseDup = 0;
 		List<Runner> courseData = registry().getRunnersFromCourse(course);
 		int total = courseData.size();
 		for (Runner runner : courseData) {
@@ -174,33 +180,35 @@ public class RegistryStats extends Control
 			case DNS: courseDns++; totalDns++; break;
 			case DNF: courseDnf++; totalDnf++; break;
 			case DSQ: courseDsq++; totalDsq++; break;
-			case NDA: courseNda++; totalNda++; break;
+			case NOS: courseNos++; totalNos++; break;
+			case RUN: courseRun++; totalRun++; break;
 			case UNK: courseUnk++; totalUnk++; break;
 			case DUP: courseDup++; totalDup++; break;
 			}
 		}
 		Map<StatItem, Integer> courseStats = stats.get(course.getName());
-		storeStats(courseOk, courseMp, courseDns, courseDnf, courseDsq, courseNda, courseUnk, courseDup,
+		storeStats(courseOk, courseMp, courseDns, courseDnf, courseDsq, courseNos, courseRun, courseUnk, courseDup,
 					total, courseStats);
 	}
 
 	private void computeTotalStats() {
 		int total = registry().getRunners().size();
-		storeStats(totalOk, totalMp, totalDns, totalDnf, totalDsq, totalNda, totalUnk, totalDup,
+		storeStats(totalOk, totalMp, totalDns, totalDnf, totalDsq, totalNos, totalRun, totalUnk, totalDup,
 					total, getTotalCourse());
 	}
 	
-	private void storeStats(int ok, int mp, int dns, int dnf, int dsq, int nda, int unk, int dup, 
+	private void storeStats(int ok, int mp, int dns, int dnf, int dsq, int nos, int run, int unk, int dup, 
 			int total, Map<StatItem, Integer> courseStats) {
 		courseStats.put(StatItem.OK, ok);
 		courseStats.put(StatItem.MP, mp);
 		courseStats.put(StatItem.DNS, dns);
 		courseStats.put(StatItem.DNF, dnf);
 		courseStats.put(StatItem.DSQ, dsq);
-		courseStats.put(StatItem.NDA, nda);
+		courseStats.put(StatItem.NOS, nos);
+		courseStats.put(StatItem.RUN, run);
 		courseStats.put(StatItem.UNK, unk);
 		courseStats.put(StatItem.DUP, dup);
-		int unresolved = nda + unk + dup;
+		int unresolved = nos + run + unk + dup;
 		courseStats.put(StatItem.Registered, total);
 		courseStats.put(StatItem.Present, (total - dns));
 		courseStats.put(StatItem.Unresolved, unresolved);
@@ -209,10 +217,11 @@ public class RegistryStats extends Control
 
 	private void updateCourseStats(Map<StatItem, Integer> courseStats, int total) {
 		int dns = courseStats.get(StatItem.DNS);
-		int nda = courseStats.get(StatItem.NDA);
+		int nos = courseStats.get(StatItem.NOS);
+		int run = courseStats.get(StatItem.RUN);
 		int unk = courseStats.get(StatItem.UNK);
 		int dup = courseStats.get(StatItem.DUP);
-		int unresolved = nda + unk + dup;
+		int unresolved = nos + run + unk + dup;
 		courseStats.put(StatItem.Registered, total);
 		courseStats.put(StatItem.Present, (total - dns));
 		courseStats.put(StatItem.Unresolved, unresolved);

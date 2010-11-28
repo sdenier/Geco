@@ -48,12 +48,29 @@ public enum Status {
 			return Messages.getString("Status.DSQLabel"); //$NON-NLS-1$
 		}
 	},
-	NDA { 
+	NOS { 
 		public Color color() {
 			return new Color(1, 1, 0.5f);
 		}
 		public String toString() {
-			return Messages.getString("Status.NoDataLabel"); //$NON-NLS-1$
+			return Messages.getString("Status.NotStartedLabel"); //$NON-NLS-1$
+		}
+		public boolean  hasData() {
+			return false;
+		}
+		public boolean isUnresolved() {
+			return true;
+		}
+		public boolean isTraceable() {
+			return false;
+		}
+	},
+	RUN { 
+		public Color color() {
+			return new Color(1, 1, 0.5f);
+		}
+		public String toString() {
+			return Messages.getString("Status.RunningLabel"); //$NON-NLS-1$
 		}
 		public boolean  hasData() {
 			return false;
