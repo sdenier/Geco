@@ -35,8 +35,8 @@ public class GecoLauncher {
 		"Clubs.csv", //$NON-NLS-1$
 		"Competitors.csv", //$NON-NLS-1$
 		"Courses.csv", //$NON-NLS-1$
+		"CardData.csv", //$NON-NLS-1$
 		"ResultData.csv", //$NON-NLS-1$
-		"results.csv", //$NON-NLS-1$
 		"geco.prop" //$NON-NLS-1$
 	};
 

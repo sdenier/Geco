@@ -22,13 +22,13 @@ import valmo.geco.core.GecoResources;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Stage;
+import valmo.geco.model.iocsv.CardDataIO;
 import valmo.geco.model.iocsv.CategoryIO;
 import valmo.geco.model.iocsv.ClubIO;
 import valmo.geco.model.iocsv.CourseIO;
 import valmo.geco.model.iocsv.CsvReader;
 import valmo.geco.model.iocsv.HeatSetIO;
 import valmo.geco.model.iocsv.OrStageIO;
-import valmo.geco.model.iocsv.RaceDataIO;
 import valmo.geco.model.iocsv.ResultDataIO;
 import valmo.geco.model.iocsv.RunnerIO;
 
@@ -50,7 +50,7 @@ public class StageBuilder extends BasicControl {
 		CategoryIO.sourceFilename(),
 		ClubIO.orFilename(),
 		CourseIO.orFilename(),
-		RaceDataIO.sourceFilename(),
+		CardDataIO.sourceFilename(),
 		RunnerIO.sourceFilename()
 	};
 	
@@ -144,7 +144,7 @@ public class StageBuilder extends BasicControl {
 	}
 
 	/**
-	 * 
+	 * MIGR11
 	 */
 	public void backupData(String basedir, String backupname) {
 		try {

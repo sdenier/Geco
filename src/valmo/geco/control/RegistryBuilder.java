@@ -10,6 +10,7 @@ import java.io.IOException;
 import valmo.geco.core.GecoResources;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Registry;
+import valmo.geco.model.iocsv.CardDataIO;
 import valmo.geco.model.iocsv.CategoryIO;
 import valmo.geco.model.iocsv.ClubIO;
 import valmo.geco.model.iocsv.CourseIO;
@@ -71,14 +72,23 @@ public class RegistryBuilder extends BasicControl{
 			e.printStackTrace();
 		}
 
-		try {
-			reader.initialize(baseDir, RaceDataIO.sourceFilename());
-			new RaceDataIO(factory(), reader, null, registry).importData();
-		} catch (IOException e) {
-			e.printStackTrace();
+		if( GecoResources.exists(baseDir + GecoResources.sep + CardDataIO.sourceFilename()) ) {
+			try {
+				reader.initialize(baseDir, CardDataIO.sourceFilename());
+				new CardDataIO(factory(), reader, null, registry).importData();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}						
+		} else { // MIGR11
+			try {
+				reader.initialize(baseDir, RaceDataIO.sourceFilename());
+				new RaceDataIO(factory(), reader, null, registry).importData();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}			
 		}
 
-		if( importResult ) {
+		if( importResult ) { // MIGR11
 			try {
 				reader.initialize(baseDir, ResultDataIO.sourceFilename());
 				new ResultDataIO(factory(), reader, null, registry).importData();
@@ -131,10 +141,13 @@ public class RegistryBuilder extends BasicControl{
 		}
 
 		try {
-			writer.initialize(baseDir, RaceDataIO.sourceFilename());
-			new RaceDataIO(factory(), null, writer, registry).exportData(registry.getRunnersData());
+			writer.initialize(baseDir, CardDataIO.sourceFilename());
+			new CardDataIO(factory(), null, writer, registry).exportData(registry.getRunnersData());
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+		if( GecoResources.exists(baseDir + GecoResources.sep + RaceDataIO.sourceFilename()) ) { // MIGR11
+			new File(baseDir + GecoResources.sep + RaceDataIO.sourceFilename()).delete();
 		}
 
 		try {
