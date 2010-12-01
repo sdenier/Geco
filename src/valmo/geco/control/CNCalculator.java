@@ -4,9 +4,7 @@
  */
 package valmo.geco.control;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,15 +20,33 @@ import valmo.geco.model.ResultType;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.RunnerResult;
+import valmo.geco.model.iocsv.CsvWriter;
 
 /**
  * @author Simon Denier
  * @since Nov 26, 2010
  *
  */
-public class CNCalculator extends OEImporter implements IResultBuilder {
+public class CNCalculator extends AResultExporter {
 
 	private Map<Integer, Integer> cnScores;
+	
+	public class CNImporter extends OEImporter {
+		protected CNImporter(GecoControl gecoControl) {
+			super(gecoControl);
+			try {
+				loadArchiveFrom(new File("data/exportCN_index5discipline1.csv"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		protected void importRunnerRecord(String[] record) {
+			cnScores.put(Integer.valueOf(record[1]), Integer.valueOf(record[9]));			
+		}
+		
+	}
 
 	/**
 	 * @param clazz
@@ -39,20 +55,7 @@ public class CNCalculator extends OEImporter implements IResultBuilder {
 	public CNCalculator(GecoControl gecoControl) {
 		super(CNCalculator.class, gecoControl);
 		cnScores = new HashMap<Integer, Integer>();
-		try {
-			loadArchiveFrom(new File("data/exportCN_index5discipline1.csv"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	protected void importRunnerRecord(String[] record) {
-		cnScores.put(Integer.valueOf(record[1]), Integer.valueOf(record[9]));
-	}
-
-	private ResultBuilder resultBuilder() {
-		return getService(ResultBuilder.class);
+		new CNImporter(gecoControl);
 	}
 
 	/* (non-Javadoc)
@@ -64,7 +67,7 @@ public class CNCalculator extends OEImporter implements IResultBuilder {
 			return "";
 		
 		Html html = new Html();
-		Vector<Result> results = resultBuilder().buildResults(config);
+		Vector<Result> results = buildResults(config);
 		for (Result result : results) {
 			double courseScore = computeCourseScore(result);
 			html.tag("h2", result.getIdentifier());
@@ -139,27 +142,22 @@ public class CNCalculator extends OEImporter implements IResultBuilder {
 		return cnRunners.subList(0, twoThird);
 	}
 
-	/* (non-Javadoc)
-	 * @see valmo.geco.control.IResultBuilder#exportFile(java.lang.String, java.lang.String, valmo.geco.control.ResultBuilder.ResultConfig, int)
-	 */
 	@Override
-	public void exportFile(String filename, String format, ResultConfig config, int refreshDelay)
-			throws IOException {
-		if( !filename.endsWith(format) ) {
-			filename = filename + "." + format; //$NON-NLS-1$
-		}
-		if( format.equals("html") ) { //$NON-NLS-1$
-			BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
-			writer.write(generateHtmlResults(config, refreshDelay));
-			writer.close();
-		}
-		if( format.equals("csv") ) { //$NON-NLS-1$
-			geco().info("Not functional", true);
-		}
-		if( format.equals("cn.csv") ) { // delegate //$NON-NLS-1$
-			resultBuilder().exportFile(filename, format, config, refreshDelay);
-		}
-		
+	public void generateOECsvResult(ResultConfig config, CsvWriter writer) throws IOException {
+		getService(SplitExporter.class).generateOECsvResult(config, false, writer);
+	}
+
+	
+	@Override
+	protected void exportCsvFile(String filename, ResultConfig config) throws IOException {
+		geco().info("Not functional", true);
+	}
+
+	@Override
+	protected void writeCsvResult(String poolId, RunnerRaceData runnerData,
+			String rankOrStatus, String timeOrStatus, boolean showPenalties,
+			CsvWriter writer) throws IOException {
+		// do nothing
 	}
 
 }

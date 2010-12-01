@@ -38,7 +38,7 @@ import javax.swing.JTextPane;
 import javax.swing.SpinnerNumberModel;
 
 import valmo.geco.Geco;
-import valmo.geco.control.IResultBuilder;
+import valmo.geco.control.AResultExporter;
 import valmo.geco.control.ResultBuilder;
 import valmo.geco.control.ResultBuilder.ResultConfig;
 import valmo.geco.core.Announcer.StageConfigListener;
@@ -147,12 +147,12 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 				showPeC.isSelected());
 	}
 
-	public IResultBuilder resultBuilder() {
+	public AResultExporter resultExporter() {
 		if( rankingResultRB.isSelected() ) {
-			return geco().resultBuilder();
+			return geco().resultExporter();
 		} else
 		if( splitResultRB.isSelected() ) {
-			return geco().splitsBuilder();
+			return geco().splitsExporter();
 		} else {
 			return geco().cnCalculator();
 		}
@@ -205,7 +205,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 				if( response==JFileChooser.APPROVE_OPTION ) {
 					String filename = filePane.getSelectedFile().getAbsolutePath();
 					try {
-						resultBuilder().exportFile(filename, exportFormat, createResultConfig(), -1);
+						resultExporter().exportFile(filename, exportFormat, createResultConfig(), -1);
 					} catch (IOException ex) {
 						JOptionPane.showMessageDialog(
 								frame(),
@@ -384,7 +384,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		selectCNCsvB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				exportFormat = "cn.csv"; //$NON-NLS-1$
+				exportFormat = "oe.csv"; //$NON-NLS-1$
 			}
 		});
 		ButtonGroup group = new ButtonGroup();
@@ -403,7 +403,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 
 
 	public void refreshResultView() {
-		String htmlResults = resultBuilder().generateHtmlResults(createResultConfig(), -1);
+		String htmlResults = resultExporter().generateHtmlResults(createResultConfig(), -1);
 		resultTA.setText(htmlResults);
 	}
 
@@ -441,7 +441,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 								+ Messages.uiGet("ResultsPanel.LastresultsLabel"); //$NON-NLS-1$
 			try {
 				try {
-					resultBuilder().exportFile(resultFile, exportFormat, createResultConfig(), refreshDelay);
+					resultExporter().exportFile(resultFile, exportFormat, createResultConfig(), refreshDelay);
 				} catch (IOException ex) {
 					geco().logger().debug(ex);
 				}

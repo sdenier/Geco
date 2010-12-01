@@ -1,0 +1,398 @@
+/**
+ * Copyright (c) 2010 Simon Denier
+ * Released under the MIT License (see LICENSE file)
+ */
+package valmo.geco.control;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Vector;
+
+import valmo.geco.control.ResultBuilder.ResultConfig;
+import valmo.geco.control.ResultBuilder.SplitTime;
+import valmo.geco.core.Announcer.StageListener;
+import valmo.geco.core.Html;
+import valmo.geco.core.TimeManager;
+import valmo.geco.model.Category;
+import valmo.geco.model.Club;
+import valmo.geco.model.Course;
+import valmo.geco.model.RankedRunner;
+import valmo.geco.model.Result;
+import valmo.geco.model.Runner;
+import valmo.geco.model.RunnerRaceData;
+import valmo.geco.model.Stage;
+import valmo.geco.model.Status;
+import valmo.geco.model.Trace;
+import valmo.geco.model.iocsv.CsvWriter;
+
+/**
+ * @author Simon Denier
+ * @since Oct 15, 2010
+ *
+ */
+public class SplitExporter extends AResultExporter implements StageListener {
+	
+	private int nbColumns = 12;
+
+	
+	public SplitExporter(GecoControl gecoControl) {
+		super(SplitExporter.class, gecoControl);
+		geco().announcer().registerStageListener(this);
+	}
+	
+	public int nbColumns() {
+		return nbColumns;
+	}
+	
+	@Override
+	public String generateHtmlResults(ResultConfig config, int refreshInterval) {
+		Vector<Result> results = buildResults(config);
+		Html html = new Html();
+		if( refreshInterval>0 ) {
+			html.open("head"); //$NON-NLS-1$
+			html.contents("<meta http-equiv=\"refresh\" content=\"" //$NON-NLS-1$
+					+ refreshInterval + "\" />"); //$NON-NLS-1$
+			html.close("head"); //$NON-NLS-1$
+		}
+		for (Result result : results) {
+			if( config.showEmptySets || !result.isEmpty() ) {
+				Map<RunnerRaceData, SplitTime[]> allSplits = new HashMap<RunnerRaceData, SplitTime[]>(); 
+				SplitTime[] bestSplit = resultBuilder.buildAllNormalSplits(result, config, allSplits);
+				appendHtmlResultsWithSplits(result, allSplits, bestSplit, config, html);
+			}
+		}
+		return html.close();
+	}
+
+	private void appendHtmlResultsWithSplits(Result result, Map<RunnerRaceData, SplitTime[]> allSplits,
+													SplitTime[] bestSplit, ResultConfig config, Html html) {
+		html.tag("h1", result.getIdentifier()); //$NON-NLS-1$
+		html.open("table"); //$NON-NLS-1$
+		for (RankedRunner runner : result.getRanking()) {
+			RunnerRaceData data = runner.getRunnerData();
+			generateHtmlSplitsFor(
+					data,
+					Integer.toString(runner.getRank()),
+					data.getResult().formatRacetime(),
+					allSplits.get(data),
+					bestSplit,
+					html);
+			html.openTr().closeTr();
+		}
+		html.openTr().closeTr();
+		for (RunnerRaceData runnerData : result.getNRRunners()) {
+			if( ! runnerData.getRunner().isNC() ) {
+				generateHtmlSplitsFor(
+						runnerData,
+						"",
+						runnerData.getResult().formatStatus(),
+						allSplits.get(runnerData),
+						bestSplit,
+						html); //$NON-NLS-1$
+			} else if( config.showNC ) {
+				generateHtmlSplitsFor(
+						runnerData,
+						"NC",
+						runnerData.getResult().shortFormat(),
+						allSplits.get(runnerData),
+						bestSplit,
+						html); //$NON-NLS-1$
+			}
+			html.openTr().closeTr();
+		}
+		if( config.showOthers ) {
+			html.openTr().closeTr();
+			for (RunnerRaceData runnerData : result.getOtherRunners()) {
+				generateHtmlSplitsFor(
+						runnerData,
+						"",
+						runnerData.getResult().formatStatus(),
+						resultBuilder.buildNormalSplits(runnerData, null),
+						bestSplit,
+						html); //$NON-NLS-1$
+				html.openTr().closeTr();
+			}			
+		}
+		html.close("table"); //$NON-NLS-1$
+	}
+
+	public void generateHtmlSplitsFor(RunnerRaceData data, String rank, String statusTime,
+													SplitTime[] splits, SplitTime[] bestSplits, Html html) {
+		html.openTr();
+		html.th(rank);
+		html.th(data.getRunner().getName(), "align=\"left\" colspan=\"3\""); //$NON-NLS-1$
+		html.th(statusTime);
+		html.closeTr();
+		appendHtmlSplitsInColumns(splits, bestSplits, nbColumns(), html);
+	}
+	
+	/**
+	 * @param buildNormalSplits
+	 * @param html
+	 */
+	protected void appendHtmlSplitsInColumns(SplitTime[] splits, SplitTime[] bestSplits, int nbColumns,
+																								Html html) {
+		int nbRows = (splits.length / nbColumns) + 1;
+		int rowStart = 0;
+		for (int i = 0; i < nbRows; i++) {
+			// if last line, take the last remaining splits, not a full row
+			int limit = ( i==nbRows-1 ) ? (splits.length % nbColumns) : nbColumns;
+			
+			if( limit==0 )
+				break; // in case we have splits.length a multiple of nbColumns, we can stop now
+			
+			// first line with seq and control number/code
+			html.openTr().td(""); //$NON-NLS-1$
+			for (int j = 0; j < limit; j++) {
+				SplitTime split = splits[j + rowStart];
+				if( split.trace != null ) {
+					String label = split.seq + " (" + split.trace.getBasicCode() +")"; //$NON-NLS-1$ //$NON-NLS-2$
+					html.td(label, "align=\"right\""); //$NON-NLS-1$
+				} else {
+					html.td(split.seq, "align=\"right\""); //$NON-NLS-1$
+				}
+			}
+			html.closeTr();
+			// second line is cumulative split since start
+			html.openTr().td(""); //$NON-NLS-1$
+			for (int j = 0; j < limit; j++) {
+				int k = j + rowStart;
+				SplitTime split = splits[k];
+				String label = TimeManager.time(split.time);
+//				if( split.trace!=null && ! split.trace.isOK() ) {
+//					label = Html.tag("i", label, new StringBuffer()).toString();
+//				}
+				long best = 0;
+				if( k < bestSplits.length ){
+					best = bestSplits[k].time; 
+				}
+				showWithBestSplit(label, split.time, best, html);
+			}
+			html.closeTr();
+			// third line is partial split since previous ok punch
+			html.openTr().td(""); //$NON-NLS-1$
+			for (int j = 0; j < limit; j++) {
+				int k = j + rowStart;
+				SplitTime split = splits[k];
+				String label = TimeManager.time(split.split);
+				if( split.trace!=null && ! split.trace.isOK() ) {
+					label = "&nbsp;"; //$NON-NLS-1$
+//					label = Html.tag("i", label, new StringBuffer()).toString();
+				}
+				long best = 0;
+				if( k < bestSplits.length ){
+					best = bestSplits[k].split;
+				}
+				showWithBestSplit(label, split.split, best, html);
+			}
+			html.closeTr();
+			rowStart += nbColumns;
+		}
+	}
+	
+	private void showWithBestSplit(String label, long split, long best, Html html) {
+		if( split==best ){
+			html.th(label, "align=\"right\""); //$NON-NLS-1$
+		} else {
+			html.td(label, "align=\"right\""); //$NON-NLS-1$
+		}
+	}
+	
+	protected void appendHtmlSplitsInLine(SplitTime[] linearSplits, Html html) {
+		for (SplitTime splitTime : linearSplits) {
+			html.openTr();
+			Trace trace = splitTime.trace;
+			String time = TimeManager.time(splitTime.time);
+			if( trace!=null ) {
+				html.td(splitTime.seq);
+				html.td(splitTime.trace.getCode());
+				if( trace.isOK() ) {
+					html.th(time, "align=\"right\""); //$NON-NLS-1$
+				} else {
+					if( trace.isAdded() || trace.isSubst() ) {
+						time = Html.tag("i", time, new StringBuilder()).toString(); //$NON-NLS-1$
+					}
+					html.td(time, "align=\"right\""); //$NON-NLS-1$
+				}
+				html.td(TimeManager.time(splitTime.split), "align=\"right\""); //$NON-NLS-1$
+			} else {
+				html.td(splitTime.seq);
+				html.td(""); //$NON-NLS-1$
+				html.th(time, "align=\"right\""); //$NON-NLS-1$
+				html.td(TimeManager.time(splitTime.split), "align=\"right\""); //$NON-NLS-1$
+			}
+			html.closeTr();
+		}
+	}
+	
+	@Override
+	protected void writeCsvResult(String id, RunnerRaceData runnerData, String rankOrStatus,
+			String timeOrStatus, boolean showPenalties, CsvWriter writer) throws IOException {
+		Runner runner = runnerData.getRunner();
+		Vector<String> csvData = new Vector<String>(
+				Arrays.asList(new String[] {
+					id,
+					rankOrStatus,
+					runner.getFirstname(),
+					runner.getLastname(),
+					runner.getClub().getName(),
+					timeOrStatus,
+					( showPenalties) ? TimeManager.time(runnerData.realRaceTime()) : "", //$NON-NLS-1$
+					( showPenalties) ? Integer.toString(runnerData.getResult().getNbMPs()) : "", //$NON-NLS-1$
+					TimeManager.fullTime(runnerData.getOfficialStarttime()),
+					TimeManager.fullTime(runnerData.getFinishtime()),
+					Integer.toString(runner.getCourse().nbControls())
+				}));
+		
+		for (SplitTime split: resultBuilder.buildNormalSplits(runnerData, null)) {
+			if( split.trace!=null ) { // finish split handled above
+				csvData.add(split.trace.getBasicCode());
+				csvData.add(TimeManager.fullTime(split.time));
+			}
+		}
+		
+		writer.writeRecord(csvData);
+	}
+
+	
+	@Override
+	public void generateOECsvResult(ResultConfig config, CsvWriter writer) throws IOException {
+		generateOECsvResult(config, true, writer);
+	}
+	
+	public void generateOECsvResult(ResultConfig config, boolean withSplits, CsvWriter writer)
+																						throws IOException {
+		writer.write("N° dép.;Puce;Ident. base de données;Nom;Prénom;Né;S;Plage;nc;Départ;Arrivée;Temps;"); //$NON-NLS-1$
+		writer.write("Evaluation;N° club;Nom;Ville;Nat;N° cat.;Court;Long;Num1;Num2;Num3;Text1;Text2;Text3;"); //$NON-NLS-1$
+		writer.write("Adr. nom;Rue;Ligne2;Code Post.;Ville;Tél.;Fax;E-mail;Id/Club;Louée;Engagement;Payé;"); //$NON-NLS-1$
+		writer.write("Circuit N°;Circuit;km;m;Postes du circuit;Pl"); //$NON-NLS-1$
+		writer.write("\n"); //$NON-NLS-1$
+		
+		Vector<String> clubnames = registry().getClubnames();
+		Vector<String> categorynames = registry().getCategorynames();
+		Vector<String> coursenames = registry().getCoursenames();
+		
+		for (RunnerRaceData runnerData : registry().getRunnersData()) {
+			Runner runner = runnerData.getRunner();
+			if( runnerData.hasResult() ) {
+				Club club = runner.getClub();
+				Category category = runner.getCategory();
+				Course course = runner.getCourse();
+				
+				Collection<String> record = saveRecord(
+						Integer.toString(runner.getStartnumber()),
+						runner.getChipnumber(),
+						( runner.getArchiveId()!=null )? runner.getArchiveId().toString() : "", //$NON-NLS-1$
+						runner.getLastname(),
+						runner.getFirstname(),
+						"", //$NON-NLS-1$ // ark.getBirthYear(),
+						"", //$NON-NLS-1$ // ark.getSex(),
+						"", //$NON-NLS-1$
+						( runner.isNC() ) ? "X" : "0", //$NON-NLS-1$ //$NON-NLS-2$
+						oeTime(runnerData.getOfficialStarttime()),
+						oeTime(runnerData.getFinishtime()),
+						oeTime(new Date(runnerData.getResult().getRacetime())),
+						oeEvaluationCode(runnerData.getStatus()),
+						Integer.toString(clubnames.indexOf(club.getName())),
+						club.getShortname(),
+						club.getName(),
+						"", //$NON-NLS-1$
+						Integer.toString(categorynames.indexOf(category.getName())),
+						category.getShortname(),
+						category.getLongname(),
+						"", "", "", "", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+						"", "", "", "", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+						"", "", "", "", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+						"", "", "",  	//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						"0", //$NON-NLS-1$
+						"0", //$NON-NLS-1$
+						"0", //$NON-NLS-1$
+						Integer.toString(coursenames.indexOf(course.getName())),
+						course.getName(),
+						Integer.toString(course.getLength()),
+						Integer.toString(course.getClimb())
+						);
+				if( withSplits ) {
+					addSplits(runnerData, record);
+				} else {
+					record.add("1"); //$NON-NLS-1$
+					record.add("1"); //$NON-NLS-1$
+				}
+				writer.writeRecord(record);
+			}
+		}
+	}
+	
+	private void addSplits(RunnerRaceData runnerData, Collection<String> record) {
+		record.add(Integer.toString(runnerData.getCourse().nbControls()));
+		record.add("1"); //$NON-NLS-1$
+		record.add(oeTime(runnerData.getOfficialStarttime()));
+		record.add(oeTime(runnerData.getFinishtime()));
+		SplitTime[] splits = resultBuilder.buildNormalSplits(runnerData, null);
+		for (SplitTime split : splits) {
+			if( split.trace!=null ) { // finish split handled above
+				record.add(split.trace.getBasicCode());
+				record.add(oeSplit(split.time));
+			}
+		}
+	}
+
+	private Collection<String> saveRecord(String... records) {
+		ArrayList<String> record = new ArrayList<String>(44);
+		for (String r : records) {
+			record.add(r);
+		}
+		return record;
+	}
+	
+	private String oeTime(Date time) {
+		if( time.equals(TimeManager.NO_TIME) ) {
+			return ""; //$NON-NLS-1$
+		} else {
+			return TimeManager.fullTime(time);
+		}
+	}
+
+	private String oeSplit(long time) {
+		if( time==TimeManager.NO_TIME_l ) {
+			return "-----"; //$NON-NLS-1$
+		} else {
+			return TimeManager.fullTime(time);
+		}
+	}
+
+	private String oeEvaluationCode(Status status) {
+		if( status==Status.OK ) {
+			return "0"; //$NON-NLS-1$
+		} else {
+			return "1"; //$NON-NLS-1$
+		}
+	}
+	
+
+	@Override
+	public void changed(Stage previous, Stage current) {
+		Properties props = stage().getProperties();
+		String nbCol = props.getProperty(splitNbColumnsProperty());
+		if( nbCol!=null ){
+			nbColumns = Integer.parseInt(nbCol);
+		}
+	}
+	@Override
+	public void saving(Stage stage, Properties properties) {
+		properties.setProperty(splitNbColumnsProperty(), Integer.toString(nbColumns));
+	}
+	@Override
+	public void closing(Stage stage) {	}
+
+	public static String splitNbColumnsProperty() {
+		return "SplitNbColumns"; //$NON-NLS-1$
+	}
+
+}

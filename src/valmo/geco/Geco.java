@@ -17,10 +17,11 @@ import valmo.geco.control.HeatBuilder;
 import valmo.geco.control.PenaltyChecker;
 import valmo.geco.control.RegistryStats;
 import valmo.geco.control.ResultBuilder;
+import valmo.geco.control.ResultExporter;
 import valmo.geco.control.RunnerControl;
 import valmo.geco.control.SIReaderHandler;
 import valmo.geco.control.SingleSplitPrinter;
-import valmo.geco.control.SplitBuilder;
+import valmo.geco.control.SplitExporter;
 import valmo.geco.control.StageControl;
 import valmo.geco.control.StartlistImporter;
 import valmo.geco.core.Announcer;
@@ -173,7 +174,8 @@ public class Geco implements GecoRequestHandler {
 		stageControl = new StageControl(gecoControl);
 		runnerControl = new RunnerControl(gecoControl);
 		resultBuilder = new ResultBuilder(gecoControl);
-		new SplitBuilder(gecoControl);
+		new ResultExporter(gecoControl);
+		new SplitExporter(gecoControl);
 		new SingleSplitPrinter(gecoControl);
 		heatBuilder = new HeatBuilder(gecoControl, resultBuilder);
 		stats = new RegistryStats(gecoControl);
@@ -226,8 +228,11 @@ public class Geco implements GecoRequestHandler {
 	public ResultBuilder resultBuilder() {
 		return this.gecoControl.getService(ResultBuilder.class);
 	}
-	public SplitBuilder splitsBuilder() {
-		return this.gecoControl.getService(SplitBuilder.class);
+	public ResultExporter resultExporter() {
+		return this.gecoControl.getService(ResultExporter.class);
+	}
+	public SplitExporter splitsExporter() {
+		return this.gecoControl.getService(SplitExporter.class);
 	}
 	public SingleSplitPrinter splitPrinter() {
 		return this.gecoControl.getService(SingleSplitPrinter.class);

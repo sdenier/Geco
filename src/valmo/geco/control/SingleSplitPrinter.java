@@ -23,7 +23,7 @@ import javax.print.attribute.standard.MediaSizeName;
 import javax.swing.JFrame;
 import javax.swing.JTextPane;
 
-import valmo.geco.control.SplitBuilder.SplitTime;
+import valmo.geco.control.ResultBuilder.SplitTime;
 import valmo.geco.core.Announcer.CardListener;
 import valmo.geco.core.Announcer.StageListener;
 import valmo.geco.core.Html;
@@ -39,32 +39,25 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 	
 	public static enum SplitFormat { MultiColumns, Ticket }
 
-
 	private static final boolean DEBUGMODE = false;
 	
-	
 	private PrintService splitPrinter;
-	
 	private boolean autoPrint;
-
 	private SplitFormat splitFormat = SplitFormat.MultiColumns;
-
 	private MediaSizeName[] splitMedia;
 	
+	private final ResultBuilder builder;
+	private final SplitExporter exporter;
 	
 	public SingleSplitPrinter(GecoControl gecoControl) {
 		super(SingleSplitPrinter.class, gecoControl);
+		builder = getService(ResultBuilder.class);
+		exporter = getService(SplitExporter.class);
 		geco().announcer().registerStageListener(this);
 		geco().announcer().registerCardListener(this);
-		geco().registerService(SingleSplitPrinter.class, this);
 		changed(null, stage());
 	}
 	
-	private SplitBuilder builder() {
-		return getService(SplitBuilder.class);
-	}
-
-
 	public String printSingleSplits(RunnerRaceData data) {
 		if( getSplitPrinter()!=null ) {
 			Html html = new Html();
@@ -126,10 +119,10 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 				+ data.getCourse().getName() + " - " //$NON-NLS-1$
 				+ data.getResult().shortFormat());
 		html.open("table"); //$NON-NLS-1$
-		builder().appendHtmlSplitsInColumns( // TODO: refactor into public API in SplitBuilder
-				builder().buildNormalSplits(data, null),
+		exporter.appendHtmlSplitsInColumns(
+				builder.buildNormalSplits(data, null),
 				new SplitTime[0],
-				builder().nbColumns(),
+				exporter.nbColumns(),
 				html);
 		html.close("table"); //$NON-NLS-1$
 		html.tag("div", //$NON-NLS-1$
@@ -149,7 +142,7 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 					+ data.getResult().shortFormat());
 			html.close("div"); // don't center table, it wastes too much space for some formats.
 			html.open("table", "width=\"75%\""); //$NON-NLS-1$
-			builder().appendHtmlSplitsInLine(builder().buildLinearSplits(data), html); // TODO: refactor into public API in SplitBuilder
+			exporter.appendHtmlSplitsInLine(builder.buildLinearSplits(data), html);
 			html.close("table").br(); //$NON-NLS-1$
 			html.contents("Geco for orienteering").br();
 			html.contents("http://bitbucket.org/sdenier/geco");
