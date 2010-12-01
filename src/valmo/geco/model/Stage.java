@@ -41,6 +41,9 @@ public interface Stage {
 	public int getNbAutoBackups();
 
 	public void setNbAutoBackups(int nbBackups);
+	
+	public String filepath(String filename);
+
 
 	/**
 	 * Return the properties for the current stage, create new ones if necessary.

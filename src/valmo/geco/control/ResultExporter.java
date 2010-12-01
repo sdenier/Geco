@@ -24,6 +24,8 @@ import valmo.geco.model.iocsv.CsvWriter;
  */
 public class ResultExporter extends AResultExporter {
 	
+	private int refreshInterval;
+
 	public ResultExporter(GecoControl gecoControl) {
 		super(ResultExporter.class, gecoControl);
 	}
@@ -31,19 +33,22 @@ public class ResultExporter extends AResultExporter {
 	@Override
 	public String generateHtmlResults(ResultConfig config, int refreshInterval) {
 		Vector<Result> results = buildResults(config);
+		this.refreshInterval = refreshInterval;
 		Html html = new Html();
-		if( refreshInterval>0 ) {
-			html.open("head"); //$NON-NLS-1$
-			html.contents("<meta http-equiv=\"refresh\" content=\"" //$NON-NLS-1$
-							+ refreshInterval + "\" />"); //$NON-NLS-1$
-			html.close("head"); //$NON-NLS-1$
-		}
+		includeHeader(html, "result.css");
 		for (Result result : results) {
 			if( config.showEmptySets || !result.isEmpty()) {
 				appendHtmlResult(result, config, html);	
 			}
 		}
 		return html.close();
+	}
+	
+	protected void generateHtmlHeader(Html html) {
+		if( refreshInterval>0 ) {
+			html.contents("<meta http-equiv=\"refresh\" content=\"" //$NON-NLS-1$
+					+ refreshInterval + "\" />"); //$NON-NLS-1$
+		}
 	}
 
 	/**
@@ -62,17 +67,17 @@ public class ResultExporter extends AResultExporter {
 		}
 		resultLabel.append(" (").append(Integer.toString(finished)).append("/") //$NON-NLS-1$ //$NON-NLS-2$
 					.append(Integer.toString(present)).append(")"); //$NON-NLS-1$
-		html.tag("h1", resultLabel.toString()); //$NON-NLS-1$
+		html.nl().tag("h2", "class=\"pool\"", resultLabel.toString()).nl(); //$NON-NLS-1$
 		
-		html.open("table"); //$NON-NLS-1$
+		html.open("table").nl(); //$NON-NLS-1$
 		if( config.showPenalties ){
-			html.open("tr") //$NON-NLS-1$
+			html.openTr("runner") //$NON-NLS-1$
 				.th("") //$NON-NLS-1$
 				.th(Messages.getString("ResultBuilder.NameHeader")) //$NON-NLS-1$
 				.th(Messages.getString("ResultBuilder.ClubHeader")) //$NON-NLS-1$
-				.th(Messages.getString("ResultBuilder.TimeHeader"), "align=\"right\"") //$NON-NLS-1$ //$NON-NLS-2$
-				.th(Messages.getString("ResultBuilder.MPHeader"), "align=\"right\"") //$NON-NLS-1$ //$NON-NLS-2$
-				.th(Messages.getString("ResultBuilder.RacetimeHeader"), "align=\"right\"") //$NON-NLS-1$ //$NON-NLS-2$
+				.th(Messages.getString("ResultBuilder.TimeHeader"), "class=\"right\"") //$NON-NLS-1$ //$NON-NLS-2$
+				.th(Messages.getString("ResultBuilder.MPHeader"), "class=\"right\"") //$NON-NLS-1$ //$NON-NLS-2$
+				.th(Messages.getString("ResultBuilder.RacetimeHeader"), "class=\"right\"") //$NON-NLS-1$ //$NON-NLS-2$
 				.closeTr();
 		}
 		// Format: rank, first name + last name, club [, real time, nb mps], time/status
@@ -85,7 +90,7 @@ public class ResultExporter extends AResultExporter {
 					config.showPenalties,
 					html);
 		}
-		html.openTr().closeTr(); // jump line
+		emptyTr(html);
 		for (RunnerRaceData runnerData : result.getNRRunners()) {
 			Runner runner = runnerData.getRunner();
 			if( !runner.isNC() ) {
@@ -105,7 +110,7 @@ public class ResultExporter extends AResultExporter {
 			}
 		}
 		if( config.showOthers ) {
-			html.openTr().closeTr(); // jump line
+			emptyTr(html);
 			for (RunnerRaceData runnerData : result.getOtherRunners()) {
 				writeHtml(
 						runnerData,
@@ -115,19 +120,19 @@ public class ResultExporter extends AResultExporter {
 						html);
 			}			
 		}
-		html.close("table"); //$NON-NLS-1$
+		html.close("table").nl(); //$NON-NLS-1$
 	}
 	
 	private void writeHtml(RunnerRaceData runnerData, String rank, String timeOrStatus,
 																		boolean showPenalties, Html html) {
-		html.openTr();
+		html.openTr("runner");
 		html.td(rank);
 		html.td(runnerData.getRunner().getName());
 		html.td(runnerData.getRunner().getClub().getName());
-		html.th(timeOrStatus, "align=\"right\""); //$NON-NLS-1$
+		html.td(timeOrStatus, "class=\"time\""); //$NON-NLS-1$
 		if( showPenalties ){
-			html.td(Integer.toString(runnerData.getResult().getNbMPs()), "align=\"right\""); //$NON-NLS-1$
-			html.td(TimeManager.time(runnerData.realRaceTime()), "align=\"right\""); //$NON-NLS-1$
+			html.td(Integer.toString(runnerData.getResult().getNbMPs()), "class=\"right\""); //$NON-NLS-1$
+			html.td(TimeManager.time(runnerData.realRaceTime()), "class=\"right\""); //$NON-NLS-1$
 		}
 		html.closeTr();
 	}

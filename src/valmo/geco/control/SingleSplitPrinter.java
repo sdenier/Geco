@@ -61,17 +61,11 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 	public String printSingleSplits(RunnerRaceData data) {
 		if( getSplitPrinter()!=null ) {
 			Html html = new Html();
-			html.open("head");
-			html.open("style", "type=\"text/css\"");
-			html.contents(
-					"body { font-size: " + splitFontSize() + "; background-color:white }\n" +
-//					"table { border-width: 1px } \n" +
-					"td, th { padding: 0px 0px 0px 10px; margin: 0px }");
-			html.close("style");
-			html.close("head");
 			if( splitFormat==SplitFormat.Ticket ) {
+				exporter.includeHeader(html, "ticket.css");
 				printSingleSplitsInLine(data, html);
 			} else {
+				exporter.includeHeader(html, "result.css");
 				printSingleSplitsInColumns(data, html);
 			}
 		
@@ -158,7 +152,6 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 //		float width = 2.76f;
 
 		if( DEBUGMODE ){
-			System.out.println("Font size: " + splitFontSize());
 			System.out.print("Request: ");
 			System.out.print(height * 25.4);
 			System.out.print("x");
@@ -272,10 +265,6 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 	
 	public void setSplitFormat(SplitFormat format) {
 		this.splitFormat = format;
-	}
-
-	public int splitFontSize() {
-		return 10; // 8 for race with more than 30+ punches
 	}
 
 

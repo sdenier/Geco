@@ -77,8 +77,11 @@ public class StageImpl implements Stage {
 	public void setNbAutoBackups(int nbBackups) {
 		this.nbBackups = nbBackups;
 	}
-
 	
+	public String filepath(String filename) {
+		return baseDir + "/" + filename;
+	}
+
 	/**
 	 * Return the properties for the current stage, create new ones if necessary.
 	 * 

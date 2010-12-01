@@ -4,6 +4,10 @@
  */
 package valmo.geco.core;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 
 
 /**
@@ -119,6 +123,11 @@ public final class Html {
 		return buffer.toString();
 	}
 	
+	public Html nl() {
+		buffer.append("\n"); //$NON-NLS-1$
+		return this;
+	}
+	
 	public Html contents(String contents) {
 		buffer.append(contents);
 		return this;
@@ -163,9 +172,14 @@ public final class Html {
 		tag("th", attributes, contents); //$NON-NLS-1$
 		return this;
 	}
-	
+
 	public Html openTr() {
 		open("tr"); //$NON-NLS-1$
+		return this;
+	}
+	
+	public Html openTr(String classes) {
+		open("tr", "class=\"" + classes + "\""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		return this;
 	}
 	
@@ -180,6 +194,22 @@ public final class Html {
 		buffer.append("\n"); //$NON-NLS-1$
 		return this;
 	}
-
 	
+	public Html include(String filename) throws IOException {
+		BufferedReader reader = new BufferedReader(new FileReader(filename));
+		String line = reader.readLine();
+		while( line!=null ) {
+			buffer.append(line).append("\n"); //$NON-NLS-1$
+			line = reader.readLine();
+		}
+		return this;
+	}
+	
+	public Html inlineCss(String cssfile) throws IOException {
+		nl();
+		open("style", "type=\"text/css\"").nl(); //$NON-NLS-1$ //$NON-NLS-2$
+		include(cssfile);
+		return close("style"); //$NON-NLS-1$
+	}
+
 }

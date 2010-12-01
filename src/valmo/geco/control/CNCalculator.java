@@ -67,11 +67,12 @@ public class CNCalculator extends AResultExporter {
 			return "";
 		
 		Html html = new Html();
+		includeHeader(html, "result.css");
 		Vector<Result> results = buildResults(config);
 		for (Result result : results) {
 			double courseScore = computeCourseScore(result);
-			html.tag("h2", result.getIdentifier());
-			html.open("table");
+			html.nl().tag("h2", "class=\"pool\"", result.getIdentifier()).nl();
+			html.open("table").nl();
 			for (RankedRunner data : result.getRanking()) {
 				RunnerResult r = data.getRunnerData().getResult();
 				writeHtml(
@@ -81,7 +82,7 @@ public class CNCalculator extends AResultExporter {
 						Integer.toString((int) (courseScore / r.getRacetime())),
 						html);
 			}
-			html.close("table");
+			html.close("table").nl();
 		}
 		return html.close();
 	}
@@ -95,13 +96,13 @@ public class CNCalculator extends AResultExporter {
 		} else {
 			score = "";
 		}
-		html.openTr();
+		html.openTr("runner");
 		html.td(rank);
 		html.td(runner.getName());
 		html.td(runner.getClub().getName());
 		html.td(yScore);
 		html.td(score);
-		html.th(timeOrStatus, "align=\"right\""); //$NON-NLS-1$
+		html.td(timeOrStatus, "class=\"time\""); //$NON-NLS-1$
 		html.closeTr();
 	}
 

@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.Vector;
 
 import valmo.geco.control.ResultBuilder.ResultConfig;
+import valmo.geco.core.Html;
 import valmo.geco.model.Pool;
 import valmo.geco.model.RankedRunner;
 import valmo.geco.model.Result;
@@ -75,7 +76,23 @@ public abstract class AResultExporter extends Control {
 
 	public abstract String generateHtmlResults(ResultConfig config, int refreshDelay);
 	
+	public void includeHeader(Html html, String cssfile) {
+		html.open("head"); //$NON-NLS-1$
+		generateHtmlHeader(html);
+		try {
+			html.inlineCss(stage().filepath(cssfile));
+		} catch (IOException e) {
+			geco().debug(e.toString());
+		}
+		html.close("head"); //$NON-NLS-1$
+	}
 	
+	protected void generateHtmlHeader(Html html) { }
+	
+	protected void emptyTr(Html html) {
+		html.openTr("empty").td("&nbsp;").closeTr(); // jump line
+	}
+
 	public void generateCsvResult(ResultConfig config, CsvWriter writer) throws IOException {
 		Vector<Result> results = buildResults(config);
 		for (Result result : results) {

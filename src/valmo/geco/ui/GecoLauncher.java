@@ -37,7 +37,9 @@ public class GecoLauncher {
 		"Courses.csv", //$NON-NLS-1$
 		"CardData.csv", //$NON-NLS-1$
 		"ResultData.csv", //$NON-NLS-1$
-		"geco.prop" //$NON-NLS-1$
+		"geco.prop", //$NON-NLS-1$
+		"result.css", //$NON-NLS-1$
+		"ticket.css", //$NON-NLS-1$
 	};
 
 	private JFileChooser chooser;
