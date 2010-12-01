@@ -37,48 +37,58 @@ public class RunnerIO extends AbstractIO<Runner> {
 	@Override
 	public Runner importTData(String[] record) {
 		/*
-		 * id,SI card,Name,Club,Course,Rented,Class,Start time,Finish Time,
+		 * id,SI card,First Name,Last Name,Club,Course,Rented,Class,Start time,Finish Time,
 		 * Status,NC,IOA,bonus
 		 */
 		Runner runner = this.factory.createRunner();
 		runner.setStartnumber(new Integer(record[0]));
 		runner.setChipnumber(record[1]);
-		int i = record[2].lastIndexOf(" "); //$NON-NLS-1$
-		if(i==-1) {
-			runner.setFirstname(""); //$NON-NLS-1$
-			runner.setLastname(record[2]);
+		
+		// MIGR11: split first name and last name
+		int s;
+		if( record.length==14 ){
+			s = 1;
+			runner.setFirstname(record[2]);
+			runner.setLastname(record[3]);
 		} else {
-			runner.setFirstname(record[2].substring(0, i));
-			runner.setLastname(record[2].substring(i+1));			
+			s = 0;
+			int i = record[2].lastIndexOf(" "); //$NON-NLS-1$
+			if(i==-1) {
+				runner.setFirstname(""); //$NON-NLS-1$
+				runner.setLastname(record[2]);
+			} else {
+				runner.setFirstname(record[2].substring(0, i));
+				runner.setLastname(record[2].substring(i+1));			
+			}			
 		}
-		Club club = registry.findClub(record[3]);
+		Club club = registry.findClub(record[3 + s]);
 		if( club == null ) {
 			runner.setClub(registry.noClub());
-			System.err.println("Unknown club " + record[3] + " for runner " + runner.idString()); //$NON-NLS-1$ //$NON-NLS-2$
+			System.err.println("Unknown club " + record[3 + s] + " for runner " + runner.idString()); //$NON-NLS-1$ //$NON-NLS-2$
 		} else {
 			runner.setClub(club);
 		}
-		Course course = registry.findCourse(record[4]);
+		Course course = registry.findCourse(record[4 + s]);
 		if( course == null ) {
 			runner.setCourse(registry.anyCourse());
-			System.err.println("Unknown course " + record[4] + " for runner " + runner.idString()); //$NON-NLS-1$ //$NON-NLS-2$
+			System.err.println("Unknown course " + record[4 + s] + " for runner " + runner.idString()); //$NON-NLS-1$ //$NON-NLS-2$
 		} else {
 			runner.setCourse(course);
 		}
-		Category cat = registry.findCategory(record[6]);
+		Category cat = registry.findCategory(record[6 + s]);
 		if( cat == null ) {
 			runner.setCategory(registry.noCategory());
-			System.err.println("Unknown category " + record[6] + " for runner " + runner.idString()); //$NON-NLS-1$ //$NON-NLS-2$
+			System.err.println("Unknown category " + record[6 + s] + " for runner " + runner.idString()); //$NON-NLS-1$ //$NON-NLS-2$
 		} else {
-			runner.setCategory(cat);	
+			runner.setCategory(cat);
 		}
-		runner.setRegisteredStarttime( TimeManager.absoluteTime(TimeManager.safeParse(record[7]), zeroTime) );
-		runner.setRentedEcard(new Boolean(record[5]));
-		runner.setNC(new Boolean(record[10]));
-		if( record[11].equals("") ) { //$NON-NLS-1$
+		runner.setRegisteredStarttime( TimeManager.absoluteTime(TimeManager.safeParse(record[7 + s]), zeroTime) );
+		runner.setRentedEcard(new Boolean(record[5 + s]));
+		runner.setNC(new Boolean(record[10 + s]));
+		if( record[11 + s].equals("") ) { //$NON-NLS-1$
 			runner.setArchiveId(null);
 		} else {
-			runner.setArchiveId(new Integer(record[11]));
+			runner.setArchiveId(new Integer(record[11 + s]));
 		}
 		return runner;
 	}
@@ -91,13 +101,14 @@ public class RunnerIO extends AbstractIO<Runner> {
 	@Override
 	public String[] exportTData(Runner r) {
 		/*
-		 * id,SI card,Name,Club,Course,Rented,Class,Start time,Finish Time,
+		 * id,SI card,First Name,Last Name,Club,Course,Rented,Class,Start time,Finish Time,
 		 * Status,NC,IOA,bonus,archiveid
 		 */
 		return new String[] {
 				Integer.toString(r.getStartnumber()),
 				r.getChipnumber(),
-				r.getName(),
+				r.getFirstname(),
+				r.getLastname(),
 				r.getClub().getName(),
 				r.getCourse().getName(),
 				new Boolean(r.rentedEcard()).toString(),
@@ -111,7 +122,7 @@ public class RunnerIO extends AbstractIO<Runner> {
 				new Boolean(r.isNC()).toString(),
 				(r.getArchiveId()==null) ? "" : r.getArchiveId().toString(), //$NON-NLS-1$
 				"0","", //$NON-NLS-1$ //$NON-NLS-2$
-//				61;11211;Mark Young;CNOC;Short Course;true;M14;36000000;-2;2;false;;0;;
+//				61;11211;Mark;Young;CNOC;Short Course;true;M14;36000000;-2;2;false;;0;;
 		};
 	}
 
