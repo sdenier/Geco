@@ -10,10 +10,9 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import valmo.geco.control.ArchiveManager;
 import valmo.geco.control.GecoControl;
 import valmo.geco.control.RunnerControl;
-import valmo.geco.control.SIReaderHandler;
+import valmo.geco.control.RunnerCreationException;
 import valmo.geco.core.Html;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
@@ -47,15 +46,21 @@ public class StationReaderFunction extends GecoFunction {
 	public void execute() {
 
 //		something to handle timeout?
-		String[] ecards = getService(SIReaderHandler.class).downloadBackupMemory();
+		String[] ecards = null;
+//		ecards = getService(SIReaderHandler.class).downloadBackupMemory();
 
 		for (String ecard : ecards) {
 			Runner runner = registry().findRunnerByChip(ecard);
 			if( runner==null ) {
 				if( autoInsertB.isSelected() ){
-					runner = getService(ArchiveManager.class).findAndCreateRunner(ecard); // default course
+//					runner = getService(ArchiveManager.class).findAndCreateRunner(ecard); // default course
 					if( runner==null ){
-						runner = runnerControl().buildAnonymousRunner(ecard, registry().anyCourse());
+						try {
+							runner = runnerControl().buildAnonymousRunner(ecard, registry().anyCourse());
+						} catch (RunnerCreationException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 					runnerControl().registerNewRunner(runner);
 					runnerControl().validateStatus(registry().findRunnerData(runner), Status.RUN);

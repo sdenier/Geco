@@ -8,6 +8,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collection;
 
 import valmo.geco.core.Util;
 
@@ -83,5 +84,10 @@ public class CsvWriter {
 	public void writeRecord(String... record) throws IOException {
 		writeRecord(record, this.csvSep);
 	}
+	
+	public void writeRecord(Collection<String> record) throws IOException {
+		writeRecord(record.toArray(new String[0]), this.csvSep);
+	}
+
 
 }

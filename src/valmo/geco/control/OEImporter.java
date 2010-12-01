@@ -18,6 +18,10 @@ import valmo.geco.model.iocsv.CsvReader;
  */
 public abstract class OEImporter extends Control {
 
+	protected OEImporter(GecoControl gecoControl) {
+		super(gecoControl);
+	}
+
 	protected OEImporter(Class<? extends Control> clazz, GecoControl gecoControl) {
 		super(clazz, gecoControl);
 	}
