@@ -24,6 +24,7 @@ The right pane displays either complementary information about the currently sel
 - *Live Mode (tickbox):* in this mode, Geco automatically focuses on the last data received from the card reader; runners are dynamically sorted by order of card reading, with most recent on top (other sort options disabled)
 - *Fast edit Mode (tickbox):* start edition with just one click, useful when lots of edition have to be done quickly
 
+### How to register competitors? (pre-registration)
 The table is good for registration/modification on the fly during the event. See [Registrations](../howtos/register.html) for some advice about mass registration.
 
 - Geco checks that the values you enter in the table are valid
@@ -37,20 +38,12 @@ The table is good for registration/modification on the fly during the event. See
   - DNS: Did Not Start
   - DNF: Did Not Finish
   - DSQ: Disqualified
-  
-### Keyboard navigation
-Geco defines some keybindings to enhance quick navigation in the data.
-- `tab` navigates between widgets
-- `space` starts edition in the table, `enter` to validate (`space` or `tab` work too), `esc` to cancel edition
-- `modifier + F` puts focus in the `Find:` field to filter entries (modifier is the `Control` or `Command` key, depending on your platform)
-- `Esc` cancels the filter
-
 
 <a href="../images/runners_filter.png"><img src="../images/runners_filter.png" /></a>
 (Table with a filter on the 'W21' string)
 
 
-## Runner Data Pane
+## Runner Data
 
 The *Runner Data* pane shows complementary information about the currently selected runner. It is useful for an analysis of runner race when resolving a problem. In particular, Geco is able to accurately detect and display *missing punches* in the trace view.
 
@@ -65,7 +58,7 @@ The *Runner Data* pane shows complementary information about the currently selec
 - Click the *Merge...* button for advanced management of data, like merging two runners together. It opens the *[Merge dialog](merge.html)* on the currently selected runner.
 
 
-### Trace
+## Runner Trace
 The trace pane displays the list of controls for the course compared with the list of punches (control code and punch time) of the runner. It is of great help to understand where a runner mispunched. Geco uses a sophisticated algorithm to detect accurately mispunches, even in the case of butterfly loop:
 
 - a missing control is displayed in red with a **-** sign in front

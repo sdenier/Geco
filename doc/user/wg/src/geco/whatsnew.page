@@ -8,3 +8,32 @@ routed_title: Geco
 #What's new?
 
 ##Version 1.1
+Geco 1.1 is a move from the custom app for Orient'Show to a full-featured app for regular Orienteering events, with many new features and UI improvements.
+
+The big changes:
+- easy registration through CSV import and competitors archive
+- automatic mode to handle registration when reading e-cards, unknown e-cards, with course detection from the trace
+- split format for printing and export (OE format for RouteGadget...)
+- ability to use a registered start times instead of a start box
+- translation available in french and english (both app and doc)
+
+UI/Usability changes:
+- many UI changes
+- List serial ports to let user choose. Try to guess the serial port where the SI box is connected (only Mac and Linux)
+- hyperlink navigation to quickly focus on a e-card from the log
+- new and more universal keybindings
+
+Other changes:
+- new status and stats to better manage special cases (competitors still running, unknown and duplicate e-cards for automatic mode)
+- new data fields for each competitor: registered start time, archive id for licensed competitor, flag for rented e-card
+- a default course can be linked to a category (use when performing registration through CSV or archive)
+- introduce Functions to perform batch operations on data
+- CSV export format for French Classement National + CN simulation in results
+- Html result files can be styled with CSS
+- better handling of files with different charsets across platforms
+
+Architecture/Code:
+- Controls can register themselves as services and get a simple access to each other.
+- Refactoring ResultBuilder class and related: split between result builder and result/split exporter
+- \[Mac\] update to latest Java Mac revision
+- Some changes in data files to support 1.1 features

@@ -34,7 +34,6 @@ Read the [UI Guide] for documentation about each panel.
 
 
 [UI Guide]: ../guide/index.html
-[workflow]: ../guide/workflow.html
 [Stage]: ../guide/stage.html
 [Runners]: ../guide/runners.html
 [Log]: ../guide/log.html

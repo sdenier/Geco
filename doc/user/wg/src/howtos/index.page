@@ -12,11 +12,11 @@ All data relating to a stage are stored in the same directory. This page explain
 - `geco.prop` stores stage information and meta-data
 - `Classes.csv` stores category information
 - `Clubs.csv` stores club information
-- `Competitors.csv` stores runner information
+- `Competitors.csv` stores runner information (name, category, club, course...)
 - `Courses.csv` stores course information
+- `CardData.csv` stores card data information (punches and split times)
+- `ResultData.csv` stores result information (status and race time)
 - `HeatSets.csv` stores heatset information
-- `results.csv` stores card data information
-- `ResultData.csv` stores result information
 
 
 See [Registrations](register.html) for detailed information about the internal format of each file.

@@ -5,8 +5,36 @@ in_menu: true
 routed_title: Geco
 
 ---
-# Seven Steps to manage an event with Geco
+# Seven Steps to manage an O' event with Geco
+
+Don't know where to start? Never use a full-featured O software before? Here is a quick guide to manage an orienteering event: seven steps you have to perform to handle a race. Read on for starters.
+
+1\. Use the [Launcher] and the [Stage] panel to set up a new stage.
+
+2\. Load courses from within the [Stage] panel.
+
+3\. Register competitors from the [Runners] panel and using the [Archive].
+
+Boxes 4, 4bis, and 5 illustrates the main loop of events during the stage.
+
+4\. Check E-card configuration in the [Stage] panel and click the Reader button in the [Toolbar].
+
+4bis. Resolve problems directly in the [Runners] panel and using the [Merge] dialog.
+
+5\. Print intermediate [Results].
+
+6\. Don't forget to check the [Stats] to see if everyone is finished
+
+7\. Generate final [Results] for publishing and analysis.
 
 <img src="../images/sevensteps.png" />
 
-Boxes 4, 4bis, and 5 illustrates the main loop.
+
+[Launcher]: ../guide/index.html
+[Stage]: ../guide/stage.html
+[Runners]: ../guide/runners.html
+[Archive]: ../guide/archive.html
+[Toolbar]: ../guide/toolbar.html
+[Merge]: ../guide/merge.html
+[Stats]: ../guide/log.html
+[Results]: ../guide/results.html

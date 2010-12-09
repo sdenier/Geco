@@ -11,7 +11,6 @@ Launch geco from the command line: `java -jar gecoXXXX.jar`
 
 Options:
 - `--startdir <aDirectoryWithData>`: opens Geco directly on the selected stage, without showing the launcher
-- `--test`: opens Geco in test mode, enabling new buttons and options in the log panel to generate randomized data and test Geco
 - `--leisure`: enable the leisure mode for the LiveMap, showing simplified data and no race time for leisure runners who should not be timed
 
 Other programs accessible from the command line:

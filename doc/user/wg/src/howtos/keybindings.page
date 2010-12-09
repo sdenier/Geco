@@ -6,3 +6,25 @@ routed_title: How-tos
 ---
 
 # Keybindings
+
+While Geco is fully controllable with a mouse, you can use the keyboard to speed up your work. In the hints below, the `Mod` key refers to the menu modifier key specific to your platform (typically `alt` for Windows/Linux, `cmd` for Mac).
+
+When you switch between tabs, Geco puts the focus on the most important widget in the tab. For example, in runners panel you can directly browse the table; in results panel, the refresh button is selected so that pressing space will activate the button.
+
+## Keybindings for tabs
+
+- `Mod+number` (1 to 9): focus on the corresponding tab, from left (1) to right. For example, `Mod+1` focus on the Stage panel for configuration, `Mod+4` focus on the Results panel...
+- `Mod+0`: focus on the Reader button in toolbar (space pushes the button on/off)
+
+## Keybindings for registration (Runners panel and Archive view)
+- `Mod+F`: focus on the filter field (start typing to filter entries)
+- `Mod+Shift+F`: cancel filter
+- `Mod+I`: insert new runner (runners panel)/insert selected runner (archive view)
+
+## Keybindings in runners panel
+- `Mod+D`: switch to Data view in right panel
+- `Mod+T`: switch to Trace view in right panel
+- `Mod+S`: switch to Stats view in right panel
+- `Mod+R`: recheck selected runner (shortcut for recheck button in Data view)
+- `Mod+P`: print split times for selected runner (shortcut for print splits button in Data view)
+- use tab, arrows, space, and escape to navigate in the table, and start/stop edition of table cells

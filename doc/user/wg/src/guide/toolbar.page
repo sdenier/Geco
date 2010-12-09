@@ -19,13 +19,22 @@ Be careful with this action as it will also discard manual modification to race 
 The two following buttons manage [Live](../howtos/live.html) features.  
 <img style="float:none; width:94px" src="../images/animation_toolbar.png" />
 
-In addition, the toolbar lets you control the state of the Sportident reader station.
+In addition, the toolbar lets you control the behavior of Geco when reading e-cards.
+<img style="float:none; width:199px" src="../images/sireader_toolbar.png" />
 
-The underneath button indicates that the reader is off. Click it to start the reader and accepts card reading.  
-<img style="float:none; width:114px" src="../images/startreader.png" />
+The left-most button controls the [Auto](../howtos/autoworkflow.html) mode of Geco (by default it is enabled). The middle-one controls auto-printing of split times when a runner downloads his e-card. The right-most one controls the e-card reader station.
+
+When disabled, Auto mode and Split printing each display a grey icons:  
+<img style="float:none; width:90px" src="../images/sifeatures_off.png" />
+
+When enabled, Auto mode and Split printing display icons with yellow flashes:  
+<img style="float:none; width:92px" src="../images/sifeatures_on.png" />
+
+The underneath button indicates that the reader is off. Click it to start the reader and accepts card reading. Geco checks the status of Split printing before ans ask you if you want to enabled split printing if disabled.  
+<img style="float:none; width:110px" src="../images/reader_off.png" />
 
 While Geco is launching the reader, the toolbar will display a *Starting...* button. Errors are displayed in the status bar. You can click on the button to interrupt the launch.
-<img style="float:none; width:105px" src="../images/startingreader.png" />
+<img style="float:none; width:105px" src="../images/reader_starting.png" />
 
 The underneath button indicates that the reader is on and accepts card reading. Click it to stop the reader.  
 <img style="float:none; width:114px" src="../images/stopreader.png" />

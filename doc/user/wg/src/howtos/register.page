@@ -21,8 +21,10 @@ To create courses in `Courses.csv`:
 
 To register runners in `Competitors.csv`:
 - one runner per line
-- the first line `startnumber; si number; firstname lastname; club; course; false; category;;;1;NC?;;0;` shows what is expected in each field. **Remove it** before saving the file
-- sample runner description: `1; 10000; John Doe; ClubName1; Course A;false;M21;;;1;false;;0;`
+- the first line `startnumber; e-card; firstname; lastname; club; course; rented?; category; registered starttime;; 1; NC?; archive; 0;` shows what is expected in each field. **Remove it** before saving the file
+- sample runner description: `1; 10000; John; Doe; ClubName1; Course A;false;M21;;;1;false;;0;`
 - give a unique `startnumber` and `si number` to avoid problems
 - give `club`, `course`, and `category` names which match those declared in above files
+- `registered starttime` should be given with format h:mm:ss, relative to the zero hour of the competition
+- `rented?` field is either `true` or `false`
 - `NC?` field is either `true` or `false` (`false` in most cases)
