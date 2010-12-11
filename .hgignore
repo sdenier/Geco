@@ -29,3 +29,8 @@ syntax: regexp
 ^annecy_wcup2010$
 syntax: regexp
 ^demo2$
+
+syntax: regexp
+^doc/andreas06$
+syntax: regexp
+^doc/screenshots$

@@ -14,7 +14,7 @@ trans = translations[context.node.lang]
     <meta name="author" content="Simon Denier / Original design: Andreas Viklund - http://andreasviklund.com/" />
     <meta name="generator" content="webgen - http://webgen.rubyforge.org" />
     <link rel="stylesheet" href="{relocatable: default.css}" type="text/css" media="screen,projection" />
-    <title>{title:}</title>
+    <title>Geco - {title:}</title>
   </head>
 
   <body>
