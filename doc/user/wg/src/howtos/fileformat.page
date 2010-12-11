@@ -1,15 +1,16 @@
 ---
-title: Registrations
-sort_info: 2
+title: File formats
+sort_info: 4
 in_menu: true
 routed_title: How-tos
 ---
 
-# Fill in mass registrations
+# File formats
 
-Whenever you have to perform mass pre-registration for a stage, it is possible to work with your own spreadsheet application.
-The folder `data/template` provides some data files with basic samples for clubs, categories, courses, and runners. 
+You can work directly on the data files of Geco using a spreadsheet application.
+The folder `data/template` provides some data files with basic samples for clubs, categories, courses, and runners. *You can customize these files to your needs.*
 Copying the content of this folder into a new folder is a simple way to create a new stage.
+To perform mass registrations, it is advised to use CSV import or archive import from the [Runners](../guide/runners.html) panel.
 
 Editing `Clubs.csv` and `Classes.csv` (categories) is straightforward.
 

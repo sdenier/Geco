@@ -1,6 +1,6 @@
 ---
 title: Keybindings
-sort_info: 4
+sort_info: 2
 in_menu: true
 routed_title: How-tos
 ---
@@ -16,7 +16,7 @@ When you switch between tabs, Geco puts the focus on the most important widget i
 - `Mod+number` (1 to 9): focus on the corresponding tab, from left (1) to right. For example, `Mod+1` focus on the Stage panel for configuration, `Mod+4` focus on the Results panel...
 - `Mod+0`: focus on the Reader button in toolbar (space pushes the button on/off)
 
-## Keybindings for registration (Runners panel and Archive view)
+## Keybindings for tables (Runners panel and Archive view)
 - `Mod+F`: focus on the filter field (start typing to filter entries)
 - `Mod+Shift+F`: cancel filter
 - `Mod+I`: insert new runner (runners panel)/insert selected runner (archive view)

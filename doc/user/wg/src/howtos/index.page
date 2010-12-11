@@ -1,28 +1,20 @@
 ---
-title: Backup
+title: Auto Workflow
 sort_info: 1
 in_menu: true
 routed_title: How-tos
 ---
 
-# Data organization on disk and Backup
+# Workflow in auto mode
 
-All data relating to a stage are stored in the same directory. This page explains what are the most important files in this directory:
+<img src="../images/autoworkflow.png" />
 
-- `geco.prop` stores stage information and meta-data
-- `Classes.csv` stores category information
-- `Clubs.csv` stores club information
-- `Competitors.csv` stores runner information (name, category, club, course...)
-- `Courses.csv` stores course information
-- `CardData.csv` stores card data information (punches and split times)
-- `ResultData.csv` stores result information (status and race time)
-- `HeatSets.csv` stores heatset information
+The schema illustrates the four outcomes of reading an e-card in auto mode. On each wing, there are the fully automatic ways:
+- on the left wing, normal way for pre-registered entries.
+- on the right wing, normal way for on-the-fly registration with archive.
 
+In the middle, unresolved cases which require manual intervention:
+- middle left is duplicate status. It can happen simply if you ask the competitor to read again the e-card, or if a new competitor runs with a previously used e-card
+- middle right is unknown status. The competitor may have followed onsite registration with a rented e-card and is completely unknown to the system (that is, until now). Or the competitor is pre-registered, or in the archive, but his real e-card does not match either because of a typo or because he recently changed it.
 
-See [Registrations](register.html) for detailed information about the internal format of each file.
-
-
-When you *save or quit* Geco, data are saved on disk in the above files. Geco automatically performs a backup right after the save in the `backups` subfolder of the folder.
-They are named `backupXXXXX.zip` following their creation timestamp. In case of problems, you can directly restore data by unzipping the last backup. Such backups are never deleted by Geco.
-
-Geco also saves data on disk every 2 minutes (this parameter `AutosaveDelay` can be changed in the `geco.prop` file). Autosave performs a backup using a circular set of files named `backupX.zip`. Geco uses 9 backups so that the last 18 minutes of activity are always on disk.
+Depending on the case, you can edit, delete, merge the new entry to resolve the case. If you choose to keep and edit the new entry, don't forget to recheck or change the official status (ok, mp). You can also print splits for the competitor.
