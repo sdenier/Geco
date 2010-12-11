@@ -4,3 +4,23 @@ sort_info: 8
 in_menu: true
 ---
 # Functions (Log Panel)
+
+Functions are special purpose operations which can be performed on batch of data, usually runners. They allow one to change/check data in registry at once.
+
+<a href="../images/function_start.png"><img src="../images/function_start.png" /></a>
+
+Select the tab *Functions* next to Stats in the [Log](log.html) panel and choose a function in the combo box. Each function displays its set of parameters and actions in the top pane. Pressing *Execute* performs the default operation of the function.
+
+Currently available functions:
+
+**Set start times**
+- Change registered start times at once for the selected pool of runners (by course, category, or an arbitrary set); can be use to mimic a mass start if necessary
+- Only change the start time of runners without race data (i.e. Not Started runners); tick *Reset all runners...* to change start time for all runners, including those with race data
+
+**Recheck runners**  
+Recheck all runners in the selected pool (by course, category, or an arbitrary set); a more fine-grained version of *Recheck OK|MP* in the toolbar
+
+**Random Generator**
+- Generate random entries (complete with e-card) to test Geco behavior
+- Additional action to generate an unknown entry (test manual vs auto mode)
+- Additional action to generate e-card data for an existing entry (possibly generating a duplicate in auto mode)

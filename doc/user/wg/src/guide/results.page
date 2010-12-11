@@ -7,20 +7,51 @@ in_menu: true
 
 The results panel can generate results from current data at any time during a race.
 
-<a href="../images/results_panel.png"><img src="../images/results_panel.png" /></a>
+<a href="../images/results_ranking.png"><img src="../images/results_ranking.png" /></a>
 
-Select either *Courses* or *Categories* to compute results. A manual selection of courses (categories) can be performed in the list below.
+## Computing results
+
+1\. Select either *Courses* or *Categories* i.e., the kind of pools with which to compute results. A manual selection of courses (categories) can be performed in the list below.
 
 The *Category/Courses* is a third option which computes one ranking per category in each course. It is useful when categories are split across different courses in pools.
 
-By default, results display the ranking of runners with OK status, as well as runners with status MP, DNF, DSQ. Courses/categories for which no race data are available yet are not displayed.
-Options for displaying results include:
-- *Show NC*: include runners ticked as NC in the results. They will appear after the ranked runners, with MPs and others.
-- *Show others*: include DNS runners, which were registered but did not run.
-- *Show penalties*: show real race time and number of MPs for each runner.
-- *Show empty sets*: show all courses (categories) in results, even if there is no race data yet.
+2\. Select either *Ranking*, *Splits*, or *CN* to set up the kind of results to compute.
+- Ranking: classic ranking, can be used to compute intermediate or official results
+- Splits: split times for all runners in selected pools
+- CN: simulator of french [CN](http://cn.ffco.asso.fr) (national ranking)
 
-Results can be displayed in the right panel (*Refresh* button), printed, or exported in an external file using either **html** or **csv** format. The default export format is html.
+By default, results display runners with OK status, as well as runners with status MP, DNF, DSQ. Courses/categories for which no data are available are not displayed.
+Options for displaying results include:
+- *Show NC*: include runners ticked as NC in the results. They will appear after the ranked runners, with MPs and related.
+- *Show others*: include DNS runners, which were registered but did not run.
+- *Show penalties*: show real race time and number of MPs for each runner (only ranking).
+- *Show empty sets*: show all courses (categories) in results, even if there is no data yet.
+
+Results can be displayed in the right panel (*Refresh* button), printed, or exported in an external file. The default export format is html.
+
+### Export format
+
+Geco proposes three formats for file export:
+- **html** for web publication
+- **csv** for spreadsheets
+- **OE csv**, which is recognized by many analysis applications
+
+For example for RouteGadget, select *Splits* and *OE csv*.
+
+For French CN, select *Ranking* or *CN* and *OE csv*. The resulting file will be much smaller.
+
+<a href="../images/results_splits.png"><img src="../images/results_splits.png" /></a>
+
+### CN simulator
+
+The CN simulator computes scores for competitors from the FFCO. It is just a simulation and there is no warranty about the accuracy of scores. You can use this function to check that data are ok for publication. Use the *OE CSV* checkbox in the export file dialog.
+
+Check the correctness of archive ids to ensure ok results! Best way to do it is simply to use archive import or CSV import.
+
+<a href="../images/results_cn.png"><img src="../images/results_cn.png" /></a>
+
+
+## Autoexport
 
 The *Autoexport* button, when on (pressed), repeatedly refreshes results or generates a result file called `lastresults` in the data folder with the interval specified (in seconds) in the textfield at the right.
 The autoexport feature takes into account parameters specified when the button is pressed (selected courses or categories, export format, *Show NC*,...).

@@ -16,10 +16,12 @@ The stage panel allows one to configure general data for the stage.
   - Time penalty: time penalty per missing punch, in seconds
 - SIReader configuration
   - Station port: `COMx` under Windows, `/dev/ttyX` under Linux and Mac OS
-  - Zero hour: give the hour before first start to be safe (used for older SI cards)
+  - Zero hour: give the hour before first start to be safe (used for older SI cards and registered start times)
+  - Split format: multi-columns (see `SplitNbColumns` in `geco.prop`) or ticket (single column, best for thermal printer)
 - Course
   - Geco can import courses described with the *[IOF XML](http://www.soenniksen.dk/iof-datastandard/index.shtml)* format. Click the *XML* button to select the course file
   - You can *Edit* the course sequence by hand, if necessary
   - You can *Recheck* all runners from a course after a change
+- Category/Course: default course for runners in the category (used when importing registrations from file or from archive)
 
-Data for clubs, categories, courses can also be edited with a spreadsheet application. See [Registrations](../howtos/register.html).
+Data for clubs, categories, courses can also be edited with a spreadsheet application. See [File Formats](../howtos/fileformat.html).
