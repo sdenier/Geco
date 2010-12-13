@@ -18,14 +18,14 @@ To use the Nimbus look and feel, launch Geco from the command line with `java -j
 
 <img src="../images/runners_panel.png" />
 
-**Results panel (with autoexport on)**
+**Log panel**
 
-<img src="../images/results_panel.png" />
+<img src="../images/log_stats.png" />
+
+**Results panel**
+
+<img src="../images/results_ranking.png" />
 
 **Heats panel**
 
 <img src="../images/heats_panel_dialog.png" />
-
-**Log panel**
-
-<img src="../images/log_panel.png" />

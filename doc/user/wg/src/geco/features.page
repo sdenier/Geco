@@ -9,20 +9,26 @@ routed_title: Geco
 
 Geco currently supports the Sportident timing system.
 
+In 1.1, Geco introduces an [automatic](../howtos/index.html) mode, which can be used to handle an event without pre-registration.
+- automatically insert new entries when downloading e-cards
+- detect the course from the punch trace in e-card
+- look up for new entries in archive to retrieve name, club, category...
+
 Geco UI is organized as a series of panels in tabs, each dedicated to one aspect of the race.
 
 - [Stage] to configure stage, clubs, courses, categories
   - import course from the IOF XML format
   - change Orient'Show parameters
-- [Runners] to look at registered runners, filter data, check punches, and modify runner's status for the race
-  - follow the race in live 
-  - get trace explanation about any runner
+- [Runners] to register competitors and manage issues during the race
+  - register runners in CSV file or using an archive
+  - get a detailed view of race data for each runner, including trace of punches
   - manage special cases using the merge dialog
-- [Results] to generate results
+- [Results] to generate rankings and splits
   - export results in html and csv formats, with multiple options
   - automatically export results for live update
+  - French National Ranking calculator
+- [Log] to get race statistics and perform batch operations
 - [Heats] to generate heats from results for the next stage in knockout qualifications
-- [Log] to get race statistics
 
 Read the [UI Guide] for documentation about each panel.
 

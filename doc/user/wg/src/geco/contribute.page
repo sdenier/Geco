@@ -7,12 +7,12 @@ routed_title: Geco
 ---
 #How to contribute?
 
-Spread the word!
+There are many ways you can contribute to Geco, whatever your experience and your knowledge of O and softwares is.
 
-Test, use, assess, and report bugs and proposals at http://bitbucket.org/sdenier/geco/issues/new
+Use, test, assess the Geco experience to make your own opinion. *Spread the word*, it is the most simple thing you can do for Geco.
 
-Help with the translation and documentation.
+If you find *bugs* or have *proposals* to enhance Geco, please report them by mail or directly in the [Bug tracker](http://bitbucket.org/sdenier/geco/issues/new).
 
-Create your own extension.
+You can always help with software *documentation*: improving descriptions, figures, tutorials, screencasts. *Translation* of software and documentation is also an important task. The text editor will be your main tool.
 
-Help with Geco development.
+if you are a developer, you can create your own *extension* of Geco, as indicated by the [License](license.html). Do not hesitate to ask for help on the architecture and technical details of Geco. Finally, you can help with Geco *development* by committing your code to the public repository. Geco is developed using [Mercurial](http://mercurial.selenic.com) and [eclipse](http://www.eclipse.org).
