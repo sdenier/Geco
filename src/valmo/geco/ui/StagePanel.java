@@ -38,6 +38,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 
 import valmo.geco.Geco;
+import valmo.geco.control.SIReaderHandler.SerialPort;
 import valmo.geco.control.SingleSplitPrinter;
 import valmo.geco.core.Announcer;
 import valmo.geco.core.Html;
@@ -209,11 +210,11 @@ public class StagePanel extends TabPanel {
 		stationPortCB.setPreferredSize(new Dimension(170, stationPortCB.getPreferredSize().height));
 		stationPortCB.setToolTipText(Messages.uiGet("StagePanel.StationPortTooltip")); //$NON-NLS-1$
 		panel.add(stationPortCB, c);
-		stationPortCB.setSelectedItem(geco().siHandler().getPortName());
+		stationPortCB.setSelectedItem(geco().siHandler().getPort());
 		stationPortCB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				geco().siHandler().setPortName( (String) stationPortCB.getSelectedItem() );
+				geco().siHandler().setPort( (SerialPort) stationPortCB.getSelectedItem() );
 			}
 		});
 		

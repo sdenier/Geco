@@ -37,7 +37,7 @@ public class CNCalculator extends AResultExporter {
 			try {
 				loadArchiveFrom(new File("data/exportCN_index5discipline1.csv"));
 			} catch (IOException e) {
-				e.printStackTrace();
+				gecoControl.debug(e.toString());
 			}
 		}
 
@@ -54,8 +54,13 @@ public class CNCalculator extends AResultExporter {
 	 */
 	public CNCalculator(GecoControl gecoControl) {
 		super(CNCalculator.class, gecoControl);
-		cnScores = new HashMap<Integer, Integer>();
-		new CNImporter(gecoControl);
+	}
+
+	private void importCN() {
+		if( cnScores==null ){
+			cnScores = new HashMap<Integer, Integer>();
+			new CNImporter(geco());
+		}
 	}
 
 	/* (non-Javadoc)
@@ -65,7 +70,8 @@ public class CNCalculator extends AResultExporter {
 	public String generateHtmlResults(ResultConfig config, int refreshDelay) {
 		if( config.resultType!=ResultType.CourseResult )
 			return "";
-		
+
+		importCN();
 		Html html = new Html();
 		includeHeader(html, "result.css");
 		Vector<Result> results = buildResults(config);

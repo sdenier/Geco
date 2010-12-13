@@ -9,6 +9,7 @@ import gnu.io.CommPortIdentifier;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -25,6 +26,7 @@ import valmo.geco.core.Announcer;
 import valmo.geco.core.GecoRequestHandler;
 import valmo.geco.core.GecoResources;
 import valmo.geco.core.TimeManager;
+import valmo.geco.core.WindowsRegistryQuery;
 import valmo.geco.model.Punch;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
@@ -46,7 +48,9 @@ public class SIReaderHandler extends Control
 	
 	private SIPortHandler portHandler;
 
-	private String portName;
+	private SerialPort siPort;
+	
+	private Vector<SerialPort> serialPorts;
 	
 	private long zeroTime = DEFAULT_ZEROTIME;
 	
@@ -54,6 +58,22 @@ public class SIReaderHandler extends Control
 	
 	private boolean starting;
 
+	
+	public static class SerialPort {
+		private String port;
+		private String friendlyName;
+		public SerialPort(String port, String friendlyName){
+			this.port = port;
+			this.friendlyName = friendlyName;
+		}
+		public String name(){
+			return port;
+		}
+		public String toString(){
+			return friendlyName;
+		}
+	}
+	
 	
 	/**
 	 * @param factory
@@ -80,12 +100,17 @@ public class SIReaderHandler extends Control
 	}
 	
 	private void changePortName() {
+		serialPorts = null; // reset listPorts
 		String port = stage().getProperties().getProperty(portNameProperty());
 		if( port!=null ) {
-			setPortName(port);
-		} else {
-			setPortName(detectSIPort());
+			for (SerialPort serial : listPorts()) {
+				if( serial.name().equals(port) ){
+					setPort(serial);
+					return;
+				}
+			}
 		}
+		setPort(detectSIPort());
 	}
 	
 	public static long readZeroTime(Stage stage) {
@@ -106,41 +131,70 @@ public class SIReaderHandler extends Control
 			portHandler.setCourseZeroTime(getZeroTime());
 	}
 	
-	public Vector<String> listPorts() {
-		@SuppressWarnings("rawtypes")
-		Enumeration portIdentifiers = CommPortIdentifier.getPortIdentifiers();
-		Vector<String> serialPorts = new Vector<String>();
-		while( portIdentifiers.hasMoreElements() ){
-			CommPortIdentifier port = (CommPortIdentifier) portIdentifiers.nextElement();
-			if( port.getPortType()==CommPortIdentifier.PORT_SERIAL ){
-				serialPorts.add(port.getName());
+	public Vector<SerialPort> listPorts() {
+		if( serialPorts==null ){
+			@SuppressWarnings("rawtypes")
+			Enumeration portIdentifiers = CommPortIdentifier.getPortIdentifiers();
+			Vector<String> sPorts = new Vector<String>();
+			while( portIdentifiers.hasMoreElements() ){
+				CommPortIdentifier port = (CommPortIdentifier) portIdentifiers.nextElement();
+				if( port.getPortType()==CommPortIdentifier.PORT_SERIAL ){
+					sPorts.add(port.getName());
+				}
 			}
+			serialPorts = createFriendlyPorts(sPorts);			
 		}
 		return serialPorts;
 	}
-	
-	public String detectSIPort() {
-		String match;
-		if( GecoResources.platformIsMacOs() ){
-			match = "/dev/tty.SLAB_USBtoUART"; // TODO: Linux ? 
+	private Vector<SerialPort> createFriendlyPorts(Vector<String> serialPorts) {
+		Vector<SerialPort> ports = new Vector<SerialPort>(serialPorts.size());
+		ports.add(new SerialPort("", "")); // empty port
+		if( GecoResources.platformIsWindows() ){
+			// "HKLM\\System\\CurrentControlSet\\Enum\\USB\\Vid_10c4&Pid_800a\\78624 /v FriendlyName";
+			String[] reg =
+				WindowsRegistryQuery.listRegistryEntries("HKLM\\System\\CurrentControlSet\\Enum").split("\n");
+			HashMap<String,String> friendlyNames = new HashMap<String,String>();
+			for (String string : reg) {
+				if( string.contains("FriendlyName") && string.contains("COM") ){
+					int s = string.indexOf("COM");
+					String com = string.substring(s, string.indexOf(')', s));
+					String fname = com + ": "
+									+ string.substring(string.lastIndexOf("\t") + 1, s - 1).trim();
+					friendlyNames.put(com, fname);
+				}
+			}
+			for (String port : serialPorts) {
+				ports.add(new SerialPort(port, friendlyNames.get(port)));
+			}
 		} else {
-			match = "SPORTident";
-		}
-		Vector<String> ports = listPorts();
-		for (String portName : ports) {
-			if( portName.contains(match) ){
-				return portName;
+			for (String port : serialPorts) {
+				ports.add(new SerialPort(port, port));
 			}
 		}
-		return ports.firstElement();
-	}
-	
-	public String getPortName() {
-		return portName;
+		return ports;
 	}
 
-	public void setPortName(String portName) {
-		this.portName = portName;
+	private SerialPort detectSIPort() {
+		String match;
+		if( GecoResources.platformIsWindows() ){
+			match = "SPORTident";
+		} else { // Linux, Mac
+			match = "SLAB_USBtoUART";
+		}
+		for (SerialPort serial : listPorts()) {
+			if( serial.toString().contains(match) ){
+				return serial;
+			}
+		}
+		return serialPorts.firstElement();
+	}
+	
+	public SerialPort getPort() {
+		return siPort;
+	}
+
+	public void setPort(SerialPort port) {
+		this.siPort = port;
 	}
 
 	public long getZeroTime() {
@@ -154,7 +208,7 @@ public class SIReaderHandler extends Control
 	private void configure() {
 		portHandler = new SIPortHandler(new ResultData());
 		portHandler.addListener(this);
-		portHandler.setPortName(getPortName());
+		portHandler.setPortName(getPort().name());
 		portHandler.setDebugDir(stage().getBaseDir());
 		portHandler.setCourseZeroTime(getZeroTime());
 	}
@@ -315,7 +369,7 @@ public class SIReaderHandler extends Control
 
 	@Override
 	public void saving(Stage stage, Properties properties) {
-		properties.setProperty(portNameProperty(), getPortName());
+		properties.setProperty(portNameProperty(), getPort().name());
 		properties.setProperty(zerotimeProperty(), Long.toString(getZeroTime()));
 	}
 

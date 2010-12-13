@@ -429,7 +429,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		if( status.equals("NotFound") ) { //$NON-NLS-1$
 			geco.info(
 					Messages.uiGet("GecoWindow.StationNotFoundStatus") //$NON-NLS-1$
-					+ geco.siHandler().getPortName(),
+					+ geco.siHandler().getPort(),
 					false);
 			startB.initialize();
 			return;
@@ -437,7 +437,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		if( status.equals("Failed") ) { //$NON-NLS-1$
 			geco.info(
 					Messages.uiGet("GecoWindow.StationOffline1Status") //$NON-NLS-1$
-					+ geco.siHandler().getPortName()
+					+ geco.siHandler().getPort()
 					+ Messages.uiGet("GecoWindow.StationOffline2Status"), //$NON-NLS-1$
 					false);
 			startB.initialize();

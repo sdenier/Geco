@@ -77,8 +77,13 @@ public class GecoResources {
 	}
 
 	public static boolean platformIsMacOs() {
-		// See for more: http://oreilly.com/pub/a/mac/2002/09/06/osx_java.html
-		return System.getProperty("mrj.version")!=null; //$NON-NLS-1$
+		return System.getProperty("os.name").startsWith("Mac"); //$NON-NLS-1$ //$NON-NLS-2$
+	}	
+	public static boolean platformIsWindows() {
+		return System.getProperty("os.name").startsWith("Windows"); //$NON-NLS-1$ //$NON-NLS-2$
+	}	
+	public static boolean platformIsLinux() {
+		return System.getProperty("os.name").startsWith("Linux"); //$NON-NLS-1$ //$NON-NLS-2$
 	}	
 
 }
