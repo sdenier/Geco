@@ -15,12 +15,12 @@ import java.io.StringWriter;
  * See http://www.rhinocerus.net/forum/lang-pascal-delphi-misc/438962-identifying-friendlyname-usb-com-port.html
  * 
  * @author Simon Denier, based on Oleg Ryaboy, Miguel Enriquez 
- * @since 12 déc. 2010
+ * @since 12 dec. 2010
  */
 public class WindowsRegistryQuery {
 	public static final String readRegistry(String location, String key) {
 		try {
-			Process process = Runtime.getRuntime().exec("reg query \"" + location + "\" /v " + key);
+			Process process = Runtime.getRuntime().exec("reg query \"" + location + "\" /v " + key); //$NON-NLS-1$ //$NON-NLS-2$
 			StreamReader reader = new StreamReader(process.getInputStream());
 			reader.start();
 			process.waitFor();
@@ -29,11 +29,11 @@ public class WindowsRegistryQuery {
 			String output = reader.getResult();
 			// Output has the following format:
 			// \n<Version information>\n\n<key>\t<registry type>\t<value>
-			if (!output.contains("\t")) {
+			if (!output.contains("\t")) { //$NON-NLS-1$
 				return null;
 			}
 			// Parse out the value
-			String[] parsed = output.split("\t");
+			String[] parsed = output.split("\t"); //$NON-NLS-1$
 			return parsed[parsed.length - 1];
 		} catch (Exception e) {
 			return null;
@@ -42,7 +42,7 @@ public class WindowsRegistryQuery {
 
 	public static final String listRegistryEntries(String location) {
 		try {
-			Process process = Runtime.getRuntime().exec("reg query \"" + location + "\" /s");
+			Process process = Runtime.getRuntime().exec("reg query \"" + location + "\" /s"); //$NON-NLS-1$ //$NON-NLS-2$
 			StreamReader reader = new StreamReader(process.getInputStream());
 			reader.start();
 			process.waitFor();
@@ -76,9 +76,9 @@ public class WindowsRegistryQuery {
 	
 	public static void main(String[] args) {
 		String[] entries =
-			WindowsRegistryQuery.listRegistryEntries("HKLM\\System\\CurrentControlSet\\Enum").split("\n");
+			WindowsRegistryQuery.listRegistryEntries("HKLM\\System\\CurrentControlSet\\Enum").split("\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		for (String string : entries) {
-			if( string.contains("COM") && string.contains("FriendlyName") )
+			if( string.contains("COM") && string.contains("FriendlyName") ) //$NON-NLS-1$ //$NON-NLS-2$
 				System.out.println(string.trim());
 		}
 	}

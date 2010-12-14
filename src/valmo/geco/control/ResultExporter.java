@@ -35,7 +35,7 @@ public class ResultExporter extends AResultExporter {
 		Vector<Result> results = buildResults(config);
 		this.refreshInterval = refreshInterval;
 		Html html = new Html();
-		includeHeader(html, "result.css");
+		includeHeader(html, "result.css"); //$NON-NLS-1$
 		for (Result result : results) {
 			if( config.showEmptySets || !result.isEmpty()) {
 				appendHtmlResult(result, config, html);	
@@ -67,7 +67,7 @@ public class ResultExporter extends AResultExporter {
 		}
 		resultLabel.append(" (").append(Integer.toString(finished)).append("/") //$NON-NLS-1$ //$NON-NLS-2$
 					.append(Integer.toString(present)).append(")"); //$NON-NLS-1$
-		html.nl().tag("h2", "class=\"pool\"", resultLabel.toString()).nl(); //$NON-NLS-1$
+		html.nl().tag("h2", "class=\"pool\"", resultLabel.toString()).nl(); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		html.open("table").nl(); //$NON-NLS-1$
 		if( config.showPenalties ){
@@ -125,7 +125,7 @@ public class ResultExporter extends AResultExporter {
 	
 	private void writeHtml(RunnerRaceData runnerData, String rank, String timeOrStatus,
 																		boolean showPenalties, Html html) {
-		html.openTr("runner");
+		html.openTr("runner"); //$NON-NLS-1$
 		html.td(rank);
 		html.td(runnerData.getRunner().getName());
 		html.td(runnerData.getRunner().getClub().getName());

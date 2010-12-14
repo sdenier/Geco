@@ -79,7 +79,7 @@ public class StageImpl implements Stage {
 	}
 	
 	public String filepath(String filename) {
-		return baseDir + "/" + filename;
+		return baseDir + "/" + filename; //$NON-NLS-1$
 	}
 
 	/**

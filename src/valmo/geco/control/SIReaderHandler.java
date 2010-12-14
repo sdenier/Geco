@@ -148,18 +148,18 @@ public class SIReaderHandler extends Control
 	}
 	private Vector<SerialPort> createFriendlyPorts(Vector<String> serialPorts) {
 		Vector<SerialPort> ports = new Vector<SerialPort>(serialPorts.size());
-		ports.add(new SerialPort("", "")); // empty port
+		ports.add(new SerialPort("", "")); // empty port //$NON-NLS-1$ //$NON-NLS-2$
 		if( GecoResources.platformIsWindows() ){
 			// "HKLM\\System\\CurrentControlSet\\Enum\\USB\\Vid_10c4&Pid_800a\\78624 /v FriendlyName";
 			String[] reg =
-				WindowsRegistryQuery.listRegistryEntries("HKLM\\System\\CurrentControlSet\\Enum").split("\n");
+				WindowsRegistryQuery.listRegistryEntries("HKLM\\System\\CurrentControlSet\\Enum").split("\n"); //$NON-NLS-1$ //$NON-NLS-2$
 			HashMap<String,String> friendlyNames = new HashMap<String,String>();
 			for (String string : reg) {
-				if( string.contains("FriendlyName") && string.contains("COM") ){
-					int s = string.indexOf("COM");
+				if( string.contains("FriendlyName") && string.contains("COM") ){ //$NON-NLS-1$ //$NON-NLS-2$
+					int s = string.indexOf("COM"); //$NON-NLS-1$
 					String com = string.substring(s, string.indexOf(')', s));
-					String fname = com + ": "
-									+ string.substring(string.lastIndexOf("\t") + 1, s - 1).trim();
+					String fname = com + ": " //$NON-NLS-1$
+									+ string.substring(string.lastIndexOf("\t") + 1, s - 1).trim(); //$NON-NLS-1$
 					friendlyNames.put(com, fname);
 				}
 			}
@@ -177,9 +177,9 @@ public class SIReaderHandler extends Control
 	private SerialPort detectSIPort() {
 		String match;
 		if( GecoResources.platformIsWindows() ){
-			match = "SPORTident";
+			match = "SPORTident"; //$NON-NLS-1$
 		} else { // Linux, Mac
-			match = "SLAB_USBtoUART";
+			match = "/dev/tty.SLAB_USBtoUART"; //$NON-NLS-1$
 		}
 		for (SerialPort serial : listPorts()) {
 			if( serial.toString().contains(match) ){

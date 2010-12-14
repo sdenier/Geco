@@ -296,8 +296,7 @@ public class RunnerPanel extends GecoPanel {
 		readTimeF.setEditable(false);
 		raceTimeF = new JTextField(FIELDSIZE);
 		raceTimeF.setEditable(false);
-		raceTimeF.setToolTipText(Messages.uiGet("RunnerPanel.RealRacetimeTooltip1") //$NON-NLS-1$
-				+ Messages.uiGet("RunnerPanel.RealRacetimeTooltip2")); //$NON-NLS-1$		
+		raceTimeF.setToolTipText(Messages.uiGet("RunnerPanel.RealRacetimeTooltip1")); //$NON-NLS-1$
 		
 		JPanel ecardPanel = new JPanel();
 		ecardPanel.setLayout(new GridBagLayout());
@@ -333,6 +332,8 @@ public class RunnerPanel extends GecoPanel {
 		penaltyF.setEditable(false);
 		fullTimeF = new JTextField(FIELDSIZE);
 		fullTimeF.setEditable(false);
+		fullTimeF.setToolTipText("Real race time + penalties. Yellow background indicates official time edited in table.");		
+
 		
 		JPanel resultPanel = new JPanel();
 		resultPanel.setLayout(new GridBagLayout());

@@ -56,7 +56,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 		Vector<Result> results = buildResults(config);
 		this.refreshInterval = refreshInterval;
 		Html html = new Html();
-		includeHeader(html, "result.css");
+		includeHeader(html, "result.css"); //$NON-NLS-1$
 		for (Result result : results) {
 			if( config.showEmptySets || !result.isEmpty() ) {
 				Map<RunnerRaceData, SplitTime[]> allSplits = new HashMap<RunnerRaceData, SplitTime[]>(); 
@@ -76,7 +76,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 
 	private void appendHtmlResultsWithSplits(Result result, Map<RunnerRaceData, SplitTime[]> allSplits,
 													SplitTime[] bestSplit, ResultConfig config, Html html) {
-		html.nl().tag("h2", "class=\"pool\"", result.getIdentifier()).nl(); //$NON-NLS-1$
+		html.nl().tag("h2", "class=\"pool\"", result.getIdentifier()).nl(); //$NON-NLS-1$ //$NON-NLS-2$
 		html.open("table").nl(); //$NON-NLS-1$
 		for (RankedRunner runner : result.getRanking()) {
 			RunnerRaceData data = runner.getRunnerData();
@@ -93,7 +93,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 			if( ! runnerData.getRunner().isNC() ) {
 				generateHtmlSplitsFor(
 						runnerData,
-						"",
+						"", //$NON-NLS-1$
 						runnerData.getResult().formatStatus(),
 						allSplits.get(runnerData),
 						bestSplit,
@@ -113,7 +113,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 			for (RunnerRaceData runnerData : result.getOtherRunners()) {
 				generateHtmlSplitsFor(
 						runnerData,
-						"",
+						"", //$NON-NLS-1$
 						runnerData.getResult().formatStatus(),
 						resultBuilder.buildNormalSplits(runnerData, null),
 						bestSplit,
@@ -125,7 +125,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 
 	public void generateHtmlSplitsFor(RunnerRaceData data, String rank, String statusTime,
 													SplitTime[] splits, SplitTime[] bestSplits, Html html) {
-		html.openTr("rsplit");
+		html.openTr("rsplit"); //$NON-NLS-1$
 		html.td(rank);
 		html.td(data.getRunner().getName(), "colspan=\"4\""); //$NON-NLS-1$
 		html.td(statusTime);
@@ -148,7 +148,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 			if( limit==0 )
 				break; // in case we have splits.length a multiple of nbColumns, we can stop now
 			
-			String trClass = ( i % 2 == 0 ) ? "col0" : "col1";
+			String trClass = ( i % 2 == 0 ) ? "col0" : "col1"; //$NON-NLS-1$ //$NON-NLS-2$
 			// first line with seq and control number/code
 			html.openTr(trClass).td(""); //$NON-NLS-1$
 			for (int j = 0; j < limit; j++) {
@@ -203,23 +203,23 @@ public class SplitExporter extends AResultExporter implements StageListener {
 	
 	protected void appendHtmlSplitsInLine(SplitTime[] linearSplits, Html html) {
 		for (SplitTime splitTime : linearSplits) {
-			html.openTr("lin");
+			html.openTr("lin"); //$NON-NLS-1$
 			Trace trace = splitTime.trace;
 			String time = TimeManager.time(splitTime.time);
 			if( trace!=null ) {
 				html.td(splitTime.seq);
 				html.td(splitTime.trace.getCode());
-				String timeClass = "class=\"";
+				String timeClass = "class=\""; //$NON-NLS-1$
 				if( trace.isOK() ) {
-					timeClass += "time";
+					timeClass += "time"; //$NON-NLS-1$
 				} else {
 					if( trace.isAdded() || trace.isSubst() ) {
-						timeClass += "add";
+						timeClass += "add"; //$NON-NLS-1$
 					} else {
-						timeClass += "miss";
+						timeClass += "miss"; //$NON-NLS-1$
 					}
 				}
-				html.td(time, timeClass + "\"");
+				html.td(time, timeClass + "\""); //$NON-NLS-1$
 				html.td(TimeManager.time(splitTime.split), "class=\"sp\""); //$NON-NLS-1$
 			} else {
 				html.td(splitTime.seq);

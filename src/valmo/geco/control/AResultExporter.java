@@ -90,7 +90,7 @@ public abstract class AResultExporter extends Control {
 	protected void generateHtmlHeader(Html html) { }
 	
 	protected void emptyTr(Html html) {
-		html.openTr("empty").td("&nbsp;").closeTr(); // jump line
+		html.openTr("empty").td("&nbsp;").closeTr(); // jump line //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void generateCsvResult(ResultConfig config, CsvWriter writer) throws IOException {

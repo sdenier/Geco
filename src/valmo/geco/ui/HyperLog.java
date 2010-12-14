@@ -28,16 +28,16 @@ public class HyperLog extends JTextPane implements Logging {
 
 	private static final int LOGSIZE = 6;
 	
-	private static final Pattern ECARD_PATTERN = java.util.regex.Pattern.compile("(\\d{5,}\\w*)");
+	private static final Pattern ECARD_PATTERN = java.util.regex.Pattern.compile("(\\d{5,}\\w*)"); //$NON-NLS-1$
 	
 	private List<String> logRing;
 	
 	public HyperLog(Geco geco, HyperlinkListener hlListener) {
 		logRing = new ArrayList<String>(LOGSIZE);
 		for (int i = 0; i < LOGSIZE; i++) {
-			logRing.add(""); // fill-in log
+			logRing.add(""); // fill-in log //$NON-NLS-1$
 		}
-		setContentType("text/html");
+		setContentType("text/html"); //$NON-NLS-1$
 		setEditable(false);
 		setPreferredSize(new Dimension(700, 100));
 		setBorder(BorderFactory.createEtchedBorder());
@@ -61,9 +61,9 @@ public class HyperLog extends JTextPane implements Logging {
 	private String format(String message) {
 		Set<String> ecards = detectEcardNumbers(message);
 		for (String ecard : ecards) {
-			message = message.replaceAll(ecard, "<a href=\"" + ecard + "\">" + ecard + "</a>");
+			message = message.replaceAll(ecard, "<a href=\"" + ecard + "\">" + ecard + "</a>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
-		return message + "<br />";
+		return message + "<br />"; //$NON-NLS-1$
 	}
 	
 	public Set<String> detectEcardNumbers(String source) {
