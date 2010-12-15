@@ -106,7 +106,7 @@ public class ArchiveViewer extends JFrame {
 			JOptionPane.showMessageDialog(
 					this,
 					e.toString(),
-					"Error loading archive",
+					Messages.uiGet("ArchiveViewer.LoadArchiveError"), //$NON-NLS-1$
 					JOptionPane.ERROR_MESSAGE);
 			try {
 				archive = archiveManager().archive();

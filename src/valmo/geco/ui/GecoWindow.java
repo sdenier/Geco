@@ -39,6 +39,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import valmo.geco.Geco;
 import valmo.geco.core.Announcer;
 import valmo.geco.core.GecoResources;
+import valmo.geco.core.GecoWarning;
 import valmo.geco.core.Html;
 import valmo.geco.live.LiveClient;
 import valmo.geco.live.LiveClientDialog;
@@ -208,11 +209,13 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 				try {
 					geco.openStage(new GecoLauncher(
 							new File(geco.getCurrentStagePath()).getParentFile()).open(GecoWindow.this));
+				} catch (GecoWarning w) {
+					// ok, do nothing
 				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(
 							GecoWindow.this,
-							e1.toString() + "\nData may be corrupted?\n\nGeco will close now.",
-							"Error loading stage ",
+							e1.toString() + Messages.uiGet("GecoWindow.FatalOpenError"), //$NON-NLS-1$
+							Messages.uiGet("GecoWindow.LoadErrorTitle"), //$NON-NLS-1$
 							JOptionPane.ERROR_MESSAGE);
 					e1.printStackTrace();
 					System.exit(-1);
@@ -231,6 +234,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		toolBar.addSeparator();
 		
 		previousB = new JButton(Messages.uiGet("GecoWindow.PreviousStageButton"), createIcon(2)); //$NON-NLS-1$
+		previousB.setToolTipText(Messages.uiGet("GecoWindow.PreviousStageToolip")); //$NON-NLS-1$
 		previousB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -239,6 +243,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		});
 		toolBar.add(previousB);
 		nextB = new JButton(Messages.uiGet("GecoWindow.NextStageButton"), createIcon(3)); //$NON-NLS-1$
+		nextB.setToolTipText(Messages.uiGet("GecoWindow.NextStageTooltip")); //$NON-NLS-1$
 		nextB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -309,13 +314,13 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 			public void actionOn() {
 				geco.siHandler().setRequestHandler(geco.autoMergeHandler());
 				setIcon(autoOn);
-				setToolTipText("Auto merge mode"); //$NON-NLS-1$
+				setToolTipText(Messages.uiGet("GecoWindow.AutoMergeTooltip")); //$NON-NLS-1$
 			}
 			@Override
 			public void actionOff() {
 				geco.siHandler().setRequestHandler(geco.defaultMergeHandler());
 				setIcon(autoOff);
-				setToolTipText("Manual merge mode"); //$NON-NLS-1$
+				setToolTipText(Messages.uiGet("GecoWindow.ManualMergeTooltip")); //$NON-NLS-1$
 			}
 		};
 		toolBar.add(autoModeB);

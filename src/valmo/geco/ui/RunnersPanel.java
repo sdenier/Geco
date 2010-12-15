@@ -107,7 +107,7 @@ public class RunnersPanel extends TabPanel
 		this.tracePanel = new PunchPanel();
 		final JTabbedPane pane = new JTabbedPane();
 		pane.addTab(Messages.uiGet("RunnersPanel.RunnerDataTitle"), this.runnerPanel); //$NON-NLS-1$
-		pane.addTab("Runner Trace", tracePanel);
+		pane.addTab(Messages.uiGet("RunnersPanel.RunnerTraceTitle"), tracePanel); //$NON-NLS-1$
 		pane.addTab(Messages.uiGet("RunnersPanel.StatsTitle"), new VStatsPanel(geco(), frame())); //$NON-NLS-1$
 		
 		getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
@@ -176,7 +176,7 @@ public class RunnersPanel extends TabPanel
 		ImageIcon importCsv = new ImageIcon(
 				getClass().getResource("/resources/icons/crystal/fileimport.png")); //$NON-NLS-1$
 		JButton importCsvB = new JButton(importCsv);
-		importCsvB.setToolTipText("Import runners from CSV (OE format)");
+		importCsvB.setToolTipText(Messages.uiGet("RunnersPanel.ImportCsvRunnersTooltip")); //$NON-NLS-1$
 		importCsvB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -219,8 +219,8 @@ public class RunnersPanel extends TabPanel
 		});
 		topPanel.add(fastB);
 
-		final JCheckBox defaultCourseB = new JCheckBox("Default course");
-		defaultCourseB.setToolTipText("When changing runner category, also update runner course with the default course for the category");
+		final JCheckBox defaultCourseB = new JCheckBox(Messages.uiGet("RunnersPanel.DefaultCourseLabel")); //$NON-NLS-1$
+		defaultCourseB.setToolTipText(Messages.uiGet("RunnersPanel.DefaultCourseTooltip")); //$NON-NLS-1$
 		defaultCourseB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -586,7 +586,7 @@ public class RunnersPanel extends TabPanel
 	
 	@Override
 	public void rentedCard(String siIdent) {
-		JOptionPane.showMessageDialog(frame(), "Rented E-card " + siIdent);
+		JOptionPane.showMessageDialog(frame(), Messages.uiGet("RunnersPanel.RentedEcardMessage") + siIdent); //$NON-NLS-1$
 	}
 
 

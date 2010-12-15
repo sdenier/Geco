@@ -27,6 +27,7 @@ import valmo.geco.control.StartlistImporter;
 import valmo.geco.core.Announcer;
 import valmo.geco.core.GecoRequestHandler;
 import valmo.geco.core.GecoResources;
+import valmo.geco.core.GecoWarning;
 import valmo.geco.core.Logger;
 import valmo.geco.core.Util;
 import valmo.geco.functions.GeneratorFunction;
@@ -160,8 +161,11 @@ public class Geco implements GecoRequestHandler {
 		} else {
 			try {
 				startDir = launcher();
+			} catch (GecoWarning w) {
+				System.out.println(w.getLocalizedMessage());
+				System.exit(0);
 			} catch (Exception e) {
-				System.err.println("Error loading stage. Data may be corrupted?");
+				System.err.println(Messages.getString("Geco.FatalLaunchError")); //$NON-NLS-1$
 				e.printStackTrace();
 				System.exit(-1);
 			}

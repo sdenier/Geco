@@ -305,7 +305,7 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 				SwingUtils.makeButtonBar(FlowLayout.CENTER, refreshB, exportB, printB),
 				BorderLayout.CENTER);
 		commandPanel.add(Box.createVerticalStrut(10), BorderLayout.SOUTH);
-		commandPanel.setBorder(BorderFactory.createTitledBorder("Commands"));
+		commandPanel.setBorder(BorderFactory.createTitledBorder(Messages.uiGet("HeatsPanel.CommandTitle"))); //$NON-NLS-1$
 
 		// selection panel for pools
 		poolList = new JList();

@@ -140,7 +140,7 @@ public class RunnerPanel extends GecoPanel {
 	
 	protected void refreshRegistrationPanel() {
 		displayRegTime(regStartF, runner.getRegisteredStarttime());
-		archiveF.setText( ( runner.getArchiveId() != null ) ? runner.getArchiveId().toString() : "");
+		archiveF.setText( ( runner.getArchiveId() != null ) ? runner.getArchiveId().toString() : ""); //$NON-NLS-1$
 		rentedBx.setSelected(runner.rentedEcard());
 		ncBx.setSelected(runner.isNC());
 	}
@@ -167,7 +167,7 @@ public class RunnerPanel extends GecoPanel {
 	
 	protected void displayRegTime(JTextField timeF, Date time) {
 		if( time.equals(TimeManager.NO_TIME) ) {
-			prvDisplayTime(timeF, "", Color.white);
+			prvDisplayTime(timeF, "", Color.white); //$NON-NLS-1$
 		} else {
 			prvDisplayTime(timeF, TimeManager.fullTime(time), PALE_BLUE);
 		}
@@ -221,8 +221,8 @@ public class RunnerPanel extends GecoPanel {
 	public JPanel initRegistrationPanel() {
 		regStartF = new JTextField(FIELDSIZE);
 		archiveF = new JTextField(FIELDSIZE);
-		rentedBx = new JCheckBox("Rented E-card");
-		ncBx = new JCheckBox("NC");
+		rentedBx = new JCheckBox(Messages.uiGet("RunnerPanel.RentedEcardLabel")); //$NON-NLS-1$
+		ncBx = new JCheckBox(Messages.uiGet("RunnerPanel.NCLabel")); //$NON-NLS-1$
 		
 		regStartF.addActionListener(new ActionListener() {
 			@Override
@@ -273,13 +273,13 @@ public class RunnerPanel extends GecoPanel {
 		regPanel.setLayout(new GridBagLayout());
 
 		GridBagConstraints c = buildGBConstraint();
-		addRow(regPanel, c, new JLabel("Registered Start"), regStartF);
+		addRow(regPanel, c, new JLabel(Messages.uiGet("RunnerPanel.RegisteredStartLabel")), regStartF); //$NON-NLS-1$
 		c.gridy = 1;
-		addRow(regPanel, c, new JLabel("Archive Id"), archiveF);
+		addRow(regPanel, c, new JLabel(Messages.uiGet("RunnerPanel.ArchiveIdLabel")), archiveF); //$NON-NLS-1$
 		c.gridy = 2;
 		addRow(regPanel, c, rentedBx, ncBx);
 		
-		regPanel.setBorder(BorderFactory.createTitledBorder("Registration"));
+		regPanel.setBorder(BorderFactory.createTitledBorder(Messages.uiGet("RunnerPanel.RegistrationTitle"))); //$NON-NLS-1$
 		return regPanel;
 	}
 
@@ -320,7 +320,7 @@ public class RunnerPanel extends GecoPanel {
 				new JLabel(Messages.uiGet("RunnerPanel.RaceLabel")), //$NON-NLS-1$
 				raceTimeF);
 		
-		ecardPanel.setBorder(BorderFactory.createTitledBorder("E-card"));
+		ecardPanel.setBorder(BorderFactory.createTitledBorder(Messages.uiGet("RunnerPanel.EcardTitle"))); //$NON-NLS-1$
 		return ecardPanel;
 	}
 	
@@ -332,7 +332,7 @@ public class RunnerPanel extends GecoPanel {
 		penaltyF.setEditable(false);
 		fullTimeF = new JTextField(FIELDSIZE);
 		fullTimeF.setEditable(false);
-		fullTimeF.setToolTipText("Real race time + penalties. Yellow background indicates official time edited in table.");		
+		fullTimeF.setToolTipText(Messages.uiGet("RunnerPanel.OfficialTimeTooltip"));		 //$NON-NLS-1$
 
 		
 		JPanel resultPanel = new JPanel();
@@ -348,7 +348,7 @@ public class RunnerPanel extends GecoPanel {
 		addRow(resultPanel, c, 
 				Box.createGlue(),
 				Box.createGlue(),
-				new JLabel("Official"),
+				new JLabel(Messages.uiGet("RunnerPanel.OfficialTimeLabel")), //$NON-NLS-1$
 				fullTimeF);
 
 //		c.gridy = 2;
@@ -358,7 +358,7 @@ public class RunnerPanel extends GecoPanel {
 //				new JLabel(Messages.uiGet("RunnerPanel.FinishLabel")), //$NON-NLS-1$
 //				new JTextField(4));
 
-		resultPanel.setBorder(BorderFactory.createTitledBorder("Result"));
+		resultPanel.setBorder(BorderFactory.createTitledBorder(Messages.uiGet("RunnerPanel.ResultTitle"))); //$NON-NLS-1$
 		return resultPanel;
 	}
 

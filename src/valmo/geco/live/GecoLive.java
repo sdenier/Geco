@@ -34,6 +34,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 
 import valmo.geco.control.GecoControl;
+import valmo.geco.core.GecoWarning;
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.Messages;
 import valmo.geco.model.Registry;
@@ -67,6 +68,9 @@ public class GecoLive implements LiveListener {
 		String startDir = null;
 		try {
 			startDir = launcher();
+		} catch (GecoWarning w) {
+			System.out.println(w.getLocalizedMessage());
+			System.exit(0);
 		} catch (Exception e) {
 			System.out.println(e.toString());
 			e.printStackTrace();

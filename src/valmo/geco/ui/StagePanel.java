@@ -505,13 +505,13 @@ public class StagePanel extends TabPanel {
 			new ConfigTableModel<Category>(new String[] {
 												Messages.uiGet("StagePanel.CategoryShortNameHeader"), //$NON-NLS-1$
 												Messages.uiGet("StagePanel.CategoryLongNameHeader"), //$NON-NLS-1$
-												"Course" }) {
+												Messages.uiGet("StagePanel.CategoryCourseHeader") }) { //$NON-NLS-1$
 				@Override
 				public Object getValueIn(Category cat, int columnIndex) {
 					switch (columnIndex) {
 					case 0: return cat.getShortname();
 					case 1: return cat.getLongname();
-					case 2: return (cat.getCourse()==null) ? "" : cat.getCourse().getName();
+					case 2: return (cat.getCourse()==null) ? "" : cat.getCourse().getName(); //$NON-NLS-1$
 					default: return super.getValueIn(cat, columnIndex);
 					}
 				}
@@ -525,7 +525,7 @@ public class StagePanel extends TabPanel {
 					}
 				}
 				private void setCourse(Category cat, String coursename) {
-					if( coursename.equals("") ){
+					if( coursename.equals("") ){ //$NON-NLS-1$
 						cat.setCourse(null);
 					} else {
 						cat.setCourse(registry().findCourse(coursename));
@@ -579,7 +579,7 @@ public class StagePanel extends TabPanel {
 
 	private void updateCoursesCBforCategories(final JComboBox coursesCB) {
 		Vector<String> sortedCoursenames = new Vector<String>( registry().getSortedCoursenames() );
-		sortedCoursenames.add(0, "");
+		sortedCoursenames.add(0, ""); //$NON-NLS-1$
 		coursesCB.setModel(new DefaultComboBoxModel(sortedCoursenames));
 	}
 		

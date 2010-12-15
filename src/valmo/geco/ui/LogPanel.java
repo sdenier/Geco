@@ -43,8 +43,8 @@ public class LogPanel extends TabPanel implements Logging {
 
 	public void initPanels(JPanel panel) {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.BOTTOM);
-		tabbedPane.add("Stats", initStatsPanel());
-		tabbedPane.add("Functions", initFunctionsPanel());
+		tabbedPane.add(Messages.uiGet("LogPanel.StatsTitle"), initStatsPanel()); //$NON-NLS-1$
+		tabbedPane.add(Messages.uiGet("LogPanel.FunctionsTitle"), initFunctionsPanel()); //$NON-NLS-1$
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		splitPane.add(tabbedPane);
 		splitPane.add(initLogArea());

@@ -17,6 +17,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import valmo.geco.core.GecoWarning;
 import valmo.geco.model.Messages;
 
 /**
@@ -71,11 +72,11 @@ public class GecoLauncher {
 					createDataFiles(basePath);
 					new File(basePath + File.separator + "backups").mkdir(); //$NON-NLS-1$
 				} else 
-					throw new Exception(Messages.uiGet("GecoLauncher.CancelCreation")); //$NON-NLS-1$
+					throw new GecoWarning(Messages.uiGet("GecoLauncher.CancelCreation")); //$NON-NLS-1$
 			}
 			return basePath;
 		} else {
-			throw new Exception(Messages.uiGet("GecoLauncher.CancelImport")); //$NON-NLS-1$
+			throw new GecoWarning(Messages.uiGet("GecoLauncher.CancelImport")); //$NON-NLS-1$
 		}
 	}
 
