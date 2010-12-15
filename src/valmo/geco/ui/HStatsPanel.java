@@ -24,6 +24,7 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
 import valmo.geco.Geco;
+import valmo.geco.control.RegistryStats;
 import valmo.geco.control.RegistryStats.StatItem;
 import valmo.geco.core.Html;
 import valmo.geco.model.Messages;
@@ -135,7 +136,7 @@ public class HStatsPanel extends StatsPanel {
 				else 
 					content = stats().getCourseStatsFor(courseKeys[rowIndex],
 														statusKeys[columnIndex-1]).toString();
-				if( courseKeys[rowIndex]=="Total" ){ //$NON-NLS-1$
+				if( courseKeys[rowIndex]==RegistryStats.totalName() ){
 					return Html.htmlTag("b", content); //$NON-NLS-1$
 				} else {
 					return content;

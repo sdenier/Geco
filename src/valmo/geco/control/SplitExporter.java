@@ -22,6 +22,7 @@ import valmo.geco.core.TimeManager;
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
 import valmo.geco.model.Course;
+import valmo.geco.model.Messages;
 import valmo.geco.model.RankedRunner;
 import valmo.geco.model.Result;
 import valmo.geco.model.Runner;
@@ -97,15 +98,15 @@ public class SplitExporter extends AResultExporter implements StageListener {
 						runnerData.getResult().formatStatus(),
 						allSplits.get(runnerData),
 						bestSplit,
-						html); //$NON-NLS-1$
+						html);
 			} else if( config.showNC ) {
 				generateHtmlSplitsFor(
 						runnerData,
-						"NC",
+						Messages.getString("SplitExporter.NCLabel"), //$NON-NLS-1$
 						runnerData.getResult().shortFormat(),
 						allSplits.get(runnerData),
 						bestSplit,
-						html); //$NON-NLS-1$
+						html);
 			}
 		}
 		if( config.showOthers ) {
@@ -117,7 +118,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 						runnerData.getResult().formatStatus(),
 						resultBuilder.buildNormalSplits(runnerData, null),
 						bestSplit,
-						html); //$NON-NLS-1$
+						html);
 			}			
 		}
 		html.close("table").nl(); //$NON-NLS-1$

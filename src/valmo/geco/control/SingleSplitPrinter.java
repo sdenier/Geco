@@ -27,6 +27,7 @@ import valmo.geco.control.ResultBuilder.SplitTime;
 import valmo.geco.core.Announcer.CardListener;
 import valmo.geco.core.Announcer.StageListener;
 import valmo.geco.core.Html;
+import valmo.geco.model.Messages;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Stage;
 
@@ -62,10 +63,10 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 		if( getSplitPrinter()!=null ) {
 			Html html = new Html();
 			if( splitFormat==SplitFormat.Ticket ) {
-				exporter.includeHeader(html, "ticket.css");
+				exporter.includeHeader(html, "ticket.css"); //$NON-NLS-1$
 				printSingleSplitsInLine(data, html);
 			} else {
-				exporter.includeHeader(html, "result.css");
+				exporter.includeHeader(html, "result.css"); //$NON-NLS-1$
 				printSingleSplitsInColumns(data, html);
 			}
 		
@@ -128,18 +129,18 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 	private void printSingleSplitsInLine(RunnerRaceData data, Html html) {
 	//		char[] chars = Character.toChars(0x2B15); // control flag char :)
 	//		html.contents(new String(chars));
-			html.open("div", "align=\"center\"");
+			html.open("div", "align=\"center\""); //$NON-NLS-1$ //$NON-NLS-2$
 			html.contents(geco().stage().getName()).br();
 			html.b(data.getRunner().getName()).br();
 			html.br();
 			html.b(data.getCourse().getName() + " - " //$NON-NLS-1$
 					+ data.getResult().shortFormat());
-			html.close("div"); // don't center table, it wastes too much space for some formats.
-			html.open("table", "width=\"75%\""); //$NON-NLS-1$
+			html.close("div"); // don't center table, it wastes too much space for some formats. //$NON-NLS-1$
+			html.open("table", "width=\"75%\""); //$NON-NLS-1$ //$NON-NLS-2$
 			exporter.appendHtmlSplitsInLine(builder.buildLinearSplits(data), html);
 			html.close("table").br(); //$NON-NLS-1$
-			html.contents("Geco for orienteering").br();
-			html.contents("http://bitbucket.org/sdenier/geco");
+			html.contents(Messages.getString("SingleSplitPrinter.SplitBottomLine1")).br(); //$NON-NLS-1$
+			html.contents(Messages.getString("SingleSplitPrinter.SplitBottomLine2")); //$NON-NLS-1$
 		}
 
 
@@ -152,11 +153,11 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 //		float width = 2.76f;
 
 		if( DEBUGMODE ){
-			System.out.print("Request: ");
+			System.out.print("Request: "); //$NON-NLS-1$
 			System.out.print(height * 25.4);
-			System.out.print("x");
+			System.out.print("x"); //$NON-NLS-1$
 			System.out.print(width * 25.4);
-			System.out.println(" mm");
+			System.out.println(" mm"); //$NON-NLS-1$
 		}
 
 		MediaSizeName bestMedia = null;
@@ -165,8 +166,8 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 			MediaSize mediaSize = MediaSize.getMediaSizeForName(media);
 			if( mediaSize!=null ){
 				if( DEBUGMODE ){
-					System.out.print(mediaSize.toString(MediaSize.MM, "mm"));
-					System.out.println(" - " + media);
+					System.out.print(mediaSize.toString(MediaSize.MM, "mm")); //$NON-NLS-1$
+					System.out.println(" - " + media); //$NON-NLS-1$
 				}
 				float dy = mediaSize.getY(MediaSize.INCH) - height;
 				float dx = mediaSize.getY(MediaSize.INCH) - width;
@@ -179,23 +180,23 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 		}
 		if( bestMedia==null ){
 			bestMedia = MediaSize.findMedia(width, height, MediaSize.INCH);
-			geco().debug("Ticket size may be too small");
+			geco().debug(Messages.getString("SingleSplitPrinter.SmallTicketSizeWarning")); //$NON-NLS-1$
 			if( DEBUGMODE ){
-				System.out.print("Found: ");
+				System.out.print("Found: "); //$NON-NLS-1$
 			}			
 		} else {
 			if( DEBUGMODE ){
-				System.out.print("Chosen: ");
+				System.out.print("Chosen: "); //$NON-NLS-1$
 			}			
 		}
 		if( bestMedia!=null ){
 			attributes.add(bestMedia);
 			MediaSize fitSize = MediaSize.getMediaSizeForName(bestMedia);
 			if( DEBUGMODE ){
-				System.out.println(fitSize.toString(MediaSize.MM, "mm"));
+				System.out.println(fitSize.toString(MediaSize.MM, "mm")); //$NON-NLS-1$
 			}
 		} else {
-			geco().log("Can't find a matching size for ticket");
+			geco().log(Messages.getString("SingleSplitPrinter.NoMatchingTicketSizeWarning")); //$NON-NLS-1$
 		}
 	}
 

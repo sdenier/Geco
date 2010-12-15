@@ -324,21 +324,21 @@ public class RunnerControl extends Control {
 	}
 	
 	public boolean validateRegisteredStartTime(Runner runner, String startTime) {
-		if( startTime.equals("") )
+		if( startTime.equals("") ) //$NON-NLS-1$
 			return false;
 		try {
 			Date oldTime = runner.getRegisteredStarttime();
 			Date newTime = TimeManager.userParse(startTime);
 			if( ! oldTime.equals(newTime) ) {
 				runner.setRegisteredStarttime(newTime);
-				geco().log("Registered start time change "
+				geco().log(Messages.getString("RunnerControl.RegisteredStartimeChangeMessage") //$NON-NLS-1$
 						+ runner.idString() + Messages.getString("RunnerControl.FromMessage") //$NON-NLS-1$
 						+ TimeManager.fullTime(oldTime) + Messages.getString("RunnerControl.ToMessage") //$NON-NLS-1$
 						+ TimeManager.fullTime(newTime));
 			}
 			return true;
 		} catch (ParseException e1) {
-			geco().info("Bad format for registered start time", true);
+			geco().info(Messages.getString("RunnerControl.RegisteredStartimeWarning"), true); //$NON-NLS-1$
 			return false;
 		}
 	}
@@ -351,14 +351,14 @@ public class RunnerControl extends Control {
 	}
 
 	public boolean validateArchiveId(Runner runner, String archiveId) {
-		if( archiveId.equals("") )
+		if( archiveId.equals("") ) //$NON-NLS-1$
 			return false;
 		try {
 			// TODO: check unicity of archive id
 			runner.setArchiveId(Integer.parseInt(archiveId));
 			return true;
 		} catch (NumberFormatException e) {
-			geco().info("Bad format for archive id", true);
+			geco().info(Messages.getString("RunnerControl.ArchiveIdFormatWarning"), true); //$NON-NLS-1$
 			return false;
 		}
 	}

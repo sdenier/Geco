@@ -265,9 +265,13 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		builderGroup.setSelected(rankingResultRB.getModel(), true);
 		
 		showNcC = new JCheckBox(Messages.uiGet("ResultsPanel.ShowNCLabel")); //$NON-NLS-1$
+		showNcC.setToolTipText(Messages.uiGet("ResultsPanel.ShowNCTooltip")); //$NON-NLS-1$
 		showOtC = new JCheckBox(Messages.uiGet("ResultsPanel.ShowOthersLabel")); //$NON-NLS-1$
+		showOtC.setToolTipText(Messages.uiGet("ResultsPanel.ShowOthersTooltip")); //$NON-NLS-1$
 		showPeC = new JCheckBox(Messages.uiGet("ResultsPanel.ShowPenaltiesLabel")); //$NON-NLS-1$
+		showPeC.setToolTipText(Messages.uiGet("ResultsPanel.ShowPenaltiesTooltip")); //$NON-NLS-1$
 		showEsC = new JCheckBox(Messages.uiGet("ResultsPanel.ShowESLabel")); //$NON-NLS-1$
+		showEsC.setToolTipText(Messages.uiGet("ResultsPanel.ShowESTooltip")); //$NON-NLS-1$
 		JPanel optionsPanel = new JPanel(new GridLayout(0, 2));
 		optionsPanel.add(showNcC);
 		optionsPanel.add(showOtC);

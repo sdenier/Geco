@@ -117,7 +117,7 @@ public class LiveClient implements Announcer.CardListener {
 			runner.getCategory().getName(),
 			runner.getClub().getName(),
 			runner.getCourse().getName(),
-			result.getStatus().toString(),
+			result.getStatus().name(),
 			Long.toString(result.getRacetime()),
 			Integer.toString(result.getNbMPs()),
 			Long.toString(result.getTimePenalty()),

@@ -33,7 +33,11 @@ import valmo.geco.ui.SwingUtils;
  *
  */
 public class LiveClientDialog extends JDialog {
-	
+
+	static {
+		Messages.put("live", "valmo.geco.live.messages"); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
 	private JTextField nameF;
 	private JFormattedTextField portF;
 

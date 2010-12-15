@@ -205,7 +205,7 @@ public class ResultBuilder extends Control {
 				added.add(createSplit("", trace, startTime, TimeManager.NO_TIME_l, time)); //$NON-NLS-1$
 			}
 		}
-		SplitTime fSplit = createSplit("F", null, startTime, previousTime, data.getFinishtime().getTime());
+		SplitTime fSplit = createSplit("F", null, startTime, previousTime, data.getFinishtime().getTime()); //$NON-NLS-1$
 		splits.add(fSplit); //$NON-NLS-1$
 		if( bestSplits!=null ){
 			SplitTime bestSplit = bestSplits[bestSplits.length - 1];
@@ -236,7 +236,7 @@ public class ResultBuilder extends Control {
 			int nbControls = registry().findCourse(result.getIdentifier()).nbControls();
 			bestSplits = new SplitTime[nbControls + 1];
 			for (int i = 0; i < bestSplits.length; i++) {
-				bestSplits[i] = new SplitTime("", null, TimeManager.NO_TIME_l, TimeManager.NO_TIME_l);
+				bestSplits[i] = new SplitTime("", null, TimeManager.NO_TIME_l, TimeManager.NO_TIME_l); //$NON-NLS-1$
 			}
 		}
 		for (RunnerRaceData runnerData : result.getRankedRunners()) {

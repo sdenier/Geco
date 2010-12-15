@@ -124,7 +124,7 @@ public class RegistryStats extends Control
 		return entries.toArray(new String[0]);
 	}
 	
-	private String totalName() {
+	public static String totalName() {
 		return Messages.getString("RegistryStats.TotalLabel"); //$NON-NLS-1$
 	}
 

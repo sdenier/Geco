@@ -14,6 +14,7 @@ import java.util.Vector;
 
 import valmo.geco.control.ResultBuilder.ResultConfig;
 import valmo.geco.core.Html;
+import valmo.geco.model.Messages;
 import valmo.geco.model.RankedRunner;
 import valmo.geco.model.Result;
 import valmo.geco.model.ResultType;
@@ -35,7 +36,7 @@ public class CNCalculator extends AResultExporter {
 		protected CNImporter(GecoControl gecoControl) {
 			super(gecoControl);
 			try {
-				loadArchiveFrom(new File("data/exportCN_index5discipline1.csv"));
+				loadArchiveFrom(new File("data/exportCN_index5discipline1.csv")); //$NON-NLS-1$
 			} catch (IOException e) {
 				gecoControl.debug(e.toString());
 			}
@@ -69,16 +70,16 @@ public class CNCalculator extends AResultExporter {
 	@Override
 	public String generateHtmlResults(ResultConfig config, int refreshDelay) {
 		if( config.resultType!=ResultType.CourseResult )
-			return "";
+			return ""; //$NON-NLS-1$
 
 		importCN();
 		Html html = new Html();
-		includeHeader(html, "result.css");
+		includeHeader(html, "result.css"); //$NON-NLS-1$
 		Vector<Result> results = buildResults(config);
 		for (Result result : results) {
 			double courseScore = computeCourseScore(result);
-			html.nl().tag("h2", "class=\"pool\"", result.getIdentifier()).nl();
-			html.open("table").nl();
+			html.nl().tag("h2", "class=\"pool\"", result.getIdentifier()).nl(); //$NON-NLS-1$ //$NON-NLS-2$
+			html.open("table").nl(); //$NON-NLS-1$
 			for (RankedRunner data : result.getRanking()) {
 				RunnerResult r = data.getRunnerData().getResult();
 				writeHtml(
@@ -88,21 +89,21 @@ public class CNCalculator extends AResultExporter {
 						Integer.toString((int) (courseScore / r.getRacetime())),
 						html);
 			}
-			html.close("table").nl();
+			html.close("table").nl(); //$NON-NLS-1$
 		}
 		return html.close();
 	}
 
 	private void writeHtml(RunnerRaceData runnerData, String rank, String timeOrStatus, String score, Html html) {
 		Runner runner = runnerData.getRunner();
-		String yScore = "";
+		String yScore = ""; //$NON-NLS-1$
 		Integer id = runner.getArchiveId();
 		if( id != null ) {
-			yScore = ( cnScores.get(id) != null) ? cnScores.get(id).toString() : "";
+			yScore = ( cnScores.get(id) != null) ? cnScores.get(id).toString() : ""; //$NON-NLS-1$
 		} else {
-			score = "";
+			score = ""; //$NON-NLS-1$
 		}
-		html.openTr("runner");
+		html.openTr("runner"); //$NON-NLS-1$
 		html.td(rank);
 		html.td(runner.getName());
 		html.td(runner.getClub().getName());
@@ -157,7 +158,7 @@ public class CNCalculator extends AResultExporter {
 	
 	@Override
 	protected void exportCsvFile(String filename, ResultConfig config) throws IOException {
-		geco().info("Not functional", true);
+		geco().info(Messages.getString("CNCalculator.NotFunctionalLabel"), true); //$NON-NLS-1$
 	}
 
 	@Override

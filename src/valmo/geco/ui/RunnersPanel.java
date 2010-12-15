@@ -181,7 +181,7 @@ public class RunnersPanel extends TabPanel
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir")); //$NON-NLS-1$
-				fileChooser.setDialogTitle("Import Startlist in OE CSV format"); //$NON-NLS-1$
+				fileChooser.setDialogTitle(Messages.uiGet("RunnersPanel.ImportStartlistTitle")); //$NON-NLS-1$
 				int answer = fileChooser.showOpenDialog(frame());
 				if( answer==JFileChooser.APPROVE_OPTION ) {
 					try {
