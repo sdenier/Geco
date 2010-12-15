@@ -11,16 +11,16 @@ routed_title: Presentation
 
 ## Philosophy
 Geco has three driving forces.
+
 - Enhanced **user experience** through simple workflow and UI: Geco favors direct accessibility and manipulation of data through visible panels and actions, making obvious how to interact with the application. Features such as [Auto mode](../howtos/index.html) support events with minimal setup.
 - Customization for the **Orient’Show** format, which has a number of peculiarities (rules and format) not well supported by other apps. But Geco also supports classical formats out of the box, and leans towards an extensible platform for any format of orienteering.
-- Extensible by and for the **open-source** community, because it's time for everybody to get some good tools for our geeky sport.
-
+- An **open source** project for the orienteering community, to easily share new tools and ideas.
 
 <img src="../images/runners_panel.png" width="500px" />
 
 
 ## Author and contact
-Hi, my name is Simon Denier, I am a O'coholic and you can find more information on my [website](http://www.simondenier.eu).
+Hi, my name is Simon Denier, I am a O'coholic and you can find more information on my [website](http://www.simondenier.eu). But you can also [contribute](contribute.html)!
 
 
 ## Thanks

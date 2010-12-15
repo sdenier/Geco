@@ -1,0 +1,32 @@
+---
+title: Barre d'outils
+sort_info: 2
+in_menu: true
+---
+# Barre d'outils
+
+
+<img src="../images/toolbar.png" />
+
+La barre d'outils propose des actions courantes.
+
+- *Nouveau/Ouvrir* renvoie au [Lanceur](index.fr.html)
+- *Sauvegarder* enregistre les donnnées. Il est à noter que les données sont [sauvées](../howtos/backup.fr.html) automatiquement quand vous quittez l'application, mais aussi à intervalles réguliers
+- *Etape Précédente/Suivante* permet d'accéder aux différentes étapes de qualifications. Only available if current stage is detected as part of qualifications
+- *Recontrôler OK|PM* réinitialise le statut et temps officiel des coureurs ayant les statuts OK ou MP, à utiliser quand un problème affectant tous les coureurs a été détecté et corrigé.
+Attention, cette manipulation annulera toutes les modifications effectuées manuellement.
+
+Les 2 boutons suivants sont pour la gestion du [Live](../howtos/live.fr.html).  
+<img style="float:none; width:94px" src="../images/animation_toolbar.png" />
+
+De plus, la barre d'outil permet de contrôler l'état du boîtier maître.
+
+Le bouton ci-dessous indique que le boîtier maître est désactivé. Cliquer dessus pour commencer la lecture des puces électroniques.  
+<img style="float:none; width:114px" src="../images/reader_off.png" />
+
+Au moment où Geco lance la lecture, un bouton *Starting...* apparait. Les erreurs sont affichées dans la barre de statut. Vous pouvez cliquer à nouveau pour interrompre le lancement.  
+<img style="float:none; width:105px" src="../images/reader_starting.png" />
+
+Le bouton ci-dessous indique que le boîtier est activé et permet la lecture des puces électroniques. Recliquer pour l'arrêter.  
+<img style="float:none; width:114px" src="../images/stopreader.png" />
+

@@ -2,15 +2,15 @@
 title: Lanceur
 sort_info: 1
 in_menu: true
-routed_title: Guide Utilisateur
+routed_title: Guide interface
 ---
-# Launcher
+# Lanceur
 
-The launcher is the first window to pop up when opening Geco. It allows you to open/create a stage.
+Le lanceur est la première fenêtre qui s'affiche à l'ouverture de Geco. Il permet d'ouvrir ou de créer un étape/compétition.
 
-- To open an existing stage, select the folder with data (just select, do not double-click) and click the Open button.
-- To create a new stage, create/select the folder where you want to put data then click the Open button: Geco will propose you to create a new stage by copying some data template.
+- Pour ouvrir une étape/compétition existante, sélectionner le fichier de données (sélection simple, pas de double-clic) et cliquer sur le bouton Ouvrir/Open.
+- Pour créer une nouvelle étape/compétition, créer/sélectionner le fichier où vous souhaitez mettre/placer/conserver/enregistrer les données et cliquer sur le bouton 'Ouvrir/Open' : Geco vous proposera de créer une nouvelle étape/compétition en copiant un modèle de données.
 
 <img src="../images/launcher.png" />
 
-How to spot a folder with stage data? Simple, it contains a file named `geco.prop` as well as multiple csv files.
+Pour repérer un fichier avec vos données de course, rien de plus simple : il contient un fichier 'geco.prop' et un certain nombre de fichiers csv.

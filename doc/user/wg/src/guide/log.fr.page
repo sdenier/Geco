@@ -1,0 +1,30 @@
+---
+title: Log
+sort_info: 8
+in_menu: true
+---
+# Onglet Log
+
+L'onglet log est un journal des évènements importants apparus depuis le début de la session. Il affiche également les statistiques de la course.
+Pour voir tous les évènements encourus depuis la création de cette course, parcourir le fichier `geco.log`.
+
+Raccourci : `modifier + L`.
+
+<a href="../images/log_panel.png"><img src="../images/log_panel.png" /></a>
+
+La partie statistiques montre le statut des coureurs circuit par circuit en plus d'un récapitulatif total.
+Un état simple propose les données importantes, contrairement à la vue détaillée, accessible en cochant la case *Vue simplifiée*.
+
+Quand la *Vue simplifiée* est active, les statuts suivants sont affichés:
+- Present: runners who ran or are running the stage
+- Unknown: runners without race data for now. They might still be running, or they might be absent (you should mark such people as DNS)
+- Finished: runners having some race data. Hence, Present = Unknown + Finished
+- OK: runners who finished
+- PM: un grand nombre de PMs en début de course est succeptible d'indiquer un problème avec les circuits (dans Geco ou sur le terrain)
+
+Quand la *Vue simplifiée* est désactivée, la liste indique:
+- Inscrits: coureurs entrés dans la base de données, incluant donc Present + DNS
+- DNS, DNF, DSQ runners
+- Arrivées = OK + PM + DNF + DSQ
+
+Les statistiques se mettent à jour automatiquement toutes les 10 secondes. Il est possible de les rafraîchir manuellement en cliquant sur le fonton *Actualiser*.

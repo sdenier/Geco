@@ -1,0 +1,73 @@
+---
+title: LiveMap et Animation
+sort_info: 6
+in_menu: true
+---
+
+# LiveMap et Animation
+
+La barre d'outils contient 2 boutons spécialement dédiés au direct et à l'animation de course.
+
+<img style="float:none; width:94px" src="../images/animation_toolbar.png" />
+
+La *loupe* ouvre le **LiveMap**, un outil spécialement conçu pour facilement visualiser les tracés.
+L'*antenne* ouvre une boîte de dialogue pour permettre la diffusion des données lues dans les puces électroniques vers un serveur **GecoLive**.
+
+*Il est à noter que ces fonctionnalités sont encore à l'état de test.*
+
+
+## LiveMap pour visualisation et analyse à la volée
+
+**LiveMap** offre une visualisation précise des poinçons manquants ou en trop. Même dans les cas complexes (papillons par exemple), les 2 outils sont complémentaires et permettent de comprendre bon nombre d'erreurs commises par les coureurs.
+
+Une fois la fenêtre ouverte, selectionner un coureur dans l'**Onglet Coureurs** pour afficher son tracé.
+Les poinçons validés apparaissent en magenta. Les poinçons ou tronçons manquants sont affichés en pointillés rouges. Les postes poinçonnés mais non présents sur le circuit sont en blue.
+
+<img src="../images/livemap_config.png" />
+
+Configuration:
+1. charger un fichier image de la carte
+1. charger un fichier XML de circuits
+
+Il est recommendé de procéder à ces exports depuis OCAD. Certains problèmes peuvent survenir avec d'autres logiciels.
+
+Et maintenant, de quoi jouer avec vos nerfs (des modifications seront apportées dans les futures versions de Geco):
+1. entrer la résolution en DPI de votre image, afin de régler grossièrement la mise à l'échelle des postes sur la carte
+1. faire varier les valeur des facteurs X, Y, translation X et Y
+1. pour afficher les ronds et vérifier leur position, cliquer sur actualiser
+1. répéter les étapes 2 et 3 jusqu'à obtenir un résultat satisfaisant. Bon courage... !
+
+Vous pouvez ensuite contrôler les postes et circuits avec les derniers boutons.
+
+Pour le moment, Geco *ne conserve pas* ces paramètres. Par conséquent, ils seront perdus à la prochaine ouverture du LiveMap! Pour les enregistrer, vous devez créer un fichier `live.prop` dans le dossier de la course avec les informations suivantes (exemple):
+
+`MapFile=hellemmes.jpg`  
+`CourseFile=hellemmes.xml`  
+`DPI=150`  
+`XTrans=1`  
+`YTrans=-3`
+
+Le bonne nouvelle est qu'il est possible de récupérer ce fichier pour n'importe quel autre ordinateur utilisant LiveMap ou GecoLive pour cette course.
+
+
+## GecoLive pour l'animation
+
+**GecoLive** est une application dédiée à l'animation: elle permet de montrer le parcours d'un coureur dès qu'il a lu sa puce dans Geco. Le commentateur peut aussi parcourir les autres concurrents. GecoLive peut tourner sur un autre ordinateur en recevant les information par réseau. 
+
+<img src="../images/gecolive.png" />
+
+Configuration:
+1. lancer **GecoLive** en ligne de commande : `java -jar gecoXXX.jar valmo.geco.live.GecoLive`
+1. démarrer le serveur GecoLive en cliquant sur le bouton *Listen* dans le coin en bas à gauche (penser à vérifier le numéro de port)
+
+Des instances **Geco** multiples peuvent envoyer des données au **GecoLive**:
+1. ouvrir open the live dialog encliquant sur le bouton *antenne*
+1. renseigner l'adresse et le numéro de port de la machine où GecoLive est lancé
+1. appuyer sur ok, la diffusion commence
+
+Il est possible d'interrompre à tout moment la diffusion en recliquant sur ce même bouton.
+
+Further configuration:
+- **Geco** ne renvoit que les informations contenues sur les puces et non les changements pouvant influer sur les résultat; par conséquent, **GecoLive** n'est pas fiable pour annoncer des résultats: il affiche juste les parcours
+- pour annoncer les **résultats** au commentateur, lancer un serveur web qui utilise la fonction [autoexport](../guide/results.fr.html) depuis l' **Onglet Résultats**
+

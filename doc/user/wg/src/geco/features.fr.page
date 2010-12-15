@@ -5,38 +5,38 @@ in_menu: true
 routed_title: Geco
 
 ---
-# Features
+# Caractéristiques
 
-Geco currently supports the Sportident timing system.
+Geco prend actuellement en charge le système de chronométrage SPORTident.
 
-Geco presents some features dedicated to Orient'Show:
-- time penalties and MP limit
-- accurate count of MPs and detailed trace
-- management of knockout qualifications
-
-
-Geco UI is organized as a series of panels in tabs, each dedicated to one aspect of the race.
-
-- [Stage] to configure stage, clubs, courses, categories
-  - import course from the IOF XML format
-  - change Orient'Show parameters
-- [Runners] to look at registered runners, filter data, check punches, and modify runner's status for the race
-  - follow the race in live 
-  - get trace explanation about any runner
-  - manage special cases using the merge dialog
-- [Results] to generate results
-  - export results in html and csv formats, with multiple options
-  - automatically export results for live update
-- [Heats] to generate heats from results for the next stage in knockout qualifications
-- [Log] to get race statistics
-
-Read the [UI Guide] for documentation about each panel.
+Il permet également de gérer des courses de type Orient'Show :
+- pénalités en temps et limite du nombre de PM
+- comptage précis des PM et parcours détaillé
+- gestion des qualifications par éliminination directe
 
 
-[UI Guide]: ../guide/index.html
-[workflow]: ../guide/workflow.html
-[Stage]: ../guide/stage.html
-[Runners]: ../guide/runners.html
-[Log]: ../guide/log.html
-[Results]: ../guide/results.html
-[Heats]: ../guide/heats.html
+L'interface graphique de Geco se présente sous la forme d'onglets, chacun dédié à un aspect de la course.
+
+- [Étape] pour configurer l'étage, les clubs, circuits, catégories
+  - import des circuits depuis un fichier XML (norme IOF)
+  - modification des paramètres Orient'Show
+- [Coureurs] pour voir la liste des coureurs inscrits, filtrer les données, contrôler/vérifier les poinçons, et modifier le statut des coureurs sur la course
+  - suivre la course en direct 
+  - accéder aux détails de n'importe quel coureur
+  - gérer les cas spéciaux grâce à la fonction de fusion
+- [Résultats] pour générer les résultats
+  - export des résultats aux formats html et csv, avec de nombreuses options
+  - export automatique pour une mise à jour en direct
+- [Séries] pour calculer des poules à partir des résultats sur la prochaine étape en mode de qualification par éliminination directe
+- [Log] pour des statistiques sur la course
+
+Lire le [Guide] pour des explications détaillées sur chaque onglet.
+
+
+[Guide]: ../guide/index.fr.html
+[workflow]: ../guide/workflow.fr.html
+[Étape]: ../guide/stage.fr.html
+[Coureurs]: ../guide/runners.fr.html
+[Log]: ../guide/log.fr.html
+[Résultats]: ../guide/results.fr.html
+[Séries]: ../guide/heats.fr.html

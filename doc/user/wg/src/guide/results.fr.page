@@ -1,0 +1,29 @@
+---
+title: Résultats
+sort_info: 6
+in_menu: true
+---
+# Onglet Résultats
+
+L'onglet résultats permet de produire un état à partir des données, et ce à n'importe quel moment de la course.
+
+Raccourci : `modifier + E`.
+
+<a href="../images/results_panel.png"><img src="../images/results_panel.png" /></a>
+
+Sélectionner *Circuits* ou *Catégories* pour le calcul des résultats. On peut également choisir les ciruits/catégories voulus dans la liste située juste en-dessous.
+
+The *Category/Courses* is a third option which computes one ranking per category in each course. It is useful when categories are split across different courses in pools.
+
+By default, results display the ranking of runners with OK status, as well as runners with status MP, DNF, DSQ. Courses/categories for which no race data are available yet are not displayed.
+Options for displaying results include:
+- *Show NC*: include runners ticked as NC in the results. They will appear after the ranked runners, with MPs and others.
+- *Show others*: include DNS runners, which were registered but did not run.
+- *Show penalties*: show real race time and number of MPs for each runner.
+- *Show empty sets*: show all courses (categories) in results, even if there is no race data yet.
+
+Les résultats peuvent être affichés dans le panneau de droite (bouton *Acualiser*), imprimés, ou exportés sous forme de fichiers au format **html** (par défaut) ou **csv**.
+
+Le bouton *Autoexport*, quand il est en marche, rafraîchit à intervalles réguliers (en secondes dans le champ à droite) ou génère un fichier de résultats nommée `lastresults` dans le dossier de la course.
+La fonction autoexport est basée sur les paramètres spécifiés lors de l'activation (circuits ou catégories, format d'export, *Afficher NC*,...).
+Arrêter et redémarrer l'export automatique pour prendre en compte les modifications de paramètres.

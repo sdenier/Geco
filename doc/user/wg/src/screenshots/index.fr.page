@@ -1,0 +1,30 @@
+---
+title: Windows/Linux
+sort_info: 1
+in_menu: true
+routed_title: Captures d'écran
+---
+
+### Geco se lance avec le style Nimbus sous Windows et Linux
+
+<img src="../images/nimbus/launcher.png" />
+
+**Onglet Etape**
+
+<img src="../images/nimbus/stage.png" />
+
+**Onglet Coureurs**
+
+<img src="../images/nimbus/runners.png" />
+
+**Onglet Résultats**
+
+<img src="../images/nimbus/results.png" />
+
+**Onglet Poules**
+
+<img src="../images/nimbus/heats.png" />
+
+**Onglet Log**
+
+<img src="../images/nimbus/log.png" />

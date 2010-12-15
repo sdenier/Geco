@@ -1,0 +1,25 @@
+---
+title: Licence
+sort_info: 4
+in_menu: true
+routed_title: Geco
+
+---
+#Licence
+
+L'application Geco est distribué sous licence 'GNU General Public License' Version 2. Voir gpl-2.0.txt pour plus de détails.
+
+Certaines parties du programme sont distribuées sous licence MIT licence. Voir le fichier de LICENSE pour plus de détails.
+Le code-source est disponible à cette adresse : [http://bitbucket.org/sdenier/geco](http://bitbucket.org/sdenier/geco)
+
+JarClassLoader est distribué sous licence 'GNU General Public License' Version 2.
+Voir [http://www.jdotsoft.com/JarClassLoader.php](http://www.jdotsoft.com/JarClassLoader.php)
+
+La bibliothèque SIReader a gentiment été fournie par Martin Flynn, un grand merci à lui!
+Vous pouvez jeter un oeil à son logiciel Ór ici : [http://orienteering.ie/wiki/doku.php?id=or:index](http://orienteering.ie/wiki/doku.php?id=or:index)
+
+SIReader utilise la bibliothèque RXTX, sous licence LGPL.
+Voir le site web pour plus de détails [http://www.rxtx.org/](http://www.rxtx.org/)
+
+Les icônes proviennent du 'Crystal Project Icons', sous licence LGPL, créé par Everaldo Coelho.
+Voir [http://everaldo.com/crystal](http://everaldo.com/crystal)

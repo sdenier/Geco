@@ -7,21 +7,21 @@ routed_title: Présentation
 ---
 
 # Geco
-<div class="intro">...est une application Java légère pour la gestion électronique de courses d'orientation. Geco est développé pour le format Orient’Show. Il marche cependant très bien avec les formats standards de la course d'orientation.</div>
+<div class="intro">...est une application Java légère pour la gestion électronique de courses d'orientation. Développé à l'origine pour le format Orient’Show, Geco supporte toute compétition standard de petite à moyenne envergure.</div>
 
-## Philosophy
-Geco has three driving forces.
-- Customization for the **Orient’Show** format, which has a number of peculiarities (rules and format) not well supported by other apps. But Geco also supports classical formats out of the box, and leans towards an extensible platform for any format of orienteering.
-- Enhanced **user experience** through simple UI guidelines: Geco favors direct accessibility and manipulation of data through visible panels and actions, making obvious how to interact with the application. Very few capabilities are not visible at first hand.
-- Extensible by and for the **open-source** community, because it's time for everybody to get some good tools for our geeky sport.
+## Philosophie
+Le projet Geco est porté par trois principes.
 
+- Une meilleure **expérience utilisateur** grâce à une interface graphique aboutie et des processus simples : Geco met l'accent sur l'accessibilité et la manipulation directe des données. Les interactions sont visibles, immédiates et facilitent la GEC. Des fonctions comme le [mode Auto](../howtos/index.fr.html) supportent des organisations avec un minimum de préparation.
+- Spécialisation pour le format **Orient’Show**, qui demande des règles et fonctions particulières. Geco supporte aussi les formats classiques de la CO et tend vers une plate-forme extensible pour différents formats.
+- Un projet **open source** pour la communauté CO, afin de partager plus facilement outils et idées nouvelles.
 
 <img src="../images/runners_panel.png" width="500px" />
 
 
-## Author and contact
-Hi, my name is Simon Denier, I am a O'coholic and you can find more information on my [website](http://www.simondenier.eu).
+## Auteur et contact
+Geco est actuellement développé par [Simon Denier](http://www.simondenier.eu). Mais vous pouvez aussi [contribuer](contribute.fr.html) !
 
 
-## Thanks
-Many thanks to Julien Thézé, Martin Flynn, and Jannik Laval for their technical help and debugging sessions.
+## Remerciements
+Merci à Julien Thézé, Martin Flynn et Jannik Laval pour leur aide et leurs sessions de test.

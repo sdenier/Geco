@@ -19,7 +19,7 @@ The big changes:
 
 UI/Usability changes:
 - many UI changes
-- List serial ports to let user choose. Try to guess the serial port where the SI box is connected (only Mac and Linux)
+- List serial ports to let user choose. Detect the serial port where the SI box is connected
 - hyperlink navigation to quickly focus on an e-card from the log
 - new and more universal keybindings
 

@@ -16,3 +16,7 @@ If you find *bugs* or have *proposals* to enhance Geco, please report them by ma
 You can always help with software *documentation*: improving descriptions, figures, tutorials, screencasts. *Translation* of software and documentation is also an important task. The text editor will be your main tool.
 
 if you are a developer, you can create your own *extension* of Geco, as indicated by the [License](license.html). Do not hesitate to ask for help on the architecture and technical details of Geco. Finally, you can help with Geco *development* by committing your code to the public repository. Geco is developed using [Mercurial](http://mercurial.selenic.com) and [eclipse](http://www.eclipse.org).
+
+## Current contributors
+
+Julien Thézé, doc and app translation

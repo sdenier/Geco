@@ -1,6 +1,6 @@
 en:
         sitename: Geco User Help
-        slogan: The lightweight experience for O'software
+        version: Version
         content: Contents
         links: Links
         repository: Repository
@@ -9,7 +9,7 @@ en:
 
 fr:
         sitename: Documentation Geco
-        slogan: La nouvelle expérience pour la GEC
+        version: Version
         content: Contenu
         links: Liens
         repository: Référentiel

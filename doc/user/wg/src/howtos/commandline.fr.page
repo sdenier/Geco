@@ -1,0 +1,18 @@
+---
+title: Ligne de commande
+sort_info: 5
+in_menu: true
+---
+
+# Opérations en ligne(s) de commande
+
+Pour lancer Geco en ligne de commande: `java -jar gecoXXXX.jar`
+
+Options:
+- `--startdir <CheminVersLesDonnees>`: ouvre Geco directement sur l'étape/compétition sélectionnée, sans passer par le lanceur
+- `--test`: ouvre geco en mode test, de nouveaux boutons et de nouvelles options apparaissent dans l'onglet log pour générer des données fictives et ainsi pouvoir tester Geco
+- `--leisure`: active le mode loisir pour LiveMap, affichant des données simplifiées sans temps de course pour les loisirs qui ne sont pas chronométrés
+
+Autres programmes accessibles en ligne de commande:
+- `java -jar gecoXXX.jar valmo.geco.GecoPools <CheminVersLesDonnees>`: éxécute le [pool merger](quals.fr.html) en mode groupé
+- `java -jar gecoXXX.jar valmo.geco.live.GecoLive`: ouvre le sezrveur GecoLive pour l'[animation](live.fr.html)

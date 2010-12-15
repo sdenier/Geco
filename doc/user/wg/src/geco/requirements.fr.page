@@ -1,0 +1,20 @@
+---
+title: Pré-requis
+sort_info: 3
+in_menu: true
+
+---
+# Pré-requis
+
+Pour faire tourner Geco, vous avez besoin :
+- D'un JRE récent (Java Runtime Environment, version 6+)
+- Du pack Geco qui contient l'application (fichier jar), les modèles/structures de données pour une course, les bibliothèques natives pour la communication série et un peu de documentation
+- Des pilotes SPORTident 
+  - Windows: vérifier leur site web
+  - Linux: les kernels/noyaux récents prennent en charge la puce utilisée par les boîtiers maîtres, aucune manipulation n'est requise
+  - Mac OS X: pas de support officiel, mais il est facile de reconnaître un boîtier maître sur un Mac (une simple ligne de code à insérer). Contactez-moi pour la procédure
+
+Pour lancer Geco, **éxecuter le fichier geco.jar**. Il devrait se lancer directement si votre JRE est bien configuré.
+
+## Bibliothèque RXTX
+Dans certains cas, vous devrez installer et compiler les pilotes RXTX (pilotes série pour plateforme Java). Contactez-moi si besoin.

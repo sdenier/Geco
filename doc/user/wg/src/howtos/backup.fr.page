@@ -1,0 +1,27 @@
+---
+title: Sauvegarde
+sort_info: 3
+in_menu: true
+---
+
+# Organisation des données et Sauvegarde
+
+Toutes les données relatives à une compétition sont enregistrées au même endroit. Cette page explique les fichiers les plus importants dans le dossier de données :
+
+- `geco.prop` contient les information sur la compétition et les méta-données
+- `Classes.csv` contient les informations sur les catégories
+- `Clubs.csv` contient les informations sur les clubs
+- `Competitors.csv` contient les informations sur les coureurs
+- `Courses.csv` contient les informations sur les circuits
+- `HeatSets.csv` contient les informations sur les séries/poules
+- `results.csv` contient les informations des puces électroniques
+- `ResultData.csv` contient les informtaions de résultats
+
+
+Voir [Format des fichiers](fileformat.fr.html) pour des informations détaillées sur les formats internes de chacun des fichiers.
+
+
+Quand vous sauvez ou quittez Geco, les données sont enregistrées dans les fichiers précédemment cités. De plus, Geco procède automatiquement à une sauvegarde dans le sous-dossier `backups` du dossier de course.
+Ils se nomment `backupXXXXX.zip` en fonction de la date et l'heure de création. En cas de problèmes, vous pouvez simplement restaurer les données en dézippant le dernier fichier. Ces sauvegardes ne sont jamais supprimées par Geco.
+
+Le logiciel effectue également une sauvegarde automatique toutes les 2 minutes (paramètre `AutosaveDelay` par défaut qui peut être modifié dans le fichier `geco.prop`). La sauvegarde automatique enregistre un jeu de fichiers particuliers nommé `backupX.zip`. Geco contient 9 emplacements de sauvegarde, ce qui veut dire que les 18 dernières minutes sont toujours accessibles.

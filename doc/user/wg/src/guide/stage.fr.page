@@ -1,0 +1,27 @@
+---
+title: Étape
+sort_info: 3
+in_menu: true
+---
+# Onglet Étape
+
+L'onglet étape permet de configurer les informations générales de la course.
+
+Raccourci : `modifier + S`.
+
+<a href="../images/stage_panel.png"><img src="../images/stage_panel.png" /></a>
+(Cliquer pour zoomer)
+
+- Etape précédente/suivant (non modifiable): Voir [Qualifications](../howtos/quals.fr.html) pour plus de détails
+- Options Orientshow
+  - Limites PM: nombre de postes manquants tolérés avant d'indiqué le coureur comme PM
+  - Pémalité: pénalité de temps par poste manquant, en secondes
+- Configuration
+  - Numéro de port: `COMx` sous Windows, `/dev/ttyX` sous Linux et Mac OS
+  - Heure Zero: donner une heure antérieure à celle du premier départ pour éviter tout problème (utile pour les puces v5)
+- Circuits
+  - Geco permet d'importer des données au format *[IOF XML](http://www.soenniksen.dk/iof-datastandard/index.shtml)*. Cliquer sur le bouton *XML* pour sélectionner le fichier de circuits
+  - Vous pouvez *Editer* les circuits à la main, si besoin
+  - Vous pouvez *Contrôler* tous les coureurs du circuit après changement(s)
+
+Les données clubs, catégories, circuits peuvent aussi être éditées via un tableur. Voir [Format des fichiers](../howtos/fileformat.fr.html).
