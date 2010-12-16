@@ -2,9 +2,8 @@
 title: Seven Steps
 sort_info: 2
 in_menu: true
-routed_title: Geco
-
 ---
+
 # Seven Steps to manage an O' event with Geco
 
 Don't know where to start? Never use a full-featured O software before? Here is a quick guide to manage an orienteering event: seven steps to handle the race organization. Read on for starters.
@@ -19,7 +18,7 @@ Don't know where to start? Never use a full-featured O software before? Here is 
 
 Runners download their e-card in the reader to check their status and get their split times.
 
-4bis. Resolve problems directly in the [Runners] panel and using the [Merge] dialog (read [automatic](../howtos/index.html) mode first).
+4bis. Resolve problems directly in the [Runners] panel and using the [Merge] dialog (read [Workflows](../howtos/index.html) to get a better a picture of manual vs auto modes).
 
 5\. Print intermediate [Results].
 

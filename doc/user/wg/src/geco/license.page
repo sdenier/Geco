@@ -2,15 +2,14 @@
 title: License
 sort_info: 7
 in_menu: true
-routed_title: Geco
-
 ---
+
 #License
 
 The Geco application is distributed under the GNU General Public License Version 2. See gpl-2.0.txt for details.
 
 Original parts of this program are distributed under the MIT license. See LICENSE file for details.
-Open-source code is available at [http://bitbucket.org/sdenier/geco](http://bitbucket.org/sdenier/geco)
+Open source code is available at [http://bitbucket.org/sdenier/geco](http://bitbucket.org/sdenier/geco)
 
 JarClassLoader distributed under the GNU General Public License Version 2.
 See [http://www.jdotsoft.com/JarClassLoader.php](http://www.jdotsoft.com/JarClassLoader.php)
@@ -18,7 +17,7 @@ See [http://www.jdotsoft.com/JarClassLoader.php](http://www.jdotsoft.com/JarClas
 SIReader library kindly provided by Martin Flynn, many thanks to him!
 Visit his software Òr on [http://orienteering.ie/wiki/doku.php?id=or:index](http://orienteering.ie/wiki/doku.php?id=or:index)
 
-SIReader uses the RXTX library, released under LGPL.
+SIReader uses the RXTX library, released under LGPL v 2.1 + Linking Over Controlled Interface.
 See website for details [http://www.rxtx.org/](http://www.rxtx.org/)
 
 Icons come from the Crystal Project Icons, released under LGPL, designed by Everaldo Coelho.

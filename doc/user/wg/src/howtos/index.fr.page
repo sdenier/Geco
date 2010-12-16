@@ -1,26 +1,12 @@
 ---
-title: Mode Auto
+title: Processus
 sort_info: 1
 in_menu: true
 routed_title: Guide pratique
 ---
 
-# Processus dans le mode Auto
+# Processus en mode auto et mode manuel
 
 The automatic mode in Geco can handle e-card download without pre-registration. It provides **on-the-fly registration** with an up to date archive. When reading an e-card which is not registered, Geco *looks up the e-card in the archive* and inserts the matching entry in the base. Geco also *detects the course* ran by the competitor from the e-card punches.
-
-The schema shows in blue the two possible outcomes which (should) require no intervention on your part:
-- on the left the classic way with **pre-registered** entries;
-- on the right the automatic insertion of competitors from **archive**.
-
-<img src="../images/autoworkflow.png" />
-
-Geco also recognizes two different outcomes which require your attention: e-card which can not be found (even in the archive) and e-card already read. For both cases, Geco creates new entries with e-card data and detect the course, but sets unresolved status Unknown or Duplicate.
-
-These outcomes are shown in orange in the schema:
-- middle left shows the **Duplicate** outcome. It can happen simply if you ask the competitor to read again the e-card, or if a new competitor runs with a previously used e-card;
-- middle right shows the **Unknown** outcome. The competitor may have followed on-site registration with a rented e-card. Or the competitor is pre-registered, or in the archive, but his real e-card does not match either because of a typo or because he recently changed it.
-
-Follow the green workflow in the schema. You can edit, delete, merge the new entry to *resolve the case*. If you choose to keep and edit the new entry, don't forget to *recheck or change* the official status. You can also print splits for the competitor.
 
 In manual mode, Geco does not look up in the archive nor insert new entries automatically. Instead, it raises a [Merge Dialog](../guide/merge.html) to let you handle unknown and duplicate e-cards.

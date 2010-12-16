@@ -22,7 +22,7 @@ The two following buttons manage [Live](../howtos/live.html) features.
 In addition, the toolbar lets you control the behavior of Geco when reading e-cards.
 <img style="float:none; width:199px" src="../images/sireader_toolbar.png" />
 
-The left-most button controls the [Auto](../howtos/index.html) mode of Geco (by default it is enabled). The middle-one controls auto-printing of split times when a runner downloads his e-card. The right-most one controls the e-card reader station.
+The left-most button controls the [Auto](../howtos/auto.html) mode of Geco (by default it is enabled). The middle-one controls auto-printing of split times when a runner downloads his e-card. The right-most one controls the e-card reader station.
 
 When disabled, Auto mode and Split printing each display a grey icons:  
 <img style="float:none; width:90px" src="../images/sifeatures_off.png" />
