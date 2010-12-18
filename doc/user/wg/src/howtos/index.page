@@ -7,6 +7,34 @@ routed_title: How-tos
 
 # Workflows in auto mode and manual mode
 
-The automatic mode in Geco can handle e-card download without pre-registration. It provides **on-the-fly registration** with an up to date archive. When reading an e-card which is not registered, Geco *looks up the e-card in the archive* and inserts the matching entry in the base. Geco also *detects the course* ran by the competitor from the e-card punches.
+With the introduction of the [automatic mode](auto.html) in Geco 1.1, there are multiple ways you can handle an event and in particular registrations.
 
-In manual mode, Geco does not look up in the archive nor insert new entries automatically. Instead, it raises a [Merge Dialog](../guide/merge.html) to let you handle unknown and duplicate e-cards.
+Below are two examples of handling events with different styles. Of course, you can also mix both during the same race: pre-register competitors and run in auto mode to manage special cases.
+
+
+## Lazy workflow (with auto mode)
+
+The lazy workflow lets you and Geco handle registrations **on the fly**, that is when competitors download their e-cards after their race. This means almost no work at all before the race, but can involve a bit more to handle onsite registrations.
+
+- Geco handles pre-registered e-cards as usual.
+- If the e-card has not been registered beforehand, Geco automatically creates an entry with the e-card. It also *detects the course* ran by the competitor from the e-card punches. This eliminates the risk of a mistake in course selection in the entry.
+- Geco *looks up in the archive* to fill in registration data for the new e-card entry (name, category, club, ...).
+- Otherwise, you will have to edit the entry manually.
+
+Hint: if possible, try to pre-register runners which do not have a personal e-card in the archive (either because they have to rent one or have changed recently).
+
+This workflow is best for trainings and small events.
+
+
+## Classic workflow (with manual mode)
+
+The classic workflow involves pre-registrations so that work is minimized when competitors download their e-cards.
+
+- Register all known participants beforehand.
+- Don't forget to use the archive to quickly insert known competitors.
+- Double-check the course.
+- You can manage registrations with a spreadsheet application and import a CSV file: fastest way to register lots of competitors.
+
+During the race, you still have to: 
+- handle onsite registrations;
+- resolve problems with unknown and duplicate e-cards. The [Merge Dialog](../guide/merge.html) pops up.
