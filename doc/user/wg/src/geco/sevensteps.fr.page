@@ -6,41 +6,41 @@ in_menu: true
 
 # Sept points pour organiser une CO avec Geco
 
-Don't know where to start? Never use a full-featured O software before? Here is a quick guide to manage an orienteering event: seven steps to handle the race organization. Read on for starters.
+Voici un guide rapide pour découvrir les fonctions essentielles de Geco : sept points pour organiser la GEC d'une course d'orientation.
 
-1\. Use the [Launcher] and the [Stage] panel to set up a new stage.
+1\. Utilisez le [Lanceur] et l'onglet [Étape] pour configurer une nouvelle étape.
 
-2\. Load courses from within the [Stage] panel.
+2\. Chargez des circuits depuis l'onglet [Étape].
 
-3\. Register competitors from the [Runners] panel and using the [Archive].
+3\. Faites les inscriptions des concurrents depuis l'onglet [Coureurs] et avec l'[Archive].
 
 > *Voir la démo des points 1 à 3 dans le screencast [Avant la course]().*
 
-4\. Check E-card configuration in the [Stage] panel and click the Reader button in the [Toolbar].
+4\. Vérifiez la configuration du boîtier maître dans l'onglet [Étape] et cliquez sur le bouton Lecture dans la [Barre d'outils].
 
-Runners download their e-card in the reader to check their status and get their split times.
+> Les concurrents lisent leur puce dans le boîtier maître pour obtenir leur statut et récupérer leurs temps intermédiaires.
 
-4bis. Resolve problems directly in the [Runners] panel and using the [Merge] dialog read [Workflows](../howtos/index.html) to get a better a picture of manual vs auto modes).
+4bis. Corrigez les problèmes directement dans l'onglet [Coureurs] et en utilisant la [Fenêtre de fusion]. Lisez les [Processus](../howtos/index.fr.html) pour vous faire une idée des modes manuel et auto.
 
 > *Découvrez le mode auto dans ce [screencast]().*
 
-5\. Print intermediate [Results].
+5\. Imprimez les [Résultats] intermédiaires.
 
 > *Voir la démo des points 4 à 5 dans le screencast [Pendant la course]().*
 
-6\. Don't forget to check [unresolved statuses](../howtos/endstage.fr.html) to see if everyone is finished.
+6\. Vérifiez les [statuts non-résolus](../howtos/endstage.fr.html) pour voir si tout le monde a bien fini.
 
-7\. Generate final [Results] for publishing and analysis.
+7\. Générez les [Résultats] officiels pour publication et analyse.
 
 > *Voir la démo des points 6 et 7 dans le screencast [Fin de course]().*
 
 <img src="../images/sevensteps.fr.png" />
 
 
-[Launcher]: ../guide/index.fr.html
-[Stage]: ../guide/stage.fr.html
-[Runners]: ../guide/runners.fr.html
+[Lanceur]: ../guide/index.fr.html
+[Étape]: ../guide/stage.fr.html
+[Coureurs]: ../guide/runners.fr.html
 [Archive]: ../guide/archive.fr.html
-[Toolbar]: ../guide/toolbar.fr.html
-[Merge]: ../guide/merge.fr.html
-[Results]: ../guide/results.fr.html
+[Barre d'outils]: ../guide/toolbar.fr.html
+[Fenêtre de fusion]: ../guide/merge.fr.html
+[Résultats]: ../guide/results.fr.html

@@ -1,21 +1,23 @@
 ---
-title: Contribute
+title: Contribuer
 sort_info: 6
 in_menu: true
 ---
 
-#How to contribute?
+#Comment contribuer ?
 
-There are many ways you can contribute to Geco, whatever your experience and your knowledge of O and softwares is.
+Il y a plusieurs façons de contribuer à Geco, quelles que soient votre expérience et vos connaissances de la CO et de la GEC.
 
-Use, test, assess the Geco experience to make your own opinion. *Spread the word*, it is the most simple thing you can do for Geco.
+Utilisez, testez, évaluez Geco pour faire votre propre expérience et *parlez-en*. C'est la chose la plus simple que vous pouvez faire.
 
-If you find *bugs* or have *proposals* to enhance Geco, please report them by mail or directly in the [Bug tracker](http://bitbucket.org/sdenier/geco/issues/new).
+Si vous trouvez des *bugs* ou voulez faire des *propositions* pour améliorer Geco, vous pouvez me contacter par mail ou utiliser directement le [traqueur](http://bitbucket.org/sdenier/geco/issues/new).
 
-You can always help with software *documentation*: improving descriptions, figures, tutorials, screencasts. *Translation* of software and documentation is also an important task. The text editor will be your main tool.
+Vous pouvez toujours contribuer à la *documentation* : améliorer les descriptions, images, tutoriaux, screencasts. La *traduction* de l'application et de la documentation est tout aussi importante. Pour toutes ces tâches, un éditeur de texte fait l'affaire.
 
-if you are a developer, you can create your own *extension* of Geco, as indicated by the [License](license.html). Do not hesitate to ask for help on the architecture and technical details of Geco. Finally, you can help with Geco *development* by committing your code to the public repository. Geco is developed using [Mercurial](http://mercurial.selenic.com) and [eclipse](http://www.eclipse.org).
+Si vous êtes développeur, vous pouvez créer votre propre *extension* de Geco, comme indiqué par la [license](license.fr.html). N'hésitez pas à demander de l'aide sur l'architecture et les détails techniques de Geco. Finalement, vous pouvez aider au *développement* de Geco en versant votre code dans le référentiel public. Geco est développé avec [Mercurial](http://mercurial.selenic.com) et [eclipse](http://www.eclipse.org).
 
-## Current contributors
 
-Julien Thézé, doc and app translation
+## Contributeurs actuels
+
+Simon Denier, développeur principal, documentation.  
+Julien Thézé, traduction de l'application et de la documentation.

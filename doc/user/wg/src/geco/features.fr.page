@@ -8,31 +8,36 @@ in_menu: true
 
 Geco prend actuellement en charge le système de chronométrage SPORTident.
 
-Il permet également de gérer des courses de type Orient'Show :
-- pénalités en temps et limite du nombre de PM
-- comptage précis des PM et parcours détaillé
-- gestion des qualifications par éliminination directe
+Dans la version 1.1, Geco inclut un mode [automatique](../howtos/auto.fr.html) qui permet d'organiser une CO sans pré-inscription.
+- insertion automatique des inscriptions à la lecture des puces
+- détection du circuit d'après la trace des poinçons dans la puce
+- recherche des inscriptions dans une archive pour renseigner le nom, club, catégorie...
 
+L'interface graphique de Geco est organisée autour d'une série d'onglets, chacun dédié à un aspect de la course.
 
-L'interface graphique de Geco se présente sous la forme d'onglets, chacun dédié à un aspect de la course.
-
-- [Étape] pour configurer l'étage, les clubs, circuits, catégories
+- [Étape] pour configurer l'étape, les clubs, circuits, catégories
   - import des circuits depuis un fichier XML (norme IOF)
-  - modification des paramètres Orient'Show
-- [Coureurs] pour voir la liste des coureurs inscrits, filtrer les données, contrôler/vérifier les poinçons, et modifier le statut des coureurs sur la course
-  - suivre la course en direct 
-  - accéder aux détails de n'importe quel coureur
-  - gérer les cas spéciaux grâce à la fonction de fusion
-- [Résultats] pour générer les résultats
-  - export des résultats aux formats html et csv, avec de nombreuses options
+  - modification des paramètres SPORTident
+- [Coureurs] pour inscrire les concurrents et résoudre les problèmes durant la course
+  - faire les inscriptions avec un fichier CSV ou depuis une archive
+  - avoir une vue détaillée des données pour chaque coureur, y compris sa trace
+  - gérer les cas spéciaux grâce à la fenêtre de fusion
+- [Log] pour les statistiques de course et les opérations batch
+- [Résultats] pour générer les classements et temps intermédiaires
+  - export des résultats aux formats HTML et CSV, avec diverses options
   - export automatique pour une mise à jour en direct
-- [Séries] pour calculer des poules à partir des résultats sur la prochaine étape en mode de qualification par éliminination directe
-- [Log] pour des statistiques sur la course
+  - simulateur des points Classement National
+- [Séries] pour calculer des séries de qualification par élimination directe à partir des résultats
 
-Lire le [Guide] pour des explications détaillées sur chaque onglet.
+Le [Guide Interface] donne les explications détaillées pour chaque onglet.
+
+Geco dispose de caractéristiques dédiées au format Orient'Show :
+- pénalités de temps et limite du nombre de PMs
+- comptage précis des PMs et trace détaillée
+- gestion des qualifications par poules et par élimination directe
 
 
-[Guide]: ../guide/index.fr.html
+[Guide Interface]: ../guide/index.fr.html
 [workflow]: ../guide/workflow.fr.html
 [Étape]: ../guide/stage.fr.html
 [Coureurs]: ../guide/runners.fr.html

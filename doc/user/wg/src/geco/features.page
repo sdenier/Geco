@@ -6,7 +6,7 @@ in_menu: true
 
 # Features
 
-Geco currently supports the Sportident timing system.
+Geco currently supports the SPORTident timing system.
 
 In 1.1, Geco introduces an [automatic](../howtos/auto.html) mode, which can be used to handle an event without pre-registration.
 - automatically insert new entries when downloading e-cards
@@ -17,16 +17,16 @@ Geco UI is organized as a series of panels in tabs, each dedicated to one aspect
 
 - [Stage] to configure stage, clubs, courses, categories
   - import course from the IOF XML format
-  - change Orient'Show parameters
+  - change SPORTident parameters
 - [Runners] to register competitors and manage issues during the race
   - register runners in CSV file or using an archive
   - get a detailed view of race data for each runner, including trace of punches
   - manage special cases using the merge dialog
+- [Log] to get race statistics and perform batch operations
 - [Results] to generate rankings and splits
-  - export results in html and csv formats, with multiple options
+  - export results in HTML and CSV formats, with multiple options
   - automatically export results for live update
   - French National Ranking calculator
-- [Log] to get race statistics and perform batch operations
 - [Heats] to generate heats from results for the next stage in knockout qualifications
 
 Read the [UI Guide] for documentation about each panel.
@@ -34,7 +34,7 @@ Read the [UI Guide] for documentation about each panel.
 Geco presents some features dedicated to Orient'Show:
 - time penalties and MP limit
 - accurate count of MPs and detailed trace
-- management of knockout qualifications
+- management of parallel pools and knockout qualifications
 
 
 [UI Guide]: ../guide/index.html

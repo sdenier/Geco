@@ -18,7 +18,7 @@ The big changes:
 
 UI/Usability changes:
 - many UI changes
-- List serial ports to let user choose. Detect the serial port where the SI box is connected
+- list serial ports to let user choose. Detect the serial port where the SI box is connected
 - hyperlink navigation to quickly focus on an e-card from the shortlog (runners panel)
 - more universal and new keybindings
 
@@ -32,10 +32,10 @@ Other changes:
 - better handling of files with different charsets across platforms
 
 Architecture/Code:
-- Controls can register themselves as services and get simple access to each other.
-- Refactoring ResultBuilder class and related: split between result builder and result/split exporter
+- `Controls` can register themselves as services and get simple access to each other
+- refactoring `ResultBuilder` class and related: split between result builder and result/split exporter
 - \[Mac\] update to latest Java Mac revision
-- Some changes in data files to support 1.1 features
+- some changes in data files to support 1.1 features
 
 
 ##Version 1.0 - 2010/10/19

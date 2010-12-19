@@ -12,7 +12,7 @@ routed_title: Présentation
 ## Philosophie
 Le projet Geco est porté par trois principes.
 
-- Une meilleure **expérience utilisateur** grâce à une interface graphique aboutie et des processus simples : Geco met l'accent sur l'accessibilité et la manipulation directe des données. Les interactions sont visibles, immédiates et facilitent la GEC. Des fonctions comme le [mode Auto](../howtos/index.fr.html) supportent des organisations avec un minimum de préparation.
+- Une meilleure **expérience utilisateur** grâce à une interface graphique aboutie et des processus simples : Geco met l'accent sur l'accessibilité et la manipulation directe des données. Les interactions sont visibles, immédiates et facilitent la GEC. Des fonctions comme le [mode Auto](../howtos/auto.fr.html) supportent des organisations avec un minimum de préparation.
 - Spécialisation pour le format **Orient’Show**, qui demande des règles et fonctions particulières. Geco supporte aussi les formats classiques de la CO et tend vers une plate-forme extensible pour différents formats.
 - Un projet **open source** pour la communauté CO, afin de partager plus facilement outils et idées nouvelles.
 

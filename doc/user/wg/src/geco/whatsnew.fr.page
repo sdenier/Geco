@@ -1,45 +1,45 @@
 ---
-title: What's new?
+title: Quoi de neuf ?
 sort_info: 5
 in_menu: true
 ---
 
-#What's new?
+# Quoi de neuf ?
 
 ##Version 1.1
-Geco 1.1 is a move from the custom app for Orient'Show to a full-featured app for regular Orienteering events, with many new features and UI improvements.
+Geco 1.1 est une évolution de l'application dédiée à l'Orient'Show vers une application complète pour des CO classiques, avec plusieurs nouvelles fonctions et de multiples améliorations de l'interface.
 
-The big changes:
-- easy registration through CSV import and competitors archive
-- automatic mode to handle registration from archive when reading unknown e-cards, with course detection from the trace
-- split format for printing and export (OE format for RouteGadget...)
-- ability to use registered start times instead of a start box
-- translation available in french and english (both app and doc)
+Les grands changements :
+- inscriptions faciles par import CSV ou avec une archive de concurrents
+- mode automatique pour réaliser des inscriptions à la lecture des puces, avec détection du circuit
+- temps intermédiaires pour impression et export (format OE pour RouteGadget...)
+- possibilité d'utiliser un horaire de départ pré-attribué à la place du boîtier départ
+- traduction en français et anglais
 
-UI/Usability changes:
-- many UI changes
-- List serial ports to let user choose. Detect the serial port where the SI box is connected
-- hyperlink navigation to quickly focus on an e-card from the shortlog (runners panel)
-- more universal and new keybindings
+Changements interface et utilisabilité :
+- multiples améliorations de l'interface
+- liste des ports série disponibles pour offrir le choix à l'utilisateur. Détection du port où le boîtier maître est connecté.
+- navigation par hyperlien pour sélectionner rapidement une puce depuis le shortlog (onglet coureurs)
+- plus de raccourcis claviers et plus universels
 
-Other changes:
-- new status and stats to better manage special cases (competitors still running, unknown and duplicate e-cards for automatic mode)
-- new data fields for each competitor: registered start time, archive id for competitor, flag for rented e-card
-- a default course can be linked to a category (use when performing registration through CSV or archive)
-- introduce Functions to perform batch operations on data
-- CSV export format for French CN (Classement National) + CN simulation in results
-- HTML result files can be styled with CSS
-- better handling of files with different charsets across platforms
+Autre changements :
+- nouveaux statuts et statistiques pour gérer les cas spéciaux (concurrents en course, puces inconnues et doublons pour le mode automatique)
+- nouveaux champs de données pour chaque concurrent : horaire de départ pré-attribué, champ d'archive, puce louée
+- attribution d'un circuit par défaut à une catégorie
+- ajout des Fonctions pour effectuer des opérations batch sur les données
+- format d'export CSV pour le Classement National + simulation des points CN
+- styles CSS pour les fichiers résultats HTML
+- meilleure gestion des fichiers avec différents charsets
 
-Architecture/Code:
-- Controls can register themselves as services and get simple access to each other.
-- Refactoring ResultBuilder class and related: split between result builder and result/split exporter
-- \[Mac\] update to latest Java Mac revision
-- Some changes in data files to support 1.1 features
+Architecture/Code :
+- les `Controls` peuvent s'enregistrer comme services et accéder simplement l'un à l'autre
+- ré-ingénierie de la classe `ResultBuilder` et affiliées : séparation entre le calcul des résultats et l'export des résultats et splits
+- \[Mac\] mise à jour pour la dernière révision Mac Java
+- quelques changements dans les fichiers de données pour supporter les fonctions 1.1
 
 
-##Version 1.0 - 2010/10/19
+##Version 1.0 - 19/10/2010
 
-Initial [release](https://bitbucket.org/sdenier/geco/downloads/geco1.0-238-20101019-demo.zip).
+Version [initiale](https://bitbucket.org/sdenier/geco/downloads/geco1.0-238-20101019-demo.zip) (anglais seulement).
 
-Geco 1.0 is dedicated to the Orient'Show format. It was released shortly after the World Cup event in Annecy. Take a look at [Maps and Results](http://www.wcup2010.fr/index.php?option=com_content&view=article&id=34&Itemid=66&lang=en) and especially at the trace of the finals using [Geco WebStart](http://www.wcup2010.fr/orientshow/gecows_annecy2010.html).
+Geco 1.0 est dédié au format Orient'Show. Il est sorti peu après l'organisation à la Coupe du Monde d'Annecy. Vous pouvez jeter un oeil aux [cartes et résultats](http://www.wcup2010.fr/index.php?option=com_content&view=article&id=34&Itemid=66&lang=en) et particulièrement aux traces des finalistes en utilisant [Geco WebStart](http://www.wcup2010.fr/orientshow/gecows_annecy2010.html).

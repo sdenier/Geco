@@ -6,7 +6,7 @@ in_menu: true
 
 # Seven Steps to manage an O' event with Geco
 
-Don't know where to start? Never use a full-featured O software before? Here is a quick guide to manage an orienteering event: seven steps to handle the race organization. Read on for starters.
+Here is a quick guide to discover the essential features of Geco: seven steps to handle the computerized organization of an orienteering event. Read on for starters.
 
 1\. Use the [Launcher] and the [Stage] panel to set up a new stage.
 
@@ -16,7 +16,7 @@ Don't know where to start? Never use a full-featured O software before? Here is 
 
 4\. Check E-card configuration in the [Stage] panel and click the Reader button in the [Toolbar].
 
-Runners download their e-card in the reader to check their status and get their split times.
+> Runners download their e-card in the reader to check their status and get their split times.
 
 4bis. Resolve problems directly in the [Runners] panel and using the [Merge] dialog (read [Workflows](../howtos/index.html) to get a better a picture of manual vs auto modes).
 
