@@ -3,6 +3,7 @@ title: Stage
 sort_info: 3
 in_menu: true
 ---
+
 # Stage Panel
 
 The stage panel allows one to configure general data for the stage.
@@ -10,13 +11,13 @@ The stage panel allows one to configure general data for the stage.
 <a href="../images/stage_panel.png"><img src="../images/stage_panel.png" /></a>
 (Click to zoom in)
 
-- Previous stage/next stage (not editable): see [Qualifications](../howtos/quals.html) for details
-- Orientshow options
+- Previous stage/next stage (not editable): see [Qualifications](../howtos/quals.html)
+- Orient'Show options
   - MP limit: number of missing punches authorized before marking the runner as MP
   - Time penalty: time penalty per missing punch, in seconds
 - SIReader configuration
-  - Station port: `COMx` under Windows, `/dev/ttyX` under Linux and Mac OS
-  - Zero hour: give the hour before first start to be safe (used for older SI cards and registered start times)
+  - Station port: *SPORTident master station must be connected before launching the app so that Geco can detect the port*
+  - Zero hour: used for older SI cards V5 and registered start times
   - Split format: multi-columns (see `SplitNbColumns` in `geco.prop`) or ticket (single column, best for thermal printer)
 - Course
   - Geco can import courses described with the *[IOF XML](http://www.soenniksen.dk/iof-datastandard/index.shtml)* format. Click the *XML* button to select the course file

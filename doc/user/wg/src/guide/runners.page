@@ -10,7 +10,7 @@ The runners panel is the central place to register runners and manage events dur
 <a href="../images/runners_panel_notes.png"><img src="../images/runners_panel_notes.png" /></a>
 (Click to zoom in)
 
-The main part of the panel is the table, which lets you view/edit/filter/sort runners with all the important data.
+The main part of the panel is the table, which lets you view/edit/filter/sort runners with all the essential data.
 The right pane can display details about the currently selected runner (e-card data, trace), or statistics about the race.
 
 
@@ -20,8 +20,8 @@ The right pane can display details about the currently selected runner (e-card d
 - *Import CSV / Open Archive Viewer:* click to perform mass registrations
 - *Sort Runners:* click on a header cell of the table to sort runners according to ascending/descending rank
 - *Filter Runners:* start typing to display only entries matching your search (the search is performed full-text and matches substring in data)
-- *Fast edit Mode (tickbox):* start edition with just one click, useful when lots of edition have to be done quickly
-- *Default course Mode (tickbox):* when active, changing a runner's category also sets his course to the default course for the category (if set in the [Stage](stage.html) panel)
+- *Fast edit Mode (tickbox):* start edition with just one click - useful when lots of manual edition have to be done quickly
+- *Default course Mode (tickbox):* when active, manually changing a runner's category also sets his course to the default course for the category (if set in the [Stage](stage.html) panel)
 - *Live Mode (tickbox):* in this mode, Geco automatically focuses on the last data received from the card reader; runners are dynamically sorted by order of card reading, with most recent on top (other sort options disabled)
 
 ### Pre-registration of competitors
@@ -51,19 +51,21 @@ The right pane can display details about the currently selected runner (e-card d
   - Unknown: unknown e-card downloaded (auto mode)
   - Duplicate: duplicate e-card downloaded (auto mode)
 
+
 ## Shortlog
-The shortlog displays the last six events registered in the log. It is especially useful when reading e-cards as it displays the important data: e-card number, status, time, but also problems detected (trace of missing punches, missing start time or finish time, unknown e-card...).
+The shortlog displays the last six events registered in the log. It is especially useful when reading e-cards as it displays the important data: e-card number, status, official time, but also problems detected (trace of missing punches, missing start time or finish time, unknown e-card...).
 
 The shortlog displays e-card numbers as **hyperlinks**, so that clicking an hyperlink directly focuses on the table entry to let you check and solve problems.
 
 <a href="../images/runners_filter.png"><img src="../images/runners_filter.png" /></a>
 (Table with a filter on the 'litto' string and focus on the Runner Trace pane)
 
+
 ## Runner Data (mod+D)
 The *Runner Data* pane shows complementary information about the currently selected runner. It is useful for an analysis of runner race when resolving a problem.
 
 - Registration
-  - Registered Start: in case you allocate start times to competitors. Note that a start time in e-card always has priority over the registered start time.
+  - Registered Start: in case you allocate start times to competitors. Note that a start time in e-card always has priority over the registered start time
   - Rented e-card: if ticked, Geco displays a warning message when reading this e-card
 - E-card (information fields, non-editable)
   - The *Race* field always displays *finish - start* time, not taking into account time penalties
@@ -84,7 +86,7 @@ The *Trace* pane displays the list of controls for the course compared with the 
 - a missing control is displayed in red with a **-** sign in front
 - a supplementary control is displayed in blue with a **+** sign in front
 - in some cases, the control is displayed in red as **-X+Y**: this is a mispunch which can be explained as a substitution, the runner took control Y instead of X
-- it is also easy to spot inversion in the shape of **-X, Y, +X**: the runner took Y before X, while he should have go the other way.
+- it is also easy to spot inversion with a sequence like **-X, Y, +X**: the runner took Y before X, while he should have go the other way.
 
 ## Statistics Pane (mod+S)
 See the [Log](log.html) page for a description of stage statistics.

@@ -3,88 +3,92 @@ title: Coureurs
 sort_info: 4
 in_menu: true
 ---
+
 # Onglet Coureurs
 
-The runners panel is the central place to register runners and manage events during the race.
+L'onglet coureurs est la place centrale pour inscrire les concurrents et gérer les événements durant la course.
 
 <a href="../images/runners_panel_notes.fr.png"><img src="../images/runners_panel_notes.fr.png" /></a>
-(Click to zoom in)
+(Cliques pour zoomer)
 
-The main part of the panel is the table, which lets you view/edit/filter/sort runners with all the important data.
-The right pane can display details about the currently selected runner (e-card data, trace), or statistics about the race.
+La partie principale est la table des coureurs, qui permet de voir/éditer/filtrer/trier les concurrents tout en montrant les données essentielles.
+La vue dans le panneau de droite peut montrer des données détaillées sur le coureur sélectionné (données puce, trace), ou bien des statistiques sur la course.
 
 
-## Runners Table
+## Table des coureurs
 
-- *Add/Remove Runner:* add a runner at the end of the startlist; remove the currently selected runner
-- *Import CSV / Open Archive Viewer:* click to perform mass registrations
-- *Sort Runners:* click on a header cell of the table to sort runners according to ascending/descending rank
-- *Filter Runners:* start typing to display only entries matching your search (the search is performed full-text and matches substring in data)
-- *Fast edit Mode (tickbox):* start edition with just one click, useful when lots of edition have to be done quickly
-- *Default course Mode (tickbox):* when active, changing a runner's category also sets his course to the default course for the category (if set in the [Stage](stage.html) panel)
-- *Live Mode (tickbox):* in this mode, Geco automatically focuses on the last data received from the card reader; runners are dynamically sorted by order of card reading, with most recent on top (other sort options disabled)
+- *Créer/Supprimer un coureur :* ajouter un nouveau concurrent à la fin de la liste de départ ; supprimer le concurrent sélectionné
+- *Importer CSV / Ouvrir la vue Archive :* pour faire des pré-inscriptions en masse
+- *Trier les concurrents :* cliquez sur l'entête d'une colonne pour trier les concurrents par rang ascendant/descendant
+- *Filtrer les concurrents :* entrez quelques caractères pour montrer les entrées correspondant à la recherche
+- *Édition rapide :* un seul clic dans la table permet d'éditer les données - utile quand il s'agit d'effectuer rapidement plusieurs modifications manuelles
+- *Circuit par défaut :* si coché, changer manuellement la catégorie d'un coureur change aussi son circuit pour le circuit par défaut de la catégorie (configuré dans l'[Étape](stage.fr.html))
+- *Mode Live :* dans ce mode, Geco sélectionne automatiquement le dernier concurrent dont la puce est lue ; les coureurs sont classés par ordre de lecture des puces, en commençant par les plus récents (les tris par colonne sont désactivés dans ce mode)
 
-### Pre-registration of competitors
+### Pré-inscription des concurrents
 
-- You can import a CSV file in OE entry format. It is the fastest way to import many entries.
-- You can import competitors from an [Archive](archive.html).
-- Both CSV import and archive import automatically create club and category necessary for the import.
-- Both CSV import and archive import sets runner's course to the default course for category (if configured).
-- You can insert a new entry by clicking the `+` button (or pressing `mod+I`) and edit the entry by hand.
+- Vous pouvez importer un fichier CSV avec le format des inscriptions OE. C'est la méthode la plus rapide pour importer de nombreuses inscriptions.
+- Vous pouvez importer des coureurs depuis l'[Archive](archive.fr.html).
+- L'import CSV ou par l'archive crée automatiquement les clubs et catégories nécessaires pour l'import.
+- L'import CSV ou par l'archive utilise le circuit par défaut de la catégorie (si configuré).
+- Vous pouvez insérer une nouvelle entrée en cliquant le bouton `+` (raccourci `mod+I`) et éditer l'entrée manuellement.
 
-### Manual edition of competitors
+### Édition manuelle des concurrents
 
-- Double-click in a cell to start edition
-- Geco checks that the values you enter in the table are valid
-- Information/problems are displayed in the status bar (and in the log for the most important ones)
-- Use *Default course Mode* to change the course automatically with the category
-- Changing the course triggers a status computation to check if the trace is still valid
-- If necessary, the official race time (used for results) can be edited by hand
-- If necessary, status can be changed manually
-  - Not Started (default status): runner registered but no race data available
-  - Running: runner known to have started but not yet arrived
+- Double-cliquez sur une cellule pour l'éditer
+- Geco vérifie la validité des valeurs entrées dans la table
+- La barre de statut (et le log) montre informations et problèmes
+- Utilisez le mode *Circuit par défaut* pour changer le circuit avec la catégorie
+- Changer de circuit déclenche un calcul du statut pour vérifier la validité de la trace
+- Si nécessaire, le temps officiel de course (pour les résultats) peut être changé manuellement
+- Si nécessaire, le statut peut être changé manuellement
+  - Non parti  (statut par défaut) : coureur inscrit mais sans données de course
+  - En course : coureur confirmé comme parti mais pas encore arrivé
   - OK
-  - MP: Missing Punch
-  - DNS: Did Not Start
-  - DNF: Did Not Finish
-  - DSQ: Disqualified
-  - Unknown: unknown e-card downloaded (auto mode)
-  - Duplicate: duplicate e-card downloaded (auto mode)
+  - PM
+  - Absent
+  - Abandon
+  - Disq : disqualifié
+  - Inconnu : puce lue inconnue (mode auto)
+  - Doublon : puce déjà lue (mode auto)
+
 
 ## Shortlog
-The shortlog displays the last six events registered in the log. It is especially useful when reading e-cards as it displays the important data: e-card number, status, time, but also problems detected (trace of missing punches, missing start time or finish time, unknown e-card...).
+Le shortlog montre les six derniers événements enregistrés par le log. Il est spécialement utile durant la lecture des puces car il montre les informations essentielles : numéro de puce, statut, temps officiel, mais aussi problèmes détectés (trace des poinçons manquant, temps de départ ou d'arrivée manquant, puce inconnue...).
 
-The shortlog displays e-card numbers as **hyperlinks**, so that clicking an hyperlink directly focuses on the table entry to let you check and solve problems.
+Dans le shortlog, les numéros de puce sont affichés comme **hyperliens**. Cliquer sur le lien sélectionne automatiquement l'entrée dans la table pour vérifier les données et résoudre les problèmes.
 
 <a href="../images/runners_filter.png"><img src="../images/runners_filter.png" /></a>
-(Table with a filter on the 'litto' string and focus on the Runner Trace pane)
-
-## Runner Data (mod+D)
-The *Runner Data* pane shows complementary information about the currently selected runner. It is useful for an analysis of runner race when resolving a problem.
-
-- Registration
-  - Registered Start: in case you allocate start times to competitors. Note that a start time in e-card always has priority over the registered start time.
-  - Rented e-card: if ticked, Geco displays a warning message when reading this e-card
-- E-card (information fields, non-editable)
-  - The *Race* field always displays *finish - start* time, not taking into account time penalties
-  - *Start/Finish* times are displayed with a **red background** if missing
-- Result (information fields, non-editable)
-  - Official is the official time computed as race time + penalties
-  - The time taken by Geco to compute results is the one given in the table (which can be edited by hand if necessary) - Official time is displayed with a **yellow background** if it does match with the table
-- Buttons
-  - *Recheck* (mod+R) computes the status based on punches and course and reset the official time
-  - *Reset Official Time* computes the official time in table based on race time and penalties
-  - *Print Runner Splits* (mod+P) sends splits to the printer
-  - Click the *Merge...* button for advanced management of data, like merging two runners together. It opens the *[Merge dialog](merge.html)* on the currently selected runner.
+(Table avec un filtre sur 'litto' et affichant la trace détaillée)
 
 
-## Runner Trace (mod+T)
-The *Trace* pane displays the list of controls for the course compared with the list of punches (control code and punch time) of the runner. It is of great help to understand where a runner mispunched. Geco uses a sophisticated algorithm to detect accurately mispunches, even in the case of butterfly loop:
+## Vue Données du coureur (mod+D)
+La vue *Données* du coureur montre des informations complémentaires sur le coureur sélectionné. Cette vue est utile pour l'analyse des données de course lors de la résolution d'un problème.
 
-- a missing control is displayed in red with a **-** sign in front
-- a supplementary control is displayed in blue with a **+** sign in front
-- in some cases, the control is displayed in red as **-X+Y**: this is a mispunch which can be explained as a substitution, the runner took control Y instead of X
-- it is also easy to spot inversion in the shape of **-X, Y, +X**: the runner took Y before X, while he should have go the other way.
+- Inscription
+  - Horaire départ : si vous faites un départ avec horaires attribués à l'avance. Notez que vous pouvez mélanger horaire départ et boîtier départ : Geco donne priorité à l'heure de départ enregistrée dans la puce
+  - Puce louée : si cochée, Geco affiche un message lors de la lecture de la puce
+- Données puce (champs d'information, non modifiables)
+  - Le champ *Chrono* montre toujours le temps *Arrivée - Départ*, sans prendre en compte des pénalités
+  - Les temps *Départ/Arrivée* sont affichées avec un **fond rouge** s'ils sont manquants
+- Résultats (champs d'information, non modifiables)
+  - Le champ du temps officiel affiche toujours le chrono + pénalité
+  - Geco utilise le temps officiel de la table pour calculer les résultats (qui peut être changé à la main) - le champ est affiché avec un **fond jaune** pour indiquer un changement dans la table
+- Boutons
+  - *Vérifier* (mod+R) recalcule le statut du coureur et le temps officiel
+  - *Réinitialiser temps officiel* recalcule le temps officiel
+  - *Imprimer splits* (mod+P) envoie les temps intermédiaires du coureur à l'imprimante
+  - Cliquez sur le bouton *Fusion...* pour une gestion avancée, comme la fusion de deux inscriptions ensemble. Ce bouton ouvre la *[Fenêtre de fusion](merge.html)* sur le coureur sélectionné.
 
-## Statistics Pane (mod+S)
-See the [Log](log.html) page for a description of stage statistics.
+
+## Vue Trace du coureur (mod+T)
+La vue *Trace* montre la liste des postes du circuit comparée avec la liste des poinçons (code et temps) du coureur. Cette vue est très utile pour comprendre où un coureur a manqué un poste. Geco utilise un algorithme sophistiqué pour détecter les postes manquants, même dans le cas des papillons :
+
+- un poste manquant est affiché en rouge avec le signe **-** devant
+- un poste supplémentaire est affiché en bleu avec le signe **+** devant
+- dans certains cas, le poste est affiché en rouge avec le format **-X+Y** : c'est l'indice d'une substitution, le coureur a pris le poste Y au lieu de X
+- il est aussi facile de repérer les inversions avec la séquence **-X, Y, +X** : le coureur a pris Y avant de prendre X, alors qu'il aurait dû prendre l'ordre inverse.
+
+
+## Vue Statistiques (mod+S)
+Voir la page [Log](log.fr.html) pour une description des statistiques de course.

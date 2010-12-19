@@ -7,21 +7,21 @@ in_menu: true
 
 L'onglet étape permet de configurer les informations générales de la course.
 
-Raccourci : `modifier + S`.
+<a href="../images/stage_panel.fr.png"><img src="../images/stage_panel.fr.png" /></a>
+(Cliquez pour zoomer)
 
-<a href="../images/stage_panel.png"><img src="../images/stage_panel.png" /></a>
-(Cliquer pour zoomer)
+- Précédent/Suivant (non modifiable) : voir [Qualifications](../howtos/quals.fr.html)
+- Options Orient'Show
+  - Limites PM : nombre de postes manquant autorisés avant de marquer le coureur comme PM
+  - Pénalité : pénalité de temps en secondes par poste manquant
+- Lecture SI
+  - Port : *le boîtier maître SPORTident doit être connecté avant de lancer l'application pour que Geco détecte le port*
+  - Heure zéro : utilisée pour les puces V5 et les horaires de départ
+  - Format splits : multi-colonnes (voir option `SplitNbColumns` dans le fichier `geco.prop`) ou ticket (une seule colonne, pour imprimante thermique à ticket)
+- Circuit
+  - Geco peut importer des circuits décrits au format *[IOF XML](http://www.soenniksen.dk/iof-datastandard/index.shtml)*. Cliquez sur le bouton *XML* pour sélectionner le fichier de circuits
+  - Vous pouvez *Éditer* les circuits à la main, si besoin
+  - Vous pouvez *Revérifier* tous les coureurs d'un circuit après changement
+- Catégorie/Circuit : circuit par défaut pour les coureurs de la catégorie (utilisé en particulier pour l'import CSV ou depuis l'archive)
 
-- Etape précédente/suivant (non modifiable): Voir [Qualifications](../howtos/quals.fr.html) pour plus de détails
-- Options Orientshow
-  - Limites PM: nombre de postes manquants tolérés avant d'indiqué le coureur comme PM
-  - Pémalité: pénalité de temps par poste manquant, en secondes
-- Configuration
-  - Numéro de port: `COMx` sous Windows, `/dev/ttyX` sous Linux et Mac OS
-  - Heure Zero: donner une heure antérieure à celle du premier départ pour éviter tout problème (utile pour les puces v5)
-- Circuits
-  - Geco permet d'importer des données au format *[IOF XML](http://www.soenniksen.dk/iof-datastandard/index.shtml)*. Cliquer sur le bouton *XML* pour sélectionner le fichier de circuits
-  - Vous pouvez *Editer* les circuits à la main, si besoin
-  - Vous pouvez *Contrôler* tous les coureurs du circuit après changement(s)
-
-Les données clubs, catégories, circuits peuvent aussi être éditées via un tableur. Voir [Format des fichiers](../howtos/fileformat.fr.html).
+Les données clubs, catégories, circuits peuvent aussi être éditées via un tableur. Voir les [formats fichiers](../howtos/fileformat.fr.html).

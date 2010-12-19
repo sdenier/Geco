@@ -3,8 +3,8 @@ title: Toolbar
 sort_info: 2
 in_menu: true
 ---
-# Toolbar
 
+# Toolbar
 
 <img src="../images/toolbar.png" />
 
@@ -12,7 +12,7 @@ The toolbar offers global actions.
 
 - *New/Open* opens the [Launcher](index.html)
 - *Save* saves current data on disk. Note that data are [backuped and saved](../howtos/backup.html) automatically when you exit and at regular intervals
-- *Previous stage/Next stage* navigate to the indicated stage in qualifications. Only available if current stage is detected as part of qualifications
+- *Previous stage/Next stage* navigate to the indicated stage in qualifications (only available if current stage is detected as part of qualifications)
 - *Recheck OK|MP* resets all status and all official times for runners with OK or MP status, to be used when a problem affecting all runners has been detected and fixed.
 Be careful with this action as it will also discard manual modification to race time you may have made.
 
@@ -22,15 +22,15 @@ The two following buttons manage [Live](../howtos/live.html) features.
 In addition, the toolbar lets you control the behavior of Geco when reading e-cards.
 <img style="float:none; width:199px" src="../images/sireader_toolbar.png" />
 
-The left-most button controls the [Auto](../howtos/auto.html) mode of Geco (by default it is enabled). The middle-one controls auto-printing of split times when a runner downloads his e-card. The right-most one controls the e-card reader station.
+The left button controls the [Auto](../howtos/auto.html) mode of Geco (by default it is enabled). The middle one controls auto-printing of split times when a runner downloads his e-card. The right one controls the e-card reader station.
 
-When disabled, Auto mode and Split printing each display a grey icons:  
+When disabled, Auto mode and Split printing each display a grey icon:  
 <img style="float:none; width:90px" src="../images/sifeatures_off.png" />
 
 When enabled, Auto mode and Split printing display icons with yellow flashes:  
 <img style="float:none; width:92px" src="../images/sifeatures_on.png" />
 
-The underneath button indicates that the reader is off. Click it to start the reader and accepts card reading. Geco checks the status of Split printing before ans ask you if you want to enabled split printing if disabled.  
+The underneath button indicates that the reader is off. Click it to start the reader and accepts card reading. Geco checks the status of Split printing before and ask you if you want to enable split printing if disabled.  
 <img style="float:none; width:110px" src="../images/reader_off.png" />
 
 While Geco is launching the reader, the toolbar will display a *Starting...* button. Errors are displayed in the status bar. You can click on the button to interrupt the launch.
