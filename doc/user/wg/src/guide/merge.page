@@ -6,13 +6,13 @@ in_menu: true
 
 # Merge Dialog
 
-The *Merge Dialog* allows to manage card data after a problem arises: wrong SI number, duplication of runner data, problem when reading the card...
+The *Merge Dialog* allows to manage card data after a problem arises: wrong e-card number, duplication of runner data, problem when reading the card...
 
 <img src="../images/merge_dialog.png" />
 
 You get the merge dialog when:
-- a SI card has been read but no runner with this SI number is registered
-- a SI card has been read but the linked runner has some results already
+- (manual mode) a SI card has been read but no runner with this SI number is registered
+- (manual mode) a SI card has been read but the linked runner has some results already
 - opening it on the selected runner in the runners table
 
 Three commands are available from the merge dialog:
@@ -28,42 +28,45 @@ If you select a runner who already has card data, the *Merge* button changes to 
 Following are typical usage of the *Merge* dialog.
 
 
-### Unknown Chip
+### Unknown E-card (manual mode)
 
-When a SI chip which has not been registered in the system is read, the merge dialog pops up automatically.
+When an e-card which has not been registered in the system is read, the merge dialog pops up automatically.
 
-- If the runner has been registered but without a chip number or with an incorrect chip number, select him in the combo box then click *Merge*. You are done!
+- If the runner has been registered but without an e-card number or with an incorrect e-card number, select him in the combo box then click *Merge*. You are done!
 
 - If the runner has not been registered or if you are unsure, select the course then click *Create* to create an anonymous runner. You can then edit runner information in the table.
 
 - *Close* simply discards card data
 
 
-### Existing Data for Runner
+### Existing Data for Runner (manual mode)
 
-When a SI chip is read and the linked runner already has card data, the merge dialog pops up automatically. The linked runner is selected by default and the dialog displays an *Overwrite* button.
+*This matches the Duplicate status in auto mode.*
 
-- If you read again the card for the same runner, just click *Overwrite* to replace previous card data with the new one
+When an e-card is read and the linked runner already has card data, the merge dialog pops up automatically. The linked runner is selected by default and the dialog displays an *Overwrite* button.
 
-- If the runner is different (two runners using the same chip), click *Create* to create a new runner (and start editing) or select and *Merge* with the registered runner
+- If you read again the card for the same runner, just click *Overwrite* to replace previous card data with the new one.
 
-- *Close* simply discards card data
+- If the runner is different (two runners using the same e-card), click *Create* to create a new runner (and start editing) or select and *Merge* with the registered runner.
+
+- *Close* simply discards card data.
 
 
-### Merge Card Data
+### Merge Registered Entries
 
-You previously read an unknown chip and you choose to create an anonymous runner. Then you found the registered runner which should be linked with card data. You now want to merge the card data with the registered runner.
+You previously read an unknown e-card and you choose to create an anonymous runner. Then you found the registered runner which should be linked with card data. You now want to merge the card data with the registered runner.
 
 1. Select the anonymous runner with the new card data, then open the merge dialog from the Runner pane.
 
-1. Select the registered runner in the combo box of the dialog
+1. Select the registered runner in the combo box of the dialog.
 
-1. Click *Merge* or *Overwrite*. The dialog will link the card data with the registered runner
+1. Click *Merge* or *Overwrite*. The dialog will link the card data with the registered runner.
 
-1. Confirm or cancel the deletion of the previous (anonymous) runner
+1. Confirm or cancel the deletion of the anonymous runner (which now duplicates the other entry).
+
 
 The two other commands are also available:
 
-- *Create* in this mode will duplicate the card data in a new anonymous runner
+- *Create* in this mode will duplicate the card data in a new anonymous runner.
  
-- *Close* just exits the dialog
+- *Close* just exits the dialog.

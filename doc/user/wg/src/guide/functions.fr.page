@@ -1,26 +1,27 @@
 ---
-title: Functions
+title: Fonctions
 sort_info: 8
 in_menu: true
 ---
-# Functions (Log Panel)
 
-Functions are special purpose operations which can be performed on batch of data, usually runners. They allow one to change/check data in registry at once.
+# Fonctions (Onglet Log)
 
-<a href="../images/function_start.png"><img src="../images/function_start.png" /></a>
+Les Fonctions servent à appliquer des opérations sur des lots de données (batch). Elles permettent de changer/vérifier toutes les données de la base en une seule passe.
 
-Select the tab *Functions* next to Stats in the [Log](log.html) panel and choose a function in the combo box. Each function displays its set of parameters and actions in the top pane. Pressing *Execute* performs the default operation of the function.
+<a href="../images/function_start.fr.png"><img src="../images/function_start.fr.png" /></a>
 
-Currently available functions:
+Sélectionnez l'onglet *Fonctions* à côté des Stats dans le [Log](log.fr.html) et choisissez une fonction dans la liste. Chaque fonction affiche ses paramètres et ses actions dans la vue haute. Cliquez *Exécuter* pour appliquer l'opération par défaut de la fonction.
 
-**Set start times**
-- Change registered start times at once for the selected pool of runners (by course, category, or an arbitrary set); can be use to mimic a mass start if necessary
-- Only change the start time of runners without race data (i.e. Not Started runners); tick *Reset all runners...* to change start time for all runners, including those with race data
+Fonctions disponibles :
 
-**Recheck runners**  
-Recheck all runners in the selected pool (by course, category, or an arbitrary set); a more fine-grained version of *Recheck OK|MP* in the toolbar
+**Horaires de départ**
+- Changer tous les horaires de départ pour un groupe de coureurs (par course, catégorie, ou un groupe arbitraire) ; cela peut servir à simuler un départ en masse
+- Par défaut seul l'horaire des coureurs sans données de course est changé (coureurs non partis) ; cochez *Régler tous les horaires* pour changer l'horaire de tous les coureurs, y compris ceux qui ont déjà des données
 
-**Random Generator**
-- Generate random entries (complete with e-card) to test Geco behavior
-- Additional action to generate an unknown entry (test manual vs auto mode)
-- Additional action to generate e-card data for an existing entry (possibly generating a duplicate in auto mode)
+**Vérifier les coureurs**  
+Revérifier les coureurs dans le groupe sélectionné (par course, catégorie, ou un groupe arbitraire) ; même principe que l'action *Vérifier OK|MP*
+
+**Générateur aléatoire** 
+- Générer des entrées aléatoires (avec les données puce) pour tester Geco
+- Action supplémentaire pour générer une entrée inconnue (test modes manuel et auto)
+- Action supplémentaire pour générer des données puces pour une entrée existante (génération de doublons)

@@ -3,6 +3,7 @@ title: Heats
 sort_info: 10
 in_menu: true
 ---
+
 # Heats Panel
 
 The heats panel lets you define how runners in the current stage got qualified for the next stage in knockout qualifications.
@@ -21,8 +22,8 @@ Create a **heatset** by clicking the *New* button (or edit an existing heatset b
 
 Save the heatset parameters. Finally, select in the bottom left list from which courses (or categories) runners should be drawn.
 
-For example, the heatset *Women* in the above figure indicates that runners ranked at most 4th in the W21 category should be qualified.
-All qualified runners will be dispatched in two heats, *X* and *Y*, which correspond to courses in the next stage. 
+For example, the heatset *Men* in the above figure indicates that the first two runners of each H* category should be qualified.
+All qualified runners will be dispatched in two heats, *A* and *B*, which correspond to courses in the next stage. 
 
 Hit the *Refresh* button to generate and view heats. Hit the *Export* button to export generated heats to a file.
 If there is a next stage, Geco will automatically propose to overwrite the startlist of the next stage.

@@ -4,19 +4,19 @@ sort_info: 5
 in_menu: true
 ---
 
-# Archive Viewer
+# Vue Archive
 
-The archive viewer offers a practical way to register entries from a large database of known competitors (for example from a sports federation).
+La vue archive permet d'enregistrer des inscriptions à partir d'une base de concurrents (par exemple l'archive fédérale).
 
-<a href="../images/archive.png"><img src="../images/archive.png" /></a>
+<a href="../images/archive.fr.png"><img src="../images/archive.fr.png" /></a>
 
-First click the *Load Archive* button and select an archive file (CSV file in OE format). You only need to do this step once for a stage. After that, Geco will remember the file location and automatically loads the file when necessary.
+Cliquez d'abord sur le bouton *Charger l'archive* et sélectionnez le fichier d'archive (fichier CSV au format OE). Cette étape est nécessaire une seule fois par course. Geco mémorise l'emplacement du fichier et charge automatiquement l'archive quand c'est nécessaire.
 
-- Use the filter field to find someone in the archive
-- Select a competitor and press *Insert* (or `mod+I`) to create a new entry in the stage
-- Geco automatically creates club and category for the new entry if necessary
-- Geco sets the course for the new entry to the [default course](stage.html) for category (if available)
+- Utilisez le champ de recherche pour trouver quelqu'un dans l'archive
+- Sélectionnez un coureur et cliquez sur *Insérer* (ou pressez `mod+I`) pour créer une nouvelle entrée dans la course
+- Geco crée automatiquement club et catégorie pour la nouvelle entrée si nécessaire
+- Geco utilise comme circuit de la nouvelle entrée le [circuit par défaut](stage.fr.html) de la catégorie (si configuré)
 
-**Hint:** when performing pre-registration, try the following process
-- first search the competitor by his e-card number (as given in the registration file); this way you can check that the competitor gets the right e-card
-- if the e-card can not be found in the archive or the archive entry does not match, it may have changed and the archive is not up to date; search by name or club to find the competitor
+**Conseil :** quand vous faites les pré-inscriptions, essayez la démarche suivante
+- cherchez d'abord le coureur par son numéro de puce (tel qu'indiqué dans le fichier d'inscription) ; ceci permet de vérifier que le numéro de puce est correct
+- si la puce n'est pas trouvée dans l'archive ou bien si l'entrée dans l'archive ne correspond pas au coureur, ceci indique un changement non mis à jour dans l'archive ; cherchez le coureur par son nom ou son club

@@ -1,69 +1,72 @@
 ---
-title: Merge
+title: Fusion
 sort_info: 6
 in_menu: true
 ---
 
-# Merge Dialog
+# Fenêtre de fusion
 
-The *Merge Dialog* allows to manage card data after a problem arises: wrong SI number, duplication of runner data, problem when reading the card...
+La *Fenêtre de fusion* permet de gérer les données puce en cas de problème : mauvais numéro de puce, entrées dupliquées dans la table, problème à la lecture de puce...
 
-<img src="../images/merge_dialog.png" />
+<img src="../images/merge_dialog.fr.png" />
 
-You get the merge dialog when:
-- a SI card has been read but no runner with this SI number is registered
-- a SI card has been read but the linked runner has some results already
-- opening it on the selected runner in the runners table
+Cette boîte de dialogue apparaît quand :
+- (mode manuel) une puce est lue mais aucune entrée n'existe avec ce numéro
+- (mode manuel) une puce est lue mais l'entrée concernée a déjà des résultats
+- vous l'ouvrez depuis la vue *Données* sur le coureur sélectionné
 
-Three commands are available from the merge dialog:
-- *Create* simply creates an anonymous runner (X) with the card data.
-- *Close* exits the dialog without further action.
-- *Merge* links card data with the runner selected in the combo box.
+Trois commandes sont disponibles dans cette boîte de dialogue :
+- *Créer* créer une nouvelle entrée (anonyme) avec les données de la puce.
+- *Fermer* clôt la fenêtre sans autre action.
+- *Fusionner* associe les données puce au coureur sélectionné dans la liste déroulante.
 
-If you select a runner who already has card data, the *Merge* button changes to *Overwrite* as card data from the selected runner will be **overwritten** with the new card data. This is the only case to handle with care, as it implies some information will be lost.
-
-
-## Scenarios
-
-Following are typical usage of the *Merge* dialog.
+Si vous sélectionnez dans cette liste un coureur ayant déjà des données puce, le bouton *Fusionner* affiche *Remplacer* car ses données seront **écrasées** avec les nouvelles données puce. C'est le seul cas à prendre avec précaution car l'action détruira des données.
 
 
-### Unknown Chip
+## Scénarios
 
-When a SI chip which has not been registered in the system is read, the merge dialog pops up automatically.
-
-- If the runner has been registered but without a chip number or with an incorrect chip number, select him in the combo box then click *Merge*. You are done!
-
-- If the runner has not been registered or if you are unsure, select the course then click *Create* to create an anonymous runner. You can then edit runner information in the table.
-
-- *Close* simply discards card data
+Voici quelques usages typiques de la fenêtre de fusion.
 
 
-### Existing Data for Runner
+### Puce inconnue (mode manuel)
 
-When a SI chip is read and the linked runner already has card data, the merge dialog pops up automatically. The linked runner is selected by default and the dialog displays an *Overwrite* button.
+Quand une puce non inscrite est lue, la fenêtre s'affiche automatiquement en mode manuel.
 
-- If you read again the card for the same runner, just click *Overwrite* to replace previous card data with the new one
+- Si le coureur a bien été inscrit mais sans numéro de puce ou avec un mauvais numéro, sélectionnez-le dans la liste déroulante et cliquez *Fusionner*.
 
-- If the runner is different (two runners using the same chip), click *Create* to create a new runner (and start editing) or select and *Merge* with the registered runner
+- Si le coureur n'a pas été inscrit ou bien en cas de doute, sélectionnez un circuit et cliquez *Créer* pour insérer un coureur anonyme. Vous pouvez ensuite éditer les informations dans la table.
 
-- *Close* simply discards card data
+- *Fermer* jette les données puce.
 
 
-### Merge Card Data
+### Données existantes pour le coureur (mode manuel)
 
-You previously read an unknown chip and you choose to create an anonymous runner. Then you found the registered runner which should be linked with card data. You now want to merge the card data with the registered runner.
+*Ceci correspond à une entrée Doublon en mode auto.*
 
-1. Select the anonymous runner with the new card data, then open the merge dialog from the Runner pane.
+Quand une puce est lue et que le coureur associé a déjà des données de course, la fenêtre s'affiche automatiquement en mode manuel. Le coureur associé est sélectionné par défaut dans la liste déroulante et la fenêtre affiche le bouton *Remplacer*.
 
-1. Select the registered runner in the combo box of the dialog
+- Si vous relisez la puce pour le même coureur, cliquez *Remplacer* pour écraser les anciennes données puce avec les nouvelles.
 
-1. Click *Merge* or *Overwrite*. The dialog will link the card data with the registered runner
+- S'il s'agit d'un autre coureur (deux coureurs utilisant la même puce), cliquez *Créer* pour insérer une nouvelle entrée (et éditez la) ou bien *Fusionner* avec le coureur correspondant.
 
-1. Confirm or cancel the deletion of the previous (anonymous) runner
+- *Fermer* jette les données puce.
 
-The two other commands are also available:
 
-- *Create* in this mode will duplicate the card data in a new anonymous runner
- 
-- *Close* just exits the dialog
+### Fusionner des inscriptions
+
+Vous avez auparavant lu une puce inconnue et choisi de créer une entrée anonyme. Puis vous avez trouvé l'inscription correspondante à la puce. Plutôt que de recopier à la main les données, vous pouvez fusionner les données puce dans cette inscription.
+
+1. Sélectionnez l'entrée anonyme avec les données puce, puis ouvrez la fenêtre de fusion depuis la vue Données du coureur.
+
+1. Sélectionnez la bonne inscription dans la liste déroulante.
+
+1. Cliquez *Fusionner* ou *Remplacer*. Ceci associe les données puce à l'inscription sélectionnée.
+
+1. Confirmez ou annulez la suppression de l'entrée anonyme (qui fait maintenant doublon).
+
+
+Les deux autres commandes sont aussi disponibles :
+
+- *Créer* va dupliquer les données puce dans une nouvelle entrée anonyme.
+
+- *Fermer* clôt la boîte de dialogue.

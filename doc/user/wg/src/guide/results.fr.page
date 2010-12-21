@@ -5,25 +5,53 @@ in_menu: true
 ---
 # Onglet Résultats
 
-L'onglet résultats permet de produire un état à partir des données, et ce à n'importe quel moment de la course.
+L'onglet résultats permet de générer plusieurs types de résultats pendant et après la course.
 
-Raccourci : `modifier + E`.
+<a href="../images/results_ranking.fr.png"><img src="../images/results_ranking.fr.png" /></a>
 
-<a href="../images/results_panel.png"><img src="../images/results_panel.png" /></a>
+## Calculer les résultats
 
-Sélectionner *Circuits* ou *Catégories* pour le calcul des résultats. On peut également choisir les ciruits/catégories voulus dans la liste située juste en-dessous.
+1\. Sélectionnez *Circuits* ou *Catégories* pour le calcul des résultats. La sélection peut être affinée circuit par circuit (ou catégorie par catégorie) dans la liste en dessous.
 
-The *Category/Courses* is a third option which computes one ranking per category in each course. It is useful when categories are split across different courses in pools.
+L'option *Catégorie/Circuit* calcule un classement par catégorie pour chaque circuit. Cette option est utilisée quand les catégories sont dispersées sur plusieurs circuits lors de qualifications.
 
-By default, results display the ranking of runners with OK status, as well as runners with status MP, DNF, DSQ. Courses/categories for which no race data are available yet are not displayed.
-Options for displaying results include:
-- *Show NC*: include runners ticked as NC in the results. They will appear after the ranked runners, with MPs and others.
-- *Show others*: include DNS runners, which were registered but did not run.
-- *Show penalties*: show real race time and number of MPs for each runner.
-- *Show empty sets*: show all courses (categories) in results, even if there is no race data yet.
+2\. Sélectionnez *Classement*, *Splits*, ou *CN* comme méthode de calcul des résultats.
+- Classement : classement classique, pour les résultats intermédiaires et officiels.
+- Splits : temps intermédiaires pour les coureurs des groupes sélectionnés.
+- CN : simulation des points [CN](http://cn.ffco.asso.fr) pour les coureurs présents.
 
-Les résultats peuvent être affichés dans le panneau de droite (bouton *Acualiser*), imprimés, ou exportés sous forme de fichiers au format **html** (par défaut) ou **csv**.
+Par défaut, les résultats affichent les concurrents classés OK, ainsi que les concurrents PMs, en Abandon, Disqualifiés. Les circuits (catégories) sans résultat ne sont pas affichés.
+Les options d'affichage sont :
+- *NC* : inclut les coureurs non classés. Ils apparaissent avec les concurrents PMs etc.
+- *Autres* : inclut les coureurs absents ou sans donnée.
+- *Pénalités* : montre le chrono et le nombre de PMs pour chaque coureur (seulement pour le *classement*).
+- *Groupes vides* : montre tous les circuits (catégories), même si aucun classement n'est disponible.
 
-Le bouton *Autoexport*, quand il est en marche, rafraîchit à intervalles réguliers (en secondes dans le champ à droite) ou génère un fichier de résultats nommée `lastresults` dans le dossier de la course.
-La fonction autoexport est basée sur les paramètres spécifiés lors de l'activation (circuits ou catégories, format d'export, *Afficher NC*,...).
-Arrêter et redémarrer l'export automatique pour prendre en compte les modifications de paramètres.
+Les résultats peuvent s'afficher dans la fenêtre (bouton *Actualiser*), être imprimés, ou exportés dans un fichier. Le format HTML est le format d'export par défaut.
+
+<a href="../images/results_splits.fr.png"><img src="../images/results_splits.fr.png" /></a>
+
+### Formats d'export
+
+Geco propose trois formats d'export :
+- **HTML** pour la publication web
+- **CSV** pour tableurs
+- **OE CSV**, format reconnu par de nombreux outils d'analyse
+
+Par example, utilisez *Splits* et *OE CSV* pour un fichier compatible avec RouteGadget.
+
+Pour le Classement National, utilisez *Classement* ou *CN* avec le format *OE CSV*. Le fichier produit contient l'essentiel et sera plus petit qu'un fichier splits.
+
+### Simulation CN
+
+La simulation CN calcule les points (hypothétiques) marqués sur la course pour les licenciés FFCO. Vous pouvez vous en servir pour vérifier la validité des données avant transmission au site CN. Utilisez le format *OE CSV* dans la boîte de dialogue d'export.
+
+Geco utilise le numéro d'archive pour repérer les coureurs CN. Ce numéro doit donc correspondre à l'identifiant FFCO (numéro de licence). Utilisez l'import par archive ou par CSV pour évitez les erreurs.
+
+<a href="../images/results_cn.fr.png"><img src="../images/results_cn.fr.png" /></a>
+
+## Mode auto (résultats)
+
+Le bouton *Auto*, une fois activé, rafraîchit les résultats dans la fenêtre ou génère un fichier nommé `lastresults` à intervalles réguliers (en secondes).
+La fonction auto prend en compte les paramètres spécifiés à l'activation (circuits ou catégories, classement/splits/CN, format d'export, options).
+Arrêtez et redémarrez le mode auto pour prendre en compte de nouveaux paramètres.

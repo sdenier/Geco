@@ -5,26 +5,29 @@ in_menu: true
 ---
 # Onglet Log
 
-L'onglet log est un journal des évènements importants apparus depuis le début de la session. Il affiche également les statistiques de la course.
-Pour voir tous les évènements encourus depuis la création de cette course, parcourir le fichier `geco.log`.
+L'onglet log affiche le journal des évènements importants enregistrés depuis le début de la session. Il affiche également les statistiques de la course et les [Fonctions](functions.fr.html).
+Pour voir tous les évènements depuis la création de la course, ouvrez le fichier `geco.log`.
 
-Raccourci : `modifier + L`.
+<a href="../images/log_stats.fr.png"><img src="../images/log_stats.fr.png" /></a>
 
-<a href="../images/log_panel.png"><img src="../images/log_panel.png" /></a>
+La vue des statistiques montre le statut des coureurs pour chaque circuit ainsi que le total.
+Il existe une *Vue simple* avec les états essentiels et une vue complète avec plus d'informations.
 
-La partie statistiques montre le statut des coureurs circuit par circuit en plus d'un récapitulatif total.
-Un état simple propose les données importantes, contrairement à la vue détaillée, accessible en cochant la case *Vue simplifiée*.
+Quand la *Vue simple* est activée, les statuts suivants sont affichés :
+- Présent : concurrents qui ont fini ou sont encore en course
+- Non résolu : entrées demandant votre attention, en particulier en [Fin de course](../howtos/endstage.fr.html) ; les statuts Non parti, En course, Inconnu et Doublon sont tous considérés comme non résolus (la course n'est pas finie tant qu'il existe des entrées avec ces status)
+- Non parti : coureurs inscrits mais sans données de course (puce non lue). En fin de course, vous devez distinguer entre coureurs encore en course et coureurs pré-inscrits mais absents
+- Arrivé : coureurs avec données de course (puce lue), Arrivés = OK + PM + Abandon + Disq. Présents = Inconnu + Arrivé
+- OK
+- PM : a grand nombre de PMs au début de la course peut indiquer un problème dans la configuration des circuits (sur le terrain ou à la GEC)
 
-Quand la *Vue simplifiée* est active, les statuts suivants sont affichés:
-- Present: runners who ran or are running the stage
-- Unknown: runners without race data for now. They might still be running, or they might be absent (you should mark such people as DNS)
-- Finished: runners having some race data. Hence, Present = Unknown + Finished
-- OK: runners who finished
-- PM: un grand nombre de PMs en début de course est succeptible d'indiquer un problème avec les circuits (dans Geco ou sur le terrain)
+Quand la *Vue simple* est désactivée, la liste donne en plus:
+- Inscrit : tous les coureurs de la base, incluant Présent + Absent
+- En course : coureurs marqués comme toujours en course (et manquant)
+- coureurs Absents, Abandon, Disqualifiés
+- Inconnu : puce lue en mode [auto] sans données d'inscription
+- Doublon : puce déjà lue en mode [auto]
 
-Quand la *Vue simplifiée* est désactivée, la liste indique:
-- Inscrits: coureurs entrés dans la base de données, incluant donc Present + DNS
-- DNS, DNF, DSQ runners
-- Arrivées = OK + PM + DNF + DSQ
+Les statistiques sont mises à jour toutes les 10 secondes. Cliquez le bouton *Rafraîchir* pour mettre à jour manuellement.
 
-Les statistiques se mettent à jour automatiquement toutes les 10 secondes. Il est possible de les rafraîchir manuellement en cliquant sur le fonton *Actualiser*.
+[auto]: ../howtos/auto.fr.html
