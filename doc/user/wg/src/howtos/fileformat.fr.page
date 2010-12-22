@@ -6,22 +6,24 @@ in_menu: true
 
 # Format des fichiers
 
-Si vous devez procéder à des pre-inscriptions ppour une compétition, il est possible de le faire à l'aide d'un simple tableur.
-Le dossier `data/template` fournit quelques fichiers types pour les clubs, catégories, circuits, et coureurs. 
-Vous pouvez facilement créer une nouvelle compétition en copiant son contenu dans un nouveau dossier.
+Vous pouvez travailler directement avec les fichiers de données de Geco en utilisant un tableur.
+Le dossier `data/template` fournit quelques fichiers modèles pour les clubs, catégories, circuits, et coureurs. *Vous pouvez personnaliser ces fichiers pour votre usage.*
+Vous pouvez facilement créer une nouvelle compétition en copiant son contenu dans un nouveau dossier. Pour faire des inscriptions en masse, il est conseillé d'utiliser l'import CSV ou par l'archive depuis l'onglet [Coureurs](../guide/runners.fr.html).
 
-Editer les fichiers `Clubs.csv` et `Classes.csv` (catégories) est un jeu d'enfant.
+Le format des fichiers `Clubs.csv` et `Classes.csv` (catégories) est très simple.
 
 Pour créer des circuits (`Courses.csv`):
 - une ligne = une circuit
-- La première ligne `Course name, distance, elevation, Cross Country,1,1001,60,10,36000000,,,, Control 1, Control2, Control 3, ...` indique l'intitulé de chaque colonne. **Supprimer la** avant de sauvegarder le fichier
+- La première ligne `Course name, distance, elevation, Cross Country,1,1001,60,10,36000000,,,, Control 1, Control2, Control 3, ...` indique le contenu de chaque champ. **Supprimer la** avant de sauver le fichier
 - Voici un exemple basique de circuit: `Course A, 5.5, 100, Cross Country,1,1001,60,10,36000000,,,,31,32,33`
-- Pour éviter les erreurs, il est préférable d'importer directement les circuits dans Geco depuis un fichier au format XML
+- Pour éviter les erreurs, il est préférable d'importer directement les circuits dans Geco depuis un fichier XML
 
 Pour inscrire des coureurs (`Competitors.csv`):
 - une ligne = un coureur
-- La première ligne `startnumber; si number; firstname lastname; club; course; false; category;;;1;NC?;;0;` indique l'intitulé de chaque colonne. **Supprimer la** avant de sauvegarder le fichier
-- Voici un exemple basique d'inscription: `1; 10000; John Doe; ClubName1; Course A;false;M21;;;1;false;;0;`
-- Attribuer un `startnumber` et `si number` uniques pour éviter les problèmes/conflits
+- La première ligne `startnumber; e-card; firstname; lastname; club; course; rented?; category; registered starttime;; 1; NC?; archive; 0;` indique le contenu de chaque champ. **Supprimer la** avant de sauver le fichier
+- Voici un exemple basique d'inscription: `1; 10000; John; Doe; ClubName1; Course A;false;M21;;;1;false;;0;`
+- Attribuer un `startnumber` et `si number` uniques pour éviter les problèmes
 - Attribuer des noms de `club`, `course`, et `category` qui correspondent à ceux renseignés dans les fichiers précédents
-- Le champ `NC?` est soit `true` ou `false` (`false` dans la plupart des cas)
+- L'horaire de départ doit être donné au format h:mm:ss et est relative à l'heure zéro de la course
+- Le champ `rented?` (puce louée) est soit `true` soit `false`
+- Le champ `NC?` est soit `true` soit `false`

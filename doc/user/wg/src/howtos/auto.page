@@ -4,17 +4,17 @@ sort_info: 2
 in_menu: true
 ---
 
-# Workflow in auto mode
+# Auto mode
 
 The automatic mode in Geco can handle e-card download without pre-registration. It provides **on-the-fly registration** with an up to date archive. When reading an e-card which is not registered, Geco *looks up the e-card in the archive* and inserts the matching entry in the base. Geco also *detects the course* ran by the competitor from the e-card punches.
 
-The schema shows in <font color="blue">blue</font> the two possible outcomes which (should) require no intervention on your part:
+The schema shows in <font color="blue">blue</font> the two outcomes which require no operation on your part when reading e-cards in auto mode:
 - on the left the classic way with **pre-registered** entries;
 - on the right the automatic insertion of competitors from **archive**.
 
 <img src="../images/autoworkflow.png" />
 
-Geco also recognizes two different outcomes which require your attention: e-card which can not be found (even in the archive) and e-card already read. For both cases, Geco creates new entries with e-card data and detect the course, but sets unresolved status Unknown or Duplicate.
+Geco also recognizes two different outcomes which require your attention: e-card which can not be found (even in the archive) and e-card already read. For both cases, Geco creates a new entry with e-card data and detect the course, but sets unresolved status Unknown or Duplicate.
 
 These outcomes are shown in <font color="orange">orange</font> in the schema:
 - middle left shows the **Duplicate** outcome. It can happen simply if you ask the competitor to read again the e-card, or if a new competitor runs with a previously used e-card;

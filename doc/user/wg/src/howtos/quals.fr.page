@@ -5,30 +5,30 @@ in_menu: true
 ---
 
 
-# Create parallel pools for qualifications
+# Créer des poules de qualification parallèles
 
-*Experimental feature*
+*Fonctionnalité expérimentale*
 
-1. Create one stage per pool (each runner has to run in each pool)
-1. Create a merging stage to merge all pool results
-  1. it should define a `pools.prop` file listing all pool stages to merge
-  1. it should define [heatsets](../guide/heats.html) to qualify runners based on merged results
-1. Once pools are finished, run pool merger on the merging stage directory with `java -jar gecoXXX.jar valmo.geco.GecoPools <MergingStageDirectory>`
-1. the batch run generates files `merged_results.html` and `heat_startlists.csv` for the first stage in the knockout series
+1. Créez une étape par poule (chaque coureur doit courir une fois dans chaque poule)
+1. Créer une étape spéciale qui servira à fusionner les résultats des poules
+  1. cette étape doit définir un fichier `pools.prop` avec la liste des étapes de poule
+  1. elle doit aussi définir les [groupes de séries](../guide/heats.fr.html) pour qualifier les coureurs à partier des résultats fusionnés
+1. Une fois les poules finies, lancez la fusion des poules sur l'étape de fusion avec `java -jar gecoXXX.jar valmo.geco.GecoPools <DossierEtapeFusion>`
+1. L'application génère les fichiers `merged_results.html` (résultat pour chaque poule + général) et `heat_startlists.csv` qui sert de liste de départ pour les qualifications par séries éliminatoires.
 
-Notice that only runners having OK results in all pools can be qualified. See *hellemmes\_poolmerge* in the demo samples for an example of merging stage.
+Seuls les coureurs classés OK dans toutes les poules peuvent être qualifiés. Voir *hellemmes\_poolmerge* dans les données de démo pour un example d'étape de fusion.
 
 
-# Create a series of stages for qualifications
+# Créer une suite d'étape de qualifications
 
-1. Create one stage for each step of the qualification (quarter-finals, semi-finals, finals, ...)
-1. Put all stage folders in the same parent folder
-1. Create a file named `stages.prop` in the parent folder
-1. Open `stages.prop` and write stage folder names in order (from first quals to finals), one per line
+1. Créez une course pour chaque étape de la qualification (quart, demi, finale, ...)
+1. Tous les dossiers de course doivent être dans le même dossier parent
+1. Créez un fichier `stages.prop` dans le dossier parent
+1. Ouvrir le fichier `stages.prop` et inscrire les noms des dossiers d'étape dans l'ordre (depuis la première étape jusqu'à la finale), un nom par ligne
 
 <img style="float:none; width:168px" src="../images/stages.png" />
 
 
-Content of `stages.prop` for the above example (where hellemmes\_df would be semi-finals and hellemmes\_f finals):  
+Un exemple  de contenu pour le fichier `stages.prop` (où hellemmes\_df représente les demi-finales et hellemmes\_f la finale):  
   `hellemmes_df`  
   `hellemmes_f`  

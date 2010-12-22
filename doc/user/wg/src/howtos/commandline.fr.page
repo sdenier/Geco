@@ -4,15 +4,14 @@ sort_info: 9
 in_menu: true
 ---
 
-# Opérations en ligne(s) de commande
+# Opérations en ligne de commande
 
-Pour lancer Geco en ligne de commande: `java -jar gecoXXXX.jar`
+Pour lancer Geco depuis la ligne de commande: `java -jar gecoXXXX.jar`
 
-Options:
-- `--startdir <CheminVersLesDonnees>`: ouvre Geco directement sur l'étape/compétition sélectionnée, sans passer par le lanceur
-- `--test`: ouvre geco en mode test, de nouveaux boutons et de nouvelles options apparaissent dans l'onglet log pour générer des données fictives et ainsi pouvoir tester Geco
-- `--leisure`: active le mode loisir pour LiveMap, affichant des données simplifiées sans temps de course pour les loisirs qui ne sont pas chronométrés
+Options :
+- `--startdir <DossierDeDonnees>` : ouvre Geco directement sur l'étape sélectionnée, sans passer par le lanceur
+- `--leisure` : active le mode loisir pour LiveMap, affichant des données simplifiées sans temps de course pour des coureurs loisirs (non chronométrés)
 
-Autres programmes accessibles en ligne de commande:
-- `java -jar gecoXXX.jar valmo.geco.GecoPools <CheminVersLesDonnees>`: éxécute le [pool merger](quals.fr.html) en mode groupé
-- `java -jar gecoXXX.jar valmo.geco.live.GecoLive`: ouvre le sezrveur GecoLive pour l'[animation](live.fr.html)
+Autres programmes accessibles depuis la ligne de commande :
+- `java -jar gecoXXX.jar valmo.geco.GecoPools <DossierDeDonnees>` : lance la [fusion des poules](quals.fr.html) en batch
+- `java -jar gecoXXX.jar valmo.geco.live.GecoLive` : ouvre le serveur GecoLive pour l'[animation](live.fr.html)

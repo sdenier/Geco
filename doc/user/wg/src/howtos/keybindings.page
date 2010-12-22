@@ -6,9 +6,9 @@ in_menu: true
 
 # Keybindings
 
-While Geco is fully controllable with a mouse, you can use the keyboard to speed up your work. In the hints below, the `Mod` key refers to the menu modifier key specific to your platform (typically `alt` for Windows/Linux, `cmd` for Mac).
+Using the keyboard can speed up your work with Geco. In the hints below, the `Mod` key refers to the menu modifier key specific to your platform (typically `alt` for Windows/Linux, `cmd` for Mac).
 
-When you switch between tabs, Geco puts the focus on the most important widget in the tab. For example, in runners panel you can directly browse the table; in results panel, the refresh button is selected so that pressing space will activate the button.
+When you switch between tabs, Geco puts the focus on the most important widget in the tab. For example, in runners panel you can directly browse the table. In results panel, the Refresh button is selected so that pressing space will activate the button.
 
 ## Keybindings for tabs
 

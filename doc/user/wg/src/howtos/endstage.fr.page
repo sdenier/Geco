@@ -1,14 +1,14 @@
 ---
-title: End of stage
+title: Fin de course
 sort_info: 3
 in_menu: true
 ---
 
-# Manage end of stage and Not Started runners
+# Fin de course et coureurs 'Non partis'
 
-The [Stats](../guide/log.html) views in Runners and Log panel give a detailed account of statuses for each course and for the stage. The rule of thumb is that the stage is not done until the number of *unresolved status is not 0*. This includes runners marked as Not Started, Running, but also Unknown and Duplicate entries.
+Les vues [Stats](../guide/log.fr.html) dans les onglets Coureurs et Log donnent un compte-rendu détaillé des statuts pour chaque circuit et pour la course. La règle de base est que la course n'est pas finie tant que le nombre de *statuts non résolus n'est pas à 0*. Ceci inclut les coureurs encore marqués Non partis, En course, mais aussi les entrées Inconnues et Doublons.
 
-Towards the end of the stage, you should start looking for missing runners. In particular, you need to distinguish between those still running and those who did not start (DNS).
-In the classic method, you check the list of Not Started entries against the control list checked by the start team. You manually set the status to either **DNS** or **Running**.
+En fin de course, vous devez surveiller les coureurs manquants. En particulier, il faut distinguer entre coureurs en course et ceux qui sont absents.
+La méthode classique consiste à vérifier la liste des entrées 'Non parties' contre la liste de contrôle de l'atelier départ. Vous pouvez changer manuellement le statut à **Absent** ou **En course**.
 
-Currently, Geco does not support reading the backup memory of SI stations to handle DNS automatically (planned for 1.2).
+Dans sa version actuelle, Geco ne supporte pas la lecture de la mémoire des boîtiers SPORTident pour gérer automatiquement les absents (en prévision pour 1.2).

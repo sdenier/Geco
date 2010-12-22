@@ -9,7 +9,7 @@ routed_title: How-tos
 
 With the introduction of the [automatic mode](auto.html) in Geco 1.1, there are multiple ways you can handle an event and in particular registrations.
 
-Below are two examples of handling events with different styles. Of course, you can also mix both during the same race: pre-register competitors and run in auto mode to manage special cases.
+Below are two examples of handling events with different styles so that you can compare both workflows. Of course, you can also mix both during the same race: pre-register competitors and run in auto mode to manage special cases.
 
 
 ## Lazy workflow (with auto mode)

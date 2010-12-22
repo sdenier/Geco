@@ -10,7 +10,7 @@ The toolbar contains two buttons dedicated to live analysis and animation of the
 
 <img style="float:none; width:94px" src="../images/animation_toolbar.png" />
 
-The *magnifier* opens the **LiveMap**, a dedicated visualization which provides an easy to understand visualization of traces. The *antenna* opens a dialog to start broadcasting card read to a **GecoLive** server.
+The *magnifier* opens the **LiveMap**, a dedicated visualization which provides an easy way to understand traces. The *antenna* opens a dialog to start broadcasting card read to a **GecoLive** server.
 
 *Please note these are still experimental features.*
 
@@ -46,7 +46,7 @@ Currently Geco *does not save* these parameters. They will be lost next time you
 `XTrans=1`  
 `YTrans=-3`
 
-Good news is that you can reuse the file on any computer using LiveMap or GecoLive for this course.
+Good news is that you can reuse the file on any computer using LiveMap or GecoLive for this stage.
 
 
 ## GecoLive for animation
@@ -67,6 +67,5 @@ Multiple **Geco** instances can push data to **GecoLive**:
 You can always interrupt broadcasting by clicking again the button.
 
 Further configuration:
-- **Geco** only pushes card reading events and not other changes affecting results; as a consequence, **GecoLive** is not a reliable mean to get results: it just displays traces
-- to display **results** to the speaker, run a web server and use the [autoexport](../guide/results.html) feature from the **Results Panel**
-
+- **Geco** only pushes card reading events and not other changes affecting results; as a consequence, **GecoLive** is not a reliable mean to get results: it just displays traces.
+- to display **results** to the speaker, run a web server and use the [autoexport](../guide/results.html) feature from the **Results Panel**.

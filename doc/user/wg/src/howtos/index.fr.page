@@ -7,34 +7,34 @@ routed_title: Guide pratique
 
 # Processus en mode auto et mode manuel
 
-With the introduction of the [automatic mode](auto.html) in Geco 1.1, there are multiple ways you can handle an event and in particular registrations.
+L'introduction du [mode automatique](auto.fr.html) dans Geco 1.1 permet de nouvelles façons d'organiser la GEC et en particulier les inscriptions.
 
-Below are two examples of handling events with different styles. Of course, you can also mix both during the same race: pre-register competitors and run in auto mode to manage special cases.
-
-
-## Lazy workflow (with auto mode)
-
-The lazy workflow lets you and Geco handle registrations **on the fly**, that is when competitors download their e-cards after their race. This means almost no work at all before the race, but can involve a bit more to handle onsite registrations.
-
-- Geco handles pre-registered e-cards as usual.
-- If the e-card has not been registered beforehand, Geco automatically creates an entry with the e-card. It also *detects the course* ran by the competitor from the e-card punches. This eliminates the risk of a mistake in course selection in the entry.
-- Geco *looks up in the archive* to fill in registration data for the new e-card entry (name, category, club, ...).
-- Otherwise, you will have to edit the entry manually.
-
-Hint: if possible, try to pre-register runners which do not have a personal e-card in the archive (either because they have to rent one or have changed recently).
-
-This workflow is best for trainings and small events.
+Ci-dessous deux exemples de GEC aux styles opposées sont présentés pour vous permettre de comparer les approches. Vous pouvez toujours mixer les deux approches : pré-inscrire les concurrents et faire la lecture des puces en mode auto.
 
 
-## Classic workflow (with manual mode)
+## Méthode paresseuse (avec le mode auto)
 
-The classic workflow involves pre-registrations so that work is minimized when competitors download their e-cards.
+La méthode paresseuse vise à gérer les inscriptions **à la volée**, c'est-à-dire quand les coureurs lisent leur puce après la course. Ceci implique une préparation minimale avant la course, mais un léger surcroît pour gérer les inscriptions sur place (non licenciés).
 
-- Register all known participants beforehand.
-- Don't forget to use the archive to quickly insert known competitors.
-- Double-check the course.
-- You can manage registrations with a spreadsheet application and import a CSV file: fastest way to register lots of competitors.
+- Geco gère les puces pré-inscrites normalement.
+- Si une puce n'est pas pré-inscrite, Geco crée automatiquement une entrée avec la puce. Le circuit couru est aussi *détecté automatiquement* à partir des données de la puce. Ceci élimine le risque d'une erreur de circuit dans l'inscription.
+- Geco *cherche dans l'archive* les informations pour compléter l'inscription (nom, catégorie, club...).
+- Sinon, il vous faut éditer manuellement l'entrée.
 
-During the race, you still have to: 
-- handle onsite registrations;
-- resolve problems with unknown and duplicate e-cards. The [Merge Dialog](../guide/merge.html) pops up.
+Conseil : si possible, pré-inscrivez les coureurs qui n'ont pas de puce personnelle dans l'archive (soit parce qu'ils sont non licenciés, vont devoir en louer une ou ont changé récemment).
+
+Cette méthode marche bien pour les entraînements et petits événements.
+
+
+## Méthode classique (avec le mode manuel)
+
+La méthode classique implique des pré-inscriptions afin de minimiser le travail quand les coureurs lisent leur puce.
+
+- Faites les inscriptions avant la course.
+- Utilisez l'archive pour rapidement insérer des concurrents licenciés.
+- Vérifiez que le circuit est correct.
+- Vous pouvez gérer les inscriptions avec un tableur et importer un fichier CSV : la façon la plus rapide d'inscrire de nombreux coureurs.
+
+Durant la course, vous devez toujours :
+- gérer les inscriptions sur place
+- résoudre les problèmes avec les puces inconnues et doublons. La [Fenêtre de fusion](../guide/merge.fr.html) s'ouvre automatiquement en mode manuel.

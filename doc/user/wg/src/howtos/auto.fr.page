@@ -4,20 +4,20 @@ sort_info: 2
 in_menu: true
 ---
 
-# Processus dans le mode Auto
+# Mode Auto
 
-The automatic mode in Geco can handle e-card download without pre-registration. It provides **on-the-fly registration** with an up to date archive. When reading an e-card which is not registered, Geco *looks up the e-card in the archive* and inserts the matching entry in the base. Geco also *detects the course* ran by the competitor from the e-card punches.
+Le mode automatique de Geco permet de lire des puces sans pré-inscription. Il autorise des **inscriptions à la volée** avec une archive à jour. Si une puce non inscrite est lue, Geco *recherche le numéro dans l'archive* et inscrit l'entrée correspondante dans la base. Geco *détecte le circuit* couru par le concurrent en se basant sur les poinçons de la puce.
 
-The schema shows in <font color="blue">blue</font> the two possible outcomes which (should) require no intervention on your part:
-- on the left the classic way with **pre-registered** entries;
-- on the right the automatic insertion of competitors from **archive**.
+Le schéma ci-dessous montre en <font color="blue">bleu</font> les deux issues qui ne demandent pas d'intervention de votre part durant la lecture des puces en mode auto :
+- à gauche l'issue classique avec les entrées **pré-inscrites** ;
+- à droite l'insertion automatique depuis l'**archive**.
 
-<img src="../images/autoworkflow.png" />
+<img src="../images/autoworkflow.fr.png" />
 
-Geco also recognizes two different outcomes which require your attention: e-card which can not be found (even in the archive) and e-card already read. For both cases, Geco creates new entries with e-card data and detect the course, but sets unresolved status Unknown or Duplicate.
+Geco reconnaît aussi deux issues différentes qui demandent votre attention : puce inconnue (même dans l'archive) et puce déjà lue. Dans les deux cas, Geco crée une nouvelle entrée avec les données de la puce et détecte le circuit, mais met le statut à Inconnu ou Doublon.
 
-These outcomes are shown in <font color="orange">orange</font> in the schema:
-- middle left shows the **Duplicate** outcome. It can happen simply if you ask the competitor to read again the e-card, or if a new competitor runs with a previously used e-card;
-- middle right shows the **Unknown** outcome. The competitor may have followed on-site registration with a rented e-card. Or the competitor is pre-registered, or in the archive, but his real e-card does not match either because of a typo or because he recently changed it.
+Ces issues sont montrées en <font color="orange">orange</font> dans le schéma :
+- le statut **Doublon** au milieu gauche. Cela arrive si simplement vous demandez au coureur de lire sa puce à nouveau, ou bien si un nouveau concurrent court avec la même puce ;
+- le statut **Inconnu** au milieu droit. Le coureur a pu s'inscrire sur place avec une puce louée. Ou bien il y a une erreur ou un changement récent du numéro par rapport aux inscriptions ou à l'archive.
 
-Resolve manually these outcomes by following the <font color="green">green</font> workflow in the schema. You can edit, delete, merge the new entry to *resolve the case*. If you choose to keep and edit the new entry, don't forget to *recheck or change* the official status. You can also print splits for the competitor.
+Vous pouvez résoudre ces statuts en suivant le processus en **<font color="green">vert</font>** sur le schéma. Vous pouvez éditer, supprimer, fusionner la nouvelle entrée. Si vous choisissez de garder l'entrée, n'oubliez de *vérifier ou changer* le statut pour un statut normal (OK, MP...). Vous pouvez aussi imprimer les splits pour le coureur.
