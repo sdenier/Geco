@@ -7,24 +7,24 @@ in_menu: true
 ### Geco se lance avec le style Aqua sous Mac OS
 Pour utiliser le style Nimbus, lancer Geco en ligne de commande : `java -jar <geco jar file> -Dswing.defaultlaf=com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel`
 
-<img src="../images/launcher.png" />
+<img src="../images/launcher.fr.png" />
 
 **Onglet Etape**
 
-<img src="../images/stage_panel.png" />
+<img src="../images/stage_panel.fr.png" />
 
 **Onglet Coureurs**
 
-<img src="../images/runners_panel.png" />
-
-**Onglet Résultats**
-
-<img src="../images/results_ranking.png" />
-
-**Onglet Poules**
-
-<img src="../images/heats_panel_dialog.png" />
+<img src="../images/runners_panel.fr.png" />
 
 **Onglet Log**
 
-<img src="../images/log_panel.png" />
+<img src="../images/log_stats.fr.png" />
+
+**Onglet Résultats**
+
+<img src="../images/results_ranking.fr.png" />
+
+**Onglet Séries**
+
+<img src="../images/heats_panel_dialog.fr.png" />

@@ -23,7 +23,7 @@ La **LiveMap** complémente la trace en offrant une visualisation intuitive des 
 Une fois la fenêtre ouverte, la sélection d'un coureur dans l'**onglet Coureurs** affichera sa trace sur la LiveMap.
 Les postes validés sont en magenta. Les postes et tronçons manquants sont affichés en pointillés rouges. Les postes poinçonnés hors circuit sont en bleu et cyan pour les tronçons.
 
-<img src="../images/livemap_config.fr.png" />
+<a href="../images/livemap_config.fr.png"><img src="../images/livemap_config.fr.png" /></a>
 
 Configuration :
 1. chargez un fichier image pour la carte
@@ -37,7 +37,7 @@ Maintenant la partie... fun (à changer dans une future version) :
 1. pour afficher les postes et vérifier leur position, cliquer sur Actualiser
 1. répétez les étapes 2 et 3 jusqu'à obtenir un résultat satisfaisant. Bon courage !
 
-Vous pouvez ensuite contrôler les postes et circuits avec les derniers boutons.
+Vous pouvez ensuite contrôler la position des postes et circuits avec les derniers boutons.
 
 Pour le moment, Geco *ne sauve pas* ces paramètres. Par conséquent, ils seront perdus à la prochaine ouverture de LiveMap ! Pour les enregistrer, créez un fichier `live.prop` dans le dossier de la course avec les informations suivantes (pour exemple):
 
@@ -54,7 +54,7 @@ Il est possible de transférer ce fichier à n'importe quel autre ordinateur uti
 
 **GecoLive** est une application dédiée à l'animation : elle permet de montrer le parcours d'un coureur dès qu'il a lu sa puce dans Geco. Le commentateur peut aussi voir les autres concurrents. GecoLive peut tourner sur un autre ordinateur en recevant les information via un réseau. 
 
-<img src="../images/gecolive.fr.png" />
+<a href="../images/gecolive.fr.png"><img src="../images/gecolive.fr.png" /></a>
 
 Configuration :
 1. lancez **GecoLive** en ligne de commande : `java -jar gecoXXX.jar valmo.geco.live.GecoLive`

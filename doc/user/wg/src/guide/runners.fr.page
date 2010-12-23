@@ -58,7 +58,7 @@ Le shortlog montre les six derniers événements enregistrés par le log. Il est
 
 Dans le shortlog, les numéros de puce sont affichés comme **hyperliens**. Cliquer sur le lien sélectionne automatiquement l'entrée dans la table pour vérifier les données et résoudre les problèmes.
 
-<a href="../images/runners_filter.png"><img src="../images/runners_filter.png" /></a>
+<a href="../images/runners_filter.fr.png"><img src="../images/runners_filter.fr.png" /></a>
 (Table avec un filtre sur 'litto' et affichant la trace détaillée)
 
 
@@ -78,7 +78,7 @@ La vue *Données* du coureur montre des informations complémentaires sur le cou
   - *Vérifier* (mod+R) recalcule le statut du coureur et le temps officiel
   - *Réinitialiser temps officiel* recalcule le temps officiel
   - *Imprimer splits* (mod+P) envoie les temps intermédiaires du coureur à l'imprimante
-  - Cliquez sur le bouton *Fusion...* pour une gestion avancée, comme la fusion de deux inscriptions ensemble. Ce bouton ouvre la *[Fenêtre de fusion](merge.html)* sur le coureur sélectionné.
+  - Cliquez sur le bouton *Fusion...* pour une gestion avancée, comme la fusion de deux inscriptions ensemble. Ce bouton ouvre la *[Fenêtre de fusion](merge.fr.html)* sur le coureur sélectionné.
 
 
 ## Vue Trace du coureur (mod+T)

@@ -11,6 +11,6 @@ Le lanceur est la première fenêtre qui s'affiche à l'ouverture de Geco. Il pe
 - Pour ouvrir une étape existante, sélectionnez le dossier de données et cliquez sur le bouton Ouvrir.
 - Pour créer une nouvelle étape, créez/sélectionnez le dossier (vide) où vous souhaitez enregistrer les données et cliquez sur le bouton Ouvrir : Geco vous proposera de créer une nouvelle étape en copiant un modèle des données.
 
-<img src="../images/launcher.png" />
+<img src="../images/launcher.fr.png" />
 
 Pour repérer un dossier avec des données d'étape, rien de plus simple : il contient un fichier `geco.prop` et des fichiers CSV.

@@ -37,5 +37,5 @@ While Geco is launching the reader, the toolbar will display a *Starting...* but
 <img style="float:none; width:105px" src="../images/reader_starting.png" />
 
 The underneath button indicates that the reader is on and accepts card reading. Click it to stop the reader.  
-<img style="float:none; width:114px" src="../images/stopreader.png" />
+<img style="float:none; width:114px" src="../images/reader_on.png" />
 

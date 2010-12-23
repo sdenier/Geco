@@ -6,7 +6,7 @@ in_menu: true
 # Barre d'outils
 
 
-<img src="../images/toolbar.png" />
+<img src="../images/toolbar.fr.png" />
 
 La barre d'outils présente les actions globales.
 
@@ -21,7 +21,7 @@ Les deux boutons suivant gèrent le mode [Live](../howtos/live.fr.html).
 
 
 La barre d'outils sert à contrôler le comportement de Geco pendant la lecture des puces.
-<img style="float:none; width:199px" src="../images/sireader_toolbar.png" />
+<img style="float:none; width:199px" src="../images/sireader_toolbar.fr.png" />
 
 Le bouton de gauche contrôle le mode [Auto](../howtos/auto.fr.html) de Geco (activé par défaut). Celui du milieu contrôle l'auto-impression des splits quand un coureur lit sa puce. Celui de droite contrôle le boîtier maître.
 
@@ -32,10 +32,10 @@ Activés, le mode Auto et l'impression des splits affichent avec des icônes ave
 <img style="float:none; width:92px" src="../images/sifeatures_on.png" />
 
 Le bouton ci-dessous indique que le boîtier maître est désactivé. Cliquez dessus pour commencer la lecture des puces. Geco vérifie d'abord que l'impression des splits est activée et vous demande si vous souhaitez l'activer si ce n'est pas déjà le cas.  
-<img style="float:none; width:114px" src="../images/reader_off.png" />
+<img style="float:none; width:114px" src="../images/reader_off.fr.png" />
 
 Quand Geco initialise le boîtier maître, le bouton change à *Initialisation...*. Les erreurs sont affichées dans la barre de statut. Vous pouvez cliquer sur le bouton pour interrompre l'initialisation.  
-<img style="float:none; width:105px" src="../images/reader_starting.png" />
+<img style="float:none; width:123px" src="../images/reader_starting.fr.png" />
 
 Le bouton ci-dessous indique que le boîtier est activé et accepte la lecture des puces. Cliquez pour arrêter.  
-<img style="float:none; width:114px" src="../images/stopreader.png" />
+<img style="float:none; width:109px" src="../images/reader_on.fr.png" />
