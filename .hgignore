@@ -34,3 +34,5 @@ syntax: regexp
 ^doc/andreas06$
 syntax: regexp
 ^doc/screenshots$
+syntax: regexp
+^scrap\.jpage$

@@ -20,5 +20,7 @@ Visit his software Òr on [http://orienteering.ie/wiki/doku.php?id=or:index](htt
 SIReader uses the RXTX library, released under LGPL v 2.1 + Linking Over Controlled Interface.
 See website for details [http://www.rxtx.org/](http://www.rxtx.org/)
 
+Geco uses a subset of the ICU4J library, released under ICU License 1.8.1. See [http://site.icu-project.org](http://site.icu-project.org)
+
 Icons come from the Crystal Project Icons, released under LGPL, designed by Everaldo Coelho.
 See [http://everaldo.com/crystal](http://everaldo.com/crystal)

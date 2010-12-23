@@ -78,6 +78,7 @@
     		<fileset file="${geco.dir}/readme.txt"/>
     		<fileset file="${geco.dir}/LICENSE"/>
     		<fileset file="${geco.dir}/gpl-2.0.txt"/>
+    		<fileset file="${geco.dir}/icu-license.txt"/>
     		<fileset dir="${geco.dir}" includes="help/"/>
     		<fileset dir="${geco.dir}" includes="data/template/"/>
     		<fileset dir="${geco.dir}" includes="data/sample_stages.prop"/>
@@ -94,9 +95,11 @@
         	<fileset file="${geco.dir}/readme.txt"/>
         	<fileset file="${geco.dir}/LICENSE"/>
     		<fileset file="${geco.dir}/gpl-2.0.txt"/>
+    		<fileset file="${geco.dir}/icu-license.txt"/>
     		<fileset dir="${geco.dir}" includes="help/"/>
     		<fileset dir="${geco.dir}" includes="data/template/"/>
     		<fileset dir="${geco.dir}" includes="data/sample_stages.prop"/>
+    		<fileset dir="${geco.dir}" includes="data/exportCN_index5discipline1.csv"/>
     		<fileset dir="${geco.dir}" includes="demo/"/>
     	</zip>
 	</target>	

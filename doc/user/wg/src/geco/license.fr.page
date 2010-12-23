@@ -2,7 +2,6 @@
 title: Licence
 sort_info: 7
 in_menu: true
-routed_title: Geco
 ---
 
 #Licence
@@ -20,6 +19,8 @@ Vous pouvez jeter un oeil à son logiciel Ór ici : [http://orienteering.ie/wiki
 
 SIReader utilise la bibliothèque RXTX, sous licence LGPL v 2.1 + Linking Over Controlled Interface.
 Voir le site web pour plus de détails [http://www.rxtx.org/](http://www.rxtx.org/)
+
+Geco utilise un sous-ensemble de la bibliothèque ICU4J, sous licence ICU 1.8.1. Voir [http://site.icu-project.org](http://site.icu-project.org)
 
 Les icônes proviennent du Crystal Project Icons, sous licence LGPL, créé par Everaldo Coelho.
 Voir [http://everaldo.com/crystal](http://everaldo.com/crystal)
