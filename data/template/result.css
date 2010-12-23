@@ -1,0 +1,9 @@
+table { border-collapse:collapse }
+.pool { font-size: 1.2em; font-weight: bold }
+.runner td, .runner th { padding: 0px 10px }
+.right, .time, .col0, .col1 { text-align: right }
+.col0 { background-color: white }
+.col1 { background-color: #F0F0F0 }
+.rsplit td, .col0 td, .col1 td { padding: 0 5px 0 0 }
+.rsplit td, .time, .best { font-weight: bold }
+.lin {}
