@@ -13,6 +13,7 @@ import java.util.Vector;
 import valmo.geco.core.TimeManager;
 import valmo.geco.model.Category;
 import valmo.geco.model.Course;
+import valmo.geco.model.Messages;
 import valmo.geco.model.Pool;
 import valmo.geco.model.Result;
 import valmo.geco.model.ResultType;
@@ -232,13 +233,28 @@ public class ResultBuilder extends Control {
 	
 	public SplitTime[] buildAllNormalSplits(Result result, ResultConfig config, Map<RunnerRaceData, SplitTime[]> allSplits) {
 		SplitTime[] bestSplits = null;
-		if( config.resultType==ResultType.CourseResult ) {
-			int nbControls = registry().findCourse(result.getIdentifier()).nbControls();
-			bestSplits = new SplitTime[nbControls + 1];
-			for (int i = 0; i < bestSplits.length; i++) {
-				bestSplits[i] = new SplitTime("", null, TimeManager.NO_TIME_l, TimeManager.NO_TIME_l); //$NON-NLS-1$
+		boolean sameCourse = true; // default for CourseResult and MixedResult
+		if( ! result.isEmpty() ){
+			Course course = result.anyRunner().getCourse();
+			if( config.resultType==ResultType.CategoryResult ){
+				// check that all runners in category share the same course
+				for (RunnerRaceData runnerData : result.getRankedRunners()) {
+					sameCourse &= runnerData.getCourse()==course;
+				}
+				for (RunnerRaceData runnerData : result.getNRRunners()) {
+					sameCourse &= runnerData.getCourse()==course;
+				}
+			}
+			if( ! sameCourse ) {
+				geco().log(Messages.getString("ResultBuilder.NoBestSplitForCategoryWarning") + result.getIdentifier()); //$NON-NLS-1$
+			} else { // initialize bestSplits
+				bestSplits = new SplitTime[course.nbControls() + 1];
+				for (int i = 0; i < bestSplits.length; i++) {
+					bestSplits[i] = new SplitTime("", null, TimeManager.NO_TIME_l, TimeManager.NO_TIME_l); //$NON-NLS-1$
+				}
 			}
 		}
+		// bad smell but anyway: bestsplits=null if we don't want to compute splits
 		for (RunnerRaceData runnerData : result.getRankedRunners()) {
 			allSplits.put(runnerData, buildNormalSplits(runnerData, bestSplits));
 		}
@@ -246,10 +262,10 @@ public class ResultBuilder extends Control {
 			allSplits.put(runnerData, buildNormalSplits(runnerData, bestSplits));
 		}
 		
-		if( config.resultType==ResultType.CourseResult ) {
-			return bestSplits;
+		if( bestSplits==null ){
+			return new SplitTime[0];
 		} else {
-			return new SplitTime[0]; // do not care about best splits
+			return bestSplits;
 		}
 	}
 	

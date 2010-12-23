@@ -39,5 +39,7 @@ public interface Result {
 	public void clearOtherRunners();
 
 	public void sortRankedRunners();
+	
+	public RunnerRaceData anyRunner();
 
 }

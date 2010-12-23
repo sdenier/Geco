@@ -123,5 +123,15 @@ public class ResultImpl implements Result {
 			}
 		});
 	}
+	
+	public RunnerRaceData anyRunner() {
+		if( !this.rankedRunners.isEmpty() ){
+			return this.rankedRunners.get(0);
+		}
+		if( !this.nrRunners.isEmpty() ){
+			return this.nrRunners.get(0);
+		}
+		return null;
+	}
 
 }
