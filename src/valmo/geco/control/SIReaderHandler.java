@@ -164,7 +164,8 @@ public class SIReaderHandler extends Control
 				}
 			}
 			for (String port : serialPorts) {
-				ports.add(new SerialPort(port, friendlyNames.get(port)));
+				String friendlyName = friendlyNames.get(port);
+				ports.add(new SerialPort(port, (friendlyName==null) ? "" : friendlyName ));
 			}
 		} else {
 			for (String port : serialPorts) {
