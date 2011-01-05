@@ -73,8 +73,8 @@ public class RunnerPanel extends GecoPanel {
 	
 	private static final int FIELDSIZE = 5;
 	private static final Color PALE_YELLOW = new Color(1, 1, 0.5f);
-	private static final Color PALE_BLUE = new Color(0.9f, 0.9f, 1.0f);
-	private static final Color PALE_RED = new Color(1.0f, 0.9f, 0.9f);
+	private static final Color PALE_BLUE = new Color(0.8f, 0.8f, 1.0f);
+	private static final Color PALE_RED = new Color(1.0f, 0.8f, 0.8f);
 
 	
 	public RunnerPanel(Geco geco, JFrame frame, RunnersPanel parent) {
