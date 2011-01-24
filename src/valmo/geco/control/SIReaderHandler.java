@@ -157,10 +157,13 @@ public class SIReaderHandler extends Control
 			for (String string : reg) {
 				if( string.contains("FriendlyName") && string.contains("COM") ){ //$NON-NLS-1$ //$NON-NLS-2$
 					int s = string.indexOf("COM"); //$NON-NLS-1$
-					String com = string.substring(s, string.indexOf(')', s));
-					String fname = com + ": " //$NON-NLS-1$
-									+ string.substring(string.lastIndexOf("\t") + 1, s - 1).trim(); //$NON-NLS-1$
-					friendlyNames.put(com, fname);
+					int e = string.indexOf(')', s);
+					if( e>=0 ){
+						String com = string.substring(s, e); // expect (COMx) format
+						String fname = com + ": " //$NON-NLS-1$
+										+ string.substring(string.lastIndexOf("\t") + 1, s - 1).trim(); //$NON-NLS-1$
+						friendlyNames.put(com, fname);						
+					} // else we match something which is not like COMx)
 				}
 			}
 			for (String port : serialPorts) {
