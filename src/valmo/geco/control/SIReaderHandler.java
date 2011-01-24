@@ -12,6 +12,8 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.martin.sireader.common.PunchObject;
 import org.martin.sireader.common.PunchRecordData;
@@ -154,17 +156,25 @@ public class SIReaderHandler extends Control
 			String[] reg =
 				WindowsRegistryQuery.listRegistryEntries("HKLM\\System\\CurrentControlSet\\Enum").split("\n"); //$NON-NLS-1$ //$NON-NLS-2$
 			HashMap<String,String> friendlyNames = new HashMap<String,String>();
+			Pattern comPattern = Pattern.compile("FriendlyName.+REG_SZ(.+)\\((COM\\d+)\\)"); //$NON-NLS-1$
 			for (String string : reg) {
-				if( string.contains("FriendlyName") && string.contains("COM") ){ //$NON-NLS-1$ //$NON-NLS-2$
-					int s = string.indexOf("COM"); //$NON-NLS-1$
-					int e = string.indexOf(')', s);
-					if( e>=0 ){
-						String com = string.substring(s, e); // expect (COMx) format
-						String fname = com + ": " //$NON-NLS-1$
-										+ string.substring(string.lastIndexOf("\t") + 1, s - 1).trim(); //$NON-NLS-1$
-						friendlyNames.put(com, fname);						
-					} // else we match something which is not like COMx)
+				Matcher match = comPattern.matcher(string);
+				if( match.find() ){
+					String com = match.group(2);
+					String fname = com + ": " + match.group(1).trim(); //$NON-NLS-1$
+					friendlyNames.put(com, fname);
 				}
+				// The following did not always match well?
+//				if( string.contains("FriendlyName") && string.contains("COM") ){ //$NON-NLS-1$ //$NON-NLS-2$
+//					int s = string.indexOf("COM"); //$NON-NLS-1$
+//					int e = string.indexOf(')', s);
+//					if( e>=0 ){
+//						String com = string.substring(s, e); // expect (COMx) format
+//						String fname = com + ": " //$NON-NLS-1$
+//										+ string.substring(string.lastIndexOf("\t") + 1, s - 1).trim(); //$NON-NLS-1$
+//						friendlyNames.put(com, fname);						
+//					} // else we match something which is not like COMx)
+//				}
 			}
 			for (String port : serialPorts) {
 				String friendlyName = friendlyNames.get(port);
