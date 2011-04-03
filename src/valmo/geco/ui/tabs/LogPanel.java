@@ -55,7 +55,7 @@ public class LogPanel extends TabPanel implements Logging {
 	}
 	
 	private FunctionsPanel initFunctionsPanel() {
-		funtionsPanel = new FunctionsPanel(geco(), frame(), createClearLogButton());
+		funtionsPanel = new FunctionsPanel(frame(), createClearLogButton());
 		return funtionsPanel;
 	}
 

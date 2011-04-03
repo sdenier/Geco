@@ -18,29 +18,25 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import valmo.geco.framework.IGeco;
 import valmo.geco.functions.GecoFunction;
 import valmo.geco.model.Messages;
-import valmo.geco.ui.framework.GecoPanel;
 
 /**
  * @author Simon Denier
  * @since Nov 11, 2010
  *
  */
-public class FunctionsPanel extends GecoPanel {
-	// TODO: simplify - do we need a geco reference here?
+public class FunctionsPanel extends JPanel {
 
 	private GecoFunction gFunction;
 	
 	private JComponent functionUI;
 
-	public FunctionsPanel(IGeco geco, JFrame frame, JButton clearLogB) {
-		super(geco, frame);
-		initFunctionsPanel(clearLogB);
+	public FunctionsPanel(JFrame frame, JButton clearLogB) {
+		initFunctionsPanel(frame, clearLogB);
 	}
 
-	public JComponent initFunctionsPanel(JButton clearLogB) {
+	public JComponent initFunctionsPanel(final JFrame frame, JButton clearLogB) {
 		setLayout(new BorderLayout());
 
 		Vector<GecoFunction> functions = GecoFunction.functions();
@@ -77,7 +73,7 @@ public class FunctionsPanel extends GecoPanel {
 				execB.setToolTipText(gFunction.executeTooltip());
 				functionUI = gFunction.getFunctionUI();
 				add(functionUI, BorderLayout.CENTER);
-				((JComponent) frame().getContentPane()).revalidate();
+				((JComponent) frame.getContentPane()).revalidate();
 			}
 		});
 		gecoFunctionsCB.setSelectedIndex(0);

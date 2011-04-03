@@ -46,8 +46,8 @@ import valmo.geco.live.LiveClientDialog;
 import valmo.geco.model.Messages;
 import valmo.geco.model.Stage;
 import valmo.geco.ui.basics.GecoLauncher;
+import valmo.geco.ui.basics.GecoStatusBar;
 import valmo.geco.ui.basics.StartStopButton;
-import valmo.geco.ui.components.GecoStatusBar;
 import valmo.geco.ui.tabs.HeatsPanel;
 import valmo.geco.ui.tabs.LogPanel;
 import valmo.geco.ui.tabs.ResultsPanel;
@@ -157,7 +157,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		setKeybindings(pane);
 		getContentPane().add(pane, BorderLayout.CENTER);
 		
-		getContentPane().add(new GecoStatusBar(this.geco, this), BorderLayout.SOUTH);
+		getContentPane().add(new GecoStatusBar(this.geco.announcer()), BorderLayout.SOUTH);
 
 		addWindowListener(new WindowAdapter() {
 			@Override

@@ -12,31 +12,24 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.TableRowSorter;
 
-import valmo.geco.framework.IGeco;
 import valmo.geco.model.Messages;
-import valmo.geco.ui.framework.GecoPanel;
 
 /**
  * @author Simon Denier
  * @since Dec 24, 2009
  * 
  */
-public class ConfigTablePanel<T> extends GecoPanel {
-	// TODO: simplify - do we need a geco and frame references here?
+public class ConfigTablePanel<T> extends JPanel {
 
 	private ConfigTableModel<T> tableModel;
-	private JTable table;
 
-	public ConfigTablePanel(IGeco geco, JFrame frame) {
-		super(geco, frame);
-	}
+	private JTable table;
 
 	public ConfigTablePanel<T> initialize(String panelTitle,
 			ConfigTableModel<T> tableModel, ActionListener addAction,

@@ -2,34 +2,30 @@
  * Copyright (c) 2010 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package valmo.geco.ui.components;
+package valmo.geco.ui.basics;
 
 import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
+import valmo.geco.basics.Announcer;
 import valmo.geco.basics.Announcer.Logging;
 import valmo.geco.basics.Html;
-import valmo.geco.framework.IGeco;
-import valmo.geco.ui.framework.GecoPanel;
 
 /**
  * @author Simon Denier
  * @since Jun 2, 2010
  *
  */
-public class GecoStatusBar extends GecoPanel implements Logging {
-	// TODO: simplify - do we need a geco and frame references here?
-	
+public class GecoStatusBar extends JPanel implements Logging {
 	
 	private JLabel status;
 	
-	public GecoStatusBar(IGeco geco, JFrame frame) {
-		super(geco, frame);
+	public GecoStatusBar(Announcer announcer) {
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 		status = new JLabel(" "); //$NON-NLS-1$
 		addMouseListener(new MouseAdapter() {
@@ -38,7 +34,7 @@ public class GecoStatusBar extends GecoPanel implements Logging {
 			}
 		});
 		add(status);
-		geco.announcer().registerLogger(this);
+		announcer.registerLogger(this);
 		setBorder(BorderFactory.createEtchedBorder());
 	}
 

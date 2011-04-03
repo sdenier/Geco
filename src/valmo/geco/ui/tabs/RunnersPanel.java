@@ -61,10 +61,10 @@ import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Stage;
 import valmo.geco.model.Status;
+import valmo.geco.ui.basics.HyperLog;
 import valmo.geco.ui.basics.PunchPanel;
 import valmo.geco.ui.basics.SwingUtils;
 import valmo.geco.ui.components.ArchiveViewer;
-import valmo.geco.ui.components.HyperLog;
 import valmo.geco.ui.framework.TabPanel;
 
 /**
@@ -99,7 +99,7 @@ public class RunnersPanel extends TabPanel
 	public void initRunnersPanel(JPanel panel) {
 		JPanel tablePan = new JPanel(new BorderLayout());
 		tablePan.add(initTableScroll(), BorderLayout.CENTER);
-		tablePan.add(SwingUtils.embed(new HyperLog(geco(), this)), BorderLayout.SOUTH);
+		tablePan.add(SwingUtils.embed(new HyperLog(geco().announcer(), this)), BorderLayout.SOUTH);
 		panel.setLayout(new BorderLayout());
 		panel.add(tablePan, BorderLayout.CENTER);
 		panel.add(initTopPanel(), BorderLayout.NORTH);

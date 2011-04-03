@@ -298,7 +298,7 @@ public class StagePanel extends TabPanel {
 
 	
 	private JPanel clubConfigPanel() {
-		final ConfigTablePanel<Club> panel = new ConfigTablePanel<Club>(geco(), frame());
+		final ConfigTablePanel<Club> panel = new ConfigTablePanel<Club>();
 		
 		final ConfigTableModel<Club> tableModel = 
 			new ConfigTableModel<Club>(new String[] {
@@ -361,7 +361,7 @@ public class StagePanel extends TabPanel {
 	}
 
 	private JPanel courseConfigPanel() {
-		final ConfigTablePanel<Course> panel = new ConfigTablePanel<Course>(geco(), frame());
+		final ConfigTablePanel<Course> panel = new ConfigTablePanel<Course>();
 		
 		final ConfigTableModel<Course> tableModel = 
 			new ConfigTableModel<Course>(new String[] {
@@ -503,7 +503,7 @@ public class StagePanel extends TabPanel {
 
 	
 	private JPanel categoryConfigPanel() {
-		final ConfigTablePanel<Category> panel = new ConfigTablePanel<Category>(geco(), frame());
+		final ConfigTablePanel<Category> panel = new ConfigTablePanel<Category>();
 		final JComboBox coursesCB = new JComboBox();
 		
 		final ConfigTableModel<Category> tableModel = 
