@@ -19,6 +19,10 @@ Les fonctionnalités suivantes ne sont pas encore supportées mais devraient êt
 - insertion d'un poinçon manquant pour les coureurs, suppression d'un poste pour les circuits
 
 
+## La lecture des puces SPORTident est anormalement lente
+Des utilisateurs ont reporté des temps de lecture des puces très longs sur certains ordinateurs. Dans ces cas la lecture d'une seule prend environ 10 secondes au lieu des 1 à 2 secondes habituelles, ce qui rend Geco impraticable en compétition. Le problème semble apparaître uniquement quand le boîtier maître SPORTident est branché directement sur l'ordinateur. Bien que la cause du problème soit encore inconnue, il est possible de le résoudre en branchant un hub USB entre l'ordinateur et le boîtier maître. Une configuration typique de GEC est l'utilisation du hub pour le boîtier maître et l'imprimante à ticket, tandis que les autres ports USB sont libres de recevoir une imprimante normale ou des clés USB.
+
+
 ## Comment installer le pilote SPORTident sous Mac OS X?
 
 Il faut télécharger le pilote Mac OS pour le chip USB des boîtiers SPORTident, puis changer quelques informations du pilote pour que Mac OS le reconnaisse pour le boîtier.

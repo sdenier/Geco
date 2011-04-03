@@ -4,7 +4,7 @@
 <%
 analytics_tracking = false
 currentversion = '1.1'
-currentlink = 'http://bitbucket.org/sdenier/geco/downloads/geco1.1b1-378-20110403-demo.zip'
+currentlink = 'http://bitbucket.org/sdenier/geco/downloads/geco1.1b1-379-20110403-demo.zip'
 translations = YAML::load(File.read(File.join(context.website.directory, 'default.languages')))
 trans = translations[context.node.lang]
 %>
