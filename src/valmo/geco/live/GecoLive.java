@@ -33,14 +33,14 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 
+import valmo.geco.basics.GecoWarning;
+import valmo.geco.basics.TimeManager;
 import valmo.geco.control.GecoControl;
-import valmo.geco.core.GecoWarning;
-import valmo.geco.core.TimeManager;
 import valmo.geco.model.Messages;
 import valmo.geco.model.Registry;
 import valmo.geco.model.RunnerRaceData;
-import valmo.geco.ui.GecoLauncher;
-import valmo.geco.ui.StartStopButton;
+import valmo.geco.ui.basics.GecoLauncher;
+import valmo.geco.ui.basics.StartStopButton;
 
 /**
  * @author Simon Denier

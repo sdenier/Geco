@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 import valmo.geco.model.Course;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.RunnerResult;
-import valmo.geco.ui.SwingUtils;
+import valmo.geco.ui.basics.SwingUtils;
 
 /**
  * @author Simon Denier

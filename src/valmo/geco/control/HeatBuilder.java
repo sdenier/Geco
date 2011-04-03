@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Vector;
 
-import valmo.geco.core.Html;
+import valmo.geco.basics.Html;
 import valmo.geco.model.Course;
 import valmo.geco.model.Heat;
 import valmo.geco.model.HeatSet;

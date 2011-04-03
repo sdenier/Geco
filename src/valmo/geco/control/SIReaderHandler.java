@@ -24,11 +24,11 @@ import org.martin.sireader.server.PortMessage;
 import org.martin.sireader.server.SIPortHandler;
 import org.martin.sireader.server.SIReaderListener;
 
-import valmo.geco.core.Announcer;
-import valmo.geco.core.GecoRequestHandler;
-import valmo.geco.core.GecoResources;
-import valmo.geco.core.TimeManager;
-import valmo.geco.core.WindowsRegistryQuery;
+import valmo.geco.basics.Announcer;
+import valmo.geco.basics.GecoRequestHandler;
+import valmo.geco.basics.GecoResources;
+import valmo.geco.basics.TimeManager;
+import valmo.geco.basics.WindowsRegistryQuery;
 import valmo.geco.model.Punch;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;

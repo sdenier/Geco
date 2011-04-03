@@ -8,15 +8,14 @@ import java.util.Date;
 import java.util.Properties;
 import java.util.Vector;
 
-import valmo.geco.core.Announcer.StageListener;
-import valmo.geco.core.TimeManager;
+import valmo.geco.basics.TimeManager;
+import valmo.geco.basics.Announcer.StageListener;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Punch;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Stage;
 import valmo.geco.model.Status;
 import valmo.geco.model.Trace;
-import valmo.geco.ui.MergeRunnerDialog;
 
 /**
  * @author Simon Denier
@@ -88,7 +87,6 @@ public class PenaltyChecker extends PunchChecker implements StageListener {
 	 * the data comes from an unknown chip without a course.
 	 * 
 	 * @param data
-	 * @see MergeRunnerDialog
 	 */
 	public void normalTrace(RunnerRaceData data) {
 		Trace[] nTrace = new Trace[data.getPunches().length];

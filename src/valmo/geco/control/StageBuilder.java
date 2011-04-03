@@ -18,7 +18,7 @@ import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import valmo.geco.core.GecoResources;
+import valmo.geco.basics.GecoResources;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Stage;

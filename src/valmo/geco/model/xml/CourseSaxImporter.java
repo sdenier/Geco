@@ -16,7 +16,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import valmo.geco.core.GecoResources;
+import valmo.geco.basics.GecoResources;
 import valmo.geco.model.Course;
 import valmo.geco.model.Factory;
 import valmo.geco.model.impl.POFactory;

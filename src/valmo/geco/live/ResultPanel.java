@@ -12,7 +12,7 @@ import javax.swing.SwingConstants;
 
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Status;
-import valmo.geco.ui.PunchPanel;
+import valmo.geco.ui.basics.PunchPanel;
 
 /**
  * @author Simon Denier

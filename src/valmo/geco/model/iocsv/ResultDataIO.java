@@ -4,7 +4,7 @@
  */
 package valmo.geco.model.iocsv;
 
-import valmo.geco.core.TimeManager;
+import valmo.geco.basics.TimeManager;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Registry;
 import valmo.geco.model.RunnerRaceData;

@@ -18,13 +18,13 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
-import valmo.geco.core.GecoResources;
+import valmo.geco.basics.GecoResources;
 import valmo.geco.model.Course;
 import valmo.geco.model.Messages;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.impl.POFactory;
 import valmo.geco.model.xml.CourseSaxImporter;
-import valmo.geco.ui.SwingUtils;
+import valmo.geco.ui.basics.SwingUtils;
 
 /**
  * @author Simon Denier

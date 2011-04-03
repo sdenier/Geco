@@ -17,7 +17,7 @@ import java.util.Collection;
 
 import javax.imageio.ImageIO;
 
-import valmo.geco.core.GecoResources;
+import valmo.geco.basics.GecoResources;
 
 /**
  * @author Simon Denier

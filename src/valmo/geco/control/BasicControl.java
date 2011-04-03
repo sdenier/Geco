@@ -4,7 +4,7 @@
  */
 package valmo.geco.control;
 
-import valmo.geco.core.GService;
+import valmo.geco.basics.GService;
 import valmo.geco.model.Factory;
 
 

@@ -4,7 +4,7 @@
  */
 package valmo.geco.control;
 
-import valmo.geco.core.Announcer;
+import valmo.geco.basics.Announcer;
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
 import valmo.geco.model.Course;

@@ -8,8 +8,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import valmo.geco.core.GecoResources;
-import valmo.geco.core.Util;
+import valmo.geco.basics.GecoResources;
+import valmo.geco.basics.Util;
 
 
 /**

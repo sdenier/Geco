@@ -10,7 +10,7 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Properties;
 
-import valmo.geco.core.Announcer.StageListener;
+import valmo.geco.basics.Announcer.StageListener;
 import valmo.geco.model.Archive;
 import valmo.geco.model.ArchiveRunner;
 import valmo.geco.model.Category;

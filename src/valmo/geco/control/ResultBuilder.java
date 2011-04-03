@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Vector;
 
-import valmo.geco.core.TimeManager;
+import valmo.geco.basics.TimeManager;
 import valmo.geco.model.Category;
 import valmo.geco.model.Course;
 import valmo.geco.model.Messages;

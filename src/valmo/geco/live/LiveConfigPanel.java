@@ -28,7 +28,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import valmo.geco.model.Messages;
-import valmo.geco.ui.SwingUtils;
+import valmo.geco.ui.basics.SwingUtils;
 
 /**
  * @author Simon Denier

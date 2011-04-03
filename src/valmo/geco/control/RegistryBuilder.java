@@ -7,7 +7,7 @@ package valmo.geco.control;
 import java.io.File;
 import java.io.IOException;
 
-import valmo.geco.core.GecoResources;
+import valmo.geco.basics.GecoResources;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Registry;
 import valmo.geco.model.iocsv.CardDataIO;

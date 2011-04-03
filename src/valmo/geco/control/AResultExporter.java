@@ -9,8 +9,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Vector;
 
+import valmo.geco.basics.Html;
 import valmo.geco.control.ResultBuilder.ResultConfig;
-import valmo.geco.core.Html;
 import valmo.geco.model.Pool;
 import valmo.geco.model.RankedRunner;
 import valmo.geco.model.Result;

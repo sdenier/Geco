@@ -6,7 +6,7 @@ package valmo.geco.control;
 
 import java.util.Date;
 
-import valmo.geco.core.TimeManager;
+import valmo.geco.basics.TimeManager;
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
 import valmo.geco.model.Messages;

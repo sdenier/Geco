@@ -4,7 +4,7 @@
  */
 package valmo.geco.control;
 
-import valmo.geco.core.TimeManager;
+import valmo.geco.basics.TimeManager;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Punch;
 import valmo.geco.model.RunnerRaceData;

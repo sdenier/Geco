@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2009 Simon Denier
  */
-package valmo.geco.core;
+package valmo.geco.basics;
 
 import java.util.Properties;
 import java.util.Vector;

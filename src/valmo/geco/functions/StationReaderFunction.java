@@ -10,10 +10,10 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
+import valmo.geco.basics.Html;
 import valmo.geco.control.GecoControl;
 import valmo.geco.control.RunnerControl;
 import valmo.geco.control.RunnerCreationException;
-import valmo.geco.core.Html;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.RunnerResult;

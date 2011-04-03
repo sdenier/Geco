@@ -2,7 +2,7 @@
  * Copyright (c) 2010 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package valmo.geco.core;
+package valmo.geco.basics;
 
 /**
  * @author Simon Denier

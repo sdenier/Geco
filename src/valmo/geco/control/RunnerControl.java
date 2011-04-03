@@ -9,9 +9,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import valmo.geco.core.Announcer;
-import valmo.geco.core.TimeManager;
-import valmo.geco.core.Util;
+import valmo.geco.basics.Announcer;
+import valmo.geco.basics.TimeManager;
+import valmo.geco.basics.Util;
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
 import valmo.geco.model.Course;

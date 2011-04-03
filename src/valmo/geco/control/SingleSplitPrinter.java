@@ -23,10 +23,10 @@ import javax.print.attribute.standard.MediaSizeName;
 import javax.swing.JFrame;
 import javax.swing.JTextPane;
 
+import valmo.geco.basics.Html;
+import valmo.geco.basics.Announcer.CardListener;
+import valmo.geco.basics.Announcer.StageListener;
 import valmo.geco.control.ResultBuilder.SplitTime;
-import valmo.geco.core.Announcer.CardListener;
-import valmo.geco.core.Announcer.StageListener;
-import valmo.geco.core.Html;
 import valmo.geco.model.Messages;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Stage;

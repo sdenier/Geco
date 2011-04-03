@@ -10,7 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
 
-import valmo.geco.core.Util;
+import valmo.geco.basics.Util;
 
 
 /**

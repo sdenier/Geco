@@ -6,7 +6,7 @@ package valmo.geco.control;
 
 import java.util.Vector;
 
-import valmo.geco.core.TimeManager;
+import valmo.geco.basics.TimeManager;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Stage;
 import valmo.geco.model.Status;

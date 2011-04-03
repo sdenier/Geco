@@ -29,15 +29,15 @@ import javax.swing.SpinnerNumberModel;
 import org.martin.sireader.common.PunchObject;
 import org.martin.sireader.common.ResultData;
 
+import valmo.geco.basics.TimeManager;
 import valmo.geco.control.GecoControl;
 import valmo.geco.control.RunnerControl;
 import valmo.geco.control.RunnerCreationException;
 import valmo.geco.control.SIReaderHandler;
-import valmo.geco.core.TimeManager;
 import valmo.geco.model.Course;
 import valmo.geco.model.Messages;
 import valmo.geco.model.Runner;
-import valmo.geco.ui.SwingUtils;
+import valmo.geco.ui.basics.SwingUtils;
 
 /**
  * @author Simon Denier

@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
 
-import valmo.geco.core.Announcer;
+import valmo.geco.basics.Announcer;
 import valmo.geco.model.Course;
 import valmo.geco.model.Messages;
 import valmo.geco.model.Runner;

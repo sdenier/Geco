@@ -14,11 +14,11 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
 
+import valmo.geco.basics.Html;
+import valmo.geco.basics.TimeManager;
+import valmo.geco.basics.Announcer.StageListener;
 import valmo.geco.control.ResultBuilder.ResultConfig;
 import valmo.geco.control.ResultBuilder.SplitTime;
-import valmo.geco.core.Announcer.StageListener;
-import valmo.geco.core.Html;
-import valmo.geco.core.TimeManager;
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
 import valmo.geco.model.Course;

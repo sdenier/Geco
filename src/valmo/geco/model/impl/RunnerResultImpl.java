@@ -4,8 +4,8 @@
  */
 package valmo.geco.model.impl;
 
-import valmo.geco.core.TimeManager;
-import valmo.geco.core.Util;
+import valmo.geco.basics.TimeManager;
+import valmo.geco.basics.Util;
 import valmo.geco.model.RunnerResult;
 import valmo.geco.model.Status;
 import valmo.geco.model.Trace;

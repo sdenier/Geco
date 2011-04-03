@@ -9,6 +9,12 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.Vector;
 
+import valmo.geco.basics.Announcer;
+import valmo.geco.basics.GecoRequestHandler;
+import valmo.geco.basics.GecoResources;
+import valmo.geco.basics.GecoWarning;
+import valmo.geco.basics.Logger;
+import valmo.geco.basics.Util;
 import valmo.geco.control.ArchiveManager;
 import valmo.geco.control.AutoMergeHandler;
 import valmo.geco.control.CNCalculator;
@@ -24,12 +30,6 @@ import valmo.geco.control.SingleSplitPrinter;
 import valmo.geco.control.SplitExporter;
 import valmo.geco.control.StageControl;
 import valmo.geco.control.StartlistImporter;
-import valmo.geco.core.Announcer;
-import valmo.geco.core.GecoRequestHandler;
-import valmo.geco.core.GecoResources;
-import valmo.geco.core.GecoWarning;
-import valmo.geco.core.Logger;
-import valmo.geco.core.Util;
 import valmo.geco.functions.GeneratorFunction;
 import valmo.geco.functions.RecheckFunction;
 import valmo.geco.functions.StartTimeFunction;
@@ -39,9 +39,9 @@ import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
 import valmo.geco.model.Stage;
 import valmo.geco.model.Status;
-import valmo.geco.ui.GecoLauncher;
 import valmo.geco.ui.GecoWindow;
-import valmo.geco.ui.MergeRunnerDialog;
+import valmo.geco.ui.basics.GecoLauncher;
+import valmo.geco.ui.components.MergeRunnerDialog;
 
 /**
  * Geco is the main class, responsible for launching the application and managing the current stage.

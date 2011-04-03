@@ -11,9 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import valmo.geco.core.Announcer;
-import valmo.geco.core.GService;
-import valmo.geco.core.Logger;
+import valmo.geco.basics.Announcer;
+import valmo.geco.basics.GService;
+import valmo.geco.basics.Logger;
 import valmo.geco.model.Factory;
 import valmo.geco.model.Registry;
 import valmo.geco.model.Stage;
@@ -21,8 +21,6 @@ import valmo.geco.model.impl.POFactory;
 
 /**
  * @author Simon Denier
- * @param <T>
- * @param <H>
  * @since Aug 20, 2010
  *
  */

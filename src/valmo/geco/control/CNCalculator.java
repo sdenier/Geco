@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import valmo.geco.basics.Html;
 import valmo.geco.control.ResultBuilder.ResultConfig;
-import valmo.geco.core.Html;
 import valmo.geco.model.Messages;
 import valmo.geco.model.RankedRunner;
 import valmo.geco.model.Result;

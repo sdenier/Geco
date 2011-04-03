@@ -7,7 +7,7 @@ package valmo.geco.control;
 import java.util.Collections;
 import java.util.Vector;
 
-import valmo.geco.core.GecoRequestHandler;
+import valmo.geco.basics.GecoRequestHandler;
 import valmo.geco.model.Course;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;

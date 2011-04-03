@@ -11,14 +11,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Vector;
 
+import valmo.geco.basics.Html;
+import valmo.geco.basics.Util;
 import valmo.geco.control.GecoControl;
 import valmo.geco.control.HeatBuilder;
 import valmo.geco.control.PenaltyChecker;
 import valmo.geco.control.PoolMerger;
 import valmo.geco.control.ResultBuilder;
 import valmo.geco.control.StageBuilder;
-import valmo.geco.core.Html;
-import valmo.geco.core.Util;
 import valmo.geco.model.HeatSet;
 import valmo.geco.model.Messages;
 import valmo.geco.model.RankedRunner;
