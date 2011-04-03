@@ -2,7 +2,7 @@
  * Copyright (c) 2010 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package valmo.geco.ui;
+package valmo.geco.ui.basics;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,7 +17,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import valmo.geco.core.GecoWarning;
+import valmo.geco.basics.GecoWarning;
 import valmo.geco.model.Messages;
 
 /**

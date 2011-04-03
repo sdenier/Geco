@@ -2,7 +2,7 @@
  * Copyright (c) 2009 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package valmo.geco.ui;
+package valmo.geco.ui.tabs;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -38,16 +38,22 @@ import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 
 import valmo.geco.Geco;
+import valmo.geco.basics.Announcer;
+import valmo.geco.basics.Html;
 import valmo.geco.control.SIReaderHandler.SerialPort;
 import valmo.geco.control.SingleSplitPrinter;
-import valmo.geco.core.Announcer;
-import valmo.geco.core.Html;
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
 import valmo.geco.model.Course;
 import valmo.geco.model.Messages;
 import valmo.geco.model.Stage;
 import valmo.geco.model.xml.CourseSaxImporter;
+import valmo.geco.ui.GecoWindow;
+import valmo.geco.ui.basics.CourseControlDialog;
+import valmo.geco.ui.basics.SwingUtils;
+import valmo.geco.ui.components.ConfigTableModel;
+import valmo.geco.ui.components.ConfigTablePanel;
+import valmo.geco.ui.framework.TabPanel;
 
 /**
  * @author Simon Denier

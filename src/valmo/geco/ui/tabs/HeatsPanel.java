@@ -2,7 +2,7 @@
  * Copyright (c) 2009 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package valmo.geco.ui;
+package valmo.geco.ui.tabs;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -37,12 +37,15 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import valmo.geco.Geco;
-import valmo.geco.core.Announcer;
+import valmo.geco.basics.Announcer;
 import valmo.geco.model.HeatSet;
 import valmo.geco.model.Messages;
 import valmo.geco.model.Pool;
 import valmo.geco.model.Stage;
 import valmo.geco.model.iocsv.RunnerIO;
+import valmo.geco.ui.basics.HeatSetDialog;
+import valmo.geco.ui.basics.SwingUtils;
+import valmo.geco.ui.framework.TabPanel;
 
 /**
  * 

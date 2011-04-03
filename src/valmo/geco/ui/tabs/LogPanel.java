@@ -2,7 +2,7 @@
  * Copyright (c) 2009 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package valmo.geco.ui;
+package valmo.geco.ui.tabs;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -19,9 +19,11 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 
 import valmo.geco.Geco;
-import valmo.geco.core.Announcer.Logging;
+import valmo.geco.basics.Announcer.Logging;
 import valmo.geco.model.Messages;
 import valmo.geco.model.Stage;
+import valmo.geco.ui.components.FunctionsPanel;
+import valmo.geco.ui.framework.TabPanel;
 
 /**
  * @author Simon Denier

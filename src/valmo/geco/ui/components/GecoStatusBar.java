@@ -2,7 +2,7 @@
  * Copyright (c) 2010 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package valmo.geco.ui;
+package valmo.geco.ui.components;
 
 import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
@@ -13,8 +13,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import valmo.geco.Geco;
-import valmo.geco.core.Announcer.Logging;
-import valmo.geco.core.Html;
+import valmo.geco.basics.Html;
+import valmo.geco.basics.Announcer.Logging;
+import valmo.geco.ui.framework.GecoPanel;
 
 /**
  * @author Simon Denier

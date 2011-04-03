@@ -2,7 +2,7 @@
  * Copyright (c) 2010 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package valmo.geco.ui;
+package valmo.geco.ui.basics;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,7 +29,7 @@ public abstract class StartStopButton extends JButton {
 		});
 	}
 
-	protected void initialize() { }
+	public void initialize() { }
 
 	public void doOnAction() {
 		setSelected(true);

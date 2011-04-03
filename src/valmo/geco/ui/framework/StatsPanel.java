@@ -2,13 +2,13 @@
  * Copyright (c) 2009 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package valmo.geco.ui;
+package valmo.geco.ui.framework;
 
 import javax.swing.JFrame;
 
 import valmo.geco.Geco;
+import valmo.geco.basics.Announcer;
 import valmo.geco.control.RegistryStats;
-import valmo.geco.core.Announcer;
 import valmo.geco.model.Stage;
 
 /**

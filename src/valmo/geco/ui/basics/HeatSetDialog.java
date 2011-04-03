@@ -2,7 +2,7 @@
  * Copyright (c) 2009 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package valmo.geco.ui;
+package valmo.geco.ui.basics;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -25,7 +25,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import valmo.geco.core.Util;
+import valmo.geco.basics.Util;
 import valmo.geco.model.HeatSet;
 import valmo.geco.model.Messages;
 import valmo.geco.model.Pool;

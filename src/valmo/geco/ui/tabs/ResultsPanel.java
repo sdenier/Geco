@@ -2,7 +2,7 @@
  * Copyright (c) 2009 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package valmo.geco.ui;
+package valmo.geco.ui.tabs;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -38,13 +38,15 @@ import javax.swing.JTextPane;
 import javax.swing.SpinnerNumberModel;
 
 import valmo.geco.Geco;
+import valmo.geco.basics.Announcer.StageConfigListener;
 import valmo.geco.control.AResultExporter;
 import valmo.geco.control.ResultBuilder;
 import valmo.geco.control.ResultBuilder.ResultConfig;
-import valmo.geco.core.Announcer.StageConfigListener;
 import valmo.geco.model.Messages;
 import valmo.geco.model.ResultType;
 import valmo.geco.model.Stage;
+import valmo.geco.ui.basics.SwingUtils;
+import valmo.geco.ui.framework.TabPanel;
 
 /**
  * @author Simon Denier

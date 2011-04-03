@@ -2,7 +2,7 @@
  * Copyright (c) 2009 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package valmo.geco.ui;
+package valmo.geco.ui.framework;
 
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -11,7 +11,7 @@ import java.util.Properties;
 import javax.swing.JFrame;
 
 import valmo.geco.Geco;
-import valmo.geco.core.Announcer.StageListener;
+import valmo.geco.basics.Announcer.StageListener;
 import valmo.geco.model.Stage;
 
 /**

@@ -2,7 +2,7 @@
  * Copyright (c) 2009 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package valmo.geco.ui;
+package valmo.geco.ui.components;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -21,6 +21,7 @@ import javax.swing.table.TableRowSorter;
 
 import valmo.geco.Geco;
 import valmo.geco.model.Messages;
+import valmo.geco.ui.framework.GecoPanel;
 
 /**
  * @author Simon Denier
@@ -114,7 +115,7 @@ public class ConfigTablePanel<T> extends GecoPanel {
 		return null;
 	}
 	
-	protected JTable table() {
+	public JTable table() {
 		return table;
 	}
 

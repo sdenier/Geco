@@ -2,7 +2,7 @@
  * Copyright (c) 2010 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package valmo.geco.ui;
+package valmo.geco.ui.components;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -37,6 +37,7 @@ import valmo.geco.control.ArchiveManager;
 import valmo.geco.model.Archive;
 import valmo.geco.model.ArchiveRunner;
 import valmo.geco.model.Messages;
+import valmo.geco.ui.basics.SwingUtils;
 
 /**
  * @author Simon Denier

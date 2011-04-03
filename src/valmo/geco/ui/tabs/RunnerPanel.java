@@ -2,7 +2,7 @@
  * Copyright (c) 2009 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package valmo.geco.ui;
+package valmo.geco.ui.tabs;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -29,11 +29,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import valmo.geco.Geco;
+import valmo.geco.basics.TimeManager;
 import valmo.geco.control.RunnerControl;
-import valmo.geco.core.TimeManager;
 import valmo.geco.model.Messages;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
+import valmo.geco.ui.basics.SwingUtils;
+import valmo.geco.ui.components.MergeRunnerDialog;
+import valmo.geco.ui.framework.GecoPanel;
 
 /**
  * @author Simon Denier

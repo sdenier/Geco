@@ -2,7 +2,7 @@
  * Copyright (c) 2009 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package valmo.geco.ui;
+package valmo.geco.ui.tabs;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -28,6 +28,8 @@ import valmo.geco.Geco;
 import valmo.geco.control.RegistryStats.StatItem;
 import valmo.geco.model.Messages;
 import valmo.geco.model.Stage;
+import valmo.geco.ui.basics.SwingUtils;
+import valmo.geco.ui.framework.StatsPanel;
 
 /**
  * @author Simon Denier

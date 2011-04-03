@@ -2,7 +2,7 @@
  * Copyright (c) 2010 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package valmo.geco.ui;
+package valmo.geco.ui.components;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import javax.swing.JTextPane;
 import javax.swing.event.HyperlinkListener;
 
 import valmo.geco.Geco;
-import valmo.geco.core.Announcer.Logging;
+import valmo.geco.basics.Announcer.Logging;
 
 /**
  * @author Simon Denier

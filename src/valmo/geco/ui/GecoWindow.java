@@ -37,14 +37,22 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import valmo.geco.Geco;
-import valmo.geco.core.Announcer;
-import valmo.geco.core.GecoResources;
-import valmo.geco.core.GecoWarning;
-import valmo.geco.core.Html;
+import valmo.geco.basics.Announcer;
+import valmo.geco.basics.GecoResources;
+import valmo.geco.basics.GecoWarning;
+import valmo.geco.basics.Html;
 import valmo.geco.live.LiveClient;
 import valmo.geco.live.LiveClientDialog;
 import valmo.geco.model.Messages;
 import valmo.geco.model.Stage;
+import valmo.geco.ui.basics.GecoLauncher;
+import valmo.geco.ui.basics.StartStopButton;
+import valmo.geco.ui.components.GecoStatusBar;
+import valmo.geco.ui.tabs.HeatsPanel;
+import valmo.geco.ui.tabs.LogPanel;
+import valmo.geco.ui.tabs.ResultsPanel;
+import valmo.geco.ui.tabs.RunnersPanel;
+import valmo.geco.ui.tabs.StagePanel;
 
 
 /**
@@ -278,7 +286,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		StartStopButton liveClientB = new StartStopButton() {
 			private LiveClient liveClient;
 			@Override
-			protected void initialize() {
+			public void initialize() {
 				setIcon(offliveIcon);
 				setToolTipText(Messages.uiGet("GecoWindow.StartLiveclientTooltip")); //$NON-NLS-1$
 			}
@@ -307,7 +315,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		final ImageIcon autoOn = createIcon(13);
 		final StartStopButton autoModeB = new StartStopButton() {
 			@Override
-			protected void initialize() {
+			public void initialize() {
 				doOnAction();
 			}
 			@Override
@@ -329,7 +337,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		final ImageIcon splitOn = createIcon(11);
 		final StartStopButton autoSplitB = new StartStopButton() {
 			@Override
-			protected void initialize() {
+			public void initialize() {
 				setToolTipText(Messages.uiGet("GecoWindow.AutoprintTooltip")); //$NON-NLS-1$
 				doOffAction();
 			}
@@ -350,7 +358,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		final ImageIcon stopIcon = createIcon(6);
 		startB = new StartStopButton() {
 			@Override
-			protected void initialize() {
+			public void initialize() {
 				setSelected(false);
 				setText(Messages.uiGet("GecoWindow.StartReaderButton")); //$NON-NLS-1$
 				setIcon(startIcon);
