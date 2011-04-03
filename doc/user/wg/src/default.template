@@ -2,8 +2,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 
 <%
-currentversion = '1.1b1 - beta1'
-currentlink = 'http://bitbucket.org/sdenier/geco/downloads/geco1.1b1-372-20110108-demo.zip'
+analytics_tracking = false
+currentversion = '1.1'
+currentlink = 'http://bitbucket.org/sdenier/geco/downloads/geco1.1b1-378-20110403-demo.zip'
 translations = YAML::load(File.read(File.join(context.website.directory, 'default.languages')))
 trans = translations[context.node.lang]
 %>
@@ -17,6 +18,13 @@ trans = translations[context.node.lang]
     <meta name="generator" content="webgen - http://webgen.rubyforge.org" />
     <link rel="stylesheet" href="{relocatable: default.css}" type="text/css" media="screen,projection" />
     <title>Geco - {title:}</title>
+      <%=
+        if analytics_tracking
+            script = File.read(File.join(context.website.directory, 'analytics.jscript'))
+        else
+            script = ''
+        end
+        script %>
   </head>
 
   <body>
