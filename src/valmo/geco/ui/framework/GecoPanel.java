@@ -7,7 +7,7 @@ package valmo.geco.ui.framework;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import valmo.geco.Geco;
+import valmo.geco.framework.IGeco;
 import valmo.geco.model.Registry;
 
 /**
@@ -20,17 +20,17 @@ import valmo.geco.model.Registry;
  */
 public abstract class GecoPanel extends JPanel {
 	
-	private Geco geco;
+	private IGeco geco;
 
 	private JFrame frame;
 	
 	
-	public GecoPanel(Geco geco, JFrame frame) {
+	public GecoPanel(IGeco geco, JFrame frame) {
 		this.geco = geco;
 		this.frame = frame;
 	}
 	
-	public Geco geco() {
+	public IGeco geco() {
 		return this.geco;
 	}
 	

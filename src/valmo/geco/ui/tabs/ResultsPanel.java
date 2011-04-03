@@ -37,11 +37,11 @@ import javax.swing.JSpinner;
 import javax.swing.JTextPane;
 import javax.swing.SpinnerNumberModel;
 
-import valmo.geco.Geco;
 import valmo.geco.basics.Announcer.StageConfigListener;
 import valmo.geco.control.AResultExporter;
 import valmo.geco.control.ResultBuilder;
 import valmo.geco.control.ResultBuilder.ResultConfig;
+import valmo.geco.framework.IGecoApp;
 import valmo.geco.model.Messages;
 import valmo.geco.model.ResultType;
 import valmo.geco.model.Stage;
@@ -92,7 +92,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	 * @param frame 
 	 * @param announcer 
 	 */
-	public ResultsPanel(Geco geco, JFrame frame) {
+	public ResultsPanel(IGecoApp geco, JFrame frame) {
 		super(geco, frame);
 		updateNames();
 		initResultsPanel(this);

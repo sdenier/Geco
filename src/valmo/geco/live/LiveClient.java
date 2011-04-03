@@ -12,9 +12,9 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
-import valmo.geco.Geco;
 import valmo.geco.basics.Announcer;
 import valmo.geco.basics.Util;
+import valmo.geco.framework.IGeco;
 import valmo.geco.model.Messages;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
@@ -28,7 +28,7 @@ import valmo.geco.ui.basics.StartStopButton;
  */
 public class LiveClient implements Announcer.CardListener {
 
-	private Geco geco;
+	private IGeco geco;
 	private StartStopButton serverB;
 
 	private Thread thread;
@@ -37,7 +37,7 @@ public class LiveClient implements Announcer.CardListener {
 	
 	private Vector<String> messages;
 
-	public LiveClient(Geco geco, StartStopButton serverB) {
+	public LiveClient(IGeco geco, StartStopButton serverB) {
 		this.geco = geco;
 		this.serverB = serverB;
 	}

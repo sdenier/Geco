@@ -28,9 +28,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import valmo.geco.Geco;
 import valmo.geco.basics.TimeManager;
 import valmo.geco.control.RunnerControl;
+import valmo.geco.framework.IGeco;
 import valmo.geco.model.Messages;
 import valmo.geco.model.Runner;
 import valmo.geco.model.RunnerRaceData;
@@ -80,7 +80,7 @@ public class RunnerPanel extends GecoPanel {
 	private static final Color PALE_RED = new Color(1.0f, 0.8f, 0.8f);
 
 	
-	public RunnerPanel(Geco geco, JFrame frame, RunnersPanel parent) {
+	public RunnerPanel(IGeco geco, JFrame frame, RunnersPanel parent) {
 		super(geco, frame);
 		this.parentContainer = parent;
 		initPanel(this);

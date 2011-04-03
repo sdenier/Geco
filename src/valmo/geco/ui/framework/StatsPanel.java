@@ -6,9 +6,9 @@ package valmo.geco.ui.framework;
 
 import javax.swing.JFrame;
 
-import valmo.geco.Geco;
 import valmo.geco.basics.Announcer;
 import valmo.geco.control.RegistryStats;
+import valmo.geco.framework.IGecoApp;
 import valmo.geco.model.Stage;
 
 /**
@@ -20,7 +20,7 @@ public abstract class StatsPanel extends TabPanel implements Announcer.StageConf
 
 	private Thread updateThread;
 	
-	public StatsPanel(Geco geco, JFrame frame) {
+	public StatsPanel(IGecoApp geco, JFrame frame) {
 		super(geco, frame);
 		geco().announcer().registerStageConfigListener(this);
 	}

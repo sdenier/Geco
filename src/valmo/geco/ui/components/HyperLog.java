@@ -16,8 +16,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JTextPane;
 import javax.swing.event.HyperlinkListener;
 
-import valmo.geco.Geco;
 import valmo.geco.basics.Announcer.Logging;
+import valmo.geco.framework.IGeco;
 
 /**
  * @author Simon Denier
@@ -25,6 +25,7 @@ import valmo.geco.basics.Announcer.Logging;
  *
  */
 public class HyperLog extends JTextPane implements Logging {
+	// TODO: only need announcer here
 
 	private static final int LOGSIZE = 6;
 	
@@ -32,7 +33,7 @@ public class HyperLog extends JTextPane implements Logging {
 	
 	private List<String> logRing;
 	
-	public HyperLog(Geco geco, HyperlinkListener hlListener) {
+	public HyperLog(IGeco geco, HyperlinkListener hlListener) {
 		logRing = new ArrayList<String>(LOGSIZE);
 		for (int i = 0; i < LOGSIZE; i++) {
 			logRing.add(""); // fill-in log //$NON-NLS-1$

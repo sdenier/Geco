@@ -23,10 +23,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
-import valmo.geco.Geco;
 import valmo.geco.basics.Html;
 import valmo.geco.control.RegistryStats;
 import valmo.geco.control.RegistryStats.StatItem;
+import valmo.geco.framework.IGecoApp;
 import valmo.geco.model.Messages;
 import valmo.geco.model.Stage;
 import valmo.geco.ui.basics.SwingUtils;
@@ -56,7 +56,7 @@ public class HStatsPanel extends StatsPanel {
 	 * @param frame
 	 * @param clearLogB 
 	 */
-	public HStatsPanel(Geco geco, JFrame frame, JButton clearLogB) {
+	public HStatsPanel(IGecoApp geco, JFrame frame, JButton clearLogB) {
 		super(geco, frame);
 		refreshTableKeys();
 		initStatsPanel(this, clearLogB);

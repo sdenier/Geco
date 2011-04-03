@@ -25,8 +25,8 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
-import valmo.geco.Geco;
 import valmo.geco.control.RunnerControl;
+import valmo.geco.framework.IGeco;
 import valmo.geco.model.Course;
 import valmo.geco.model.Messages;
 import valmo.geco.model.Registry;
@@ -45,7 +45,7 @@ public class RunnersTableModel extends AbstractTableModel {
 	private static final int FIELD_WIDTH = 70;
 	private static final int NAME_WIDTH = 100;
 
-	private Geco geco;
+	private IGeco geco;
 	private String[] headers;
 	private List<RunnerRaceData> data;
 
@@ -57,7 +57,7 @@ public class RunnersTableModel extends AbstractTableModel {
 	private DefaultCellEditor statusEditor;
 
 	
-	public RunnersTableModel(Geco geco) {
+	public RunnersTableModel(IGeco geco) {
 		this.geco = geco;
 		this.headers = new String[] {
 				Messages.uiGet("RunnersTableModel.StartHeader"), //$NON-NLS-1$

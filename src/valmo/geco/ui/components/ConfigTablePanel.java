@@ -19,7 +19,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.TableRowSorter;
 
-import valmo.geco.Geco;
+import valmo.geco.framework.IGeco;
 import valmo.geco.model.Messages;
 import valmo.geco.ui.framework.GecoPanel;
 
@@ -29,11 +29,12 @@ import valmo.geco.ui.framework.GecoPanel;
  * 
  */
 public class ConfigTablePanel<T> extends GecoPanel {
+	// TODO: simplify - do we need a geco and frame references here?
 
 	private ConfigTableModel<T> tableModel;
 	private JTable table;
 
-	public ConfigTablePanel(Geco geco, JFrame frame) {
+	public ConfigTablePanel(IGeco geco, JFrame frame) {
 		super(geco, frame);
 	}
 

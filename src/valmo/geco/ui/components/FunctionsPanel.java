@@ -18,7 +18,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import valmo.geco.Geco;
+import valmo.geco.framework.IGeco;
 import valmo.geco.functions.GecoFunction;
 import valmo.geco.model.Messages;
 import valmo.geco.ui.framework.GecoPanel;
@@ -29,12 +29,13 @@ import valmo.geco.ui.framework.GecoPanel;
  *
  */
 public class FunctionsPanel extends GecoPanel {
+	// TODO: simplify - do we need a geco reference here?
 
 	private GecoFunction gFunction;
 	
 	private JComponent functionUI;
 
-	public FunctionsPanel(Geco geco, JFrame frame, JButton clearLogB) {
+	public FunctionsPanel(IGeco geco, JFrame frame, JButton clearLogB) {
 		super(geco, frame);
 		initFunctionsPanel(clearLogB);
 	}

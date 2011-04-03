@@ -18,8 +18,8 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 
-import valmo.geco.Geco;
 import valmo.geco.basics.Announcer.Logging;
+import valmo.geco.framework.IGecoApp;
 import valmo.geco.model.Messages;
 import valmo.geco.model.Stage;
 import valmo.geco.ui.components.FunctionsPanel;
@@ -37,7 +37,7 @@ public class LogPanel extends TabPanel implements Logging {
 	private JTextArea logArea;
 	
 	
-	public LogPanel(Geco geco, JFrame frame) {
+	public LogPanel(IGecoApp geco, JFrame frame) {
 		super(geco, frame);
 		initPanels(this);
 		geco().announcer().registerLogger(this);

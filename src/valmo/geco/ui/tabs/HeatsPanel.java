@@ -36,8 +36,8 @@ import javax.swing.JTextPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import valmo.geco.Geco;
 import valmo.geco.basics.Announcer;
+import valmo.geco.framework.IGecoApp;
 import valmo.geco.model.HeatSet;
 import valmo.geco.model.Messages;
 import valmo.geco.model.Pool;
@@ -71,7 +71,7 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 	private String exportFormat;
 
 	
-	public HeatsPanel(Geco geco, JFrame frame) {
+	public HeatsPanel(IGecoApp geco, JFrame frame) {
 		super(geco, frame);
 		heatlistModel = new DefaultListModel();
 		heatDialog = new HeatSetDialog(frame);

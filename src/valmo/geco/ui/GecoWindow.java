@@ -36,11 +36,11 @@ import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import valmo.geco.Geco;
 import valmo.geco.basics.Announcer;
 import valmo.geco.basics.GecoResources;
 import valmo.geco.basics.GecoWarning;
 import valmo.geco.basics.Html;
+import valmo.geco.framework.IGecoApp;
 import valmo.geco.live.LiveClient;
 import valmo.geco.live.LiveClientDialog;
 import valmo.geco.model.Messages;
@@ -68,7 +68,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		Messages.put("ui", "valmo.geco.ui.messages"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	private Geco geco;
+	private IGecoApp geco;
 
 	private StagePanel stagePanel;
 	
@@ -111,7 +111,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		});
 	}
 	
-	public GecoWindow(Geco geco) {
+	public GecoWindow(IGecoApp geco) {
 		this.geco = geco;
 		setLookAndFeel();
 		this.stagePanel = new StagePanel(this.geco, this);
@@ -200,6 +200,12 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 	public void updateWindowTitle() {
 		setTitle("Geco - " + geco.stage().getName()); //$NON-NLS-1$
 	}
+	
+	public void repaint() { // Bad smell: updating something in the repaint call
+		System.err.println("window repaint");
+		updateWindowTitle();
+		super.repaint();
+	}
 
 	public void launchGUI() {
 		pack();
@@ -210,6 +216,31 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 	private JToolBar initToolbar() {
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);
+		
+		initNavigationToolbar(toolBar);
+		toolBar.addSeparator();
+		
+		JButton recheckB = new JButton(Messages.uiGet("GecoWindow.RecheckButton"), createIcon(4)); //$NON-NLS-1$
+		recheckB.setToolTipText(Messages.uiGet("GecoWindow.RecheckToolTip")); //$NON-NLS-1$
+		recheckB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				geco.runnerControl().recheckOkMpRunners();
+			}
+		});
+		toolBar.add(recheckB);
+		
+		toolBar.add(Box.createHorizontalGlue());
+
+		initLiveToolbar(toolBar);
+		toolBar.addSeparator();
+		
+		initReaderToolbar(toolBar);
+		initVersionDialog(toolBar);
+		return toolBar;
+	}
+
+	private void initNavigationToolbar(JToolBar toolBar) {
 		JButton openB = new JButton(Messages.uiGet("GecoWindow.NewOpenButton"), createIcon(0)); //$NON-NLS-1$
 		openB.addActionListener(new ActionListener() {
 			@Override
@@ -259,20 +290,9 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 			}
 		});
 		toolBar.add(nextB);
-		toolBar.addSeparator();
-		
-		JButton statusB = new JButton(Messages.uiGet("GecoWindow.RecheckButton"), createIcon(4)); //$NON-NLS-1$
-		statusB.setToolTipText(Messages.uiGet("GecoWindow.RecheckToolTip")); //$NON-NLS-1$
-		statusB.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				geco.runnerControl().recheckOkMpRunners();
-			}
-		});
-		toolBar.add(statusB);
-		
-		toolBar.add(Box.createHorizontalGlue());
+	}
 
+	private void initLiveToolbar(JToolBar toolBar) {
 		JButton liveMapB = new JButton(createIcon(7));
 		liveMapB.setToolTipText(Messages.uiGet("GecoWindow.LivemapTooltip")); //$NON-NLS-1$
 		liveMapB.addActionListener(new ActionListener() {
@@ -309,8 +329,9 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 			}
 		};
 		toolBar.add(liveClientB);
-		toolBar.addSeparator();
-		
+	}
+
+	private void initReaderToolbar(JToolBar toolBar) {
 		final ImageIcon autoOff = createIcon(12);
 		final ImageIcon autoOn = createIcon(13);
 		final StartStopButton autoModeB = new StartStopButton() {
@@ -386,8 +407,10 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 			}
 		};
 		toolBar.add(startB);
+	}
 
-		final JLabel versionL = new JLabel(" v" + Geco.VERSION); //$NON-NLS-1$
+	private void initVersionDialog(JToolBar toolBar) {
+		final JLabel versionL = new JLabel(" v" + geco.version()); //$NON-NLS-1$
 		versionL.setBorder(BorderFactory.createLineBorder(versionL.getBackground()));
 		versionL.addMouseListener(new MouseListener() {
 			@Override
@@ -397,7 +420,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 			public void mousePressed(MouseEvent e) {
 				Html html = new Html();
 				html.open("div", "align=center"); //$NON-NLS-1$ //$NON-NLS-2$
-				html.b("Geco version " + Geco.VERSION).br().br(); //$NON-NLS-1$
+				html.b("Geco version " + geco.version()).br().br(); //$NON-NLS-1$
 				html.contents("Copyright (c) 2008-2010 Simon Denier.").br(); //$NON-NLS-1$
 				html.contents(Messages.uiGet("GecoWindow.AboutLicenseText")).br(); //$NON-NLS-1$
 				html.contents(Messages.uiGet("GecoWindow.AboutReadmeText")); //$NON-NLS-1$
@@ -420,9 +443,8 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 			public void mouseClicked(MouseEvent e) { }
 		});
 		toolBar.add(versionL);
-		return toolBar;
 	}
-	
+
 	public ImageIcon createIcon(int i) {
 		return createImageIcon(THEME, ICONS.get(THEME)[i]);
 	}

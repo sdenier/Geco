@@ -12,9 +12,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import valmo.geco.Geco;
-import valmo.geco.basics.Html;
 import valmo.geco.basics.Announcer.Logging;
+import valmo.geco.basics.Html;
+import valmo.geco.framework.IGeco;
 import valmo.geco.ui.framework.GecoPanel;
 
 /**
@@ -23,10 +23,12 @@ import valmo.geco.ui.framework.GecoPanel;
  *
  */
 public class GecoStatusBar extends GecoPanel implements Logging {
+	// TODO: simplify - do we need a geco and frame references here?
+	
 	
 	private JLabel status;
 	
-	public GecoStatusBar(Geco geco, JFrame frame) {
+	public GecoStatusBar(IGeco geco, JFrame frame) {
 		super(geco, frame);
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 		status = new JLabel(" "); //$NON-NLS-1$

@@ -27,11 +27,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import valmo.geco.Geco;
 import valmo.geco.basics.Html;
 import valmo.geco.basics.TimeManager;
 import valmo.geco.control.RunnerControl;
 import valmo.geco.control.RunnerCreationException;
+import valmo.geco.framework.IGeco;
 import valmo.geco.model.Course;
 import valmo.geco.model.Messages;
 import valmo.geco.model.Registry;
@@ -49,7 +49,7 @@ import valmo.geco.ui.basics.SwingUtils;
  */
 public class MergeRunnerDialog extends JDialog {
 	
-	private Geco geco;
+	private IGeco geco;
 	private RunnerRaceData runnerData;
 	private Runner existingRunner;
 	private Runner mockRunner;
@@ -75,7 +75,7 @@ public class MergeRunnerDialog extends JDialog {
 	private boolean updateStatus;
 
 	
-	public MergeRunnerDialog(Geco geco, JFrame frame, String title) {
+	public MergeRunnerDialog(IGeco geco, JFrame frame, String title) {
 		super(frame, title, true);
 		this.geco = geco;
 		setResizable(false);
@@ -110,14 +110,14 @@ public class MergeRunnerDialog extends JDialog {
 		setVisible(false);
 	}
 
-	private Vector<String> courseItems(Geco geco) {
+	private Vector<String> courseItems(IGeco geco) {
 		Vector<String> items = new Vector<String>();
 		items.add(Messages.uiGet("MergeRunnerDialog.UnknownCourseItem")); //$NON-NLS-1$
 		items.addAll(geco.registry().getSortedCoursenames());
 		return items;
 	}
 
-	private Object[] runnerItems(Geco geco) {
+	private Object[] runnerItems(IGeco geco) {
 		Runner[] runners = geco.registry().getRunners().toArray(new Runner[0]);
 		Arrays.sort(runners, new Comparator<Runner>() {
 			@Override

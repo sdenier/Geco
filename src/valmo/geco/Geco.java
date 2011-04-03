@@ -30,6 +30,7 @@ import valmo.geco.control.SingleSplitPrinter;
 import valmo.geco.control.SplitExporter;
 import valmo.geco.control.StageControl;
 import valmo.geco.control.StartlistImporter;
+import valmo.geco.framework.IGecoApp;
 import valmo.geco.functions.GeneratorFunction;
 import valmo.geco.functions.RecheckFunction;
 import valmo.geco.functions.StartTimeFunction;
@@ -50,7 +51,7 @@ import valmo.geco.ui.components.MergeRunnerDialog;
  * @author Simon Denier
  * @since Jan 25, 2009
  */
-public class Geco implements GecoRequestHandler {
+public class Geco implements IGecoApp, GecoRequestHandler {
 	
 	public static String VERSION;
 
@@ -138,8 +139,12 @@ public class Geco implements GecoRequestHandler {
 			System.out.println(Messages.getString("Geco.UnrecognizedOptionWarning") + arg); //$NON-NLS-1$
 		}
 	}
+	
+	public String version() {
+		return VERSION;
+	}
 
-	public static boolean leisureModeOn() {
+	public boolean leisureModeOn() {
 		return leisureMode;
 	}
 	

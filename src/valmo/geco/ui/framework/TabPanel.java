@@ -10,8 +10,8 @@ import java.util.Properties;
 
 import javax.swing.JFrame;
 
-import valmo.geco.Geco;
 import valmo.geco.basics.Announcer.StageListener;
+import valmo.geco.framework.IGecoApp;
 import valmo.geco.model.Stage;
 
 /**
@@ -25,11 +25,16 @@ public abstract class TabPanel extends GecoPanel implements StageListener, Compo
 	 * @param geco
 	 * @param frame
 	 */
-	public TabPanel(Geco geco, JFrame frame) {
+	public TabPanel(IGecoApp geco, JFrame frame) {
 		super(geco, frame);
 		addComponentListener(this); // panel can react when it gets shown in card layout
 		geco().announcer().registerStageListener(this);
 	}
+	
+	public IGecoApp geco() {
+		return (IGecoApp) super.geco();
+	}
+
 
 	@Override
 	public void changed(Stage previous, Stage current) {

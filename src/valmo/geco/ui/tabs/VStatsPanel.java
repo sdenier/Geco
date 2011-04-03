@@ -24,8 +24,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
-import valmo.geco.Geco;
 import valmo.geco.control.RegistryStats.StatItem;
+import valmo.geco.framework.IGecoApp;
 import valmo.geco.model.Messages;
 import valmo.geco.model.Stage;
 import valmo.geco.ui.basics.SwingUtils;
@@ -52,7 +52,7 @@ public class VStatsPanel extends StatsPanel {
 	 * @param geco
 	 * @param frame
 	 */
-	public VStatsPanel(Geco geco, JFrame frame) {
+	public VStatsPanel(IGecoApp geco, JFrame frame) {
 		super(geco, frame);
 		initStatsPanel(this);
 		refreshTableKeys();

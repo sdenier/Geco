@@ -32,8 +32,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.table.TableRowSorter;
 
-import valmo.geco.Geco;
 import valmo.geco.control.ArchiveManager;
+import valmo.geco.framework.IGeco;
 import valmo.geco.model.Archive;
 import valmo.geco.model.ArchiveRunner;
 import valmo.geco.model.Messages;
@@ -46,7 +46,7 @@ import valmo.geco.ui.basics.SwingUtils;
  */
 public class ArchiveViewer extends JFrame {
 	
-	private Geco geco;
+	private IGeco geco;
 	
 	private ArchiveTableModel tableModel;
 	
@@ -61,7 +61,7 @@ public class ArchiveViewer extends JFrame {
 	private JLabel nbEntriesL;
 
 	
-	public ArchiveViewer(Geco geco) {
+	public ArchiveViewer(IGeco geco) {
 		this.geco = geco;
 		guiInit();
 	}

@@ -50,10 +50,10 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 
-import valmo.geco.Geco;
 import valmo.geco.basics.Announcer;
 import valmo.geco.basics.TimeManager;
 import valmo.geco.control.RunnerCreationException;
+import valmo.geco.framework.IGecoApp;
 import valmo.geco.live.LiveComponent;
 import valmo.geco.model.Course;
 import valmo.geco.model.Messages;
@@ -87,7 +87,7 @@ public class RunnersPanel extends TabPanel
 	private LiveComponent gecoLiveMap;
 
 	
-	public RunnersPanel(Geco geco, JFrame frame) {
+	public RunnersPanel(IGecoApp geco, JFrame frame) {
 		super(geco, frame);
 		initRunnersPanel(this);
 		geco().announcer().registerRunnerListener(this);
@@ -515,7 +515,7 @@ public class RunnersPanel extends TabPanel
 	
 	public void openMapWindow() {
 		if( gecoLiveMap==null ) {
-			gecoLiveMap = new LiveComponent().initWindow(Geco.leisureModeOn());
+			gecoLiveMap = new LiveComponent().initWindow(geco().leisureModeOn());
 			gecoLiveMap.setStartDir(geco().getCurrentStagePath());
 		}
 		gecoLiveMap.openWindow();

@@ -37,18 +37,17 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 
-import valmo.geco.Geco;
 import valmo.geco.basics.Announcer;
 import valmo.geco.basics.Html;
 import valmo.geco.control.SIReaderHandler.SerialPort;
 import valmo.geco.control.SingleSplitPrinter;
+import valmo.geco.framework.IGecoApp;
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
 import valmo.geco.model.Course;
 import valmo.geco.model.Messages;
 import valmo.geco.model.Stage;
 import valmo.geco.model.xml.CourseSaxImporter;
-import valmo.geco.ui.GecoWindow;
 import valmo.geco.ui.basics.CourseControlDialog;
 import valmo.geco.ui.basics.SwingUtils;
 import valmo.geco.ui.components.ConfigTableModel;
@@ -62,7 +61,7 @@ import valmo.geco.ui.framework.TabPanel;
  */
 public class StagePanel extends TabPanel {
 
-	public StagePanel(Geco geco, JFrame frame) {
+	public StagePanel(IGecoApp geco, JFrame frame) {
 		super(geco, frame);
 		refresh();
 	}
@@ -144,7 +143,7 @@ public class StagePanel extends TabPanel {
 	private boolean validateStagename(JTextField stagenameF) {
 		if( verifyStagename(stagenameF.getText()) ){
 			geco().stage().setName(stagenameF.getText().trim());
-			((GecoWindow) frame()).updateWindowTitle();
+			frame().repaint(); // bad smell, we call repaint so that the GecoWindow updates its title
 			return true;					
 		} else {
 			geco().info(Messages.uiGet("StagePanel.StageNameEmptyWarning"), true); //$NON-NLS-1$
