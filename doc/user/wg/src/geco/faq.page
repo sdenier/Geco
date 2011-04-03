@@ -1,0 +1,69 @@
+---
+title: FAQ
+sort_info: 6
+in_menu: true
+---
+
+# FAQ
+
+
+## How to customize result sheets?
+Tweaking the result sheets is possible by editing their CSS style in the stage directory. For now it is mostly useful when ticket size is not adapted to your printer.
+- edit `result.css` for ranking results, CN, split times in multi-columns format
+- edit `ticket.css` for split times in ticket format
+
+
+## Future features
+The following features are not currently supported but should be part of future releases.
+- reading SPORTident (start|clear|control) boxes to automatically detect and set DNS competitors
+- spool printing of split times when split printer was stopped for a while
+- insertion of missing punches for competitors, removal of a control from courses
+
+
+## How to install SPORTident driver on Mac OS X?
+
+The trick is to download the Mac OS driver for the USB chip onboard SPORTident boxes, then changes some bits of the driver so that Mac OS links the SPORTident box with this driver.
+
+1\. Download and install the driver from [SI labs](https://www.silabs.com/products/interface/usbtouart/Pages/usb-to-uart-bridge.aspx), section *Design tools* on the right, *software downloads* combo box, choose *CP210x VCP Mac OSX Drivers*. The driver needs a restart.
+
+2\. Open file `/System/Library/Extensions/SiLabsUSBDriver.kext/Contents/Info.plist` with a text editor. Plist files in Mac OS describes various kinds of property in a XML format.
+You can make a backup copy of the file before edition.
+
+Inside the file, copy the full XML entry for the **SiLabsUSBDriver - SILabs 60000 CP210x** and paste it as a new entry. Change the **idProduct** from 60000 (0xEA6) to 32778 (0x800A). SPORTident stations have a USB product id of 32778 and thus will be recognized and interfaced with this USB driver.
+
+Alternatively, you can directly copy the following entry within the right tags:
+
+<pre>
+&lt;key&gt;SiLabsUSBDriver - SILabs 60000 CP210x&lt;/key&gt;
+&lt;dict&gt;
+&lt;key&gt;CFBundleIdentifier&lt;/key&gt;
+&lt;string&gt;com.silabs.driver.SiLabsUSBDriver&lt;/string&gt;
+&lt;key&gt;IOClass&lt;/key&gt;
+&lt;string&gt;SiLabsUSBDriver&lt;/string&gt;
+&lt;key&gt;IOKitDebug&lt;/key&gt;
+&lt;integer&gt;0&lt;/integer&gt;
+&lt;key&gt;IOMatchCategory&lt;/key&gt;
+&lt;string&gt;SiLabsUSBSerial&lt;/string&gt;
+&lt;key&gt;IOProviderClass&lt;/key&gt;
+&lt;string&gt;IOUSBDevice&lt;/string&gt;
+&lt;key&gt;IOResourceMatch&lt;/key&gt;
+&lt;string&gt;IOKit&lt;/string&gt;
+&lt;key&gt;IOUserClientClass&lt;/key&gt;
+&lt;string&gt;SiLabsUSBUserClient&lt;/string&gt;
+&lt;key&gt;USB Product Name&lt;/key&gt;
+&lt;string&gt;CP210x USB to UART Bridge Controller&lt;/string&gt;
+&lt;key&gt;bConfigurationValue&lt;/key&gt;
+&lt;integer&gt;1&lt;/integer&gt;
+&lt;key&gt;bInterfaceNumber&lt;/key&gt;
+&lt;integer&gt;0&lt;/integer&gt;
+&lt;key&gt;idProduct&lt;/key&gt;
+&lt;integer&gt;32778&lt;/integer&gt;
+&lt;key&gt;idVendor&lt;/key&gt;
+&lt;integer&gt;4292&lt;/integer&gt;
+&lt;/dict&gt;
+</pre>
+
+
+3\. Restart so that the system takes into account the new property. (There may be a way to avoid this double restart, either by directly patching the installer files with the product id, or asking Mac OS to refresh its list of driver, but I have no idea).
+
+Now the station should appear as **/dev/tty.SLAB\_USBtoUART** in Geco (also appear in the System profiler as **SPORTident USB to UART Bridge Controller**).

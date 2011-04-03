@@ -66,7 +66,7 @@
             	<attribute name="Built-Date" value="${TODAY}"/> 
                	<attribute name="Implementation-Version" value="${version.num}-${build.num}"/>
             </manifest>
-            <fileset dir="${geco.dir}/bin"/>
+            <fileset dir="${geco.dir}/bin" excludes="test/"/>
             <fileset file="${geco.dir}/lib/SIReader.jar"/>
         	<fileset file="${geco.dir}/lib/icu4j-charsetdetector-4_4_2.jar"/>
         </jar>
@@ -113,7 +113,7 @@
             	<attribute name="Built-Date" value="${TODAY}"/> 
                	<attribute name="Implementation-Version" value="${version.num}-${build.num}"/>
             </manifest>
-            <fileset dir="${geco.dir}/bin"/>
+            <fileset dir="${geco.dir}/bin" excludes="test/"/>
         </jar>
     </target>
 
@@ -126,7 +126,7 @@
             	<attribute name="Built-Date" value="${TODAY}"/> 
                	<attribute name="Implementation-Version" value="${version.num}-${build.num}"/>
             </manifest>
-            <fileset dir="${geco.dir}/bin"/>
+            <fileset dir="${geco.dir}/bin" excludes="test/"/>
             <fileset dir="${webstart.data}"/>
         </jar>
     </target>

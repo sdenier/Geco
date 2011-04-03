@@ -1,0 +1,67 @@
+---
+title: FAQ
+sort_info: 6
+in_menu: true
+---
+
+# FAQ
+
+## Comment personnaliser les fiches de résultat ?
+Il est possible de personnaliser les fiches de résultat en éditant les styles CSS dans le répertoire de la course. Cela est surtout utile si le format de ticket n'est pas adapté à l'imprimante.
+- éditez `result.css` pour les classements, le CN, les temps intermédiaires au format multi-colonnes
+- éditez `ticket.css` pour les temps intermédiaires au format ticket
+
+
+## Fonctionnalités futures
+Les fonctionnalités suivantes ne sont pas encore supportées mais devraient être intégrées dans les prochaines versions.
+- lecture de la mémoire des boîtiers SPORTident pour détecter automatiquement les coureurs absents
+- impression en masse des temps intermédiaires quand l'imprimante a été stoppée pour un moment
+- insertion d'un poinçon manquant pour les coureurs, suppression d'un poste pour les circuits
+
+
+## Comment installer le pilote SPORTident sous Mac OS X?
+
+Il faut télécharger le pilote Mac OS pour le chip USB des boîtiers SPORTident, puis changer quelques informations du pilote pour que Mac OS le reconnaisse pour le boîtier.
+
+1\. Télécharger et installer le pilote depuis [SI labs](https://www.silabs.com/products/interface/usbtouart/Pages/usb-to-uart-bridge.aspx), section *Design tools* à droite, liste déroulante *software downloads*, sélectionner *CP210x VCP Mac OSX Drivers*. L'installation demande un redémarrage.
+
+2\. Ouvrir le fichier `/System/Library/Extensions/SiLabsUSBDriver.kext/Contents/Info.plist` avec un éditeur de texte. Les fichiers plist de Mac OS contiennent des informations pour le système au format XML. Vous pouvez faire une copie de sauvegarde avant édition.
+
+Dans le fichier, copier l'entrée XML complète pour **SiLabsUSBDriver - SILabs 60000 CP210x** et coller la comme une nouvelle entrée. Changer le **idProduct** de 60000 (0xEA6) à 32778 (0x800A). Les boîtiers SPORTident ont un id produit à 32778 et seront ainsi liés au pilote.
+
+Alternativement, vous pouvez copier directement l'entrée suivante entre les balises :
+
+<pre>
+&lt;key&gt;SiLabsUSBDriver - SILabs 60000 CP210x&lt;/key&gt;
+&lt;dict&gt;
+&lt;key&gt;CFBundleIdentifier&lt;/key&gt;
+&lt;string&gt;com.silabs.driver.SiLabsUSBDriver&lt;/string&gt;
+&lt;key&gt;IOClass&lt;/key&gt;
+&lt;string&gt;SiLabsUSBDriver&lt;/string&gt;
+&lt;key&gt;IOKitDebug&lt;/key&gt;
+&lt;integer&gt;0&lt;/integer&gt;
+&lt;key&gt;IOMatchCategory&lt;/key&gt;
+&lt;string&gt;SiLabsUSBSerial&lt;/string&gt;
+&lt;key&gt;IOProviderClass&lt;/key&gt;
+&lt;string&gt;IOUSBDevice&lt;/string&gt;
+&lt;key&gt;IOResourceMatch&lt;/key&gt;
+&lt;string&gt;IOKit&lt;/string&gt;
+&lt;key&gt;IOUserClientClass&lt;/key&gt;
+&lt;string&gt;SiLabsUSBUserClient&lt;/string&gt;
+&lt;key&gt;USB Product Name&lt;/key&gt;
+&lt;string&gt;CP210x USB to UART Bridge Controller&lt;/string&gt;
+&lt;key&gt;bConfigurationValue&lt;/key&gt;
+&lt;integer&gt;1&lt;/integer&gt;
+&lt;key&gt;bInterfaceNumber&lt;/key&gt;
+&lt;integer&gt;0&lt;/integer&gt;
+&lt;key&gt;idProduct&lt;/key&gt;
+&lt;integer&gt;32778&lt;/integer&gt;
+&lt;key&gt;idVendor&lt;/key&gt;
+&lt;integer&gt;4292&lt;/integer&gt;
+&lt;/dict&gt;
+</pre>
+
+
+3\. Redémarrer à nouveau pour que le système prenne en compte la nouvelle entrée.
+
+Un boîtier apparaît sous l'identifiant **/dev/tty.SLAB\_USBtoUART** dans Geco (et aussi comme **SPORTident USB to UART Bridge Controller** dans le profile système).

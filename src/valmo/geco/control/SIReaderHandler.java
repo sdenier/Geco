@@ -45,6 +45,9 @@ public class SIReaderHandler extends Control
 
 	// 9:00
 	private static final int DEFAULT_ZEROTIME = 32400000;
+	
+	private static final boolean DEBUGMODE = false;
+	
 
 	private GecoRequestHandler requestHandler;
 	
@@ -138,9 +141,13 @@ public class SIReaderHandler extends Control
 			@SuppressWarnings("rawtypes")
 			Enumeration portIdentifiers = CommPortIdentifier.getPortIdentifiers();
 			Vector<String> sPorts = new Vector<String>();
+			if( DEBUGMODE )
+				geco().debug("*** CommPort listing ***");
 			while( portIdentifiers.hasMoreElements() ){
 				CommPortIdentifier port = (CommPortIdentifier) portIdentifiers.nextElement();
 				if( port.getPortType()==CommPortIdentifier.PORT_SERIAL ){
+					if( DEBUGMODE )
+						geco().debug(port.getName());
 					sPorts.add(port.getName());
 				}
 			}
@@ -157,12 +164,16 @@ public class SIReaderHandler extends Control
 				WindowsRegistryQuery.listRegistryEntries("HKLM\\System\\CurrentControlSet\\Enum").split("\n"); //$NON-NLS-1$ //$NON-NLS-2$
 			HashMap<String,String> friendlyNames = new HashMap<String,String>();
 			Pattern comPattern = Pattern.compile("FriendlyName.+REG_SZ(.+)\\((COM\\d+)\\)"); //$NON-NLS-1$
+			if( DEBUGMODE )
+				geco().debug("*** Registry listing ***");
 			for (String string : reg) {
 				Matcher match = comPattern.matcher(string);
 				if( match.find() ){
 					String com = match.group(2);
 					String fname = com + ": " + match.group(1).trim(); //$NON-NLS-1$
 					friendlyNames.put(com, fname);
+					if( DEBUGMODE )
+						geco().debug(fname);
 				}
 				// The following did not always match well?
 //				if( string.contains("FriendlyName") && string.contains("COM") ){ //$NON-NLS-1$ //$NON-NLS-2$
@@ -176,9 +187,13 @@ public class SIReaderHandler extends Control
 //					} // else we match something which is not like COMx)
 //				}
 			}
+			if( DEBUGMODE )
+				geco().debug("*** Match ***");
 			for (String port : serialPorts) {
 				String friendlyName = friendlyNames.get(port);
-				ports.add(new SerialPort(port, (friendlyName==null) ? "" : friendlyName ));
+				ports.add(new SerialPort(port, (friendlyName==null) ? port : friendlyName ));
+				if( DEBUGMODE )
+					geco().debug(port + " -> " + friendlyName);
 			}
 		} else {
 			for (String port : serialPorts) {

@@ -20,7 +20,7 @@ You can download a JRE (Java Runtime Environment) from http://www.java.com
 You need the SPORTIdent drivers to read SI cards.
 – Windows: download available at http://www.sportident.com/
 – Linux: recent kernels recognize the chip used by SI station, so it’s plug’n’play.
-– Mac OS X: nothing out of the box, but it is easy to install some driver and get Mac OS to recognize the station (one line to hack). Contact me for the process.
+– Mac OS X: it's possible to install and tweak a USB driver to get Mac OS X to recognize the station. See the FAQ in the documentation.
 
 Launch: double-click on the jar file.
 

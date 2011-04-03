@@ -16,7 +16,7 @@ L'onglet résultats permet de générer plusieurs types de résultats pendant et
 L'option *Catégorie/Circuit* calcule un classement par catégorie pour chaque circuit. Cette option est utilisée quand les catégories sont dispersées sur plusieurs circuits lors de qualifications.
 
 2\. Sélectionnez *Classement*, *Splits*, ou *CN* comme méthode de calcul des résultats.
-- Classement : classement classique, pour les résultats intermédiaires et officiels.
+- Classement : classement classique, pour les résultats provisoires et officiels.
 - Splits : temps intermédiaires pour les coureurs des groupes sélectionnés.
 - CN : simulation des points [CN](http://cn.ffco.asso.fr) pour les coureurs présents.
 

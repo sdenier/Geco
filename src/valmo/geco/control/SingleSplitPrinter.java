@@ -122,7 +122,7 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 		html.close("table"); //$NON-NLS-1$
 		html.tag("div", //$NON-NLS-1$
 				"align=\"center\"", //$NON-NLS-1$
-				"Geco for orienteering - http://bitbucket.org/sdenier/geco"); //$NON-NLS-1$
+				"Geco for orienteering - http://geco.webou.net"); //$NON-NLS-1$
 	}
 
 
