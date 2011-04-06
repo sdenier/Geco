@@ -4,7 +4,7 @@
 <%
 analytics_tracking = false
 currentversion = '1.1'
-currentlink = 'http://bitbucket.org/sdenier/geco/downloads/geco1.1b1-379-20110403-demo.zip'
+currentlink = 'http://bitbucket.org/sdenier/geco/downloads/geco1.1-383-20110405-demo.zip'
 translations = YAML::load(File.read(File.join(context.website.directory, 'default.languages')))
 trans = translations[context.node.lang]
 %>
@@ -58,6 +58,13 @@ trans = translations[context.node.lang]
             <h1><%= trans['links'] %></h1>
             <div id="links">
                     <ul>
+                    <%=
+        			if context.node.lang=='fr'
+			            script = '<li><a href="http://geco.webout.net/geco_formation_11.pdf">Doc formation 1.1</a></li>'
+        			else
+            			script = ''
+        			end
+        			script %>
                     <li><a href="http://bitbucket.org/sdenier/geco/downloads">
                         <%= trans['repository'] %></a></li>
                     <li><a href="http://www.valmo.net/">Valmo</a></li>
