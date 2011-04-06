@@ -36,7 +36,7 @@ public class CNCalculator extends AResultExporter {
 		protected CNImporter(GecoControl gecoControl) {
 			super(gecoControl);
 			try {
-				loadArchiveFrom(new File("data/exportCN_index5discipline1.csv")); //$NON-NLS-1$
+				loadArchiveFrom(new File("data/CN-Ped-Base.csv")); //$NON-NLS-1$
 			} catch (IOException e) {
 				gecoControl.debug(e.toString());
 			}
@@ -44,7 +44,10 @@ public class CNCalculator extends AResultExporter {
 
 		@Override
 		protected void importRunnerRecord(String[] record) {
-			cnScores.put(Integer.valueOf(record[1]), Integer.valueOf(record[9]));			
+//			licence -> CN
+			cnScores.put(Integer.valueOf(trimQuotes(record[4])), Integer.valueOf(trimQuotes(record[1])));
+//			MIGR11 Old CN format
+//			cnScores.put(Integer.valueOf(trimQuotes(record[1])), Integer.valueOf(trimQuotes(record[9])));
 		}
 		
 	}
