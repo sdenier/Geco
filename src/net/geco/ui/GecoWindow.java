@@ -66,7 +66,7 @@ import net.geco.ui.tabs.StagePanel;
 public class GecoWindow extends JFrame implements Announcer.StageListener, Announcer.StationListener {
 
 	static { // Just in case
-		Messages.put("ui", "valmo.geco.ui.messages"); //$NON-NLS-1$ //$NON-NLS-2$
+		Messages.put("ui", "net.geco.ui.messages"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	private IGecoApp geco;

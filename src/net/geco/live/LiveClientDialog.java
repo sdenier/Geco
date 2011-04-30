@@ -36,7 +36,7 @@ import net.geco.ui.basics.SwingUtils;
 public class LiveClientDialog extends JDialog {
 
 	static {
-		Messages.put("live", "valmo.geco.live.messages"); //$NON-NLS-1$ //$NON-NLS-2$
+		Messages.put("live", "net.geco.live.messages"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	private JTextField nameF;

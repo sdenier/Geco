@@ -48,7 +48,7 @@ public class Messages {
 	}
 
 	private static final String DEFAULT_BUNDLEKEY = "default"; //$NON-NLS-1$
-	private static final String DEFAULT_BUNDLE = "valmo.geco.messages"; //$NON-NLS-1$
+	private static final String DEFAULT_BUNDLE = "net.geco.messages"; //$NON-NLS-1$
 
 	static {
 		put(DEFAULT_BUNDLEKEY, DEFAULT_BUNDLE); //$NON-NLS-1$

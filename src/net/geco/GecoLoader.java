@@ -26,7 +26,6 @@ import javax.swing.JOptionPane;
 
 import net.geco.model.Messages;
 
-
 import com.jdotsoft.jarloader.JarClassLoader;
 
 /**
@@ -50,7 +49,7 @@ public class GecoLoader {
 			if( args.length>0 && args[0].startsWith("valmo") ) { //$NON-NLS-1$
 				loader.invokeMain(args[0], Arrays.copyOfRange(args, 1, args.length));
 			} else {
-				loader.invokeMain("valmo.geco.Geco", args); //$NON-NLS-1$
+				loader.invokeMain("net.geco.Geco", args); //$NON-NLS-1$
 			}
 		} catch (ClassNotFoundException e) {
 			JOptionPane.showMessageDialog(

@@ -50,7 +50,7 @@ public class GecoWebStart {
 
 	
 	public static void main(String[] args) {
-		Messages.put("live", "valmo.geco.live.messages"); //$NON-NLS-1$ //$NON-NLS-2$
+		Messages.put("live", "net.geco.live.messages"); //$NON-NLS-1$ //$NON-NLS-2$
 		GecoResources.forWebstart();
 		GecoWebStart gecows = new GecoWebStart();
 		gecows.guiLaunch();

@@ -29,7 +29,7 @@ import net.geco.model.Messages;
 public class GecoLauncher {
 	
 	static {
-		Messages.put("ui", "valmo.geco.ui.messages"); //$NON-NLS-1$ //$NON-NLS-2$
+		Messages.put("ui", "net.geco.ui.messages"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	public static final String[] FILES = {
