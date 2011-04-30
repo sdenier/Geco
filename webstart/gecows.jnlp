@@ -14,7 +14,7 @@
     </resources>
     <application-desc
          name="Geco WS - Finale Orientshow Annecy 2010"
-         main-class="valmo.geco.live.GecoWebStart">
+         main-class="net.geco.live.GecoWebStart">
      </application-desc>
      <update check="background"/>
 </jnlp>	

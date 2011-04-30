@@ -10,8 +10,8 @@
                 <attribute name="Class-Path" value="."/>
             </manifest>
             <fileset dir="${basedir}/bin" includes="test/comports/WindowsComPortsDiag.class"/>
-            <fileset dir="${basedir}/bin" includes="valmo/geco/core/WindowsRegistryQuery.class"/>
-            <fileset dir="${basedir}/bin" includes="valmo/geco/core/WindowsRegistryQuery$StreamReader.class"/>
+            <fileset dir="${basedir}/bin" includes="net/geco/core/WindowsRegistryQuery.class"/>
+            <fileset dir="${basedir}/bin" includes="net/geco/core/WindowsRegistryQuery$StreamReader.class"/>
         	<zipfileset excludes="META-INF/*.SF" src="${basedir}/lib/RXTXcomm.jar"/>
         </jar>
     </target>

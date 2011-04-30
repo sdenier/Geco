@@ -60,7 +60,7 @@
     <target name="build_jar" depends="buildnumber">
         <jar destfile="${geco.dir}/geco${version.num}-${build.num}.jar" filesetmanifest="mergewithoutmain">
             <manifest>
-                <attribute name="Main-Class" value="valmo.geco.GecoLoader"/>
+                <attribute name="Main-Class" value="net.geco.GecoLoader"/>
                 <attribute name="Class-Path" value="."/>
             	<attribute name="Built-By" value="${dev.username}"/>
             	<attribute name="Built-Date" value="${TODAY}"/> 
@@ -107,7 +107,7 @@
     <target name="build_livejar" depends="buildnumber">
         <jar destfile="${geco.dir}/livegeco-${build.num}.jar" filesetmanifest="mergewithoutmain">
             <manifest>
-                <attribute name="Main-Class" value="valmo.geco.live.GecoLive"/>
+                <attribute name="Main-Class" value="net.geco.live.GecoLive"/>
                 <attribute name="Class-Path" value="."/>
             	<attribute name="Built-By" value="${dev.username}"/>
             	<attribute name="Built-Date" value="${TODAY}"/> 
@@ -120,7 +120,7 @@
     <target name="build_webstart" depends="buildnumber">
         <jar destfile="${geco.dir}/webstart/gecows.jar" filesetmanifest="mergewithoutmain">
             <manifest>
-                <attribute name="Main-Class" value="valmo.geco.live.GecoWebStart"/>
+                <attribute name="Main-Class" value="net.geco.live.GecoWebStart"/>
                 <attribute name="Class-Path" value="."/>
             	<attribute name="Built-By" value="${dev.username}"/>
             	<attribute name="Built-Date" value="${TODAY}"/> 

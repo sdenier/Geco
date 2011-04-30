@@ -12,7 +12,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Enumeration;
 
-import valmo.geco.basics.WindowsRegistryQuery;
+import net.geco.basics.WindowsRegistryQuery;
+
 
 /**
  * @author Simon Denier
