@@ -57,7 +57,7 @@ public class Archive {
 	
 	public void addRunner(ArchiveRunner runner) {
 		runnersById.put(runner.getArchiveId(), runner);
-		String ecard = runner.getChipnumber();
+		String ecard = runner.getEcard();
 		if( !ecard.isEmpty() ) {
 			runnersByECard.put(ecard, runner);
 		}

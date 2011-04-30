@@ -227,7 +227,7 @@ public class MergeRunnerDialog extends JDialog {
 	}
 	
 	public String showOverwriteDialogFor(RunnerRaceData data, Runner target) {
-		showDialogFor(data, target.getChipnumber(), Status.DUP);
+		showDialogFor(data, target.getEcard(), Status.DUP);
 		courseCB.setSelectedItem(target.getCourse().getName());
 		runnersCB.setSelectedItem(target);
 		showOverwriteInfo();
@@ -348,7 +348,7 @@ public class MergeRunnerDialog extends JDialog {
 					}
 				}
 				geco.log("Merge " + getRunnerData(getTargetRunner()).infoString()); //$NON-NLS-1$
-				returnCard = getTargetRunner().getChipnumber();
+				returnCard = getTargetRunner().getEcard();
 				setVisible(false);
 			}
 		});

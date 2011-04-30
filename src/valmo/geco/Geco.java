@@ -368,12 +368,12 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 	}
 
 	@Override
-	public String requestMergeUnknownRunner(RunnerRaceData data, String chip) {
+	public String requestMergeUnknownRunner(RunnerRaceData data, String ecard) {
 		return new MergeRunnerDialog(
 					this,
 					window,
 					Messages.getString("Geco.UnknownEcardTitle")) //$NON-NLS-1$
-						.showMergeDialogFor(data, chip, Status.UNK);
+						.showMergeDialogFor(data, ecard, Status.UNK);
 	}
 
 	@Override

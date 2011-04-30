@@ -50,7 +50,7 @@ public class StationReaderFunction extends GecoFunction {
 //		ecards = getService(SIReaderHandler.class).downloadBackupMemory();
 
 		for (String ecard : ecards) {
-			Runner runner = registry().findRunnerByChip(ecard);
+			Runner runner = registry().findRunnerByEcard(ecard);
 			if( runner==null ) {
 				if( autoInsertB.isSelected() ){
 //					runner = getService(ArchiveManager.class).findAndCreateRunner(ecard); // default course

@@ -42,7 +42,7 @@ public class RunnerIO extends AbstractIO<Runner> {
 		 */
 		Runner runner = this.factory.createRunner();
 		runner.setStartnumber(new Integer(record[0]));
-		runner.setChipnumber(record[1]);
+		runner.setEcard(record[1]);
 		
 		// MIGR11: split first name and last name
 		int s;
@@ -106,7 +106,7 @@ public class RunnerIO extends AbstractIO<Runner> {
 		 */
 		return new String[] {
 				Integer.toString(r.getStartnumber()),
-				r.getChipnumber(),
+				r.getEcard(),
 				r.getFirstname(),
 				r.getLastname(),
 				r.getClub().getName(),

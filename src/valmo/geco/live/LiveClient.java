@@ -110,7 +110,7 @@ public class LiveClient implements Announcer.CardListener {
 		Runner runner = data.getRunner();
 		RunnerResult result = data.getResult();
 		return Util.join(new String[]{
-			runner.getChipnumber(),
+			runner.getEcard(),
 			Integer.toString(runner.getStartnumber()),
 			runner.getLastname(),
 			runner.getFirstname(),

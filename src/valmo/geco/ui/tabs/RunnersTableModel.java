@@ -135,7 +135,7 @@ public class RunnersTableModel extends AbstractTableModel {
 		Runner runner = getRunner(rowIndex);
 		switch (columnIndex) {
 		case 0: return runner.getStartnumber();
-		case 1: return runner.getChipnumber();
+		case 1: return runner.getEcard();
 		case 2: return runner.getFirstname();
 		case 3: return runner.getLastname();
 		case 4: return runner.getCategory().getShortname();
@@ -383,7 +383,7 @@ public class RunnersTableModel extends AbstractTableModel {
 	public class ChipnumberEditor extends RunnersTableEditor {
 		@Override
 		public Object getCellEditorValue() {
-			return selectedRunner.getChipnumber();
+			return selectedRunner.getEcard();
 		}
 		@Override
 		public boolean validateInput() {

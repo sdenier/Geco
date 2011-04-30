@@ -188,7 +188,7 @@ public class HeatBuilder extends Control {
 	private Runner cloneRunnerForHeat(Runner runner, Course heatCourse) {
 		Runner newRunner = factory().createRunner();
 		newRunner.setStartnumber(newStartnumber());
-		newRunner.setChipnumber(runner.getChipnumber());
+		newRunner.setEcard(runner.getEcard());
 		newRunner.setFirstname(runner.getFirstname());
 		newRunner.setLastname(runner.getLastname());
 		newRunner.setCategory(runner.getCategory());

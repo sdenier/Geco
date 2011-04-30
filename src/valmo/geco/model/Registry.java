@@ -40,7 +40,7 @@ public class Registry {
 	
 	private Vector<String> sortedCategorynames;
 	
-	private Map<String, Runner> runnersByChip;
+	private Map<String, Runner> runnersByEcard;
 	
 	private Map<Course, List<Runner>> runnersByCourse;
 	
@@ -60,7 +60,7 @@ public class Registry {
 		courses = new HashMap<String, Course>();
 		clubs = new HashMap<String, Club>();
 		categories = new HashMap<String, Category>();
-		runnersByChip = new HashMap<String, Runner>();
+		runnersByEcard = new HashMap<String, Runner>();
 		runnersByCategory = new HashMap<Category, List<Runner>>();
 		runnersByCourse = new HashMap<Course, List<Runner>>();
 		runnerData = new HashMap<Runner, RunnerRaceData>();
@@ -301,19 +301,19 @@ public class Registry {
 
 	public Collection<Runner> getRunners() {
 		synchronized (runnersLock) {
-			return runnersByChip.values();
+			return runnersByEcard.values();
 		}
 	}
 	
-	public Runner findRunnerByChip(String chip) {
+	public Runner findRunnerByEcard(String ecard) {
 		synchronized (runnersLock) {
-			return runnersByChip.get(chip);
+			return runnersByEcard.get(ecard);
 		}
 	}
 	
 	public void addRunner(Runner runner) {
 		synchronized (runnersLock) {
-			runnersByChip.put(runner.getChipnumber(), runner);
+			runnersByEcard.put(runner.getEcard(), runner);
 			addRunnerinCategoryList(runner, runner.getCategory());
 			addRunnerinCourseList(runner, runner.getCourse());
 		}
@@ -331,10 +331,10 @@ public class Registry {
 		}
 	}
 
-	public void updateRunnerChip(String oldChip, Runner runner) {
+	public void updateRunnerEcard(String oldEcard, Runner runner) {
 		synchronized (runnersLock) {
-			runnersByChip.remove(oldChip);
-			runnersByChip.put(runner.getChipnumber(), runner);
+			runnersByEcard.remove(oldEcard);
+			runnersByEcard.put(runner.getEcard(), runner);
 		}
 	}
 
@@ -358,7 +358,7 @@ public class Registry {
 	
 	public void removeRunner(Runner runner) {
 		synchronized (runnersLock) {
-			runnersByChip.remove(runner.getChipnumber());
+			runnersByEcard.remove(runner.getEcard());
 			runnersByCategory.get(runner.getCategory()).remove(runner);
 			runnersByCourse.get(runner.getCourse()).remove(runner);
 		}
@@ -376,9 +376,9 @@ public class Registry {
 		}
 	}
 
-	public RunnerRaceData findRunnerData(String chip) {
+	public RunnerRaceData findRunnerData(String ecard) {
 		synchronized (runnersLock) {
-			return runnerData.get(findRunnerByChip(chip));
+			return runnerData.get(findRunnerByEcard(ecard));
 		}
 	}
 	
@@ -470,9 +470,9 @@ public class Registry {
 	 */
 	public Integer[] collectStartnumbers() { // TODO: maybe use the Integer type for startnumber, it will save some code
 		synchronized (runnersLock) {
-			Integer[] startnums = new Integer[runnersByChip.size()];
+			Integer[] startnums = new Integer[runnersByEcard.size()];
 			int i = 0;
-			for (Runner runner : runnersByChip.values()) {
+			for (Runner runner : runnersByEcard.values()) {
 				startnums[i] = runner.getStartnumber();
 				i++;
 			}
@@ -484,33 +484,33 @@ public class Registry {
 	public Integer detectMaxStartnumber() {
 		synchronized (runnersLock) {
 			int max = 0;
-			for (Runner runner : runnersByChip.values()) {
+			for (Runner runner : runnersByEcard.values()) {
 				max = Math.max(max, runner.getStartnumber());
 			}
 			return max;
 		}
 	}
 
-	public Integer detectMaxChipnumber() {
+	public Integer detectMaxEcardNumber() {
 		synchronized (runnersLock) {
 			int max = 0;
-			for (String chip : runnersByChip.keySet()) {
+			for (String ecard : runnersByEcard.keySet()) {
 				try {
-					Integer chipi = Integer.valueOf(chip);					
-					max = Math.max(max, chipi);
+					Integer ecardi = Integer.valueOf(ecard);					
+					max = Math.max(max, ecardi);
 				} catch (NumberFormatException e) {
-					// bypass chip number xxxxa (cloned entries)
+					// bypass ecard number xxxxa (cloned entries)
 				}
 			}
 			return max;
 		}
 	}
 	
-	public String[] collectChipnumbers() {
+	public String[] collectEcardNumbers() {
 		synchronized (runnersLock) {
-			String[] chipnumbers = runnersByChip.keySet().toArray(new String[0]);
-			Arrays.sort(chipnumbers);
-			return chipnumbers;
+			String[] ecards = runnersByEcard.keySet().toArray(new String[0]);
+			Arrays.sort(ecards);
+			return ecards;
 		}
 	}
 

@@ -107,8 +107,8 @@ public class RunnerPanel extends GecoPanel {
 			return panel;
 		}
 
-	public void updateRunner(String chipnumber) {
-		this.runnerData = registry().findRunnerData(chipnumber);
+	public void updateRunner(String ecard) {
+		this.runnerData = registry().findRunnerData(ecard);
 		this.runner = runnerData.getRunner();
 		if( ! isEnabled() ){
 			enablePanel(true);
@@ -415,7 +415,7 @@ public class RunnerPanel extends GecoPanel {
 						Messages.uiGet("RunnerPanel.MergeCardTitle")) //$NON-NLS-1$
 					.showMergeDialogFor(
 							runnerData.clone(),
-							runner.getChipnumber(),
+							runner.getEcard(),
 							runnerData.getResult().getStatus());
 			}
 		});

@@ -45,7 +45,7 @@ public class ArchiveRunnerImpl extends AbstractRunnerImpl implements ArchiveRunn
 	
 	@Override
 	public String idString() {
-		return getNameR() + ", " + getArchiveId() + ", " + getChipnumber();   //$NON-NLS-1$ //$NON-NLS-2$
+		return getNameR() + ", " + getArchiveId() + ", " + getEcard();   //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 

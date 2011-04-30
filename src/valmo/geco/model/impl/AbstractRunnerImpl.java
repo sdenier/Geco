@@ -4,9 +4,9 @@
  */
 package valmo.geco.model.impl;
 
+import valmo.geco.model.AbstractRunner;
 import valmo.geco.model.Category;
 import valmo.geco.model.Club;
-import valmo.geco.model.AbstractRunner;
 
 
 /**
@@ -24,7 +24,7 @@ public abstract class AbstractRunnerImpl implements AbstractRunner {
 	
 	private Club club;
 	
-	private String chipnumber;
+	private String ecard;
 	
 	private Category category;
 
@@ -71,12 +71,12 @@ public abstract class AbstractRunnerImpl implements AbstractRunner {
 		this.club = club;
 	}
 
-	public String getChipnumber() {
-		return chipnumber;
+	public String getEcard() {
+		return ecard;
 	}
 
-	public void setChipnumber(String chipnumber) {
-		this.chipnumber = chipnumber;
+	public void setEcard(String ecard) {
+		this.ecard = ecard;
 	}
 
 	public Category getCategory() {

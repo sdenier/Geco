@@ -83,7 +83,7 @@ public class ArchiveManager extends OEImporter implements StageListener {
 //		[0-5] Ident. base de données;Puce;Nom;Prénom;Né;S;
 		ArchiveRunner runner = geco().factory().createArchiveRunner();
 		runner.setArchiveId(new Integer(record[0]));
-		runner.setChipnumber(record[1]);
+		runner.setEcard(record[1]);
 		runner.setLastname(trimQuotes(record[2]));
 		runner.setFirstname(trimQuotes(record[3]));
 		runner.setBirthYear(record[4]);
@@ -147,7 +147,7 @@ public class ArchiveManager extends OEImporter implements StageListener {
 		Club rClub = ensureClubInRegistry(club.getName(), club.getShortname());
 		Category category = arkRunner.getCategory();
 		Category rCat = ensureCategoryInRegistry(category.getName(), category.getLongname());
-		String ecard = arkRunner.getChipnumber();
+		String ecard = arkRunner.getEcard();
 		if( ecard.equals("") ){ //$NON-NLS-1$
 			geco().log(Messages.getString("ArchiveManager.NoMatchingEcardWarning") + arkRunner.getName()); //$NON-NLS-1$
 			ecard = runnerControl().newUniqueChipnumber();

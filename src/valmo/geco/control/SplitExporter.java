@@ -288,7 +288,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 				
 				Collection<String> record = saveRecord(
 						Integer.toString(runner.getStartnumber()),
-						runner.getChipnumber(),
+						runner.getEcard(),
 						( runner.getArchiveId()!=null )? runner.getArchiveId().toString() : "", //$NON-NLS-1$
 						runner.getLastname(),
 						runner.getFirstname(),

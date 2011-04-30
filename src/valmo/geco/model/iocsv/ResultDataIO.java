@@ -31,9 +31,9 @@ public class ResultDataIO extends AbstractIO<RunnerRaceData> {
 	 */
 	@Override
 	public String[] exportTData(RunnerRaceData d) {
-		// chip, status, racetime
+		// ecard, status, racetime
 		return new String[] {
-				d.getRunner().getChipnumber(),
+				d.getRunner().getEcard(),
 				d.getResult().getStatus().name(),
 				TimeManager.fullTime(d.getResult().getRacetime()),
 		};

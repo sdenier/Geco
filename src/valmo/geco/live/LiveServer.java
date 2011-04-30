@@ -107,7 +107,7 @@ public class LiveServer extends Control {
 	
 	private String processData(String[] data) {
 		// chip, start, last, first, cat, club, course, status, racetime, mps, penalties, trace...
-		Runner runner = registry().findRunnerByChip(data[0]);
+		Runner runner = registry().findRunnerByEcard(data[0]);
 		if( runner==null || Integer.parseInt(data[1])!=runner.getStartnumber() ) {
 			System.err.println("creation " + data[0]); //$NON-NLS-1$
 			try {

@@ -31,7 +31,7 @@ public class AutoMergeHandler extends Control implements GecoRequestHandler {
 
 	@Override
 	public String requestMergeExistingRunner(RunnerRaceData data, Runner target) {
-		return processData(data, target.getChipnumber(), detectCourse(data), Status.DUP);
+		return processData(data, target.getEcard(), detectCourse(data), Status.DUP);
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class AutoMergeHandler extends Control implements GecoRequestHandler {
 			return null;
 		} else {
 			runnerControl().registerRunner(newRunner, data);
-			geco().announcer().announceCardRead(newRunner.getChipnumber());
+			geco().announcer().announceCardRead(newRunner.getEcard());
 			geco().log("Insertion " + data.infoString()); //$NON-NLS-1$
 			return newRunner;
 		}

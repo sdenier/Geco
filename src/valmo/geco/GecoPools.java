@@ -117,7 +117,7 @@ public class GecoPools {
 		html.closeTr();
 	}
 	private RunnerRaceData findRunnerDataIn(RunnerRaceData data, Stage pool) {
-		return pool.registry().findRunnerData(data.getRunner().getChipnumber());
+		return pool.registry().findRunnerData(data.getRunner().getEcard());
 	}
 	
 	

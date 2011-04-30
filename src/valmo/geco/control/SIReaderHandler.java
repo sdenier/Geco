@@ -265,7 +265,7 @@ public class SIReaderHandler extends Control
 	
 	@Override
 	public void newCardRead(IResultData<PunchObject,PunchRecordData> card) {
-		Runner runner = registry().findRunnerByChip(card.getSiIdent());
+		Runner runner = registry().findRunnerByEcard(card.getSiIdent());
 		if( runner!=null ) {
 			RunnerRaceData runnerData = registry().findRunnerData(runner);
 			if( runnerData.hasData() ) {
@@ -310,7 +310,7 @@ public class SIReaderHandler extends Control
 		if( runnerData.getResult().is(Status.MP) ) {
 			geco().announcer().dataInfo(runnerData.getResult().formatMpTrace() + " (" + runnerData.getResult().getNbMPs() + " MP)"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		geco().announcer().announceCardRead(runnerData.getRunner().getChipnumber());
+		geco().announcer().announceCardRead(runnerData.getRunner().getEcard());
 		geco().announcer().announceStatusChange(runnerData, oldStatus);
 	}
 

@@ -62,7 +62,7 @@ public class ArchiveTableModel extends AbstractTableModel {
 		ArchiveRunner runner = getRunner(rowIndex);
 		switch (columnIndex) {
 		case 0: return runner.getArchiveId();
-		case 1: return runner.getChipnumber();
+		case 1: return runner.getEcard();
 		case 2: return runner.getFirstname();
 		case 3: return runner.getLastname();
 		case 4: return runner.getCategory().getShortname();

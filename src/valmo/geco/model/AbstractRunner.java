@@ -31,9 +31,9 @@ public interface AbstractRunner {
 
 	public void setClub(Club club);
 
-	public String getChipnumber();
+	public String getEcard();
 
-	public void setChipnumber(String chipnumber);
+	public void setEcard(String ecard);
 
 	public Category getCategory();
 

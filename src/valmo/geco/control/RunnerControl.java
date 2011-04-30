@@ -47,7 +47,7 @@ public class RunnerControl extends Control {
 	public Runner buildBasicRunner(String chip) {
 		Runner runner = factory().createRunner();
 		runner.setStartnumber(registry().detectMaxStartnumber() + 1);
-		runner.setChipnumber(deriveUniqueChipnumber(chip));
+		runner.setEcard(deriveUniqueChipnumber(chip));
 		runner.setFirstname(""); //$NON-NLS-1$
 		runner.setLastname("X"); //$NON-NLS-1$
 		return runner;
@@ -88,11 +88,11 @@ public class RunnerControl extends Control {
 	}
 
 	public String newUniqueChipnumber() {
-		return Integer.toString(registry().detectMaxChipnumber() + 1);
+		return Integer.toString(registry().detectMaxEcardNumber() + 1);
 	}
 	
 	public String deriveUniqueChipnumber(String chipnumber) {
-		return prvDeriveUniqueEcard(chipnumber, registry().collectChipnumbers());
+		return prvDeriveUniqueEcard(chipnumber, registry().collectEcardNumbers());
 	}
 	private String prvDeriveUniqueEcard(String newEcard, String[] ecards) {
 		if( Util.different(newEcard, -1, ecards) )
@@ -155,8 +155,8 @@ public class RunnerControl extends Control {
 			geco().info(Messages.getString("RunnerControl.EcardEmptyWarning"), true); //$NON-NLS-1$
 			return false;
 		}
-		String oldChip = runner.getChipnumber();
-		String[] chips = registry().collectChipnumbers();
+		String oldChip = runner.getEcard();
+		String[] chips = registry().collectEcardNumbers();
 		boolean ok = Util.different(newChip, Arrays.binarySearch(chips, oldChip), chips);
 		if( !ok )
 			geco().info(Messages.getString("RunnerControl.EcardUsedWarning"), true); //$NON-NLS-1$
@@ -165,9 +165,9 @@ public class RunnerControl extends Control {
 
 	public boolean validateChipnumber(Runner runner, String newChip) {
 		if( verifyChipnumber(runner, newChip) ) {
-			String oldChip = runner.getChipnumber();
-			runner.setChipnumber(newChip.trim());
-			registry().updateRunnerChip(oldChip, runner);
+			String oldChip = runner.getEcard();
+			runner.setEcard(newChip.trim());
+			registry().updateRunnerEcard(oldChip, runner);
 			return true;
 		} else {
 			return false;

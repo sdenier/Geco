@@ -47,7 +47,7 @@ public class RaceDataIO extends AbstractIO<RunnerRaceData> {
 		data.setControltime(TimeManager.safeParse(record[2]));
 		data.setStarttime(TimeManager.safeParse(record[3]));
 		data.setFinishtime(TimeManager.safeParse(record[4]));
-		Runner runner = this.registry.findRunnerByChip(record[0]);
+		Runner runner = this.registry.findRunnerByEcard(record[0]);
 		if( runner==null ){
 			throw new Error("Error in race data " + sourceFilename() +"! " //$NON-NLS-1$ //$NON-NLS-2$
 							+ "Can't find runner with e-card " + record[0] //$NON-NLS-1$
@@ -84,7 +84,7 @@ public class RaceDataIO extends AbstractIO<RunnerRaceData> {
 		 */
 		Punch[] punches = d.getPunches();
 		String [] record = new String[5 + 2 * punches.length];
-		record[0] = d.getRunner().getChipnumber();
+		record[0] = d.getRunner().getEcard();
 		record[1] = TimeManager.fullTime(d.getErasetime());
 		record[2] = TimeManager.fullTime(d.getControltime());
 		record[3] = TimeManager.fullTime(d.getStarttime());

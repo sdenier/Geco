@@ -49,7 +49,7 @@ public class OrRunnerTest {
 	@Test
 	public void testRuthLynamB() {
 //		24	10886	Ruth Lynam	CNOC	Long Course	false	W50	36000000	-2	2	true		0
-		Runner runner = registryB.findRunnerByChip("10886");
+		Runner runner = registryB.findRunnerByEcard("10886");
 		assertEquals(24, runner.getStartnumber());
 		assertEquals("Ruth", runner.getFirstname());
 		assertEquals("Lynam", runner.getLastname());
@@ -62,7 +62,7 @@ public class OrRunnerTest {
 	@Test
 	public void testErikOronnolsB() {
 //		34	27326	Erik Oronnols	Linkopings	Long Course	false	M21	42027000	43736000	2	false		0
-		Runner runner = registryB.findRunnerByChip("27326");
+		Runner runner = registryB.findRunnerByEcard("27326");
 		assertEquals(34, runner.getStartnumber());
 		assertEquals("Erik", runner.getFirstname());
 		assertEquals("Oronnols", runner.getLastname());
@@ -75,7 +75,7 @@ public class OrRunnerTest {
 	@Test
 	public void testSusieNaughtonB() {
 //		16	11261	Susie Amelie Naughton	3ROC	Short Course	false	W12	40636000	42908000	2	false		0
-		Runner runner = registryB.findRunnerByChip("11261");
+		Runner runner = registryB.findRunnerByEcard("11261");
 		assertEquals(16, runner.getStartnumber());
 		assertEquals("Susie Amelie", runner.getFirstname());
 		assertEquals("Naughton", runner.getLastname());
@@ -88,7 +88,7 @@ public class OrRunnerTest {
 	@Test
 	public void testBillyFyffeM() {
 //		168	203186	Billy Fyffe	FERMO	Brown	false	M50	46438000	54054000	2	false		0
-		Runner runner = registryM.findRunnerByChip("203186");
+		Runner runner = registryM.findRunnerByEcard("203186");
 		assertEquals(168, runner.getStartnumber());
 		assertEquals("Billy", runner.getFirstname());
 		assertEquals("Fyffe", runner.getLastname());
@@ -101,7 +101,7 @@ public class OrRunnerTest {
 	@Test
 	public void testOBoyleM() {
 //		162	51009	Caoimhe O'Boyle	CNOC	Orange	false	 	47396000	48530000	2	false		0
-		Runner runner = registryM.findRunnerByChip("51009");
+		Runner runner = registryM.findRunnerByEcard("51009");
 		assertEquals(162, runner.getStartnumber());
 		assertEquals("Caoimhe", runner.getFirstname());
 		assertEquals("O'Boyle", runner.getLastname());
@@ -114,7 +114,7 @@ public class OrRunnerTest {
 	@Test
 	public void testAidanBlagdenM() {
 //		43	11445	Aidan Blagden	 	Orange	true	M14	41219000	42673000	2	false		0
-		Runner runner = registryM.findRunnerByChip("11445");
+		Runner runner = registryM.findRunnerByEcard("11445");
 		assertEquals(43, runner.getStartnumber());
 		assertEquals("Aidan", runner.getFirstname());
 		assertEquals("Blagden", runner.getLastname());

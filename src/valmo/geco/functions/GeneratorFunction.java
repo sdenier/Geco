@@ -186,7 +186,7 @@ public class GeneratorFunction extends GecoFunction {
 	}
 	
 	public ResultData generateCardData(Runner runner) {
-		return generateCardData(runner.getChipnumber(), runner.getCourse());
+		return generateCardData(runner.getEcard(), runner.getCourse());
 	}
 
 	public ResultData generateCardData(String chipNumber, Course course) {
