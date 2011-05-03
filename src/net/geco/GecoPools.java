@@ -18,6 +18,7 @@ import net.geco.control.HeatBuilder;
 import net.geco.control.PenaltyChecker;
 import net.geco.control.PoolMerger;
 import net.geco.control.ResultBuilder;
+import net.geco.control.SIReaderHandler;
 import net.geco.control.StageBuilder;
 import net.geco.model.HeatSet;
 import net.geco.model.Messages;
@@ -45,6 +46,7 @@ public class GecoPools {
 	
 	public void run(String baseDir) {
 		gecoControl = new GecoControl(baseDir);
+		new SIReaderHandler(gecoControl, null); // bad smell: create just to import zerotime property for IO. TODO: prop should be part of basic stage prop?
 		try {
 			importStages(Util.readLines(StageBuilder.filepath(baseDir, "pools.prop"))); //$NON-NLS-1$
 			mergePools();
