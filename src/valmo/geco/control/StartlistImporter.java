@@ -50,7 +50,9 @@ public class StartlistImporter extends OEImporter {
 		if( ! record[0].equals("") ){ //$NON-NLS-1$
 			runner.setStartnumber(new Integer(record[0])); // we do not ensure unique start number here
 		}
-		runner.setArchiveId(new Integer(record[2]));
+		if( ! record[2].equals("") ){
+			runner.setArchiveId(new Integer(record[2]));			
+		}
 		runner.setLastname(lastName);
 		runner.setFirstname(firstName);
 		runner.setNC(record[8].equals("X")); //$NON-NLS-1$
