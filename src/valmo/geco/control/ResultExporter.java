@@ -75,6 +75,7 @@ public class ResultExporter extends AResultExporter {
 				.th("") //$NON-NLS-1$
 				.th(Messages.getString("ResultBuilder.NameHeader")) //$NON-NLS-1$
 				.th(Messages.getString("ResultBuilder.ClubHeader")) //$NON-NLS-1$
+				.th("Catégorie") //$NON-NLS-1$
 				.th(Messages.getString("ResultBuilder.TimeHeader"), "class=\"right\"") //$NON-NLS-1$ //$NON-NLS-2$
 				.th(Messages.getString("ResultBuilder.MPHeader"), "class=\"right\"") //$NON-NLS-1$ //$NON-NLS-2$
 				.th(Messages.getString("ResultBuilder.RacetimeHeader"), "class=\"right\"") //$NON-NLS-1$ //$NON-NLS-2$
@@ -129,6 +130,7 @@ public class ResultExporter extends AResultExporter {
 		html.td(rank);
 		html.td(runnerData.getRunner().getName());
 		html.td(runnerData.getRunner().getClub().getName());
+		html.td(runnerData.getRunner().getCategory().getName());
 		html.td(timeOrStatus, "class=\"time\""); //$NON-NLS-1$
 		if( showPenalties ){
 			html.td(Integer.toString(runnerData.getResult().getNbMPs()), "class=\"right\""); //$NON-NLS-1$
