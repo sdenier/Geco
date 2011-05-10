@@ -11,6 +11,8 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
@@ -255,6 +257,16 @@ public class RunnersPanel extends TabPanel
 		filterField = new JTextField(25);
 		filterField.setToolTipText(Messages.uiGet("RunnersPanel.FindTooltip")); //$NON-NLS-1$
 		filterField.setMaximumSize(new Dimension(250, SwingUtils.SPINNERHEIGHT));
+		filterField.addFocusListener(new FocusListener() {
+			@Override
+			public void focusLost(FocusEvent e) {}
+			@Override
+			public void focusGained(FocusEvent e) {
+				if( liveModeOn() ){
+					liveB.doClick(); // disable Live mode to enable filtering
+				}
+			}
+		});
 		filterField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -334,6 +346,15 @@ public class RunnersPanel extends TabPanel
 			public void actionPerformed(ActionEvent e) {
 				filterField.setText(""); //$NON-NLS-1$
 				sorter.setRowFilter(null);
+			}
+		});
+		getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
+				KeyStroke.getKeyStroke(KeyEvent.VK_L, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+				"toggleLiveMode"); //$NON-NLS-1$
+		getActionMap().put("toggleLiveMode", new AbstractAction() { //$NON-NLS-1$
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				liveB.doClick();
 			}
 		});
 	}
