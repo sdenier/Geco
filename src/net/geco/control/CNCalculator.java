@@ -111,6 +111,7 @@ public class CNCalculator extends AResultExporter {
 		html.td(rank);
 		html.td(runner.getName());
 		html.td(runner.getClub().getName());
+		html.td(runner.getCategory().getName());
 		html.td(yScore);
 		html.td(score);
 		html.td(timeOrStatus, "class=\"time\""); //$NON-NLS-1$
@@ -150,7 +151,7 @@ public class CNCalculator extends AResultExporter {
 		if( cnRunners.size()<3 ){
 			return null;
 		}
-		int twoThird = Math.max(3, cnRunners.size());
+		int twoThird = Math.max(3, cnRunners.size() * 2 / 3);
 		return cnRunners.subList(0, twoThird);
 	}
 

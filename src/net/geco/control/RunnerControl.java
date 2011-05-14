@@ -20,7 +20,6 @@ import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Status;
 
-
 /**
  * @author Simon Denier
  * @since Aug 21, 2009
@@ -352,8 +351,10 @@ public class RunnerControl extends Control {
 	}
 
 	public boolean validateArchiveId(Runner runner, String archiveId) {
-		if( archiveId.equals("") ) //$NON-NLS-1$
-			return false;
+		if( archiveId.equals("") ){ //$NON-NLS-1$
+			runner.setArchiveId(null);
+			return true;
+		}
 		try {
 			// TODO: check unicity of archive id
 			runner.setArchiveId(Integer.parseInt(archiveId));
