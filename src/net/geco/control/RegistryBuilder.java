@@ -42,7 +42,7 @@ public class RegistryBuilder extends BasicControl{
 	}
 	
 
-	public Registry importAllData(Registry registry, String baseDir, boolean importResult, long zeroTime) {
+	public Registry importAllData(Registry registry, String baseDir, long zeroTime) {
 		
 		try {
 			reader.initialize(baseDir, ClubIO.orFilename());
@@ -79,13 +79,11 @@ public class RegistryBuilder extends BasicControl{
 			e.printStackTrace();
 		}						
 
-		if( importResult ) { // MIGR11
-			try {
-				reader.initialize(baseDir, ResultDataIO.sourceFilename());
-				new ResultDataIO(factory(), reader, null, registry).importData();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		try {
+			reader.initialize(baseDir, ResultDataIO.sourceFilename());
+			new ResultDataIO(factory(), reader, null, registry).importData();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		
 		if( GecoResources.exists(baseDir + GecoResources.sep + HeatSetIO.sourceFilename()) ) {
