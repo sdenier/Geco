@@ -237,7 +237,6 @@ public class PenaltyCheckerTest {
 				punch(121), punch(123), punch(121), punch(122), punch(121),
 			});
 		checker.check(data);
-		checker.explainTrace(course.getCodes(), data.getPunches(), false);
 		assertEquals(Status.MP, data.getResult().getStatus());
 		assertTrue(data.getResult().getRacetime() == 630000 + checker.timePenalty(6));
 	}

@@ -8,8 +8,8 @@ import java.util.Date;
 import java.util.Properties;
 import java.util.Vector;
 
-import net.geco.basics.TimeManager;
 import net.geco.basics.Announcer.StageListener;
+import net.geco.basics.TimeManager;
 import net.geco.model.Factory;
 import net.geco.model.Punch;
 import net.geco.model.RunnerRaceData;
@@ -123,7 +123,7 @@ public class PenaltyChecker extends PunchChecker implements StageListener {
 	 * @param punches
 	 * @return
 	 */
-	private int[][] lcssMatrix(int[] codes, Punch[] punches) {
+	public int[][] lcssMatrix(int[] codes, Punch[] punches) {
 		int n = codes.length;
 		int m = punches.length;
 		int[][] matrix = new int[m+1][n+1];
@@ -151,7 +151,7 @@ public class PenaltyChecker extends PunchChecker implements StageListener {
 		return Math.max(a, Math.max(b, c));
 	}
 
-	private void showMatrix(int[] codes, Punch[] punches, int[][] matrix) {
+	public void showMatrix(int[] codes, Punch[] punches, int[][] matrix) {
 		String f = "%4d"; //$NON-NLS-1$
 		System.out.print("\n        "); //$NON-NLS-1$
 		for (int i = 0; i < codes.length; i++) {
@@ -171,8 +171,19 @@ public class PenaltyChecker extends PunchChecker implements StageListener {
 		System.out.println();
 	}
 	
+	public String[] explainTrace(RunnerRaceData data) {
+		return explainTrace(data, false, false);
+	}
 	
-	public String[] explainTrace(int[] codes, Punch[] punches, boolean showMatrix) {
+	public String[] explainTrace(RunnerRaceData data, boolean showMatrix, boolean showTrace) {
+		return explainTrace(data.getCourse().getCodes(), data.getPunches(), showMatrix, showTrace);
+	}
+	
+	public String[] explainTrace(int[] codes, Punch[] punches) {
+		return explainTrace(codes, punches, false, false);
+	}
+	
+	public String[] explainTrace(int[] codes, Punch[] punches, boolean showMatrix, boolean showTrace) {
 		int[][] matrix = lcssMatrix(codes, punches);
 		if( showMatrix ) {
 			showMatrix(codes, punches, matrix);
@@ -180,15 +191,17 @@ public class PenaltyChecker extends PunchChecker implements StageListener {
 		}
 
 		String[] path = trace(codes, punches, matrix);
-		for (int i = 0; i < path.length; i++) {
-			System.out.format(":%4s", path[i]); //$NON-NLS-1$
+		if( showTrace ) {
+			for (int i = 0; i < path.length; i++) {
+				System.out.format(":%4s", path[i]); //$NON-NLS-1$
+			}
+			System.out.println();			
 		}
-		System.out.println();
 		return path;
 	}
 	
 
-	private String[] trace(int[] codes, Punch[] punches, int[][] matrix) {
+	public String[] trace(int[] codes, Punch[] punches, int[][] matrix) {
 		StringBuffer path = new StringBuffer();
 		int i = codes.length - 1;
 		int j = punches.length - 1;

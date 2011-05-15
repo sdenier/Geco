@@ -5,10 +5,12 @@
 package test.net.geco.control;
 
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
 
+import net.geco.basics.Util;
 import net.geco.control.PenaltyChecker;
 import net.geco.model.Course;
 import net.geco.model.Factory;
@@ -35,6 +37,8 @@ public class OShowTest {
 	private Course course;
 	private RunnerRaceData data;
 
+	public static final boolean SHOW = false;
+	
 	@Before
 	public void setUp() {
 		factory = new POFactory();
@@ -66,30 +70,13 @@ public class OShowTest {
 		}
 		return punches;
 	}
+
 	
-	int[] pauline = new int[] {
-			131,136,142,147,144,135,131,158,160,161,164,131,154,153,131,159,181,104,195,189,107,124,102,189,188,185,189,183,179,189,199,121,109,189,180,175,174,173,172,169,129,200,
-	};
-	int[] okpauline = new int[] {
-			131, 136, 142, 131, 147, 144, 135, 131, 158, 160, 161, 164, 131, 154, 153, 131, 159, 181, 104, 195, 189, 107, 124, 102, 189, 188, 185, 189, 183, 179, 189, 199, 121, 109, 189, 180, 175, 174, 173, 172, 169, 129, 200
-	};
-	int[] lola = new int[] {
-			131,154,154,152,131,142,136,142,131,147,144,135,131,158,161,164,131,159,181,104,195,189,199,121,109,189,107,124,102,189,188,185,189,183,179,189,180,175,174,173,172,169,129,200,
-	};
-	int[] oklola = new int[] {
-			131, 154, 153, 131, 136, 142, 131, 147, 144, 135, 131, 158, 161, 164, 131, 159, 181, 104, 195, 189, 199, 121, 109, 189, 107, 124, 102, 189, 188, 185, 189, 183, 179, 189, 180, 175, 174, 173, 172, 169, 129, 200
-	};
 	int[] amelie = new int[] {
 			131,147,144,135,131,158,161,164,131,154,153,131,136,142,131,159,181,104,195,189,188,185,189,183,179,189,199,121,109,189,107,124,102,189,180,175,174,173,172,169,129,200,
 	};
 	int[] okamelie = new int[] {
 			131,147,144,135,131,158,161,164,131,154,153,131,136,142,131,159,181,104,195,189,188,185,189,183,179,189,199,121,109,189,107,124,102,189,180,175,174,173,172,169,129,200,
-	};
-	int[] misa = new int[] {
-			131,158,161,164,131,153,154,153,131,136,142,131,147,144,135,131,159,181,104,195,189,183,179,189,199,121,109,189,107,124,102,189,188,185,189,180,175,174,173,172,169,129,200,
-	};
-	int[] okmisa = new int[] {
-			131, 158, 161, 164, 131, 154, 153, 131, 136, 142, 131, 147, 144, 135, 131, 159, 181, 104, 195, 189, 183, 179, 189, 199, 121, 109, 189, 107, 124, 102, 189, 188, 185, 189, 180, 175, 174, 173, 172, 169, 129, 200
 	};
 
 	@Test
@@ -100,10 +87,24 @@ public class OShowTest {
 		data.setFinishtime(new Date(20000000));
 		checker.check(data);
 		assertEquals(Status.OK, data.getResult().getStatus());
-		System.out.println("\nAmelie");
-		checker.explainTrace(okamelie, data.getPunches(), false);
+		assertEquals(0, data.getResult().getNbMPs());
+		assertArrayEquals(
+				Util.splitAndTrim("131,147,144,135,131,158,161,164,131,154,153,131,136,142,131,159,181,104,195,189,188,185,189,183,179,189,199,121,109,189,107,124,102,189,180,175,174,173,172,169,129,200", ","),
+				checker.explainTrace(data));
+		if( SHOW ){
+			System.out.println("\nAmelie");
+			checker.explainTrace(okamelie, data.getPunches(), false, true);
+		}
 	}
 
+	
+	int[] misa = new int[] {
+			131,158,161,164,131,153,154,153,131,136,142,131,147,144,135,131,159,181,104,195,189,183,179,189,199,121,109,189,107,124,102,189,188,185,189,180,175,174,173,172,169,129,200,
+	};
+	int[] okmisa = new int[] {
+			131,158,161,164,131,154,153,131,136,142,131,147,144,135,131,159,181,104,195,189,183,179,189,199,121,109,189,107,124,102,189,188,185,189,180,175,174,173,172,169,129,200
+	};
+	
 	@Test
 	public void testMisaRace() {
 		course.setCodes(okmisa);
@@ -112,10 +113,24 @@ public class OShowTest {
 		data.setFinishtime(new Date(20000000));
 		checker.check(data);
 		assertEquals(Status.OK, data.getResult().getStatus());
-		System.out.println("\nMisa");
-		checker.explainTrace(okmisa, data.getPunches(), false);
+		assertEquals(0, data.getResult().getNbMPs());
+		assertArrayEquals(
+				Util.splitAndTrim("131,158,161,164,131,+153,154,153,131,136,142,131,147,144,135,131,159,181,104,195,189,183,179,189,199,121,109,189,107,124,102,189,188,185,189,180,175,174,173,172,169,129,200", ","),
+				checker.explainTrace(data));
+		if( SHOW ){
+			System.out.println("\nMisa");
+			checker.explainTrace(okmisa, data.getPunches(), false, true);
+		}
 	}
 
+	
+	int[] lola = new int[] {
+			131,154,154,152,131,142,136,142,131,147,144,135,131,158,161,164,131,159,181,104,195,189,199,121,109,189,107,124,102,189,188,185,189,183,179,189,180,175,174,173,172,169,129,200,
+	};
+	int[] oklola = new int[] {
+			131,154,153,131,136,142,131,147,144,135,131,158,161,164,131,159,181,104,195,189,199,121,109,189,107,124,102,189,188,185,189,183,179,189,180,175,174,173,172,169,129,200
+	};
+	
 	@Test
 	public void testLolaRace() {
 		course.setCodes(oklola);
@@ -124,9 +139,23 @@ public class OShowTest {
 		data.setFinishtime(new Date(20000000));
 		checker.check(data);
 		assertEquals(Status.OK, data.getResult().getStatus());
-		System.out.println("\nLola");
-		checker.explainTrace(oklola, data.getPunches(), false);
+		assertEquals(1, data.getResult().getNbMPs());
+		assertArrayEquals(
+				Util.splitAndTrim("131,+154,154,-153+152,131,+142,136,142,131,147,144,135,131,158,161,164,131,159,181,104,195,189,199,121,109,189,107,124,102,189,188,185,189,183,179,189,180,175,174,173,172,169,129,200", ","),
+				checker.explainTrace(data));
+		if( SHOW ){
+			System.out.println("\nLola");
+			checker.explainTrace(oklola, data.getPunches(), false, true);
+		}	
 	}
+	
+	
+	int[] pauline = new int[] {
+			131,136,142,147,144,135,131,158,160,161,164,131,154,153,131,159,181,104,195,189,107,124,102,189,188,185,189,183,179,189,199,121,109,189,180,175,174,173,172,169,129,200,
+	};
+	int[] okpauline = new int[] {
+			131,136,142,131,147,144,135,131,158,160,161,164,131,154,153,131,159,181,104,195,189,107,124,102,189,188,185,189,183,179,189,199,121,109,189,180,175,174,173,172,169,129,200
+	};
 
 	@Test
 	public void testPaulineRace() {
@@ -136,8 +165,14 @@ public class OShowTest {
 		data.setFinishtime(new Date(20000000));
 		checker.check(data);
 		assertEquals(Status.OK, data.getResult().getStatus());
-		System.out.println("\nPauline");
-		checker.explainTrace(okpauline, data.getPunches(), false);
+		assertEquals(1, data.getResult().getNbMPs());
+		assertArrayEquals(
+				Util.splitAndTrim("131,136,142,-131,147,144,135,131,158,160,161,164,131,154,153,131,159,181,104,195,189,107,124,102,189,188,185,189,183,179,189,199,121,109,189,180,175,174,173,172,169,129,200", ","),
+				checker.explainTrace(data));
+		if( SHOW ){
+			System.out.println("\nPauline");
+			checker.explainTrace(okpauline, data.getPunches(), false, true);
+		}
 	}
 
 }
