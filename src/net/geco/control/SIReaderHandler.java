@@ -43,9 +43,6 @@ import org.martin.sireader.server.SIReaderListener;
  */
 public class SIReaderHandler extends Control
 	implements Announcer.StageListener, SIReaderListener<PunchObject,PunchRecordData> {
-
-	// 9:00
-	private static final int DEFAULT_ZEROTIME = 32400000;
 	
 	private static final boolean DEBUGMODE = false;
 	
@@ -57,8 +54,6 @@ public class SIReaderHandler extends Control
 	private SerialPort siPort;
 	
 	private Vector<SerialPort> serialPorts;
-	
-	private long zeroTime = DEFAULT_ZEROTIME;
 	
 	private int nbTry;
 	
@@ -90,7 +85,6 @@ public class SIReaderHandler extends Control
 		super(SIReaderHandler.class, geco);
 		this.requestHandler = requestHandler;
 		changePortName();
-		changeZeroTime();
 		geco.announcer().registerStageListener(this);
 	}
 	
@@ -100,9 +94,6 @@ public class SIReaderHandler extends Control
 
 	public static String portNameProperty() {
 		return "SIPortname"; //$NON-NLS-1$
-	}
-	public static String zerotimeProperty() {
-		return "SIZeroTime"; //$NON-NLS-1$
 	}
 	
 	private void changePortName() {
@@ -119,22 +110,9 @@ public class SIReaderHandler extends Control
 		setPort(detectSIPort());
 	}
 	
-	public static long readZeroTime(Stage stage) {
-		try {
-			return Long.parseLong(stage.getProperties().getProperty(zerotimeProperty()));
-		} catch (NumberFormatException e) {
-			return DEFAULT_ZEROTIME;
-		}		
-	}
-	
-	private void changeZeroTime() {
-		setNewZeroTime( readZeroTime(stage()) );			
-	}
-	
-	public void setNewZeroTime(long newZerotime) {
-		setZeroTime( newZerotime );			
+	public void changeZeroTime() {
 		if( portHandler!=null )
-			portHandler.setCourseZeroTime(getZeroTime());
+			portHandler.setCourseZeroTime( stage().getZeroHour() );
 	}
 	
 	public Vector<SerialPort> listPorts() {
@@ -227,20 +205,12 @@ public class SIReaderHandler extends Control
 		this.siPort = port;
 	}
 
-	public long getZeroTime() {
-		return zeroTime;
-	}
-
-	private void setZeroTime(long zeroTime) {
-		this.zeroTime = zeroTime;
-	}
-	
 	private void configure() {
 		portHandler = new SIPortHandler(new ResultData());
 		portHandler.addListener(this);
 		portHandler.setPortName(getPort().name());
 		portHandler.setDebugDir(stage().getBaseDir());
-		portHandler.setCourseZeroTime(getZeroTime());
+		changeZeroTime();
 	}
 
 	public void start() {
@@ -400,7 +370,6 @@ public class SIReaderHandler extends Control
 	@Override
 	public void saving(Stage stage, Properties properties) {
 		properties.setProperty(portNameProperty(), getPort().name());
-		properties.setProperty(zerotimeProperty(), Long.toString(getZeroTime()));
 	}
 
 	@Override

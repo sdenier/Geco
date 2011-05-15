@@ -4,7 +4,6 @@
  */
 package net.geco.model.impl;
 
-import java.util.Date;
 import java.util.Properties;
 
 import net.geco.model.Registry;
@@ -15,7 +14,7 @@ public class StageImpl implements Stage {
 	
 	private String name;
 	private String baseDir;
-	private Date date;
+	private long zeroHour;
 	
 	private Registry registry;
 	private Properties properties;
@@ -24,22 +23,25 @@ public class StageImpl implements Stage {
 	private int autosaveDelay; // in minutes
 
 	
+	private static final int DEFAULT_ZEROHOUR = 32400000;	// 9:00
+
+	
 	public StageImpl() {
 		initializeDefault();
 	}
 
 	protected void initializeDefault() {
-		name = ""; //$NON-NLS-1$
+		name = "Stage Name"; //$NON-NLS-1$
+		zeroHour = DEFAULT_ZEROHOUR;
 		nbBackups = 9;
 		autosaveDelay = 2;
-	}
-	
-	public void initialize(String baseDir) {
-		this.baseDir = baseDir;
 	}
 
 	public void close() {}
 	
+	public void setBaseDir(String baseDir) {
+		this.baseDir = baseDir;
+	}
 	public String getBaseDir() {
 		return baseDir;
 	}
@@ -49,11 +51,11 @@ public class StageImpl implements Stage {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Date getDate() {
-		return date;
+	public long getZeroHour() {
+		return zeroHour;
 	}
-	public void setDate(Date date) {
-		this.date = date;
+	public void setZeroHour(long zeroHour) {
+		this.zeroHour = zeroHour;
 	}
 	public Registry registry() {
 		return registry;
@@ -110,13 +112,21 @@ public class StageImpl implements Stage {
 		if( prop!=null ) {
 			setName(prop);
 		}
-
+		
+		prop = properties.getProperty(zerohourProperty());
+		if (prop != null) {
+			try {
+				setZeroHour(Long.parseLong(prop));
+			} catch (NumberFormatException e) {
+				System.err.println(e);
+			}
+		}
+		
 		prop = properties.getProperty(autosaveDelayProperty());
 		if( prop!=null ) {
 			try {
-				setAutosaveDelay(new Integer(prop));				
+				setAutosaveDelay(Integer.parseInt(prop));				
 			} catch (NumberFormatException e) {
-				setAutosaveDelay( 2 );
 				System.err.println(e);
 			}
 		}
@@ -124,9 +134,8 @@ public class StageImpl implements Stage {
 		prop = properties.getProperty(nbAutoBackupsProperty());
 		if( prop!=null ) {
 			try {
-				setNbAutoBackups(new Integer(prop));				
+				setNbAutoBackups(Integer.parseInt(prop));				
 			} catch (NumberFormatException e) {
-				setNbAutoBackups( 9 );
 				System.err.println(e);
 			}
 		}	
@@ -140,13 +149,18 @@ public class StageImpl implements Stage {
 	 */
 	public void saveProperties(Properties properties) {
 		properties.setProperty(nameProperty(), getName());
-		properties.setProperty(autosaveDelayProperty(), new Integer(getAutosaveDelay()).toString());
-		properties.setProperty(nbAutoBackupsProperty(), new Integer(getNbAutoBackups()).toString());
+		properties.setProperty(zerohourProperty(), Long.toString(getZeroHour()));
+		properties.setProperty(autosaveDelayProperty(), Integer.toString(getAutosaveDelay()));
+		properties.setProperty(nbAutoBackupsProperty(), Integer.toString(getNbAutoBackups()));
 		setProperties(properties);
 	}
 
 	public static String nameProperty() {
 		return "name"; //$NON-NLS-1$
+	}
+	
+	public static String zerohourProperty() { // MIGR12
+		return "SIZeroTime"; //$NON-NLS-1$
 	}
 
 	public static String autosaveDelayProperty() {

@@ -3,7 +3,6 @@
  */
 package net.geco.model;
 
-import java.util.Date;
 import java.util.Properties;
 
 /**
@@ -16,9 +15,9 @@ import java.util.Properties;
  */
 public interface Stage {
 
-	public void initialize(String baseDir);
-
 	public void close();
+
+	public void setBaseDir(String baseDir);
 
 	public String getBaseDir();
 
@@ -26,9 +25,9 @@ public interface Stage {
 
 	public void setName(String name);
 
-	public Date getDate();
-
-	public void setDate(Date date);
+	public long getZeroHour();
+	
+	public void setZeroHour(long zeroHour);
 
 	public Registry registry();
 
