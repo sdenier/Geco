@@ -44,17 +44,6 @@ public class RunnerBuilder extends BasicControl {
 		}
 	}
 	
-	public void checkOrData(Stage currentStage, PenaltyChecker checker) {
-		checkNoDataRunners(currentStage.registry());
-		// compute status and trace for data
-		for (RunnerRaceData raceData : currentStage.registry().getRunnersData()) {
-			// Special runner status (DNS) should have been set before this point
-			if( raceData.getResult()==null ) {
-				checker.check(raceData);	
-			}
-		}
-	}
-	
 	public void checkNoDataRunners(Registry registry) {
 		for (Runner runner : registry.getRunners()) {
 			if( registry.findRunnerData(runner) == null ) {

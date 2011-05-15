@@ -11,11 +11,11 @@ import net.geco.model.Registry;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.impl.POFactory;
+import net.geco.model.iocsv.CardDataIO;
 import net.geco.model.iocsv.CategoryIO;
 import net.geco.model.iocsv.ClubIO;
 import net.geco.model.iocsv.CourseIO;
 import net.geco.model.iocsv.CsvReader;
-import net.geco.model.iocsv.RaceDataIO;
 import net.geco.model.iocsv.RunnerIO;
 
 
@@ -75,8 +75,8 @@ public class OrFixture {
 			reader.initialize(baseDir, RunnerIO.sourceFilename());
 			new RunnerIO(factory, reader, null, registry, 0).importData();
 
-			reader.initialize(baseDir, RaceDataIO.sourceFilename());
-			new RaceDataIO(factory, reader, null, registry).importData();
+			reader.initialize(baseDir, CardDataIO.sourceFilename());
+			new CardDataIO(factory, reader, null, registry).importData();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

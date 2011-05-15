@@ -17,7 +17,6 @@ import net.geco.model.iocsv.CourseIO;
 import net.geco.model.iocsv.CsvReader;
 import net.geco.model.iocsv.CsvWriter;
 import net.geco.model.iocsv.HeatSetIO;
-import net.geco.model.iocsv.RaceDataIO;
 import net.geco.model.iocsv.ResultDataIO;
 import net.geco.model.iocsv.RunnerIO;
 
@@ -73,21 +72,12 @@ public class RegistryBuilder extends BasicControl{
 			e.printStackTrace();
 		}
 
-		if( GecoResources.exists(baseDir + GecoResources.sep + CardDataIO.sourceFilename()) ) {
-			try {
-				reader.initialize(baseDir, CardDataIO.sourceFilename());
-				new CardDataIO(factory(), reader, null, registry).importData();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}						
-		} else { // MIGR11
-			try {
-				reader.initialize(baseDir, RaceDataIO.sourceFilename());
-				new RaceDataIO(factory(), reader, null, registry).importData();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}			
-		}
+		try {
+			reader.initialize(baseDir, CardDataIO.sourceFilename());
+			new CardDataIO(factory(), reader, null, registry).importData();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}						
 
 		if( importResult ) { // MIGR11
 			try {
@@ -146,9 +136,6 @@ public class RegistryBuilder extends BasicControl{
 			new CardDataIO(factory(), null, writer, registry).exportData(registry.getRunnersData());
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		if( GecoResources.exists(baseDir + GecoResources.sep + RaceDataIO.sourceFilename()) ) { // MIGR11
-			new File(baseDir + GecoResources.sep + RaceDataIO.sourceFilename()).delete();
 		}
 
 		try {
