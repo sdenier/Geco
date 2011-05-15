@@ -16,7 +16,6 @@ import javax.swing.JTextField;
 
 import net.geco.basics.TimeManager;
 import net.geco.control.GecoControl;
-import net.geco.control.SIReaderHandler;
 import net.geco.model.Messages;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
@@ -68,14 +67,9 @@ public class StartTimeFunction extends AbstractRunnerFunction {
 			geco().info(e.getLocalizedMessage(), true);
 		}
 	}
-
-	private SIReaderHandler siHandler() {
-		return geco().getService(SIReaderHandler.class);
-	}
 	
 	private String getDefaultStarttime() {
-		long zeroTime = siHandler().getZeroTime();
-		return TimeManager.time(zeroTime);
+		return TimeManager.time( stage().getZeroHour() );
 	}
 
 	@Override

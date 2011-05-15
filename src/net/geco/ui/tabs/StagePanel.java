@@ -39,8 +39,8 @@ import javax.swing.filechooser.FileFilter;
 
 import net.geco.basics.Announcer;
 import net.geco.basics.Html;
-import net.geco.control.SingleSplitPrinter;
 import net.geco.control.SIReaderHandler.SerialPort;
+import net.geco.control.SingleSplitPrinter;
 import net.geco.framework.IGecoApp;
 import net.geco.model.Category;
 import net.geco.model.Club;
@@ -228,7 +228,7 @@ public class StagePanel extends TabPanel {
 		panel.add(new JLabel(Messages.uiGet("StagePanel.ZeroHourLabel")), c); //$NON-NLS-1$
 		final SimpleDateFormat formatter = new SimpleDateFormat("H:mm"); //$NON-NLS-1$
 		formatter.setTimeZone(TimeZone.getTimeZone("GMT")); //$NON-NLS-1$
-		final JTextField zerohourF = new JTextField(formatter.format(geco().siHandler().getZeroTime()));
+		final JTextField zerohourF = new JTextField(formatter.format(geco().stage().getZeroHour()));
 		zerohourF.setColumns(7);
 		zerohourF.setToolTipText(Messages.uiGet("StagePanel.ZeroHourTooltip")); //$NON-NLS-1$
 		panel.add(zerohourF, c);
@@ -285,14 +285,15 @@ public class StagePanel extends TabPanel {
 	
 	private boolean validateZeroHour(SimpleDateFormat formatter, JTextField zerohourF) {
 		try {
-			long oldTime = geco().siHandler().getZeroTime();
+			long oldTime = geco().stage().getZeroHour();
 			long zeroTime = formatter.parse(zerohourF.getText()).getTime();
-			geco().siHandler().setNewZeroTime(zeroTime);
+			geco().stage().setZeroHour(zeroTime);
+			geco().siHandler().changeZeroTime();
 			geco().runnerControl().updateRegisteredStarttimes(zeroTime, oldTime);
 			return true;
 		} catch (ParseException e1) {
 			geco().info(Messages.uiGet("StagePanel.ZeroHourBadFormatWarning"), true); //$NON-NLS-1$
-			zerohourF.setText(formatter.format(geco().siHandler().getZeroTime()));
+			zerohourF.setText(formatter.format(geco().stage().getZeroHour()));
 			return false;
 		}
 	}

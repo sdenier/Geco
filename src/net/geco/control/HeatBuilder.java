@@ -36,9 +36,9 @@ public class HeatBuilder extends Control {
 	private ResultBuilder resultBuilder;
 
 
-	public HeatBuilder(GecoControl gecoControl, ResultBuilder resultBuilder) {
+	public HeatBuilder(GecoControl gecoControl) {
 		super(gecoControl);
-		this.resultBuilder = resultBuilder;
+		this.resultBuilder = getService(ResultBuilder.class);
 	}
 	
 	public HeatSet createHeatSet() {
@@ -178,8 +178,7 @@ public class HeatBuilder extends Control {
 		writer.close();
 	}
 	private void appendCsvHeat(Heat heat, CsvWriter writer) throws IOException {
-		RunnerIO runnerIO = new RunnerIO(null, null, writer, null,
-											getService(SIReaderHandler.class).getZeroTime());
+		RunnerIO runnerIO = new RunnerIO(null, null, writer, null, stage().getZeroHour());
 		Course heatCourse = factory().createCourse();
 		heatCourse.setName(heat.getName());
 		for (Runner runner : heat.getQualifiedRunners()) {

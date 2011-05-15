@@ -64,10 +64,10 @@ public class GeneratorFunction extends GecoFunction {
 	private JSpinner genDelay;
 
 
-	public GeneratorFunction(GecoControl gecoControl, RunnerControl runnerControl, SIReaderHandler siHandler){
+	public GeneratorFunction(GecoControl gecoControl){
 		super(gecoControl);
-		this.runnerControl = runnerControl;
-		this.siHandler = siHandler;
+		this.runnerControl = getService(RunnerControl.class);
+		this.siHandler = getService(SIReaderHandler.class);
 		this.mutationX = 40;
 	}
 
@@ -193,7 +193,7 @@ public class GeneratorFunction extends GecoFunction {
 	public ResultData generateCardData(String chipNumber, Course course) {
 		ResultData card = new ResultData();
 		card.setSiIdent(chipNumber);
-		long startTime = siHandler.getZeroTime() + randomTime();
+		long startTime = stage().getZeroHour() + randomTime();
 		card.setStartTime(startTime);
 		card.setFinishTime(startTime + randomTime());
 		card.setPunches(generateRandomPunchesFor(course, mutationX));

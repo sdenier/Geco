@@ -21,11 +21,8 @@ import net.geco.model.Runner;
  */
 public class StartlistImporter extends OEImporter {
 	
-	private SIReaderHandler siHandler;
-
 	public StartlistImporter(GecoControl gecoControl) {
 		super(StartlistImporter.class, gecoControl);
-		siHandler = getService(SIReaderHandler.class);
 	}
 
 	@Override
@@ -59,7 +56,7 @@ public class StartlistImporter extends OEImporter {
 		runner.setNC(record[8].equals("X")); //$NON-NLS-1$
 		
 		Date relativeTime = TimeManager.safeParse(record[9]); // ! Time since zero hour
-		runner.setRegisteredStarttime( TimeManager.absoluteTime(relativeTime, siHandler.getZeroTime()) );
+		runner.setRegisteredStarttime( TimeManager.absoluteTime(relativeTime, stage().getZeroHour()) );
 
 		Club club = ensureClubInRegistry(record[15], record[14]);
 		Category cat = ensureCategoryInRegistry(record[18], record[19]);
