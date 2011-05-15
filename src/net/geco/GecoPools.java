@@ -125,7 +125,8 @@ public class GecoPools {
 	
 	
 	public void buildHeats() {
-		HeatBuilder heatBuilder = new HeatBuilder(gecoControl, new ResultBuilder(gecoControl));
+		new ResultBuilder(gecoControl); // used by HeatBuilder
+		HeatBuilder heatBuilder = new HeatBuilder(gecoControl);
 		try {
 			String filepath = StageBuilder.filepath(gecoControl.stage().getBaseDir(), "heat_startlists.csv"); //$NON-NLS-1$
 			heatBuilder.generateCsvHeats(filepath, gecoControl.registry().getHeatSets().toArray(new HeatSet[0]));

@@ -88,8 +88,6 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 	
 	private RunnerControl runnerControl;
 	
-	private ResultBuilder resultBuilder;
-	
 	private HeatBuilder heatBuilder;
 	
 	private SIReaderHandler siHandler;
@@ -177,17 +175,19 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 			}
 		}
 
-		updateStageList(startDir);
+		updateStageList(startDir); // TODO: deprecate
 		gecoControl = new GecoControl();
 		gecoControl.openStage(startDir);
+		
+		// TODO: call AppBuilder (launch AppWizard)
 
 		stageControl = new StageControl(gecoControl);
 		runnerControl = new RunnerControl(gecoControl);
-		resultBuilder = new ResultBuilder(gecoControl);
+		new ResultBuilder(gecoControl);
 		new ResultExporter(gecoControl);
 		new SplitExporter(gecoControl);
 		new SingleSplitPrinter(gecoControl);
-		heatBuilder = new HeatBuilder(gecoControl, resultBuilder);
+		heatBuilder = new HeatBuilder(gecoControl);
 		stats = new RegistryStats(gecoControl);
 		new AutoMergeHandler(gecoControl);
 		siHandler = new SIReaderHandler(gecoControl, defaultMergeHandler());
@@ -197,7 +197,7 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 		
 		new StartTimeFunction(gecoControl);
 		new RecheckFunction(gecoControl);
-		new GeneratorFunction(gecoControl, runnerControl, siHandler);
+		new GeneratorFunction(gecoControl);
 			
 		window = new GecoWindow(this);
 	}
