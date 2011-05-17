@@ -37,8 +37,6 @@ public class StageImpl implements Stage {
 		autosaveDelay = 2;
 	}
 
-	public void close() {}
-	
 	public void setBaseDir(String baseDir) {
 		this.baseDir = baseDir;
 	}

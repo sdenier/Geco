@@ -123,18 +123,6 @@ public class StagePanel extends TabPanel {
 			}
 		});
 		panel.add(stagenameF, c);
-		c.gridy = 1;
-		panel.add(new JLabel(Messages.uiGet("StagePanel.PreviousStageLabel")), c); //$NON-NLS-1$
-		JTextField previousF = new JTextField(geco().getPreviousStageDir());
-		previousF.setEditable(false);
-		previousF.setToolTipText(Messages.uiGet("StagePanel.PreviousNextStageTooltip")); //$NON-NLS-1$
-		panel.add(previousF, c);
-		c.gridy = 2;
-		panel.add(new JLabel(Messages.uiGet("StagePanel.NextStageLabel")), c); //$NON-NLS-1$
-		JTextField nextF = new JTextField(geco().getNextStageDir());
-		nextF.setEditable(false);
-		nextF.setToolTipText(Messages.uiGet("StagePanel.PreviousNextStageTooltip")); //$NON-NLS-1$
-		panel.add(nextF, c);
 		return titlePanel(panel, Messages.uiGet("StagePanel.StageConfigTitle")); //$NON-NLS-1$
 	}
 	

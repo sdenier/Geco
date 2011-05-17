@@ -81,10 +81,6 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 
 	private HeatsPanel heatsPanel;
 
-	private JButton nextB;
-
-	private JButton previousB;
-
 	private StartStopButton startB;
 
 	private static final String THEME = "crystal/"; //$NON-NLS-1$
@@ -97,8 +93,8 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		ICONS.put("crystal/", new String[] { //$NON-NLS-1$
 			"folder_new.png", //$NON-NLS-1$
 			"folder_sent_mail.png", //$NON-NLS-1$
-			"undo.png", //$NON-NLS-1$
-			"redo.png", //$NON-NLS-1$
+			"undo.png", //$NON-NLS-1$ // TODO: remove
+			"redo.png", //$NON-NLS-1$ // remove
 			"quick_restart.png", //$NON-NLS-1$
 			"cnr.png", //$NON-NLS-1$
 			"exit.png", //$NON-NLS-1$
@@ -148,7 +144,6 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 	public void guiInit() {
 		updateWindowTitle();
 		getContentPane().add(initToolbar(), BorderLayout.NORTH);
-		checkButtonsStatus();
 		final JTabbedPane pane = new JTabbedPane();
 		pane.addTab(Messages.uiGet("GecoWindow.Stage"), this.stagePanel); //$NON-NLS-1$
 		pane.addTab(Messages.uiGet("GecoWindow.Runners"), this.runnersPanel); //$NON-NLS-1$
@@ -271,26 +266,6 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 				geco.saveCurrentStage();
 			}
 		});
-		toolBar.addSeparator();
-		
-		previousB = new JButton(Messages.uiGet("GecoWindow.PreviousStageButton"), createIcon(2)); //$NON-NLS-1$
-		previousB.setToolTipText(Messages.uiGet("GecoWindow.PreviousStageToolip")); //$NON-NLS-1$
-		previousB.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				geco.switchToPreviousStage();
-			}
-		});
-		toolBar.add(previousB);
-		nextB = new JButton(Messages.uiGet("GecoWindow.NextStageButton"), createIcon(3)); //$NON-NLS-1$
-		nextB.setToolTipText(Messages.uiGet("GecoWindow.NextStageTooltip")); //$NON-NLS-1$
-		nextB.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				geco.switchToNextStage();
-			}
-		});
-		toolBar.add(nextB);
 	}
 
 	private void initLiveToolbar(JToolBar toolBar) {
@@ -483,20 +458,6 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 	@Override
 	public void changed(Stage previous, Stage next) {
 		updateWindowTitle();
-		checkButtonsStatus();
-	}
-
-	private void checkButtonsStatus() {
-		if( geco.hasPreviousStage() ) {
-			previousB.setEnabled(true);
-		} else {
-			previousB.setEnabled(false);
-		}
-		if( geco.hasNextStage() ) {
-			nextB.setEnabled(true);
-		} else {
-			nextB.setEnabled(false);
-		}
 	}
 
 	@Override

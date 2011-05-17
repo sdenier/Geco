@@ -7,14 +7,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
-import java.util.Vector;
 
 import net.geco.basics.Announcer;
 import net.geco.basics.GecoRequestHandler;
 import net.geco.basics.GecoResources;
 import net.geco.basics.GecoWarning;
 import net.geco.basics.Logger;
-import net.geco.basics.Util;
 import net.geco.control.ArchiveManager;
 import net.geco.control.AutoMergeHandler;
 import net.geco.control.CNCalculator;
@@ -94,17 +92,6 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 
 	private RegistryStats stats;
 
-	/*
-	 * Stage list
-	 */
-	private String stageListFile;
-
-	private Vector<String> stageList;
-
-	private int stageIndex;
-
-	private String parentDir;
-
 
 	public static void main(String[] args) {
 		setLaunchOptions(args);
@@ -153,7 +140,7 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 	}
 
 	public void shutdown() {
-		gecoControl.closeAllStages();
+		gecoControl.closeCurrentStage();
 	}
 
 	public Geco(String startDir) {
@@ -175,7 +162,6 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 			}
 		}
 
-		updateStageList(startDir); // TODO: deprecate
 		gecoControl = new GecoControl();
 		gecoControl.openStage(startDir);
 		
@@ -207,7 +193,6 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 	}
 	
 	public void openStage(String startDir) {
-		updateStageList(startDir);
 		gecoControl.openStage(startDir);
 	}
 	
@@ -286,88 +271,10 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 		gecoControl.info(message, warning);
 	}
 
-	
-	private void updateStageList(String baseDir) {
-		parentDir = new File(baseDir).getParent();
-		String stageFile = fileInParentDir("stages.prop"); //$NON-NLS-1$
-		if( !stageFile.equals(this.stageListFile) ) {
-			this.stageListFile = stageFile;
-			this.stageList = new Vector<String>();
-			try {
-				this.stageList = Util.readLines(this.stageListFile);
-			} catch (FileNotFoundException e) {
-				// no file, proceed
-			} catch (IOException e) {
-				logger().debug(e);
-			}
-		}
-		updateStageIndex(baseDir);
-	}
-	private String fileInParentDir(String filename) {
-		return parentDir + File.separator + filename;
-	}
-	private void updateStageIndex(String baseDir) {
-		this.stageIndex = -1;
-		for (int i = 0; i < this.stageList.size(); i++) {
-			if( baseDir.endsWith(this.stageList.get(i)) ) {
-				this.stageIndex = i;
-				break;
-			}
-		}
-	}
-	
 	public String getCurrentStagePath() {
 		return new File(stage().getBaseDir()).getAbsolutePath();
 	}
-
-	public boolean hasPreviousStage() {
-		return stageIndex > 0;
-	}
 	
-	public String getPreviousStageDir() {
-		if( hasPreviousStage() ) {
-			return this.stageList.get(this.stageIndex - 1);
-		} else {
-			return ""; //$NON-NLS-1$
-		}
-	}
-	
-	public String getPreviousStagePath() {
-		return fileInParentDir(getPreviousStageDir());
-	}
-	
-	public boolean hasNextStage() {
-		return stageIndex >= 0 && stageIndex < this.stageList.size()-1;
-	}
-
-	public String getNextStageDir() {
-		if( hasNextStage() ) {
-			return this.stageList.get(this.stageIndex + 1);
-		} else {
-			return ""; //$NON-NLS-1$
-		}
-	}
-	
-	public String getNextStagePath() {
-		return fileInParentDir(getNextStageDir());
-	}
-	
-	public void switchToPreviousStage() {
-		if( hasPreviousStage() ) {
-			gecoControl.preloadPreviousStage(getPreviousStagePath());
-			stageIndex--;
-			gecoControl.switchToPreviousStage();
-		} // else do nothing
-	}
-
-	public void switchToNextStage() {
-		if( hasNextStage() ) {
-			gecoControl.preloadNextStage(getNextStagePath());
-			stageIndex++;
-			gecoControl.switchToNextStage();
-		} // else do nothing
-	}
-
 	@Override
 	public String requestMergeUnknownRunner(RunnerRaceData data, String ecard) {
 		return new MergeRunnerDialog(

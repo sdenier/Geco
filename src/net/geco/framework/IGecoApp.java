@@ -26,21 +26,5 @@ public interface IGecoApp extends IGeco {
 	public void saveCurrentStage();
 	
 	public String getCurrentStagePath();
-
-	public boolean hasPreviousStage();
-	
-	public String getPreviousStageDir();
-	
-	public String getPreviousStagePath();
-	
-	public boolean hasNextStage();
-
-	public String getNextStageDir();
-	
-	public String getNextStagePath();
-	
-	public void switchToPreviousStage();
-
-	public void switchToNextStage();
 	
 }

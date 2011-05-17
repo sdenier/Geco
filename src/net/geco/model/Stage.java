@@ -15,8 +15,6 @@ import java.util.Properties;
  */
 public interface Stage {
 
-	public void close();
-
 	public void setBaseDir(String baseDir);
 
 	public String getBaseDir();

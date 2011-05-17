@@ -47,13 +47,8 @@ public class GecoControl {
 		}
 	}
 	
-	/*
-	 * stupid accessor against null value
-	 */
-	private static Stage getStage(RuntimeStage rstage) {
-		return ( rstage!=null ) ? rstage.stage() : null;
-	}
 	
+	private RuntimeStage current;
 	
 	private final Factory factory;
 	
@@ -64,16 +59,10 @@ public class GecoControl {
 	private PenaltyChecker checker;
 
 	private Thread autosaveThread;
-	
-	/*
-	 * Stage
-	 */
-	private RuntimeStage current;
-	
-	private RuntimeStage previous;
-	
-	private RuntimeStage next;
 
+	private final SimpleDateFormat backupDateFormat = new SimpleDateFormat("yyMMdd-HHmmss"); //$NON-NLS-1$
+	
+	
 	/*
 	 * Services
 	 */
@@ -142,14 +131,15 @@ public class GecoControl {
 	 * @param baseDir
 	 */
 	public void openStage(String baseDir) {
-		stopAutosave();
-		RuntimeStage oldStage = current;
-		closeAllStages();
+		Stage oldStage = null;
+		if( current!=null ){
+			oldStage = current.stage();
+			closeCurrentStage();
+		}
 
-		RuntimeStage newStage = loadStage(baseDir, true);
-		current = newStage;
+		current = loadStage(baseDir, true);
 
-		announcer.announceChange(getStage(oldStage), stage());
+		announcer.announceChange(oldStage, stage());
 		startAutosave();
 	}
 	private RuntimeStage loadStage(String baseDir, boolean withLogger) {
@@ -161,6 +151,63 @@ public class GecoControl {
 			logger = initializeLogger(stage);
 		}
 		return new RuntimeStage(stage, logger);
+	}
+
+	private String backupFilename(String id) {
+		return "backups" + File.separator + "backup" + id + ".zip"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	}
+	
+	private void saveStage(String backupName) {
+		Properties props = new Properties();
+		announcer.announceSave(stage(), props);
+		stageBuilder.save(	stage(), 
+							props, 
+							backupName);
+	}
+
+	public void saveCurrentStage() {
+		saveStage( backupFilename( backupDateFormat.format(new Date()) ));
+	}
+	
+	public void closeCurrentStage() {
+		stopAutosave();
+		saveCurrentStage();
+		announcer.announceClose(stage());
+		logger().close();
+	}
+	
+	public Thread startAutosave() {
+		final long saveDelay = stage().getAutosaveDelay() * 60 * 1000;
+		autosaveThread = new Thread(new Runnable() {
+			@Override
+			public synchronized void run() {
+				int id = stage().getNbAutoBackups();
+				while( true ){
+					try {
+						wait(saveDelay);
+						id ++;
+						if( id > stage().getNbAutoBackups() ) {
+							id = 1;
+						}
+						saveStage(backupFilename(Integer.toString(id)));
+					} catch (InterruptedException e) {
+						return;
+					}					
+				}
+			}});
+		autosaveThread.start();
+		return autosaveThread;
+	}
+	
+	public void stopAutosave() {
+		if( autosaveThread!=null ) {
+			autosaveThread.interrupt();
+			try {
+				autosaveThread.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	private Logger initializeLogger(Stage stage) {
@@ -181,135 +228,6 @@ public class GecoControl {
 	}
 	public void info(String message, boolean warning) {
 		announcer().info(message, warning);
-	}
-	
-	public Thread startAutosave() {
-		final long saveDelay = stage().getAutosaveDelay() * 60 * 1000;
-		autosaveThread = new Thread(new Runnable() {
-			@Override
-			public synchronized void run() {
-				int id = stage().getNbAutoBackups();
-				while( true ){
-					try {
-						wait(saveDelay);
-						id ++;
-						if( id > stage().getNbAutoBackups() ) {
-							id = 1;
-						}
-						saveStage(backupFilename(new Integer(id).toString()));
-					} catch (InterruptedException e) {
-						return;
-					}					
-				}
-			}});
-		autosaveThread.start();
-		return autosaveThread;
-	}
-	
-	public void stopAutosave() {
-		if( autosaveThread!=null ) {
-			autosaveThread.interrupt();
-			try {
-				autosaveThread.join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	private String backupFilename(String id) {
-		return "backups" + File.separator + "backup" + id + ".zip"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-	}
-	
-	private void saveStage(String backupName) {
-		Properties props = new Properties();
-		announcer.announceSave(stage(), props);
-		stageBuilder.save(	stage(), 
-							props, 
-							backupName);
-	}
-
-	public void saveCurrentStage() {
-		saveStage( backupFilename( new SimpleDateFormat("yyMMdd-HHmmss").format(new Date()) )); //$NON-NLS-1$
-	}
-	
-	public void closeStage(RuntimeStage runStage) {
-		if( runStage!=null ) {
-			announcer.announceClose(runStage.stage());
-			runStage.stage().close();
-			runStage.logger().close();
-		}
-	}
-	private void closeCurrentStage() {
-		if( current!=null ) {
-			saveCurrentStage();
-		}
-		closeStage(current);
-	}
-	private void closeNextStage() {
-		closeStage(next);
-		next = null;
-	}
-	private void closePreviousStage() {
-		closeStage(previous);
-		previous = null;
-	}
-	public void closeAllStages() {
-		closeCurrentStage();
-		closePreviousStage();
-		closeNextStage();
-	}
-
-	/**
-	 * Private method, do not call!
-	 * @param previousPath
-	 * @see valmo.geco.core.Geco.switchToPreviousStage()
-	 */
-	public void preloadPreviousStage(String previousPath) {
-		stopAutosave();
-		saveCurrentStage();
-		if( previous==null ) {
-			previous = loadStage(previousPath, true);
-		}
-	}
-
-	/**
-	 * Private method, do not call! Previous loaded, proceed with switching references around
-	 * @see valmo.geco.core.Geco.switchToPreviousStage()
-	 */
-	public void switchToPreviousStage() {
-		closeNextStage();
-		next = current; // current becomes next
-		current = previous; // previous becomes current
-		previous = null; // unset previous ref (we dont want to automatically load previous one)
-		announcer.announceChange(getStage(next), stage());
-		startAutosave();
-	}
-
-	/**
-	 * Private method, do not call!
-	 * @param nextPath 
-	 * @see valmo.geco.core.Geco.switchToNextStage()
-	 */
-	public void preloadNextStage(String nextPath) {
-		stopAutosave();
-		saveCurrentStage();
-		if( next==null ) {
-			next = loadStage(nextPath, true);
-		}
-	}
-	
-	/**
-	 * Private method, do not call! next loaded, proceed with switching references around
-	 * @see valmo.geco.core.Geco.switchToNextStage()
-	 */
-	public void switchToNextStage() {
-		closePreviousStage();
-		previous = current;
-		current = next;
-		next = null;
-		announcer.announceChange(getStage(previous), stage());
-		startAutosave();
 	}
 
 }

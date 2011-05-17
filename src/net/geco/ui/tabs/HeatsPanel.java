@@ -42,7 +42,6 @@ import net.geco.model.HeatSet;
 import net.geco.model.Messages;
 import net.geco.model.Pool;
 import net.geco.model.Stage;
-import net.geco.model.iocsv.RunnerIO;
 import net.geco.ui.basics.HeatSetDialog;
 import net.geco.ui.basics.SwingUtils;
 import net.geco.ui.framework.TabPanel;
@@ -225,13 +224,14 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 		exportB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String heatFile;
-				if( geco().hasNextStage() ) {
-					heatFile = geco().getNextStagePath() + File.separator + RunnerIO.sourceFilename();
-				} else {
+				// TODO: add property to hold next stage
+//				if( geco().hasNextStage() ) {
+//					heatFile = geco().getNextStagePath() + File.separator + RunnerIO.sourceFilename();
+//				} else {
 					heatFile = geco().getCurrentStagePath()
 								+ File.separator
 								+ Messages.uiGet("HeatsPanel.HeatsFilename"); //$NON-NLS-1$
-				}
+//				}
 				filePane.setSelectedFile(new File(heatFile).getAbsoluteFile());
 				int response = filePane.showSaveDialog(frame());
 				if( response==JFileChooser.APPROVE_OPTION ) {
