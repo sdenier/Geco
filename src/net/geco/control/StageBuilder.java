@@ -68,15 +68,19 @@ public class StageBuilder extends BasicControl {
 		return newStage;
 	}
 
-	public void loadStageProperties(Stage stage, String baseDir) {
-		stage.setBaseDir(baseDir);
+	public static Properties loadProperties(String baseDir) {
 		Properties props = new Properties();
 		try {
 			props.load( GecoResources.getReaderFor(propPath(baseDir)) );
 		} catch (IOException e) {
 			System.out.println(e); // TODO: !!!!!!!!!!!!!!!!!!!!! throw exception and handle in UI
 		}
-		stage.loadProperties(props);
+		return props;
+	}
+	
+	public void loadStageProperties(Stage stage, String baseDir) {
+		stage.setBaseDir(baseDir);
+		stage.loadProperties(loadProperties(baseDir));
 	}
 
 	private void importDataIntoRegistry(Stage newStage) {

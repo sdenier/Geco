@@ -4,18 +4,19 @@
  */
 package test.net.geco.control;
 
-import java.io.FileNotFoundException;
+import static org.junit.Assert.assertEquals;
+
 import java.util.Properties;
 
-import junit.framework.Assert;
 import net.geco.basics.TimeManager;
+import net.geco.control.PenaltyChecker;
 import net.geco.control.StageBuilder;
+import net.geco.model.Registry;
 import net.geco.model.Stage;
 import net.geco.model.impl.POFactory;
 
 import org.junit.Before;
 import org.junit.Test;
-
 
 /**
  * Fonctionnalité: chargement d'une étape dans Geco.
@@ -39,11 +40,11 @@ public class StageBuilderTest {
 	}
 	
 	public void assertStageData(Stage stage, String name, String baseDir, String zeroHour, int nbBackups, int saveDelay) {
-		Assert.assertEquals(name, stage.getName());
-		Assert.assertEquals(baseDir, stage.getBaseDir());
-		Assert.assertEquals(zeroHour, TimeManager.time(stage.getZeroHour()));
-		Assert.assertEquals(nbBackups, stage.getNbAutoBackups());
-		Assert.assertEquals(saveDelay, stage.getAutosaveDelay());
+		assertEquals(name, stage.getName());
+		assertEquals(baseDir, stage.getBaseDir());
+		assertEquals(zeroHour, TimeManager.time(stage.getZeroHour()));
+		assertEquals(nbBackups, stage.getNbAutoBackups());
+		assertEquals(saveDelay, stage.getAutosaveDelay());
 		
 	}
 
@@ -60,14 +61,36 @@ public class StageBuilderTest {
 	 * Et que je regarde les propriétés de l'étape
 	 * Alors je dois voir le nom "Valid Stage"
 	 * Et je dois voir l'horaire zéro 10:00
-	 * 
-	 * @throws FileNotFoundException
 	 */
 	@Test
-	public void testLoadStageProperties() throws FileNotFoundException {
+	public void testLoadStageProperties() {
 		StageBuilder stageBuilder = new StageBuilder(factory);
 		stageBuilder.loadStageProperties(stage, "testData/valid/");
 		assertStageData(stage, "Valid Stage", "testData/valid/", "10:00:00", 10, 1);
 	}
+	
+	@Test
+	public void testLoadStage() {
+		StageBuilder stageBuilder = new StageBuilder(factory);
+		stage = stageBuilder.loadStage("testData/belfield", new PenaltyChecker(factory));
+		assertStageData(stage, "Belfield", "testData/belfield", "9:00:00", 9, 2);
+		Registry registry = stage.registry();
+		assertEquals(32, registry.getCategories().size());
+		assertEquals(13, registry.getClubs().size());
+		assertEquals(2, registry.getCourses().size());
+		assertEquals(60, registry.getRunners().size());
+	}
+
+	@Test
+	public void testLoadStageWithMissingData() {
+		StageBuilder stageBuilder = new StageBuilder(factory);
+		stage = stageBuilder.loadStage("testData/damaged", new PenaltyChecker(factory));
+		Registry registry = stage.registry();
+		assertEquals(3, registry.getCategories().size());
+		assertEquals(4, registry.getClubs().size());
+		assertEquals(2, registry.getCourses().size());
+		assertEquals(9, registry.getRunners().size());		
+	}
+
 	
 }
