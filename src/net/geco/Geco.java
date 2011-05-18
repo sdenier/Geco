@@ -176,7 +176,8 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 		heatBuilder = new HeatBuilder(gecoControl);
 		stats = new RegistryStats(gecoControl);
 		new AutoMergeHandler(gecoControl);
-		siHandler = new SIReaderHandler(gecoControl, defaultMergeHandler());
+		siHandler = new SIReaderHandler(gecoControl);
+		siHandler.setRequestHandler(defaultMergeHandler());
 		new ArchiveManager(gecoControl);
 		new StartlistImporter(gecoControl);
 		new CNCalculator(gecoControl);

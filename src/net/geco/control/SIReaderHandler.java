@@ -81,9 +81,8 @@ public class SIReaderHandler extends Control
 	 * @param stage
 	 * @param announcer
 	 */
-	public SIReaderHandler(GecoControl geco, GecoRequestHandler requestHandler) {
+	public SIReaderHandler(GecoControl geco) {
 		super(SIReaderHandler.class, geco);
-		this.requestHandler = requestHandler;
 		changePortName();
 		geco.announcer().registerStageListener(this);
 	}
@@ -224,6 +223,7 @@ public class SIReaderHandler extends Control
 	}
 	
 	public void stop() {
+		// TODO: announce station status
 		if( portHandler==null )
 			return;
 		try {
