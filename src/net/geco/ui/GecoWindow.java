@@ -36,6 +36,7 @@ import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import net.geco.app.AppBuilder;
 import net.geco.basics.Announcer;
 import net.geco.basics.GecoResources;
 import net.geco.basics.GecoWarning;
@@ -48,6 +49,7 @@ import net.geco.model.Stage;
 import net.geco.ui.basics.GecoLauncher;
 import net.geco.ui.basics.GecoStatusBar;
 import net.geco.ui.basics.StartStopButton;
+import net.geco.ui.framework.TabPanel;
 import net.geco.ui.tabs.HeatsPanel;
 import net.geco.ui.tabs.LogPanel;
 import net.geco.ui.tabs.ResultsPanel;
@@ -121,6 +123,24 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		guiInit();
 	}
 	
+	/**
+	 * @param mock
+	 * @param mockBuilder
+	 */
+	public GecoWindow(IGecoApp geco, AppBuilder builder) {
+		this.geco = geco;
+		setLookAndFeel();
+		this.stagePanel = new StagePanel(this.geco, this);
+		TabPanel[] uiTabs = builder.buildUITabs(geco, this);
+//		this.runnersPanel = new RunnersPanel(this.geco, this);
+//		this.logPanel = new LogPanel(this.geco, this);
+//		this.resultsPanel = new ResultsPanel(this.geco, this);
+//		this.heatsPanel = new HeatsPanel(this.geco, this);
+		geco.announcer().registerStageListener(this);
+		geco.announcer().registerStationListener(this);
+		guiInit();
+	}
+
 	private void setLookAndFeel() {
 		if( ! GecoResources.platformIsMacOs() ) { // try to use Nimbus unless on Mac Os
 			try {

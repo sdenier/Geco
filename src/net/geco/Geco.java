@@ -8,7 +8,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
+import net.geco.app.AppBuilder;
+import net.geco.app.OrientShowAppBuilder;
 import net.geco.basics.Announcer;
+import net.geco.basics.GService;
 import net.geco.basics.GecoRequestHandler;
 import net.geco.basics.GecoResources;
 import net.geco.basics.GecoWarning;
@@ -29,9 +32,6 @@ import net.geco.control.SplitExporter;
 import net.geco.control.StageControl;
 import net.geco.control.StartlistImporter;
 import net.geco.framework.IGecoApp;
-import net.geco.functions.GeneratorFunction;
-import net.geco.functions.RecheckFunction;
-import net.geco.functions.StartTimeFunction;
 import net.geco.model.Messages;
 import net.geco.model.Registry;
 import net.geco.model.Runner;
@@ -86,11 +86,7 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 	
 	private RunnerControl runnerControl;
 	
-	private HeatBuilder heatBuilder;
-	
 	private SIReaderHandler siHandler;
-
-	private RegistryStats stats;
 
 
 	public static void main(String[] args) {
@@ -99,11 +95,7 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 			GecoMacos.earlySetup();
 		}
 
-		final Geco geco = new Geco(startDir);
-		if( GecoResources.platformIsMacOs() ) {
-			GecoMacos.setupQuitAction(geco);
-		}
-		geco.window.launchGUI();
+		launchGeco(new OrientShowAppBuilder());
 	}
 	
 	private static void setLaunchOptions(String[] args) {
@@ -125,6 +117,18 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 			System.out.println(Messages.getString("Geco.UnrecognizedOptionWarning") + arg); //$NON-NLS-1$
 		}
 	}
+
+	public static void launchGeco(AppBuilder builder) {
+		final Geco geco = new Geco(startDir, builder);
+		if( GecoResources.platformIsMacOs() ) {
+			GecoMacos.setupQuitAction(geco);
+		}
+		geco.window.launchGUI();
+	}
+	
+	public static Geco withMock(AppBuilder builder){
+		return null;
+	}
 	
 	public String version() {
 		return VERSION;
@@ -143,7 +147,7 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 		gecoControl.closeCurrentStage();
 	}
 
-	public Geco(String startDir) {
+	public Geco(String startDir, AppBuilder builder) {
 		if( startDir!=null ) {
 			if( !GecoResources.exists(startDir) ) {
 				System.out.println(Messages.getString("Geco.NoPathWarning") + startDir); //$NON-NLS-1$
@@ -162,35 +166,21 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 			}
 		}
 
-		gecoControl = new GecoControl();
+		gecoControl = new GecoControl(builder);
 		gecoControl.openStage(startDir);
 		
-		// TODO: call AppBuilder (launch AppWizard)
-
-		stageControl = new StageControl(gecoControl);
-		runnerControl = new RunnerControl(gecoControl);
-		new ResultBuilder(gecoControl);
-		new ResultExporter(gecoControl);
-		new SplitExporter(gecoControl);
-		new SingleSplitPrinter(gecoControl);
-		heatBuilder = new HeatBuilder(gecoControl);
-		stats = new RegistryStats(gecoControl);
-		new AutoMergeHandler(gecoControl);
-		siHandler = new SIReaderHandler(gecoControl);
-		siHandler.setRequestHandler(defaultMergeHandler());
-		new ArchiveManager(gecoControl);
-		new StartlistImporter(gecoControl);
-		new CNCalculator(gecoControl);
+		stageControl = getService(StageControl.class);
+		runnerControl = getService(RunnerControl.class);
+		siHandler = getService(SIReaderHandler.class);
 		
-		new StartTimeFunction(gecoControl);
-		new RecheckFunction(gecoControl);
-		new GeneratorFunction(gecoControl);
-			
-		window = new GecoWindow(this);
+		window = new GecoWindow(this, builder);
 	}
 
 	private String launcher() throws Exception {
 		return new GecoLauncher(System.getProperty("user.dir")).open(null); //$NON-NLS-1$
+	}
+	private <T extends GService> T getService(Class<T> clazz) {
+		return this.gecoControl.getService(clazz);
 	}
 	
 	public void openStage(String startDir) {
@@ -222,41 +212,41 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 		return this.runnerControl;
 	}
 	public ResultBuilder resultBuilder() {
-		return this.gecoControl.getService(ResultBuilder.class);
+		return getService(ResultBuilder.class);
 	}
 	public ResultExporter resultExporter() {
-		return this.gecoControl.getService(ResultExporter.class);
+		return getService(ResultExporter.class);
 	}
 	public SplitExporter splitsExporter() {
-		return this.gecoControl.getService(SplitExporter.class);
+		return getService(SplitExporter.class);
 	}
 	public SingleSplitPrinter splitPrinter() {
-		return this.gecoControl.getService(SingleSplitPrinter.class);
+		return getService(SingleSplitPrinter.class);
 	}
 	public HeatBuilder heatBuilder() {
-		return this.heatBuilder;
+		return getService(HeatBuilder.class);
 	}	
 	public RegistryStats registryStats() {
-		return this.stats;
+		return getService(RegistryStats.class);
 	}
 	public SIReaderHandler siHandler() {
 		return this.siHandler;
 	}
 	public ArchiveManager archiveManager() {
-		return this.gecoControl.getService(ArchiveManager.class);
+		return getService(ArchiveManager.class);
 	}
 	public StartlistImporter startlistImporter() {
-		return this.gecoControl.getService(StartlistImporter.class);
+		return getService(StartlistImporter.class);
 	}
 	public CNCalculator cnCalculator() {
-		return this.gecoControl.getService(CNCalculator.class);
+		return getService(CNCalculator.class);
 	}
 	
 	public GecoRequestHandler defaultMergeHandler() {
 		return this;
 	}
 	public GecoRequestHandler autoMergeHandler() {
-		return this.gecoControl.getService(AutoMergeHandler.class);
+		return getService(AutoMergeHandler.class);
 	}
 	
 	public Logger logger() {
