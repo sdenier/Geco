@@ -103,7 +103,7 @@ public class RegistryStats extends Control
 	private int totalDup;
 	
 	public RegistryStats(GecoControl gecoControl) {
-		super(gecoControl);
+		super(RegistryStats.class, gecoControl);
 		Announcer announcer = gecoControl.announcer();
 		announcer.registerStageListener(this);
 		announcer.registerRunnerListener(this);
