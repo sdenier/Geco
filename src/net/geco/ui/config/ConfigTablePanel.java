@@ -2,7 +2,7 @@
  * Copyright (c) 2009 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.ui.components;
+package net.geco.ui.config;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
