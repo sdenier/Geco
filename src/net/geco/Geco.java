@@ -95,11 +95,7 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 			GecoMacos.earlySetup();
 		}
 
-		final Geco geco = new Geco(startDir, new OrientShowAppBuilder());
-		if( GecoResources.platformIsMacOs() ) {
-			GecoMacos.setupQuitAction(geco);
-		}
-		geco.window.launchGUI();
+		new Geco().startup(chooseStartDir(startDir), new OrientShowAppBuilder());
 	}
 	
 	private static void setLaunchOptions(String[] args) {
@@ -121,6 +117,50 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 			System.out.println(Messages.getString("Geco.UnrecognizedOptionWarning") + arg); //$NON-NLS-1$
 		}
 	}
+
+	private static String chooseStartDir(String startDir) {
+		if( startDir!=null ) {
+			if( !GecoResources.exists(startDir) ) {
+				System.out.println(Messages.getString("Geco.NoPathWarning") + startDir); //$NON-NLS-1$
+				System.exit(0);
+			}
+		} else {
+			try {
+				startDir = new GecoLauncher(System.getProperty("user.dir")).open(null);
+			} catch (GecoWarning w) {
+				System.out.println(w.getLocalizedMessage());
+				System.exit(0);
+			} catch (Exception e) {
+				System.err.println(Messages.getString("Geco.FatalLaunchError")); //$NON-NLS-1$
+				e.printStackTrace();
+				System.exit(-1);
+			}
+		}
+		return startDir;
+	}
+
+	public Geco() {
+		if( GecoResources.platformIsMacOs() ) {
+			GecoMacos.setupQuitAction(this);
+		}
+	}
+	
+	public void startup(String startDir, AppBuilder builder){
+		GecoControl gecoControl = new GecoControl(builder);
+		gecoControl.openStage(startDir);
+		initControls(builder, gecoControl);
+		window = new GecoWindow(this);
+		window.initGUI(builder);
+		window.launchGUI();
+	}
+	
+	public void initControls(AppBuilder builder, GecoControl gecoControl) {
+		this.gecoControl = gecoControl;
+		builder.buildControls(gecoControl);
+		stageControl = getService(StageControl.class);
+		runnerControl = getService(RunnerControl.class);
+		siHandler = getService(SIReaderHandler.class);
+	}
 	
 	public String version() {
 		return VERSION;
@@ -138,39 +178,7 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 	public void shutdown() {
 		gecoControl.closeCurrentStage();
 	}
-
-	public Geco(String startDir, AppBuilder builder) {
-		if( startDir!=null ) {
-			if( !GecoResources.exists(startDir) ) {
-				System.out.println(Messages.getString("Geco.NoPathWarning") + startDir); //$NON-NLS-1$
-				System.exit(0);
-			}
-		} else {
-			try {
-				startDir = launcher();
-			} catch (GecoWarning w) {
-				System.out.println(w.getLocalizedMessage());
-				System.exit(0);
-			} catch (Exception e) {
-				System.err.println(Messages.getString("Geco.FatalLaunchError")); //$NON-NLS-1$
-				e.printStackTrace();
-				System.exit(-1);
-			}
-		}
-
-		gecoControl = new GecoControl(builder);
-		gecoControl.openStage(startDir);
-		
-		stageControl = getService(StageControl.class);
-		runnerControl = getService(RunnerControl.class);
-		siHandler = getService(SIReaderHandler.class);
-		
-		window = new GecoWindow(this, builder);
-	}
-
-	private String launcher() throws Exception {
-		return new GecoLauncher(System.getProperty("user.dir")).open(null); //$NON-NLS-1$
-	}
+	
 	private <T extends GService> T getService(Class<T> clazz) {
 		return this.gecoControl.getService(clazz);
 	}

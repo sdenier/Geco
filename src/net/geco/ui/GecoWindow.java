@@ -98,13 +98,11 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 	}
 	
 
-	public GecoWindow(IGecoApp geco, AppBuilder builder) {
+	public GecoWindow(IGecoApp geco) {
 		this.geco = geco;
 		setLookAndFeel();
-		StagePanel stagePanel = new StagePanel(this.geco, this);
 		geco.announcer().registerStageListener(this);
 		geco.announcer().registerStationListener(this);
-		guiInit(stagePanel, builder.buildUITabs(geco, this), builder.buildConfigPanels(geco, this));
 	}
 
 	private void setLookAndFeel() {
@@ -126,28 +124,34 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 			}
 		}
 	}
-
-	public void guiInit(StagePanel stagePanel, TabPanel[] uiTabs, ConfigPanel[] configPanels) {
+	
+	public void initGUI(AppBuilder builder){
 		updateWindowTitle();
-		getContentPane().add(initToolbar(), BorderLayout.NORTH);
-		final JTabbedPane pane = new JTabbedPane();
-		pane.addTab(Messages.uiGet("GecoWindow.Stage"), stagePanel); //$NON-NLS-1$
-		for (TabPanel tabPanel : uiTabs) {
-			pane.addTab(tabPanel.getTabTitle(), tabPanel);
-		}
-		stagePanel.addConfigPanels(configPanels);
-		
-		setKeybindings(pane);
-		getContentPane().add(pane, BorderLayout.CENTER);
-		
-		getContentPane().add(new GecoStatusBar(this.geco.announcer()), BorderLayout.SOUTH);
-
+		buildGUI(new StagePanel(this.geco, this),
+				 builder.buildUITabs(geco, this),
+				 builder.buildConfigPanels(geco, this));
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				geco.exit();
 			}
 		});
+	}
+
+	public void buildGUI(StagePanel stagePanel, TabPanel[] uiTabs, ConfigPanel[] configPanels) {
+		getContentPane().add(initToolbar(), BorderLayout.NORTH);
+
+		stagePanel.addConfigPanels(configPanels);
+		
+		final JTabbedPane pane = new JTabbedPane();
+		pane.addTab(Messages.uiGet("GecoWindow.Stage"), stagePanel); //$NON-NLS-1$
+		for (TabPanel tabPanel : uiTabs) {
+			pane.addTab(tabPanel.getTabTitle(), tabPanel);
+		}
+		setKeybindings(pane);
+		getContentPane().add(pane, BorderLayout.CENTER);
+		
+		getContentPane().add(new GecoStatusBar(this.geco.announcer()), BorderLayout.SOUTH);
 	}
 
 	private void setKeybindings(final JTabbedPane pane) {
