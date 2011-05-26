@@ -4,6 +4,8 @@
  */
 package net.geco.ui.framework;
 
+import java.awt.Component;
+
 
 /**
  * @author Simon Denier
@@ -13,5 +15,7 @@ package net.geco.ui.framework;
 public interface ConfigPanel {
 	
 	public String getLabel();
+	
+	public Component get();
 
 }

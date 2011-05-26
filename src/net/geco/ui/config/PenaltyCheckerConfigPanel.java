@@ -4,6 +4,7 @@
  */
 package net.geco.ui.config;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -86,6 +87,11 @@ public class PenaltyCheckerConfigPanel extends JPanel implements ConfigPanel {
 			.contents(Messages.uiGet("StagePanel.MPConfigHelp3")) //$NON-NLS-1$
 			.close("i").close(); //$NON-NLS-1$
 		add(new JLabel(helpL), c);
+	}
+
+	@Override
+	public Component get() {
+		return this;
 	}
 
 }

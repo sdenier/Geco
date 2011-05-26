@@ -4,6 +4,7 @@
  */
 package net.geco.ui.config;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -130,6 +131,11 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 			zerohourF.setText(formatter.format(geco.stage().getZeroHour()));
 			return false;
 		}
+	}
+
+	@Override
+	public Component get() {
+		return this;
 	}
 
 }

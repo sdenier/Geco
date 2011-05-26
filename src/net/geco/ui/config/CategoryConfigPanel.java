@@ -4,6 +4,7 @@
  */
 package net.geco.ui.config;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
@@ -120,6 +121,11 @@ public class CategoryConfigPanel extends ConfigTablePanel<Category> implements C
 		Vector<String> sortedCoursenames = new Vector<String>( geco.registry().getSortedCoursenames() );
 		sortedCoursenames.add(0, ""); //$NON-NLS-1$
 		coursesCB.setModel(new DefaultComboBoxModel(sortedCoursenames));
+	}
+
+	@Override
+	public Component get() {
+		return this;
 	}
 	
 }

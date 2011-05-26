@@ -4,6 +4,7 @@
  */
 package net.geco.ui.config;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -173,7 +174,12 @@ public class CourseConfigPanel extends ConfigTablePanel<Course> implements Confi
 				}
 
 			}
-};
+		};
+	}
+
+	@Override
+	public Component get() {
+		return this;
 	}
 
 }

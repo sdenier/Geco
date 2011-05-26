@@ -4,6 +4,7 @@
  */
 package net.geco.ui.config;
 
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -75,6 +76,11 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 			stagenameF.setText(geco.stage().getName());
 			return false;
 		}	
+	}
+
+	@Override
+	public Component get() {
+		return this;
 	}
 
 }

@@ -5,10 +5,14 @@
 package net.geco.ui.tabs;
 
 import java.awt.BorderLayout;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
+import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JPanel;
 
 import net.geco.framework.IGecoApp;
 import net.geco.model.Messages;
@@ -24,16 +28,20 @@ import net.geco.ui.framework.TabPanel;
  */
 public class StagePanel extends TabPanel {
 
+	private Vector<String> labels;
+	private Map<String,JPanel> configs;
+	
 	public StagePanel(IGecoApp geco, JFrame frame) {
 		super(geco, frame);
-		refresh();
+		labels = new Vector<String>();
+		configs = new HashMap<String, JPanel>();
 	}
 	
 	public void refresh() {
 		this.removeAll();
 		
 		setLayout(new BorderLayout());
-		add(new JList(), BorderLayout.WEST);
+		add(new JList(labels), BorderLayout.WEST);
 	}
 
 	@Override
@@ -42,10 +50,25 @@ public class StagePanel extends TabPanel {
 	}
 
 	public void addConfigPanels(ConfigPanel[] configPanels) {
-		// TODO Auto-generated method stub
-		
+		for (ConfigPanel configPanel : configPanels) {
+			addConfigPanel(configPanel);
+		}
 	}	
 		
+	public void addConfigPanel(ConfigPanel configPanel) {
+		String label = configPanel.getLabel();
+		if( ! configs.containsKey(label) ){
+			labels.add(label);
+			configs.put(label, new JPanel());
+		}
+		getConfigFor(label).add(configPanel.get());
+		refresh();
+	}
+
+	public JPanel getConfigFor(String label) {
+		return configs.get(label);
+	}
+
 	@Override
 	public void changed(Stage previous, Stage next) {
 		refresh();

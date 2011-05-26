@@ -4,6 +4,7 @@
  */
 package net.geco.ui.config;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -87,6 +88,11 @@ public class ClubConfigPanel extends ConfigTablePanel<Club> implements ConfigPan
 				tableModel,
 				addAction,
 				removeAction);
+	}
+
+	@Override
+	public Component get() {
+		return this;
 	}
 	
 }
