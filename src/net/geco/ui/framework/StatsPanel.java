@@ -25,8 +25,12 @@ public abstract class StatsPanel extends TabPanel implements Announcer.StageConf
 		super(geco, frame);
 		geco().announcer().registerStageConfigListener(this);
 	}
-
 	
+	@Override
+	public String getTabTitle() {
+		return "Stats";
+	}
+
 	protected Thread startAutoUpdate() {
 		updateThread = new Thread(new Runnable() {
 			@Override
