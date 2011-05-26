@@ -65,4 +65,7 @@ public abstract class TabPanel extends GecoPanel implements StageListener, Compo
 	public void componentHidden(ComponentEvent e) {
 	}
 
+	abstract
+	public String getTabTitle();
+
 }

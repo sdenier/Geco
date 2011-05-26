@@ -70,7 +70,11 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 	private JFileChooser filePane;
 	private String exportFormat;
 
-	
+	@Override
+	public String getTabTitle() {
+		return Messages.uiGet("GecoWindow.Heats");
+	}
+
 	public HeatsPanel(IGecoApp geco, JFrame frame) {
 		super(geco, frame);
 		heatlistModel = new DefaultListModel();

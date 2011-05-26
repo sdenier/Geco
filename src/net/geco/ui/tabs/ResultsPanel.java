@@ -87,6 +87,10 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	private JSpinner autodelayS;
 	private JRadioButton refreshRB;
 
+	@Override
+	public String getTabTitle() {
+		return Messages.uiGet("GecoWindow.Results");
+	}
 
 	/**
 	 * @param geco

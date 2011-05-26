@@ -89,6 +89,12 @@ public class RunnersPanel extends TabPanel
 	private PunchPanel tracePanel;
 	private LiveComponent gecoLiveMap;
 
+
+	@Override
+	public String getTabTitle() {
+		return Messages.uiGet("GecoWindow.Runners");
+	}
+
 	
 	public RunnersPanel(IGecoApp geco, JFrame frame) {
 		super(geco, frame);
