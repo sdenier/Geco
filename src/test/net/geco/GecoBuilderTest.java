@@ -4,6 +4,8 @@
  */
 package test.net.geco;
 
+import javax.swing.JFrame;
+
 import junit.framework.Assert;
 import net.geco.Geco;
 import net.geco.GecoLauncher;
@@ -13,6 +15,9 @@ import net.geco.basics.Announcer;
 import net.geco.control.GecoControl;
 import net.geco.framework.IGecoApp;
 import net.geco.ui.GecoWindow;
+import net.geco.ui.framework.ConfigPanel;
+import net.geco.ui.framework.TabPanel;
+import net.geco.ui.tabs.StagePanel;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,12 +32,13 @@ import org.mockito.Mockito;
 public class GecoBuilderTest {
 	
 	private AppBuilder mockBuilder;
-	private GecoLauncher mockLauncher;
+	private IGecoApp mockGeco;
 
 	@Before
 	public void setUp(){
-		mockLauncher = Mockito.mock(GecoLauncher.class);
 		mockBuilder = Mockito.mock(AppBuilder.class);
+		mockGeco = Mockito.mock(IGecoApp.class);
+		Mockito.when(mockGeco.announcer()).thenReturn(new Announcer());
 	}
 	
 	@Test
@@ -54,17 +60,33 @@ public class GecoBuilderTest {
 
 	@Test
 	public void gecoInitialization(){
-		Geco geco = Geco.withMock(mockBuilder);
+		Geco geco = new Geco("testData/valid", mockBuilder);
 		Mockito.verify(mockBuilder, Mockito.times(1)).buildControls(Matchers.any(GecoControl.class));
 	}
 
 	@Test
 	public void gecoWindowInitialization(){
-		IGecoApp mockGeco = Mockito.mock(IGecoApp.class);
-		Mockito.when(mockGeco.announcer()).thenReturn(new Announcer());
-//		Mockito.when(mockGeco.stage()).thenReturn(new StageImpl());
 		GecoWindow window = new GecoWindow(mockGeco, mockBuilder);
 		Mockito.verify(mockBuilder, Mockito.times(1)).buildUITabs(Matchers.eq(mockGeco), window);
+		Mockito.verify(mockBuilder, Mockito.times(1)).buildConfigPanels(Matchers.eq(mockGeco), window);
 	}
 
+	@Test
+	public void gecoUiTabsInitialization(){
+		StagePanel stagePanel = new StagePanel(mockGeco, Mockito.mock(JFrame.class));
+		TabPanel mockTab = Mockito.mock(TabPanel.class);
+		GecoWindow window = new GecoWindow(Mockito.mock(IGecoApp.class), mockBuilder);
+		window.guiInit(stagePanel, new TabPanel[] { mockTab }, new ConfigPanel[0]);
+		Mockito.verify(mockTab, Mockito.times(1)).getTabTitle();
+		Assert.assertEquals(mockTab, window.getComponent(0));
+	}
+
+	@Test
+	public void stagePanelSetupWithTabs(){
+		StagePanel stagePanel = new StagePanel(mockGeco, Mockito.mock(JFrame.class));
+		ConfigPanel mockConfig = Mockito.mock(ConfigPanel.class);
+		stagePanel.addConfigPanels(new ConfigPanel[] { mockConfig });
+		Mockito.verify(mockConfig, Mockito.times(1)).getLabel();
+	}
+	
 }

@@ -28,6 +28,13 @@ import net.geco.functions.RecheckFunction;
 import net.geco.functions.StartTimeFunction;
 import net.geco.model.Factory;
 import net.geco.model.impl.POFactory;
+import net.geco.ui.config.CategoryConfigPanel;
+import net.geco.ui.config.ClubConfigPanel;
+import net.geco.ui.config.CourseConfigPanel;
+import net.geco.ui.config.PenaltyCheckerConfigPanel;
+import net.geco.ui.config.SIReaderConfigPanel;
+import net.geco.ui.config.StageConfigPanel;
+import net.geco.ui.framework.ConfigPanel;
 import net.geco.ui.framework.TabPanel;
 import net.geco.ui.tabs.HeatsPanel;
 import net.geco.ui.tabs.LogPanel;
@@ -87,7 +94,18 @@ public class OrientShowAppBuilder extends AppBuilder {
 				new HeatsPanel(geco, frame)
 		};
 	}
+
+	@Override
+	public ConfigPanel[] buildConfigPanels(IGecoApp geco, JFrame frame) {
+		return new ConfigPanel[] {
+				new StageConfigPanel(geco, frame),
+				new PenaltyCheckerConfigPanel(geco),
+				new SIReaderConfigPanel(geco),
+				new ClubConfigPanel(geco, frame),
+				new CourseConfigPanel(geco, frame),
+				new CategoryConfigPanel(geco, frame)
 	
-	
+		};
+	}
 
 }

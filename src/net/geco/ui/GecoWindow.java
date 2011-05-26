@@ -49,11 +49,8 @@ import net.geco.model.Stage;
 import net.geco.ui.basics.GecoLauncher;
 import net.geco.ui.basics.GecoStatusBar;
 import net.geco.ui.basics.StartStopButton;
+import net.geco.ui.framework.ConfigPanel;
 import net.geco.ui.framework.TabPanel;
-import net.geco.ui.tabs.HeatsPanel;
-import net.geco.ui.tabs.LogPanel;
-import net.geco.ui.tabs.ResultsPanel;
-import net.geco.ui.tabs.RunnersPanel;
 import net.geco.ui.tabs.StagePanel;
 
 
@@ -72,16 +69,6 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 	}
 
 	private IGecoApp geco;
-
-	private StagePanel stagePanel;
-	
-	private RunnersPanel runnersPanel;
-	
-	private LogPanel logPanel;
-	
-	private ResultsPanel resultsPanel;
-
-	private HeatsPanel heatsPanel;
 
 	private StartStopButton startB;
 
@@ -110,35 +97,14 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		});
 	}
 	
-	public GecoWindow(IGecoApp geco) {
-		this.geco = geco;
-		setLookAndFeel();
-		this.stagePanel = new StagePanel(this.geco, this);
-		this.runnersPanel = new RunnersPanel(this.geco, this);
-		this.logPanel = new LogPanel(this.geco, this);
-		this.resultsPanel = new ResultsPanel(this.geco, this);
-		this.heatsPanel = new HeatsPanel(this.geco, this);
-		geco.announcer().registerStageListener(this);
-		geco.announcer().registerStationListener(this);
-		guiInit();
-	}
-	
-	/**
-	 * @param mock
-	 * @param mockBuilder
-	 */
+
 	public GecoWindow(IGecoApp geco, AppBuilder builder) {
 		this.geco = geco;
 		setLookAndFeel();
-		this.stagePanel = new StagePanel(this.geco, this);
-		TabPanel[] uiTabs = builder.buildUITabs(geco, this);
-//		this.runnersPanel = new RunnersPanel(this.geco, this);
-//		this.logPanel = new LogPanel(this.geco, this);
-//		this.resultsPanel = new ResultsPanel(this.geco, this);
-//		this.heatsPanel = new HeatsPanel(this.geco, this);
+		StagePanel stagePanel = new StagePanel(this.geco, this);
 		geco.announcer().registerStageListener(this);
 		geco.announcer().registerStationListener(this);
-		guiInit();
+		guiInit(stagePanel, builder.buildUITabs(geco, this), builder.buildConfigPanels(geco, this));
 	}
 
 	private void setLookAndFeel() {
@@ -161,15 +127,16 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		}
 	}
 
-	public void guiInit() {
+	public void guiInit(StagePanel stagePanel, TabPanel[] uiTabs, ConfigPanel[] configPanels) {
 		updateWindowTitle();
 		getContentPane().add(initToolbar(), BorderLayout.NORTH);
 		final JTabbedPane pane = new JTabbedPane();
-		pane.addTab(Messages.uiGet("GecoWindow.Stage"), this.stagePanel); //$NON-NLS-1$
-		pane.addTab(Messages.uiGet("GecoWindow.Runners"), this.runnersPanel); //$NON-NLS-1$
-		pane.addTab(Messages.uiGet("GecoWindow.Log"), this.logPanel); //$NON-NLS-1$
-		pane.addTab(Messages.uiGet("GecoWindow.Results"), this.resultsPanel); //$NON-NLS-1$
-		pane.addTab(Messages.uiGet("GecoWindow.Heats"), this.heatsPanel); //$NON-NLS-1$
+		pane.addTab(Messages.uiGet("GecoWindow.Stage"), stagePanel); //$NON-NLS-1$
+		for (TabPanel tabPanel : uiTabs) {
+			pane.addTab(tabPanel.getTabTitle(), tabPanel);
+		}
+		stagePanel.addConfigPanels(configPanels);
+		
 		setKeybindings(pane);
 		getContentPane().add(pane, BorderLayout.CENTER);
 		
@@ -293,7 +260,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		liveMapB.setToolTipText(Messages.uiGet("GecoWindow.LivemapTooltip")); //$NON-NLS-1$
 		liveMapB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				runnersPanel.openMapWindow();
+//				runnersPanel.openMapWindow(); // TODO: extract Map from RunnersPanel
 			}
 		});
 		toolBar.add(liveMapB);

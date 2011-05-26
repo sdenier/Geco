@@ -10,6 +10,7 @@ import net.geco.control.GecoControl;
 import net.geco.control.StageBuilder;
 import net.geco.framework.IGecoApp;
 import net.geco.model.Factory;
+import net.geco.ui.framework.ConfigPanel;
 import net.geco.ui.framework.TabPanel;
 
 /**
@@ -50,5 +51,7 @@ public abstract class AppBuilder {
 	public abstract void buildControls(GecoControl gecoControl);
 	
 	public abstract TabPanel[] buildUITabs(IGecoApp geco, JFrame frame);
+
+	public abstract ConfigPanel[] buildConfigPanels(IGecoApp eq, JFrame window);
 
 }

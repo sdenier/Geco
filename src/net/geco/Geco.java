@@ -95,7 +95,11 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 			GecoMacos.earlySetup();
 		}
 
-		launchGeco(new OrientShowAppBuilder());
+		final Geco geco = new Geco(startDir, new OrientShowAppBuilder());
+		if( GecoResources.platformIsMacOs() ) {
+			GecoMacos.setupQuitAction(geco);
+		}
+		geco.window.launchGUI();
 	}
 	
 	private static void setLaunchOptions(String[] args) {
@@ -116,18 +120,6 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 			}
 			System.out.println(Messages.getString("Geco.UnrecognizedOptionWarning") + arg); //$NON-NLS-1$
 		}
-	}
-
-	public static void launchGeco(AppBuilder builder) {
-		final Geco geco = new Geco(startDir, builder);
-		if( GecoResources.platformIsMacOs() ) {
-			GecoMacos.setupQuitAction(geco);
-		}
-		geco.window.launchGUI();
-	}
-	
-	public static Geco withMock(AppBuilder builder){
-		return null;
 	}
 	
 	public String version() {
