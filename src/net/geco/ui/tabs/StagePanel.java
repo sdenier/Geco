@@ -5,6 +5,7 @@
 package net.geco.ui.tabs;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -39,10 +40,33 @@ public class StagePanel extends TabPanel {
 		labels = new Vector<String>();
 		configs = new HashMap<String, JPanel>();
 	}
-	
-	public void refresh() {
-		this.removeAll();
+
+	@Override
+	public String getTabTitle() {
+		return Messages.uiGet("GecoWindow.Stage");
+	}
+
+	public void buildConfigPanels(ConfigPanel[] configPanels) {
+		for (ConfigPanel configPanel : configPanels) {
+			addConfigPanel(configPanel);
+		}
+		buildGUI();
+	}	
 		
+	public void addConfigPanel(ConfigPanel configPanel) {
+		String label = configPanel.getLabel();
+		if( ! configs.containsKey(label) ){
+			labels.add(label);
+			configs.put(label, new JPanel(new FlowLayout(FlowLayout.LEFT)));
+		}
+		getConfigFor(label).add(configPanel.build());
+	}
+	
+	public JPanel getConfigFor(String label) {
+		return configs.get(label);
+	}
+	
+	public void buildGUI() {
 		setLayout(new BorderLayout());
 		final JList labelList = new JList(labels);
 		labelList.addListSelectionListener(new ListSelectionListener() {
@@ -60,11 +84,6 @@ public class StagePanel extends TabPanel {
 		labelList.setSelectedIndex(0); // first selected by default
 	}
 
-	@Override
-	public String getTabTitle() {
-		return Messages.uiGet("GecoWindow.Stage");
-	}
-	
 	public void showConfigPanelFor(String label){
 		remove(displayedConfig);
 		displayedConfig = getConfigFor(label);
@@ -72,29 +91,9 @@ public class StagePanel extends TabPanel {
 		frame().repaint();
 	}
 
-	public void addConfigPanels(ConfigPanel[] configPanels) {
-		for (ConfigPanel configPanel : configPanels) {
-			addConfigPanel(configPanel);
-		}
-	}	
-		
-	public void addConfigPanel(ConfigPanel configPanel) {
-		String label = configPanel.getLabel();
-		if( ! configs.containsKey(label) ){
-			labels.add(label);
-			configs.put(label, new JPanel());
-		}
-		getConfigFor(label).add(configPanel.get());
-		refresh();
-	}
-
-	public JPanel getConfigFor(String label) {
-		return configs.get(label);
-	}
-
 	@Override
 	public void changed(Stage previous, Stage next) {
-		refresh();
+		buildGUI();
 		frame().repaint();
 	}
 
