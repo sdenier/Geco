@@ -16,6 +16,6 @@ public interface ConfigPanel {
 	
 	public String getLabel();
 	
-	public Component get();
+	public Component build();
 
 }

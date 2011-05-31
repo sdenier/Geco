@@ -178,7 +178,7 @@ public class CourseConfigPanel extends ConfigTablePanel<Course> implements Confi
 	}
 
 	@Override
-	public Component get() {
+	public Component build() {
 		return this;
 	}
 

@@ -91,7 +91,7 @@ public class ClubConfigPanel extends ConfigTablePanel<Club> implements ConfigPan
 	}
 
 	@Override
-	public Component get() {
+	public Component build() {
 		return this;
 	}
 	

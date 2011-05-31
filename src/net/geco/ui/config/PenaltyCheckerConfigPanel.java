@@ -90,7 +90,7 @@ public class PenaltyCheckerConfigPanel extends JPanel implements ConfigPanel {
 	}
 
 	@Override
-	public Component get() {
+	public Component build() {
 		return this;
 	}
 

@@ -124,7 +124,7 @@ public class CategoryConfigPanel extends ConfigTablePanel<Category> implements C
 	}
 
 	@Override
-	public Component get() {
+	public Component build() {
 		return this;
 	}
 	
