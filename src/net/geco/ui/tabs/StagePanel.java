@@ -13,6 +13,8 @@ import java.util.Vector;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import net.geco.framework.IGecoApp;
 import net.geco.model.Messages;
@@ -30,6 +32,7 @@ public class StagePanel extends TabPanel {
 
 	private Vector<String> labels;
 	private Map<String,JPanel> configs;
+	private JPanel displayedConfig;
 	
 	public StagePanel(IGecoApp geco, JFrame frame) {
 		super(geco, frame);
@@ -41,12 +44,32 @@ public class StagePanel extends TabPanel {
 		this.removeAll();
 		
 		setLayout(new BorderLayout());
-		add(new JList(labels), BorderLayout.WEST);
+		final JList labelList = new JList(labels);
+		labelList.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				if( !e.getValueIsAdjusting() ){
+					String selectedLabel = (String) labelList.getSelectedValue();
+					showConfigPanelFor(selectedLabel);
+				}
+			}
+		});
+		add(labelList, BorderLayout.WEST);
+		displayedConfig = new JPanel(); // null object
+		add(displayedConfig, BorderLayout.CENTER);
+		labelList.setSelectedIndex(0); // first selected by default
 	}
 
 	@Override
 	public String getTabTitle() {
 		return Messages.uiGet("GecoWindow.Stage");
+	}
+	
+	public void showConfigPanelFor(String label){
+		remove(displayedConfig);
+		displayedConfig = getConfigFor(label);
+		add(displayedConfig, BorderLayout.CENTER);
+		frame().repaint();
 	}
 
 	public void addConfigPanels(ConfigPanel[] configPanels) {
