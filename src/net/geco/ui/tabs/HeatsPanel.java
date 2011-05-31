@@ -72,7 +72,7 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 
 	@Override
 	public String getTabTitle() {
-		return Messages.uiGet("GecoWindow.Heats");
+		return Messages.uiGet("HeatsPanel.Title");
 	}
 
 	public HeatsPanel(IGecoApp geco, JFrame frame) {

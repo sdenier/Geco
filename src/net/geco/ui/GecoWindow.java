@@ -144,7 +144,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		stagePanel.buildConfigPanels(configPanels);
 		
 		final JTabbedPane pane = new JTabbedPane();
-		pane.addTab(Messages.uiGet("GecoWindow.Stage"), stagePanel); //$NON-NLS-1$
+		pane.addTab(stagePanel.getTabTitle(), stagePanel);
 		for (TabPanel tabPanel : uiTabs) {
 			pane.addTab(tabPanel.getTabTitle(), tabPanel);
 		}

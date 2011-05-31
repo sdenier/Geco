@@ -46,7 +46,7 @@ public class StagePanel extends TabPanel {
 
 	@Override
 	public String getTabTitle() {
-		return Messages.uiGet("GecoWindow.Stage");
+		return Messages.uiGet("StagePanel.Title");
 	}
 
 	public void buildConfigPanels(ConfigPanel[] configPanels) {

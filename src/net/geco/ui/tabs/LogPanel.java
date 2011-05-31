@@ -39,7 +39,7 @@ public class LogPanel extends TabPanel implements Logging {
 	
 	@Override
 	public String getTabTitle() {
-		return Messages.uiGet("GecoWindow.Log");
+		return Messages.uiGet("LogPanel.Title");
 	}
 
 	public LogPanel(IGecoApp geco, JFrame frame) {

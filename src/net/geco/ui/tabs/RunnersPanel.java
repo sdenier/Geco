@@ -92,7 +92,7 @@ public class RunnersPanel extends TabPanel
 
 	@Override
 	public String getTabTitle() {
-		return Messages.uiGet("GecoWindow.Runners");
+		return Messages.uiGet("RunnersPanel.Title");
 	}
 
 	

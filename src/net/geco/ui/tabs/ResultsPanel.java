@@ -89,7 +89,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 
 	@Override
 	public String getTabTitle() {
-		return Messages.uiGet("GecoWindow.Results");
+		return Messages.uiGet("ResultsPanel.Title");
 	}
 
 	/**
