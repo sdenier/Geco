@@ -1,5 +1,5 @@
 Geco readme file version 1.1
-Copyright (c) 2008-2010 Simon Denier
+Copyright (c) 2008-2011 Simon Denier
 Contact: http://www.simondenier.eu
 
 Geco is a lightweight application for managing orienteering races.
