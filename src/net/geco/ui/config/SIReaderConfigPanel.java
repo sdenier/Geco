@@ -11,16 +11,10 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.TimeZone;
 
-import javax.swing.InputVerifier;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import net.geco.control.SIReaderHandler.SerialPort;
 import net.geco.control.SingleSplitPrinter;
@@ -53,39 +47,8 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 				geco.siHandler().setPort( (SerialPort) stationPortCB.getSelectedItem() );
 			}
 		});
-		
-		// TODO: move zero hour config to stageconfig
-		c.gridy = 1;
-		add(new JLabel(Messages.uiGet("StagePanel.ZeroHourLabel")), c); //$NON-NLS-1$
-		final SimpleDateFormat formatter = new SimpleDateFormat("H:mm"); //$NON-NLS-1$
-		formatter.setTimeZone(TimeZone.getTimeZone("GMT")); //$NON-NLS-1$
-		final JTextField zerohourF = new JTextField(formatter.format(geco.stage().getZeroHour()));
-		zerohourF.setColumns(7);
-		zerohourF.setToolTipText(Messages.uiGet("StagePanel.ZeroHourTooltip")); //$NON-NLS-1$
-		add(zerohourF, c);
-		zerohourF.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				validateZeroHour(formatter, zerohourF, geco);
-			}
-		});
-		zerohourF.setInputVerifier(new InputVerifier() {
-			@Override
-			public boolean verify(JComponent input) {
-				try {
-					formatter.parse(zerohourF.getText());
-					return true;
-				} catch (ParseException e) {
-					return false;
-				}
-			}
-			@Override
-			public boolean shouldYieldFocus(JComponent input) {
-				return validateZeroHour(formatter, zerohourF, geco);
-			}
-		});
 	
-		c.gridy = 2;
+		c.gridy = 1;
 		add(new JLabel(Messages.uiGet("StagePanel.SplitPrinterLabel")), c); //$NON-NLS-1$
 		final JComboBox printersCB = new JComboBox(geco.splitPrinter().listPrinterNames());
 		printersCB.setPreferredSize(new Dimension(170, stationPortCB.getPreferredSize().height));
@@ -98,7 +61,7 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 			}
 		});
 		
-		c.gridy = 3;
+		c.gridy = 2;
 		add(new JLabel(Messages.uiGet("StagePanel.SplitFormatLabel")), c); //$NON-NLS-1$
 		final JComboBox splitFormatCB = new JComboBox(SingleSplitPrinter.SplitFormat.values());
 		splitFormatCB.setPreferredSize(new Dimension(170, stationPortCB.getPreferredSize().height));
@@ -117,24 +80,8 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 		return Messages.uiGet("StagePanel.SIReaderConfigTitle"); //$NON-NLS-1$
 	}
 
-	
-	private boolean validateZeroHour(SimpleDateFormat formatter, JTextField zerohourF, IGecoApp geco) {
-		try {
-			long oldTime = geco.stage().getZeroHour();
-			long zeroTime = formatter.parse(zerohourF.getText()).getTime();
-			geco.stage().setZeroHour(zeroTime);
-			geco.siHandler().changeZeroTime();
-			geco.runnerControl().updateRegisteredStarttimes(zeroTime, oldTime);
-			return true;
-		} catch (ParseException e1) {
-			geco.info(Messages.uiGet("StagePanel.ZeroHourBadFormatWarning"), true); //$NON-NLS-1$
-			zerohourF.setText(formatter.format(geco.stage().getZeroHour()));
-			return false;
-		}
-	}
-
 	@Override
-	public Component get() {
+	public Component build() {
 		return this;
 	}
 
