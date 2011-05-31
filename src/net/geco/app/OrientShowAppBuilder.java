@@ -99,12 +99,11 @@ public class OrientShowAppBuilder extends AppBuilder {
 	public ConfigPanel[] buildConfigPanels(IGecoApp geco, JFrame frame) {
 		return new ConfigPanel[] {
 				new StageConfigPanel(geco, frame),
-				new PenaltyCheckerConfigPanel(geco),
 				new SIReaderConfigPanel(geco),
-				new ClubConfigPanel(geco, frame),
+				new PenaltyCheckerConfigPanel(geco),
 				new CourseConfigPanel(geco, frame),
-				new CategoryConfigPanel(geco, frame)
-	
+				new CategoryConfigPanel(geco, frame),
+				new ClubConfigPanel(geco, frame),
 		};
 	}
 
