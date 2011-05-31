@@ -10,7 +10,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -52,7 +51,6 @@ public class ConfigTablePanel<T> extends JPanel {
 
 	private void initTable(String panelTitle, ConfigTableModel<T> tableModel) {
 		setLayout(new BorderLayout());
-		setBorder(BorderFactory.createTitledBorder(panelTitle));
 		this.tableModel = tableModel;
 		table = new JTable(tableModel);
 

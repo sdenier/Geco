@@ -5,15 +5,18 @@
 package net.geco.ui.tabs;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -58,6 +61,7 @@ public class StagePanel extends TabPanel {
 		if( ! configs.containsKey(label) ){
 			labels.add(label);
 			configs.put(label, new JPanel(new FlowLayout(FlowLayout.LEFT)));
+			getConfigFor(label).setBorder(BorderFactory.createTitledBorder(label));
 		}
 		getConfigFor(label).add(configPanel.build());
 	}
@@ -78,7 +82,10 @@ public class StagePanel extends TabPanel {
 				}
 			}
 		});
-		add(labelList, BorderLayout.WEST);
+		JScrollPane jsp = new JScrollPane(labelList);
+		jsp.setPreferredSize(new Dimension(150, 200));
+		add(jsp, BorderLayout.WEST);
+
 		displayedConfig = new JPanel(); // null object
 		add(displayedConfig, BorderLayout.CENTER);
 		labelList.setSelectedIndex(0); // first selected by default
