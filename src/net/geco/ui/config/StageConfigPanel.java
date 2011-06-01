@@ -14,8 +14,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
+import javax.swing.ImageIcon;
 import javax.swing.InputVerifier;
+import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -93,6 +96,51 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 				return validateZeroHour(formatter, zerohourF, geco);
 			}
 		});
+		
+		c.gridy = 2;
+		add(new JLabel("Runner archive"), c);
+		final JTextField archiveF = new JTextField();
+		archiveF.setEditable(false);
+		archiveF.setText(geco.archiveManager().getArchiveName()); // TODO: refresh
+		add(archiveF, c);
+		JButton selectArchiveFileB = new JButton(
+				new ImageIcon(getClass().getResource("/resources/icons/crystal/db.png"))); //$NON-NLS-1$
+		selectArchiveFileB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir")); //$NON-NLS-1$
+				fileChooser.setDialogTitle(Messages.uiGet("ArchiveViewer.SelectArchiveLabel")); //$NON-NLS-1$
+				int answer = fileChooser.showOpenDialog(frame);
+				if( answer==JFileChooser.APPROVE_OPTION ) {
+					geco.archiveManager().setArchiveFile(fileChooser.getSelectedFile());
+					archiveF.setText(geco.archiveManager().getArchiveName()); // TODO: refresh
+				}
+			}
+		});
+		add(selectArchiveFileB, c);
+
+		c.gridy = 3;
+		add(new JLabel("CN base"), c);
+		final JTextField cnScoreF = new JTextField();
+		cnScoreF.setEditable(false);
+		cnScoreF.setText(geco.cnCalculator().getCnFile().getName());
+		add(cnScoreF, c);
+		JButton selectCNFileB = new JButton(
+				new ImageIcon(getClass().getResource("/resources/icons/crystal/db.png"))); //$NON-NLS-1$
+		selectCNFileB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir")); //$NON-NLS-1$
+				fileChooser.setDialogTitle("Select CN file"); //$NON-NLS-1$
+				int answer = fileChooser.showOpenDialog(frame);
+				if( answer==JFileChooser.APPROVE_OPTION ) {
+					geco.cnCalculator().setCnFile(fileChooser.getSelectedFile());
+					cnScoreF.setText(geco.cnCalculator().getCnFile().getName());
+				}
+			}
+		});
+		add(selectCNFileB, c);
+		
 	}
 	
 	private boolean verifyStagename(String text) {

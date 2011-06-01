@@ -60,6 +60,11 @@ public class ArchiveManager extends OEImporter implements StageListener {
 		super.loadArchiveFrom(archiveFile);
 	}
 	
+	public void setArchiveFile(File archiveFile) {
+		this.archiveFile = archiveFile;
+		archive = null;
+	}
+	
 	public String getArchiveName() {
 		return ( archiveFile==null )? " " : archiveFile.getName(); //$NON-NLS-1$
 	}

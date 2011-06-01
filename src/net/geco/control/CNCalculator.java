@@ -10,8 +10,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Vector;
 
+import net.geco.basics.Announcer.StageListener;
 import net.geco.basics.Html;
 import net.geco.control.ResultBuilder.ResultConfig;
 import net.geco.model.Messages;
@@ -21,6 +23,7 @@ import net.geco.model.ResultType;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.RunnerResult;
+import net.geco.model.Stage;
 import net.geco.model.iocsv.CsvWriter;
 
 
@@ -29,15 +32,17 @@ import net.geco.model.iocsv.CsvWriter;
  * @since Nov 26, 2010
  *
  */
-public class CNCalculator extends AResultExporter {
+public class CNCalculator extends AResultExporter implements StageListener {
 
+	private File cnFile = new File("data/CN-Ped-Base.csv");
+	
 	private Map<Integer, Integer> cnScores;
 	
 	public class CNImporter extends OEImporter {
 		protected CNImporter(GecoControl gecoControl) {
 			super(gecoControl);
 			try {
-				loadArchiveFrom(new File("data/CN-Ped-Base.csv")); //$NON-NLS-1$
+				loadArchiveFrom(getCnFile()); //$NON-NLS-1$
 			} catch (IOException e) {
 				gecoControl.debug(e.toString());
 			}
@@ -47,8 +52,6 @@ public class CNCalculator extends AResultExporter {
 		protected void importRunnerRecord(String[] record) {
 //			licence -> CN
 			cnScores.put(Integer.valueOf(trimQuotes(record[4])), Integer.valueOf(trimQuotes(record[1])));
-//			MIGR11 Old CN format
-//			cnScores.put(Integer.valueOf(trimQuotes(record[1])), Integer.valueOf(trimQuotes(record[9])));
 		}
 		
 	}
@@ -59,6 +62,17 @@ public class CNCalculator extends AResultExporter {
 	 */
 	public CNCalculator(GecoControl gecoControl) {
 		super(CNCalculator.class, gecoControl);
+		geco().announcer().registerStageListener(this);
+		changed(null, null);
+	}
+	
+	public File getCnFile() {
+		return cnFile;
+	}
+
+	public void setCnFile(File cnFile) {
+		cnScores = null;
+		this.cnFile = cnFile;
 	}
 
 	private void importCN() {
@@ -74,7 +88,7 @@ public class CNCalculator extends AResultExporter {
 	@Override
 	public String generateHtmlResults(ResultConfig config, int refreshDelay) {
 		if( config.resultType!=ResultType.CourseResult )
-			return ""; //$NON-NLS-1$
+			return "CN scores can only be computed on courses";
 
 		importCN();
 		Html html = new Html();
@@ -171,6 +185,27 @@ public class CNCalculator extends AResultExporter {
 			String rankOrStatus, String timeOrStatus, boolean showPenalties,
 			CsvWriter writer) throws IOException {
 		// do nothing
+	}
+
+	@Override
+	public void changed(Stage previous, Stage current) {
+		try {
+			setCnFile(new File( stage().getProperties().getProperty(cnFileProperty()) ));
+		} catch (NullPointerException e) {
+			
+		}
+	}
+
+	@Override
+	public void saving(Stage stage, Properties properties) {
+		properties.setProperty(cnFileProperty(), getCnFile().getAbsolutePath());
+	}
+
+	@Override
+	public void closing(Stage stage) {}
+
+	public static String cnFileProperty() {
+		return "CNFile";
 	}
 
 }
