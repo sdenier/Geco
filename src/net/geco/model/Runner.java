@@ -12,6 +12,10 @@ import java.util.Date;
  */
 public interface Runner extends AbstractRunner {
 
+	public Integer getStartId();
+
+	public void setStartId(Integer id);
+
 	public int getStartnumber();
 
 	public void setStartnumber(int startnumber);

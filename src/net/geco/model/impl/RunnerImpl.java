@@ -19,6 +19,8 @@ import net.geco.model.Runner;
  */
 public class RunnerImpl extends AbstractRunnerImpl implements Runner {
 	
+	private Integer startId;
+
 	private int startnumber;
 	
 	private Date starttime;
@@ -32,6 +34,16 @@ public class RunnerImpl extends AbstractRunnerImpl implements Runner {
 	
 	public RunnerImpl() {
 		this.starttime = TimeManager.NO_TIME;
+	}
+
+	@Override
+	public Integer getStartId() {
+		return startId;
+	}
+	
+	@Override
+	public void setStartId(Integer id) {
+		startId = id;
 	}
 	
 	public int getStartnumber() {
