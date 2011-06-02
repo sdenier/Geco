@@ -6,6 +6,8 @@ package net.geco.model;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Simon Denier
@@ -18,8 +20,12 @@ public class RunnerRegistry {
 	
 	private int maxStartId;
 
+	private HashMap<Category, List<Runner>> runnersByCategory;
+
+
 	public RunnerRegistry() {
 		runnersById = new HashMap<Integer, Runner>();
+		runnersByCategory = new HashMap<Category, List<Runner>>();
 		maxStartId = 0;
 	}
 
@@ -28,7 +34,7 @@ public class RunnerRegistry {
 	}
 
 	private void checkMaxStartId(Runner runner) {
-		maxStartId = Math.max(maxStartId, runner.getStartId());
+		maxStartId = Math.max(maxStartId, runner.getStartId().intValue());
 	}
 	
 	private void detectMaxStartId() {
@@ -47,27 +53,60 @@ public class RunnerRegistry {
 	}
 	
 	public void addRunner(Runner runner) {
-		addRunnerWithId(runner.getStartId(), runner);
+		addRunnerWithId(runner);
+		putRunnerInCategoryList(runner, runner.getCategory());
 	}
 
-	private void addRunnerWithId(Integer startId, Runner runner) {
-		runnersById.put(startId, runner);
-		maxStartId = Math.max(maxStartId, startId);
+	private void addRunnerWithId(Runner runner) {
+		runnersById.put(runner.getStartId(), runner);
+		checkMaxStartId(runner);
 	}
 
-	public void registerRunner(Runner runner) {
-		runner.setStartId(maxStartId + 1);
+	public void addRunnerWithoutId(Runner runner) {
+		runner.setStartId(Integer.valueOf(maxStartId + 1));
 		addRunner(runner);
+	}
+
+	public void addRunnerSafely(Runner runner) {
+		if( availableStartId(runner.getStartId()) ){
+			addRunner(runner);
+		} else {
+			addRunnerWithoutId(runner);
+		}
 	}
 
 	public void removeRunner(Runner runner) {
 		runnersById.remove(runner.getStartId());
+		runnersByCategory.get(runner.getCategory()).remove(runner);
 		detectMaxStartId();
 	}
 
 	public void updateRunnerStartId(Integer oldId, Runner runner) {
 		runnersById.remove(oldId);
-		addRunnerWithId(runner.getStartId(), runner);
+		addRunnerWithId(runner);
+	}
+
+	public boolean availableStartId(Integer id) {
+		return id!=null && ! runnersById.containsKey(id);
+	}
+
+	private void putRunnerInCategoryList(Runner runner, Category category) {
+		runnersByCategory.get(category).add(runner);
+	}
+
+	public Collection<Runner> getRunnersFromCategory(Category category) {
+		return runnersByCategory.get(category);
+	}
+
+	public void categoryCreated(Category category) { // TODO protected?
+		runnersByCategory.put(category, new LinkedList<Runner>());
+	}
+
+	public void updateRunnerCategory(Category oldCat, Runner runner) {
+		if( !oldCat.equals(runner.getCategory()) ){
+			runnersByCategory.get(oldCat).remove(runner);
+			putRunnerInCategoryList(runner, runner.getCategory());
+		}
 	}
 
 }
