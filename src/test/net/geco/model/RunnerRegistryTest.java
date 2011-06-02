@@ -12,6 +12,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 
 import net.geco.model.Category;
+import net.geco.model.Course;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRegistry;
 import net.geco.model.impl.POFactory;
@@ -37,6 +38,10 @@ public class RunnerRegistryTest {
 
 	private Category h60;
 
+	private Course cou;
+
+	private Course red;
+
 
 	@Before
 	public void setUp(){
@@ -44,6 +49,8 @@ public class RunnerRegistryTest {
 		registry = new RunnerRegistry();
 		cat = categoryFactory("cat");
 		h60 = categoryFactory("H60");
+		cou = courseFactory("course");
+		red = courseFactory("Red");
 		runner1 = factory(1);
 	}
 	
@@ -54,6 +61,7 @@ public class RunnerRegistryTest {
 	public Runner factory(){
 		Runner runner = factory.createRunner();
 		runner.setCategory(cat);
+		runner.setCourse(cou);
 		return runner;
 	}
 	
@@ -68,6 +76,13 @@ public class RunnerRegistryTest {
 		category.setShortname(name);
 		registry.categoryCreated(category);
 		return category;
+	}
+	
+	public Course courseFactory(String name){
+		Course course = factory.createCourse();
+		course.setName(name);
+		registry.courseCreated(course);
+		return course;
 	}
 	
 	@Test
@@ -229,6 +244,47 @@ public class RunnerRegistryTest {
 	/*
 	 * Runners and courses
 	 */
+	
+	@Test
+	public void addRunnerInRedCourse(){
+		runner1.setCourse(red);
+		registry.addRunner(runner1);
+		assertEquals(1, registry.getRunnersFromCourse(red).size());
+		assertTrue( registry.getRunnersFromCourse(red).contains(runner1) );
+	}
+	
+	@Test
+	public void updateRunnerCourseToYellow(){
+		addRunnerInRedCourse();
+		Course yellow = courseFactory("Yellow");
+		runner1.setCourse(yellow);
+		registry.updateRunnerCourse(red, runner1);
+		
+		assertFalse( registry.getRunnersFromCourse(red).contains(runner1) );
+		assertTrue( registry.getRunnersFromCourse(yellow).contains(runner1) );
+	}
+	
+	@Test
+	public void removeRunnerAlsoRemoveFromCourseList(){
+		addRunnerInRedCourse();
+		Runner runner = factory();
+		runner.setCourse(red);
+		registry.addRunnerSafely(runner);
+		
+		Collection<Runner> runners = registry.getRunnersFromCourse(red);
+		assertEquals(2, runners.size());
+		assertTrue(runners.contains(runner1));
+		assertTrue(runners.contains(runner));
+		
+		registry.removeRunner(runner1);
+
+		runners = registry.getRunnersFromCourse(red);
+		assertEquals(1, runners.size());
+		assertTrue(runners.contains(runner));
+		assertFalse(runners.contains(runner1));
+
+		
+	}
 	
 	/*
 	 * Runners and categories

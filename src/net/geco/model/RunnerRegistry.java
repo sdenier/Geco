@@ -18,17 +18,20 @@ public class RunnerRegistry {
 
 	private HashMap<Integer, Runner> runnersById;
 	
-	private int maxStartId;
+	private HashMap<String, Runner> runnersByEcard;
 
 	private HashMap<Category, List<Runner>> runnersByCategory;
 
-	private HashMap<String, Runner> runnersByEcard;
+	private HashMap<Course, List<Runner>> runnersByCourse;
 
+	private int maxStartId;
 
+	
 	public RunnerRegistry() {
 		runnersById = new HashMap<Integer, Runner>();
-		runnersByCategory = new HashMap<Category, List<Runner>>();
 		runnersByEcard = new HashMap<String, Runner>();
+		runnersByCategory = new HashMap<Category, List<Runner>>();
+		runnersByCourse = new HashMap<Course, List<Runner>>();
 		maxStartId = 0;
 	}
 
@@ -59,6 +62,7 @@ public class RunnerRegistry {
 		addRunnerWithId(runner);
 		putRunnerByEcard(runner);
 		putRunnerInCategoryList(runner, runner.getCategory());
+		putRunnerInCourseList(runner, runner.getCourse());
 	}
 
 	private void putRunnerByEcard(Runner runner) {
@@ -89,6 +93,7 @@ public class RunnerRegistry {
 	public void removeRunner(Runner runner) {
 		runnersById.remove(runner.getStartId());
 		runnersByEcard.remove(runner.getEcard());
+		runnersByCourse.get(runner.getCourse()).remove(runner);
 		runnersByCategory.get(runner.getCategory()).remove(runner);
 		detectMaxStartId();
 	}
@@ -126,8 +131,29 @@ public class RunnerRegistry {
 	}
 
 	public void updateRunnerEcard(String oldEcard, Runner runner) {
-		runnersByEcard.remove(oldEcard);
-		putRunnerByEcard(runner);
+		if( oldEcard==null || !oldEcard.equals(runner.getEcard()) ){
+			runnersByEcard.remove(oldEcard);
+			putRunnerByEcard(runner);
+		}
+	}
+
+	public void courseCreated(Course course) { // TODO protected?
+		runnersByCourse.put(course, new LinkedList<Runner>());
+	}
+
+	public Collection<Runner> getRunnersFromCourse(Course course) {
+		return runnersByCourse.get(course);
+	}
+	
+	private void putRunnerInCourseList(Runner runner, Course course){
+		runnersByCourse.get(course).add(runner);
+	}
+
+	public void updateRunnerCourse(Course oldCourse, Runner runner) {
+		if( !oldCourse.equals(runner.getCourse()) ){
+			runnersByCourse.get(oldCourse).remove(runner);
+			putRunnerInCourseList(runner, runner.getCourse());
+		}		
 	}
 
 }
