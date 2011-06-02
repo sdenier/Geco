@@ -14,6 +14,7 @@ import java.util.Collection;
 import net.geco.model.Category;
 import net.geco.model.Course;
 import net.geco.model.Runner;
+import net.geco.model.RunnerRaceData;
 import net.geco.model.RunnerRegistry;
 import net.geco.model.impl.POFactory;
 
@@ -337,6 +338,34 @@ public class RunnerRegistryTest {
 	/*
 	 * Runners and data
 	 */
+	
+	@Test
+	public void addRunnerData(){
+		RunnerRaceData data = factory.createRunnerRaceData();
+		data.setRunner(runner1);
+		registry.addRunnerData(data);
+		assertTrue( registry.getRunnersData().contains(data));
+	}
+	
+	@Test
+	public void findRunnerData(){
+		RunnerRaceData data = factory.createRunnerRaceData();
+		data.setRunner(runner1);
+		runner1.setEcard("100");
+		registry.addRunner(runner1);
+		registry.addRunnerData(data);
+		assertEquals( data, registry.findRunnerData(runner1) );
+		assertEquals( data, registry.findRunnerData("100") );
+	}
 
+	@Test
+	public void removeRunnerData(){
+		RunnerRaceData data = factory.createRunnerRaceData();
+		data.setRunner(runner1);
+		registry.addRunnerData(data);
+		
+		registry.removeRunnerData(data);
+		assertFalse(registry.getRunnersData().contains(data));
+	}
 
 }

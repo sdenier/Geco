@@ -24,6 +24,8 @@ public class RunnerRegistry {
 
 	private HashMap<Course, List<Runner>> runnersByCourse;
 
+	private HashMap<Runner, RunnerRaceData> runnerData;
+
 	private int maxStartId;
 
 	
@@ -32,6 +34,7 @@ public class RunnerRegistry {
 		runnersByEcard = new HashMap<String, Runner>();
 		runnersByCategory = new HashMap<Category, List<Runner>>();
 		runnersByCourse = new HashMap<Course, List<Runner>>();
+		runnerData = new HashMap<Runner, RunnerRaceData>();
 		maxStartId = 0;
 	}
 
@@ -154,6 +157,26 @@ public class RunnerRegistry {
 			runnersByCourse.get(oldCourse).remove(runner);
 			putRunnerInCourseList(runner, runner.getCourse());
 		}		
+	}
+
+	public void addRunnerData(RunnerRaceData data) {
+		runnerData.put(data.getRunner(), data);
+	}
+
+	public Collection<RunnerRaceData> getRunnersData() {
+		return runnerData.values();
+	}
+
+	public RunnerRaceData findRunnerData(Runner runner) {
+		return runnerData.get(runner);
+	}
+
+	public RunnerRaceData findRunnerData(String ecard) {
+		return runnerData.get(findRunnerByEcard(ecard));
+	}
+
+	public void removeRunnerData(RunnerRaceData data) {
+		runnerData.remove(data.getRunner());
 	}
 
 }
