@@ -22,10 +22,13 @@ public class RunnerRegistry {
 
 	private HashMap<Category, List<Runner>> runnersByCategory;
 
+	private HashMap<String, Runner> runnersByEcard;
+
 
 	public RunnerRegistry() {
 		runnersById = new HashMap<Integer, Runner>();
 		runnersByCategory = new HashMap<Category, List<Runner>>();
+		runnersByEcard = new HashMap<String, Runner>();
 		maxStartId = 0;
 	}
 
@@ -54,7 +57,15 @@ public class RunnerRegistry {
 	
 	public void addRunner(Runner runner) {
 		addRunnerWithId(runner);
+		putRunnerByEcard(runner);
 		putRunnerInCategoryList(runner, runner.getCategory());
+	}
+
+	private void putRunnerByEcard(Runner runner) {
+		String ecard = runner.getEcard();
+		if( ecard!=null && ! ecard.equals("")){
+			runnersByEcard.put(ecard, runner);
+		}
 	}
 
 	private void addRunnerWithId(Runner runner) {
@@ -77,6 +88,7 @@ public class RunnerRegistry {
 
 	public void removeRunner(Runner runner) {
 		runnersById.remove(runner.getStartId());
+		runnersByEcard.remove(runner.getEcard());
 		runnersByCategory.get(runner.getCategory()).remove(runner);
 		detectMaxStartId();
 	}
@@ -107,6 +119,15 @@ public class RunnerRegistry {
 			runnersByCategory.get(oldCat).remove(runner);
 			putRunnerInCategoryList(runner, runner.getCategory());
 		}
+	}
+
+	public Runner findRunnerByEcard(String ecard) {
+		return runnersByEcard.get(ecard);
+	}
+
+	public void updateRunnerEcard(String oldEcard, Runner runner) {
+		runnersByEcard.remove(oldEcard);
+		putRunnerByEcard(runner);
 	}
 
 }

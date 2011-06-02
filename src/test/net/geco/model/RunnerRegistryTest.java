@@ -6,6 +6,7 @@ package test.net.geco.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
@@ -128,6 +129,7 @@ public class RunnerRegistryTest {
 		addOneRunnerWithId();
 		runner1.setStartId(6);
 		registry.updateRunnerStartId(1, runner1);
+		assertEquals(null, registry.findRunnerById(1));
 		assertEquals(runner1, registry.findRunnerById(6));
 		assertEquals(1, registry.getRunners().size());
 	}
@@ -165,6 +167,64 @@ public class RunnerRegistryTest {
 	/*
 	 * Runners and ecards
 	 */
+	
+	@Test
+	public void findRunnerByEcard(){
+		runner1.setEcard("100");
+		registry.addRunner(runner1);
+		assertEquals(runner1, registry.findRunnerByEcard("100"));
+	}
+	
+	@Test
+	public void updateRunnerEcard(){
+		runner1.setEcard("100");
+		registry.addRunner(runner1);
+		runner1.setEcard("200");
+		registry.updateRunnerEcard("100", runner1);
+		assertNull(registry.findRunnerByEcard("100"));
+		assertEquals(runner1, registry.findRunnerByEcard("200"));
+	}
+	
+	@Test
+	public void deleteRunnerEcard(){
+		runner1.setEcard("100");
+		registry.addRunner(runner1);
+		
+		runner1.setEcard(null);
+		registry.updateRunnerEcard("100", runner1);
+		assertNull(registry.findRunnerByEcard("100"));
+		assertNull(registry.findRunnerByEcard(null));
+		
+		Runner runner = factory();
+		runner.setEcard("200");
+		registry.addRunnerSafely(runner);
+		assertEquals(runner, registry.findRunnerByEcard("200"));
+		
+		runner.setEcard("");
+		registry.updateRunnerEcard("200", runner);
+		assertNull(registry.findRunnerByEcard("200"));
+		assertNull(registry.findRunnerByEcard(""));
+	}
+	
+	@Test
+	public void updateRunnerWithoutEcard(){
+		registry.addRunner(runner1);
+		assertNull(registry.findRunnerByEcard(runner1.getEcard()));
+		
+		runner1.setEcard("1000");
+		registry.updateRunnerEcard(null, runner1);
+		assertEquals(runner1, registry.findRunnerByEcard(runner1.getEcard()));
+	}
+	
+	@Test
+	public void removeRunnerAlsoRemoveFromEcardList(){
+		runner1.setEcard("100");
+		registry.addRunner(runner1);
+		assertEquals(runner1, registry.findRunnerByEcard("100"));
+
+		registry.removeRunner(runner1);
+		assertNull(registry.findRunnerByEcard("100"));
+	}
 	
 	/*
 	 * Runners and courses
