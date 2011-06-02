@@ -27,6 +27,8 @@ public class RunnerRegistry {
 	private HashMap<Runner, RunnerRaceData> runnerData;
 
 	private int maxStartId;
+	
+	private Object runnersLock = new Object();
 
 	
 	public RunnerRegistry() {
@@ -54,18 +56,24 @@ public class RunnerRegistry {
 	}
 
 	public Collection<Runner> getRunners() {
-		return runnersById.values();
+		synchronized (runnersLock) {
+			return runnersById.values();
+		}
 	}
 
 	public Runner findRunnerById(Integer id) {
-		return runnersById.get(id);
+		synchronized (runnersLock) {
+			return runnersById.get(id);
+		}
 	}
 	
 	public void addRunner(Runner runner) {
-		addRunnerWithId(runner);
-		putRunnerByEcard(runner);
-		putRunnerInCategoryList(runner, runner.getCategory());
-		putRunnerInCourseList(runner, runner.getCourse());
+		synchronized (runnersLock) {
+			addRunnerWithId(runner);
+			putRunnerByEcard(runner);
+			putRunnerInCategoryList(runner, runner.getCategory());
+			putRunnerInCourseList(runner, runner.getCourse());
+		}
 	}
 
 	private void putRunnerByEcard(Runner runner) {
@@ -81,33 +89,43 @@ public class RunnerRegistry {
 	}
 
 	public void addRunnerWithoutId(Runner runner) {
-		runner.setStartId(Integer.valueOf(maxStartId + 1));
-		addRunner(runner);
+		synchronized (runnersLock) {
+			runner.setStartId(Integer.valueOf(maxStartId + 1));
+			addRunner(runner);
+		}
 	}
 
 	public void addRunnerSafely(Runner runner) {
-		if( availableStartId(runner.getStartId()) ){
-			addRunner(runner);
-		} else {
-			addRunnerWithoutId(runner);
+		synchronized (runnersLock) {
+			if( availableStartId(runner.getStartId()) ){
+				addRunner(runner);
+			} else {
+				addRunnerWithoutId(runner);
+			}
 		}
 	}
 
 	public void removeRunner(Runner runner) {
-		runnersById.remove(runner.getStartId());
-		runnersByEcard.remove(runner.getEcard());
-		runnersByCourse.get(runner.getCourse()).remove(runner);
-		runnersByCategory.get(runner.getCategory()).remove(runner);
-		detectMaxStartId();
+		synchronized (runnersLock) {
+			runnersById.remove(runner.getStartId());
+			runnersByEcard.remove(runner.getEcard());
+			runnersByCourse.get(runner.getCourse()).remove(runner);
+			runnersByCategory.get(runner.getCategory()).remove(runner);
+			detectMaxStartId();
+		}
 	}
 
 	public void updateRunnerStartId(Integer oldId, Runner runner) {
-		runnersById.remove(oldId);
-		addRunnerWithId(runner);
+		synchronized (runnersLock) {
+			runnersById.remove(oldId);
+			addRunnerWithId(runner);
+		}
 	}
 
 	public boolean availableStartId(Integer id) {
-		return id!=null && ! runnersById.containsKey(id);
+		synchronized (runnersLock) {
+			return id!=null && ! runnersById.containsKey(id);
+		}
 	}
 
 	private void putRunnerInCategoryList(Runner runner, Category category) {
@@ -115,37 +133,51 @@ public class RunnerRegistry {
 	}
 
 	public Collection<Runner> getRunnersFromCategory(Category category) {
-		return runnersByCategory.get(category);
+		synchronized (runnersLock) {
+			return runnersByCategory.get(category);
+		}
 	}
 
 	public void categoryCreated(Category category) { // TODO protected?
-		runnersByCategory.put(category, new LinkedList<Runner>());
+		synchronized (runnersLock) {
+			runnersByCategory.put(category, new LinkedList<Runner>());
+		}
 	}
 
 	public void updateRunnerCategory(Category oldCat, Runner runner) {
-		if( !oldCat.equals(runner.getCategory()) ){
-			runnersByCategory.get(oldCat).remove(runner);
-			putRunnerInCategoryList(runner, runner.getCategory());
+		synchronized (runnersLock) {
+			if( !oldCat.equals(runner.getCategory()) ){
+				runnersByCategory.get(oldCat).remove(runner);
+				putRunnerInCategoryList(runner, runner.getCategory());
+			}
 		}
 	}
 
 	public Runner findRunnerByEcard(String ecard) {
-		return runnersByEcard.get(ecard);
+		synchronized (runnersLock) {
+			return runnersByEcard.get(ecard);
+		}
 	}
 
 	public void updateRunnerEcard(String oldEcard, Runner runner) {
-		if( oldEcard==null || !oldEcard.equals(runner.getEcard()) ){
-			runnersByEcard.remove(oldEcard);
-			putRunnerByEcard(runner);
+		synchronized (runnersLock) {
+			if( oldEcard==null || !oldEcard.equals(runner.getEcard()) ){
+				runnersByEcard.remove(oldEcard);
+				putRunnerByEcard(runner);
+			}
 		}
 	}
 
 	public void courseCreated(Course course) { // TODO protected?
-		runnersByCourse.put(course, new LinkedList<Runner>());
+		synchronized (runnersLock) {
+			runnersByCourse.put(course, new LinkedList<Runner>());
+		}
 	}
 
 	public Collection<Runner> getRunnersFromCourse(Course course) {
-		return runnersByCourse.get(course);
+		synchronized (runnersLock) {
+			return runnersByCourse.get(course);
+		}
 	}
 	
 	private void putRunnerInCourseList(Runner runner, Course course){
@@ -153,30 +185,42 @@ public class RunnerRegistry {
 	}
 
 	public void updateRunnerCourse(Course oldCourse, Runner runner) {
-		if( !oldCourse.equals(runner.getCourse()) ){
-			runnersByCourse.get(oldCourse).remove(runner);
-			putRunnerInCourseList(runner, runner.getCourse());
-		}		
+		synchronized (runnersLock) {
+			if( !oldCourse.equals(runner.getCourse()) ){
+				runnersByCourse.get(oldCourse).remove(runner);
+				putRunnerInCourseList(runner, runner.getCourse());
+			}
+		}
 	}
 
 	public void addRunnerData(RunnerRaceData data) {
-		runnerData.put(data.getRunner(), data);
+		synchronized (runnersLock) {
+			runnerData.put(data.getRunner(), data);
+		}
 	}
 
 	public Collection<RunnerRaceData> getRunnersData() {
-		return runnerData.values();
+		synchronized (runnersLock) {
+			return runnerData.values();
+		}
 	}
 
 	public RunnerRaceData findRunnerData(Runner runner) {
-		return runnerData.get(runner);
+		synchronized (runnersLock) {
+			return runnerData.get(runner);
+		}
 	}
 
 	public RunnerRaceData findRunnerData(String ecard) {
-		return runnerData.get(findRunnerByEcard(ecard));
+		synchronized (runnersLock) {
+			return runnerData.get(findRunnerByEcard(ecard));
+		}
 	}
 
 	public void removeRunnerData(RunnerRaceData data) {
-		runnerData.remove(data.getRunner());
+		synchronized (runnersLock) {
+			runnerData.remove(data.getRunner());
+		}
 	}
 
 }
