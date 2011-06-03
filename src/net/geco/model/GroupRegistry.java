@@ -5,7 +5,11 @@
 package net.geco.model;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,6 +20,7 @@ import java.util.Map;
 public class GroupRegistry<T extends Group> {
 
 	private Map<String, T> groups;
+	private List<String> sortedNames;
 
 	public GroupRegistry() {
 		groups = new HashMap<String, T>();
@@ -23,6 +28,7 @@ public class GroupRegistry<T extends Group> {
 	
 	public void add(T group) {
 		groups.put(group.getName(), group);
+		sortedNames = null;
 	}
 
 	public Collection<T> getGroups() {
@@ -35,6 +41,7 @@ public class GroupRegistry<T extends Group> {
 
 	public void remove(T group) {
 		groups.remove(group.getName());
+		sortedNames = null;
 	}
 	
 	public T any() {
@@ -45,6 +52,28 @@ public class GroupRegistry<T extends Group> {
 		groups.remove(group.getName());
 		group.setName(newName);
 		add(group);
+	}
+
+	public List<String> getNames() {
+		return new LinkedList<String>(groups.keySet());
+	}
+
+	public List<T> getSortedGroups() {
+		LinkedList<T> groups = new LinkedList<T>(getGroups());
+		Collections.sort(groups, new Comparator<T>() {
+			@Override
+			public int compare(T c1, T c2) {
+				return c1.getName().compareTo(c2.getName());
+			}});
+		return groups;
+	}
+
+	public List<String> getSortedNames() {
+		if( sortedNames==null ){
+			sortedNames = getNames();
+			Collections.sort(sortedNames);
+		}
+		return sortedNames;
 	}
 
 }
