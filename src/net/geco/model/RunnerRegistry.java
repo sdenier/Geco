@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Simon Denier
@@ -132,7 +133,7 @@ public class RunnerRegistry {
 		runnersByCategory.get(category).add(runner);
 	}
 
-	public Collection<Runner> getRunnersFromCategory(Category category) {
+	public List<Runner> getRunnersFromCategory(Category category) {
 		synchronized (runnersLock) {
 			return runnersByCategory.get(category);
 		}
@@ -174,7 +175,7 @@ public class RunnerRegistry {
 		}
 	}
 
-	public Collection<Runner> getRunnersFromCourse(Course course) {
+	public List<Runner> getRunnersFromCourse(Course course) {
 		synchronized (runnersLock) {
 			return runnersByCourse.get(course);
 		}
@@ -220,6 +221,21 @@ public class RunnerRegistry {
 	public void removeRunnerData(RunnerRaceData data) {
 		synchronized (runnersLock) {
 			runnerData.remove(data.getRunner());
+		}
+	}
+	
+	public Map<Course, List<Runner>> getRunnersByCourseFromCategory(Category cat) {
+		synchronized (runnersLock) {
+			HashMap<Course, List<Runner>> map = new HashMap<Course, List<Runner>>();
+			List<Runner> runners = getRunnersFromCategory(cat);
+			if( runners==null ) return map;
+			for (Runner runner : runners) {
+				if( ! map.containsKey(runner.getCourse()) ) {
+					map.put(runner.getCourse(), new LinkedList<Runner>());
+				}
+				map.get(runner.getCourse()).add(runner);
+			}
+			return map;
 		}
 	}
 

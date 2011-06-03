@@ -10,6 +10,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import net.geco.model.Category;
 import net.geco.model.Course;
@@ -366,6 +368,24 @@ public class RunnerRegistryTest {
 		
 		registry.removeRunnerData(data);
 		assertFalse(registry.getRunnersData().contains(data));
+	}
+	
+	@Test
+	public void getRunnersByCategoryAndCourse(){
+		Runner runner2 = factory(2);
+		Runner runner3 = factory(3);
+		runner3.setCourse(red);
+		registry.addRunner(runner1);
+		registry.addRunner(runner2);
+		registry.addRunner(runner3);
+		
+		Map<Course, List<Runner>> runners = registry.getRunnersByCourseFromCategory(cat);
+		assertEquals(2, runners.size());
+		assertEquals(2, runners.get(cou).size());
+		assertEquals(1, runners.get(red).size());
+		assertTrue(runners.get(cou).contains(runner1));
+		assertTrue(runners.get(cou).contains(runner2));
+		assertTrue(runners.get(red).contains(runner3));
 	}
 
 }
