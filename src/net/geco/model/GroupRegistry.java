@@ -26,35 +26,35 @@ public class GroupRegistry<T extends Group> {
 		groups = new HashMap<String, T>();
 	}
 	
-	public void add(T group) {
+	public synchronized void add(T group) {
 		groups.put(group.getName(), group);
 		sortedNames = null;
 	}
 
-	public Collection<T> getGroups() {
+	public synchronized Collection<T> getGroups() {
 		return groups.values();
 	}
 
-	public T find(String name) {
+	public synchronized T find(String name) {
 		return groups.get(name);
 	}
 
-	public void remove(T group) {
+	public synchronized void remove(T group) {
 		groups.remove(group.getName());
 		sortedNames = null;
 	}
 	
-	public T any() {
+	public synchronized T any() {
 		return groups.values().iterator().next();
 	}
 
-	public void updateName(T group, String newName) {
+	public synchronized void updateName(T group, String newName) {
 		groups.remove(group.getName());
 		group.setName(newName);
 		add(group);
 	}
 
-	public List<String> getNames() {
+	public synchronized List<String> getNames() {
 		return new LinkedList<String>(groups.keySet());
 	}
 
@@ -68,12 +68,12 @@ public class GroupRegistry<T extends Group> {
 		return groups;
 	}
 
-	public List<String> getSortedNames() {
+	public synchronized List<String> getSortedNames() {
 		if( sortedNames==null ){
 			sortedNames = getNames();
 			Collections.sort(sortedNames);
 		}
-		return sortedNames;
+		return sortedNames;			
 	}
 
 }

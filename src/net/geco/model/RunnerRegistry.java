@@ -28,8 +28,6 @@ public class RunnerRegistry {
 	private HashMap<Runner, RunnerRaceData> runnerData;
 
 	private int maxStartId;
-	
-	private Object runnersLock = new Object();
 
 	
 	public RunnerRegistry() {
@@ -56,25 +54,19 @@ public class RunnerRegistry {
 		}
 	}
 
-	public Collection<Runner> getRunners() {
-		synchronized (runnersLock) {
-			return runnersById.values();
-		}
+	public synchronized Collection<Runner> getRunners() {
+		return runnersById.values();
 	}
 
-	public Runner findRunnerById(Integer id) {
-		synchronized (runnersLock) {
-			return runnersById.get(id);
-		}
+	public synchronized Runner findRunnerById(Integer id) {
+		return runnersById.get(id);
 	}
 	
-	public void addRunner(Runner runner) {
-		synchronized (runnersLock) {
-			addRunnerWithId(runner);
-			putRunnerByEcard(runner);
-			putRunnerInCategoryList(runner, runner.getCategory());
-			putRunnerInCourseList(runner, runner.getCourse());
-		}
+	public synchronized void addRunner(Runner runner) {
+		addRunnerWithId(runner);
+		putRunnerByEcard(runner);
+		putRunnerInCategoryList(runner, runner.getCategory());
+		putRunnerInCourseList(runner, runner.getCourse());
 	}
 
 	private void putRunnerByEcard(Runner runner) {
@@ -89,154 +81,116 @@ public class RunnerRegistry {
 		checkMaxStartId(runner);
 	}
 
-	public void addRunnerWithoutId(Runner runner) {
-		synchronized (runnersLock) {
-			runner.setStartId(Integer.valueOf(maxStartId + 1));
+	public synchronized void addRunnerWithoutId(Runner runner) {
+		runner.setStartId(Integer.valueOf(maxStartId + 1));
+		addRunner(runner);
+	}
+
+	public synchronized void addRunnerSafely(Runner runner) {
+		if( availableStartId(runner.getStartId()) ){
 			addRunner(runner);
+		} else {
+			addRunnerWithoutId(runner);
 		}
 	}
 
-	public void addRunnerSafely(Runner runner) {
-		synchronized (runnersLock) {
-			if( availableStartId(runner.getStartId()) ){
-				addRunner(runner);
-			} else {
-				addRunnerWithoutId(runner);
-			}
-		}
+	public synchronized void removeRunner(Runner runner) {
+		runnersById.remove(runner.getStartId());
+		runnersByEcard.remove(runner.getEcard());
+		runnersByCourse.get(runner.getCourse()).remove(runner);
+		runnersByCategory.get(runner.getCategory()).remove(runner);
+		detectMaxStartId();
 	}
 
-	public void removeRunner(Runner runner) {
-		synchronized (runnersLock) {
-			runnersById.remove(runner.getStartId());
-			runnersByEcard.remove(runner.getEcard());
-			runnersByCourse.get(runner.getCourse()).remove(runner);
-			runnersByCategory.get(runner.getCategory()).remove(runner);
-			detectMaxStartId();
-		}
+	public synchronized void updateRunnerStartId(Integer oldId, Runner runner) {
+		runnersById.remove(oldId);
+		addRunnerWithId(runner);
 	}
 
-	public void updateRunnerStartId(Integer oldId, Runner runner) {
-		synchronized (runnersLock) {
-			runnersById.remove(oldId);
-			addRunnerWithId(runner);
-		}
-	}
-
-	public boolean availableStartId(Integer id) {
-		synchronized (runnersLock) {
-			return id!=null && ! runnersById.containsKey(id);
-		}
+	public synchronized boolean availableStartId(Integer id) {
+		return id!=null && ! runnersById.containsKey(id);
 	}
 
 	private void putRunnerInCategoryList(Runner runner, Category category) {
 		runnersByCategory.get(category).add(runner);
 	}
 
-	public List<Runner> getRunnersFromCategory(Category category) {
-		synchronized (runnersLock) {
-			return runnersByCategory.get(category);
+	public synchronized List<Runner> getRunnersFromCategory(Category category) {
+		return runnersByCategory.get(category);
+	}
+
+	public synchronized void categoryCreated(Category category) { // TODO protected?
+		runnersByCategory.put(category, new LinkedList<Runner>());
+	}
+
+	public synchronized void updateRunnerCategory(Category oldCat, Runner runner) {
+		if( !oldCat.equals(runner.getCategory()) ){
+			runnersByCategory.get(oldCat).remove(runner);
+			putRunnerInCategoryList(runner, runner.getCategory());
 		}
 	}
 
-	public void categoryCreated(Category category) { // TODO protected?
-		synchronized (runnersLock) {
-			runnersByCategory.put(category, new LinkedList<Runner>());
+	public synchronized Runner findRunnerByEcard(String ecard) {
+		return runnersByEcard.get(ecard);
+	}
+
+	public synchronized void updateRunnerEcard(String oldEcard, Runner runner) {
+		if( oldEcard==null || !oldEcard.equals(runner.getEcard()) ){
+			runnersByEcard.remove(oldEcard);
+			putRunnerByEcard(runner);
 		}
 	}
 
-	public void updateRunnerCategory(Category oldCat, Runner runner) {
-		synchronized (runnersLock) {
-			if( !oldCat.equals(runner.getCategory()) ){
-				runnersByCategory.get(oldCat).remove(runner);
-				putRunnerInCategoryList(runner, runner.getCategory());
-			}
-		}
+	public synchronized void courseCreated(Course course) { // TODO protected?
+		runnersByCourse.put(course, new LinkedList<Runner>());
 	}
 
-	public Runner findRunnerByEcard(String ecard) {
-		synchronized (runnersLock) {
-			return runnersByEcard.get(ecard);
-		}
-	}
-
-	public void updateRunnerEcard(String oldEcard, Runner runner) {
-		synchronized (runnersLock) {
-			if( oldEcard==null || !oldEcard.equals(runner.getEcard()) ){
-				runnersByEcard.remove(oldEcard);
-				putRunnerByEcard(runner);
-			}
-		}
-	}
-
-	public void courseCreated(Course course) { // TODO protected?
-		synchronized (runnersLock) {
-			runnersByCourse.put(course, new LinkedList<Runner>());
-		}
-	}
-
-	public List<Runner> getRunnersFromCourse(Course course) {
-		synchronized (runnersLock) {
-			return runnersByCourse.get(course);
-		}
+	public synchronized List<Runner> getRunnersFromCourse(Course course) {
+		return runnersByCourse.get(course);
 	}
 	
 	private void putRunnerInCourseList(Runner runner, Course course){
 		runnersByCourse.get(course).add(runner);
 	}
 
-	public void updateRunnerCourse(Course oldCourse, Runner runner) {
-		synchronized (runnersLock) {
-			if( !oldCourse.equals(runner.getCourse()) ){
-				runnersByCourse.get(oldCourse).remove(runner);
-				putRunnerInCourseList(runner, runner.getCourse());
-			}
+	public synchronized void updateRunnerCourse(Course oldCourse, Runner runner) {
+		if( !oldCourse.equals(runner.getCourse()) ){
+			runnersByCourse.get(oldCourse).remove(runner);
+			putRunnerInCourseList(runner, runner.getCourse());
 		}
 	}
 
-	public void addRunnerData(RunnerRaceData data) {
-		synchronized (runnersLock) {
-			runnerData.put(data.getRunner(), data);
-		}
+	public synchronized void addRunnerData(RunnerRaceData data) {
+		runnerData.put(data.getRunner(), data);
 	}
 
-	public Collection<RunnerRaceData> getRunnersData() {
-		synchronized (runnersLock) {
-			return runnerData.values();
-		}
+	public synchronized Collection<RunnerRaceData> getRunnersData() {
+		return runnerData.values();
 	}
 
-	public RunnerRaceData findRunnerData(Runner runner) {
-		synchronized (runnersLock) {
-			return runnerData.get(runner);
-		}
+	public synchronized RunnerRaceData findRunnerData(Runner runner) {
+		return runnerData.get(runner);
 	}
 
-	public RunnerRaceData findRunnerData(String ecard) {
-		synchronized (runnersLock) {
-			return runnerData.get(findRunnerByEcard(ecard));
-		}
+	public synchronized RunnerRaceData findRunnerData(String ecard) {
+		return runnerData.get(findRunnerByEcard(ecard));
 	}
 
-	public void removeRunnerData(RunnerRaceData data) {
-		synchronized (runnersLock) {
-			runnerData.remove(data.getRunner());
-		}
+	public synchronized void removeRunnerData(RunnerRaceData data) {
+		runnerData.remove(data.getRunner());
 	}
 	
-	public Map<Course, List<Runner>> getRunnersByCourseFromCategory(Category cat) {
-		synchronized (runnersLock) {
-			HashMap<Course, List<Runner>> map = new HashMap<Course, List<Runner>>();
-			List<Runner> runners = getRunnersFromCategory(cat);
-			if( runners==null ) return map;
-			for (Runner runner : runners) {
-				if( ! map.containsKey(runner.getCourse()) ) {
-					map.put(runner.getCourse(), new LinkedList<Runner>());
-				}
-				map.get(runner.getCourse()).add(runner);
+	public synchronized Map<Course, List<Runner>> getRunnersByCourseFromCategory(Category cat) {
+		HashMap<Course, List<Runner>> map = new HashMap<Course, List<Runner>>();
+		List<Runner> runners = getRunnersFromCategory(cat);
+		if( runners==null ) return map;
+		for (Runner runner : runners) {
+			if( ! map.containsKey(runner.getCourse()) ) {
+				map.put(runner.getCourse(), new LinkedList<Runner>());
 			}
-			return map;
+			map.get(runner.getCourse()).add(runner);
 		}
+		return map;
 	}
 
 }
