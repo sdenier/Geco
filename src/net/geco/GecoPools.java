@@ -74,7 +74,7 @@ public class GecoPools {
 	public void exportMergedResults() {
 		ResultBuilder resultBuilder = new ResultBuilder(gecoControl);
 		Html html = new Html();
-		for (String cat : gecoControl.registry().getCategorynames()) {
+		for (String cat : gecoControl.registry().getCategoryNames()) {
 			exportMergedResult(cat, resultBuilder, html);
 		}
 		try {

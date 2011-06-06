@@ -114,7 +114,7 @@ public class MergeRunnerDialog extends JDialog {
 	private Vector<String> courseItems(IGeco geco) {
 		Vector<String> items = new Vector<String>();
 		items.add(Messages.uiGet("MergeRunnerDialog.UnknownCourseItem")); //$NON-NLS-1$
-		items.addAll(geco.registry().getSortedCoursenames());
+		items.addAll(geco.registry().getSortedCourseNames());
 		return items;
 	}
 

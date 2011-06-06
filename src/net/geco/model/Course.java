@@ -9,7 +9,7 @@ package net.geco.model;
  * @since Nov 22, 2008
  *
  */
-public interface Course extends Pool {
+public interface Course extends Pool, Group {
 
 	public String getName();
 

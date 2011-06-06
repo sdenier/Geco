@@ -278,8 +278,8 @@ public class SplitExporter extends AResultExporter implements StageListener {
 		writer.write("\n"); //$NON-NLS-1$
 		
 		List<String> clubnames = registry().getClubNames();
-		List<String> categorynames = registry().getCategorynames();
-		List<String> coursenames = registry().getCoursenames();
+		List<String> categorynames = registry().getCategoryNames();
+		List<String> coursenames = registry().getCourseNames();
 		
 		for (RunnerRaceData runnerData : registry().getRunnersData()) {
 			Runner runner = runnerData.getRunner();

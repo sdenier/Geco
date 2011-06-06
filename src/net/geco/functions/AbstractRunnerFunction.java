@@ -54,13 +54,13 @@ public abstract class AbstractRunnerFunction extends GecoFunction {
 		coursesRB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				data.setListData(registry().getSortedCoursenames());
+				data.setListData(registry().getSortedCourseNames().toArray());
 			}
 		});
 		categoriesRB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				data.setListData(registry().getSortedCategorynames());
+				data.setListData(registry().getSortedCategoryNames().toArray());
 			}
 		});
 		runnersRB.addActionListener(new ActionListener() {

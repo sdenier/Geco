@@ -118,7 +118,7 @@ public class CategoryConfigPanel extends ConfigTablePanel<Category> implements C
 	}
 
 	private void updateCoursesCBforCategories(IGecoApp geco, JComboBox coursesCB) {
-		Vector<String> sortedCoursenames = new Vector<String>( geco.registry().getSortedCoursenames() );
+		Vector<String> sortedCoursenames = new Vector<String>( geco.registry().getSortedCourseNames() );
 		sortedCoursenames.add(0, ""); //$NON-NLS-1$
 		coursesCB.setModel(new DefaultComboBoxModel(sortedCoursenames));
 	}

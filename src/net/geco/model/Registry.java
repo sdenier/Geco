@@ -3,15 +3,9 @@
  */
 package net.geco.model;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Vector;
 
 
 
@@ -28,115 +22,69 @@ import java.util.Vector;
  */
 public class Registry {
 	
-	private Map<String, Course> courses;
+	private RunnerRegistry runnerRegistry;
 	
-	private Vector<String> sortedCoursenames;
+	private GroupRegistry<Course> courseRegistry;
 	
 	private GroupRegistry<Club> clubRegistry;
-	
-	private Map<String, Category> categories;
-	
-	private Vector<String> sortedCategorynames;
-	
-	private Map<String, Runner> runnersByEcard;
-	
-	private Map<Course, List<Runner>> runnersByCourse;
-	
-	private Map<Category, List<Runner>> runnersByCategory;
-	
-	private Map<Runner, RunnerRaceData> runnerData;
+
+	private GroupRegistry<Category> categoryRegistry;
 	
 	private GroupRegistry<HeatSet> heatsetRegistry;
-	
-	private Object runnersLock = new Object();
 
 	
 	public Registry() {
-		courses = new HashMap<String, Course>();
+		runnerRegistry = new RunnerRegistry();
+		courseRegistry = new GroupRegistry<Course>();
 		clubRegistry = new GroupRegistry<Club>();
-		categories = new HashMap<String, Category>();
-		runnersByEcard = new HashMap<String, Runner>();
-		runnersByCategory = new HashMap<Category, List<Runner>>();
-		runnersByCourse = new HashMap<Course, List<Runner>>();
-		runnerData = new HashMap<Runner, RunnerRaceData>();
+		categoryRegistry = new GroupRegistry<Category>();
 		heatsetRegistry = new GroupRegistry<HeatSet>();
 	}
 	
 	
+	/*
+	 * Courses
+	 */
+	
 	public Collection<Course> getCourses() {
-		synchronized (courses) {
-			return courses.values();			
-		}
+		return courseRegistry.getGroups();
 	}
 	
-	public Vector<Course> getSortedCourses() {
-		Vector<Course> courseList = new Vector<Course>(getCourses());
-		Collections.sort(courseList, new Comparator<Course>() {
-			@Override
-			public int compare(Course c1, Course c2) {
-				return c1.getName().compareTo(c2.getName());
-			}});
-		return courseList;
+	public List<Course> getSortedCourses() {
+		return courseRegistry.getSortedGroups();
 	}
 
-	public Vector<String> getCoursenames() {
-		synchronized (courses) {
-			return new Vector<String>(courses.keySet());	
-		}
+	public List<String> getCourseNames() {
+		return courseRegistry.getNames();
 	}
 
-	public Vector<String> getSortedCoursenames() {
-		if( sortedCoursenames==null ) {
-			sortedCoursenames = getCoursenames();
-			Collections.sort(sortedCoursenames);
-		}
-		return sortedCoursenames;
+	public List<String> getSortedCourseNames() {
+		return courseRegistry.getSortedNames();
 	}
 	
 	public Course findCourse(String name) {
-		synchronized (courses) {
-			return courses.get(name);
-		}
+		return courseRegistry.find(name);
 	}
 	
 	public void addCourse(Course course) {
-		synchronized (courses) {
-			courses.put(course.getName(), course);
-			if( !runnersByCourse.containsKey(course) ) {
-				// if creating a previously unknown course, we also
-				// create the entry for runners
-				runnersByCourse.put(course, new Vector<Runner>());
-			}
-			sortedCoursenames = null;
-		}
+		courseRegistry.add(course);
+		runnerRegistry.courseCreated(course);
 	}
 
 	public void removeCourse(Course course) {
-		synchronized (courses) {
-			courses.remove(course.getName());
-			runnersByCourse.remove(course);
-			sortedCoursenames = null;
-		}
+		courseRegistry.remove(course);
+		runnerRegistry.courseDeleted(course);
 	}
 	
-	public void updateCoursename(Course course, String newName) {
-		synchronized (courses) {
-			courses.remove(course.getName());
-			course.setName(newName);
-			addCourse(course);
-		}		
+	public void updateCourseName(Course course, String newName) {
+		courseRegistry.updateName(course, newName);
 	}
 	
 	public Course anyCourse() {
-		synchronized (courses) {
-			try {
-				return courses.values().iterator().next();
-			} catch (NoSuchElementException e) {
-				return null;
-			}
-		}
+		return courseRegistry.any();
 	}
 
+	
 	/*
 	 * Clubs
 	 */
@@ -182,66 +130,42 @@ public class Registry {
 	}
 
 	
+	/*
+	 * Categories
+	 */
+	
 	public Collection<Category> getCategories() {
-		synchronized (categories) {
-			return categories.values();
-		}
+		return categoryRegistry.getGroups();
 	}
 	
-	public Vector<Category> getSortedCategories() {
-		Vector<Category> catList = new Vector<Category>(getCategories());
-		Collections.sort(catList, new Comparator<Category>() {
-			@Override
-			public int compare(Category c1, Category c2) {
-				return c1.getName().compareTo(c2.getName());
-			}});
-		return catList;
+	public List<Category> getSortedCategories() {
+		return categoryRegistry.getSortedGroups();
 	}
 
-	public Vector<String> getCategorynames() {
-		synchronized (categories) {
-			return new Vector<String>(categories.keySet());
-		}
+	public List<String> getCategoryNames() {
+		return categoryRegistry.getNames();
 	}
 
-	public Vector<String> getSortedCategorynames() {
-		if( sortedCategorynames==null ) {
-			sortedCategorynames = getCategorynames();
-			Collections.sort(sortedCategorynames);
-		}
-		return sortedCategorynames;
+	public List<String> getSortedCategoryNames() {
+		return categoryRegistry.getSortedNames();
 	}
 
 	public Category findCategory(String name) {
-		synchronized (categories) {
-			return categories.get(name);
-		}
+		return categoryRegistry.find(name);
 	}
 	
 	public void addCategory(Category cat) {
-		synchronized (categories) {
-			categories.put(cat.getShortname(), cat);
-			if( !runnersByCategory.containsKey(cat) ) {
-				runnersByCategory.put(cat, new Vector<Runner>());
-			}
-			sortedCategorynames = null;
-		}
+		categoryRegistry.add(cat);
+		runnerRegistry.categoryCreated(cat);
 	}
 	
 	public void removeCategory(Category cat) {
-		synchronized (categories) {
-			categories.remove(cat.getShortname());
-			runnersByCategory.remove(cat);
-			sortedCategorynames = null;
-		}
+		categoryRegistry.remove(cat);
+		runnerRegistry.categoryDeleted(cat);
 	}
 
-	public void updateCategoryname(Category cat, String newName) {
-		synchronized (categories) {
-			categories.remove(cat.getShortname());
-			cat.setShortname(newName);
-			addCategory(cat);
-		}
+	public void updateCategoryName(Category cat, String newName) {
+		categoryRegistry.updateName(cat, newName);
 	}
 	
 	public Category noCategory() {
@@ -249,13 +173,7 @@ public class Registry {
 	}
 	
 	public Category anyCategory() {
-		synchronized (categories) {
-			try {
-				return categories.values().iterator().next();
-			} catch (NoSuchElementException e) {
-				return null;
-			}
-		}
+		return categoryRegistry.any();
 	}
 	
 	public Course getDefaultCourseOrAnyFor(Category cat) {
@@ -264,139 +182,89 @@ public class Registry {
 				anyCourse();
 	}
 
+	
+	/*
+	 * Runners
+	 */
 
 	public Collection<Runner> getRunners() {
-		synchronized (runnersLock) {
-			return runnersByEcard.values();
-		}
+		return runnerRegistry.getRunners();
 	}
 	
 	public Runner findRunnerByEcard(String ecard) {
-		synchronized (runnersLock) {
-			return runnersByEcard.get(ecard);
-		}
+		return runnerRegistry.findRunnerByEcard(ecard);
 	}
 	
 	public void addRunner(Runner runner) {
-		synchronized (runnersLock) {
-			runnersByEcard.put(runner.getEcard(), runner);
-			addRunnerinCategoryList(runner, runner.getCategory());
-			addRunnerinCourseList(runner, runner.getCourse());
-		}
+		runnerRegistry.addRunner(runner);
+	}
+
+	public void addRunnerWithoutId(Runner runner) {
+		runnerRegistry.addRunnerWithoutId(runner);
 	}
 	
-	private void addRunnerinCourseList(Runner runner, Course course) {
-		synchronized (runnersLock) {
-			runnersByCourse.get(course).add(runner);
-		}
+	public void addRunnerSafely(Runner runner) {
+		runnerRegistry.addRunnerSafely(runner);
 	}
-
-	private void addRunnerinCategoryList(Runner runner, Category cat) {
-		synchronized (runnersLock) {
-			runnersByCategory.get(cat).add(runner);
-		}
-	}
-
+	
 	public void updateRunnerEcard(String oldEcard, Runner runner) {
-		synchronized (runnersLock) {
-			runnersByEcard.remove(oldEcard);
-			runnersByEcard.put(runner.getEcard(), runner);
-		}
+		runnerRegistry.updateRunnerEcard(oldEcard, runner);
 	}
 
 	public void updateRunnerCourse(Course oldCourse, Runner runner) {
-		synchronized (runnersLock) {
-			if( !oldCourse.equals(runner.getCourse() )) {
-				runnersByCourse.get(oldCourse).remove(runner);
-				addRunnerinCourseList(runner, runner.getCourse());
-			}
-		}
+		runnerRegistry.updateRunnerCourse(oldCourse, runner);
 	}
 
 	public void updateRunnerCategory(Category oldCat, Runner runner) {
-		synchronized (runnersLock) {
-			if( !oldCat.equals(runner.getCategory() )) {
-				runnersByCategory.get(oldCat).remove(runner);
-				addRunnerinCategoryList(runner, runner.getCategory());
-			}
-		}
+		runnerRegistry.updateRunnerCategory(oldCat, runner);
 	}
 	
 	public void removeRunner(Runner runner) {
-		synchronized (runnersLock) {
-			runnersByEcard.remove(runner.getEcard());
-			runnersByCategory.get(runner.getCategory()).remove(runner);
-			runnersByCourse.get(runner.getCourse()).remove(runner);
-		}
+		runnerRegistry.removeRunner(runner);
 	}
 
+	/*
+	 * Runner Race Data
+	 */
+	
 	public Collection<RunnerRaceData> getRunnersData() {
-		synchronized (runnersLock) {
-			return runnerData.values();
-		}
+		return runnerRegistry.getRunnersData();
 	}
 	
 	public RunnerRaceData findRunnerData(Runner runner) {
-		synchronized (runnersLock) {
-			return runnerData.get(runner);
-		}
+		return runnerRegistry.findRunnerData(runner);
 	}
 
 	public RunnerRaceData findRunnerData(String ecard) {
-		synchronized (runnersLock) {
-			return runnerData.get(findRunnerByEcard(ecard));
-		}
+		return runnerRegistry.findRunnerData(ecard);
 	}
 	
 	public void addRunnerData(RunnerRaceData data) {
-		synchronized (runnersLock) {
-			runnerData.put(data.getRunner(), data);
-		}
+		runnerRegistry.addRunnerData(data);
 	}
 	
 	public void removeRunnerData(RunnerRaceData data) {
-		synchronized (runnersLock) {
-			runnerData.remove(data.getRunner());
-		}
+		runnerRegistry.removeRunnerData(data);
 	}
 	
 	public List<Runner> getRunnersFromCategory(Category cat) {
-		synchronized (runnersLock) {
-			return runnersByCategory.get(cat);
-		}
+		return runnerRegistry.getRunnersFromCategory(cat);
 	}
 
 	public List<Runner> getRunnersFromCategory(String catName) {
-		synchronized (runnersLock) {
-			return runnersByCategory.get(findCategory(catName));
-		}
+		return getRunnersFromCategory(findCategory(catName));
 	}
 	
 	public Map<Course, List<Runner>> getRunnersByCourseFromCategory(String catName) {
-		synchronized (runnersLock) {
-			HashMap<Course, List<Runner>> map = new HashMap<Course, List<Runner>>();
-			List<Runner> runners = getRunnersFromCategory(catName);
-			if( runners==null ) return map;
-			for (Runner runner : runners) {
-				if( ! map.containsKey(runner.getCourse()) ) {
-					map.put(runner.getCourse(), new Vector<Runner>());
-				}
-				map.get(runner.getCourse()).add(runner);
-			}
-			return map;
-		}
+		return runnerRegistry.getRunnersByCourseFromCategory(findCategory(catName));
 	}
 
 	public List<Runner> getRunnersFromCourse(Course course) {
-		synchronized (runnersLock) {
-			return runnersByCourse.get(course);
-		}
+		return runnerRegistry.getRunnersFromCourse(course);
 	}
 	
 	public List<Runner> getRunnersFromCourse(String courseName) {
-		synchronized (runnersLock) {
-			return runnersByCourse.get(findCourse(courseName));
-		}
+		return getRunnersFromCourse(findCourse(courseName));
 	}
 
 	
@@ -409,10 +277,6 @@ public class Registry {
 		return heatsetRegistry.getGroups();
 	}
 
-	public HeatSet findHeatSet(String name) {
-		return heatsetRegistry.find(name);
-	}
-	
 	public void addHeatSet(HeatSet heatset) {
 		heatsetRegistry.add(heatset);
 	}
@@ -422,53 +286,33 @@ public class Registry {
 	}
 
 
-	/**
-	 * @return
+	/*
+	 * TODO: refactor below
 	 */
-	public Integer[] collectStartnumbers() { // TODO: maybe use the Integer type for startnumber, it will save some code
-		synchronized (runnersLock) {
-			Integer[] startnums = new Integer[runnersByEcard.size()];
-			int i = 0;
-			for (Runner runner : runnersByEcard.values()) {
-				startnums[i] = runner.getStartnumber();
-				i++;
-			}
-			Arrays.sort(startnums);
-			return startnums;
-		}
+
+	public Integer[] collectStartnumbers() {
+		return runnerRegistry.getStartIds().toArray(new Integer[0]);
 	}
 	
 	public Integer detectMaxStartnumber() {
-		synchronized (runnersLock) {
-			int max = 0;
-			for (Runner runner : runnersByEcard.values()) {
-				max = Math.max(max, runner.getStartnumber());
-			}
-			return max;
-		}
+		return runnerRegistry.maxStartId();
 	}
 
 	public Integer detectMaxEcardNumber() {
-		synchronized (runnersLock) {
-			int max = 0;
-			for (String ecard : runnersByEcard.keySet()) {
-				try {
-					Integer ecardi = Integer.valueOf(ecard);					
-					max = Math.max(max, ecardi);
-				} catch (NumberFormatException e) {
-					// bypass ecard number xxxxa (cloned entries)
-				}
+		int max = 0;
+		for (String ecard : runnerRegistry.getEcards()) {
+			try {
+				Integer ecardi = Integer.valueOf(ecard);
+				max = Math.max(max, ecardi);
+			} catch (NumberFormatException e) {
+				// bypass ecard number xxxxa (cloned entries)
 			}
-			return max;
 		}
+		return max;
 	}
 	
 	public String[] collectEcardNumbers() {
-		synchronized (runnersLock) {
-			String[] ecards = runnersByEcard.keySet().toArray(new String[0]);
-			Arrays.sort(ecards);
-			return ecards;
-		}
+		return runnerRegistry.getEcards().toArray(new String[0]);
 	}
 
 }

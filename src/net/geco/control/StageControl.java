@@ -148,7 +148,7 @@ public class StageControl extends Control {
 	
 	public void updateName(Course course, String newName) {
 		if( !course.getName().equals(newName) && registry().findCourse(newName)==null ) {
-			registry().updateCoursename(course, newName);
+			registry().updateCourseName(course, newName);
 			announcer().announceCoursesChanged();
 		}		
 	}
@@ -209,7 +209,7 @@ public class StageControl extends Control {
 	 */
 	public void updateShortname(Category cat, String newName) {
 		if( !cat.getShortname().equals(newName) && registry().findCategory(newName)==null ) {
-			registry().updateCategoryname(cat, newName);
+			registry().updateCategoryName(cat, newName);
 			announcer().announceCategoriesChanged();
 		}		
 	}

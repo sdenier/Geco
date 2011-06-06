@@ -9,7 +9,7 @@ package net.geco.model;
  * @since Jan 4, 2009
  *
  */
-public interface Category extends Pool {
+public interface Category extends Pool, Group {
 
 	public String getShortname();
 

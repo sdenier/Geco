@@ -15,7 +15,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -225,7 +224,7 @@ public class GeneratorFunction extends GecoFunction {
 
 
 	private Course randomCourse() {
-		Vector<String> courses = registry().getCoursenames();
+		List<String> courses = registry().getCourseNames();
 		Course course = registry().findCourse(courses.get(random.nextInt(courses.size())));
 		return course;
 	}

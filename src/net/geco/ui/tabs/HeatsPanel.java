@@ -16,7 +16,7 @@ import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Vector;
+import java.util.List;
 
 import javax.swing.AbstractListModel;
 import javax.swing.BorderFactory;
@@ -55,8 +55,8 @@ import net.geco.ui.framework.TabPanel;
  */
 public class HeatsPanel extends TabPanel implements Announcer.StageConfigListener {
 
-	private Vector<String> coursenames;	
-	private Vector<String> categorynames;
+	private List<String> coursenames;	
+	private List<String> categorynames;
 	private DefaultListModel heatlistModel;
 	private HeatSetDialog heatDialog;
 	
@@ -87,10 +87,10 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 	}
 
 	private void updatePoolnames() {
-		coursenames = registry().getSortedCoursenames();
-		categorynames = registry().getSortedCategorynames();
+		coursenames = registry().getSortedCourseNames();
+		categorynames = registry().getSortedCategoryNames();
 	}
-	private Vector<String> getAllPoolnames(HeatSet heatset) {
+	private List<String> getAllPoolnames(HeatSet heatset) {
 		if( heatset.isCourseType() ) {
 			return coursenames;
 		} else {
@@ -109,7 +109,7 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 	
 	public void showPoolList() {
 		HeatSet currentHeatset = getSelectedHeatset();
-		final Vector<String> poolnames = getAllPoolnames(currentHeatset);
+		final List<String> poolnames = getAllPoolnames(currentHeatset);
 		poolList.setModel(new AbstractListModel() {
 			public int getSize() {
 				return poolnames.size();
@@ -123,7 +123,7 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 	
 	private int[] getSelectedIndices(HeatSet heatset) {
 		int[] indices = new int[heatset.getSelectedPools().length];
-		Vector<String> nameset = getAllPoolnames(heatset);
+		List<String> nameset = getAllPoolnames(heatset);
 		int i = 0;
 		for (Pool pool : heatset.getSelectedPools()) {
 			indices[i] = nameset.indexOf(pool.getName());

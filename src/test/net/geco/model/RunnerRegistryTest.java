@@ -9,6 +9,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -56,10 +57,6 @@ public class RunnerRegistryTest {
 		red = courseFactory("Red");
 		runner1 = factory(1);
 	}
-	
-	/*
-	 * Basic runner registry
-	 */
 
 	public Runner factory(){
 		Runner runner = factory.createRunner();
@@ -71,6 +68,12 @@ public class RunnerRegistryTest {
 	public Runner factory(int i){
 		Runner runner = factory();
 		runner.setStartId(Integer.valueOf(i));
+		return runner;
+	}
+
+	public Runner factory(String ecard){
+		Runner runner = factory();
+		runner.setEcard(ecard);
 		return runner;
 	}
 	
@@ -87,6 +90,10 @@ public class RunnerRegistryTest {
 		registry.courseCreated(course);
 		return course;
 	}
+	
+	/*
+	 * Basic runner registry
+	 */
 	
 	@Test
 	public void addOneRunnerWithId(){
@@ -150,6 +157,16 @@ public class RunnerRegistryTest {
 		assertEquals(null, registry.findRunnerById(1));
 		assertEquals(runner1, registry.findRunnerById(6));
 		assertEquals(1, registry.getRunners().size());
+	}
+	
+	@Test
+	public void listStartIds(){
+		registry.addRunner(runner1);
+		registry.addRunner(factory(2));
+		registry.addRunner(factory(3));
+		registry.addRunner(factory(4));
+		Assert.assertArrayEquals(new Integer[]{ 1, 2, 3, 4},
+								 registry.getStartIds().toArray());
 	}
 	
 	@Test
@@ -242,6 +259,18 @@ public class RunnerRegistryTest {
 
 		registry.removeRunner(runner1);
 		assertNull(registry.findRunnerByEcard("100"));
+	}
+	
+	@Test
+	public void listEcards(){
+		registry.addRunnerSafely(factory("101"));
+		registry.addRunnerSafely(factory("102"));
+		registry.addRunnerSafely(factory("101a"));
+		registry.addRunnerSafely(factory("200"));
+		
+		List<String> ecards = Arrays.asList(new String[]{ "101", "102", "101a", "200" });
+		assertTrue( registry.getEcards().containsAll(ecards) );
+		assertTrue( ecards.containsAll(registry.getEcards()) );
 	}
 	
 	/*

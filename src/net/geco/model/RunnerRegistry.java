@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Simon Denier
@@ -54,6 +55,14 @@ public class RunnerRegistry {
 		}
 	}
 
+	public Set<Integer> getStartIds() {
+		return runnersById.keySet();
+	}
+
+	public Set<String> getEcards() {
+		return runnersByEcard.keySet();
+	}
+
 	public synchronized Collection<Runner> getRunners() {
 		return runnersById.values();
 	}
@@ -95,11 +104,14 @@ public class RunnerRegistry {
 	}
 
 	public synchronized void removeRunner(Runner runner) {
-		runnersById.remove(runner.getStartId());
+		Integer startId = runner.getStartId();
+		runnersById.remove(startId);
 		runnersByEcard.remove(runner.getEcard());
 		runnersByCourse.get(runner.getCourse()).remove(runner);
 		runnersByCategory.get(runner.getCategory()).remove(runner);
-		detectMaxStartId();
+		if( maxStartId==startId.intValue() ){
+			detectMaxStartId();
+		}
 	}
 
 	public synchronized void updateRunnerStartId(Integer oldId, Runner runner) {
@@ -119,8 +131,12 @@ public class RunnerRegistry {
 		return runnersByCategory.get(category);
 	}
 
-	public synchronized void categoryCreated(Category category) { // TODO protected?
+	public synchronized void categoryCreated(Category category) {
 		runnersByCategory.put(category, new LinkedList<Runner>());
+	}
+
+	public synchronized void categoryDeleted(Category category) {
+		runnersByCategory.remove(category);
 	}
 
 	public synchronized void updateRunnerCategory(Category oldCat, Runner runner) {
@@ -141,8 +157,12 @@ public class RunnerRegistry {
 		}
 	}
 
-	public synchronized void courseCreated(Course course) { // TODO protected?
+	public synchronized void courseCreated(Course course) {
 		runnersByCourse.put(course, new LinkedList<Runner>());
+	}
+
+	public synchronized void courseDeleted(Course course) {
+		runnersByCourse.remove(course);
 	}
 
 	public synchronized List<Runner> getRunnersFromCourse(Course course) {

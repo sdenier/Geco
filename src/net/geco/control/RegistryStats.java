@@ -120,7 +120,7 @@ public class RegistryStats extends Control
 	}
 	
 	public String[] sortedEntries() {
-		Vector<String> entries = new Vector<String>(registry().getSortedCoursenames());
+		Vector<String> entries = new Vector<String>(registry().getSortedCourseNames());
 		entries.add(totalName());
 		return entries.toArray(new String[0]);
 	}

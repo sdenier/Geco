@@ -15,8 +15,8 @@ import java.awt.event.ComponentEvent;
 import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
-import java.util.Vector;
 
 import javax.swing.AbstractListModel;
 import javax.swing.BorderFactory;
@@ -58,8 +58,8 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	
 	private static final int AutoexportDelay = 60;
 	
-	private Vector<String> coursenames;
-	private Vector<String> categorynames;
+	private List<String> coursenames;
+	private List<String> categorynames;
 	private JTextPane resultTA;
 	
 	private JComboBox resultTypeCB;
@@ -107,8 +107,8 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	}
 
 	private void updateNames() {
-		coursenames = registry().getSortedCoursenames();
-		categorynames = registry().getSortedCategorynames();
+		coursenames = registry().getSortedCourseNames();
+		categorynames = registry().getSortedCategoryNames();
 	}
 	private void updateCourseList() {
 		poolList.setModel(new AbstractListModel() {
@@ -326,7 +326,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		listButtonsPanel.add(SwingUtils.embed(selectAllB));
 		listButtonsPanel.add(SwingUtils.embed(selectNoneB));
 
-		poolList = new JList(coursenames);
+		poolList = new JList(coursenames.toArray());
 		selectAllPools();
 		JScrollPane scrollPane = new JScrollPane(poolList);
 		scrollPane.setPreferredSize(new Dimension(150, 250));
