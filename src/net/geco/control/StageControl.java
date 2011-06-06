@@ -43,7 +43,7 @@ public class StageControl extends Control {
 
 	public void updateName(Club club, String newName) {
 		if( !club.getName().equals(newName) && registry().findClub(newName)==null ) {
-			registry().updateClubname(club, newName);
+			registry().updateClubName(club, newName);
 			announcer().announceClubsChanged();
 		}
 	}

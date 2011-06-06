@@ -51,9 +51,6 @@ public class Registry {
 	private Object runnersLock = new Object();
 
 	
-	/**
-	 * 
-	 */
 	public Registry() {
 		courses = new HashMap<String, Course>();
 		clubRegistry = new GroupRegistry<Club>();
@@ -140,6 +137,9 @@ public class Registry {
 		}
 	}
 
+	/*
+	 * Clubs
+	 */
 
 	public Collection<Club> getClubs() {
 		return clubRegistry.getGroups();
@@ -149,11 +149,11 @@ public class Registry {
 		return clubRegistry.getSortedGroups();
 	}
 	
-	public List<String> getClubnames() {
+	public List<String> getClubNames() {
 		return clubRegistry.getNames();
 	}
 	
-	public List<String> getSortedClubnames() {
+	public List<String> getSortedClubNames() {
 		return clubRegistry.getSortedNames();
 	}
 	
@@ -169,7 +169,7 @@ public class Registry {
 		clubRegistry.remove(club);
 	}
 	
-	public void updateClubname(Club club, String newName) {
+	public void updateClubName(Club club, String newName) {
 		clubRegistry.updateName(club, newName);
 	}
 	

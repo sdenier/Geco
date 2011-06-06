@@ -277,7 +277,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 		writer.write("Circuit N°;Circuit;km;m;Postes du circuit;Pl"); //$NON-NLS-1$
 		writer.write("\n"); //$NON-NLS-1$
 		
-		List<String> clubnames = registry().getClubnames();
+		List<String> clubnames = registry().getClubNames();
 		List<String> categorynames = registry().getCategorynames();
 		List<String> coursenames = registry().getCoursenames();
 		
