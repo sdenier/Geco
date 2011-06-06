@@ -238,11 +238,11 @@ public class RunnersTableModel extends AbstractTableModel {
 
 	protected void updateComboBoxEditors(JTable table) {
 		TableColumnModel model = table.getColumnModel();
-		categoryEditor = new DefaultCellEditor(new JComboBox(registry().getSortedCategorynames()));
+		categoryEditor = new DefaultCellEditor(new JComboBox(registry().getSortedCategorynames().toArray()));
 		model.getColumn(4).setCellEditor(categoryEditor);
-		courseEditor = new DefaultCellEditor(new JComboBox(registry().getSortedCoursenames()));
+		courseEditor = new DefaultCellEditor(new JComboBox(registry().getSortedCoursenames().toArray()));
 		model.getColumn(5).setCellEditor(courseEditor);
-		clubEditor = new DefaultCellEditor(new JComboBox(registry().getSortedClubnames()));
+		clubEditor = new DefaultCellEditor(new JComboBox(registry().getSortedClubnames().toArray()));
 		model.getColumn(6).setCellEditor(clubEditor);
 		// (re)set clicks for new cell editors
 		setClickCountToEdit(clickCountToEdit);

@@ -32,9 +32,7 @@ public class Registry {
 	
 	private Vector<String> sortedCoursenames;
 	
-	private Map<String, Club> clubs;
-
-	private Vector<String> sortedClubnames;
+	private GroupRegistry<Club> clubRegistry;
 	
 	private Map<String, Category> categories;
 	
@@ -58,7 +56,7 @@ public class Registry {
 	 */
 	public Registry() {
 		courses = new HashMap<String, Course>();
-		clubs = new HashMap<String, Club>();
+		clubRegistry = new GroupRegistry<Club>();
 		categories = new HashMap<String, Category>();
 		runnersByEcard = new HashMap<String, Runner>();
 		runnersByCategory = new HashMap<Category, List<Runner>>();
@@ -144,61 +142,35 @@ public class Registry {
 
 
 	public Collection<Club> getClubs() {
-		synchronized (clubs) {
-			return clubs.values();
-		}
+		return clubRegistry.getGroups();
 	}
 
-	public Vector<Club> getSortedClubs() {
-		Vector<Club> clubList = new Vector<Club>(getClubs());
-		Collections.sort(clubList, new Comparator<Club>() {
-			@Override
-			public int compare(Club c1, Club c2) {
-				return c1.getName().compareTo(c2.getName());
-			}});
-		return clubList;
+	public List<Club> getSortedClubs() {
+		return clubRegistry.getSortedGroups();
 	}
 	
-	public Vector<String> getClubnames() {
-		synchronized (clubs) {
-			return new Vector<String>(clubs.keySet());
-		}
+	public List<String> getClubnames() {
+		return clubRegistry.getNames();
 	}
 	
-	public Vector<String> getSortedClubnames() {
-		if( sortedClubnames==null ) {
-			sortedClubnames = getClubnames();
-			Collections.sort(sortedClubnames);
-		}
-		return sortedClubnames;
+	public List<String> getSortedClubnames() {
+		return clubRegistry.getSortedNames();
 	}
 	
 	public Club findClub(String name) {
-		synchronized (clubs) {
-			return clubs.get(name);
-		}
+		return clubRegistry.find(name);
 	}
 	
 	public void addClub(Club club) {
-		synchronized (clubs) {
-			clubs.put(club.getName(), club);
-			sortedClubnames = null;
-		}
+		clubRegistry.add(club);
 	}
 	
 	public void removeClub(Club club) {
-		synchronized (clubs) {
-			clubs.remove(club.getName());
-			sortedClubnames = null;
-		}		
+		clubRegistry.remove(club);
 	}
 	
 	public void updateClubname(Club club, String newName) {
-		synchronized (clubs) {
-			clubs.remove(club.getName());
-			club.setName(newName);
-			addClub(club);
-		}
+		clubRegistry.updateName(club, newName);
 	}
 	
 	public Club noClub() {
@@ -206,13 +178,7 @@ public class Registry {
 	}
 
 	public Club anyClub() {
-		synchronized (clubs) {
-			try {
-				return clubs.values().iterator().next();
-			} catch (NoSuchElementException e) {
-				return null;
-			}
-		}
+		return clubRegistry.any();
 	}
 
 	

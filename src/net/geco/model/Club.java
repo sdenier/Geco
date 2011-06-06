@@ -9,7 +9,7 @@ package net.geco.model;
  * @since Nov 23, 2008
  *
  */
-public interface Club {
+public interface Club extends Group {
 
 	public String getName();
 

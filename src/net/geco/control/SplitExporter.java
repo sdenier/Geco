@@ -10,13 +10,14 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
 
+import net.geco.basics.Announcer.StageListener;
 import net.geco.basics.Html;
 import net.geco.basics.TimeManager;
-import net.geco.basics.Announcer.StageListener;
 import net.geco.control.ResultBuilder.ResultConfig;
 import net.geco.control.ResultBuilder.SplitTime;
 import net.geco.model.Category;
@@ -276,9 +277,9 @@ public class SplitExporter extends AResultExporter implements StageListener {
 		writer.write("Circuit N°;Circuit;km;m;Postes du circuit;Pl"); //$NON-NLS-1$
 		writer.write("\n"); //$NON-NLS-1$
 		
-		Vector<String> clubnames = registry().getClubnames();
-		Vector<String> categorynames = registry().getCategorynames();
-		Vector<String> coursenames = registry().getCoursenames();
+		List<String> clubnames = registry().getClubnames();
+		List<String> categorynames = registry().getCategorynames();
+		List<String> coursenames = registry().getCoursenames();
 		
 		for (RunnerRaceData runnerData : registry().getRunnersData()) {
 			Runner runner = runnerData.getRunner();
