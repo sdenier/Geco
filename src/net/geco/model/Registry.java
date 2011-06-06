@@ -46,7 +46,7 @@ public class Registry {
 	
 	private Map<Runner, RunnerRaceData> runnerData;
 	
-	private Map<String, HeatSet> heatsets;
+	private GroupRegistry<HeatSet> heatsetRegistry;
 	
 	private Object runnersLock = new Object();
 
@@ -59,7 +59,7 @@ public class Registry {
 		runnersByCategory = new HashMap<Category, List<Runner>>();
 		runnersByCourse = new HashMap<Course, List<Runner>>();
 		runnerData = new HashMap<Runner, RunnerRaceData>();
-		heatsets = new HashMap<String, HeatSet>();
+		heatsetRegistry = new GroupRegistry<HeatSet>();
 	}
 	
 	
@@ -400,34 +400,25 @@ public class Registry {
 	}
 
 	
+	/*
+	 * HeatSet
+	 * TODO: add updateHeatSetName
+	 */
+	
 	public Collection<HeatSet> getHeatSets() {
-		synchronized (heatsets) {
-			return heatsets.values();
-		}
+		return heatsetRegistry.getGroups();
 	}
 
-	public Vector<String> getHeatSetnames() {
-		synchronized (heatsets) {
-			return new Vector<String>(heatsets.keySet());
-		}
-	}
-	
 	public HeatSet findHeatSet(String name) {
-		synchronized (heatsets) {
-			return heatsets.get(name);
-		}
+		return heatsetRegistry.find(name);
 	}
 	
 	public void addHeatSet(HeatSet heatset) {
-		synchronized (heatsets) {
-			heatsets.put(heatset.getName(), heatset);
-		}
+		heatsetRegistry.add(heatset);
 	}
 
 	public void removeHeatset(HeatSet heatSet) {
-		synchronized (heatsets) {
-			heatsets.remove(heatSet.getName());
-		}
+		heatsetRegistry.remove(heatSet);
 	}
 
 

@@ -10,7 +10,7 @@ package net.geco.model;
  * @since Jun 23, 2009
  *
  */
-public interface HeatSet {
+public interface HeatSet extends Group {
 
 	public String getName();
 
