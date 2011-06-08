@@ -22,12 +22,19 @@ public class CardDataIO extends AbstractIO<RunnerRaceData> {
 		return "CardData.csv"; //$NON-NLS-1$
 	}
 
+	private boolean version12 = true;
+
 	public CardDataIO(Factory factory, CsvReader reader, CsvWriter writer, Registry registry) {
+		this(factory, reader, writer, registry, true);
+	}
+	
+	public CardDataIO(Factory factory, CsvReader reader, CsvWriter writer, Registry registry, boolean version12) { // MIGR12
 		super(factory, reader, writer, registry);
 		if( this.reader!=null )
 			this.reader.setCsvSep(";"); //$NON-NLS-1$
 		if( this.writer!=null )
 			this.writer.setCsvSep(";"); //$NON-NLS-1$
+		this.version12  = version12;
 	}
 
 	@Override
@@ -36,7 +43,12 @@ public class CardDataIO extends AbstractIO<RunnerRaceData> {
 		 * Start id,read time,clear time,check time,start time,finish time,
 		 * control, time, ...
 		 */
-		Runner runner = this.registry.findRunnerById(Integer.valueOf(record[0]));
+		Runner runner;
+		if( version12 ){
+			runner = this.registry.findRunnerById(Integer.valueOf(record[0]));
+		} else {
+			runner = this.registry.findRunnerByEcard(record[0]);
+		}
 		if( runner==null ){
 			throw new Error("Error in race data " + sourceFilename() +"! " //$NON-NLS-1$ //$NON-NLS-2$
 							+ "Can't find runner with e-card " + record[0] //$NON-NLS-1$

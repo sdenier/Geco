@@ -6,6 +6,7 @@ package test.net.geco.model;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
@@ -76,30 +77,13 @@ public class CSVFormatTest {
 		assertTrue(runner.rentedEcard());
 		assertTrue(runner.isNC());
 		assertEquals(new Date(3600000), runner.getRegisteredStarttime());
-	}
-
-	@Test
-	public void testMigr12EcardToStartid(){ // MIGR12
-		RunnerIO runnerIO = new RunnerIO(null, null, null, null, 0);
-		assertEquals(10001, runnerIO.uniqueStartIdFromDerivedEcard("1a").intValue());
-		assertEquals(100001, runnerIO.uniqueStartIdFromDerivedEcard("10a").intValue());
-		assertEquals(1000001, runnerIO.uniqueStartIdFromDerivedEcard("100a").intValue());
-		assertEquals(100011, runnerIO.uniqueStartIdFromDerivedEcard("1aa").intValue());
-		assertEquals(10000111, runnerIO.uniqueStartIdFromDerivedEcard("10aaa").intValue());
-		assertEquals(10000011, runnerIO.uniqueStartIdFromDerivedEcard("100aa").intValue());
-	}
-	
-	@Test
-	public void testRunnerImportMigr12(){ // MIGR12
-		RunnerIO runnerIO = new RunnerIO(factory, null, null, registry, 0);
-		Runner runner = runnerIO.importTData(new String[]{
-			"100a", "203a", "John", "Doe", "Cl", "Course", "true", "H60", "1:00:00", "", "", "true", "50000"
-		});
 		
+		runner = runnerIO.importTData(new String[]{
+			"100", "203a", "John", "Doe", "Cl", "Course", "true", "H60", "1:00:00", "", "","true" });
 		assertEquals("Doe", runner.getLastname());
 		assertEquals("John", runner.getFirstname());
-		assertEquals(1000001, runner.getStartId().intValue());
-		assertEquals(50000, runner.getArchiveId().intValue());
+		assertEquals(100, runner.getStartId().intValue());
+		assertNull(runner.getArchiveId());
 		assertEquals("203a", runner.getEcard());
 		assertTrue(runner.rentedEcard());
 		assertTrue(runner.isNC());
@@ -138,8 +122,13 @@ public class CSVFormatTest {
 	}
 	
 	private Runner runnerFactory(Integer startId){
+		return runnerFactory(startId, "");
+	}
+	
+	private Runner runnerFactory(Integer startId, String ecard){
 		Runner runner = factory.createRunner();
 		runner.setStartId(startId);
+		runner.setEcard(ecard);
 		runner.setCategory(category);
 		runner.setCourse(course);
 		registry.addRunner(runner);
@@ -169,6 +158,25 @@ public class CSVFormatTest {
 	}
 
 	@Test
+	public void testCardDataImportMigration12(){ // MIGR12
+		CardDataIO cardDataIO = new CardDataIO(factory, null, null, registry, false);
+		runnerFactory(67, "501aa");
+		RunnerRaceData runnerData = cardDataIO.importTData(new String[]{
+			"501aa", "1:00:00", "--:--", "1:00:15", "1:05:00", "2:10:05", "33", "1:06:15"				
+		});
+		cardDataIO.register(runnerData, registry);
+		assertEquals(TimeManager.safeParse("1:00:00"), runnerData.getReadtime());
+		assertEquals(TimeManager.NO_TIME, runnerData.getErasetime());
+		assertEquals(TimeManager.safeParse("1:00:15"), runnerData.getControltime());
+		assertEquals(TimeManager.safeParse("1:05:00"), runnerData.getStarttime());
+		assertEquals(TimeManager.safeParse("2:10:05"), runnerData.getFinishtime());
+		Punch[] punches = runnerData.getPunches();
+		assertEquals(1, punches.length);
+		assertEquals(33, punches[0].getCode());
+		assertEquals(TimeManager.safeParse("1:06:15"), punches[0].getTime());
+	}
+	
+	@Test
 	public void testCardDataRoundtrip(){
 		runnerFactory(66);
 		CardDataIO cardDataIO = new CardDataIO(factory, null, null, registry);
@@ -192,6 +200,17 @@ public class CSVFormatTest {
 		assertEquals(TimeManager.safeParse("0:59:25").getTime(), raceData.getResult().getRacetime());
 	}
 
+	@Test
+	public void testResultDataImportMigration12(){ // MIGR12
+		testCardDataImportMigration12();
+		ResultDataIO resultDataIO = new ResultDataIO(factory, null, null, registry, false);
+		RunnerRaceData raceData = resultDataIO.importTData(new String[]{
+			"501aa", "NOS", "0:59:25" 
+		});
+		assertEquals(Status.NOS, raceData.getStatus());
+		assertEquals(TimeManager.safeParse("0:59:25").getTime(), raceData.getResult().getRacetime());
+	}
+	
 	@Test
 	public void testResultDataRoundtrip(){
 		testCardDataImport();

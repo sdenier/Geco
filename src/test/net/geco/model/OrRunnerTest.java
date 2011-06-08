@@ -7,7 +7,6 @@ package test.net.geco.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
 import net.geco.model.Registry;
 import net.geco.model.Runner;
 
@@ -51,7 +50,7 @@ public class OrRunnerTest {
 	public void testRuthLynamB() {
 //		24	10886	Ruth Lynam	CNOC	Long Course	false	W50	36000000	-2	2	true		0
 		Runner runner = registryB.findRunnerByEcard("10886");
-		assertEquals(24, runner.getStartnumber());
+		assertEquals(24, runner.getStartId().intValue());
 		assertEquals("Ruth", runner.getFirstname());
 		assertEquals("Lynam", runner.getLastname());
 		assertEquals(registryB.findClub("CNOC"), runner.getClub());
@@ -64,7 +63,7 @@ public class OrRunnerTest {
 	public void testErikOronnolsB() {
 //		34	27326	Erik Oronnols	Linkopings	Long Course	false	M21	42027000	43736000	2	false		0
 		Runner runner = registryB.findRunnerByEcard("27326");
-		assertEquals(34, runner.getStartnumber());
+		assertEquals(34, runner.getStartId().intValue());
 		assertEquals("Erik", runner.getFirstname());
 		assertEquals("Oronnols", runner.getLastname());
 		assertEquals(registryB.findClub("Linkopings"), runner.getClub());
@@ -77,7 +76,7 @@ public class OrRunnerTest {
 	public void testSusieNaughtonB() {
 //		16	11261	Susie Amelie Naughton	3ROC	Short Course	false	W12	40636000	42908000	2	false		0
 		Runner runner = registryB.findRunnerByEcard("11261");
-		assertEquals(16, runner.getStartnumber());
+		assertEquals(16, runner.getStartId().intValue());
 		assertEquals("Susie Amelie", runner.getFirstname());
 		assertEquals("Naughton", runner.getLastname());
 		assertEquals(registryB.findClub("3ROC"), runner.getClub());
@@ -90,7 +89,7 @@ public class OrRunnerTest {
 	public void testBillyFyffeM() {
 //		168	203186	Billy Fyffe	FERMO	Brown	false	M50	46438000	54054000	2	false		0
 		Runner runner = registryM.findRunnerByEcard("203186");
-		assertEquals(168, runner.getStartnumber());
+		assertEquals(168, runner.getStartId().intValue());
 		assertEquals("Billy", runner.getFirstname());
 		assertEquals("Fyffe", runner.getLastname());
 		assertEquals(registryM.findClub("FERMO"), runner.getClub());
@@ -103,7 +102,7 @@ public class OrRunnerTest {
 	public void testOBoyleM() {
 //		162	51009	Caoimhe O'Boyle	CNOC	Orange	false	 	47396000	48530000	2	false		0
 		Runner runner = registryM.findRunnerByEcard("51009");
-		assertEquals(162, runner.getStartnumber());
+		assertEquals(162, runner.getStartId().intValue());
 		assertEquals("Caoimhe", runner.getFirstname());
 		assertEquals("O'Boyle", runner.getLastname());
 		assertEquals(registryM.findClub("CNOC"), runner.getClub());
@@ -116,7 +115,7 @@ public class OrRunnerTest {
 	public void testAidanBlagdenM() {
 //		43	11445	Aidan Blagden	 	Orange	true	M14	41219000	42673000	2	false		0
 		Runner runner = registryM.findRunnerByEcard("11445");
-		assertEquals(43, runner.getStartnumber());
+		assertEquals(43, runner.getStartId().intValue());
 		assertEquals("Aidan", runner.getFirstname());
 		assertEquals("Blagden", runner.getLastname());
 		assertEquals(registryM.findClub("[None]"), runner.getClub());

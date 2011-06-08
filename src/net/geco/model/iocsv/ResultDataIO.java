@@ -22,8 +22,15 @@ public class ResultDataIO extends AbstractIO<RunnerRaceData> {
 		return "ResultData.csv"; //$NON-NLS-1$
 	}
 
+	private boolean version12 = true;
+
 	public ResultDataIO(Factory factory, CsvReader reader, CsvWriter writer, Registry registry) {
+		this(factory, reader, writer, registry, true);
+	}
+	
+	public ResultDataIO(Factory factory, CsvReader reader, CsvWriter writer, Registry registry, boolean version12) {
 		super(factory, reader, writer, registry);
+		this.version12 = version12;
 	}
 
 	@Override
@@ -41,7 +48,12 @@ public class ResultDataIO extends AbstractIO<RunnerRaceData> {
 		RunnerResult result = factory.createRunnerResult();
 		result.setStatus(Enum.valueOf(Status.class, record[1]));
 		result.setRacetime(TimeManager.safeParse(record[2]).getTime());
-		RunnerRaceData data = registry.findRunnerData(Integer.valueOf(record[0]));
+		RunnerRaceData data;
+		if( version12 ){
+			data = registry.findRunnerData(Integer.valueOf(record[0]));
+		} else {
+			data = registry.findRunnerData(record[0]);
+		}
 		if( data==null ) {
 			throw new Error("Error in race data " + sourceFilename() +"! " //$NON-NLS-1$ //$NON-NLS-2$
 					+ "Can't find runner with e-card " + record[0] //$NON-NLS-1$

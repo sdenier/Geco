@@ -42,7 +42,7 @@ public class RegistryBuilder extends BasicControl{
 	}
 	
 
-	public Registry importAllData(Registry registry, String baseDir, long zeroTime) {
+	public Registry importAllData(Registry registry, String baseDir, long zeroTime, boolean version12) {
 		
 		try {
 			reader.initialize(baseDir, ClubIO.orFilename());
@@ -74,14 +74,14 @@ public class RegistryBuilder extends BasicControl{
 
 		try {
 			reader.initialize(baseDir, CardDataIO.sourceFilename());
-			new CardDataIO(factory(), reader, null, registry).importData();
+			new CardDataIO(factory(), reader, null, registry, version12).importData(); // MIGR12
 		} catch (IOException e) {
 			e.printStackTrace();
 		}						
 
 		try {
 			reader.initialize(baseDir, ResultDataIO.sourceFilename());
-			new ResultDataIO(factory(), reader, null, registry).importData();
+			new ResultDataIO(factory(), reader, null, registry, version12).importData();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

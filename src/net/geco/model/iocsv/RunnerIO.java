@@ -38,11 +38,7 @@ public class RunnerIO extends AbstractIO<Runner> {
 	public Runner importTData(String[] record) {
 //		id,Ecard,First Name,Last Name,Club,Course,Rented,Class,Start Time,Finish Time,Status,NC,Archive
 		Runner runner = this.factory.createRunner();
-		try {
-			runner.setStartId(Integer.valueOf(record[0]));
-		} catch (NumberFormatException e) {
-			runner.setStartId(uniqueStartIdFromDerivedEcard(record[0]));
-		}
+		runner.setStartId(Integer.valueOf(record[0]));
 		runner.setEcard(record[1]);
 		runner.setFirstname(record[2]);
 		runner.setLastname(record[3]);
@@ -70,10 +66,10 @@ public class RunnerIO extends AbstractIO<Runner> {
 		runner.setRegisteredStarttime( TimeManager.absoluteTime(TimeManager.safeParse(record[8]), zeroTime) );
 		runner.setRentedEcard(Boolean.parseBoolean(record[6]));
 		runner.setNC(Boolean.parseBoolean(record[11]));
-		if( record[12].equals("") ) { //$NON-NLS-1$
-			runner.setArchiveId(null);
-		} else {
+		if( record.length==13 && ! record[12].equals("") ) { //$NON-NLS-1$
 			runner.setArchiveId(new Integer(record[12]));
+		} else {
+			runner.setArchiveId(null);
 		}
 		return runner;
 	}
@@ -105,19 +101,5 @@ public class RunnerIO extends AbstractIO<Runner> {
 				(r.getArchiveId()==null) ? "" : r.getArchiveId().toString(), //$NON-NLS-1$
 		};
 	}
-
-	public Integer uniqueStartIdFromDerivedEcard(String startId) {
-		int suffix = startId.indexOf('a');
-		String prefix = startId.substring(0, suffix);
-		int nbA = startId.substring(suffix).length();
-		int start = Integer.parseInt(prefix);
-		start *= 1000;
-		for (int i = 0; i < nbA; i++) {
-			start *= 10;
-			start++;
-		}
-		return Integer.valueOf(start);
-	}
-
 
 }

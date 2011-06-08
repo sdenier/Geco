@@ -88,7 +88,8 @@ public class StageBuilder extends BasicControl {
 		newStage.setRegistry(registry);
 		this.registryBuilder.importAllData(	registry,
 											newStage.getBaseDir(),
-											newStage.getZeroHour());
+											newStage.getZeroHour(),
+											newStage.version12()); // MIGR12
 	}
 	
 	public void save(Stage stage, Properties props, String backupname) {
