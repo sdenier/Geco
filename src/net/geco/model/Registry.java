@@ -190,6 +190,10 @@ public class Registry {
 	public Collection<Runner> getRunners() {
 		return runnerRegistry.getRunners();
 	}
+
+	public Runner findRunnerById(Integer startId) {
+		return runnerRegistry.findRunnerById(startId);
+	}
 	
 	public Runner findRunnerByEcard(String ecard) {
 		return runnerRegistry.findRunnerByEcard(ecard);
@@ -233,6 +237,10 @@ public class Registry {
 	
 	public RunnerRaceData findRunnerData(Runner runner) {
 		return runnerRegistry.findRunnerData(runner);
+	}
+
+	public RunnerRaceData findRunnerData(Integer startId) {
+		return runnerRegistry.findRunnerData(startId);
 	}
 
 	public RunnerRaceData findRunnerData(String ecard) {

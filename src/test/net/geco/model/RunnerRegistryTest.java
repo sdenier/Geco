@@ -386,6 +386,7 @@ public class RunnerRegistryTest {
 		registry.addRunner(runner1);
 		registry.addRunnerData(data);
 		assertEquals( data, registry.findRunnerData(runner1) );
+		assertEquals( data, registry.findRunnerData(1) );
 		assertEquals( data, registry.findRunnerData("100") );
 	}
 

@@ -191,6 +191,10 @@ public class RunnerRegistry {
 	public synchronized RunnerRaceData findRunnerData(Runner runner) {
 		return runnerData.get(runner);
 	}
+	
+	public synchronized RunnerRaceData findRunnerData(Integer startId) {
+		return runnerData.get(findRunnerById(startId));
+	}
 
 	public synchronized RunnerRaceData findRunnerData(String ecard) {
 		return runnerData.get(findRunnerByEcard(ecard));
