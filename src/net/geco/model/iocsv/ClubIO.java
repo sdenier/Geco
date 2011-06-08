@@ -27,7 +27,11 @@ public class ClubIO extends AbstractIO<Club> {
 	public Club importTData(String[] record) {
 		Club club = this.factory.createClub();
 		club.setName(record[0]);
-		club.setShortname(record[1]);
+		if( record.length==2 ){
+			club.setShortname(record[1]);
+		} else {
+			club.setShortname(""); //$NON-NLS-1$
+		}
 		return club;
 	}
 

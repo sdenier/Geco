@@ -27,9 +27,13 @@ public class CategoryIO extends AbstractIO<Category> {
 	public Category importTData(String[] record) {
 		Category cat = this.factory.createCategory();
 		cat.setShortname(record[0]);
-		cat.setLongname(record[1]);
-		if( record.length==3 ){
-			cat.setCourse(registry.findCourse(record[2]));
+		if( record.length==1 ){
+			cat.setLongname("");
+		} else {
+			cat.setLongname(record[1]);
+			if( record.length==3 ){
+				cat.setCourse(registry.findCourse(record[2]));
+			}			
 		}
 		return cat;
 	}
