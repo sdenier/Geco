@@ -33,10 +33,10 @@ public class CardDataIO extends AbstractIO<RunnerRaceData> {
 	@Override
 	public RunnerRaceData importTData(String[] record) {
 		/*
-		 * SI number,read time,clear time,check time,start time,finish time,
+		 * Start id,read time,clear time,check time,start time,finish time,
 		 * control, time, ...
 		 */
-		Runner runner = this.registry.findRunnerByEcard(record[0]);
+		Runner runner = this.registry.findRunnerById(Integer.valueOf(record[0]));
 		if( runner==null ){
 			throw new Error("Error in race data " + sourceFilename() +"! " //$NON-NLS-1$ //$NON-NLS-2$
 							+ "Can't find runner with e-card " + record[0] //$NON-NLS-1$
@@ -55,7 +55,7 @@ public class CardDataIO extends AbstractIO<RunnerRaceData> {
 		Punch[] punches = new Punch[(record.length - 6) / 2];
 		for (int i = 0; i < punches.length; i++) {
 			punches[i] = this.factory.createPunch();
-			punches[i].setCode(new Integer(record[2*i + 6]));
+			punches[i].setCode(Integer.parseInt(record[2*i + 6]));
 			punches[i].setTime(TimeManager.safeParse(record[2*i + 7]));
 		};
 		data.setPunches(punches);
@@ -77,7 +77,7 @@ public class CardDataIO extends AbstractIO<RunnerRaceData> {
 		 */
 		Punch[] punches = d.getPunches();
 		String [] record = new String[6 + 2 * punches.length];
-		record[0] = d.getRunner().getEcard();
+		record[0] = d.getRunner().getStartId().toString();
 		record[1] = TimeManager.fullTime(d.getReadtime());
 		record[2] = TimeManager.fullTime(d.getErasetime());
 		record[3] = TimeManager.fullTime(d.getControltime());
