@@ -21,6 +21,8 @@ public class StageImpl implements Stage {
 	
 	private int nbBackups;
 	private int autosaveDelay; // in minutes
+	
+	private boolean version12; // MIGR12
 
 	
 	private static final int DEFAULT_ZEROHOUR = 32400000;	// 9:00
@@ -82,6 +84,10 @@ public class StageImpl implements Stage {
 	public String filepath(String filename) {
 		return baseDir + "/" + filename; //$NON-NLS-1$
 	}
+	
+	public boolean version12(){
+		return version12;
+	}
 
 	/**
 	 * Return the properties for the current stage, create new ones if necessary.
@@ -136,7 +142,14 @@ public class StageImpl implements Stage {
 			} catch (NumberFormatException e) {
 				System.err.println(e);
 			}
-		}	
+		}
+		
+		prop = properties.getProperty(versionProperty());
+		if( prop!=null ) {
+			version12 = true;
+		} else {
+			version12 = false;
+		}
 	}
 	
 	
@@ -150,6 +163,7 @@ public class StageImpl implements Stage {
 		properties.setProperty(zerohourProperty(), Long.toString(getZeroHour()));
 		properties.setProperty(autosaveDelayProperty(), Integer.toString(getAutosaveDelay()));
 		properties.setProperty(nbAutoBackupsProperty(), Integer.toString(getNbAutoBackups()));
+		properties.setProperty(versionProperty(), "V1.2");
 		setProperties(properties);
 	}
 
@@ -167,6 +181,10 @@ public class StageImpl implements Stage {
 
 	public static String nbAutoBackupsProperty() {
 		return "NbAutoBackups"; //$NON-NLS-1$
+	}
+	
+	public static String versionProperty() {
+		return "Version"; //$NON-NLS-1$
 	}
 
 }

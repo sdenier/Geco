@@ -40,6 +40,8 @@ public interface Stage {
 	public void setNbAutoBackups(int nbBackups);
 	
 	public String filepath(String filename);
+	
+	public boolean version12(); // MIGR12
 
 
 	/**

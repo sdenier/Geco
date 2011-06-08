@@ -5,6 +5,8 @@
 package test.net.geco.control;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Properties;
 
@@ -67,6 +69,17 @@ public class StageBuilderTest {
 		StageBuilder stageBuilder = new StageBuilder(factory);
 		stageBuilder.loadStageProperties(stage, "testData/valid/");
 		assertStageData(stage, "Valid Stage", "testData/valid/", "10:00:00", 10, 1);
+	}
+	
+	@Test
+	public void testMigration12() {
+		StageBuilder stageBuilder = new StageBuilder(factory);
+		stageBuilder.loadStageProperties(stage, "testData/valid/");
+		assertTrue(stage.version12());
+		
+		stageBuilder = new StageBuilder(factory);
+		stageBuilder.loadStageProperties(stage, "testData/belfield/");
+		assertFalse(stage.version12());
 	}
 	
 	@Test
