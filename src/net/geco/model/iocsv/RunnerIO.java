@@ -38,7 +38,11 @@ public class RunnerIO extends AbstractIO<Runner> {
 	public Runner importTData(String[] record) {
 //		id,Ecard,First Name,Last Name,Club,Course,Rented,Class,Start Time,Finish Time,Status,NC,Archive
 		Runner runner = this.factory.createRunner();
-		runner.setStartId(new Integer(record[0]));
+		try {
+			runner.setStartId(Integer.valueOf(record[0]));
+		} catch (NumberFormatException e) {
+			runner.setStartId(uniqueStartIdFromDerivedEcard(record[0]));
+		}
 		runner.setEcard(record[1]);
 		runner.setFirstname(record[2]);
 		runner.setLastname(record[3]);
@@ -100,6 +104,19 @@ public class RunnerIO extends AbstractIO<Runner> {
 				Boolean.toString(r.isNC()),
 				(r.getArchiveId()==null) ? "" : r.getArchiveId().toString(), //$NON-NLS-1$
 		};
+	}
+
+	public Integer uniqueStartIdFromDerivedEcard(String startId) {
+		int suffix = startId.indexOf('a');
+		String prefix = startId.substring(0, suffix);
+		int nbA = startId.substring(suffix).length();
+		int start = Integer.parseInt(prefix);
+		start *= 1000;
+		for (int i = 0; i < nbA; i++) {
+			start *= 10;
+			start++;
+		}
+		return Integer.valueOf(start);
 	}
 
 

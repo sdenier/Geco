@@ -81,13 +81,12 @@ public class CSVFormatTest {
 	@Test
 	public void testMigr12EcardToStartid(){ // MIGR12
 		RunnerIO runnerIO = new RunnerIO(null, null, null, null, 0);
-		assertEquals(1, runnerIO.uniqueStartId("1"));
-		assertEquals(10001, runnerIO.uniqueStartId("1a"));
-		assertEquals(100001, runnerIO.uniqueStartId("10a"));
-		assertEquals(1000001, runnerIO.uniqueStartId("100a"));
-		assertEquals(100011, runnerIO.uniqueStartId("1aa"));
-		assertEquals(10000111, runnerIO.uniqueStartId("10aaa"));
-		assertEquals(10000011, runnerIO.uniqueStartId("100aa"));
+		assertEquals(10001, runnerIO.uniqueStartIdFromDerivedEcard("1a").intValue());
+		assertEquals(100001, runnerIO.uniqueStartIdFromDerivedEcard("10a").intValue());
+		assertEquals(1000001, runnerIO.uniqueStartIdFromDerivedEcard("100a").intValue());
+		assertEquals(100011, runnerIO.uniqueStartIdFromDerivedEcard("1aa").intValue());
+		assertEquals(10000111, runnerIO.uniqueStartIdFromDerivedEcard("10aaa").intValue());
+		assertEquals(10000011, runnerIO.uniqueStartIdFromDerivedEcard("100aa").intValue());
 	}
 	
 	@Test
