@@ -16,10 +16,6 @@ public interface Runner extends AbstractRunner {
 
 	public void setStartId(Integer id);
 
-	public int getStartnumber();
-
-	public void setStartnumber(int startnumber);
-	
 	public Date getRegisteredStarttime();
 	
 	public void setRegisteredStarttime(Date time);

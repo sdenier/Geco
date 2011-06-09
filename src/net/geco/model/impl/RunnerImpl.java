@@ -21,8 +21,6 @@ public class RunnerImpl extends AbstractRunnerImpl implements Runner {
 	
 	private Integer startId;
 
-	private int startnumber;
-	
 	private Date starttime;
 	
 	private Course course;
@@ -46,14 +44,6 @@ public class RunnerImpl extends AbstractRunnerImpl implements Runner {
 		startId = id;
 	}
 	
-	public int getStartnumber() {
-		return startnumber;
-	}
-
-	public void setStartnumber(int startnumber) {
-		this.startnumber = startnumber;
-	}
-
 	public Date getRegisteredStarttime() {
 		return starttime;
 	}
@@ -94,7 +84,7 @@ public class RunnerImpl extends AbstractRunnerImpl implements Runner {
 	}
 	
 	public String idString() {
-		return getNameR() + ", " + getStartnumber() + ", " + getEcard();   //$NON-NLS-1$ //$NON-NLS-2$
+		return getNameR() + ", " + getStartId().toString() + ", " + getEcard();   //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 }

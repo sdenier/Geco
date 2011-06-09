@@ -5,7 +5,6 @@
 package net.geco.control;
 
 import java.text.ParseException;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -46,7 +45,7 @@ public class RunnerControl extends Control {
 
 	public Runner buildBasicRunner(String chip) {
 		Runner runner = factory().createRunner();
-		runner.setStartnumber(registry().detectMaxStartnumber() + 1);
+		runner.setStartId(registry().nextStartId());
 		runner.setEcard(deriveUniqueChipnumber(chip));
 		runner.setFirstname(""); //$NON-NLS-1$
 		runner.setLastname("X"); //$NON-NLS-1$
@@ -127,10 +126,12 @@ public class RunnerControl extends Control {
 	}
 	
 	
-	public boolean verifyStartnumber(Runner runner, int newStart) {
-		int oldStart = runner.getStartnumber();
-		Integer[] startnums = registry().collectStartnumbers();
-		boolean ok = Util.different(newStart, Arrays.binarySearch(startnums, oldStart), startnums);
+	public boolean verifyStartnumber(Runner runner, Integer newStart) {
+		if( newStart.equals(runner.getStartId()) ){
+			return true;
+		}
+		Integer[] startnums = registry().getStartIds().toArray(new Integer[0]);
+		boolean ok = Util.different(newStart, startnums);
 		if( !ok )
 			geco().info(Messages.getString("RunnerControl.StartnumberUsedWarning"), true); //$NON-NLS-1$
 		return ok;
@@ -138,9 +139,9 @@ public class RunnerControl extends Control {
 	
 	public boolean validateStartnumber(Runner runner, String newStartString) {
 		try {
-			int newStart = new Integer(newStartString);
+			Integer newStart = Integer.valueOf(newStartString);
 			if( verifyStartnumber(runner, newStart) ) {
-				runner.setStartnumber(newStart);
+				runner.setStartId(newStart);
 				return true;
 			}
 		} catch (NumberFormatException e) {
@@ -151,13 +152,14 @@ public class RunnerControl extends Control {
 	
 	public boolean verifyChipnumber(Runner runner, String newChipString) {
 		String newChip = newChipString.trim();
+		if( newChip.equals(runner.getEcard()) ){
+			return true;
+		}
 		if( newChip.isEmpty() ) {
 			geco().info(Messages.getString("RunnerControl.EcardEmptyWarning"), true); //$NON-NLS-1$
 			return false;
 		}
-		String oldChip = runner.getEcard();
-		String[] chips = registry().collectEcardNumbers();
-		boolean ok = Util.different(newChip, Arrays.binarySearch(chips, oldChip), chips);
+		boolean ok = Util.different(newChip, registry().collectEcardNumbers());
 		if( !ok )
 			geco().info(Messages.getString("RunnerControl.EcardUsedWarning"), true); //$NON-NLS-1$
 		return ok;

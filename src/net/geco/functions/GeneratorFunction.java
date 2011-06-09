@@ -181,7 +181,7 @@ public class GeneratorFunction extends GecoFunction {
 	
 	public Runner generateRunner() throws RunnerCreationException {
 		Runner runner = runnerControl.createAnonymousRunner(randomCourse());
-		runner.setLastname(runner.getLastname() + runner.getStartnumber());
+		runner.setLastname(runner.getLastname() + runner.getStartId());
 		return runner;
 	}
 	

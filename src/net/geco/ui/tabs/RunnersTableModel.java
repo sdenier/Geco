@@ -135,7 +135,7 @@ public class RunnersTableModel extends AbstractTableModel {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Runner runner = getRunner(rowIndex);
 		switch (columnIndex) {
-		case 0: return runner.getStartnumber();
+		case 0: return runner.getStartId();
 		case 1: return runner.getEcard();
 		case 2: return runner.getFirstname();
 		case 3: return runner.getLastname();
@@ -373,7 +373,7 @@ public class RunnersTableModel extends AbstractTableModel {
 	public class StartnumberEditor extends RunnersTableEditor {
 		@Override
 		public Object getCellEditorValue() {
-			return Integer.toString(selectedRunner.getStartnumber());
+			return selectedRunner.getStartId();
 		}
 		@Override
 		public boolean validateInput() {

@@ -29,7 +29,7 @@ import net.geco.model.iocsv.RunnerIO;
  */
 public class HeatBuilder extends Control {
 	
-	private int startnumber;
+	private int startId;
 
 	private Vector<Heat> heats;
 
@@ -168,7 +168,7 @@ public class HeatBuilder extends Control {
 	
 	public void generateCsvHeats(String filename, HeatSet[] selectedHeatsets) throws IOException {
 		Vector<Heat> heats = getHeats(selectedHeatsets);
-		resetStartnumber();
+		resetStartId();
 		CsvWriter writer = new CsvWriter();
 		writer.initialize(filename);
 		writer.open();
@@ -187,7 +187,7 @@ public class HeatBuilder extends Control {
 	}
 	private Runner cloneRunnerForHeat(Runner runner, Course heatCourse) {
 		Runner newRunner = factory().createRunner();
-		newRunner.setStartnumber(newStartnumber());
+		newRunner.setStartId(newStartId());
 		newRunner.setEcard(runner.getEcard());
 		newRunner.setFirstname(runner.getFirstname());
 		newRunner.setLastname(runner.getLastname());
@@ -198,11 +198,11 @@ public class HeatBuilder extends Control {
 		return newRunner;
 	}
 	
-	private void resetStartnumber() {
-		startnumber = 0;
+	private void resetStartId() {
+		startId = 0;
 	}
-	private int newStartnumber() {
-		return ++startnumber;
+	private Integer newStartId() {
+		return ++startId;
 	}
 	
 }

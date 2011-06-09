@@ -6,6 +6,7 @@ package net.geco.model;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 
@@ -298,12 +299,12 @@ public class Registry {
 	 * TODO: refactor below
 	 */
 
-	public Integer[] collectStartnumbers() {
-		return runnerRegistry.getStartIds().toArray(new Integer[0]);
+	public Set<Integer> getStartIds() {
+		return runnerRegistry.getStartIds();
 	}
 	
-	public Integer detectMaxStartnumber() {
-		return runnerRegistry.maxStartId();
+	public Integer nextStartId() {
+		return runnerRegistry.maxStartId() + 1;
 	}
 
 	public Integer detectMaxEcardNumber() {

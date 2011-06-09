@@ -289,7 +289,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 				Course course = runner.getCourse();
 				
 				Collection<String> record = saveRecord(
-						Integer.toString(runner.getStartnumber()),
+						runner.getStartId().toString(),
 						runner.getEcard(),
 						( runner.getArchiveId()!=null )? runner.getArchiveId().toString() : "", //$NON-NLS-1$
 						runner.getLastname(),

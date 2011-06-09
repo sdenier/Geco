@@ -52,6 +52,16 @@ public class Util {
 		}
 		return allDiff;
 	}
+	
+	public static <T> boolean different(T t, T[] tArray) {
+		boolean allDifferent = true;
+		int i = 0;
+		while( allDifferent && i<tArray.length ) {
+			allDifferent = ! t.equals(tArray[i]);
+			i++;
+		}
+		return allDifferent;
+	}
 
 	public static <T> boolean different(T t, int numIndex, T[] tArray) {
 		boolean allDifferent = true;

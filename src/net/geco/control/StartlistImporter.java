@@ -46,7 +46,7 @@ public class StartlistImporter extends OEImporter {
 		
 		Runner runner = runnerControl().buildBasicRunner(ecard); // ensure unique ecard
 		if( ! record[0].equals("") ){ //$NON-NLS-1$
-			runner.setStartnumber(new Integer(record[0])); // we do not ensure unique start number here
+			runner.setStartId(Integer.valueOf(record[0])); // TODO: ensure unique start number here
 		}
 		if( ! record[2].equals("") ){
 			runner.setArchiveId(new Integer(record[2]));			
