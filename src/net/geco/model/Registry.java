@@ -320,8 +320,8 @@ public class Registry {
 		return max;
 	}
 	
-	public String[] collectEcardNumbers() {
-		return runnerRegistry.getEcards().toArray(new String[0]);
+	public Set<String> getEcards() {
+		return runnerRegistry.getEcards();
 	}
 
 }

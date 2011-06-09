@@ -223,7 +223,7 @@ public class RunnersTableModel extends AbstractTableModel {
 	public void initCellEditors(JTable table) {
 		TableColumnModel model = table.getColumnModel();
 		model.getColumn(0).setCellEditor(new StartnumberEditor());
-		model.getColumn(1).setCellEditor(new ChipnumberEditor());
+		model.getColumn(1).setCellEditor(new EcardEditor());
 		model.getColumn(2).setCellEditor(new FirstnameEditor());
 		model.getColumn(3).setCellEditor(new LastnameEditor());
 		model.getColumn(7).setCellEditor(new RacetimeEditor());
@@ -377,18 +377,18 @@ public class RunnersTableModel extends AbstractTableModel {
 		}
 		@Override
 		public boolean validateInput() {
-			return control().validateStartnumber(selectedRunner, getValue());
+			return control().validateStartId(selectedRunner, getValue());
 		}
 	}
 	
-	public class ChipnumberEditor extends RunnersTableEditor {
+	public class EcardEditor extends RunnersTableEditor {
 		@Override
 		public Object getCellEditorValue() {
 			return selectedRunner.getEcard();
 		}
 		@Override
 		public boolean validateInput() {
-			return control().validateChipnumber(selectedRunner, getValue());
+			return control().validateEcard(selectedRunner, getValue());
 		}
 	}
 

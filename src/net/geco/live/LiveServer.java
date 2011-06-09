@@ -113,8 +113,8 @@ public class LiveServer extends Control {
 			System.err.println("creation " + data[0]); //$NON-NLS-1$
 			try {
 				runner = runnerControl.createAnonymousRunner(registry().findCourse(data[6]));
-				runnerControl.validateChipnumber(runner, data[0]);
-				runnerControl.validateStartnumber(runner, data[1]);
+				runnerControl.validateEcard(runner, data[0]);
+				runnerControl.validateStartId(runner, data[1]);
 				runnerControl.validateLastname(runner, data[2]);
 				runnerControl.validateFirstname(runner, data[3]);
 				runnerControl.validateCategory(runner, data[4]);

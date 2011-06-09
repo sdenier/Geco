@@ -5,12 +5,12 @@
 package net.geco.control;
 
 import java.text.ParseException;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 import net.geco.basics.Announcer;
 import net.geco.basics.TimeManager;
-import net.geco.basics.Util;
 import net.geco.model.Category;
 import net.geco.model.Club;
 import net.geco.model.Course;
@@ -91,10 +91,10 @@ public class RunnerControl extends Control {
 	}
 	
 	public String deriveUniqueChipnumber(String chipnumber) {
-		return prvDeriveUniqueEcard(chipnumber, registry().collectEcardNumbers());
+		return prvDeriveUniqueEcard(chipnumber, registry().getEcards());
 	}
-	private String prvDeriveUniqueEcard(String newEcard, String[] ecards) {
-		if( Util.different(newEcard, -1, ecards) )
+	private String prvDeriveUniqueEcard(String newEcard, Collection<String> ecards) {
+		if( ! ecards.contains(newEcard) )
 			return newEcard;
 		else 
 			return prvDeriveUniqueEcard(newEcard + "a", ecards); //$NON-NLS-1$		
@@ -126,50 +126,49 @@ public class RunnerControl extends Control {
 	}
 	
 	
-	public boolean verifyStartnumber(Runner runner, Integer newStart) {
-		if( newStart.equals(runner.getStartId()) ){
+	public boolean verifyStartId(Runner runner, Integer newStart) {
+		if( newStart.equals(runner.getStartId()) ){ // no change, proceed
 			return true;
 		}
-		Integer[] startnums = registry().getStartIds().toArray(new Integer[0]);
-		boolean ok = Util.different(newStart, startnums);
-		if( !ok )
-			geco().info(Messages.getString("RunnerControl.StartnumberUsedWarning"), true); //$NON-NLS-1$
-		return ok;
+		boolean existing = registry().getStartIds().contains(newStart);
+		if( existing )
+			geco().info(Messages.getString("RunnerControl.StartIdUsedWarning"), true); //$NON-NLS-1$
+		return ! existing;
 	}
 	
-	public boolean validateStartnumber(Runner runner, String newStartString) {
+	public boolean validateStartId(Runner runner, String newStartString) {
 		try {
 			Integer newStart = Integer.valueOf(newStartString);
-			if( verifyStartnumber(runner, newStart) ) {
+			if( verifyStartId(runner, newStart) ) {
 				runner.setStartId(newStart);
 				return true;
 			}
 		} catch (NumberFormatException e) {
-			geco().info(Messages.getString("RunnerControl.StartnumberFormatWarning"), true); //$NON-NLS-1$
+			geco().info(Messages.getString("RunnerControl.StartIdFormatWarning"), true); //$NON-NLS-1$
 		}
 		return false;
 	}
 	
-	public boolean verifyChipnumber(Runner runner, String newChipString) {
-		String newChip = newChipString.trim();
-		if( newChip.equals(runner.getEcard()) ){
+	public boolean verifyEcard(Runner runner, String newEcardString) {
+		String newEcard = newEcardString.trim();
+		if( newEcard.equals(runner.getEcard()) ){ // no change, proceed
 			return true;
 		}
-		if( newChip.isEmpty() ) {
+		if( newEcard.isEmpty() ) {
 			geco().info(Messages.getString("RunnerControl.EcardEmptyWarning"), true); //$NON-NLS-1$
 			return false;
 		}
-		boolean ok = Util.different(newChip, registry().collectEcardNumbers());
-		if( !ok )
+		boolean existing = registry().getEcards().contains(newEcard);
+		if( existing )
 			geco().info(Messages.getString("RunnerControl.EcardUsedWarning"), true); //$NON-NLS-1$
-		return ok;
+		return ! existing;
 	}
 
-	public boolean validateChipnumber(Runner runner, String newChip) {
-		if( verifyChipnumber(runner, newChip) ) {
-			String oldChip = runner.getEcard();
-			runner.setEcard(newChip.trim());
-			registry().updateRunnerEcard(oldChip, runner);
+	public boolean validateEcard(Runner runner, String newEcard) {
+		if( verifyEcard(runner, newEcard) ) {
+			String oldEcard = runner.getEcard();
+			runner.setEcard(newEcard.trim());
+			registry().updateRunnerEcard(oldEcard, runner);
 			return true;
 		} else {
 			return false;
