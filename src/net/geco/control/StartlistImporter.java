@@ -32,16 +32,12 @@ public class StartlistImporter extends OEImporter {
 		// [13-19] N° club;Nom;Ville;Nat;N° cat.;Court;Long;
 		// Num1;Num2;Num3;Text1;Text2;Text3;Adr. nom;Rue;Ligne2;Code Post.;Ville;Tél.;Fax;E-mail;Id/Club;Louée;Engagement;Payé
 		// ;1061511;10869;DENIER;Simon;80;H;;;00:46:00;;;;5906;5906NO;VALMO;France;11;H21A;H21A
-
 		
 		String ecard = record[1];
 		String lastName = trimQuotes(record[3]);
 		String firstName = trimQuotes(record[4]);
 		if( ecard.equals("") ){ //$NON-NLS-1$
 			geco().log(Messages.getString("StartlistImporter.NoEcardWarning") + firstName + " " + lastName); //$NON-NLS-1$ //$NON-NLS-2$
-			ecard = runnerControl().newUniqueChipnumber();
-			// TODO: an e-card is required for the registry, however it would be good to get past that REQ
-			// part of the move to startnumber as id
 		}
 		
 		Runner runner = runnerControl().buildBasicRunner(ecard); // ensure unique ecard

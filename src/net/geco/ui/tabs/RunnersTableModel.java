@@ -222,7 +222,7 @@ public class RunnersTableModel extends AbstractTableModel {
 
 	public void initCellEditors(JTable table) {
 		TableColumnModel model = table.getColumnModel();
-		model.getColumn(0).setCellEditor(new StartnumberEditor());
+		model.getColumn(0).setCellEditor(new StartIdEditor());
 		model.getColumn(1).setCellEditor(new EcardEditor());
 		model.getColumn(2).setCellEditor(new FirstnameEditor());
 		model.getColumn(3).setCellEditor(new LastnameEditor());
@@ -370,10 +370,10 @@ public class RunnersTableModel extends AbstractTableModel {
 	}
 
 
-	public class StartnumberEditor extends RunnersTableEditor {
+	public class StartIdEditor extends RunnersTableEditor {
 		@Override
 		public Object getCellEditorValue() {
-			return selectedRunner.getStartId();
+			return selectedRunner.getStartId().toString();
 		}
 		@Override
 		public boolean validateInput() {

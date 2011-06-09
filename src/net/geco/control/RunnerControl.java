@@ -86,12 +86,15 @@ public class RunnerControl extends Control {
 		return createAnonymousRunner(registry().anyCourse());
 	}
 
-	public String newUniqueChipnumber() {
+	public String newUniqueChipnumber() { // TODO: remove
 		return Integer.toString(registry().detectMaxEcardNumber() + 1);
 	}
 	
-	public String deriveUniqueChipnumber(String chipnumber) {
-		return prvDeriveUniqueEcard(chipnumber, registry().getEcards());
+	public String deriveUniqueChipnumber(String ecard) {
+		if( ecard.equals("") ){
+			return ecard;
+		}
+		return prvDeriveUniqueEcard(ecard, registry().getEcards());
 	}
 	private String prvDeriveUniqueEcard(String newEcard, Collection<String> ecards) {
 		if( ! ecards.contains(newEcard) )
@@ -153,10 +156,6 @@ public class RunnerControl extends Control {
 		String newEcard = newEcardString.trim();
 		if( newEcard.equals(runner.getEcard()) ){ // no change, proceed
 			return true;
-		}
-		if( newEcard.isEmpty() ) {
-			geco().info(Messages.getString("RunnerControl.EcardEmptyWarning"), true); //$NON-NLS-1$
-			return false;
 		}
 		boolean existing = registry().getEcards().contains(newEcard);
 		if( existing )

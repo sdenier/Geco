@@ -156,9 +156,6 @@ public class ArchiveManager extends OEImporter implements StageListener {
 		String ecard = arkRunner.getEcard();
 		if( ecard.equals("") ){ //$NON-NLS-1$
 			geco().log(Messages.getString("ArchiveManager.NoMatchingEcardWarning") + arkRunner.getName()); //$NON-NLS-1$
-			ecard = runnerControl().newUniqueChipnumber();
-			// TODO: an e-card is required for the registry, however it would be good to get past that REQ
-			// part of the move to startnumber as id
 		}
 		Runner runner = runnerControl().buildBasicRunner(ecard); // ensure unique ecard
 		runner.setArchiveId(arkRunner.getArchiveId());
