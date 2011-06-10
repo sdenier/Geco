@@ -2,3 +2,4 @@ name=Valid Stage
 NbAutoBackups=10
 AutosaveDelay=1
 SIZeroTime=36000000
+Version=V1.2
