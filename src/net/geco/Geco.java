@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.Properties;
 
 import net.geco.app.AppBuilder;
-import net.geco.app.OrientShowAppBuilder;
 import net.geco.basics.Announcer;
 import net.geco.basics.GService;
 import net.geco.basics.GecoRequestHandler;
@@ -95,7 +94,16 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 			GecoMacos.earlySetup();
 		}
 
-		new Geco().startup(chooseStartDir(startDir), new OrientShowAppBuilder());
+		try {
+			GecoAppLauncher.loadStageProperties(chooseStartDir(startDir));
+			new Geco().startup(GecoAppLauncher.getStageDir(), GecoAppLauncher.getAppBuilder());
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private static void setLaunchOptions(String[] args) {
