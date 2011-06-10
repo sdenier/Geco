@@ -82,14 +82,14 @@ public class RunnerControlTest {
 		HashSet<String> ecards = new HashSet<String>(Arrays.asList( new String[]{"3"} ));
 		Mockito.when(registry.getEcards()).thenReturn(ecards);
 
-		assertEquals("", runnerControl.deriveUniqueChipnumber(""));
-		assertEquals("2", runnerControl.deriveUniqueChipnumber("2"));
-		assertEquals("3a", runnerControl.deriveUniqueChipnumber("3"));
+		assertEquals("", runnerControl.deriveUniqueEcard(""));
+		assertEquals("2", runnerControl.deriveUniqueEcard("2"));
+		assertEquals("3a", runnerControl.deriveUniqueEcard("3"));
 
 		ecards = new HashSet<String>(Arrays.asList( new String[]{"3", "3a"} ));
 		Mockito.when(registry.getEcards()).thenReturn(ecards);
 		
-		assertEquals("3aa", runnerControl.deriveUniqueChipnumber("3"));
+		assertEquals("3aa", runnerControl.deriveUniqueEcard("3"));
 	}
 
 }

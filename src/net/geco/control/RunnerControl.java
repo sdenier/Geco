@@ -46,7 +46,7 @@ public class RunnerControl extends Control {
 	public Runner buildBasicRunner(String chip) {
 		Runner runner = factory().createRunner();
 		runner.setStartId(registry().nextStartId());
-		runner.setEcard(deriveUniqueChipnumber(chip));
+		runner.setEcard(deriveUniqueEcard(chip));
 		runner.setFirstname(""); //$NON-NLS-1$
 		runner.setLastname("X"); //$NON-NLS-1$
 		return runner;
@@ -77,7 +77,7 @@ public class RunnerControl extends Control {
 	}
 
 	public Runner createAnonymousRunner(Course course) throws RunnerCreationException {
-		Runner runner = buildAnonymousRunner(newUniqueChipnumber(), course);
+		Runner runner = buildAnonymousRunner("", course);
 		registerRunner(runner, builder.buildRunnerData());
 		return runner;
 	}
@@ -86,11 +86,11 @@ public class RunnerControl extends Control {
 		return createAnonymousRunner(registry().anyCourse());
 	}
 
-	public String newUniqueChipnumber() { // TODO: remove
+	public String newUniqueEcard() {
 		return Integer.toString(registry().detectMaxEcardNumber() + 1);
 	}
 	
-	public String deriveUniqueChipnumber(String ecard) {
+	public String deriveUniqueEcard(String ecard) {
 		if( ecard.equals("") ){
 			return ecard;
 		}

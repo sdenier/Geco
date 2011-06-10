@@ -188,6 +188,31 @@ public class Registry {
 	 * Runners
 	 */
 
+	public Set<Integer> getStartIds() {
+		return runnerRegistry.getStartIds();
+	}
+	
+	public Integer nextStartId() {
+		return runnerRegistry.maxStartId() + 1;
+	}
+	
+	public Set<String> getEcards() {
+		return runnerRegistry.getEcards();
+	}
+
+	public int detectMaxEcardNumber() {
+		int max = 0;
+		for (String ecard : runnerRegistry.getEcards()) {
+			try {
+				Integer ecardi = Integer.valueOf(ecard);
+				max = Math.max(max, ecardi);
+			} catch (NumberFormatException e) {
+				// bypass ecard number xxxxa (cloned entries)
+			}
+		}
+		return max;
+	}
+
 	public Collection<Runner> getRunners() {
 		return runnerRegistry.getRunners();
 	}
@@ -292,36 +317,6 @@ public class Registry {
 
 	public void removeHeatset(HeatSet heatSet) {
 		heatsetRegistry.remove(heatSet);
-	}
-
-
-	/*
-	 * TODO: refactor below
-	 */
-
-	public Set<Integer> getStartIds() {
-		return runnerRegistry.getStartIds();
-	}
-	
-	public Integer nextStartId() {
-		return runnerRegistry.maxStartId() + 1;
-	}
-
-	public Integer detectMaxEcardNumber() {
-		int max = 0;
-		for (String ecard : runnerRegistry.getEcards()) {
-			try {
-				Integer ecardi = Integer.valueOf(ecard);
-				max = Math.max(max, ecardi);
-			} catch (NumberFormatException e) {
-				// bypass ecard number xxxxa (cloned entries)
-			}
-		}
-		return max;
-	}
-	
-	public Set<String> getEcards() {
-		return runnerRegistry.getEcards();
 	}
 
 }

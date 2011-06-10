@@ -107,7 +107,7 @@ public class AutoMergeHandler extends Control implements GecoRequestHandler {
 	}
 	
 	private String processData(RunnerRaceData runnerData, String ecard, Course course, Status status) {
-		String uniqueEcard = runnerControl().deriveUniqueChipnumber(ecard);
+		String uniqueEcard = runnerControl().deriveUniqueEcard(ecard);
 		try {
 			// Create from scratch a brand new runner
 			Runner newRunner = runnerControl().buildAnonymousRunner(uniqueEcard, course);

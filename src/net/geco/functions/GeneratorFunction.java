@@ -204,7 +204,7 @@ public class GeneratorFunction extends GecoFunction {
 	public ResultData generateUnknownData() {
 		random = new Random();
 		withRegistryControls();
-		ResultData cardData = generateCardData(runnerControl.newUniqueChipnumber(), randomCourse());
+		ResultData cardData = generateCardData(runnerControl.newUniqueEcard(), randomCourse());
 		siHandler.newCardRead(cardData);
 		return cardData;
 	}

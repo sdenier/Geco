@@ -286,7 +286,7 @@ public class MergeRunnerDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				// always assert we use a unique e-card (in particular if creating a new runner
 				// when one exists with the same e-card)
-				String uniqueEcardNumber = runnerControl().deriveUniqueChipnumber(ecard);
+				String uniqueEcardNumber = runnerControl().deriveUniqueEcard(ecard);
 				String selectedCoursename = getSelectedCoursename();
 				Course course = selectedCoursename.equals(Messages.uiGet("MergeRunnerDialog.UnknownCourseItem")) ? //$NON-NLS-1$
 					registry().anyCourse() :
