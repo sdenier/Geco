@@ -98,7 +98,8 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 		});
 		
 		c.gridy = 2;
-		add(new JLabel("Runner archive"), c);
+		//add(new JLabel("Runner archive"), c);
+		add(new JLabel(Messages.uiGet("StagePanel.RunnerArchiveLabel")), c);
 		final JTextField archiveF = new JTextField();
 		archiveF.setEditable(false);
 		archiveF.setText(geco.archiveManager().getArchiveName()); // TODO: refresh
@@ -120,7 +121,8 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 		add(selectArchiveFileB, c);
 
 		c.gridy = 3;
-		add(new JLabel("CN base"), c);
+		//add(new JLabel("CN base"), c);
+		add(new JLabel(Messages.uiGet("StagePanel.CNbaseLabel")), c);
 		final JTextField cnScoreF = new JTextField();
 		cnScoreF.setEditable(false);
 		cnScoreF.setText(geco.cnCalculator().getCnFile().getName());
@@ -131,7 +133,7 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir")); //$NON-NLS-1$
-				fileChooser.setDialogTitle("Select CN file"); //$NON-NLS-1$
+				fileChooser.setDialogTitle(Messages.uiGet("StagePanel.SelectCNfileLabel")); //$NON-NLS-1$
 				int answer = fileChooser.showOpenDialog(frame);
 				if( answer==JFileChooser.APPROVE_OPTION ) {
 					geco.cnCalculator().setCnFile(fileChooser.getSelectedFile());
