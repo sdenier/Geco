@@ -61,7 +61,8 @@ public class ConfigTablePanel<T> extends JPanel {
 				ListSelectionModel.SINGLE_SELECTION);
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 		JScrollPane jsp = new JScrollPane(table);
-		jsp.setPreferredSize(new Dimension(75, 275));
+		//jsp.setPreferredSize(new Dimension(75, 275));		
+		jsp.setPreferredSize(new Dimension(250, 275));
 		add(jsp, BorderLayout.CENTER);
 	}
 	
