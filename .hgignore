@@ -38,3 +38,5 @@ syntax: regexp
 ^scrap\.jpage$
 syntax: regexp
 ^Geco 1\.x alias$
+syntax: regexp
+\.jar$
