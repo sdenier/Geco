@@ -13,7 +13,6 @@ import net.geco.basics.Announcer;
 import net.geco.basics.GService;
 import net.geco.basics.GecoRequestHandler;
 import net.geco.basics.GecoResources;
-import net.geco.basics.GecoWarning;
 import net.geco.basics.Logger;
 import net.geco.control.ArchiveManager;
 import net.geco.control.AutoMergeHandler;
@@ -95,8 +94,9 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 		}
 
 		try {
-			GecoAppLauncher.loadStageProperties(chooseStartDir(startDir));
-			new Geco().startup(GecoAppLauncher.getStageDir(), GecoAppLauncher.getAppBuilder());
+//			GecoStageLauncher.loadStageProperties(chooseStartDir(startDir));
+			GecoStageLaunch stageLauncher = initStageLauncher(startDir);
+			new Geco().startup(stageLauncher);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (InstantiationException e) {
@@ -126,25 +126,23 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 		}
 	}
 
-	private static String chooseStartDir(String startDir) {
+	private static GecoStageLaunch initStageLauncher(String startDir) {
+		GecoStageLaunch stageLaunch = new GecoStageLaunch();
 		if( startDir!=null ) {
 			if( !GecoResources.exists(startDir) ) {
 				System.out.println(Messages.getString("Geco.NoPathWarning") + startDir); //$NON-NLS-1$
 				System.exit(0);
+			} else {
+				stageLaunch.loadFromFileSystem(startDir);
 			}
 		} else {
-			try {
-				startDir = new GecoLauncher(System.getProperty("user.dir")).open(null);
-			} catch (GecoWarning w) {
-				System.out.println(w.getLocalizedMessage());
-				System.exit(0);
-			} catch (Exception e) {
-				System.err.println(Messages.getString("Geco.FatalLaunchError")); //$NON-NLS-1$
-				e.printStackTrace();
-				System.exit(-1);
+			boolean cancelled = new GecoLauncher(null, stageLaunch).showLauncher();
+			if( cancelled ){
+				System.out.println("Bye bye!"); //$NON-NLS-1$
+				System.exit(0);				
 			}
 		}
-		return startDir;
+		return stageLaunch;
 	}
 
 	public Geco() {
@@ -153,9 +151,10 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 		}
 	}
 	
-	public void startup(String startDir, AppBuilder builder){
+	public void startup(GecoStageLaunch stageLauncher) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
+		AppBuilder builder = stageLauncher.getAppBuilder();
 		GecoControl gecoControl = new GecoControl(builder);
-		gecoControl.openStage(startDir);
+		gecoControl.openStage(stageLauncher.getStageDir());
 		initControls(builder, gecoControl);
 		window = new GecoWindow(this);
 		window.initGUI(builder);

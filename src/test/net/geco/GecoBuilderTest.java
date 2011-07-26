@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 
 import junit.framework.Assert;
 import net.geco.Geco;
-import net.geco.GecoAppLauncher;
+import net.geco.GecoStageLaunch;
 import net.geco.app.AppBuilder;
 import net.geco.app.OrientShowAppBuilder;
 import net.geco.basics.Announcer;
@@ -65,9 +65,10 @@ public class GecoBuilderTest {
 	
 	@Test
 	public void gecoLauncherLoadProperties() throws ClassNotFoundException, InstantiationException, IllegalAccessException{
-		GecoAppLauncher.loadStageProperties("testData/valid");
-		Assert.assertEquals("testData/valid", GecoAppLauncher.getStageDir());
-		Assert.assertTrue(GecoAppLauncher.getAppBuilder() instanceof OrientShowAppBuilder);
+		GecoStageLaunch stageLaunch = new GecoStageLaunch();
+		stageLaunch.loadFromFileSystem("testData/valid");
+		Assert.assertEquals("testData/valid", stageLaunch.getStageDir());
+		Assert.assertTrue(stageLaunch.getAppBuilder() instanceof OrientShowAppBuilder);
 	}
 
 	

@@ -102,8 +102,12 @@ public class StageBuilder extends BasicControl {
 	
 	private void saveStageProperties(Stage stage, Properties properties) {
 		stage.saveProperties(properties);
+		saveProperties(stage.getBaseDir(), properties);
+	}
+
+	public static void saveProperties(String baseDir, Properties properties) {
 		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(propFile(stage.getBaseDir())));
+			BufferedWriter writer = new BufferedWriter(new FileWriter(propFile(baseDir)));
 			properties.store(writer, "Geco " + new Date(System.currentTimeMillis()).toString()); //$NON-NLS-1$
 		} catch (IOException e) {
 			e.printStackTrace();
