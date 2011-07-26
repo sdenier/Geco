@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
 import java.net.URL;
 
 import javax.swing.BorderFactory;
@@ -27,6 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import net.geco.control.StageBuilder;
 import net.geco.framework.IStageLaunch;
 import net.geco.model.Messages;
 
@@ -174,7 +174,7 @@ public class GecoLauncher extends JDialog {
 		createB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if( directoryHasData(stageLaunch.getStageDir()) ){
+				if( StageBuilder.directoryHasData(stageLaunch.getStageDir()) ){
 					JOptionPane.showMessageDialog(GecoLauncher.this, "Can't overwrite an existing stage with new date", "Error", JOptionPane.WARNING_MESSAGE);
 				} else {
 					stageLaunch.initDirWithTemplateFiles();
@@ -183,23 +183,11 @@ public class GecoLauncher extends JDialog {
 				}
 			}
 		});
-		
-//		JButton cancelB = new JButton("Cancel");
-//		cancelB.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//			}
-//		});
-//		creationWizard.add(cancelB);
 
 		return creationWizard;
 	}
 	
 //	throw new GecoWarning(Messages.uiGet("GecoLauncher.CancelCreation")); //$NON-NLS-1$
 //	throw new GecoWarning(Messages.uiGet("GecoLauncher.CancelImport")); //$NON-NLS-1$
-	
-	public static boolean directoryHasData(String baseDir) {
-		return new File(baseDir + File.separator + "geco.prop").exists(); //$NON-NLS-1$
-	}
 	
 }

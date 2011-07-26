@@ -10,6 +10,7 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -19,9 +20,11 @@ import java.util.Vector;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -33,13 +36,12 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 
-import net.geco.basics.GecoWarning;
 import net.geco.basics.TimeManager;
 import net.geco.control.GecoControl;
+import net.geco.control.StageBuilder;
 import net.geco.model.Messages;
 import net.geco.model.Registry;
 import net.geco.model.RunnerRaceData;
-import net.geco.ui.basics.GecoLauncher;
 import net.geco.ui.basics.StartStopButton;
 
 
@@ -61,20 +63,16 @@ public class GecoLive implements LiveListener {
 	
 	public static void main(String[] args) {
 		Messages.put("live", "net.geco.live.messages"); //$NON-NLS-1$ //$NON-NLS-2$
+		Messages.put("ui", "net.geco.ui.messages"); //$NON-NLS-1$ //$NON-NLS-2$
 		GecoLive gecoLive = new GecoLive();
 		gecoLive.guiLaunch();
 	}
 
 	public GecoLive() {
 		String startDir = null;
-		try {
-			startDir = launcher();
-		} catch (GecoWarning w) {
-			System.out.println(w.getLocalizedMessage());
-			System.exit(0);
-		} catch (Exception e) {
-			System.out.println(e.toString());
-			e.printStackTrace();
+		startDir = launcher();
+		if( startDir==null ){
+			System.out.println("Bye bye!");
 			System.exit(0);
 		}
 
@@ -82,10 +80,24 @@ public class GecoLive implements LiveListener {
 		gecoControl.openStage(startDir);
 		liveComponent = new LiveComponent();
 	}
-	private String launcher() throws Exception {
-		return new GecoLauncher(System.getProperty("user.dir")).open(null); //$NON-NLS-1$
+	
+	private String launcher() {
+		JFileChooser chooser = new JFileChooser(System.getProperty("user.dir"));
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		chooser.setDialogTitle("Select a stage directory");
+		int returnValue = chooser.showDialog(null, "Open");
+		if( returnValue==JFileChooser.APPROVE_OPTION ) {
+			File baseFile = chooser.getSelectedFile();
+			String basePath = baseFile.getAbsolutePath();
+			if( baseFile.exists() && StageBuilder.directoryHasData(basePath) ) {
+				return basePath;
+			} else {
+				JOptionPane.showMessageDialog(chooser, "Directory does not contain Geco data", "Error", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		return null;
 	}
-
+	
 	private Registry registry() {
 		return gecoControl.registry();
 	}

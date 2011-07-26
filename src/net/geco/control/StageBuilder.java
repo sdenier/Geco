@@ -165,5 +165,9 @@ public class StageBuilder extends BasicControl {
 	public static boolean fileExists(String base, String filename) {
 		return new File(filepath(base, filename)).exists();
 	}
+
+	public static boolean directoryHasData(String baseDir) {
+		return propFile(baseDir).exists();
+	}
 	
 }
