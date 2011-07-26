@@ -33,15 +33,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import net.geco.app.AppBuilder;
 import net.geco.basics.Announcer;
 import net.geco.basics.GecoResources;
-import net.geco.basics.GecoWarning;
 import net.geco.basics.Html;
 import net.geco.framework.IGecoApp;
+import net.geco.framework.IStageLaunch;
 import net.geco.live.LiveClient;
 import net.geco.live.LiveClientDialog;
 import net.geco.model.Messages;
@@ -101,8 +102,12 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 	public GecoWindow(IGecoApp geco) {
 		this.geco = geco;
 		setLookAndFeel();
-		geco.announcer().registerStageListener(this);
-		geco.announcer().registerStationListener(this);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				GecoWindow.this.geco.exit();
+			}
+		});
 	}
 
 	private void setLookAndFeel() {
@@ -125,17 +130,18 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		}
 	}
 	
+	public void initAndLaunchGUI(AppBuilder builder){		
+		geco.announcer().registerStageListener(this);
+		geco.announcer().registerStationListener(this);
+		initGUI(builder);
+		launchGUI();
+	}
+	
 	public void initGUI(AppBuilder builder){
 		updateWindowTitle();
 		buildGUI(new StagePanel(this.geco, this),
 				 builder.buildUITabs(geco, this),
 				 builder.buildConfigPanels(geco, this));
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				geco.exit();
-			}
-		});
 	}
 
 	public void buildGUI(StagePanel stagePanel, TabPanel[] uiTabs, ConfigPanel[] configPanels) {
@@ -232,19 +238,27 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		openB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
-					geco.openStage(new GecoLauncher(
-							new File(geco.getCurrentStagePath()).getParentFile()).open(GecoWindow.this));
-				} catch (GecoWarning w) {
-					// ok, do nothing
-				} catch (Exception e1) {
-					JOptionPane.showMessageDialog(
-							GecoWindow.this,
-							e1.toString() + Messages.uiGet("GecoWindow.FatalOpenError"), //$NON-NLS-1$
-							Messages.uiGet("GecoWindow.LoadErrorTitle"), //$NON-NLS-1$
-							JOptionPane.ERROR_MESSAGE);
-					e1.printStackTrace();
-					System.exit(-1);
+				final IStageLaunch stageLaunch = geco.createStageLaunch();
+				stageLaunch.setStageDir(new File(geco.getCurrentStagePath()).getParentFile().getAbsolutePath());
+				boolean cancelled = new GecoLauncher(GecoWindow.this, stageLaunch).showLauncher();
+				if( ! cancelled ){
+					SwingUtilities.invokeLater(new Runnable() {
+						public void run() {
+							setVisible(false);
+							getContentPane().removeAll();
+							try {
+								geco.reboot(stageLaunch);
+							} catch (Exception e) {
+								JOptionPane.showMessageDialog(
+										GecoWindow.this,
+										e.toString() + Messages.uiGet("GecoWindow.FatalOpenError"), //$NON-NLS-1$
+										Messages.uiGet("GecoWindow.LoadErrorTitle"), //$NON-NLS-1$
+										JOptionPane.ERROR_MESSAGE);
+								e.printStackTrace();
+								System.exit(-1);
+							}
+						}
+					});
 				}
 			}
 		});

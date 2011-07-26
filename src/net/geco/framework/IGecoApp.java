@@ -26,5 +26,9 @@ public interface IGecoApp extends IGeco {
 	public void saveCurrentStage();
 	
 	public String getCurrentStagePath();
+
+	public abstract IStageLaunch createStageLaunch();
+
+	public void reboot(IStageLaunch stageLaunch) throws Exception;
 	
 }

@@ -30,6 +30,7 @@ import net.geco.control.SplitExporter;
 import net.geco.control.StageControl;
 import net.geco.control.StartlistImporter;
 import net.geco.framework.IGecoApp;
+import net.geco.framework.IStageLaunch;
 import net.geco.model.Messages;
 import net.geco.model.Registry;
 import net.geco.model.Runner;
@@ -94,15 +95,11 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 		}
 
 		try {
-//			GecoStageLauncher.loadStageProperties(chooseStartDir(startDir));
 			GecoStageLaunch stageLauncher = initStageLauncher(startDir);
 			new Geco().startup(stageLauncher);
-		} catch (ClassNotFoundException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
+			System.exit(-1);
 		}
 	}
 	
@@ -149,18 +146,29 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 		if( GecoResources.platformIsMacOs() ) {
 			GecoMacos.setupQuitAction(this);
 		}
-	}
-	
-	public void startup(GecoStageLaunch stageLauncher) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
-		AppBuilder builder = stageLauncher.getAppBuilder();
-		GecoControl gecoControl = new GecoControl(builder);
-		gecoControl.openStage(stageLauncher.getStageDir());
-		initControls(builder, gecoControl);
 		window = new GecoWindow(this);
-		window.initGUI(builder);
-		window.launchGUI();
 	}
 	
+	public void startup(GecoStageLaunch stageLaunch) throws Exception {
+		AppBuilder builder = stageLaunch.getAppBuilder();
+		GecoControl gecoControl = new GecoControl(builder);
+		gecoControl.openStage(stageLaunch.getStageDir());
+		initControls(builder, gecoControl);
+		window.initAndLaunchGUI(builder);
+		System.gc();
+	}
+
+	@Override
+	public IStageLaunch createStageLaunch() {
+		return new GecoStageLaunch();
+	}
+	
+	@Override
+	public void reboot(IStageLaunch stageLaunch) throws Exception {
+		shutdown();
+		startup((GecoStageLaunch) stageLaunch);
+	}
+
 	public void initControls(AppBuilder builder, GecoControl gecoControl) {
 		this.gecoControl = gecoControl;
 		builder.buildControls(gecoControl);
