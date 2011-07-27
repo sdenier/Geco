@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import net.geco.app.AppBuilder;
+import net.geco.app.GecoStageLaunch;
 import net.geco.basics.Announcer;
 import net.geco.basics.GService;
 import net.geco.basics.GecoRequestHandler;

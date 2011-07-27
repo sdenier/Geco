@@ -23,6 +23,7 @@ public class StageImpl implements Stage {
 	private int autosaveDelay; // in minutes
 	
 	private boolean version12; // MIGR12
+	private String appBuilderName;
 
 	
 	private static final int DEFAULT_ZEROHOUR = 32400000;	// 9:00
@@ -150,8 +151,9 @@ public class StageImpl implements Stage {
 		} else {
 			version12 = false;
 		}
+		
+		appBuilderName = properties.getProperty(appBuilderProperty(), defaultAppBuilderName());
 	}
-	
 	
 	/**
 	 * Save stage attributes in given properties, which become the new properties.
@@ -164,6 +166,7 @@ public class StageImpl implements Stage {
 		properties.setProperty(autosaveDelayProperty(), Integer.toString(getAutosaveDelay()));
 		properties.setProperty(nbAutoBackupsProperty(), Integer.toString(getNbAutoBackups()));
 		properties.setProperty(versionProperty(), "V1.2");
+		properties.setProperty(appBuilderProperty(), appBuilderName);
 		setProperties(properties);
 	}
 
@@ -185,6 +188,14 @@ public class StageImpl implements Stage {
 	
 	public static String versionProperty() {
 		return "Version"; //$NON-NLS-1$
+	}
+	
+	public static String appBuilderProperty() {
+		return "AppBuilder";
+	}
+
+	public static String defaultAppBuilderName() {
+		return "net.geco.app.OrientShowAppBuilder";
 	}
 
 }

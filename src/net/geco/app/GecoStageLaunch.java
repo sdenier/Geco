@@ -2,7 +2,7 @@
  * Copyright (c) 2011 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco;
+package net.geco.app;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,9 +14,9 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.util.Properties;
 
-import net.geco.app.AppBuilder;
 import net.geco.control.StageBuilder;
 import net.geco.framework.IStageLaunch;
+import net.geco.model.impl.StageImpl;
 
 /**
  * @author Simon Denier
@@ -46,11 +46,8 @@ public class GecoStageLaunch implements IStageLaunch {
 	public void loadFromFileSystem(String dir) {
 		setStageDir(dir);
 		Properties properties = StageBuilder.loadProperties(dir);
-		String appBuilderClassname = properties.getProperty("AppBuilder");
-		if( appBuilderClassname==null ){
-			appBuilderClassname = "net.geco.app.OrientShowAppBuilder";
-		}
-		setAppBuilderName(appBuilderClassname);
+		setAppBuilderName(properties.getProperty(StageImpl.appBuilderProperty(),
+												 StageImpl.defaultAppBuilderName()));
 	}
 	
 	public AppBuilder getAppBuilder() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
@@ -97,7 +94,8 @@ public class GecoStageLaunch implements IStageLaunch {
 		new File(baseDir + File.separator + "backups").mkdir(); //$NON-NLS-1$
 		createDataFiles(baseDir);
 		Properties properties = StageBuilder.loadProperties(baseDir);
-		properties.setProperty("name", stageName);
+		properties.setProperty(StageImpl.nameProperty(), stageName);
+		properties.setProperty(StageImpl.appBuilderProperty(), appBuilderName);
 		StageBuilder.saveProperties(baseDir, properties);
 	}
 	

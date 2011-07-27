@@ -16,8 +16,8 @@ import javax.swing.JPanel;
 
 import junit.framework.Assert;
 import net.geco.Geco;
-import net.geco.GecoStageLaunch;
 import net.geco.app.AppBuilder;
+import net.geco.app.GecoStageLaunch;
 import net.geco.app.OrientShowAppBuilder;
 import net.geco.basics.Announcer;
 import net.geco.control.GecoControl;
