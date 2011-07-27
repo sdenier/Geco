@@ -29,6 +29,6 @@ public interface IGecoApp extends IGeco {
 
 	public abstract IStageLaunch createStageLaunch();
 
-	public void reboot(IStageLaunch stageLaunch) throws Exception;
+	public void restart(IStageLaunch stageLaunch) throws Exception;
 	
 }

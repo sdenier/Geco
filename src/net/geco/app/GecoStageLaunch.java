@@ -43,6 +43,13 @@ public class GecoStageLaunch implements IStageLaunch {
 	private String appBuilderName;
 	private AppBuilder appBuilder;
 	
+	public GecoStageLaunch() {
+		setStageName("Stage name");
+		setStageDir(System.getProperty("user.dir"));
+		setAppBuilderName("net.geco.app.ClassicAppBuilder");
+	}
+	
+	@Override
 	public void loadFromFileSystem(String dir) {
 		setStageDir(dir);
 		Properties properties = StageBuilder.loadProperties(dir);

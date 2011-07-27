@@ -26,4 +26,6 @@ public interface IStageLaunch {
 
 	public void initDirWithTemplateFiles();
 
+	public void loadFromFileSystem(String dir);
+
 }

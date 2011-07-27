@@ -4,6 +4,7 @@
  */
 package net.geco.ui.basics;
 
+import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -21,6 +22,7 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -49,14 +51,13 @@ public class GecoLauncher extends JDialog {
 		super(frame, "Geco Launch Wizard", true); //$NON-NLS-1$
 		setResizable(false);
 		setModalityType(DEFAULT_MODALITY_TYPE);
-		cancelled = true;
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				cancel();
 			}
 		});
-		
-		initDefaultStageLaunch(stageLaunch);
+		cancelled = true;
+		this.stageLaunch = stageLaunch;
 
 		((JPanel) getContentPane()).setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		getContentPane().add( initGUIPanel() );
@@ -68,13 +69,6 @@ public class GecoLauncher extends JDialog {
 		setVisible(true);
 		return cancelled;
 	}
-	
-	public void initDefaultStageLaunch(IStageLaunch stageLaunch) {
-		this.stageLaunch = stageLaunch;
-		this.stageLaunch.setStageName("Stage name");
-		this.stageLaunch.setStageDir(System.getProperty("user.dir"));
-		this.stageLaunch.setAppBuilderName("net.geco.app.ClassicAppBuilder");
-	}
 
 	public boolean cancelled() {
 		return this.cancelled;
@@ -85,7 +79,70 @@ public class GecoLauncher extends JDialog {
 		setVisible(false);
 	}
 	
-	public JPanel initGUIPanel() {		
+	private JPanel initGUIPanel() {
+		JPanel launchPanel = new JPanel(new BorderLayout());
+		launchPanel.add(initOpenPanel(), BorderLayout.WEST);
+		launchPanel.add(initCreationPanel(), BorderLayout.EAST);
+		return launchPanel;
+	}
+	
+	private JPanel initOpenPanel() {
+		JPanel openWizard = new JPanel();
+		openWizard.setLayout(new GridBagLayout());
+		openWizard.setBorder(BorderFactory.createTitledBorder("Previous Stages"));
+
+		GridBagConstraints c = SwingUtils.gbConstr(0);
+		c.gridwidth = 3;
+		c.fill = GridBagConstraints.BOTH;
+		openWizard.add(new JList(new String[]{"apple", "pear", "orange"}), c);
+
+		JLabel stageDirL = new JLabel("Path:");
+		c = SwingUtils.gbConstr(1);
+		openWizard.add(stageDirL, c);
+		final JTextField stagePathL = new JTextField(stageLaunch.getStageDir());
+		stagePathL.setEditable(false);
+		stagePathL.setColumns(12);
+		openWizard.add(stagePathL, c);
+		
+		URL url = getClass().getResource("/resources/icons/crystal/folder_small.png"); //$NON-NLS-1$
+		JButton selectPathB = new JButton(new ImageIcon(url));
+		openWizard.add(selectPathB, c);
+		selectPathB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser chooser = new JFileChooser(stageLaunch.getStageDir());
+				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				chooser.setDialogTitle(Messages.uiGet("GecoLauncher.Title")); //$NON-NLS-1$
+				int returnValue = chooser.showDialog(GecoLauncher.this, "Select");
+				if( returnValue==JFileChooser.APPROVE_OPTION ) {
+					String basePath = chooser.getSelectedFile().getAbsolutePath();
+					stageLaunch.loadFromFileSystem(basePath);
+					stagePathL.setText(basePath);
+				}
+			}
+		});
+		
+		JButton openB = new JButton("Open");
+		c = SwingUtils.gbConstr(2);
+		c.gridwidth = 3;
+		c.anchor = GridBagConstraints.LINE_END;
+		openWizard.add(openB, c);
+		openB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if( ! StageBuilder.directoryHasData(stageLaunch.getStageDir()) ){
+					JOptionPane.showMessageDialog(GecoLauncher.this, "Can't find Geco data in directory", "Error", JOptionPane.WARNING_MESSAGE);
+				} else {
+					cancelled = false;
+					setVisible(false);
+				}
+			}
+		});
+		
+		return openWizard;
+	}
+	
+	private JPanel initCreationPanel() {		
 		JPanel creationWizard = new JPanel();
 		creationWizard.setLayout(new GridBagLayout());
 		creationWizard.setBorder(BorderFactory.createTitledBorder("New Stage"));
@@ -129,7 +186,7 @@ public class GecoLauncher extends JDialog {
 				JFileChooser chooser = new JFileChooser(stageLaunch.getStageDir());
 				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				chooser.setDialogTitle(Messages.uiGet("GecoLauncher.Title")); //$NON-NLS-1$
-				int returnValue = chooser.showDialog(GecoLauncher.this, Messages.uiGet("GecoLauncher.OpenLabel")); //$NON-NLS-1$
+				int returnValue = chooser.showDialog(GecoLauncher.this, "Select");
 				if( returnValue==JFileChooser.APPROVE_OPTION ) {
 					String basePath = chooser.getSelectedFile().getAbsolutePath();
 					stageLaunch.setStageDir(basePath);
@@ -140,7 +197,6 @@ public class GecoLauncher extends JDialog {
 
 		JPanel rulePanel = new JPanel();
 		rulePanel.setLayout(new BoxLayout(rulePanel, BoxLayout.Y_AXIS));
-//		rulePanel.setBorder(BorderFactory.createTitledBorder("Rules"));
 		JRadioButton classicAppRB = new JRadioButton("Classic inline");
 		classicAppRB.addActionListener(new ActionListener() {
 			@Override
@@ -175,7 +231,7 @@ public class GecoLauncher extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if( StageBuilder.directoryHasData(stageLaunch.getStageDir()) ){
-					JOptionPane.showMessageDialog(GecoLauncher.this, "Can't overwrite an existing stage with new date", "Error", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(GecoLauncher.this, "Geco data detected! Can't overwrite an existing stage", "Error", JOptionPane.WARNING_MESSAGE);
 				} else {
 					stageLaunch.initDirWithTemplateFiles();
 					cancelled = false;

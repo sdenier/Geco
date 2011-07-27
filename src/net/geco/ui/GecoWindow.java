@@ -247,7 +247,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 							setVisible(false);
 							getContentPane().removeAll();
 							try {
-								geco.reboot(stageLaunch);
+								geco.restart(stageLaunch);
 							} catch (Exception e) {
 								JOptionPane.showMessageDialog(
 										GecoWindow.this,

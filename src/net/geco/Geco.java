@@ -165,7 +165,7 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 	}
 	
 	@Override
-	public void reboot(IStageLaunch stageLaunch) throws Exception {
+	public void restart(IStageLaunch stageLaunch) throws Exception {
 		shutdown();
 		startup((GecoStageLaunch) stageLaunch);
 	}
