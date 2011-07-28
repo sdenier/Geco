@@ -4,13 +4,15 @@
  */
 package net.geco.framework;
 
+import net.geco.app.GecoStageLaunch;
+
 
 /**
  * @author Simon Denier
  * @since Jul 24, 2011
  *
  */
-public interface IStageLaunch {
+public interface IStageLaunch extends Cloneable {
 	
 	public String getStageName();
 	
@@ -26,6 +28,10 @@ public interface IStageLaunch {
 
 	public void initDirWithTemplateFiles();
 
-	public void loadFromFileSystem(String dir);
+	public GecoStageLaunch loadFromFileSystem(String dir);
+
+	public void copyFrom(IStageLaunch selectedValue);
+
+	public Object clone() throws CloneNotSupportedException;
 
 }

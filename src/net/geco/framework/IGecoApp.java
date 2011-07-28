@@ -4,6 +4,8 @@
  */
 package net.geco.framework;
 
+import java.util.List;
+
 import net.geco.model.Stage;
 
 /**
@@ -30,5 +32,7 @@ public interface IGecoApp extends IGeco {
 	public abstract IStageLaunch createStageLaunch();
 
 	public void restart(IStageLaunch stageLaunch) throws Exception;
+
+	public List<IStageLaunch> history();
 	
 }

@@ -3,9 +3,15 @@
  */
 package net.geco;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Properties;
 
 import net.geco.app.AppBuilder;
@@ -28,6 +34,7 @@ import net.geco.control.RunnerControl;
 import net.geco.control.SIReaderHandler;
 import net.geco.control.SingleSplitPrinter;
 import net.geco.control.SplitExporter;
+import net.geco.control.StageBuilder;
 import net.geco.control.StageControl;
 import net.geco.control.StartlistImporter;
 import net.geco.framework.IGecoApp;
@@ -57,6 +64,8 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 	private static boolean leisureMode = false;
 
 	private static String startDir = null;
+	
+	private static LinkedList<IStageLaunch> history = new LinkedList<IStageLaunch>();
 	
 	{
 		Properties prop = new Properties();
@@ -96,8 +105,8 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 		}
 
 		try {
-			GecoStageLaunch stageLauncher = initStageLauncher(startDir);
-			new Geco().startup(stageLauncher);
+			GecoStageLaunch stageLaunch = initStageLauncher(startDir);
+			new Geco().startup(stageLaunch);
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(-1);
@@ -134,7 +143,23 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 				stageLaunch.loadFromFileSystem(startDir);
 			}
 		} else {
-			boolean cancelled = new GecoLauncher(null, stageLaunch).showLauncher();
+			try {
+				File historyFile = new File(GecoResources.getGecoSupportDirectory() + GecoResources.sep + "history");
+				historyFile.createNewFile();
+				BufferedReader reader = new BufferedReader(new FileReader(historyFile));
+				String line;
+				do {
+					line = reader.readLine();
+					if( StageBuilder.directoryHasData(line) ){
+						history.addLast(new GecoStageLaunch().loadFromFileSystem(line));
+					}
+				} while( line != null );
+			} catch (FileNotFoundException e) {
+				System.out.println(e);
+			} catch (IOException e) {
+				System.out.println(e);
+			}
+			boolean cancelled = new GecoLauncher(null, stageLaunch, history).showLauncher();
 			if( cancelled ){
 				System.out.println("Bye bye!"); //$NON-NLS-1$
 				System.exit(0);				
@@ -153,6 +178,8 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 	public void startup(GecoStageLaunch stageLaunch) throws Exception {
 		AppBuilder builder = stageLaunch.getAppBuilder();
 		GecoControl gecoControl = new GecoControl(builder);
+		history.remove(stageLaunch);
+		history.addFirst(stageLaunch);
 		gecoControl.openStage(stageLaunch.getStageDir());
 		initControls(builder, gecoControl);
 		window.initAndLaunchGUI(builder);
@@ -168,6 +195,11 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 	public void restart(IStageLaunch stageLaunch) throws Exception {
 		shutdown();
 		startup((GecoStageLaunch) stageLaunch);
+	}
+	
+	@Override
+	public List<IStageLaunch> history(){
+		return history;
 	}
 
 	public void initControls(AppBuilder builder, GecoControl gecoControl) {
@@ -192,6 +224,16 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 	}
 
 	public void shutdown() {
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter(GecoResources.getGecoSupportDirectory() + GecoResources.sep + "history"));
+			for (IStageLaunch stageLaunch : history()) {
+				writer.write(stageLaunch.getStageDir());
+				writer.newLine();
+			}
+			writer.close();
+		} catch (IOException e) {
+			System.out.println(e);
+		}
 		gecoControl.closeCurrentStage();
 	}
 	

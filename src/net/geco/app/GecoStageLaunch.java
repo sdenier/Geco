@@ -39,7 +39,7 @@ public class GecoStageLaunch implements IStageLaunch {
 	};
 	
 	private String stageName;
-	private String baseDir;
+	private String stageDir;
 	private String appBuilderName;
 	private AppBuilder appBuilder;
 	
@@ -50,13 +50,34 @@ public class GecoStageLaunch implements IStageLaunch {
 	}
 	
 	@Override
-	public void loadFromFileSystem(String dir) {
+	public boolean equals(Object obj) {
+		return obj instanceof IStageLaunch && ((IStageLaunch) obj).getStageDir().equals(stageDir);
+	}
+
+	@Override
+	public GecoStageLaunch loadFromFileSystem(String dir) {
 		setStageDir(dir);
 		Properties properties = StageBuilder.loadProperties(dir);
+		setStageName(properties.getProperty(StageImpl.nameProperty(), "Unknown"));
 		setAppBuilderName(properties.getProperty(StageImpl.appBuilderProperty(),
 												 StageImpl.defaultAppBuilderName()));
+		return this;
 	}
 	
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		Object clone = super.clone();
+		((IStageLaunch) clone).copyFrom(this);
+		return clone;
+	}
+
+	@Override
+	public void copyFrom(IStageLaunch stageLaunch) {
+		this.stageName = stageLaunch.getStageName();
+		this.stageDir = stageLaunch.getStageDir();
+		this.appBuilderName = stageLaunch.getAppBuilderName();
+	}
+
 	public AppBuilder getAppBuilder() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
 		if( appBuilder==null ){
 			Class<?> appBuilderClass = Class.forName(appBuilderName);
@@ -74,15 +95,20 @@ public class GecoStageLaunch implements IStageLaunch {
 	public void setStageName(String name) {
 		stageName = name;
 	}
+	
+	@Override
+	public String toString() {
+		return getStageName();
+	}
 
 	@Override
 	public String getStageDir() {
-		return baseDir;
+		return stageDir;
 	}
 
 	@Override
 	public void setStageDir(String path) {
-		baseDir = path;
+		stageDir = path;
 	}
 
 	@Override
@@ -97,13 +123,13 @@ public class GecoStageLaunch implements IStageLaunch {
 
 	@Override
 	public void initDirWithTemplateFiles() {
-		new File(baseDir).mkdir();
-		new File(baseDir + File.separator + "backups").mkdir(); //$NON-NLS-1$
-		createDataFiles(baseDir);
-		Properties properties = StageBuilder.loadProperties(baseDir);
+		new File(stageDir).mkdir();
+		new File(stageDir + File.separator + "backups").mkdir(); //$NON-NLS-1$
+		createDataFiles(stageDir);
+		Properties properties = StageBuilder.loadProperties(stageDir);
 		properties.setProperty(StageImpl.nameProperty(), stageName);
 		properties.setProperty(StageImpl.appBuilderProperty(), appBuilderName);
-		StageBuilder.saveProperties(baseDir, properties);
+		StageBuilder.saveProperties(stageDir, properties);
 	}
 	
 	private void createDataFiles(String baseDir) {

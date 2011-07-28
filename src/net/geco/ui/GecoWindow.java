@@ -240,7 +240,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 			public void actionPerformed(ActionEvent e) {
 				final IStageLaunch stageLaunch = geco.createStageLaunch();
 				stageLaunch.setStageDir(new File(geco.getCurrentStagePath()).getParentFile().getAbsolutePath());
-				boolean cancelled = new GecoLauncher(GecoWindow.this, stageLaunch).showLauncher();
+				boolean cancelled = new GecoLauncher(GecoWindow.this, stageLaunch, geco.history()).showLauncher();
 				if( ! cancelled ){
 					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {

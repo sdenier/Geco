@@ -84,6 +84,21 @@ public class GecoResources {
 	}	
 	public static boolean platformIsLinux() {
 		return System.getProperty("os.name").startsWith("Linux"); //$NON-NLS-1$ //$NON-NLS-2$
-	}	
+	}
+	
+	public static File getGecoSupportDirectory() {
+		String homeDir = System.getProperty("user.home");
+		File gecoSupport = new File(homeDir + "/.geco");
+		if( platformIsMacOs() ){
+			gecoSupport = new File(homeDir + "/Library/Geco");
+		}
+		if( platformIsWindows() ){
+			gecoSupport = new File(System.getenv("APPDATA") + "/Geco");
+		}
+		if( ! gecoSupport.exists() ){
+			gecoSupport.mkdir();
+		}
+		return gecoSupport;
+	}
 
 }
