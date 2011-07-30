@@ -96,11 +96,25 @@ public class RunnerControl extends Control {
 		}
 		return prvDeriveUniqueEcard(ecard, registry().getEcards());
 	}
+	
 	private String prvDeriveUniqueEcard(String newEcard, Collection<String> ecards) {
+		char lastDigit;
+		
 		if( ! ecards.contains(newEcard) )
 			return newEcard;
-		else 
-			return prvDeriveUniqueEcard(newEcard + "a", ecards); //$NON-NLS-1$		
+		else {
+			lastDigit = newEcard.charAt(newEcard.length() - 1);
+			if ( Character.isDigit(lastDigit) ) {
+				newEcard = newEcard + "a";
+			}
+			else if ( lastDigit == 'z') {
+				newEcard = newEcard.substring(0, newEcard.length() - 1) + "aa";
+			}
+			else {
+				newEcard = newEcard.substring(0, newEcard.length() - 1) + ++lastDigit;
+			}
+			return prvDeriveUniqueEcard(newEcard, ecards); //$NON-NLS-1$
+		}
 	}
 
 	public RunnerRaceData registerNewRunner(Runner runner) {

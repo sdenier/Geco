@@ -6,6 +6,7 @@ package net.geco.model.impl;
 
 import java.util.Properties;
 
+import net.geco.model.Messages;
 import net.geco.model.Registry;
 import net.geco.model.Stage;
 
@@ -34,7 +35,7 @@ public class StageImpl implements Stage {
 	}
 
 	protected void initializeDefault() {
-		name = "Stage Name"; //$NON-NLS-1$
+		name = Messages.uiGet("StagePanel.StageNameDefault"); //$NON-NLS-1$
 		zeroHour = DEFAULT_ZEROHOUR;
 		nbBackups = 9;
 		autosaveDelay = 2;

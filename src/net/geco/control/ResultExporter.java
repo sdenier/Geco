@@ -75,7 +75,7 @@ public class ResultExporter extends AResultExporter {
 				.th("") //$NON-NLS-1$
 				.th(Messages.getString("ResultBuilder.NameHeader")) //$NON-NLS-1$
 				.th(Messages.getString("ResultBuilder.ClubHeader")) //$NON-NLS-1$
-				.th("Catégorie") //$NON-NLS-1$
+				.th(Messages.getString("ResultBuilder.CategoryHeader")) //$NON-NLS-1$
 				.th(Messages.getString("ResultBuilder.TimeHeader"), "class=\"right\"") //$NON-NLS-1$ //$NON-NLS-2$
 				.th(Messages.getString("ResultBuilder.MPHeader"), "class=\"right\"") //$NON-NLS-1$ //$NON-NLS-2$
 				.th(Messages.getString("ResultBuilder.RacetimeHeader"), "class=\"right\"") //$NON-NLS-1$ //$NON-NLS-2$
