@@ -28,11 +28,6 @@ public abstract class AResultExporter extends Control {
 
 	protected final ResultBuilder resultBuilder;
 
-	protected AResultExporter(GecoControl gecoControl) {
-		super(gecoControl);
-		resultBuilder = getService(ResultBuilder.class);
-	}
-
 	protected AResultExporter(Class<? extends Control> clazz, GecoControl gecoControl) {
 		super(clazz, gecoControl);
 		resultBuilder = getService(ResultBuilder.class);

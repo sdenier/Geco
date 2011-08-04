@@ -37,7 +37,7 @@ public class HeatBuilder extends Control {
 
 
 	public HeatBuilder(GecoControl gecoControl) {
-		super(gecoControl);
+		super(HeatBuilder.class, gecoControl);
 		this.resultBuilder = getService(ResultBuilder.class);
 	}
 	

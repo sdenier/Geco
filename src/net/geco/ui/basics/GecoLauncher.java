@@ -9,6 +9,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
@@ -128,6 +130,14 @@ public class GecoLauncher extends JDialog {
 				}
 			}
 		});
+		historyL.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if( e.getButton()==MouseEvent.BUTTON1 && e.getClickCount()==2 ){
+					returnStage();
+				}
+			}
+		});
 		
 		URL url = getClass().getResource("/resources/icons/crystal/folder_small.png"); //$NON-NLS-1$
 		JButton selectPathB = new JButton(new ImageIcon(url));
@@ -155,19 +165,23 @@ public class GecoLauncher extends JDialog {
 		openB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if( ! StageBuilder.directoryHasData(openStage.getStageDir()) ){
-					JOptionPane.showMessageDialog(GecoLauncher.this, "Can't find Geco data in directory", "Error", JOptionPane.WARNING_MESSAGE);
-				} else {
-					stageLaunch.copyFrom(openStage);
-					cancelled = false;
-					setVisible(false);
-				}
+				returnStage();
 			}
 		});
 		
 		return openWizard;
 	}
-	
+
+	private void returnStage() {
+		if( ! StageBuilder.directoryHasData(openStage.getStageDir()) ){
+			JOptionPane.showMessageDialog(GecoLauncher.this, "Can't find Geco data in directory", "Error", JOptionPane.WARNING_MESSAGE);
+		} else {
+			stageLaunch.copyFrom(openStage);
+			cancelled = false;
+			setVisible(false);
+		}
+	}
+
 	private JPanel initCreationPanel() {		
 		JPanel creationWizard = new JPanel();
 		creationWizard.setLayout(new GridBagLayout());
