@@ -46,7 +46,7 @@ public class GecoLoader {
 		
 		JarClassLoader loader = new JarClassLoader();
 		try {
-			if( args.length>0 && args[0].startsWith("valmo") ) { //$NON-NLS-1$
+			if( args.length>0 && args[0].startsWith("net.geco") ) { //$NON-NLS-1$
 				loader.invokeMain(args[0], Arrays.copyOfRange(args, 1, args.length));
 			} else {
 				loader.invokeMain("net.geco.Geco", args); //$NON-NLS-1$
