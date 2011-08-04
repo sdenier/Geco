@@ -56,8 +56,7 @@ public class ResultBuilder extends Control {
 	}
 	
 	public ResultBuilder(GecoControl gecoControl) {
-		super(gecoControl);
-		gecoControl.registerService(ResultBuilder.class, this);
+		super(ResultBuilder.class, gecoControl);
 	}
 	
 	public List<Result> buildResultForCategoryByCourses(Category cat) {
