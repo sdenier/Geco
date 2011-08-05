@@ -89,7 +89,13 @@ public class RunnerControlTest {
 		ecards = new HashSet<String>(Arrays.asList( new String[]{"3", "3a"} ));
 		Mockito.when(registry.getEcards()).thenReturn(ecards);
 		
-		assertEquals("3aa", runnerControl.deriveUniqueEcard("3"));
+		assertEquals("3b", runnerControl.deriveUniqueEcard("3"));
+		
+		for (int i = 0; i < 27; i++) {
+			ecards.add(runnerControl.deriveUniqueEcard("3"));
+		}
+		assertEquals("3ac", runnerControl.deriveUniqueEcard("3b"));
+		
 	}
 
 }

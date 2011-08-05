@@ -195,7 +195,6 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 	}
 	
 	public void repaint() { // Bad smell: updating something in the repaint call
-		System.err.println("window repaint");
 		updateWindowTitle();
 		super.repaint();
 	}
