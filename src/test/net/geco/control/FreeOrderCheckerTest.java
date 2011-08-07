@@ -9,7 +9,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
-import net.geco.control.ScoreChecker;
+import net.geco.control.FreeOrderChecker;
 import net.geco.model.Course;
 import net.geco.model.Factory;
 import net.geco.model.Punch;
@@ -26,10 +26,10 @@ import org.junit.Test;
  * @since Aug 5, 2011
  *
  */
-public class ScoreCheckerTest {
+public class FreeOrderCheckerTest {
 	
 	private Factory factory;
-	private ScoreChecker checker;
+	private FreeOrderChecker checker;
 	
 	private Course course;
 	private RunnerRaceData data;
@@ -37,7 +37,7 @@ public class ScoreCheckerTest {
 	@Before
 	public void setUp() {
 		factory = new POFactory();
-		checker = new ScoreChecker(factory);
+		checker = new FreeOrderChecker(factory);
 		course = factory.createCourse();
 		data = factory.createRunnerRaceData();
 		Runner runner = factory.createRunner();
@@ -69,6 +69,8 @@ public class ScoreCheckerTest {
 		checker.check(data);
 		assertEquals(Status.MP, data.getResult().getStatus());
 		assertTrue(data.getResult().getRacetime() == 630000);
+		assertEquals(5, data.getResult().getNbMPs());
+		assertEquals("-121,-122,-34,-33,-45", checker.getLastTraceAsString());
 	}
 	
 	@Test
@@ -82,6 +84,8 @@ public class ScoreCheckerTest {
 		checker.check(data);
 		assertEquals(Status.OK, data.getResult().getStatus());
 		assertTrue(data.getResult().getRacetime() == 630000);
+		assertEquals(0, data.getResult().getNbMPs());
+		assertEquals("121,122,34,33,45", checker.getLastTraceAsString());
 	}
 
 	@Test
@@ -95,6 +99,8 @@ public class ScoreCheckerTest {
 		checker.check(data);
 		assertEquals(Status.OK, data.getResult().getStatus());
 		assertTrue(data.getResult().getRacetime() == 630000);
+		assertEquals(0, data.getResult().getNbMPs());
+		assertEquals("45,122,34,33,121", checker.getLastTraceAsString());
 	}
 
 	@Test
@@ -108,6 +114,8 @@ public class ScoreCheckerTest {
 		checker.check(data);
 		assertEquals(Status.OK, data.getResult().getStatus());
 		assertTrue(data.getResult().getRacetime() == 630000);
+		assertEquals(0, data.getResult().getNbMPs());
+		assertEquals("45,122,33,+45,121,34,+33", checker.getLastTraceAsString());
 	}
 
 	@Test
@@ -121,6 +129,8 @@ public class ScoreCheckerTest {
 		checker.check(data);
 		assertEquals(Status.MP, data.getResult().getStatus());
 		assertTrue(data.getResult().getRacetime() == 630000);
+		assertEquals(1, data.getResult().getNbMPs());
+		assertEquals("121,34,33,45,-122", checker.getLastTraceAsString());
 	}
 
 	@Test
@@ -134,6 +144,8 @@ public class ScoreCheckerTest {
 		checker.check(data);
 		assertEquals(Status.MP, data.getResult().getStatus());
 		assertTrue(data.getResult().getRacetime() == 630000);
+		assertEquals(2, data.getResult().getNbMPs());
+		assertEquals("34,33,45,-121,-122", checker.getLastTraceAsString());
 	}
 
 	@Test
@@ -147,6 +159,8 @@ public class ScoreCheckerTest {
 		checker.check(data);
 		assertEquals(Status.MP, data.getResult().getStatus());
 		assertTrue(data.getResult().getRacetime() == 630000);
+		assertEquals(1, data.getResult().getNbMPs());
+		assertEquals("121,122,34,33,+46,-45", checker.getLastTraceAsString());
 	}
 
 }
