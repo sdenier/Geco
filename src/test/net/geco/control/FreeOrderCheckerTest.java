@@ -9,13 +9,16 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
+import net.geco.basics.Util;
 import net.geco.control.FreeOrderChecker;
 import net.geco.model.Course;
 import net.geco.model.Factory;
 import net.geco.model.Punch;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
+import net.geco.model.RunnerResult;
 import net.geco.model.Status;
+import net.geco.model.Trace;
 import net.geco.model.impl.POFactory;
 
 import org.junit.Before;
@@ -59,6 +62,10 @@ public class FreeOrderCheckerTest {
 	public Punch punch(int code) {
 		return punch(new Date(), code);
 	}
+	
+	public String traceToString(Trace[] trace) {
+		return Util.join(trace, ",", new StringBuffer());
+	}
 
 	@Test
 	public void testNoPunchMP() {
@@ -67,10 +74,11 @@ public class FreeOrderCheckerTest {
 		data.setFinishtime(new Date(630000));
 		data.setPunches(new Punch[0]);
 		checker.check(data);
-		assertEquals(Status.MP, data.getResult().getStatus());
-		assertTrue(data.getResult().getRacetime() == 630000);
-		assertEquals(5, data.getResult().getNbMPs());
-		assertEquals("-121,-122,-34,-33,-45", checker.getLastTraceAsString());
+		RunnerResult result = data.getResult();
+		assertEquals(Status.MP, result.getStatus());
+		assertTrue(result.getRacetime() == 630000);
+		assertEquals(5, result.getNbMPs());
+		assertEquals("-121,-122,-34,-33,-45", traceToString(result.getTrace()));
 	}
 	
 	@Test
@@ -82,10 +90,11 @@ public class FreeOrderCheckerTest {
 				punch(121), punch(122), punch(34), punch(33), punch(45),
 			});
 		checker.check(data);
-		assertEquals(Status.OK, data.getResult().getStatus());
-		assertTrue(data.getResult().getRacetime() == 630000);
-		assertEquals(0, data.getResult().getNbMPs());
-		assertEquals("121,122,34,33,45", checker.getLastTraceAsString());
+		RunnerResult result = data.getResult();
+		assertEquals(Status.OK, result.getStatus());
+		assertTrue(result.getRacetime() == 630000);
+		assertEquals(0, result.getNbMPs());
+		assertEquals("121,122,34,33,45", traceToString(result.getTrace()));
 	}
 
 	@Test
@@ -97,10 +106,11 @@ public class FreeOrderCheckerTest {
 				punch(45), punch(122), punch(34), punch(33), punch(121)
 			});
 		checker.check(data);
-		assertEquals(Status.OK, data.getResult().getStatus());
-		assertTrue(data.getResult().getRacetime() == 630000);
-		assertEquals(0, data.getResult().getNbMPs());
-		assertEquals("45,122,34,33,121", checker.getLastTraceAsString());
+		RunnerResult result = data.getResult();
+		assertEquals(Status.OK, result.getStatus());
+		assertTrue(result.getRacetime() == 630000);
+		assertEquals(0, result.getNbMPs());
+		assertEquals("45,122,34,33,121", traceToString(result.getTrace()));
 	}
 
 	@Test
@@ -112,10 +122,11 @@ public class FreeOrderCheckerTest {
 				 punch(45), punch(122), punch(33), punch(45), punch(121), punch(34), punch(33),
 			});
 		checker.check(data);
-		assertEquals(Status.OK, data.getResult().getStatus());
-		assertTrue(data.getResult().getRacetime() == 630000);
-		assertEquals(0, data.getResult().getNbMPs());
-		assertEquals("45,122,33,+45,121,34,+33", checker.getLastTraceAsString());
+		RunnerResult result = data.getResult();
+		assertEquals(Status.OK, result.getStatus());
+		assertTrue(result.getRacetime() == 630000);
+		assertEquals(0, result.getNbMPs());
+		assertEquals("45,122,33,+45,121,34,+33", traceToString(result.getTrace()));
 	}
 
 	@Test
@@ -127,10 +138,11 @@ public class FreeOrderCheckerTest {
 				punch(121), punch(34), punch(33), punch(45),
 			});
 		checker.check(data);
-		assertEquals(Status.MP, data.getResult().getStatus());
-		assertTrue(data.getResult().getRacetime() == 630000);
-		assertEquals(1, data.getResult().getNbMPs());
-		assertEquals("121,34,33,45,-122", checker.getLastTraceAsString());
+		RunnerResult result = data.getResult();
+		assertEquals(Status.MP, result.getStatus());
+		assertTrue(result.getRacetime() == 630000);
+		assertEquals(1, result.getNbMPs());
+		assertEquals("121,34,33,45,-122", traceToString(result.getTrace()));
 	}
 
 	@Test
@@ -142,10 +154,11 @@ public class FreeOrderCheckerTest {
 				punch(34), punch(33), punch(45),
 			});
 		checker.check(data);
-		assertEquals(Status.MP, data.getResult().getStatus());
-		assertTrue(data.getResult().getRacetime() == 630000);
-		assertEquals(2, data.getResult().getNbMPs());
-		assertEquals("34,33,45,-121,-122", checker.getLastTraceAsString());
+		RunnerResult result = data.getResult();
+		assertEquals(Status.MP, result.getStatus());
+		assertTrue(result.getRacetime() == 630000);
+		assertEquals(2, result.getNbMPs());
+		assertEquals("34,33,45,-121,-122", traceToString(result.getTrace()));
 	}
 
 	@Test
@@ -157,10 +170,11 @@ public class FreeOrderCheckerTest {
 				punch(121), punch(122), punch(34), punch(33), punch(46),
 			});
 		checker.check(data);
-		assertEquals(Status.MP, data.getResult().getStatus());
-		assertTrue(data.getResult().getRacetime() == 630000);
-		assertEquals(1, data.getResult().getNbMPs());
-		assertEquals("121,122,34,33,+46,-45", checker.getLastTraceAsString());
+		RunnerResult result = data.getResult();
+		assertEquals(Status.MP, result.getStatus());
+		assertTrue(result.getRacetime() == 630000);
+		assertEquals(1, result.getNbMPs());
+		assertEquals("121,122,34,33,+46,-45", traceToString(result.getTrace()));
 	}
 
 }
