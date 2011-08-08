@@ -60,7 +60,7 @@ public class FreeOrderTracer extends BasicControl implements Tracer {
 
 	@Override
 	public String getTraceAsString() {
-		return Util.join(getTrace(), ",", new StringBuffer());
+		return Util.join(getTrace(), ",", new StringBuilder());
 	}
 
 }

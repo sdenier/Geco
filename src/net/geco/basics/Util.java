@@ -27,7 +27,7 @@ public class Util {
 		return data;
 	}
 	
-	public static String join(Collection<?> objects, String token, StringBuffer buf) {
+	public static String join(Collection<?> objects, String token, StringBuilder buf) {
 		for (Iterator<?> it = objects.iterator(); it.hasNext();) {
 			buf.append(it.next()).append(token);
 		}
@@ -35,7 +35,7 @@ public class Util {
 		return buf.toString();
 	}
 
-	public static <T> String join(T[] objects, String token, StringBuffer buf) {
+	public static <T> String join(T[] objects, String token, StringBuilder buf) {
 		return join(Arrays.asList(objects), token, buf);
 	}
 
