@@ -14,7 +14,7 @@ import net.geco.model.Trace;
  */
 public interface Tracer {
 
-	public void computeTrace(int[] codes, Punch[] data);
+	public void computeTrace(int[] codes, Punch[] punches);
 
 	public int getNbMPs();
 

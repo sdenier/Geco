@@ -7,7 +7,6 @@ package net.geco.control;
 import java.util.Date;
 import java.util.LinkedList;
 
-import net.geco.basics.Util;
 import net.geco.model.Factory;
 import net.geco.model.Punch;
 import net.geco.model.Trace;
@@ -17,10 +16,7 @@ import net.geco.model.Trace;
  * @since Aug 8, 2011
  *
  */
-public class FreeOrderTracer extends BasicControl implements Tracer {
-
-	private int nbMPs;
-	private Trace[] trace;
+public class FreeOrderTracer extends AbstractTracer {
 
 	public FreeOrderTracer(Factory factory) {
 		super(factory);
@@ -46,21 +42,6 @@ public class FreeOrderTracer extends BasicControl implements Tracer {
 			trace.add(factory().createTrace("-" + missingCode, new Date(0)));
 		}
 		this.trace = trace.toArray(new Trace[0]);
-	}
-
-	@Override
-	public int getNbMPs() {
-		return nbMPs;
-	}
-
-	@Override
-	public Trace[] getTrace() {
-		return trace;
-	}
-
-	@Override
-	public String getTraceAsString() {
-		return Util.join(getTrace(), ",", new StringBuilder());
 	}
 
 }
