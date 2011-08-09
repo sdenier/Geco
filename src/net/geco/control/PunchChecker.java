@@ -52,12 +52,9 @@ public class PunchChecker extends BasicControl {
 
 	/**
 	 * Naive and simple algorithm, reliably judge ok/mp race but can not provide a right account of mps.
-	 * 
-	 * @param codes
-	 * @param punches
-	 * @return
+	 * For legacy.
 	 */
-	public Status checkCodes(int[] codes, Punch[] punches) {
+	private Status checkCodes(int[] codes, Punch[] punches) {
 		int current = 0;
 		for (int code : codes) {
 			int index = indexOf(code, punches, current);
@@ -69,13 +66,7 @@ public class PunchChecker extends BasicControl {
 		return Status.OK;
 	}
 
-	/**
-	 * @param code
-	 * @param punches
-	 * @param current 
-	 * @return index of code in punches, or -1 if not found.
-	 */
-	public int indexOf(int code, Punch[] punches, int current) {
+	private int indexOf(int code, Punch[] punches, int current) {
 		for (int i = current; i < punches.length; i++) {
 			if( code == punches[i].getCode() ) {
 				return i;
