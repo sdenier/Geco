@@ -50,7 +50,8 @@ trans = translations[context.node.lang]
           <div id="leftside">
             <a id="sectionmenu"></a>
             <p class="soft">
-                <%= trans['version'] %> <a href="<%= currentlink %>"><%= currentversion %></a></p>
+                <%= trans['version'] %> <a href="<%= currentlink %>"><%= currentversion %></a><br />
+                Preview <a href="http://geco.webou.net/geco/version12.html">1.2</a></p>
             <% if context.node.level > 1 %>
             <h1><%= trans['content'] %></h1>
             <div id="submenu">{menu: {start_level: 2, max_levels: 2}}</div>
@@ -60,7 +61,7 @@ trans = translations[context.node.lang]
                     <ul>
                     <%=
         			if context.node.lang=='fr'
-			            script = '<li><a href="http://geco.webout.net/geco_formation_11.pdf">Doc formation 1.1</a></li>'
+			            script = '<li><a href="http://geco.webou.net/geco_formation_11.pdf">Doc formation 1.1</a></li>'
         			else
             			script = ''
         			end

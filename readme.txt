@@ -1,5 +1,5 @@
-Geco readme file version 1.1
-Copyright (c) 2008-2011 Simon Denier
+Geco readme file version 1.2
+Copyright (c) 2008-2011 Simon Denier, Philipp Walker
 Contact: http://www.simondenier.eu
 
 Geco is a lightweight application for managing orienteering races.
@@ -10,6 +10,31 @@ Geco UI is designed to provide a lean user experience: navigate through stage wo
 Geco is also geared towards the Orient'Show format:
 - it provides advanced functions to explain MPs and count penalties (including butterfly miss);
 - it manages knockout qualifications.
+
+----------
+ABOUT THE 1.2 'PREVIEW' RELEASE
+
+Since the 1.1 release, there have been some major internal work in Geco to prepare the future.
+Such changes may not look important at first sight, however they are significant and we feel
+that providing a release would enable early field-testing by users to detect unforeseen problems.
+For this reason, the 1.2 release is labelled as a 'preview': we feel confident it is working well,
+however it is not as well tested as the 1.1. So be careful with your data.
+
+Here is the list of visible changes:
+- Geco now explicitly handles the different formats of orienteering races: in particular it adapts the UI to each format (config options, custom tabs...).
+Current formats include Classic inline and Orient'Show. Free Order stages are coming soon.
+- New launch wizard which enables to either open an existing stage (from an history of recent stages) or creates a new one for a given format.
+- ecard number is no longer required and can be left empty.
+- First german translation by Philipp Walker.
+- Some other minor changes in the UI.
+
+- Change in data file format: Geco 1.2 will automatically convert 1.1 stage files to the new format.
+Meaning also that Geco 1.1 can't load a 1.2 stage (use stage backups to be safe!).
+- Documentation not updated.
+
+----------
+Known bugs in 1.2
+- the LiveMap has been temporarily disabled.
 
 ----------
 Install: unzip the archive file (should be done already if you can read this file).
@@ -38,9 +63,7 @@ _
 |- LICENSE: license info (source code)
 |- gpl-2.0.txt: license info (application)
 |- icu-license.txt: license info
-|- data/: folder holding multiple stage folders (stage folder can be any folder)
-|- data/sample_stages.prop: sample file describing a multi-stage event
-|- data/templates/: sample stage files editable with a spreadsheet application 
+|- data/template/: sample stage files editable with a spreadsheet application 
 |- help/: documentation in html format
 
 ----------
