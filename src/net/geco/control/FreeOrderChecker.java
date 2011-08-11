@@ -6,6 +6,7 @@ package net.geco.control;
 
 import net.geco.model.Factory;
 import net.geco.model.RunnerRaceData;
+import net.geco.model.Stage;
 import net.geco.model.Status;
 
 /**
@@ -13,7 +14,7 @@ import net.geco.model.Status;
  * @since Aug 5, 2011
  *
  */
-public class FreeOrderChecker extends PunchChecker {
+public class FreeOrderChecker extends PunchChecker implements Checker {
 
 	private FreeOrderTracer tracer;
 	
@@ -22,8 +23,12 @@ public class FreeOrderChecker extends PunchChecker {
 		tracer = new FreeOrderTracer(factory);
 	}
 
+	public FreeOrderChecker(GecoControl gecoControl) {
+		this(gecoControl.factory());
+	}
+
 	@Override
-	protected Status computeStatus(RunnerRaceData data) {
+	public Status computeStatus(RunnerRaceData data) {
 		tracer.computeTrace(data.getCourse().getCodes(), data.getPunches());
 		int nbMPs = tracer.getNbMPs();
 		data.getResult().setNbMPs(nbMPs);
@@ -33,6 +38,24 @@ public class FreeOrderChecker extends PunchChecker {
 		} else {
 			return Status.OK;
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see net.geco.control.Checker#postInitialize(net.geco.model.Stage)
+	 */
+	@Override
+	public void postInitialize(Stage newStage) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see net.geco.control.Checker#normalTrace(net.geco.model.RunnerRaceData)
+	 */
+	@Override
+	public void normalTrace(RunnerRaceData runnerData) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

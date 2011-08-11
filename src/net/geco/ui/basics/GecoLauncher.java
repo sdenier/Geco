@@ -225,26 +225,12 @@ public class GecoLauncher extends JDialog {
 
 		JPanel rulePanel = new JPanel();
 		rulePanel.setLayout(new BoxLayout(rulePanel, BoxLayout.Y_AXIS));
-		JRadioButton classicAppRB = new JRadioButton("Classic inline");
-		classicAppRB.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				createStage.setAppBuilderName("net.geco.app.ClassicAppBuilder");
-			}
-		});
-		JRadioButton orientShowAppRB = new JRadioButton("Orient'Show");
-		orientShowAppRB.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				createStage.setAppBuilderName("net.geco.app.OrientShowAppBuilder");
-			}
-		});
 		ButtonGroup builderGroup = new ButtonGroup();
-		builderGroup.add(classicAppRB);
-		builderGroup.add(orientShowAppRB);
+		JRadioButton classicAppRB =
+			addAppRadioButton("Classic inline", "net.geco.app.ClassicAppBuilder", rulePanel, builderGroup); 
+		addAppRadioButton("Orient'Show", "net.geco.app.OrientShowAppBuilder", rulePanel, builderGroup);
+		addAppRadioButton("Free Order", "net.geco.app.FreeOrderAppBuilder", rulePanel, builderGroup);
 		builderGroup.setSelected(classicAppRB.getModel(), true);
-		rulePanel.add(classicAppRB);
-		rulePanel.add(orientShowAppRB);
 		c = SwingUtils.gbConstr(2);
 		c.gridwidth = 3;
 		c.fill = GridBagConstraints.BOTH;
@@ -277,6 +263,19 @@ public class GecoLauncher extends JDialog {
 		});
 
 		return creationWizard;
+	}
+
+	private JRadioButton addAppRadioButton(String appName, final String appClassname, JPanel rulePanel, ButtonGroup builderGroup) {
+		JRadioButton appRB = new JRadioButton(appName);
+		appRB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				createStage.setAppBuilderName(appClassname);
+			}
+		});
+		builderGroup.add(appRB);
+		rulePanel.add(appRB);
+		return appRB;
 	}
 	
 //	throw new GecoWarning(Messages.uiGet("GecoLauncher.CancelCreation")); //$NON-NLS-1$
