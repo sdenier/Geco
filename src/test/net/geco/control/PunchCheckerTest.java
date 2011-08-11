@@ -38,7 +38,7 @@ public class PunchCheckerTest {
 	@Before
 	public void setUp() {
 		factory = new POFactory();
-		checker = new PunchChecker(factory);
+		checker = new PunchChecker(factory) {};
 		course = factory.createCourse();
 		data = factory.createRunnerRaceData();
 		Runner runner = factory.createRunner();

@@ -20,7 +20,7 @@ import net.geco.model.Trace;
  * @since Dec 7, 2008
  *
  */
-public class PenaltyChecker extends PunchChecker implements StageListener {	
+public class PenaltyChecker extends PunchChecker implements Checker, StageListener {	
 	
 	private long MPPenalty;
 
@@ -41,12 +41,12 @@ public class PenaltyChecker extends PunchChecker implements StageListener {
 		gecoControl.announcer().registerStageListener(this);
 	}
 	
-	protected void postInitialize(Stage stage) {
+	public void postInitialize(Stage stage) {
 		setNewProperties(stage);
 	}
 	
 	@Override
-	protected Status computeStatus(RunnerRaceData data) {
+	public Status computeStatus(RunnerRaceData data) {
 		tracer.computeTrace(data.getCourse().getCodes(), data.getPunches());
 		data.getResult().setNbMPs(tracer.getNbMPs());
 		data.getResult().setTrace(tracer.getTrace());

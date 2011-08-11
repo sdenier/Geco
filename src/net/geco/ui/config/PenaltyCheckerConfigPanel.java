@@ -18,6 +18,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import net.geco.basics.Html;
+import net.geco.control.PenaltyChecker;
 import net.geco.framework.IGeco;
 import net.geco.model.Messages;
 import net.geco.ui.basics.SwingUtils;
@@ -35,10 +36,6 @@ public class PenaltyCheckerConfigPanel extends JPanel implements ConfigPanel {
 		return Messages.uiGet("StagePanel.OrientshowConfigTitle"); //$NON-NLS-1$
 	}
 	
-	/**
-	 * @param geco 
-	 * 
-	 */
 	public PenaltyCheckerConfigPanel(final IGeco geco) {
 		setLayout(new GridBagLayout());
 		
@@ -46,16 +43,16 @@ public class PenaltyCheckerConfigPanel extends JPanel implements ConfigPanel {
 		c.insets = new Insets(0, 0, 5, 5);
 		c.fill = GridBagConstraints.HORIZONTAL;
 		add(new JLabel(Messages.uiGet("StagePanel.MPLimitLabel")), c); //$NON-NLS-1$
-		int mpLimit = geco.checker().getMPLimit();
+		int mpLimit = checker(geco).getMPLimit();
 		final JSpinner mplimitS = new JSpinner(new SpinnerNumberModel(mpLimit, 0, null, 1));
 		mplimitS.setPreferredSize(new Dimension(100, SwingUtils.SPINNERHEIGHT));
 		mplimitS.setToolTipText(Messages.uiGet("StagePanel.MPLimitTooltip")); //$NON-NLS-1$
 		mplimitS.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
-				int oldLimit = geco.checker().getMPLimit();
+				int oldLimit = checker(geco).getMPLimit();
 				int newLimit = ((Integer) mplimitS.getValue()).intValue();
 				if( oldLimit!=newLimit ) {
-					geco.checker().setMPLimit(newLimit);
+					checker(geco).setMPLimit(newLimit);
 				}
 			}
 		});
@@ -63,16 +60,16 @@ public class PenaltyCheckerConfigPanel extends JPanel implements ConfigPanel {
 		
 		c.gridy = 1;
 		add(new JLabel(Messages.uiGet("StagePanel.TimePenaltyLabel")), c); //$NON-NLS-1$
-		long penalty = geco.checker().getMPPenalty() / 1000;
+		long penalty = checker(geco).getMPPenalty() / 1000;
 		final JSpinner penaltyS = new JSpinner(new SpinnerNumberModel(penalty, 0l, null, 10));
 		penaltyS.setPreferredSize(new Dimension(100, SwingUtils.SPINNERHEIGHT));
 		penaltyS.setToolTipText(Messages.uiGet("StagePanel.TimePenaltyTooltip")); //$NON-NLS-1$
 		penaltyS.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
-				long oldPenalty = geco.checker().getMPPenalty();
+				long oldPenalty = checker(geco).getMPPenalty();
 				long newPenalty = 1000 * ((Long) penaltyS.getValue()).longValue();
 				if( oldPenalty!=newPenalty ) {
-					geco.checker().setMPPenalty(newPenalty);
+					checker(geco).setMPPenalty(newPenalty);
 				}
 			}
 		});
@@ -87,6 +84,10 @@ public class PenaltyCheckerConfigPanel extends JPanel implements ConfigPanel {
 			.contents(Messages.uiGet("StagePanel.MPConfigHelp3")) //$NON-NLS-1$
 			.close("i").close(); //$NON-NLS-1$
 		add(new JLabel(helpL), c);
+	}
+
+	private PenaltyChecker checker(final IGeco geco) {
+		return (PenaltyChecker) geco.checker();
 	}
 
 	@Override

@@ -15,7 +15,7 @@ import net.geco.model.Status;
  * @since Nov 23, 2008
  *
  */
-public class PunchChecker extends BasicControl {
+public abstract class PunchChecker extends BasicControl {
 	
 	
 	public PunchChecker(Factory factory) {
