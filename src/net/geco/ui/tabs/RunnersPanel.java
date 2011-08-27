@@ -510,35 +510,27 @@ public class RunnersPanel extends TabPanel
 		this.tableModel.fireTableRowsUpdated(modelRow, modelRow);
 	}
 	
-	private String selectedEcard() {
-		String ecard = ""; //$NON-NLS-1$
+	private RunnerRaceData selectedData() {
 		int selectedRow = table.getSelectedRow();
 		if( selectedRow!=-1 && table.getRowCount() > 0) {
 			// we have to test the number of displayed rows too.
-			// If user inputs a filter which matches nothins,
+			// If user inputs a filter which matches nothing,
 			// there is no row to show but table still points to the 0-index.
-			ecard = (String) table.getValueAt(selectedRow, 1);
+			Integer selectedId = (Integer) table.getValueAt(selectedRow, 0);
+			return registry().findRunnerData(selectedId);
 		}
-		return ecard;
+		return null;
 	}
 
 	public void updateRunnerPanel() {
-		String ecard = selectedEcard();
-		if( !ecard.equals("") ) { //$NON-NLS-1$
-			RunnerRaceData runnerData = registry().findRunnerData(ecard);
-			runnerPanel.updateRunner(ecard);
+		RunnerRaceData runnerData = selectedData();
+		if( runnerData!=null ){
+			runnerPanel.updateRunner(runnerData);
 			tracePanel.refreshPunches(runnerData);
 			if( gecoLiveMap!=null && gecoLiveMap.isShowing() ) {
 				gecoLiveMap.displayRunnerMap(runnerData);
 			}
 		}
-	}
-	
-	private RunnerRaceData selectedData() {
-		String ecard = selectedEcard();
-		if( !ecard.equals("") ) //$NON-NLS-1$
-			return registry().findRunnerData(ecard);
-		return null;
 	}
 	
 	public void openMapWindow() {
