@@ -32,16 +32,15 @@ public abstract class AppBuilder {
 
 	protected Factory factory;
 
-	public AppBuilder() {
-	}
-	
 	public Factory getFactory() {
 		if( factory==null ){
 			factory = createFactory();
 		}
 		return factory;
 	}
-	
+
+	public abstract String getAppName();
+
 	protected abstract Factory createFactory();
 	
 	public abstract StageBuilder createStageBuilder();

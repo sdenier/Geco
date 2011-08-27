@@ -88,6 +88,8 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 
 	private GecoWindow window;
 	
+	private String appName;
+
 	/*
 	 * Controls
 	 */
@@ -177,6 +179,7 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 	
 	public void startup(GecoStageLaunch stageLaunch) throws Exception {
 		AppBuilder builder = stageLaunch.getAppBuilder();
+		appName = builder.getAppName();
 		GecoControl gecoControl = new GecoControl(builder);
 		history.remove(stageLaunch);
 		history.addFirst(stageLaunch);
@@ -184,6 +187,11 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 		initControls(builder, gecoControl);
 		window.initAndLaunchGUI(builder);
 		System.gc();
+	}
+	
+	@Override
+	public String getAppName() {
+		return appName;
 	}
 
 	@Override

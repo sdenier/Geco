@@ -24,6 +24,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import net.geco.basics.Html;
 import net.geco.framework.IGecoApp;
 import net.geco.model.Messages;
 import net.geco.ui.basics.SwingUtils;
@@ -46,6 +47,7 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 		GridBagConstraints c = SwingUtils.gbConstr(0);
 		c.insets = new Insets(0, 0, 5, 5);
 		c.fill = GridBagConstraints.HORIZONTAL;
+
 		add(new JLabel(Messages.uiGet("StagePanel.StageNameLabel")), c); //$NON-NLS-1$
 		final JTextField stagenameF = new JTextField(geco.stage().getName());
 		stagenameF.setColumns(12);
@@ -66,7 +68,7 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 			}
 		});
 		add(stagenameF, c);
-		
+
 		c.gridy = 1;
 		add(new JLabel(Messages.uiGet("StagePanel.ZeroHourLabel")), c); //$NON-NLS-1$
 		final SimpleDateFormat formatter = new SimpleDateFormat("H:mm"); //$NON-NLS-1$
@@ -140,7 +142,12 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 			}
 		});
 		add(selectCNFileB, c);
-		
+
+		c.gridy = 4;
+		c.insets = new Insets(15, 0, 5, 5);
+		add(new JLabel("Configuration:"), c);
+		JLabel appNameL = new JLabel(Html.htmlTag("strong", geco.getAppName()));
+		add(appNameL, c);
 	}
 	
 	private boolean verifyStagename(String text) {

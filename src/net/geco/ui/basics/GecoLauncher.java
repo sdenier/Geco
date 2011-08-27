@@ -35,6 +35,10 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import net.geco.app.AppBuilder;
+import net.geco.app.ClassicAppBuilder;
+import net.geco.app.FreeOrderAppBuilder;
+import net.geco.app.OrientShowAppBuilder;
 import net.geco.control.StageBuilder;
 import net.geco.framework.IStageLaunch;
 import net.geco.model.Messages;
@@ -227,9 +231,9 @@ public class GecoLauncher extends JDialog {
 		rulePanel.setLayout(new BoxLayout(rulePanel, BoxLayout.Y_AXIS));
 		ButtonGroup builderGroup = new ButtonGroup();
 		JRadioButton classicAppRB =
-			addAppRadioButton("Classic inline", "net.geco.app.ClassicAppBuilder", rulePanel, builderGroup); 
-		addAppRadioButton("Orient'Show", "net.geco.app.OrientShowAppBuilder", rulePanel, builderGroup);
-		addAppRadioButton("Free Order", "net.geco.app.FreeOrderAppBuilder", rulePanel, builderGroup);
+			addAppRadioButton(ClassicAppBuilder.getName(), ClassicAppBuilder.class, rulePanel, builderGroup); 
+		addAppRadioButton(OrientShowAppBuilder.getName(), OrientShowAppBuilder.class, rulePanel, builderGroup);
+		addAppRadioButton(FreeOrderAppBuilder.getName(), FreeOrderAppBuilder.class, rulePanel, builderGroup);
 		builderGroup.setSelected(classicAppRB.getModel(), true);
 		c = SwingUtils.gbConstr(2);
 		c.gridwidth = 3;
@@ -265,19 +269,19 @@ public class GecoLauncher extends JDialog {
 		return creationWizard;
 	}
 
-	private JRadioButton addAppRadioButton(String appName, final String appClassname, JPanel rulePanel, ButtonGroup builderGroup) {
+	private JRadioButton addAppRadioButton(String appName, final Class<? extends AppBuilder> appClass, JPanel rulePanel, ButtonGroup builderGroup) {
 		JRadioButton appRB = new JRadioButton(appName);
 		appRB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				createStage.setAppBuilderName(appClassname);
+				createStage.setAppBuilderName(appClass.getName());
 			}
 		});
 		builderGroup.add(appRB);
 		rulePanel.add(appRB);
 		return appRB;
 	}
-	
+
 //	throw new GecoWarning(Messages.uiGet("GecoLauncher.CancelCreation")); //$NON-NLS-1$
 //	throw new GecoWarning(Messages.uiGet("GecoLauncher.CancelImport")); //$NON-NLS-1$
 	

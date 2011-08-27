@@ -48,6 +48,15 @@ import net.geco.ui.tabs.RunnersPanel;
  */
 public class OrientShowAppBuilder extends AppBuilder {
 
+	public static String getName() {
+		return "Orient'Show";
+	}
+	
+	@Override
+	public String getAppName() {
+		return getName();
+	}
+
 	@Override
 	protected Factory createFactory() {
 		return new POFactory();

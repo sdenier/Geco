@@ -45,6 +45,15 @@ import net.geco.ui.tabs.RunnersPanel;
  */
 public class ClassicAppBuilder extends AppBuilder {
 
+	public static String getName() {
+		return "Classic inline";
+	}
+	
+	@Override
+	public String getAppName() {
+		return getName();
+	}
+
 	@Override
 	protected Factory createFactory() {
 		return new POFactory();
