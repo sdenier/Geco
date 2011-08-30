@@ -5,6 +5,7 @@
 package net.geco.control;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -147,10 +148,10 @@ public class ResultBuilder extends Control {
 			this.time = time;
 			this.split = split;
 		}
-		String seq;
-		Trace trace;
-		long time;
-		long split;
+		public final String seq;
+		public final Trace trace;
+		public long time;
+		public long split;
 		
 	}
 	
@@ -206,6 +207,7 @@ public class ResultBuilder extends Control {
 				added.add(createSplit("", trace, startTime, TimeManager.NO_TIME_l, time)); //$NON-NLS-1$
 			}
 		}
+		// TODO: do not use null value for final trace
 		SplitTime fSplit = createSplit("F", null, startTime, previousTime, data.getFinishtime().getTime()); //$NON-NLS-1$
 		splits.add(fSplit); //$NON-NLS-1$
 		if( bestSplits!=null ){
@@ -230,13 +232,13 @@ public class ResultBuilder extends Control {
 			}
 		}		
 	}
-	
-	public SplitTime[] buildAllNormalSplits(Result result, ResultConfig config, Map<RunnerRaceData, SplitTime[]> allSplits) {
+
+	public SplitTime[] initializeBestSplits(Result result, ResultType resultType) {
 		SplitTime[] bestSplits = null;
-		boolean sameCourse = true; // default for CourseResult and MixedResult
 		if( ! result.isEmpty() ){
 			Course course = result.anyRunner().getCourse();
-			if( config.resultType==ResultType.CategoryResult ){
+			boolean sameCourse = true; // default for CourseResult and MixedResult
+			if( resultType==ResultType.CategoryResult ){
 				// check that all runners in category share the same course
 				for (RunnerRaceData runnerData : result.getRankedRunners()) {
 					sameCourse &= runnerData.getCourse()==course;
@@ -252,21 +254,20 @@ public class ResultBuilder extends Control {
 				for (int i = 0; i < bestSplits.length; i++) {
 					bestSplits[i] = new SplitTime("", null, TimeManager.NO_TIME_l, TimeManager.NO_TIME_l); //$NON-NLS-1$
 				}
-			}
+			}		
 		}
-		// bad smell but anyway: bestsplits=null if we don't want to compute splits
+		return bestSplits;
+	}
+	
+	public Map<RunnerRaceData, SplitTime[]> buildAllNormalSplits(Result result, SplitTime[] bestSplits) {
+		Map<RunnerRaceData,SplitTime[]> allSplits = new HashMap<RunnerRaceData, SplitTime[]>();
 		for (RunnerRaceData runnerData : result.getRankedRunners()) {
 			allSplits.put(runnerData, buildNormalSplits(runnerData, bestSplits));
 		}
 		for (RunnerRaceData runnerData : result.getNRRunners()) {
 			allSplits.put(runnerData, buildNormalSplits(runnerData, bestSplits));
 		}
-		
-		if( bestSplits==null ){
-			return new SplitTime[0];
-		} else {
-			return bestSplits;
-		}
+		return allSplits;
 	}
 	
 }

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -62,9 +61,9 @@ public class SplitExporter extends AResultExporter implements StageListener {
 		includeHeader(html, "result.css"); //$NON-NLS-1$
 		for (Result result : results) {
 			if( config.showEmptySets || !result.isEmpty() ) {
-				Map<RunnerRaceData, SplitTime[]> allSplits = new HashMap<RunnerRaceData, SplitTime[]>(); 
-				SplitTime[] bestSplit = resultBuilder.buildAllNormalSplits(result, config, allSplits);
-				appendHtmlResultsWithSplits(result, allSplits, bestSplit, config, html);
+				SplitTime[] bestSplits = resultBuilder.initializeBestSplits(result, config.resultType);
+				Map<RunnerRaceData, SplitTime[]> allSplits = resultBuilder.buildAllNormalSplits(result, bestSplits);
+				appendHtmlResultsWithSplits(result, allSplits, bestSplits, config, html);
 			}
 		}
 		return html.close();
