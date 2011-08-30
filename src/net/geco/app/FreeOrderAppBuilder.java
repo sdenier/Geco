@@ -60,7 +60,6 @@ public class FreeOrderAppBuilder extends AppBuilder {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public FreeOrderChecker createChecker(GecoControl gecoControl) {
 		return new FreeOrderChecker(gecoControl);
 	}

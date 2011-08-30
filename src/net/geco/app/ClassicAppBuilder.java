@@ -60,7 +60,6 @@ public class ClassicAppBuilder extends AppBuilder {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public PenaltyChecker createChecker(GecoControl gecoControl) {
 		return new PenaltyChecker(gecoControl);
 	}
