@@ -75,7 +75,7 @@ public class FreeOrderAppBuilder extends AppBuilder {
 		new RunnerControl(gecoControl);
 		new ResultBuilder(gecoControl);
 		new ResultExporter(gecoControl);
-		new SplitExporter(gecoControl);
+		new SplitExporter(gecoControl).withoutBestSplits();
 		new SingleSplitPrinter(gecoControl);
 		new RegistryStats(gecoControl);
 		new AutoMergeHandler(gecoControl);

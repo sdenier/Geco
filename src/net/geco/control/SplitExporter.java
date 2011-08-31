@@ -42,11 +42,21 @@ public class SplitExporter extends AResultExporter implements StageListener {
 	
 	private int nbColumns = 12;
 	private int refreshInterval = 0;
+	private boolean withBestSplits;
 
 	
 	public SplitExporter(GecoControl gecoControl) {
 		super(SplitExporter.class, gecoControl);
 		geco().announcer().registerStageListener(this);
+		withBestSplits();
+	}
+	
+	public void withBestSplits() {
+		withBestSplits = true;
+	}
+	
+	public void withoutBestSplits() {
+		withBestSplits = false;
 	}
 	
 	public int nbColumns() {
@@ -61,7 +71,10 @@ public class SplitExporter extends AResultExporter implements StageListener {
 		includeHeader(html, "result.css"); //$NON-NLS-1$
 		for (Result result : results) {
 			if( config.showEmptySets || !result.isEmpty() ) {
-				SplitTime[] bestSplits = resultBuilder.initializeBestSplits(result, config.resultType);
+				SplitTime[] bestSplits = null;
+				if( withBestSplits ){
+					bestSplits = resultBuilder.initializeBestSplits(result, config.resultType);
+				}
 				Map<RunnerRaceData, SplitTime[]> allSplits = resultBuilder.buildAllNormalSplits(result, bestSplits);
 				appendHtmlResultsWithSplits(result, allSplits, bestSplits, config, html);
 			}
@@ -169,7 +182,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 				SplitTime split = splits[k];
 				String label = TimeManager.time(split.time);
 				long best = 0;
-				if( k < bestSplits.length ){
+				if( withBestSplits && k < bestSplits.length ){
 					best = bestSplits[k].time; 
 				}
 				showWithBestSplit(label, split.time, best, html);
@@ -185,7 +198,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 					label = "&nbsp;"; //$NON-NLS-1$
 				}
 				long best = 0;
-				if( k < bestSplits.length ){
+				if( withBestSplits &&k < bestSplits.length ){
 					best = bestSplits[k].split;
 				}
 				showWithBestSplit(label, split.split, best, html);
@@ -196,7 +209,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 	}
 	
 	private void showWithBestSplit(String label, long split, long best, Html html) {
-		if( split==best ){
+		if( withBestSplits && split==best ){
 			html.td(label, "class=\"best\""); //$NON-NLS-1$
 		} else {
 			html.td(label);
