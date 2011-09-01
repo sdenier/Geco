@@ -9,8 +9,9 @@ import javax.swing.JFrame;
 import net.geco.control.ArchiveManager;
 import net.geco.control.AutoMergeHandler;
 import net.geco.control.CNCalculator;
-import net.geco.control.FreeOrderChecker;
+import net.geco.control.FreeOrderTracer;
 import net.geco.control.GecoControl;
+import net.geco.control.PenaltyChecker;
 import net.geco.control.RegistryStats;
 import net.geco.control.ResultBuilder;
 import net.geco.control.ResultExporter;
@@ -60,8 +61,8 @@ public class FreeOrderAppBuilder extends AppBuilder {
 	}
 
 	@Override
-	public FreeOrderChecker createChecker(GecoControl gecoControl) {
-		return new FreeOrderChecker(gecoControl);
+	public PenaltyChecker createChecker(GecoControl gecoControl) {
+		return new PenaltyChecker(gecoControl, new FreeOrderTracer(gecoControl.factory()));
 	}
 
 	@Override

@@ -27,17 +27,24 @@ public class PenaltyChecker extends PunchChecker implements Checker, StageListen
 	private int MPLimit;
 
 	private Tracer tracer;
+
+	private boolean noMPLimit;
 	
 	
-	public PenaltyChecker(Factory factory) {
+	public PenaltyChecker(Factory factory, Tracer tracer) {
 		super(factory);
-		tracer = new InlineTracer(factory);
+		this.tracer = tracer;
 		setMPLimit(defaultMPLimit());
 		setMPPenalty(defaultMPPenalty());
+		noMPLimit = false;
 	}
-
-	public PenaltyChecker(GecoControl gecoControl) {
-		this(gecoControl.factory());
+	
+	public PenaltyChecker(Factory factory) {
+		this(factory, new InlineTracer(factory));
+	}
+	
+	public PenaltyChecker(GecoControl gecoControl, Tracer tracer) {
+		this(gecoControl.factory(), tracer);
 		gecoControl.announcer().registerStageListener(this);
 	}
 	
@@ -50,7 +57,7 @@ public class PenaltyChecker extends PunchChecker implements Checker, StageListen
 		tracer.computeTrace(data.getCourse().getCodes(), data.getPunches());
 		data.getResult().setNbMPs(tracer.getNbMPs());
 		data.getResult().setTrace(tracer.getTrace());
-		return (tracer.getNbMPs() <= getMPLimit()) ? Status.OK : Status.MP;
+		return (noMPLimit || tracer.getNbMPs() <= getMPLimit()) ? Status.OK : Status.MP;
 	}
 	
 	@Override
@@ -107,11 +114,29 @@ public class PenaltyChecker extends PunchChecker implements Checker, StageListen
 		MPLimit = limit;
 	}
 
+	public boolean noMPLimit() {
+		return noMPLimit;
+	}
+
+	public void disableMPLimit() {
+		noMPLimit = true;
+	}
+
+	public void enableMPLimit() {
+		noMPLimit = false;
+	}
+
 	protected void setNewProperties(Stage stage) {
 		String limit = stage.getProperties().getProperty(mpLimitProperty());
 		if( limit!=null ) {
 			try {
-				setMPLimit(new Integer(limit));				
+				setMPLimit(new Integer(limit));
+				if( getMPLimit()==-1 ){
+					disableMPLimit();
+					setMPLimit(defaultMPLimit());
+				} else {
+					enableMPLimit();
+				}
 			} catch (NumberFormatException e) {
 				setMPLimit(defaultMPLimit());
 				System.err.println(e);
@@ -139,7 +164,11 @@ public class PenaltyChecker extends PunchChecker implements Checker, StageListen
 
 	@Override
 	public void saving(Stage stage, Properties properties) {
-		properties.setProperty(mpLimitProperty(), new Integer(getMPLimit()).toString());
+		if( noMPLimit ){
+			properties.setProperty(mpLimitProperty(), "-1"); //$NON-NLS-1$
+		} else {
+			properties.setProperty(mpLimitProperty(), new Integer(getMPLimit()).toString());
+		}
 		properties.setProperty(mpPenaltyProperty(), new Long(getMPPenalty()).toString());
 	}
 

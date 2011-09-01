@@ -83,6 +83,7 @@ public class GecoControl {
 	
 	/**
 	 * Constructor for a generic GecoControl. See openStage() for the full initialization
+	 * TODO: refactor GecoControl constructors (no more default tracer/checker)
 	 */
 	public GecoControl() {
 		factory = new POFactory();
@@ -90,7 +91,7 @@ public class GecoControl {
 
 		// early controls
 		stageBuilder = new StageBuilder(factory);
-		checker = new PenaltyChecker(this);
+		checker = new PenaltyChecker(this, new InlineTracer(factory));
 	}
 
 	/**

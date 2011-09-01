@@ -11,6 +11,7 @@ import net.geco.control.AutoMergeHandler;
 import net.geco.control.CNCalculator;
 import net.geco.control.GecoControl;
 import net.geco.control.HeatBuilder;
+import net.geco.control.InlineTracer;
 import net.geco.control.PenaltyChecker;
 import net.geco.control.RegistryStats;
 import net.geco.control.ResultBuilder;
@@ -64,7 +65,7 @@ public class OrientShowAppBuilder extends AppBuilder {
 
 	@Override
 	public PenaltyChecker createChecker(GecoControl gecoControl) {
-		return new PenaltyChecker(gecoControl);
+		return new PenaltyChecker(gecoControl, new InlineTracer(gecoControl.factory()));
 	}
 
 	@Override

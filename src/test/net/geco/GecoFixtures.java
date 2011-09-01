@@ -5,6 +5,7 @@
 package test.net.geco;
 
 import net.geco.app.AppBuilder;
+import net.geco.basics.Announcer;
 import net.geco.control.GecoControl;
 import net.geco.control.StageBuilder;
 import net.geco.model.Factory;
@@ -30,7 +31,9 @@ public class GecoFixtures {
 	public static GecoControl loadFixtures(String baseDir, AppBuilder builder) {
 		Factory factory = builder.getFactory();
 		GecoControl gecoControl = mockGecoControl();
+		Announcer announcer = Mockito.mock(Announcer.class);
 		Mockito.when(gecoControl.factory()).thenReturn(factory);
+		Mockito.when(gecoControl.announcer()).thenReturn(announcer);
 		Stage stage = loadStageFrom(baseDir, builder, gecoControl);
 		Mockito.when(gecoControl.stage()).thenReturn(stage);
 		Mockito.when(gecoControl.registry()).thenReturn(stage.registry());
