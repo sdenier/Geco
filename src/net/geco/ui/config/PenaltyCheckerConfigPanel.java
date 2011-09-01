@@ -9,7 +9,10 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -18,6 +21,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import net.geco.basics.Html;
+import net.geco.basics.TimeManager;
 import net.geco.control.PenaltyChecker;
 import net.geco.framework.IGeco;
 import net.geco.model.Messages;
@@ -42,26 +46,43 @@ public class PenaltyCheckerConfigPanel extends JPanel implements ConfigPanel {
 		GridBagConstraints c = SwingUtils.gbConstr(0);
 		c.insets = new Insets(0, 0, 5, 5);
 		c.fill = GridBagConstraints.HORIZONTAL;
+		
+		c.gridy = 1;
 		add(new JLabel(Messages.uiGet("StagePanel.MPLimitLabel")), c); //$NON-NLS-1$
 		int mpLimit = checker(geco).getMPLimit();
-		final JSpinner mplimitS = new JSpinner(new SpinnerNumberModel(mpLimit, 0, null, 1));
-		mplimitS.setPreferredSize(new Dimension(100, SwingUtils.SPINNERHEIGHT));
-		mplimitS.setToolTipText(Messages.uiGet("StagePanel.MPLimitTooltip")); //$NON-NLS-1$
-		mplimitS.addChangeListener(new ChangeListener() {
+		final JSpinner mpLimitS = new JSpinner(new SpinnerNumberModel(mpLimit, 0, null, 1));
+		mpLimitS.setPreferredSize(new Dimension(100, SwingUtils.SPINNERHEIGHT));
+		mpLimitS.setToolTipText(Messages.uiGet("StagePanel.MPLimitTooltip")); //$NON-NLS-1$
+		mpLimitS.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				int oldLimit = checker(geco).getMPLimit();
-				int newLimit = ((Integer) mplimitS.getValue()).intValue();
+				int newLimit = ((Integer) mpLimitS.getValue()).intValue();
 				if( oldLimit!=newLimit ) {
 					checker(geco).setMPLimit(newLimit);
 				}
 			}
 		});
-		add(SwingUtils.embed(mplimitS), c);
+		add(SwingUtils.embed(mpLimitS), c);
+		final JCheckBox noMpLimitCB = new JCheckBox("Don't check MP limit");
+		noMpLimitCB.setToolTipText("If ticked, a runner can have any number of missing punches without ever being MP");
+		noMpLimitCB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mpLimitS.setEnabled(!noMpLimitCB.isSelected());
+				checker(geco).useMPLimit(!noMpLimitCB.isSelected());
+			}
+		});
+		if( checker(geco).noMPLimit() ){ // init time
+			noMpLimitCB.setSelected(true);
+			mpLimitS.setEnabled(false);
+		}
+		add(SwingUtils.embed(noMpLimitCB), c);
 		
-		c.gridy = 1;
+		c.gridy = 2;
 		add(new JLabel(Messages.uiGet("StagePanel.TimePenaltyLabel")), c); //$NON-NLS-1$
-		long penalty = checker(geco).getMPPenalty() / 1000;
-		final JSpinner penaltyS = new JSpinner(new SpinnerNumberModel(penalty, 0l, null, 10));
+		long penalty = checker(geco).getMPPenalty();
+		final JLabel penaltyMinuteL = new JLabel(TimeManager.time(penalty) + " per missing punch");
+		final JSpinner penaltyS = new JSpinner(new SpinnerNumberModel(penalty / 1000, 0l, null, 10));
 		penaltyS.setPreferredSize(new Dimension(100, SwingUtils.SPINNERHEIGHT));
 		penaltyS.setToolTipText(Messages.uiGet("StagePanel.TimePenaltyTooltip")); //$NON-NLS-1$
 		penaltyS.addChangeListener(new ChangeListener() {
@@ -70,12 +91,14 @@ public class PenaltyCheckerConfigPanel extends JPanel implements ConfigPanel {
 				long newPenalty = 1000 * ((Long) penaltyS.getValue()).longValue();
 				if( oldPenalty!=newPenalty ) {
 					checker(geco).setMPPenalty(newPenalty);
+					penaltyMinuteL.setText(TimeManager.time(newPenalty) + " per missing punch");
 				}
 			}
 		});
 		add(SwingUtils.embed(penaltyS), c);
+		add(penaltyMinuteL, c);
 
-		c.gridy = 2;
+		c.gridy = 3;
 		c.gridwidth = 2;
 		String helpL = new Html()
 			.open("i") //$NON-NLS-1$

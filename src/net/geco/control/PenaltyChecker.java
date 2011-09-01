@@ -126,6 +126,10 @@ public class PenaltyChecker extends PunchChecker implements Checker, StageListen
 		noMPLimit = false;
 	}
 
+	public void useMPLimit(boolean b) {
+		noMPLimit = ! b;
+	}
+
 	protected void setNewProperties(Stage stage) {
 		String limit = stage.getProperties().getProperty(mpLimitProperty());
 		if( limit!=null ) {

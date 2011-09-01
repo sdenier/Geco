@@ -31,6 +31,7 @@ import net.geco.model.impl.POFactory;
 import net.geco.ui.config.CategoryConfigPanel;
 import net.geco.ui.config.ClubConfigPanel;
 import net.geco.ui.config.CourseConfigPanel;
+import net.geco.ui.config.PenaltyCheckerConfigPanel;
 import net.geco.ui.config.SIReaderConfigPanel;
 import net.geco.ui.config.StageConfigPanel;
 import net.geco.ui.framework.ConfigPanel;
@@ -104,6 +105,7 @@ public class FreeOrderAppBuilder extends AppBuilder {
 		return new ConfigPanel[] {
 				new StageConfigPanel(geco, frame),
 				new SIReaderConfigPanel(geco),
+				new PenaltyCheckerConfigPanel(geco),
 				new CourseConfigPanel(geco, frame),
 				new CategoryConfigPanel(geco, frame),
 				new ClubConfigPanel(geco, frame),
