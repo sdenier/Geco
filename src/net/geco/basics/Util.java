@@ -65,4 +65,12 @@ public class Util {
 		return lines;
 	}
 	
+	public static int firstIndexOf(int i, int[] array) {
+		for (int j = 0; j < array.length; j++) {
+			if( array[j]==i ){
+				return j;
+			}
+		}
+		return -1;
+	}
 }

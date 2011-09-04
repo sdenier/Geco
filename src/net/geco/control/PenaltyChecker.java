@@ -22,13 +22,13 @@ import net.geco.model.Trace;
  */
 public class PenaltyChecker extends PunchChecker implements Checker, StageListener {	
 	
-	private long MPPenalty;
+	protected long MPPenalty;
 
-	private int MPLimit;
+	protected int MPLimit;
 
-	private Tracer tracer;
+	protected Tracer tracer;
 
-	private boolean noMPLimit;
+	protected boolean noMPLimit;
 	
 	
 	public PenaltyChecker(Factory factory, Tracer tracer) {
