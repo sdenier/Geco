@@ -4,7 +4,13 @@
  */
 package net.geco.control;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import net.geco.model.Course;
 import net.geco.model.Factory;
+import net.geco.model.RunnerRaceData;
+import net.geco.model.Status;
 
 /**
  * @author Simon Denier
@@ -13,28 +19,33 @@ import net.geco.model.Factory;
  */
 public class CompositeChecker2 extends PenaltyChecker {
 
+	private Map<Course,MultiCourse> multis = new HashMap<Course, MultiCourse>();
+
+	public CompositeChecker2(Factory factory, CompositeTracer2 tracer) {
+		super(factory, tracer);
+	}
+	
 	public CompositeChecker2(Factory factory) {
-		super(factory, null);
-		tracer = new CompositeTracer2(factory);
+		super(factory, new CompositeTracer2(factory));
 	}
 
 	public CompositeChecker2(GecoControl gecoControl) {
-		super(gecoControl, null);
-		tracer = new CompositeTracer2(gecoControl.factory());
+		super(gecoControl, new CompositeTracer2(gecoControl.factory()));
 	}
 
 	protected CompositeTracer2 tracer() {
 		return (CompositeTracer2) tracer;
 	}
-
-	public void startWith(Tracer tracer) {
-		tracer().startWith(tracer);
+	
+	@Override
+	public Status computeStatus(RunnerRaceData data) {
+		// TODO: what if no matching multicourse?
+		tracer().setMultiCourse(multis.get(data.getCourse()));
+		return super.computeStatus(data);
 	}
 
-	public void joinRight(int startCode, Tracer tracer) {
-		tracer().joinRight(startCode, tracer);
+	public void registerMultiCourse(MultiCourse multiCourse) {
+		multis.put(multiCourse.getCourse(), multiCourse);
 	}
-	
-	
 
 }

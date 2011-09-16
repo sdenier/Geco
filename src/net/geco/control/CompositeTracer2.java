@@ -6,7 +6,6 @@ package net.geco.control;
 
 import java.util.Arrays;
 
-import net.geco.basics.Util;
 import net.geco.model.Factory;
 import net.geco.model.Punch;
 import net.geco.model.Trace;
@@ -18,9 +17,7 @@ import net.geco.model.Trace;
  */
 public class CompositeTracer2 extends AbstractTracer {
 
-	private Tracer tracer1;
-	private Tracer tracer2;
-	private int jointStart2;
+	private MultiCourse multiCourse;
 
 	public CompositeTracer2(Factory factory) {
 		super(factory);
@@ -28,10 +25,11 @@ public class CompositeTracer2 extends AbstractTracer {
 
 	@Override
 	public void computeTrace(int[] codes, Punch[] punches) {
-		int courseIndex = Util.firstIndexOf(jointStart2, codes);
-		int[] firstCourse = Arrays.copyOfRange(codes, 0, courseIndex);
-		int[] secondCourse = Arrays.copyOfRange(codes, courseIndex, codes.length);
-
+		Tracer tracer1 = multiCourse.firstSection().tracer;
+		int[] firstCourse = multiCourse.firstSection().codes;
+		Tracer tracer2 = multiCourse.secondSection().tracer;
+		int[] secondCourse = multiCourse.secondSection().codes;
+		
 		int jointPunchIndex = findJointPunchIndex(secondCourse, punches);
 		Punch[] firstRace = Arrays.copyOfRange(punches, 0, jointPunchIndex);
 		tracer1.computeTrace(firstCourse, firstRace);
@@ -43,6 +41,7 @@ public class CompositeTracer2 extends AbstractTracer {
 	}
 
 	protected int findJointPunchIndex(int[] secondCourse, Punch[] punches) {
+		Tracer tracer2 = multiCourse.secondSection().tracer;
 		tracer2.computeTrace(secondCourse, punches);
 		Trace[] trace2 = tracer2.getTrace();
 		int i = 0;
@@ -68,13 +67,8 @@ public class CompositeTracer2 extends AbstractTracer {
 		return trace;
 	}
 
-	public void startWith(Tracer tracer) {
-		tracer1 = tracer;
-	}
-
-	public void joinRight(int startCode, Tracer tracer) {
-		jointStart2 = startCode;
-		tracer2 = tracer;
+	public void setMultiCourse(MultiCourse multiCourse) {
+		this.multiCourse = multiCourse;
 	}
 
 }
