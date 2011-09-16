@@ -4,8 +4,11 @@
  */
 package net.geco.control;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import net.geco.model.Course;
 import net.geco.model.Factory;
-import net.geco.model.Punch;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Status;
 
@@ -16,51 +19,33 @@ import net.geco.model.Status;
  */
 public class CompositeChecker extends PenaltyChecker {
 
-	private int startCode2;
+	private Map<Course,MultiCourse> multis = new HashMap<Course, MultiCourse>();
 
+	public CompositeChecker(Factory factory, CompositeTracer tracer) {
+		super(factory, tracer);
+	}
+	
 	public CompositeChecker(Factory factory) {
-		super(factory, null);
-		tracer = new CompositeTracer(factory);
+		super(factory, new CompositeTracer(factory));
 	}
 
 	public CompositeChecker(GecoControl gecoControl) {
-		super(gecoControl, null);
-		tracer = new CompositeTracer(gecoControl.factory());
-	}
-	
-	@Override
-	public Status computeStatus(RunnerRaceData data) {
-		int jointPunchIndex = findJointPunch(startCode2, data.getPunches());
-		tracer().setJointPunchIndex( jointPunchIndex );
-		Status status = super.computeStatus(data);
-		if( jointPunchIndex==-1 ){
-			return Status.MP;
-		}
-		return status;
-	}
-	
-	protected int findJointPunch(int startCode2, Punch[] punches) {
-		for (int i = 0; i < punches.length; i++) {
-			if( punches[i].getCode()==startCode2 ){
-				return i;
-			}
-		}
-		return -1;
+		super(gecoControl, new CompositeTracer(gecoControl.factory()));
 	}
 
 	protected CompositeTracer tracer() {
 		return (CompositeTracer) tracer;
 	}
-
-	public void startWith(Tracer tracer) {
-		tracer().startWith(tracer);
+	
+	@Override
+	public Status computeStatus(RunnerRaceData data) {
+		// TODO: what if no matching multicourse?
+		tracer().setMultiCourse(multis.get(data.getCourse()));
+		return super.computeStatus(data);
 	}
 
-	public void joinRight(int startCode, Tracer tracer) {
-		this.startCode2 = startCode;
-		tracer().joinRight(startCode, tracer);
+	public void registerMultiCourse(MultiCourse multiCourse) {
+		multis.put(multiCourse.getCourse(), multiCourse);
 	}
-	
-	
 
 }

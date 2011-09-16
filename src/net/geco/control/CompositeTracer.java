@@ -6,7 +6,6 @@ package net.geco.control;
 
 import java.util.Arrays;
 
-import net.geco.basics.Util;
 import net.geco.model.Factory;
 import net.geco.model.Punch;
 import net.geco.model.Trace;
@@ -18,10 +17,7 @@ import net.geco.model.Trace;
  */
 public class CompositeTracer extends AbstractTracer {
 
-	private Tracer tracer1;
-	private Tracer tracer2;
-	private int jointStart2;
-	private int jointPunchIndex;
+	private MultiCourse multiCourse;
 
 	public CompositeTracer(Factory factory) {
 		super(factory);
@@ -29,23 +25,39 @@ public class CompositeTracer extends AbstractTracer {
 
 	@Override
 	public void computeTrace(int[] codes, Punch[] punches) {
-		int courseIndex = Util.firstIndexOf(jointStart2, codes);
-		int[] secondCourse = Arrays.copyOfRange(codes, courseIndex, codes.length);
-
-		if( jointPunchIndex==-1 ){
-			tracer2.computeTrace(secondCourse, punches);
-			this.nbMPs = tracer2.getNbMPs();
-			this.trace = tracer2.getTrace();
-			return;
-		}
+		Tracer tracer1 = multiCourse.firstSection().tracer;
+		int[] firstCourse = multiCourse.firstSection().codes;
+		Tracer tracer2 = multiCourse.secondSection().tracer;
+		int[] secondCourse = multiCourse.secondSection().codes;
 		
-		int[] firstCourse = Arrays.copyOfRange(codes, 0, courseIndex);
+		int jointPunchIndex = findJointPunchIndex(secondCourse, punches);
 		Punch[] firstRace = Arrays.copyOfRange(punches, 0, jointPunchIndex);
-		Punch[] secondRace = Arrays.copyOfRange(punches, jointPunchIndex, punches.length);
 		tracer1.computeTrace(firstCourse, firstRace);
+		Punch[] secondRace = Arrays.copyOfRange(punches, jointPunchIndex, punches.length);
 		tracer2.computeTrace(secondCourse, secondRace);
+
 		this.nbMPs = tracer1.getNbMPs() + tracer2.getNbMPs();
 		this.trace = mergeTrace(tracer1.getTrace(), tracer2.getTrace());
+	}
+
+	protected int findJointPunchIndex(int[] secondCourse, Punch[] punches) {
+		Tracer tracer2 = multiCourse.secondSection().tracer;
+		tracer2.computeTrace(secondCourse, punches);
+		Trace[] trace2 = tracer2.getTrace();
+		int i = 0;
+		while( i < trace2.length && !trace2[i].isOK() ){
+			i++;
+		}
+		if( i==trace2.length ){
+			return punches.length;
+		}
+		int indexCode = Integer.parseInt( trace2[i].getCode() );
+		for (int j = 0; j < punches.length; j++) {
+			if( punches[j].getCode() == indexCode ){
+				return j;
+			}
+		}
+		return -1;
 	}
 
 	protected Trace[] mergeTrace(Trace[] trace1, Trace[] trace2) {
@@ -55,17 +67,8 @@ public class CompositeTracer extends AbstractTracer {
 		return trace;
 	}
 
-	public void startWith(Tracer tracer) {
-		tracer1 = tracer;
-	}
-
-	public void joinRight(int startCode, Tracer tracer) {
-		jointStart2 = startCode;
-		tracer2 = tracer;
-	}
-
-	public void setJointPunchIndex(int jointPunchIndex) {
-		this.jointPunchIndex = jointPunchIndex;
+	public void setMultiCourse(MultiCourse multiCourse) {
+		this.multiCourse = multiCourse;
 	}
 
 }
