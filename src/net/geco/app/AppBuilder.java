@@ -6,6 +6,7 @@ package net.geco.app;
 
 import javax.swing.JFrame;
 
+import net.geco.control.Checker;
 import net.geco.control.GecoControl;
 import net.geco.control.StageBuilder;
 import net.geco.framework.IGecoApp;
@@ -32,21 +33,20 @@ public abstract class AppBuilder {
 
 	protected Factory factory;
 
-	public AppBuilder() {
-	}
-	
 	public Factory getFactory() {
 		if( factory==null ){
 			factory = createFactory();
 		}
 		return factory;
 	}
-	
+
+	public abstract String getAppName();
+
 	protected abstract Factory createFactory();
 	
 	public abstract StageBuilder createStageBuilder();
 	
-	public abstract <T> T createChecker(GecoControl gecoControl);
+	public abstract Checker createChecker(GecoControl gecoControl);
 	
 	public abstract void buildControls(GecoControl gecoControl);
 	

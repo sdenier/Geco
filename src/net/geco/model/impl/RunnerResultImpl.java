@@ -95,7 +95,7 @@ public class RunnerResultImpl implements RunnerResult {
 	}
 	public String formatTrace() {
 		if( trace.length>0 )
-			return Util.join(trace, ",", new StringBuffer()); //$NON-NLS-1$
+			return Util.join(trace, ",", new StringBuilder()); //$NON-NLS-1$
 		else
 			return ""; //$NON-NLS-1$
 	}

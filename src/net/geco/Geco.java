@@ -24,9 +24,9 @@ import net.geco.basics.Logger;
 import net.geco.control.ArchiveManager;
 import net.geco.control.AutoMergeHandler;
 import net.geco.control.CNCalculator;
+import net.geco.control.Checker;
 import net.geco.control.GecoControl;
 import net.geco.control.HeatBuilder;
-import net.geco.control.PenaltyChecker;
 import net.geco.control.RegistryStats;
 import net.geco.control.ResultBuilder;
 import net.geco.control.ResultExporter;
@@ -88,6 +88,8 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 
 	private GecoWindow window;
 	
+	private String appName;
+
 	/*
 	 * Controls
 	 */
@@ -177,6 +179,7 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 	
 	public void startup(GecoStageLaunch stageLaunch) throws Exception {
 		AppBuilder builder = stageLaunch.getAppBuilder();
+		appName = builder.getAppName();
 		GecoControl gecoControl = new GecoControl(builder);
 		history.remove(stageLaunch);
 		history.addFirst(stageLaunch);
@@ -184,6 +187,11 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 		initControls(builder, gecoControl);
 		window.initAndLaunchGUI(builder);
 		System.gc();
+	}
+	
+	@Override
+	public String getAppName() {
+		return appName;
 	}
 
 	@Override
@@ -260,7 +268,7 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 		return gecoControl.registry();
 	}
 	
-	public PenaltyChecker checker() {
+	public Checker checker() {
 		return gecoControl.checker();
 	}
 	public StageControl stageControl() {

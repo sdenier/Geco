@@ -11,6 +11,7 @@ import net.geco.control.AutoMergeHandler;
 import net.geco.control.CNCalculator;
 import net.geco.control.GecoControl;
 import net.geco.control.HeatBuilder;
+import net.geco.control.InlineTracer;
 import net.geco.control.PenaltyChecker;
 import net.geco.control.RegistryStats;
 import net.geco.control.ResultBuilder;
@@ -48,15 +49,23 @@ import net.geco.ui.tabs.RunnersPanel;
  */
 public class OrientShowAppBuilder extends AppBuilder {
 
+	public static String getName() {
+		return "Orient'Show";
+	}
+	
+	@Override
+	public String getAppName() {
+		return getName();
+	}
+
 	@Override
 	protected Factory createFactory() {
 		return new POFactory();
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public PenaltyChecker createChecker(GecoControl gecoControl) {
-		return new PenaltyChecker(gecoControl);
+		return new PenaltyChecker(gecoControl, new InlineTracer(gecoControl.factory()));
 	}
 
 	@Override

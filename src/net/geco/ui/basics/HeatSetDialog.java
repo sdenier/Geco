@@ -176,7 +176,7 @@ public class HeatSetDialog extends JDialog {
 	private void refreshFields(HeatSet heatSet) {
 		heatSetF.setText(heatSet.getName());
 		qRankF.setText(heatSet.getQualifyingRank().toString());
-		heatNamesTA.setText(Util.join(heatSet.getHeatNames(), ",", new StringBuffer())); //$NON-NLS-1$
+		heatNamesTA.setText(Util.join(heatSet.getHeatNames(), ",", new StringBuilder())); //$NON-NLS-1$
 		setTypeCB.setSelectedItem(heatSet.getSetType());
 	}
 	

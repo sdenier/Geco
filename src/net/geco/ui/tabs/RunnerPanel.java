@@ -108,8 +108,8 @@ public class RunnerPanel extends GecoPanel {
 			return panel;
 		}
 
-	public void updateRunner(String ecard) {
-		this.runnerData = registry().findRunnerData(ecard);
+	public void updateRunner(RunnerRaceData runnerData) {
+		this.runnerData = runnerData;
 		this.runner = runnerData.getRunner();
 		if( ! isEnabled() ){
 			enablePanel(true);

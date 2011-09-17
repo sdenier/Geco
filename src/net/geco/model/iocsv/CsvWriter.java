@@ -78,7 +78,7 @@ public class CsvWriter {
 	}
 	
 	public void writeRecord(String[] record, String csvSep) throws IOException {
-		write(Util.join(record, csvSep, new StringBuffer()));
+		write(Util.join(record, csvSep, new StringBuilder()));
 		this.writer.newLine();
 	}
 	

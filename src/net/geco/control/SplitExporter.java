@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -43,11 +42,21 @@ public class SplitExporter extends AResultExporter implements StageListener {
 	
 	private int nbColumns = 12;
 	private int refreshInterval = 0;
+	private boolean withBestSplits;
 
 	
 	public SplitExporter(GecoControl gecoControl) {
 		super(SplitExporter.class, gecoControl);
 		geco().announcer().registerStageListener(this);
+		withBestSplits();
+	}
+	
+	public void withBestSplits() {
+		withBestSplits = true;
+	}
+	
+	public void withoutBestSplits() {
+		withBestSplits = false;
 	}
 	
 	public int nbColumns() {
@@ -62,9 +71,12 @@ public class SplitExporter extends AResultExporter implements StageListener {
 		includeHeader(html, "result.css"); //$NON-NLS-1$
 		for (Result result : results) {
 			if( config.showEmptySets || !result.isEmpty() ) {
-				Map<RunnerRaceData, SplitTime[]> allSplits = new HashMap<RunnerRaceData, SplitTime[]>(); 
-				SplitTime[] bestSplit = resultBuilder.buildAllNormalSplits(result, config, allSplits);
-				appendHtmlResultsWithSplits(result, allSplits, bestSplit, config, html);
+				SplitTime[] bestSplits = null;
+				if( withBestSplits ){
+					bestSplits = resultBuilder.initializeBestSplits(result, config.resultType);
+				}
+				Map<RunnerRaceData, SplitTime[]> allSplits = resultBuilder.buildAllNormalSplits(result, bestSplits);
+				appendHtmlResultsWithSplits(result, allSplits, bestSplits, config, html);
 			}
 		}
 		return html.close();
@@ -170,7 +182,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 				SplitTime split = splits[k];
 				String label = TimeManager.time(split.time);
 				long best = 0;
-				if( k < bestSplits.length ){
+				if( withBestSplits && k < bestSplits.length ){
 					best = bestSplits[k].time; 
 				}
 				showWithBestSplit(label, split.time, best, html);
@@ -186,7 +198,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 					label = "&nbsp;"; //$NON-NLS-1$
 				}
 				long best = 0;
-				if( k < bestSplits.length ){
+				if( withBestSplits &&k < bestSplits.length ){
 					best = bestSplits[k].split;
 				}
 				showWithBestSplit(label, split.split, best, html);
@@ -197,7 +209,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 	}
 	
 	private void showWithBestSplit(String label, long split, long best, Html html) {
-		if( split==best ){
+		if( withBestSplits && split==best ){
 			html.td(label, "class=\"best\""); //$NON-NLS-1$
 		} else {
 			html.td(label);

@@ -1,0 +1,13 @@
+#Geco Sun Aug 28 23:52:01 CEST 2011
+#Sun Aug 28 23:52:01 CEST 2011
+Version=V1.2
+SplitFormat=MultiColumns
+AppBuilder=net.geco.app.FreeOrderAppBuilder
+name=TEST Free Order
+NbAutoBackups=9
+CNFile=/Users/deniersi/workspace/GecO/data/CN-Ped-Base.csv
+AutosaveDelay=2
+SIZeroTime=32400000
+SplitNbColumns=12
+SIPortname=
+SplitPrinter=Canon MP560 usb

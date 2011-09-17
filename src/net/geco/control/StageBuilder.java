@@ -59,7 +59,7 @@ public class StageBuilder extends BasicControl {
 		this.registryBuilder = new RegistryBuilder(factory);
 	}
 	
-	public Stage loadStage(String baseDir, PenaltyChecker checker) {
+	public Stage loadStage(String baseDir, Checker checker) {
 		Stage newStage = factory().createStage();
 		loadStageProperties(newStage, baseDir);
 		importDataIntoRegistry(newStage);

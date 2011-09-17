@@ -123,7 +123,7 @@ public class LiveClient implements Announcer.CardListener {
 			Integer.toString(result.getNbMPs()),
 			Long.toString(result.getTimePenalty()),
 			result.formatTrace()
-		}, ",", new StringBuffer()); //$NON-NLS-1$
+		}, ",", new StringBuilder()); //$NON-NLS-1$
 	}
 
 	@Override

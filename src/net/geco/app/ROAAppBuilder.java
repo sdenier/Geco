@@ -9,8 +9,8 @@ import javax.swing.JFrame;
 import net.geco.control.ArchiveManager;
 import net.geco.control.AutoMergeHandler;
 import net.geco.control.CNCalculator;
+import net.geco.control.CompositeChecker;
 import net.geco.control.GecoControl;
-import net.geco.control.InlineTracer;
 import net.geco.control.PenaltyChecker;
 import net.geco.control.RegistryStats;
 import net.geco.control.ResultBuilder;
@@ -31,6 +31,7 @@ import net.geco.model.impl.POFactory;
 import net.geco.ui.config.CategoryConfigPanel;
 import net.geco.ui.config.ClubConfigPanel;
 import net.geco.ui.config.CourseConfigPanel;
+import net.geco.ui.config.PenaltyCheckerConfigPanel;
 import net.geco.ui.config.SIReaderConfigPanel;
 import net.geco.ui.config.StageConfigPanel;
 import net.geco.ui.framework.ConfigPanel;
@@ -44,10 +45,10 @@ import net.geco.ui.tabs.RunnersPanel;
  * @since May 6, 2011
  *
  */
-public class ClassicAppBuilder extends AppBuilder {
+public class ROAAppBuilder extends AppBuilder {
 
 	public static String getName() {
-		return "Classic inline";
+		return "Raid Orient'Alpin";
 	}
 	
 	@Override
@@ -62,7 +63,7 @@ public class ClassicAppBuilder extends AppBuilder {
 
 	@Override
 	public PenaltyChecker createChecker(GecoControl gecoControl) {
-		return new PenaltyChecker(gecoControl, new InlineTracer(gecoControl.factory()));
+		return new CompositeChecker(gecoControl);
 	}
 
 	@Override
@@ -104,6 +105,7 @@ public class ClassicAppBuilder extends AppBuilder {
 		return new ConfigPanel[] {
 				new StageConfigPanel(geco, frame),
 				new SIReaderConfigPanel(geco),
+				new PenaltyCheckerConfigPanel(geco),
 				new CourseConfigPanel(geco, frame),
 				new CategoryConfigPanel(geco, frame),
 				new ClubConfigPanel(geco, frame),

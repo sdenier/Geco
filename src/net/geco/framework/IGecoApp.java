@@ -21,6 +21,8 @@ public interface IGecoApp extends IGeco {
 	
 	public String version();
 	
+	public String getAppName();
+
 	public Stage stage();
 
 	public void openStage(String startDir);
@@ -34,5 +36,5 @@ public interface IGecoApp extends IGeco {
 	public void restart(IStageLaunch stageLaunch) throws Exception;
 
 	public List<IStageLaunch> history();
-	
+
 }

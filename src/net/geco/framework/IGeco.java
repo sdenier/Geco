@@ -9,8 +9,8 @@ import net.geco.basics.GecoRequestHandler;
 import net.geco.basics.Logger;
 import net.geco.control.ArchiveManager;
 import net.geco.control.CNCalculator;
+import net.geco.control.Checker;
 import net.geco.control.HeatBuilder;
-import net.geco.control.PenaltyChecker;
 import net.geco.control.RegistryStats;
 import net.geco.control.ResultBuilder;
 import net.geco.control.ResultExporter;
@@ -39,7 +39,7 @@ public interface IGeco {
 	public void log(String message);
 	public void info(String message, boolean warning);
 	
-	public PenaltyChecker checker();
+	public Checker checker();
 	public StageControl stageControl();
 	public RunnerControl runnerControl();
 	public ResultBuilder resultBuilder();

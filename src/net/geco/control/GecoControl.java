@@ -57,7 +57,7 @@ public class GecoControl {
 
 	private StageBuilder stageBuilder;
 
-	private PenaltyChecker checker;
+	private Checker checker;
 
 	private Thread autosaveThread;
 
@@ -83,6 +83,7 @@ public class GecoControl {
 	
 	/**
 	 * Constructor for a generic GecoControl. See openStage() for the full initialization
+	 * TODO: refactor GecoControl constructors (no more default tracer/checker)
 	 */
 	public GecoControl() {
 		factory = new POFactory();
@@ -90,7 +91,7 @@ public class GecoControl {
 
 		// early controls
 		stageBuilder = new StageBuilder(factory);
-		checker = new PenaltyChecker(this);
+		checker = new PenaltyChecker(this, new InlineTracer(factory));
 	}
 
 	/**
@@ -128,7 +129,7 @@ public class GecoControl {
 	public Registry registry() {
 		return stage().registry();
 	}
-	public PenaltyChecker checker() {
+	public Checker checker() {
 		return checker;
 	}
 
@@ -151,8 +152,6 @@ public class GecoControl {
 	}
 	private RuntimeStage loadStage(String baseDir, boolean withLogger) {
 		Stage stage = stageBuilder.loadStage(baseDir, checker);
-//		stageBuilder.backupData(stage.getBaseDir(),
-//							backupFilename( new SimpleDateFormat("yyMMdd-HHmmss'i'").format(new Date()) ));
 		Logger logger = null;
 		if( withLogger ) {
 			logger = initializeLogger(stage);
