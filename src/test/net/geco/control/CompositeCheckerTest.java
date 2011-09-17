@@ -16,6 +16,7 @@ import net.geco.control.MultiCourse;
 import net.geco.model.Course;
 import net.geco.model.Factory;
 import net.geco.model.Punch;
+import net.geco.model.Registry;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.RunnerResult;
@@ -89,12 +90,15 @@ public class CompositeCheckerTest {
 	}
 	
 	@Test
-	public void testCreateMultiCourse() {
-		MultiCourse multiCourse = new MultiCourse(course1);
-		multiCourse.startWith(new FreeOrderTracer(factory));
-		multiCourse.joinRight(121, new InlineTracer(factory));
-
-		assertEquals(course1, multiCourse.getCourse());
+	public void testImportMultiCourse() {
+		Registry mockRegistry = Mockito.mock(Registry.class);
+		Course course = factory.createCourse();
+		course.setName("Course A");
+		createMixedCourse(course);
+		Mockito.when(mockRegistry.findCourse("Course A")).thenReturn(course);
+		
+		MultiCourse multiCourse = checker.importMultiCourse(new String[] {"Course A", "121"}, mockRegistry);
+		assertEquals(course, multiCourse.getCourse());
 		Assert.assertArrayEquals(new int[]{ 31, 32, 33, 34 }, multiCourse.firstSection().codes);
 		Assert.assertTrue(multiCourse.firstSection().tracer instanceof FreeOrderTracer);
 		Assert.assertArrayEquals(new int[]{ 121, 122, 121, 123, 124, 121 },
