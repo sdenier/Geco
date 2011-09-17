@@ -39,6 +39,7 @@ import net.geco.app.AppBuilder;
 import net.geco.app.ClassicAppBuilder;
 import net.geco.app.FreeOrderAppBuilder;
 import net.geco.app.OrientShowAppBuilder;
+import net.geco.app.ROAAppBuilder;
 import net.geco.control.StageBuilder;
 import net.geco.framework.IStageLaunch;
 import net.geco.model.Messages;
@@ -234,6 +235,7 @@ public class GecoLauncher extends JDialog {
 			addAppRadioButton(ClassicAppBuilder.getName(), ClassicAppBuilder.class, rulePanel, builderGroup); 
 		addAppRadioButton(OrientShowAppBuilder.getName(), OrientShowAppBuilder.class, rulePanel, builderGroup);
 		addAppRadioButton(FreeOrderAppBuilder.getName(), FreeOrderAppBuilder.class, rulePanel, builderGroup);
+		addAppRadioButton(ROAAppBuilder.getName(), ROAAppBuilder.class, rulePanel, builderGroup);
 		builderGroup.setSelected(classicAppRB.getModel(), true);
 		c = SwingUtils.gbConstr(2);
 		c.gridwidth = 3;
