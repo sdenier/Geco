@@ -15,6 +15,7 @@ import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.RunnerResult;
 import net.geco.model.Status;
+import net.geco.model.Trace;
 
 
 /**
@@ -238,8 +239,8 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 	}
 
 	@Override
-	public boolean hasLeg(int legStart, int legEnd) {
-		return result.hasLeg(Integer.toString(legStart), Integer.toString(legEnd));
+	public Trace[] retrieveLeg(int legStart, int legEnd) {
+		return result.retrieveLeg(Integer.toString(legStart), Integer.toString(legEnd));
 	}
 
 }

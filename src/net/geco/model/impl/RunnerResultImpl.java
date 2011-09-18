@@ -134,14 +134,14 @@ public class RunnerResultImpl implements RunnerResult {
 	}
 
 	@Override
-	public boolean hasLeg(String legStart, String legEnd) {
+	public Trace[] retrieveLeg(String legStart, String legEnd) {
 		Trace[] clearTrace = getClearTrace();
 		for (int i = 0; i < clearTrace.length-1; i++) {
 			if( clearTrace[i].getCode().equals(legStart) && clearTrace[i+1].getCode().equals(legEnd) ){
-				return true;
+				return new Trace[]{ clearTrace[i], clearTrace[i+1] };
 			}
 		}
-		return false;
+		return null;
 	}
 	
 }

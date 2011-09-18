@@ -51,6 +51,6 @@ public interface RunnerResult extends Cloneable {
 
 	public RunnerResult clone();
 
-	public boolean hasLeg(String legStart, String legEnd);
+	public Trace[] retrieveLeg(String legStart, String legEnd);
 	
 }

@@ -6,6 +6,8 @@ package test.net.geco.functions;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static test.net.geco.GecoFixtures.punch;
 
@@ -22,6 +24,7 @@ import net.geco.model.Punch;
 import net.geco.model.Registry;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
+import net.geco.model.Trace;
 import net.geco.model.impl.POFactory;
 
 import org.junit.Before;
@@ -115,25 +118,31 @@ public class LegNeutralizationFunctionTest {
 		RunnerRaceData dataSelected = GecoFixtures.createRunnerData(courseA, cat); 
 		dataSelected.setPunches(new Punch[] { punch(42), punch(45), punch(31), punch(45), punch(32) });
 		checker.check(dataSelected);
-		assertTrue("runner with partial trace and matching leg should be accepted", dataSelected.hasLeg(45, 31) );
+		Trace[] leg = dataSelected.retrieveLeg(45, 31);
+		assertNotNull("runner with partial trace and matching leg should be accepted", leg );
+		assertEquals(Integer.toString(45), leg[0].getCode());
+		assertEquals(Integer.toString(31), leg[1].getCode());
 		
 		RunnerRaceData dataRejected = GecoFixtures.createRunnerData(courseA, cat);
 		dataRejected.setPunches(new Punch[0]);
 		dataRejected.setResult(factory.createRunnerResult());
-		assertFalse("runner without punch should be rejected", dataRejected.hasLeg(45, 31) );
+		assertNull("runner without punch should be rejected", dataRejected.retrieveLeg(45, 31) );
 		
 		dataRejected.setPunches(new Punch[] { punch(42), punch(43), punch(45), punch(45), punch(32) });
 		checker.check(dataSelected);
-		assertFalse("runner with missing leg punch should be rejected", dataRejected.hasLeg(45, 31) );
+		assertNull("runner with missing leg punch should be rejected", dataRejected.retrieveLeg(45, 31) );
 		
 		dataSelected.setPunches(new Punch[] { punch(42), punch(45), punch(64), punch(31), punch(45), punch(32) });
 		checker.check(dataSelected);
-		assertTrue("runner with added punch between matching leg should be accepted", dataSelected.hasLeg(45, 31) );
+		leg = dataSelected.retrieveLeg(45, 31);
+		assertNotNull("runner with added punch between matching leg should be accepted", leg );
+		assertEquals(Integer.toString(45), leg[0].getCode());
+		assertEquals(Integer.toString(31), leg[1].getCode());
 		
 		dataRejected.setPunches(new Punch[] { punch(42), punch(45), punch(64), punch(32) });
 		checker.check(dataRejected);
 		System.out.println(dataRejected.getResult().formatTrace());
-		assertFalse("runner with missing leg punch should be rejected", dataRejected.hasLeg(45, 32) );
+		assertNull("runner with missing leg punch should be rejected", dataRejected.retrieveLeg(45, 32) );
 	}
 	
 	@Test
@@ -173,7 +182,9 @@ public class LegNeutralizationFunctionTest {
 		assertEquals(3, courses.size());
 		assertTrue(courses.contains(mullaghmeen.registry().findCourse("Orange")));
 		assertTrue(courses.contains(mullaghmeen.registry().findCourse("White")));
-		assertTrue(courses.contains(mullaghmeen.registry().findCourse("Yellow")));		
+		assertTrue(courses.contains(mullaghmeen.registry().findCourse("Yellow")));
+		
+		// TODO: dont compute if split = NOTIME (extract computeSplit from ResultBuilder into TimeManager) 
 	}
 
 	@Test
