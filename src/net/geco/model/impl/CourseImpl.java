@@ -72,6 +72,16 @@ public class CourseImpl implements Course {
 				+ length +"m, "			 //$NON-NLS-1$
 				+ climb + "m): "		 //$NON-NLS-1$
 				+ Arrays.toString(codes);
-	} 
+	}
+
+	@Override
+	public boolean hasLeg(int start, int end) {
+		for (int i = 0; i < codes.length - 1; i++) {
+			if( codes[i]==start && codes[i+1]==end ){
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

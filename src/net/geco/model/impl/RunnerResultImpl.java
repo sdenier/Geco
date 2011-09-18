@@ -4,6 +4,8 @@
  */
 package net.geco.model.impl;
 
+import java.util.ArrayList;
+
 import net.geco.basics.TimeManager;
 import net.geco.basics.Util;
 import net.geco.model.RunnerResult;
@@ -112,5 +114,34 @@ public class RunnerResultImpl implements RunnerResult {
 		return mpTrace.substring(0, mpTrace.length() - 1); // remove last ","
 	}
 	
+	@Override
+	public Trace[] getClearTrace() {
+		ArrayList<Trace> clearTrace = new ArrayList<Trace>(trace.length);
+		for (Trace t : trace) {
+			if( ! t.isAdded() ){
+				clearTrace.add(t);
+			}
+		}
+		return clearTrace.toArray(new Trace[0]);
+	}
+	@Override
+	public String formatClearTrace() {
+		Trace[] clearTrace = getClearTrace();
+		if( clearTrace.length>0 )
+			return Util.join(clearTrace, ",", new StringBuilder()); //$NON-NLS-1$
+		else
+			return ""; //$NON-NLS-1$
+	}
+
+	@Override
+	public boolean hasLeg(String legStart, String legEnd) {
+		Trace[] clearTrace = getClearTrace();
+		for (int i = 0; i < clearTrace.length-1; i++) {
+			if( clearTrace[i].getCode().equals(legStart) && clearTrace[i+1].getCode().equals(legEnd) ){
+				return true;
+			}
+		}
+		return false;
+	}
 	
 }

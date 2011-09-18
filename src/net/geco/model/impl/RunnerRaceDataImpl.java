@@ -237,4 +237,9 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 		return getRunner().toString();
 	}
 
+	@Override
+	public boolean hasLeg(int legStart, int legEnd) {
+		return result.hasLeg(Integer.toString(legStart), Integer.toString(legEnd));
+	}
+
 }

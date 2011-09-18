@@ -75,4 +75,6 @@ public interface RunnerRaceData extends Cloneable {
 
 	public String infoString();
 
+	public boolean hasLeg(int legStart, int legEnd);
+
 }

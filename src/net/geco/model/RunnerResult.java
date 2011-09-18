@@ -39,13 +39,18 @@ public interface RunnerResult extends Cloneable {
 
 	public Trace[] getTrace();
 
+	public Trace[] getClearTrace();
+
 	public void setTrace(Trace[] trace);
 	
 	public String formatTrace();
 	
 	public String formatMpTrace();
 
+	public String formatClearTrace();
+
 	public RunnerResult clone();
 
+	public boolean hasLeg(String legStart, String legEnd);
 	
 }

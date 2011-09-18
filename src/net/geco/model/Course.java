@@ -29,4 +29,6 @@ public interface Course extends Pool, Group {
 	
 	public int nbControls();
 
+	public boolean hasLeg(int start, int end);
+
 }
