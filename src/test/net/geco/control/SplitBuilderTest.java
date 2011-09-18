@@ -13,7 +13,6 @@ import net.geco.basics.TimeManager;
 import net.geco.control.GecoControl;
 import net.geco.control.ResultBuilder;
 import net.geco.control.ResultBuilder.SplitTime;
-import net.geco.model.Messages;
 import net.geco.model.Registry;
 import net.geco.model.Result;
 import net.geco.model.RunnerRaceData;
@@ -40,7 +39,6 @@ public class SplitBuilderTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() {
-		Messages.put("ui", "net.geco.ui.messages"); //$NON-NLS-1$ //$NON-NLS-2$
 		gecoControl = GecoFixtures.loadFixtures("testData/freeorder", new FreeOrderAppBuilder());
 		registry = gecoControl.registry();
 	}
