@@ -89,6 +89,18 @@ public class TimeManager {
 		}
 	}
 
+	public static long computeSplit(long baseTime, long time) {
+		if( baseTime==TimeManager.NO_TIME_l || time==TimeManager.NO_TIME_l ) {
+			return TimeManager.NO_TIME_l;
+		} else {
+			if( baseTime <= time ) {
+				return time - baseTime;
+			} else {
+				return TimeManager.NO_TIME_l;
+			}
+		}		
+	}
+
 
 //	Calendar day = Calendar.getInstance();
 //	// reset time

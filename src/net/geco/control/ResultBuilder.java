@@ -219,18 +219,7 @@ public class ResultBuilder extends Control {
 	}
 
 	protected SplitTime createSplit(String seq, Trace trace, long startTime, long previousTime, long time) {
-		return new SplitTime(seq, trace, computeSplit(startTime, time), computeSplit(previousTime, time));
-	}
-	protected long computeSplit(long baseTime, long time) {
-		if( baseTime==TimeManager.NO_TIME_l || time==TimeManager.NO_TIME_l ) {
-			return TimeManager.NO_TIME_l;
-		} else {
-			if( baseTime < time ) {
-				return time - baseTime;
-			} else {
-				return TimeManager.NO_TIME_l;
-			}
-		}		
+		return new SplitTime(seq, trace, TimeManager.computeSplit(startTime, time), TimeManager.computeSplit(previousTime, time));
 	}
 
 	public SplitTime[] initializeBestSplits(Result result, ResultType resultType) {

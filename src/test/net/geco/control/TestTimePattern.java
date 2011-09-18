@@ -9,6 +9,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+import net.geco.basics.TimeManager;
+
+import org.junit.Assert;
+import org.junit.Test;
+
 /**
  * @author Simon Denier
  * @since Feb 14, 2009
@@ -21,9 +26,6 @@ public class TestTimePattern {
 	private static final SimpleDateFormat FORMATTERMin = new SimpleDateFormat("k:mm:ss Z");
 	private static final SimpleDateFormat FORMATTERp = (SimpleDateFormat) DateFormat.getTimeInstance();
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		FORMATTER.applyPattern("H:mm:ss Z");
 		FORMATTER.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -40,6 +42,15 @@ public class TestTimePattern {
 		System.out.println(FORMATTERMin.format(date));
 		System.out.println(FORMATTERp.format(date));
 		System.out.println();
+	}
+	
+	@Test
+	public void testComputeSplitTime(){
+		Assert.assertEquals(0, TimeManager.computeSplit(10000, 10000));
+		Assert.assertEquals(1000, TimeManager.computeSplit(10000, 11000));
+		Assert.assertEquals(TimeManager.NO_TIME_l, TimeManager.computeSplit(15000, 11000));
+		Assert.assertEquals(TimeManager.NO_TIME_l, TimeManager.computeSplit(TimeManager.NO_TIME_l, 11000));
+		Assert.assertEquals(TimeManager.NO_TIME_l, TimeManager.computeSplit(15000, TimeManager.NO_TIME_l));
 	}
 
 }
