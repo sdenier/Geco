@@ -201,4 +201,22 @@ public class LivePunch implements Trace {
 		// subst should have been split in MP + ADD
 		return false;
 	}
+
+	/* (non-Javadoc)
+	 * @see net.geco.model.Trace#isNeutralized()
+	 */
+	@Override
+	public boolean isNeutralized() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see net.geco.model.Trace#setNeutralized(boolean)
+	 */
+	@Override
+	public void setNeutralized(boolean flag) {
+		// TODO Auto-generated method stub
+		
+	}
 }

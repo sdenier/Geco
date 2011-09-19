@@ -9,9 +9,13 @@ import java.util.Collection;
 
 import javax.swing.JComponent;
 
+import net.geco.basics.TimeManager;
 import net.geco.control.GecoControl;
 import net.geco.model.Course;
 import net.geco.model.Runner;
+import net.geco.model.RunnerRaceData;
+import net.geco.model.RunnerResult;
+import net.geco.model.Trace;
 
 /**
  * @author Simon Denier
@@ -86,6 +90,18 @@ public class LegNeutralizationFunction extends GecoFunction {
 
 	public Collection<Runner> selectRunnersWithLegToNeutralize(Course course) {
 		return registry().getRunnersFromCourse(course);
+	}
+
+	public void neutralizeLeg(RunnerRaceData raceData) {
+		Trace[] leg = raceData.retrieveLeg(legStart, legEnd);
+		if( leg!=null && ! leg[1].isNeutralized() ){
+			long splitTime = TimeManager.computeSplit(leg[0].getTime().getTime(), leg[1].getTime().getTime());
+			if( splitTime!=TimeManager.NO_TIME_l ){
+				RunnerResult result = raceData.getResult();
+				result.setRacetime(result.getRacetime() - splitTime);
+				leg[1].setNeutralized(true);				
+			}
+		}
 	}
 
 }

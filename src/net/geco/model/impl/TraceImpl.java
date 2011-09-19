@@ -15,12 +15,14 @@ public class TraceImpl implements Trace {
 
 	private String code;
 	private Date time;
+	private boolean neutralized;
 	
 	public TraceImpl(Punch punch) {
 		this(Integer.toString(punch.getCode()), punch.getTime());
 	}
 	
 	public TraceImpl(String code, Date time) {
+		this.neutralized = false;
 		this.code = code;
 		this.time = time;
 	}
@@ -70,5 +72,15 @@ public class TraceImpl implements Trace {
 	public boolean isSubst() {
 		// Notice that isSub => isMP
 		return code.startsWith("-") && code.contains("+"); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	@Override
+	public boolean isNeutralized() {
+		return neutralized;
+	}
+
+	@Override
+	public void setNeutralized(boolean flag) {
+		this.neutralized = flag;
 	}
 }

@@ -12,6 +12,7 @@ import static org.junit.Assert.assertTrue;
 import static test.net.geco.GecoFixtures.punch;
 
 import java.util.Collection;
+import java.util.Date;
 
 import net.geco.app.ClassicAppBuilder;
 import net.geco.control.GecoControl;
@@ -22,8 +23,8 @@ import net.geco.model.Category;
 import net.geco.model.Course;
 import net.geco.model.Punch;
 import net.geco.model.Registry;
-import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
+import net.geco.model.RunnerResult;
 import net.geco.model.Trace;
 import net.geco.model.impl.POFactory;
 
@@ -141,38 +142,88 @@ public class LegNeutralizationFunctionTest {
 		
 		dataRejected.setPunches(new Punch[] { punch(42), punch(45), punch(64), punch(32) });
 		checker.check(dataRejected);
-		System.out.println(dataRejected.getResult().formatTrace());
 		assertNull("runner with missing leg punch should be rejected", dataRejected.retrieveLeg(45, 32) );
 	}
 	
+//	@Test @Ignore
+//	public void shouldSelectRunnersWithLegToNeutralize() {
+//		Category cat = factory.createCategory();
+//		RunnerRaceData dataSelected = GecoFixtures.createRunnerData(courseA, cat); 
+//		dataSelected.setPunches(new Punch[] { punch(42), punch(45), punch(31), punch(45), punch(32) });
+//		RunnerRaceData dataRejected = GecoFixtures.createRunnerData(courseA, cat); 
+//		dataRejected.setPunches(new Punch[] { punch(42), punch(43), punch(45), punch(45), punch(32) });
+//		
+//		Registry registry = new Registry();
+//		registry.addCourse(courseA);
+//		registry.addCategory(cat);
+//		registry.addRunnerWithoutId(dataSelected.getRunner());
+//		registry.addRunnerWithoutId(dataRejected.getRunner());
+//		
+//		GecoControl geco = GecoFixtures.mockGecoControlWithRegistry(registry);
+//		Mockito.when(geco.registry()).thenReturn(registry);
+//		LegNeutralizationFunction function = new LegNeutralizationFunction(geco);
+//		function.setNeutralizedLeg(45, 31);
+//		Collection<Runner> runners = function.selectRunnersWithLegToNeutralize(courseA);
+//		
+//		assertEquals(1, runners.size());
+//	}
+	
 	@Test
-	public void shouldSelectRunnersWithLegToNeutralize() {
-		Category cat = factory.createCategory();
-		RunnerRaceData dataSelected = GecoFixtures.createRunnerData(courseA, cat); 
-		dataSelected.setPunches(new Punch[] { punch(42), punch(45), punch(31), punch(45), punch(32) });
-		RunnerRaceData dataRejected = GecoFixtures.createRunnerData(courseA, cat); 
-		dataRejected.setPunches(new Punch[] { punch(42), punch(43), punch(45), punch(45), punch(32) });
+	public void shouldSetNeutralizedLegAndSubtractNeutralizedTimeFromOfficialTime(){
+		RunnerResult result = factory.createRunnerResult();
+		result.setRacetime(100000);
+		Trace endTrace = factory.createTrace("32", new Date(30000));
+		RunnerRaceData raceData = Mockito.mock(RunnerRaceData.class);
+		Mockito.when(raceData.getResult()).thenReturn(result);
+		Mockito.when(raceData.retrieveLeg(Mockito.anyInt(), Mockito.anyInt())).thenReturn(
+				new Trace[]{ factory.createTrace("", new Date(20000)), endTrace });
+
+		LegNeutralizationFunction function = new LegNeutralizationFunction(null);
+		function.setNeutralizedLeg(31, 32);
+		function.neutralizeLeg(raceData);
+		assertEquals("should substract leg time from race time", 90000, result.getRacetime());
+		assertTrue(endTrace.isNeutralized());
 		
-		Registry registry = new Registry();
-		registry.addCourse(courseA);
-		registry.addCategory(cat);
-		registry.addRunnerWithoutId(dataSelected.getRunner());
-		registry.addRunnerWithoutId(dataRejected.getRunner());
+		function.neutralizeLeg(raceData);
+		assertEquals("should not change racetime again once leg is neutralized", 90000, result.getRacetime());
+		assertTrue(endTrace.isNeutralized());
 		
-		GecoControl geco = GecoFixtures.mockGecoControlWithRegistry(registry);
-		Mockito.when(geco.registry()).thenReturn(registry);
-		LegNeutralizationFunction function = new LegNeutralizationFunction(geco);
-		function.setNeutralizedLeg(45, 31);
-		Collection<Runner> runners = function.selectRunnersWithLegToNeutralize(courseA);
-		
-		assertEquals(1, runners.size());
+		endTrace.setNeutralized(false);
+		function.neutralizeLeg(raceData);
+		assertEquals(80000, result.getRacetime());
+		assertTrue(endTrace.isNeutralized());		
+	}
+
+	@Test
+	public void shouldNotNeutralizeLegWithNoTime(){
+		RunnerResult result = factory.createRunnerResult();
+		result.setRacetime(100000);
+		Trace endTrace = factory.createTrace("32", new Date(10000));
+		RunnerRaceData raceData = Mockito.mock(RunnerRaceData.class);
+		Mockito.when(raceData.getResult()).thenReturn(result);
+		Mockito.when(raceData.retrieveLeg(Mockito.anyInt(), Mockito.anyInt())).thenReturn(
+				new Trace[]{ factory.createTrace("", new Date(20000)), endTrace });
+
+		LegNeutralizationFunction function = new LegNeutralizationFunction(null);
+		function.setNeutralizedLeg(31, 32);
+		function.neutralizeLeg(raceData);
+		assertEquals("should not neutralize leg when split has no time", 100000, result.getRacetime());
+		assertFalse(endTrace.isNeutralized());
 	}
 	
 	@Test
-	public void testSetNeutralizedLeg() {
-		
-	}
+	public void shouldNotChangeRacetimeWhenMissingLeg(){
+		RunnerResult result = factory.createRunnerResult();
+		result.setRacetime(100000);
+		RunnerRaceData raceData = Mockito.mock(RunnerRaceData.class);
+		Mockito.when(raceData.retrieveLeg(Mockito.anyInt(), Mockito.anyInt())).thenReturn(null);
 
+		LegNeutralizationFunction function = new LegNeutralizationFunction(null);
+		function.setNeutralizedLeg(31, 32);
+		function.neutralizeLeg(raceData);
+		assertEquals(100000, result.getRacetime());
+	}
+	
 	@Test
 	public void testComputeOfficialTimeWithNeutralizedLegs() {
 		GecoControl mullaghmeen = GecoFixtures.loadFixtures("testData/mullaghmeen", new ClassicAppBuilder());
@@ -183,8 +234,6 @@ public class LegNeutralizationFunctionTest {
 		assertTrue(courses.contains(mullaghmeen.registry().findCourse("Orange")));
 		assertTrue(courses.contains(mullaghmeen.registry().findCourse("White")));
 		assertTrue(courses.contains(mullaghmeen.registry().findCourse("Yellow")));
-		
-		// TODO: dont compute if split = NOTIME (extract computeSplit from ResultBuilder into TimeManager) 
 	}
 
 	@Test

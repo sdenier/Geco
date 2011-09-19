@@ -23,4 +23,8 @@ public interface Trace extends Cloneable {
 	public boolean isAdded();
 	
 	public boolean isSubst();
+
+	public boolean isNeutralized();
+	
+	public void setNeutralized(boolean flag);
 }
