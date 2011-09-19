@@ -6,8 +6,11 @@ package net.geco.functions;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
+import javax.swing.Box;
 import javax.swing.JComponent;
+import javax.swing.JFormattedTextField;
 
 import net.geco.basics.TimeManager;
 import net.geco.control.GecoControl;
@@ -33,44 +36,36 @@ public class LegNeutralizationFunction extends GecoFunction {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Leg Neutralization";
 	}
 
-	/* (non-Javadoc)
-	 * @see net.geco.functions.GecoFunction#execute()
-	 */
-	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
-
-	}
-
-	/* (non-Javadoc)
-	 * @see net.geco.functions.GecoFunction#executeTooltip()
-	 */
 	@Override
 	public String executeTooltip() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Neutralize leg for all runners";
 	}
 
-	/* (non-Javadoc)
-	 * @see net.geco.functions.GecoFunction#getParametersConfig()
-	 */
 	@Override
 	public JComponent getParametersConfig() {
-		// TODO Auto-generated method stub
-		return null;
+		JFormattedTextField startCodeF = new JFormattedTextField();
+		startCodeF.setValue(Integer.valueOf(legStart));
+		
+		Box config = Box.createVerticalBox();
+		config.add(startCodeF);
+		return config;
 	}
 
-	/* (non-Javadoc)
-	 * @see net.geco.functions.GecoFunction#updateUI()
-	 */
 	@Override
-	public void updateUI() {
-		// TODO Auto-generated method stub
+	public void updateUI() {}
 
+	@Override
+	public void execute() {
+		Collection<Course> courses = selectCoursesWithNeutralizedLeg();
+		for (Course course : courses) {
+			List<Runner> runners = registry().getRunnersFromCourse(course);
+			for (Runner runner : runners) {
+				neutralizeLeg(registry().findRunnerData(runner));
+			}
+		}
 	}
 
 	public void setNeutralizedLeg(int legStart, int legEnd) {
@@ -98,7 +93,9 @@ public class LegNeutralizationFunction extends GecoFunction {
 			long splitTime = TimeManager.computeSplit(leg[0].getTime().getTime(), leg[1].getTime().getTime());
 			if( splitTime!=TimeManager.NO_TIME_l ){
 				RunnerResult result = raceData.getResult();
-				result.setRacetime(result.getRacetime() - splitTime);
+				if( result.getRacetime()!=TimeManager.NO_TIME_l ){
+					result.setRacetime(result.getRacetime() - splitTime);
+				}
 				leg[1].setNeutralized(true);				
 			}
 		}

@@ -9,20 +9,26 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static test.net.geco.GecoFixtures.punch;
 
 import java.util.Collection;
 import java.util.Date;
 
 import net.geco.app.ClassicAppBuilder;
+import net.geco.basics.TimeManager;
 import net.geco.control.GecoControl;
 import net.geco.control.InlineTracer;
 import net.geco.control.PenaltyChecker;
+import net.geco.control.ResultBuilder;
 import net.geco.functions.LegNeutralizationFunction;
 import net.geco.model.Category;
 import net.geco.model.Course;
 import net.geco.model.Punch;
 import net.geco.model.Registry;
+import net.geco.model.Result;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.RunnerResult;
 import net.geco.model.Trace;
@@ -30,7 +36,6 @@ import net.geco.model.impl.POFactory;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import test.net.geco.GecoFixtures;
 
@@ -75,7 +80,7 @@ public class LegNeutralizationFunctionTest {
 		registry.addCourse(courseC);
 		
 		GecoControl geco = GecoFixtures.mockGecoControlWithRegistry(registry);
-		Mockito.when(geco.registry()).thenReturn(registry);
+		when(geco.registry()).thenReturn(registry);
 		LegNeutralizationFunction function = new LegNeutralizationFunction(geco);
 		function.setNeutralizedLeg(45, 31);
 		Collection<Course> courses = function.selectCoursesWithNeutralizedLeg();
@@ -145,37 +150,14 @@ public class LegNeutralizationFunctionTest {
 		assertNull("runner with missing leg punch should be rejected", dataRejected.retrieveLeg(45, 32) );
 	}
 	
-//	@Test @Ignore
-//	public void shouldSelectRunnersWithLegToNeutralize() {
-//		Category cat = factory.createCategory();
-//		RunnerRaceData dataSelected = GecoFixtures.createRunnerData(courseA, cat); 
-//		dataSelected.setPunches(new Punch[] { punch(42), punch(45), punch(31), punch(45), punch(32) });
-//		RunnerRaceData dataRejected = GecoFixtures.createRunnerData(courseA, cat); 
-//		dataRejected.setPunches(new Punch[] { punch(42), punch(43), punch(45), punch(45), punch(32) });
-//		
-//		Registry registry = new Registry();
-//		registry.addCourse(courseA);
-//		registry.addCategory(cat);
-//		registry.addRunnerWithoutId(dataSelected.getRunner());
-//		registry.addRunnerWithoutId(dataRejected.getRunner());
-//		
-//		GecoControl geco = GecoFixtures.mockGecoControlWithRegistry(registry);
-//		Mockito.when(geco.registry()).thenReturn(registry);
-//		LegNeutralizationFunction function = new LegNeutralizationFunction(geco);
-//		function.setNeutralizedLeg(45, 31);
-//		Collection<Runner> runners = function.selectRunnersWithLegToNeutralize(courseA);
-//		
-//		assertEquals(1, runners.size());
-//	}
-	
 	@Test
 	public void shouldSetNeutralizedLegAndSubtractNeutralizedTimeFromOfficialTime(){
 		RunnerResult result = factory.createRunnerResult();
 		result.setRacetime(100000);
 		Trace endTrace = factory.createTrace("32", new Date(30000));
-		RunnerRaceData raceData = Mockito.mock(RunnerRaceData.class);
-		Mockito.when(raceData.getResult()).thenReturn(result);
-		Mockito.when(raceData.retrieveLeg(Mockito.anyInt(), Mockito.anyInt())).thenReturn(
+		RunnerRaceData raceData = mock(RunnerRaceData.class);
+		when(raceData.getResult()).thenReturn(result);
+		when(raceData.retrieveLeg(anyInt(), anyInt())).thenReturn(
 				new Trace[]{ factory.createTrace("", new Date(20000)), endTrace });
 
 		LegNeutralizationFunction function = new LegNeutralizationFunction(null);
@@ -191,7 +173,7 @@ public class LegNeutralizationFunctionTest {
 		endTrace.setNeutralized(false);
 		function.neutralizeLeg(raceData);
 		assertEquals(80000, result.getRacetime());
-		assertTrue(endTrace.isNeutralized());		
+		assertTrue(endTrace.isNeutralized());	
 	}
 
 	@Test
@@ -199,9 +181,9 @@ public class LegNeutralizationFunctionTest {
 		RunnerResult result = factory.createRunnerResult();
 		result.setRacetime(100000);
 		Trace endTrace = factory.createTrace("32", new Date(10000));
-		RunnerRaceData raceData = Mockito.mock(RunnerRaceData.class);
-		Mockito.when(raceData.getResult()).thenReturn(result);
-		Mockito.when(raceData.retrieveLeg(Mockito.anyInt(), Mockito.anyInt())).thenReturn(
+		RunnerRaceData raceData = mock(RunnerRaceData.class);
+		when(raceData.getResult()).thenReturn(result);
+		when(raceData.retrieveLeg(anyInt(), anyInt())).thenReturn(
 				new Trace[]{ factory.createTrace("", new Date(20000)), endTrace });
 
 		LegNeutralizationFunction function = new LegNeutralizationFunction(null);
@@ -215,25 +197,58 @@ public class LegNeutralizationFunctionTest {
 	public void shouldNotChangeRacetimeWhenMissingLeg(){
 		RunnerResult result = factory.createRunnerResult();
 		result.setRacetime(100000);
-		RunnerRaceData raceData = Mockito.mock(RunnerRaceData.class);
-		Mockito.when(raceData.retrieveLeg(Mockito.anyInt(), Mockito.anyInt())).thenReturn(null);
+		RunnerRaceData raceData = mock(RunnerRaceData.class);
+		when(raceData.retrieveLeg(anyInt(), anyInt())).thenReturn(null);
 
 		LegNeutralizationFunction function = new LegNeutralizationFunction(null);
 		function.setNeutralizedLeg(31, 32);
 		function.neutralizeLeg(raceData);
 		assertEquals(100000, result.getRacetime());
 	}
-	
+
 	@Test
-	public void testComputeOfficialTimeWithNeutralizedLegs() {
+	public void shouldNotChangeRacetimeWithNoTime(){
+		RunnerResult result = factory.createRunnerResult();
+		result.setRacetime(TimeManager.NO_TIME_l);
+		Trace endTrace = factory.createTrace("32", new Date(40000));
+		RunnerRaceData raceData = mock(RunnerRaceData.class);
+		when(raceData.getResult()).thenReturn(result);
+		when(raceData.retrieveLeg(anyInt(), anyInt())).thenReturn(
+				new Trace[]{ factory.createTrace("", new Date(20000)), endTrace });
+
+		LegNeutralizationFunction function = new LegNeutralizationFunction(null);
+		function.setNeutralizedLeg(31, 32);
+		function.neutralizeLeg(raceData);
+		assertEquals(TimeManager.NO_TIME_l, result.getRacetime());
+		assertTrue(endTrace.isNeutralized());
+	}
+
+	@Test
+	public void testComputeRaceTimeWithNeutralizedLegs() {
 		GecoControl mullaghmeen = GecoFixtures.loadFixtures("testData/mullaghmeen", new ClassicAppBuilder());
+		Registry registry = mullaghmeen.registry();
+		Course orange = registry.findCourse("Orange");
 		LegNeutralizationFunction function = new LegNeutralizationFunction(mullaghmeen);
 		function.setNeutralizedLeg(156, 157);
+		
 		Collection<Course> courses = function.selectCoursesWithNeutralizedLeg();
 		assertEquals(3, courses.size());
-		assertTrue(courses.contains(mullaghmeen.registry().findCourse("Orange")));
-		assertTrue(courses.contains(mullaghmeen.registry().findCourse("White")));
-		assertTrue(courses.contains(mullaghmeen.registry().findCourse("Yellow")));
+		assertTrue(courses.contains(orange));
+		assertTrue(courses.contains(registry.findCourse("White")));
+		assertTrue(courses.contains(registry.findCourse("Yellow")));
+		
+		function.execute();
+		assertEquals("17:28", registry.findRunnerData("51009").getResult().formatRacetime()); // Caoimhe O'Boyle
+		assertEquals("26:40", registry.findRunnerData("11428").getResult().formatRacetime()); // Claire Garvey
+		assertEquals("26:26", registry.findRunnerData("11444").getResult().formatRacetime()); // Aaron Clogher & Eoin Connell
+		assertEquals("0:06", registry.findRunnerData("11477").getResult().formatRacetime()); // Laoise Brennan
+		assertEquals("59:36", registry.findRunnerData("11476").getResult().formatRacetime()); // Laura Murphy
+
+		// changed result
+		Result result = new ResultBuilder(mullaghmeen).buildResultForCourse(orange);
+		assertEquals("Aaron Clogher & Eoin Connell", result.getRankedRunners().get(8).getRunner().getName());
+		assertEquals("Sean Kearns", result.getRankedRunners().get(9).getRunner().getName());
+		assertEquals("Claire Garvey", result.getRankedRunners().get(10).getRunner().getName());
 	}
 
 	@Test
