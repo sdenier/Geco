@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import net.geco.app.ClassicAppBuilder;
+import net.geco.basics.Announcer;
 import net.geco.basics.TimeManager;
 import net.geco.control.GecoControl;
 import net.geco.control.InlineTracer;
@@ -29,6 +30,7 @@ import net.geco.model.Course;
 import net.geco.model.Punch;
 import net.geco.model.Registry;
 import net.geco.model.Result;
+import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.RunnerResult;
 import net.geco.model.Trace;
@@ -36,6 +38,7 @@ import net.geco.model.impl.POFactory;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import test.net.geco.GecoFixtures;
 
@@ -81,6 +84,7 @@ public class LegNeutralizationFunctionTest {
 		
 		GecoControl geco = GecoFixtures.mockGecoControlWithRegistry(registry);
 		when(geco.registry()).thenReturn(registry);
+		when(geco.announcer()).thenReturn(new Announcer());
 		LegNeutralizationFunction function = new LegNeutralizationFunction(geco);
 		function.setNeutralizedLeg(45, 31);
 		Collection<Course> courses = function.selectCoursesWithNeutralizedLeg();
@@ -157,10 +161,14 @@ public class LegNeutralizationFunctionTest {
 		Trace endTrace = factory.createTrace("32", new Date(30000));
 		RunnerRaceData raceData = mock(RunnerRaceData.class);
 		when(raceData.getResult()).thenReturn(result);
+		Runner runner = mock(Runner.class);
+		when(raceData.getRunner()).thenReturn(runner);
 		when(raceData.retrieveLeg(anyInt(), anyInt())).thenReturn(
 				new Trace[]{ factory.createTrace("", new Date(20000)), endTrace });
 
-		LegNeutralizationFunction function = new LegNeutralizationFunction(null);
+		GecoControl geco = mock(GecoControl.class);
+		Mockito.doNothing().when(geco).log(Mockito.anyString());
+		LegNeutralizationFunction function = new LegNeutralizationFunction(geco);
 		function.setNeutralizedLeg(31, 32);
 		function.neutralizeLeg(raceData);
 		assertEquals("should substract leg time from race time", 90000, result.getRacetime());
@@ -241,7 +249,7 @@ public class LegNeutralizationFunctionTest {
 		assertEquals("17:28", registry.findRunnerData("51009").getResult().formatRacetime()); // Caoimhe O'Boyle
 		assertEquals("26:40", registry.findRunnerData("11428").getResult().formatRacetime()); // Claire Garvey
 		assertEquals("26:26", registry.findRunnerData("11444").getResult().formatRacetime()); // Aaron Clogher & Eoin Connell
-		assertEquals("0:06", registry.findRunnerData("11477").getResult().formatRacetime()); // Laoise Brennan
+		assertEquals("12:00:06", registry.findRunnerData("11477").getResult().formatRacetime()); // Laoise Brennan
 		assertEquals("59:36", registry.findRunnerData("11476").getResult().formatRacetime()); // Laura Murphy
 
 		// changed result
