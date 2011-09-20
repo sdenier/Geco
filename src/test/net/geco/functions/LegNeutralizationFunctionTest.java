@@ -263,6 +263,7 @@ public class LegNeutralizationFunctionTest {
 		Registry registry = mullaghmeen.registry();
 		Course orange = registry.findCourse("Orange");
 		LegNeutralizationFunction function = new LegNeutralizationFunction(mullaghmeen);
+		function.getParametersConfig(); // init simulateCB
 		function.setNeutralizedLeg(156, 157);
 		
 		Collection<Course> courses = function.selectCoursesWithNeutralizedLeg();
@@ -314,6 +315,35 @@ public class LegNeutralizationFunctionTest {
 	
 	@Test
 	public void testDetectAndMarkNeutralizedLegs() {
+		RunnerResult result = factory.createRunnerResult();
+		result.setRacetime(100000);
+		Trace endTrace = factory.createTrace("32", new Date(30000));
+		endTrace.setNeutralized(false);
+		
+		RunnerRaceData raceData = mock(RunnerRaceData.class);
+		Runner runner = mock(Runner.class);
+		when(raceData.getResult()).thenReturn(result);
+		when(raceData.getRunner()).thenReturn(runner);
+		when(raceData.retrieveLeg(anyInt(), anyInt())).thenReturn(
+				new Trace[]{ factory.createTrace("", new Date(20000)), endTrace });
+		when(raceData.officialRaceTime()).thenReturn(110000l);
+		
+		GecoControl geco = mock(GecoControl.class);
+		when(geco.announcer()).thenReturn(new Announcer());
+		
+		LegNeutralizationFunction function = new LegNeutralizationFunction(geco);
+		function.setNeutralizedLeg(31, 32);
+		function.markNeutralizedLeg(raceData);
+		
+		assertEquals("should not change official time", 100000, result.getRacetime());
+		assertTrue("should set neutralized leg", endTrace.isNeutralized());
+		
+		endTrace.setNeutralized(false);
+		when(raceData.officialRaceTime()).thenReturn(100000l);
+		function.markNeutralizedLeg(raceData);
+		
+		assertEquals("should not change official time", 100000, result.getRacetime());
+		assertFalse("should not set neutralized leg if no change in official time detected", endTrace.isNeutralized());
 		
 	}
 	

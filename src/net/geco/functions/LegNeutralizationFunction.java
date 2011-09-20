@@ -101,7 +101,7 @@ public class LegNeutralizationFunction extends GecoFunction {
 		markNeutralizedLegsB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-//				resetAllOfficialTimes();
+				markNeutralizedLegs();
 			}
 		});
 		markNeutralizedLegsB.setToolTipText("Detect and mark the neutralized leg across runners without changing official time");
@@ -204,6 +204,29 @@ public class LegNeutralizationFunction extends GecoFunction {
 			geco().checker().resetRaceTime(raceData);
 			for (Trace t : raceData.getResult().getTrace()) {
 				t.setNeutralized(false);
+			}
+		}
+	}
+
+	public void markNeutralizedLegs() {
+		geco().announcer().dataInfo("Detecting unset neutralized legs " + legStart + " -> " + legEnd);
+		Collection<Course> courses = selectCoursesWithNeutralizedLeg();
+		for (Course course : courses) {
+			geco().announcer().dataInfo("Course " + course.getName());
+			List<Runner> runners = registry().getRunnersFromCourse(course);
+			for (Runner runner : runners) {
+				markNeutralizedLeg(registry().findRunnerData(runner));
+			}
+		}
+		geco().announcer().dataInfo("Ending detection");
+	}
+
+	public void markNeutralizedLeg(RunnerRaceData raceData) {
+		Trace[] leg = raceData.retrieveLeg(legStart, legEnd);
+		if( leg!=null && !leg[1].isNeutralized() ){
+			if( raceData.officialRaceTime() != raceData.getResult().getRacetime() ){
+				geco().announcer().dataInfo("Mark " + raceData.getRunner().idString());
+				leg[1].setNeutralized(true);
 			}
 		}
 	}
