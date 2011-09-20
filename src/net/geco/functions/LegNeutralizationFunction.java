@@ -41,6 +41,7 @@ public class LegNeutralizationFunction extends GecoFunction {
 
 	private int legStart;
 	private int legEnd;
+	private JCheckBox simulateCB;
 
 	public LegNeutralizationFunction(GecoControl gecoControl) {
 		super(gecoControl);
@@ -74,9 +75,8 @@ public class LegNeutralizationFunction extends GecoFunction {
 			}
 		});
 		endCodeF.setColumns(6);
-		JCheckBox simulateCB = new JCheckBox("Simulate");
+		simulateCB = new JCheckBox("Simulate");
 		simulateCB.setToolTipText("Show what would happen by executing the function but do not apply change");
-		simulateCB.setEnabled(false);
 		
 		JPanel paramP = new JPanel(new GridBagLayout());
 		GridBagConstraints c = SwingUtils.gbConstr(0);
@@ -97,12 +97,26 @@ public class LegNeutralizationFunction extends GecoFunction {
 				selectCoursesWithNeutralizedLeg();
 			}
 		});
-		JButton resetRaceTimeB = new JButton("Reset race times");
-		resetRaceTimeB.setToolTipText("Forget all neutralized legs and reset race times to their original value. Discard manual race times");
-		resetRaceTimeB.setEnabled(false);
-				
+		JButton markNeutralizedLegsB = new JButton("Mark neutralized legs");
+		markNeutralizedLegsB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+//				resetAllOfficialTimes();
+			}
+		});
+		markNeutralizedLegsB.setToolTipText("Detect and mark the neutralized leg across runners without changing official time");
+		JButton resetRaceTimeB = new JButton("Reset official times");
+		resetRaceTimeB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				resetAllOfficialTimes();
+			}
+		});
+		resetRaceTimeB.setToolTipText("Forget all neutralized legs and reset official times to their original value. Discard times manually edited");
+		
 		Box vBoxButtons = Box.createVerticalBox();
 		vBoxButtons.add(detectCoursesB);
+		vBoxButtons.add(markNeutralizedLegsB);
 		vBoxButtons.add(resetRaceTimeB);
 
 		paramP.setMaximumSize(paramP.getPreferredSize());
@@ -120,23 +134,34 @@ public class LegNeutralizationFunction extends GecoFunction {
 	@Override
 	public void updateUI() {}
 
+	public void setNeutralizedLeg(int legStart, int legEnd) {
+		this.legStart = legStart;
+		this.legEnd = legEnd;
+	}
+
 	@Override
 	public void execute() {
-		geco().log("Leg neutralization " + legStart + " -> " + legEnd);
+		boolean simulate = simulateCB.isSelected();
+		String startMessage = "Starting leg neutralization " + legStart + " -> " + legEnd;
+		if( simulate ){
+			geco().announcer().dataInfo("SIMULATION - " + startMessage);
+		} else {
+			geco().log(startMessage);
+		}
 		Collection<Course> courses = selectCoursesWithNeutralizedLeg();
 		for (Course course : courses) {
 			geco().announcer().dataInfo("Course " + course.getName());
 			List<Runner> runners = registry().getRunnersFromCourse(course);
 			for (Runner runner : runners) {
-				neutralizeLeg(registry().findRunnerData(runner));
+				neutralizeLeg(registry().findRunnerData(runner), simulate);
 			}
 		}
-		geco().log("End leg neutralization " + legStart + " -> " + legEnd);
-	}
-
-	public void setNeutralizedLeg(int legStart, int legEnd) {
-		this.legStart = legStart;
-		this.legEnd = legEnd;
+		String endMessage = "Ending leg neutralization " + legStart + " -> " + legEnd;
+		if( simulate ){
+			geco().announcer().dataInfo("SIMULATION - " + endMessage);
+		} else {
+			geco().log(endMessage);
+		}
 	}
 
 	public Collection<Course> selectCoursesWithNeutralizedLeg() {
@@ -154,17 +179,31 @@ public class LegNeutralizationFunction extends GecoFunction {
 		return registry().getRunnersFromCourse(course);
 	}
 
-	public void neutralizeLeg(RunnerRaceData raceData) {
+	public void neutralizeLeg(RunnerRaceData raceData, boolean simulate) {
 		Trace[] leg = raceData.retrieveLeg(legStart, legEnd);
 		if( leg!=null && ! leg[1].isNeutralized() ){
 			long splitTime = TimeManager.computeSplit(leg[0].getTime().getTime(), leg[1].getTime().getTime());
 			if( splitTime!=TimeManager.NO_TIME_l ){
-				RunnerResult result = raceData.getResult();
-				if( result.getRacetime()!=TimeManager.NO_TIME_l ){
-					result.setRacetime(result.getRacetime() - splitTime);
-					geco().log(raceData.getRunner().idString() + " split: " + TimeManager.time(splitTime) + " - race: " + result.formatRacetime());
+				if( simulate ){
+					geco().announcer().dataInfo(raceData.getRunner().idString() + " - split " + TimeManager.time(splitTime));
+				} else {
+					RunnerResult result = raceData.getResult();
+					if( result.getRacetime()!=TimeManager.NO_TIME_l ){
+						result.setRacetime(result.getRacetime() - splitTime);
+						geco().log(raceData.getRunner().idString() + " - split " + TimeManager.time(splitTime) + " - race " + result.formatRacetime());
+					}
+					leg[1].setNeutralized(true);					
 				}
-				leg[1].setNeutralized(true);				
+			}
+		}
+	}
+
+	public void resetAllOfficialTimes() {
+		geco().log("Reset all official times & leg neutralizations");
+		for (RunnerRaceData raceData : registry().getRunnersData()) {
+			geco().checker().resetRaceTime(raceData);
+			for (Trace t : raceData.getResult().getTrace()) {
+				t.setNeutralized(false);
 			}
 		}
 	}

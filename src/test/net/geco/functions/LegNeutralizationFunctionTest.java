@@ -14,6 +14,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static test.net.geco.GecoFixtures.punch;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
@@ -83,7 +84,6 @@ public class LegNeutralizationFunctionTest {
 		registry.addCourse(courseC);
 		
 		GecoControl geco = GecoFixtures.mockGecoControlWithRegistry(registry);
-		when(geco.registry()).thenReturn(registry);
 		when(geco.announcer()).thenReturn(new Announcer());
 		LegNeutralizationFunction function = new LegNeutralizationFunction(geco);
 		function.setNeutralizedLeg(45, 31);
@@ -170,16 +170,16 @@ public class LegNeutralizationFunctionTest {
 		Mockito.doNothing().when(geco).log(Mockito.anyString());
 		LegNeutralizationFunction function = new LegNeutralizationFunction(geco);
 		function.setNeutralizedLeg(31, 32);
-		function.neutralizeLeg(raceData);
-		assertEquals("should substract leg time from race time", 90000, result.getRacetime());
+		function.neutralizeLeg(raceData, false);
+		assertEquals("should substract leg time from official time", 90000, result.getRacetime());
 		assertTrue(endTrace.isNeutralized());
 		
-		function.neutralizeLeg(raceData);
-		assertEquals("should not change racetime again once leg is neutralized", 90000, result.getRacetime());
+		function.neutralizeLeg(raceData, false);
+		assertEquals("should not change official time again once leg is neutralized", 90000, result.getRacetime());
 		assertTrue(endTrace.isNeutralized());
 		
 		endTrace.setNeutralized(false);
-		function.neutralizeLeg(raceData);
+		function.neutralizeLeg(raceData, false);
 		assertEquals(80000, result.getRacetime());
 		assertTrue(endTrace.isNeutralized());	
 	}
@@ -196,7 +196,7 @@ public class LegNeutralizationFunctionTest {
 
 		LegNeutralizationFunction function = new LegNeutralizationFunction(null);
 		function.setNeutralizedLeg(31, 32);
-		function.neutralizeLeg(raceData);
+		function.neutralizeLeg(raceData, false);
 		assertEquals("should not neutralize leg when split has no time", 100000, result.getRacetime());
 		assertFalse(endTrace.isNeutralized());
 	}
@@ -210,7 +210,7 @@ public class LegNeutralizationFunctionTest {
 
 		LegNeutralizationFunction function = new LegNeutralizationFunction(null);
 		function.setNeutralizedLeg(31, 32);
-		function.neutralizeLeg(raceData);
+		function.neutralizeLeg(raceData, false);
 		assertEquals(100000, result.getRacetime());
 	}
 
@@ -226,9 +226,35 @@ public class LegNeutralizationFunctionTest {
 
 		LegNeutralizationFunction function = new LegNeutralizationFunction(null);
 		function.setNeutralizedLeg(31, 32);
-		function.neutralizeLeg(raceData);
+		function.neutralizeLeg(raceData, false);
 		assertEquals(TimeManager.NO_TIME_l, result.getRacetime());
 		assertTrue(endTrace.isNeutralized());
+	}
+	
+	@Test
+	public void testSimulateLegNeutralization(){
+		RunnerResult result = factory.createRunnerResult();
+		result.setRacetime(100000);
+		Trace endTrace = factory.createTrace("32", new Date(30000));
+		RunnerRaceData raceData = mock(RunnerRaceData.class);
+		when(raceData.getResult()).thenReturn(result);
+		Runner runner = mock(Runner.class);
+		when(runner.idString()).thenReturn("Doe");
+		when(raceData.getRunner()).thenReturn(runner);
+		when(raceData.retrieveLeg(anyInt(), anyInt())).thenReturn(
+				new Trace[]{ factory.createTrace("", new Date(20000)), endTrace });
+
+		GecoControl geco = mock(GecoControl.class);
+		Mockito.doNothing().when(geco).log(Mockito.anyString());
+		Announcer announcer = mock(Announcer.class);
+		when(geco.announcer()).thenReturn(announcer);
+		
+		LegNeutralizationFunction function = new LegNeutralizationFunction(geco);
+		function.setNeutralizedLeg(31, 32);
+		function.neutralizeLeg(raceData, true);
+		Mockito.verify(announcer).dataInfo("Doe - split 0:10");
+		assertEquals("should not change official time", 100000, result.getRacetime());
+		assertFalse(endTrace.isNeutralized());
 	}
 
 	@Test
@@ -260,13 +286,35 @@ public class LegNeutralizationFunctionTest {
 	}
 
 	@Test
-	public void testResetNeutralizedLegs() {
+	public void testResetAllOfficialTimes() {
+		RunnerResult result = factory.createRunnerResult();
+		result.setRacetime(100000);
+		result.setNbMPs(1);
+		Trace trace = factory.createTrace("34", new Date(130000));
+		trace.setNeutralized(true);
+		result.setTrace(new Trace[]{ trace });
+		RunnerRaceData raceData = factory.createRunnerRaceData();
+		raceData.setStarttime(new Date(30000));
+		raceData.setFinishtime(new Date(140000));
+		raceData.setResult(result);
 		
+		Registry registry = mock(Registry.class);
+		when(registry.getRunnersData()).thenReturn(Arrays.asList(raceData));
+		GecoControl geco = GecoFixtures.mockGecoControlWithRegistry(registry);
+		Mockito.doNothing().when(geco).log(Mockito.anyString());
+		PenaltyChecker checker = new PenaltyChecker(factory);
+		checker.setMPPenalty(15000);
+		when(geco.checker()).thenReturn(checker);
+		
+		LegNeutralizationFunction function = new LegNeutralizationFunction(geco);
+		function.resetAllOfficialTimes();
+		assertEquals("should reset official time to original time", 125000, result.getRacetime());
+		assertFalse("should reset neutralized leg", trace.isNeutralized());
 	}
 	
 	@Test
-	public void testResetAllOfficialTimes() {
+	public void testDetectAndMarkNeutralizedLegs() {
 		
 	}
-
+	
 }
