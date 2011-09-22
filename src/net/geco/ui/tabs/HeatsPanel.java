@@ -72,7 +72,7 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 
 	@Override
 	public String getTabTitle() {
-		return Messages.uiGet("HeatsPanel.Title");
+		return Messages.uiGet("HeatsPanel.Title"); //$NON-NLS-1$
 	}
 
 	public HeatsPanel(IGecoApp geco, JFrame frame) {

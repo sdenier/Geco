@@ -39,7 +39,7 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 
 	@Override
 	public String getLabel() {
-		return Messages.uiGet("StagePanel.StageConfigTitle");
+		return Messages.uiGet("StageConfigPanel.Title"); //$NON-NLS-1$
 	}
 
 	public StageConfigPanel(final IGecoApp geco, final JFrame frame) {
@@ -48,7 +48,7 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 		c.insets = new Insets(0, 0, 5, 5);
 		c.fill = GridBagConstraints.HORIZONTAL;
 
-		add(new JLabel(Messages.uiGet("StagePanel.StageNameLabel")), c); //$NON-NLS-1$
+		add(new JLabel(Messages.uiGet("StageConfigPanel.StageNameLabel")), c); //$NON-NLS-1$
 		final JTextField stagenameF = new JTextField(geco.stage().getName());
 		stagenameF.setColumns(12);
 		stagenameF.addActionListener(new ActionListener() {
@@ -70,12 +70,12 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 		add(stagenameF, c);
 
 		c.gridy = 1;
-		add(new JLabel(Messages.uiGet("StagePanel.ZeroHourLabel")), c); //$NON-NLS-1$
+		add(new JLabel(Messages.uiGet("StageConfigPanel.ZeroHourLabel")), c); //$NON-NLS-1$
 		final SimpleDateFormat formatter = new SimpleDateFormat("H:mm"); //$NON-NLS-1$
 		formatter.setTimeZone(TimeZone.getTimeZone("GMT")); //$NON-NLS-1$
 		final JTextField zerohourF = new JTextField(formatter.format(geco.stage().getZeroHour()));
 		zerohourF.setColumns(7);
-		zerohourF.setToolTipText(Messages.uiGet("StagePanel.ZeroHourTooltip")); //$NON-NLS-1$
+		zerohourF.setToolTipText(Messages.uiGet("StageConfigPanel.ZeroHourTooltip")); //$NON-NLS-1$
 		add(zerohourF, c);
 		zerohourF.addActionListener(new ActionListener() {
 			@Override
@@ -100,7 +100,7 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 		});
 		
 		c.gridy = 2;
-		add(new JLabel(Messages.uiGet("StagePanel.RunnerArchiveLabel")), c);
+		add(new JLabel(Messages.uiGet("StageConfigPanel.RunnerArchiveLabel")), c); //$NON-NLS-1$
 		final JTextField archiveF = new JTextField();
 		archiveF.setEditable(false);
 		archiveF.setText(geco.archiveManager().getArchiveName()); // TODO: refresh
@@ -122,7 +122,7 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 		add(selectArchiveFileB, c);
 
 		c.gridy = 3;
-		add(new JLabel(Messages.uiGet("StagePanel.CNbaseLabel")), c);
+		add(new JLabel(Messages.uiGet("StageConfigPanel.CNbaseLabel")), c); //$NON-NLS-1$
 		final JTextField cnScoreF = new JTextField();
 		cnScoreF.setEditable(false);
 		cnScoreF.setText(geco.cnCalculator().getCnFile().getName());
@@ -133,7 +133,7 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir")); //$NON-NLS-1$
-				fileChooser.setDialogTitle(Messages.uiGet("StagePanel.SelectCNfileLabel")); //$NON-NLS-1$
+				fileChooser.setDialogTitle(Messages.uiGet("StageConfigPanel.SelectCNfileLabel")); //$NON-NLS-1$
 				int answer = fileChooser.showOpenDialog(frame);
 				if( answer==JFileChooser.APPROVE_OPTION ) {
 					geco.cnCalculator().setCnFile(fileChooser.getSelectedFile());
@@ -145,8 +145,8 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 
 		c.gridy = 4;
 		c.insets = new Insets(15, 0, 5, 5);
-		add(new JLabel("Configuration:"), c);
-		JLabel appNameL = new JLabel(Html.htmlTag("strong", geco.getAppName()));
+		add(new JLabel(Messages.uiGet("StageConfigPanel.ConfigurationLabel")), c); //$NON-NLS-1$
+		JLabel appNameL = new JLabel(Html.htmlTag("strong", geco.getAppName())); //$NON-NLS-1$
 		add(appNameL, c);
 	}
 	
@@ -160,7 +160,7 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 			frame.repaint(); // bad smell, we call repaint so that the GecoWindow updates its title
 			return true;					
 		} else {
-			geco.info(Messages.uiGet("StagePanel.StageNameEmptyWarning"), true); //$NON-NLS-1$
+			geco.info(Messages.uiGet("StageConfigPanel.StageNameEmptyWarning"), true); //$NON-NLS-1$
 			stagenameF.setText(geco.stage().getName());
 			return false;
 		}	
@@ -175,7 +175,7 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 			geco.runnerControl().updateRegisteredStarttimes(zeroTime, oldTime);
 			return true;
 		} catch (ParseException e1) {
-			geco.info(Messages.uiGet("StagePanel.ZeroHourBadFormatWarning"), true); //$NON-NLS-1$
+			geco.info(Messages.uiGet("StageConfigPanel.ZeroHourBadFormatWarning"), true); //$NON-NLS-1$
 			zerohourF.setText(formatter.format(geco.stage().getZeroHour()));
 			return false;
 		}

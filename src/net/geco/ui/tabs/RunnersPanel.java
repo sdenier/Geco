@@ -92,7 +92,7 @@ public class RunnersPanel extends TabPanel
 
 	@Override
 	public String getTabTitle() {
-		return Messages.uiGet("RunnersPanel.Title");
+		return Messages.uiGet("RunnersPanel.Title"); //$NON-NLS-1$
 	}
 
 	

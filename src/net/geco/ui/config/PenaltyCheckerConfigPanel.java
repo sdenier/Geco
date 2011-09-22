@@ -63,8 +63,8 @@ public class PenaltyCheckerConfigPanel extends JPanel implements ConfigPanel {
 			}
 		});
 		add(SwingUtils.embed(mpLimitS), c);
-		final JCheckBox noMpLimitCB = new JCheckBox("Don't check MP limit");
-		noMpLimitCB.setToolTipText("If ticked, a runner can have any number of missing punches without ever being MP");
+		final JCheckBox noMpLimitCB = new JCheckBox(Messages.uiGet("PenaltyCheckerConfigPanel.DontCheckMPLabel")); //$NON-NLS-1$
+		noMpLimitCB.setToolTipText(Messages.uiGet("PenaltyCheckerConfigPanel.DontCheckMpTooltip")); //$NON-NLS-1$
 		noMpLimitCB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -81,7 +81,7 @@ public class PenaltyCheckerConfigPanel extends JPanel implements ConfigPanel {
 		c.gridy = 2;
 		add(new JLabel(Messages.uiGet("StagePanel.TimePenaltyLabel")), c); //$NON-NLS-1$
 		long penalty = checker(geco).getMPPenalty();
-		final JLabel penaltyMinuteL = new JLabel(TimeManager.time(penalty) + " per missing punch");
+		final JLabel penaltyMinuteL = new JLabel(TimeManager.time(penalty) + Messages.uiGet("PenaltyCheckerConfigPanel.PerMpLabel")); //$NON-NLS-1$
 		final JSpinner penaltyS = new JSpinner(new SpinnerNumberModel(penalty / 1000, 0l, null, 10));
 		penaltyS.setPreferredSize(new Dimension(100, SwingUtils.SPINNERHEIGHT));
 		penaltyS.setToolTipText(Messages.uiGet("StagePanel.TimePenaltyTooltip")); //$NON-NLS-1$
@@ -91,7 +91,7 @@ public class PenaltyCheckerConfigPanel extends JPanel implements ConfigPanel {
 				long newPenalty = 1000 * ((Long) penaltyS.getValue()).longValue();
 				if( oldPenalty!=newPenalty ) {
 					checker(geco).setMPPenalty(newPenalty);
-					penaltyMinuteL.setText(TimeManager.time(newPenalty) + " per missing punch");
+					penaltyMinuteL.setText(TimeManager.time(newPenalty) + Messages.uiGet("PenaltyCheckerConfigPanel.PerMpLabel")); //$NON-NLS-1$
 				}
 			}
 		});

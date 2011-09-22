@@ -62,7 +62,7 @@ public class GecoLauncher extends JDialog {
 	private boolean cancelled;
 	
 	public GecoLauncher(JFrame frame, IStageLaunch stageLaunch, List<IStageLaunch> history) {
-		super(frame, "Geco Launch Wizard", true); //$NON-NLS-1$
+		super(frame, Messages.uiGet("GecoLauncher.Title"), true); //$NON-NLS-1$
 		setResizable(false);
 		setModalityType(DEFAULT_MODALITY_TYPE);
 		addWindowListener(new WindowAdapter() {
@@ -109,7 +109,7 @@ public class GecoLauncher extends JDialog {
 	private JPanel initOpenPanel(List<IStageLaunch> history) {
 		JPanel openWizard = new JPanel();
 		openWizard.setLayout(new GridBagLayout());
-		openWizard.setBorder(BorderFactory.createTitledBorder("Previous Stages"));
+		openWizard.setBorder(BorderFactory.createTitledBorder(Messages.uiGet("GecoLauncher.PreviousStagesLabel"))); //$NON-NLS-1$
 
 		GridBagConstraints c = SwingUtils.gbConstr(0);
 		c.gridwidth = 3;
@@ -118,7 +118,7 @@ public class GecoLauncher extends JDialog {
 		historyL.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		openWizard.add(new JScrollPane(historyL), c);
 
-		JLabel stageDirL = new JLabel("Path:");
+		JLabel stageDirL = new JLabel(Messages.uiGet("GecoLauncher.PathLabel")); //$NON-NLS-1$
 		c = SwingUtils.gbConstr(1);
 		openWizard.add(stageDirL, c);
 		final JTextField stagePathL = new JTextField(openStage.getStageDir());
@@ -153,7 +153,7 @@ public class GecoLauncher extends JDialog {
 				JFileChooser chooser = new JFileChooser(openStage.getStageDir());
 				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				chooser.setDialogTitle(Messages.uiGet("GecoLauncher.Title")); //$NON-NLS-1$
-				int returnValue = chooser.showDialog(GecoLauncher.this, "Select");
+				int returnValue = chooser.showDialog(GecoLauncher.this, Messages.uiGet("GecoLauncher.SelectPathLabel")); //$NON-NLS-1$
 				if( returnValue==JFileChooser.APPROVE_OPTION ) {
 					String basePath = chooser.getSelectedFile().getAbsolutePath();
 					openStage.loadFromFileSystem(basePath);
@@ -162,7 +162,7 @@ public class GecoLauncher extends JDialog {
 			}
 		});
 		
-		JButton openB = new JButton("Open");
+		JButton openB = new JButton(Messages.uiGet("GecoLauncher.OpenLabel")); //$NON-NLS-1$
 		c = SwingUtils.gbConstr(2);
 		c.gridwidth = 3;
 		c.anchor = GridBagConstraints.LINE_END;
@@ -179,7 +179,11 @@ public class GecoLauncher extends JDialog {
 
 	private void returnStage() {
 		if( ! StageBuilder.directoryHasData(openStage.getStageDir()) ){
-			JOptionPane.showMessageDialog(GecoLauncher.this, "Can't find Geco data in directory", "Error", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(
+					GecoLauncher.this,
+					Messages.uiGet("GecoLauncher.NoGecoDataWarning"), //$NON-NLS-1$
+					Messages.uiGet("GecoLauncher.Error"), //$NON-NLS-1$
+					JOptionPane.WARNING_MESSAGE);
 		} else {
 			stageLaunch.copyFrom(openStage);
 			cancelled = false;
@@ -190,9 +194,9 @@ public class GecoLauncher extends JDialog {
 	private JPanel initCreationPanel() {		
 		JPanel creationWizard = new JPanel();
 		creationWizard.setLayout(new GridBagLayout());
-		creationWizard.setBorder(BorderFactory.createTitledBorder("New Stage"));
+		creationWizard.setBorder(BorderFactory.createTitledBorder(Messages.uiGet("GecoLauncher.NewStageLabel"))); //$NON-NLS-1$
 		
-		JLabel stageNameL = new JLabel("Name:");
+		JLabel stageNameL = new JLabel(Messages.uiGet("GecoLauncher.NameLabel")); //$NON-NLS-1$
 		GridBagConstraints c = SwingUtils.gbConstr(0);
 		creationWizard.add(stageNameL, c);
 		final JTextField stageNameF = new JTextField();
@@ -201,7 +205,7 @@ public class GecoLauncher extends JDialog {
 		c.fill = GridBagConstraints.BOTH;
 		creationWizard.add(stageNameF, c);
 		
-		JLabel stageDirL = new JLabel("Path:");
+		JLabel stageDirL = new JLabel(Messages.uiGet("GecoLauncher.PathLabel")); //$NON-NLS-1$
 		c = SwingUtils.gbConstr(1);
 		creationWizard.add(stageDirL, c);
 		final JTextField stagePathL = new JTextField(createStage.getStageDir());
@@ -219,7 +223,7 @@ public class GecoLauncher extends JDialog {
 				JFileChooser chooser = new JFileChooser(createStage.getStageDir());
 				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				chooser.setDialogTitle(Messages.uiGet("GecoLauncher.Title")); //$NON-NLS-1$
-				int returnValue = chooser.showDialog(GecoLauncher.this, "Select");
+				int returnValue = chooser.showDialog(GecoLauncher.this, Messages.uiGet("GecoLauncher.SelectPathLabel")); //$NON-NLS-1$
 				if( returnValue==JFileChooser.APPROVE_OPTION ) {
 					String basePath = chooser.getSelectedFile().getAbsolutePath();
 					createStage.setStageDir(basePath);
@@ -242,7 +246,7 @@ public class GecoLauncher extends JDialog {
 		c.fill = GridBagConstraints.BOTH;
 		creationWizard.add(rulePanel, c);
 		
-		JButton createB = new JButton("Create");
+		JButton createB = new JButton(Messages.uiGet("GecoLauncher.CreateLabel")); //$NON-NLS-1$
 		c = SwingUtils.gbConstr(3);
 		c.gridwidth = 3;
 		c.anchor = GridBagConstraints.LINE_END;
@@ -251,13 +255,13 @@ public class GecoLauncher extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if( StageBuilder.directoryHasData(createStage.getStageDir()) ){
-					JOptionPane.showMessageDialog(GecoLauncher.this, "Geco data detected! Can't overwrite an existing stage", "Error", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(GecoLauncher.this, Messages.uiGet("GecoLauncher.ExistingGecoDataWarning"), Messages.uiGet("GecoLauncher.Error"), JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 					return;
 				}
 				String stageName = stageNameF.getText().trim();
 				if( stageName.isEmpty() ){
 					stageNameF.setText(createStage.getStageName());
-					JOptionPane.showMessageDialog(GecoLauncher.this, "Stage name can't be empty", "Warning", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(GecoLauncher.this, Messages.uiGet("GecoLauncher.EmptyStageNameWarning"), Messages.uiGet("GecoLauncher.Warning"), JOptionPane.WARNING_MESSAGE);  //$NON-NLS-1$//$NON-NLS-2$
 					return;
 				}
 				createStage.setStageName(stageName);
@@ -284,7 +288,4 @@ public class GecoLauncher extends JDialog {
 		return appRB;
 	}
 
-//	throw new GecoWarning(Messages.uiGet("GecoLauncher.CancelCreation")); //$NON-NLS-1$
-//	throw new GecoWarning(Messages.uiGet("GecoLauncher.CancelImport")); //$NON-NLS-1$
-	
 }

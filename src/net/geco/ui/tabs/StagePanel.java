@@ -46,7 +46,7 @@ public class StagePanel extends TabPanel {
 
 	@Override
 	public String getTabTitle() {
-		return Messages.uiGet("StagePanel.Title");
+		return Messages.uiGet("StagePanel.Title"); //$NON-NLS-1$
 	}
 
 	public void buildConfigPanels(ConfigPanel[] configPanels) {

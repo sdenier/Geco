@@ -89,7 +89,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 
 	@Override
 	public String getTabTitle() {
-		return Messages.uiGet("ResultsPanel.Title");
+		return Messages.uiGet("ResultsPanel.Title"); //$NON-NLS-1$
 	}
 
 	/**

@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import net.geco.basics.Announcer;
 import net.geco.control.RegistryStats;
 import net.geco.framework.IGecoApp;
+import net.geco.model.Messages;
 import net.geco.model.Stage;
 
 
@@ -28,7 +29,7 @@ public abstract class StatsPanel extends TabPanel implements Announcer.StageConf
 	
 	@Override
 	public String getTabTitle() {
-		return "Stats";
+		return Messages.uiGet("StatsPanel.Title"); //$NON-NLS-1$
 	}
 
 	protected Thread startAutoUpdate() {

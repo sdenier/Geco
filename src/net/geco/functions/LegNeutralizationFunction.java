@@ -26,6 +26,7 @@ import javax.swing.JPanel;
 import net.geco.basics.TimeManager;
 import net.geco.control.GecoControl;
 import net.geco.model.Course;
+import net.geco.model.Messages;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.RunnerResult;
@@ -49,19 +50,19 @@ public class LegNeutralizationFunction extends GecoFunction {
 
 	@Override
 	public String toString() {
-		return "Leg Neutralization";
+		return Messages.uiGet("LegNeutralizationFunction.Title"); //$NON-NLS-1$
 	}
 
 	@Override
 	public String executeTooltip() {
-		return "Neutralize leg for all runners";
+		return Messages.uiGet("LegNeutralizationFunction.ExecuteTooltip"); //$NON-NLS-1$
 	}
 
 	@Override
 	public JComponent getParametersConfig() {
 		final JFormattedTextField startCodeF = new JFormattedTextField();
 		startCodeF.setValue(Integer.valueOf(legStart));
-		startCodeF.addPropertyChangeListener("value", new PropertyChangeListener() {
+		startCodeF.addPropertyChangeListener("value", new PropertyChangeListener() { //$NON-NLS-1$
 			public void propertyChange(PropertyChangeEvent evt) {
 				legStart = (Integer) startCodeF.getValue();
 			}
@@ -69,50 +70,50 @@ public class LegNeutralizationFunction extends GecoFunction {
 		startCodeF.setColumns(6);
 		final JFormattedTextField endCodeF = new JFormattedTextField();
 		endCodeF.setValue(Integer.valueOf(legEnd));
-		endCodeF.addPropertyChangeListener("value", new PropertyChangeListener() {
+		endCodeF.addPropertyChangeListener("value", new PropertyChangeListener() { //$NON-NLS-1$
 			public void propertyChange(PropertyChangeEvent evt) {
 				legEnd = (Integer) endCodeF.getValue();
 			}
 		});
 		endCodeF.setColumns(6);
-		simulateCB = new JCheckBox("Simulate");
-		simulateCB.setToolTipText("Show what would happen by executing the function but do not apply change");
+		simulateCB = new JCheckBox(Messages.uiGet("LegNeutralizationFunction.SimulateLabel")); //$NON-NLS-1$
+		simulateCB.setToolTipText(Messages.uiGet("LegNeutralizationFunction.SimulateTooltip")); //$NON-NLS-1$
 		
 		JPanel paramP = new JPanel(new GridBagLayout());
 		GridBagConstraints c = SwingUtils.gbConstr(0);
-		paramP.add(new JLabel("Start code:"), c);
+		paramP.add(new JLabel(Messages.uiGet("LegNeutralizationFunction.StartcodeLabel")), c); //$NON-NLS-1$
 		paramP.add(startCodeF, c);
 		c.gridy = 1;
-		paramP.add(new JLabel("End code:"), c);
+		paramP.add(new JLabel(Messages.uiGet("LegNeutralizationFunction.EndcodeLabel")), c); //$NON-NLS-1$
 		paramP.add(endCodeF, c);
 		c.gridy = 2;
 		c.gridwidth = 2;
 		paramP.add(simulateCB, c);
 		
-		JButton detectCoursesB = new JButton("Detect Courses");
-		detectCoursesB.setToolTipText("Show which courses contain the leg to neutralize");
+		JButton detectCoursesB = new JButton(Messages.uiGet("LegNeutralizationFunction.DetectCoursesLabel")); //$NON-NLS-1$
+		detectCoursesB.setToolTipText(Messages.uiGet("LegNeutralizationFunction.DetectCoursesTooltip")); //$NON-NLS-1$
 		detectCoursesB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				geco().announcer().dataInfo("Courses detected with leg " + legStart + " -> " + legEnd);
+				geco().announcer().dataInfo(Messages.uiGet("LegNeutralizationFunction.DetectCoursesMessage") + legStart + " -> " + legEnd); //$NON-NLS-1$ //$NON-NLS-2$
 				selectCoursesWithNeutralizedLeg();
 			}
 		});
-		JButton markNeutralizedLegsB = new JButton("Mark neutralized legs");
+		JButton markNeutralizedLegsB = new JButton(Messages.uiGet("LegNeutralizationFunction.MarkLegsLabel")); //$NON-NLS-1$
 		markNeutralizedLegsB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				markNeutralizedLegs();
 			}
 		});
-		markNeutralizedLegsB.setToolTipText("Detect and mark the neutralized leg across runners without changing official time");
-		JButton resetRaceTimeB = new JButton("Reset official times");
+		markNeutralizedLegsB.setToolTipText(Messages.uiGet("LegNeutralizationFunction.MarkLegsTooltip")); //$NON-NLS-1$
+		JButton resetRaceTimeB = new JButton(Messages.uiGet("LegNeutralizationFunction.ResetTimesLabel")); //$NON-NLS-1$
 		resetRaceTimeB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				resetAllOfficialTimes();
 			}
 		});
-		resetRaceTimeB.setToolTipText("Forget all neutralized legs and reset official times to their original value. Discard times manually edited");
+		resetRaceTimeB.setToolTipText(Messages.uiGet("LegNeutralizationFunction.ResetTimesTooltip")); //$NON-NLS-1$
 		
 		Box vBoxButtons = Box.createVerticalBox();
 		vBoxButtons.add(detectCoursesB);
@@ -142,23 +143,23 @@ public class LegNeutralizationFunction extends GecoFunction {
 	@Override
 	public void execute() {
 		boolean simulate = simulateCB.isSelected();
-		String startMessage = "Starting leg neutralization " + legStart + " -> " + legEnd;
+		String startMessage = Messages.uiGet("LegNeutralizationFunction.StartingLegNeutralizationMessage") + legStart + " -> " + legEnd; //$NON-NLS-1$ //$NON-NLS-2$
 		if( simulate ){
-			geco().announcer().dataInfo("SIMULATION - " + startMessage);
+			geco().announcer().dataInfo("SIMULATION - " + startMessage); //$NON-NLS-1$
 		} else {
 			geco().log(startMessage);
 		}
 		Collection<Course> courses = selectCoursesWithNeutralizedLeg();
 		for (Course course : courses) {
-			geco().announcer().dataInfo("Course " + course.getName());
+			geco().announcer().dataInfo(Messages.uiGet("LegNeutralizationFunction.CourseMessage") + course.getName()); //$NON-NLS-1$
 			List<Runner> runners = registry().getRunnersFromCourse(course);
 			for (Runner runner : runners) {
 				neutralizeLeg(registry().findRunnerData(runner), simulate);
 			}
 		}
-		String endMessage = "Ending leg neutralization " + legStart + " -> " + legEnd;
+		String endMessage = Messages.uiGet("LegNeutralizationFunction.EndingLegNeutralizationMessage") + legStart + " -> " + legEnd; //$NON-NLS-1$ //$NON-NLS-2$
 		if( simulate ){
-			geco().announcer().dataInfo("SIMULATION - " + endMessage);
+			geco().announcer().dataInfo("SIMULATION - " + endMessage); //$NON-NLS-1$
 		} else {
 			geco().log(endMessage);
 		}
@@ -185,12 +186,12 @@ public class LegNeutralizationFunction extends GecoFunction {
 			long splitTime = TimeManager.computeSplit(leg[0].getTime().getTime(), leg[1].getTime().getTime());
 			if( splitTime!=TimeManager.NO_TIME_l ){
 				if( simulate ){
-					geco().announcer().dataInfo(raceData.getRunner().idString() + " - split " + TimeManager.time(splitTime));
+					geco().announcer().dataInfo(raceData.getRunner().idString() + " - split " + TimeManager.time(splitTime)); //$NON-NLS-1$
 				} else {
 					RunnerResult result = raceData.getResult();
 					if( result.getRacetime()!=TimeManager.NO_TIME_l ){
 						result.setRacetime(result.getRacetime() - splitTime);
-						geco().log(raceData.getRunner().idString() + " - split " + TimeManager.time(splitTime) + " - race " + result.formatRacetime());
+						geco().log(raceData.getRunner().idString() + " - split " + TimeManager.time(splitTime) + " - race " + result.formatRacetime()); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 					leg[1].setNeutralized(true);					
 				}
@@ -199,7 +200,7 @@ public class LegNeutralizationFunction extends GecoFunction {
 	}
 
 	public void resetAllOfficialTimes() {
-		geco().log("Reset all official times & leg neutralizations");
+		geco().log(Messages.uiGet("LegNeutralizationFunction.ResetTimesMessage")); //$NON-NLS-1$
 		for (RunnerRaceData raceData : registry().getRunnersData()) {
 			geco().checker().resetRaceTime(raceData);
 			for (Trace t : raceData.getResult().getTrace()) {
@@ -209,23 +210,23 @@ public class LegNeutralizationFunction extends GecoFunction {
 	}
 
 	public void markNeutralizedLegs() {
-		geco().announcer().dataInfo("Detecting unset neutralized legs " + legStart + " -> " + legEnd);
+		geco().announcer().dataInfo(Messages.uiGet("LegNeutralizationFunction.MarkLegsMessage") + legStart + " -> " + legEnd); //$NON-NLS-1$ //$NON-NLS-2$
 		Collection<Course> courses = selectCoursesWithNeutralizedLeg();
 		for (Course course : courses) {
-			geco().announcer().dataInfo("Course " + course.getName());
+			geco().announcer().dataInfo(Messages.uiGet("LegNeutralizationFunction.CourseMessage") + course.getName()); //$NON-NLS-1$
 			List<Runner> runners = registry().getRunnersFromCourse(course);
 			for (Runner runner : runners) {
 				markNeutralizedLeg(registry().findRunnerData(runner));
 			}
 		}
-		geco().announcer().dataInfo("Ending detection");
+		geco().announcer().dataInfo(Messages.uiGet("LegNeutralizationFunction.EndMarkLegsMessage")); //$NON-NLS-1$
 	}
 
 	public void markNeutralizedLeg(RunnerRaceData raceData) {
 		Trace[] leg = raceData.retrieveLeg(legStart, legEnd);
 		if( leg!=null && !leg[1].isNeutralized() ){
 			if( raceData.officialRaceTime() != raceData.getResult().getRacetime() ){
-				geco().announcer().dataInfo("Mark " + raceData.getRunner().idString());
+				geco().announcer().dataInfo(Messages.uiGet("LegNeutralizationFunction.31") + raceData.getRunner().idString()); //$NON-NLS-1$
 				leg[1].setNeutralized(true);
 			}
 		}
