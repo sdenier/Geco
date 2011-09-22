@@ -83,8 +83,6 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		ICONS.put("crystal/", new String[] { //$NON-NLS-1$
 			"folder_new.png", //$NON-NLS-1$
 			"folder_sent_mail.png", //$NON-NLS-1$
-			"undo.png", //$NON-NLS-1$ // TODO: remove
-			"redo.png", //$NON-NLS-1$ // remove
 			"quick_restart.png", //$NON-NLS-1$
 			"cnr.png", //$NON-NLS-1$
 			"exit.png", //$NON-NLS-1$
@@ -130,11 +128,15 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		}
 	}
 	
-	public void initAndLaunchGUI(AppBuilder builder){		
+	public void initAndLaunchGUI(final AppBuilder builder){		
 		geco.announcer().registerStageListener(this);
 		geco.announcer().registerStationListener(this);
-		initGUI(builder);
-		launchGUI();
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				initGUI(builder);
+				launchGUI();	
+			}
+		});
 	}
 	
 	public void initGUI(AppBuilder builder){

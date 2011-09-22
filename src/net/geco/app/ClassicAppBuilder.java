@@ -24,7 +24,6 @@ import net.geco.control.StageControl;
 import net.geco.control.StartlistImporter;
 import net.geco.framework.IGecoApp;
 import net.geco.functions.GeneratorFunction;
-import net.geco.functions.LegNeutralizationFunction;
 import net.geco.functions.RecheckFunction;
 import net.geco.functions.StartTimeFunction;
 import net.geco.model.Factory;
@@ -88,7 +87,6 @@ public class ClassicAppBuilder extends AppBuilder {
 		new CNCalculator(gecoControl);
 		
 		new StartTimeFunction(gecoControl);
-		new LegNeutralizationFunction(gecoControl);
 		new RecheckFunction(gecoControl);
 		new GeneratorFunction(gecoControl);
 	}

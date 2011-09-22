@@ -115,7 +115,7 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 				int answer = fileChooser.showOpenDialog(frame);
 				if( answer==JFileChooser.APPROVE_OPTION ) {
 					geco.archiveManager().setArchiveFile(fileChooser.getSelectedFile());
-					archiveF.setText(geco.archiveManager().getArchiveName()); // TODO: refresh
+					archiveF.setText(geco.archiveManager().getArchiveName());
 				}
 			}
 		});
