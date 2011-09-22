@@ -37,7 +37,7 @@ public class PenaltyCheckerConfigPanel extends JPanel implements ConfigPanel {
 
 	@Override
 	public String getLabel() {
-		return Messages.uiGet("StagePanel.OrientshowConfigTitle"); //$NON-NLS-1$
+		return Messages.uiGet("PenaltyCheckerConfigPanel.Title"); //$NON-NLS-1$
 	}
 	
 	public PenaltyCheckerConfigPanel(final IGeco geco) {
@@ -48,11 +48,11 @@ public class PenaltyCheckerConfigPanel extends JPanel implements ConfigPanel {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		
 		c.gridy = 1;
-		add(new JLabel(Messages.uiGet("StagePanel.MPLimitLabel")), c); //$NON-NLS-1$
+		add(new JLabel(Messages.uiGet("PenaltyCheckerConfigPanel.MPLimitLabel")), c); //$NON-NLS-1$
 		int mpLimit = checker(geco).getMPLimit();
 		final JSpinner mpLimitS = new JSpinner(new SpinnerNumberModel(mpLimit, 0, null, 1));
 		mpLimitS.setPreferredSize(new Dimension(100, SwingUtils.SPINNERHEIGHT));
-		mpLimitS.setToolTipText(Messages.uiGet("StagePanel.MPLimitTooltip")); //$NON-NLS-1$
+		mpLimitS.setToolTipText(Messages.uiGet("PenaltyCheckerConfigPanel.MPLimitTooltip")); //$NON-NLS-1$
 		mpLimitS.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				int oldLimit = checker(geco).getMPLimit();
@@ -79,12 +79,12 @@ public class PenaltyCheckerConfigPanel extends JPanel implements ConfigPanel {
 		add(SwingUtils.embed(noMpLimitCB), c);
 		
 		c.gridy = 2;
-		add(new JLabel(Messages.uiGet("StagePanel.TimePenaltyLabel")), c); //$NON-NLS-1$
+		add(new JLabel(Messages.uiGet("PenaltyCheckerConfigPanel.TimePenaltyLabel")), c); //$NON-NLS-1$
 		long penalty = checker(geco).getMPPenalty();
 		final JLabel penaltyMinuteL = new JLabel(TimeManager.time(penalty) + Messages.uiGet("PenaltyCheckerConfigPanel.PerMpLabel")); //$NON-NLS-1$
 		final JSpinner penaltyS = new JSpinner(new SpinnerNumberModel(penalty / 1000, 0l, null, 10));
 		penaltyS.setPreferredSize(new Dimension(100, SwingUtils.SPINNERHEIGHT));
-		penaltyS.setToolTipText(Messages.uiGet("StagePanel.TimePenaltyTooltip")); //$NON-NLS-1$
+		penaltyS.setToolTipText(Messages.uiGet("PenaltyCheckerConfigPanel.TimePenaltyTooltip")); //$NON-NLS-1$
 		penaltyS.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				long oldPenalty = checker(geco).getMPPenalty();
@@ -102,9 +102,9 @@ public class PenaltyCheckerConfigPanel extends JPanel implements ConfigPanel {
 		c.gridwidth = 2;
 		String helpL = new Html()
 			.open("i") //$NON-NLS-1$
-			.contents(Messages.uiGet("StagePanel.MPConfigHelp1")) //$NON-NLS-1$
-			.tag("b", Messages.uiGet("StagePanel.MPConfigHelp2")) //$NON-NLS-1$ //$NON-NLS-2$
-			.contents(Messages.uiGet("StagePanel.MPConfigHelp3")) //$NON-NLS-1$
+			.contents(Messages.uiGet("PenaltyCheckerConfigPanel.MPConfigHelp1")) //$NON-NLS-1$
+			.tag("b", Messages.uiGet("PenaltyCheckerConfigPanel.MPConfigHelp2")) //$NON-NLS-1$ //$NON-NLS-2$
+			.contents(Messages.uiGet("PenaltyCheckerConfigPanel.MPConfigHelp3")) //$NON-NLS-1$
 			.close("i").close(); //$NON-NLS-1$
 		add(new JLabel(helpL), c);
 	}

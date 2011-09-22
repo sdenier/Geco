@@ -33,7 +33,7 @@ public class CourseConfigPanel extends ConfigTablePanel<Course> implements Confi
 
 	@Override
 	public String getLabel() {
-		return Messages.uiGet("StagePanel.CourseConfigTitle"); //$NON-NLS-1$
+		return Messages.uiGet("CourseConfigPanel.Title"); //$NON-NLS-1$
 	}
 	
 	public CourseConfigPanel(final IGecoApp geco, final JFrame frame) {
@@ -63,8 +63,8 @@ public class CourseConfigPanel extends ConfigTablePanel<Course> implements Confi
 						geco.stageControl().removeCourse(course);
 					} catch (Exception e1) {
 						JOptionPane.showMessageDialog(frame,
-							Messages.uiGet("StagePanel.CourseNoDeletionWarning") + e1.getMessage(), //$NON-NLS-1$
-							Messages.uiGet("StagePanel.ActionCancelledTitle"), //$NON-NLS-1$
+							Messages.uiGet("CourseConfigPanel.CourseNoDeletionWarning") + e1.getMessage(), //$NON-NLS-1$
+							Messages.uiGet("ConfigTablePanel.ActionCancelledTitle"), //$NON-NLS-1$
 							JOptionPane.WARNING_MESSAGE);
 					}
 				}
@@ -88,14 +88,14 @@ public class CourseConfigPanel extends ConfigTablePanel<Course> implements Confi
 				chooser.setFileFilter(new FileFilter() {
 					@Override
 					public String getDescription() {
-						return Messages.uiGet("StagePanel.XMLFilesLabel"); //$NON-NLS-1$
+						return Messages.uiGet("CourseConfigPanel.XMLFilesLabel"); //$NON-NLS-1$
 					}
 					@Override
 					public boolean accept(File f) {
 						return f.getName().endsWith(".xml"); //$NON-NLS-1$
 					}
 				});
-				int answer = chooser.showDialog(frame, Messages.uiGet("StagePanel.CourseImportXMLLabel")); //$NON-NLS-1$
+				int answer = chooser.showDialog(frame, Messages.uiGet("CourseConfigPanel.CourseImportXMLLabel")); //$NON-NLS-1$
 				if( answer==JFileChooser.APPROVE_OPTION ) {
 					String file = chooser.getSelectedFile().getAbsolutePath();
 					try {
@@ -107,7 +107,7 @@ public class CourseConfigPanel extends ConfigTablePanel<Course> implements Confi
 						e1.printStackTrace();
 						JOptionPane.showMessageDialog(frame,
 								e1.getMessage(),
-								Messages.uiGet("StagePanel.XMLLoadError"), //$NON-NLS-1$
+								Messages.uiGet("CourseConfigPanel.XMLLoadError"), //$NON-NLS-1$
 								JOptionPane.ERROR_MESSAGE);
 					}
 				}
@@ -122,20 +122,20 @@ public class CourseConfigPanel extends ConfigTablePanel<Course> implements Confi
 			}
 		};
 		
-		JButton editB = new JButton(Messages.uiGet("StagePanel.CourseEditLabel")); //$NON-NLS-1$
-		editB.setToolTipText(Messages.uiGet("StagePanel.CourseEditTooltip")); //$NON-NLS-1$
+		JButton editB = new JButton(Messages.uiGet("CourseConfigPanel.CourseEditLabel")); //$NON-NLS-1$
+		editB.setToolTipText(Messages.uiGet("CourseConfigPanel.CourseEditTooltip")); //$NON-NLS-1$
 		editB.addActionListener(editAction);
 		
-		JButton importB = new JButton(Messages.uiGet("StagePanel.CourseXMLLabel")); //$NON-NLS-1$
-		importB.setToolTipText(Messages.uiGet("StagePanel.CourseXMLTooltip")); //$NON-NLS-1$
+		JButton importB = new JButton(Messages.uiGet("CourseConfigPanel.CourseXMLLabel")); //$NON-NLS-1$
+		importB.setToolTipText(Messages.uiGet("CourseConfigPanel.CourseXMLTooltip")); //$NON-NLS-1$
 		importB.addActionListener(importAction);
 
-		JButton refreshB = new JButton(Messages.uiGet("StagePanel.CourseRecheckLabel")); //$NON-NLS-1$
-		refreshB.setToolTipText(Messages.uiGet("StagePanel.CourseRecheckTooltip")); //$NON-NLS-1$
+		JButton refreshB = new JButton(Messages.uiGet("CourseConfigPanel.CourseRecheckLabel")); //$NON-NLS-1$
+		refreshB.setToolTipText(Messages.uiGet("CourseConfigPanel.CourseRecheckTooltip")); //$NON-NLS-1$
 		refreshB.addActionListener(refreshAction);
 
 		initialize(
-				Messages.uiGet("StagePanel.CourseConfigTitle"), //$NON-NLS-1$
+				Messages.uiGet("CourseConfigPanel.Title"), //$NON-NLS-1$
 				tableModel,
 				addAction,
 				removeAction,
@@ -145,8 +145,8 @@ public class CourseConfigPanel extends ConfigTablePanel<Course> implements Confi
 
 	private ConfigTableModel<Course> createTableModel(final IGecoApp geco) {
 		return new ConfigTableModel<Course>(new String[] {
-											Messages.uiGet("StagePanel.CourseNameHeader"), //$NON-NLS-1$
-											Messages.uiGet("StagePanel.CourseNbControlsHeader")}) { //$NON-NLS-1$
+											Messages.uiGet("CourseConfigPanel.CourseNameHeader"), //$NON-NLS-1$
+											Messages.uiGet("CourseConfigPanel.CourseNbControlsHeader")}) { //$NON-NLS-1$
 			@Override
 			public Object getValueIn(Course course, int columnIndex) {
 				switch (columnIndex) {

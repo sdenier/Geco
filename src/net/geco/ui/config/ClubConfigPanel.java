@@ -28,13 +28,13 @@ public class ClubConfigPanel extends ConfigTablePanel<Club> implements ConfigPan
 
 	@Override
 	public String getLabel() {
-		return Messages.uiGet("StagePanel.ClubConfigTitle"); //$NON-NLS-1$
+		return Messages.uiGet("ClubConfigPanel.Title"); //$NON-NLS-1$
 	}
 
 	public ClubConfigPanel(final IGeco geco, final JFrame frame) {
 		tableModel = new ConfigTableModel<Club>(new String[] {
-										Messages.uiGet("StagePanel.ClubShortNameHeader"), //$NON-NLS-1$
-										Messages.uiGet("StagePanel.ClubLongNameHeader")}) { //$NON-NLS-1$
+										Messages.uiGet("ClubConfigPanel.ClubShortNameHeader"), //$NON-NLS-1$
+										Messages.uiGet("ClubConfigPanel.ClubLongNameHeader")}) { //$NON-NLS-1$
 			@Override
 			public Object getValueIn(Club club, int columnIndex) {
 				switch (columnIndex) {
@@ -75,8 +75,8 @@ public class ClubConfigPanel extends ConfigTablePanel<Club> implements ConfigPan
 					boolean removed = geco.stageControl().removeClub(club);
 					if( !removed ) {
 						JOptionPane.showMessageDialog(frame,
-							    Messages.uiGet("StagePanel.ClubNoDeletionWarning"), //$NON-NLS-1$
-							    Messages.uiGet("StagePanel.ActionCancelledTitle"), //$NON-NLS-1$
+							    Messages.uiGet("ClubConfigPanel.ClubNoDeletionWarning"), //$NON-NLS-1$
+							    Messages.uiGet("ConfigTablePanel.ActionCancelledTitle"), //$NON-NLS-1$
 							    JOptionPane.WARNING_MESSAGE);
 					}
 				}
@@ -84,7 +84,7 @@ public class ClubConfigPanel extends ConfigTablePanel<Club> implements ConfigPan
 		};
 
 		initialize(
-				Messages.uiGet("StagePanel.ClubConfigTitle"), //$NON-NLS-1$
+				Messages.uiGet("ClubConfigPanel.Title"), //$NON-NLS-1$
 				tableModel,
 				addAction,
 				removeAction);

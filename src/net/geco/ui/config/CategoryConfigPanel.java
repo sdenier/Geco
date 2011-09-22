@@ -33,7 +33,7 @@ public class CategoryConfigPanel extends ConfigTablePanel<Category> implements C
 
 	@Override
 	public String getLabel() {
-		return Messages.uiGet("StagePanel.CategoryConfigTitle"); //$NON-NLS-1$
+		return Messages.uiGet("CategoryConfigPanel.Title"); //$NON-NLS-1$
 	}
 
 	public CategoryConfigPanel(final IGecoApp geco, final JFrame frame) {
@@ -67,8 +67,8 @@ public class CategoryConfigPanel extends ConfigTablePanel<Category> implements C
 						geco.stageControl().removeCategory(cat);	
 					} catch (Exception e2) {
 						JOptionPane.showMessageDialog(frame,
-								Messages.uiGet("StagePanel.CategoryNoDeletionWarning") + e2.getMessage(), //$NON-NLS-1$
-								Messages.uiGet("StagePanel.ActionCancelledTitle"), //$NON-NLS-1$
+								Messages.uiGet("CategoryConfigPanel.CategoryNoDeletionWarning") + e2.getMessage(), //$NON-NLS-1$
+								Messages.uiGet("ConfigTablePanel.ActionCancelledTitle"), //$NON-NLS-1$
 								JOptionPane.WARNING_MESSAGE);
 					}
 				}
@@ -76,7 +76,7 @@ public class CategoryConfigPanel extends ConfigTablePanel<Category> implements C
 		};
 
 		initialize(
-				Messages.uiGet("StagePanel.CategoryConfigTitle"), //$NON-NLS-1$
+				Messages.uiGet("CategoryConfigPanel.Title"), //$NON-NLS-1$
 				tableModel,
 				addAction,
 				removeAction);
@@ -86,9 +86,9 @@ public class CategoryConfigPanel extends ConfigTablePanel<Category> implements C
 
 	public ConfigTableModel<Category> createTableModel(final IGecoApp geco) {
 		return new ConfigTableModel<Category>(new String[] {
-											Messages.uiGet("StagePanel.CategoryShortNameHeader"), //$NON-NLS-1$
-											Messages.uiGet("StagePanel.CategoryLongNameHeader"), //$NON-NLS-1$
-											Messages.uiGet("StagePanel.CategoryCourseHeader") }) { //$NON-NLS-1$
+											Messages.uiGet("CategoryConfigPanel.CategoryShortNameHeader"), //$NON-NLS-1$
+											Messages.uiGet("CategoryConfigPanel.CategoryLongNameHeader"), //$NON-NLS-1$
+											Messages.uiGet("CategoryConfigPanel.CategoryCourseHeader") }) { //$NON-NLS-1$
 			@Override
 			public Object getValueIn(Category cat, int columnIndex) {
 				switch (columnIndex) {

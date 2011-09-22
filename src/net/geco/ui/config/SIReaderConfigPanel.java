@@ -35,10 +35,10 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 		GridBagConstraints c = SwingUtils.gbConstr(0);
 		c.insets = new Insets(0, 0, 5, 5);
 		c.fill = GridBagConstraints.HORIZONTAL;
-		add(new JLabel(Messages.uiGet("StagePanel.StationPortLabel")), c); //$NON-NLS-1$
+		add(new JLabel(Messages.uiGet("SIReaderConfigPanel.StationPortLabel")), c); //$NON-NLS-1$
 		final JComboBox stationPortCB = new JComboBox(geco.siHandler().listPorts());
 		stationPortCB.setPreferredSize(new Dimension(170, stationPortCB.getPreferredSize().height));
-		stationPortCB.setToolTipText(Messages.uiGet("StagePanel.StationPortTooltip")); //$NON-NLS-1$
+		stationPortCB.setToolTipText(Messages.uiGet("SIReaderConfigPanel.StationPortTooltip")); //$NON-NLS-1$
 		add(stationPortCB, c);
 		stationPortCB.setSelectedItem(geco.siHandler().getPort());
 		stationPortCB.addActionListener(new ActionListener() {
@@ -49,7 +49,7 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 		});
 	
 		c.gridy = 1;
-		add(new JLabel(Messages.uiGet("StagePanel.SplitPrinterLabel")), c); //$NON-NLS-1$
+		add(new JLabel(Messages.uiGet("SIReaderConfigPanel.SplitPrinterLabel")), c); //$NON-NLS-1$
 		final JComboBox printersCB = new JComboBox(geco.splitPrinter().listPrinterNames());
 		printersCB.setPreferredSize(new Dimension(170, stationPortCB.getPreferredSize().height));
 		printersCB.setSelectedItem(geco.splitPrinter().getSplitPrinterName());
@@ -62,7 +62,7 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 		});
 		
 		c.gridy = 2;
-		add(new JLabel(Messages.uiGet("StagePanel.SplitFormatLabel")), c); //$NON-NLS-1$
+		add(new JLabel(Messages.uiGet("SIReaderConfigPanel.SplitFormatLabel")), c); //$NON-NLS-1$
 		final JComboBox splitFormatCB = new JComboBox(SingleSplitPrinter.SplitFormat.values());
 		splitFormatCB.setPreferredSize(new Dimension(170, stationPortCB.getPreferredSize().height));
 		splitFormatCB.setSelectedItem(geco.splitPrinter().getSplitFormat());
@@ -77,7 +77,7 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 
 	@Override
 	public String getLabel() {
-		return Messages.uiGet("StagePanel.SIReaderConfigTitle"); //$NON-NLS-1$
+		return Messages.uiGet("SIReaderConfigPanel.Title"); //$NON-NLS-1$
 	}
 
 	@Override
