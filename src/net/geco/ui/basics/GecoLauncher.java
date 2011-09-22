@@ -32,7 +32,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -80,14 +79,10 @@ public class GecoLauncher extends JDialog {
 			e1.printStackTrace();
 		}
 
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				((JPanel) getContentPane()).setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-				getContentPane().add(initGUIPanel(history));
-				pack();
-				setLocationRelativeTo(null);
-			}
-		});
+		((JPanel) getContentPane()).setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		getContentPane().add(initGUIPanel(history));
+		pack();
+		setLocationRelativeTo(null);
 	}
 	
 	public boolean showLauncher() {

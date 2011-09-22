@@ -35,7 +35,7 @@ public class StageImpl implements Stage {
 	}
 
 	protected void initializeDefault() {
-		name = Messages.uiGet("StagePanel.StageNameDefault"); //$NON-NLS-1$
+		name = Messages.getString("GecoStageLaunch.DefaultStageName"); //$NON-NLS-1$
 		zeroHour = DEFAULT_ZEROHOUR;
 		nbBackups = 9;
 		autosaveDelay = 2;

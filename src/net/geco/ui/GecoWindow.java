@@ -214,7 +214,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		initNavigationToolbar(toolBar);
 		toolBar.addSeparator();
 		
-		JButton recheckB = new JButton(Messages.uiGet("GecoWindow.RecheckButton"), createIcon(4)); //$NON-NLS-1$
+		JButton recheckB = new JButton(Messages.uiGet("GecoWindow.RecheckButton"), createIcon(2)); //$NON-NLS-1$
 		recheckB.setToolTipText(Messages.uiGet("GecoWindow.RecheckToolTip")); //$NON-NLS-1$
 		recheckB.addActionListener(new ActionListener() {
 			@Override
@@ -275,7 +275,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 	}
 
 	private void initLiveToolbar(JToolBar toolBar) {
-		JButton liveMapB = new JButton(createIcon(7));
+		JButton liveMapB = new JButton(createIcon(5));
 		liveMapB.setToolTipText(Messages.uiGet("GecoWindow.LivemapTooltip")); //$NON-NLS-1$
 		liveMapB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -283,8 +283,8 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 			}
 		});
 		toolBar.add(liveMapB);
-		final ImageIcon offliveIcon = createIcon(8);
-		final ImageIcon onliveIcon = createIcon(9);
+		final ImageIcon offliveIcon = createIcon(6);
+		final ImageIcon onliveIcon = createIcon(7);
 		StartStopButton liveClientB = new StartStopButton() {
 			private LiveClient liveClient;
 			@Override
@@ -314,8 +314,8 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 	}
 
 	private void initReaderToolbar(JToolBar toolBar) {
-		final ImageIcon autoOff = createIcon(12);
-		final ImageIcon autoOn = createIcon(13);
+		final ImageIcon autoOff = createIcon(10);
+		final ImageIcon autoOn = createIcon(11);
 		final StartStopButton autoModeB = new StartStopButton() {
 			@Override
 			public void initialize() {
@@ -336,8 +336,8 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		};
 		toolBar.add(autoModeB);
 		
-		final ImageIcon splitOff = createIcon(10);
-		final ImageIcon splitOn = createIcon(11);
+		final ImageIcon splitOff = createIcon(8);
+		final ImageIcon splitOn = createIcon(9);
 		final StartStopButton autoSplitB = new StartStopButton() {
 			@Override
 			public void initialize() {
@@ -357,8 +357,8 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		};
 		toolBar.add(autoSplitB);
 		
-		final ImageIcon startIcon = createIcon(5);
-		final ImageIcon stopIcon = createIcon(6);
+		final ImageIcon startIcon = createIcon(3);
+		final ImageIcon stopIcon = createIcon(4);
 		startB = new StartStopButton() {
 			@Override
 			public void initialize() {
