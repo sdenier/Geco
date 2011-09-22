@@ -77,7 +77,7 @@ public class RunnerControl extends Control {
 	}
 
 	public Runner createAnonymousRunner(Course course) throws RunnerCreationException {
-		Runner runner = buildAnonymousRunner("", course);
+		Runner runner = buildAnonymousRunner("", course); //$NON-NLS-1$
 		registerRunner(runner, builder.buildRunnerData());
 		return runner;
 	}
@@ -91,7 +91,7 @@ public class RunnerControl extends Control {
 	}
 	
 	public String deriveUniqueEcard(String ecard) {
-		if( ecard.equals("") ){
+		if( ecard.equals("") ){ //$NON-NLS-1$
 			return ecard;
 		}
 		return prvDeriveUniqueEcard(ecard, registry().getEcards());
@@ -105,10 +105,10 @@ public class RunnerControl extends Control {
 		else {
 			lastDigit = newEcard.charAt(newEcard.length() - 1);
 			if ( Character.isDigit(lastDigit) ) {
-				newEcard = newEcard + "a";
+				newEcard = newEcard + "a"; //$NON-NLS-1$
 			}
 			else if ( lastDigit == 'z') {
-				newEcard = newEcard.substring(0, newEcard.length() - 1) + "aa";
+				newEcard = newEcard.substring(0, newEcard.length() - 1) + "aa"; //$NON-NLS-1$
 			}
 			else {
 				newEcard = newEcard.substring(0, newEcard.length() - 1) + ++lastDigit;

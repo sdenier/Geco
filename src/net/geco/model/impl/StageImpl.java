@@ -166,7 +166,7 @@ public class StageImpl implements Stage {
 		properties.setProperty(zerohourProperty(), Long.toString(getZeroHour()));
 		properties.setProperty(autosaveDelayProperty(), Integer.toString(getAutosaveDelay()));
 		properties.setProperty(nbAutoBackupsProperty(), Integer.toString(getNbAutoBackups()));
-		properties.setProperty(versionProperty(), "V1.2");
+		properties.setProperty(versionProperty(), "V1.2"); //$NON-NLS-1$
 		properties.setProperty(appBuilderProperty(), appBuilderName);
 		setProperties(properties);
 	}
@@ -192,11 +192,11 @@ public class StageImpl implements Stage {
 	}
 	
 	public static String appBuilderProperty() {
-		return "AppBuilder";
+		return "AppBuilder"; //$NON-NLS-1$
 	}
 
 	public static String defaultAppBuilderName() {
-		return "net.geco.app.OrientShowAppBuilder";
+		return "net.geco.app.OrientShowAppBuilder"; //$NON-NLS-1$
 	}
 
 }

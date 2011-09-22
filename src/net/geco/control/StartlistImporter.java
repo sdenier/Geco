@@ -44,7 +44,7 @@ public class StartlistImporter extends OEImporter {
 		if( ! record[0].equals("") ){ //$NON-NLS-1$
 			runner.setStartId(Integer.valueOf(record[0])); // TODO: ensure unique start number here
 		}
-		if( ! record[2].equals("") ){
+		if( ! record[2].equals("") ){ //$NON-NLS-1$
 			runner.setArchiveId(new Integer(record[2]));			
 		}
 		runner.setLastname(lastName);

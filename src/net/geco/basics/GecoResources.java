@@ -87,13 +87,13 @@ public class GecoResources {
 	}
 	
 	public static File getGecoSupportDirectory() {
-		String homeDir = System.getProperty("user.home");
-		File gecoSupport = new File(homeDir + "/.geco");
+		String homeDir = System.getProperty("user.home"); //$NON-NLS-1$
+		File gecoSupport = new File(homeDir + "/.geco"); //$NON-NLS-1$
 		if( platformIsMacOs() ){
-			gecoSupport = new File(homeDir + "/Library/Geco");
+			gecoSupport = new File(homeDir + "/Library/Geco"); //$NON-NLS-1$
 		}
 		if( platformIsWindows() ){
-			gecoSupport = new File(System.getenv("APPDATA") + "/Geco");
+			gecoSupport = new File(System.getenv("APPDATA") + "/Geco"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		if( ! gecoSupport.exists() ){
 			gecoSupport.mkdir();

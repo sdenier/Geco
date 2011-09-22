@@ -80,7 +80,7 @@ public class RunnerRegistry {
 
 	private void putRunnerByEcard(Runner runner) {
 		String ecard = runner.getEcard();
-		if( ecard!=null && ! ecard.equals("")){
+		if( ecard!=null && ! ecard.equals("")){ //$NON-NLS-1$
 			runnersByEcard.put(ecard, runner);
 		}
 	}

@@ -34,12 +34,12 @@ public class FreeOrderTracer extends AbstractTracer {
 			if( codez.remove( Integer.valueOf(punch.getCode()) )){
 				trace.add(factory().createTrace(punch));
 			} else {
-				trace.add(factory().createTrace("+" + punch.getCode(), punch.getTime()));
+				trace.add(factory().createTrace("+" + punch.getCode(), punch.getTime())); //$NON-NLS-1$
 			}
 		}
 		for (Integer missingCode : codez) {
 			nbMPs++;
-			trace.add(factory().createTrace("-" + missingCode, new Date(0)));
+			trace.add(factory().createTrace("-" + missingCode, new Date(0))); //$NON-NLS-1$
 		}
 		this.trace = trace.toArray(new Trace[0]);
 	}

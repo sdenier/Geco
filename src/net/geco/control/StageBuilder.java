@@ -147,7 +147,7 @@ public class StageBuilder extends BasicControl {
 	}
 
 	public static String propName() {
-		return "geco.prop";
+		return "geco.prop"; //$NON-NLS-1$
 	}
 
 	public static String propPath(String baseDir) {

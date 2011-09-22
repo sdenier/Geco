@@ -34,7 +34,7 @@ public abstract class AbstractTracer extends BasicControl implements Tracer {
 
 	@Override
 	public String getTraceAsString() {
-		return Util.join(getTrace(), ",", new StringBuilder());
+		return Util.join(getTrace(), ",", new StringBuilder()); //$NON-NLS-1$
 	}
 
 }

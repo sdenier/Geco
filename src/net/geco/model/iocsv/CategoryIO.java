@@ -28,7 +28,7 @@ public class CategoryIO extends AbstractIO<Category> {
 		Category cat = this.factory.createCategory();
 		cat.setShortname(record[0]);
 		if( record.length==1 ){
-			cat.setLongname("");
+			cat.setLongname(""); //$NON-NLS-1$
 		} else {
 			cat.setLongname(record[1]);
 			if( record.length==3 ){

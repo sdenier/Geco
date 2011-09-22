@@ -120,7 +120,7 @@ public class SIReaderHandler extends Control
 			Enumeration portIdentifiers = CommPortIdentifier.getPortIdentifiers();
 			Vector<String> sPorts = new Vector<String>();
 			if( DEBUGMODE )
-				geco().debug("*** CommPort listing ***");
+				geco().debug("*** CommPort listing ***"); //$NON-NLS-1$
 			while( portIdentifiers.hasMoreElements() ){
 				CommPortIdentifier port = (CommPortIdentifier) portIdentifiers.nextElement();
 				if( port.getPortType()==CommPortIdentifier.PORT_SERIAL ){
@@ -143,7 +143,7 @@ public class SIReaderHandler extends Control
 			HashMap<String,String> friendlyNames = new HashMap<String,String>();
 			Pattern comPattern = Pattern.compile("FriendlyName.+REG_SZ(.+)\\((COM\\d+)\\)"); //$NON-NLS-1$
 			if( DEBUGMODE )
-				geco().debug("*** Registry listing ***");
+				geco().debug("*** Registry listing ***"); //$NON-NLS-1$
 			for (String string : reg) {
 				Matcher match = comPattern.matcher(string);
 				if( match.find() ){
@@ -166,12 +166,12 @@ public class SIReaderHandler extends Control
 //				}
 			}
 			if( DEBUGMODE )
-				geco().debug("*** Match ***");
+				geco().debug("*** Match ***"); //$NON-NLS-1$
 			for (String port : serialPorts) {
 				String friendlyName = friendlyNames.get(port);
 				ports.add(new SerialPort(port, (friendlyName==null) ? port : friendlyName ));
 				if( DEBUGMODE )
-					geco().debug(port + " -> " + friendlyName);
+					geco().debug(port + " -> " + friendlyName); //$NON-NLS-1$
 			}
 		} else {
 			for (String port : serialPorts) {
