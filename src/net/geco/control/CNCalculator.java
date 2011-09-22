@@ -34,7 +34,7 @@ import net.geco.model.iocsv.CsvWriter;
  */
 public class CNCalculator extends AResultExporter implements StageListener {
 
-	private File cnFile = new File("data/CN-Ped-Base.csv");
+	private File cnFile = new File("data/CN-Ped-Base.csv"); //$NON-NLS-1$
 	
 	private Map<Integer, Integer> cnScores;
 	
@@ -88,7 +88,7 @@ public class CNCalculator extends AResultExporter implements StageListener {
 	@Override
 	public String generateHtmlResults(ResultConfig config, int refreshDelay) {
 		if( config.resultType!=ResultType.CourseResult )
-			return "CN scores can only be computed on courses";
+			return Messages.getString("CNCalculator.CNCourseWarning"); //$NON-NLS-1$
 
 		importCN();
 		Html html = new Html();
@@ -205,7 +205,7 @@ public class CNCalculator extends AResultExporter implements StageListener {
 	public void closing(Stage stage) {}
 
 	public static String cnFileProperty() {
-		return "CNFile";
+		return "CNFile"; //$NON-NLS-1$
 	}
 
 }

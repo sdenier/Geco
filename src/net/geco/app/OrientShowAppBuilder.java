@@ -29,6 +29,7 @@ import net.geco.functions.LegNeutralizationFunction;
 import net.geco.functions.RecheckFunction;
 import net.geco.functions.StartTimeFunction;
 import net.geco.model.Factory;
+import net.geco.model.Messages;
 import net.geco.model.impl.POFactory;
 import net.geco.ui.config.CategoryConfigPanel;
 import net.geco.ui.config.ClubConfigPanel;
@@ -51,7 +52,7 @@ import net.geco.ui.tabs.RunnersPanel;
 public class OrientShowAppBuilder extends AppBuilder {
 
 	public static String getName() {
-		return "Orient'Show";
+		return Messages.getString("OrientShowAppBuilder.OrientshowAppName"); //$NON-NLS-1$
 	}
 	
 	@Override

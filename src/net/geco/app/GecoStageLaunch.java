@@ -16,6 +16,7 @@ import java.util.Properties;
 
 import net.geco.control.StageBuilder;
 import net.geco.framework.IStageLaunch;
+import net.geco.model.Messages;
 import net.geco.model.impl.StageImpl;
 
 /**
@@ -44,9 +45,9 @@ public class GecoStageLaunch implements IStageLaunch {
 	private AppBuilder appBuilder;
 	
 	public GecoStageLaunch() {
-		setStageName("Stage name");
-		setStageDir(System.getProperty("user.dir"));
-		setAppBuilderName("net.geco.app.ClassicAppBuilder");
+		setStageName(Messages.getString("GecoStageLaunch.DefaultStageName")); //$NON-NLS-1$
+		setStageDir(System.getProperty("user.dir")); //$NON-NLS-1$
+		setAppBuilderName("net.geco.app.ClassicAppBuilder"); //$NON-NLS-1$
 	}
 	
 	@Override
@@ -58,7 +59,7 @@ public class GecoStageLaunch implements IStageLaunch {
 	public GecoStageLaunch loadFromFileSystem(String dir) {
 		setStageDir(dir);
 		Properties properties = StageBuilder.loadProperties(dir);
-		setStageName(properties.getProperty(StageImpl.nameProperty(), "Unknown"));
+		setStageName(properties.getProperty(StageImpl.nameProperty(), Messages.getString("GecoStageLaunch.DefaultStageName"))); //$NON-NLS-1$
 		setAppBuilderName(properties.getProperty(StageImpl.appBuilderProperty(),
 												 StageImpl.defaultAppBuilderName()));
 		return this;

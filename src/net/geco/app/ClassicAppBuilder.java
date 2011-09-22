@@ -28,6 +28,7 @@ import net.geco.functions.LegNeutralizationFunction;
 import net.geco.functions.RecheckFunction;
 import net.geco.functions.StartTimeFunction;
 import net.geco.model.Factory;
+import net.geco.model.Messages;
 import net.geco.model.impl.POFactory;
 import net.geco.ui.config.CategoryConfigPanel;
 import net.geco.ui.config.ClubConfigPanel;
@@ -48,7 +49,7 @@ import net.geco.ui.tabs.RunnersPanel;
 public class ClassicAppBuilder extends AppBuilder {
 
 	public static String getName() {
-		return "Classic inline";
+		return Messages.getString("ClassicAppBuilder.ClassicAppName"); //$NON-NLS-1$
 	}
 	
 	@Override

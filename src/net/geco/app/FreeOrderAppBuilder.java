@@ -27,6 +27,7 @@ import net.geco.functions.GeneratorFunction;
 import net.geco.functions.RecheckFunction;
 import net.geco.functions.StartTimeFunction;
 import net.geco.model.Factory;
+import net.geco.model.Messages;
 import net.geco.model.impl.POFactory;
 import net.geco.ui.config.CategoryConfigPanel;
 import net.geco.ui.config.ClubConfigPanel;
@@ -48,7 +49,7 @@ import net.geco.ui.tabs.RunnersPanel;
 public class FreeOrderAppBuilder extends AppBuilder {
 
 	public static String getName() {
-		return "Free Order";
+		return Messages.getString("FreeOrderAppBuilder.FreeorderAppName"); //$NON-NLS-1$
 	}
 	
 	@Override

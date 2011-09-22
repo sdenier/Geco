@@ -146,7 +146,7 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 			}
 		} else {
 			try {
-				File historyFile = new File(GecoResources.getGecoSupportDirectory() + GecoResources.sep + "history");
+				File historyFile = new File(historyFilePath());
 				historyFile.createNewFile();
 				BufferedReader reader = new BufferedReader(new FileReader(historyFile));
 				String line;
@@ -168,6 +168,10 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 			}
 		}
 		return stageLaunch;
+	}
+
+	public static String historyFilePath() {
+		return GecoResources.getGecoSupportDirectory() + GecoResources.sep + "history"; //$NON-NLS-1$
 	}
 
 	public Geco() {
@@ -233,7 +237,7 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 
 	public void shutdown() {
 		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(GecoResources.getGecoSupportDirectory() + GecoResources.sep + "history"));
+			BufferedWriter writer = new BufferedWriter(new FileWriter(historyFilePath()));
 			for (IStageLaunch stageLaunch : history()) {
 				writer.write(stageLaunch.getStageDir());
 				writer.newLine();
