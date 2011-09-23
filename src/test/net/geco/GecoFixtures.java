@@ -60,7 +60,14 @@ public class GecoFixtures {
 		Mockito.when(gecoControl.registry()).thenReturn(stage.registry());
 		return gecoControl;
 	}
-	
+
+	public static Course createCourse(String name, int... codes) {
+		Course course = factory.createCourse();
+		course.setName(name);
+		course.setCodes(codes);
+		return course;
+	}
+
 	public static Punch punch(Date time, int code) {
 		Punch punch = factory.createPunch();
 		punch.setTime(time);

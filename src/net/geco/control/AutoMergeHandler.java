@@ -63,7 +63,7 @@ public class AutoMergeHandler extends Control implements GecoRequestHandler {
 		}
 	}
 
-	private Course detectCourse(RunnerRaceData data) {
+	public Course detectCourse(RunnerRaceData data) {
 		Vector<CourseResult> distances = new Vector<CourseResult>();
 		int nbPunches = data.getPunches().length;
 		for (Course course : registry().getCourses()) {
@@ -77,13 +77,14 @@ public class AutoMergeHandler extends Control implements GecoRequestHandler {
 		for (CourseResult cResult : distances) {
 			data.getRunner().setCourse(cResult.course);
 			geco().checker().check(data);
-			if( data.getStatus()==Status.OK ){
-				// in the case of an orient'show, we may be ok with mps. However unlikely to have 2 courses
-				// ok with the same trace
+			if( data.getResult().getNbMPs()==0 ){
+				// early stop only if no MP detected
+				// in some race case with orient'show, one trace may be ok with multiple courses (as soon as MPs < MP limit)
+				// so we should continue to look for a better match even if status == OK
 				return cResult.course;
 			}
 			int nbMPs = data.getResult().getNbMPs();
-			if( nbMPs<minMps ){
+			if( nbMPs < minMps ){
 				minMps = nbMPs;
 				bestResult = cResult;
 				bestResult.result = data.getResult(); // memoize result so we don't have to compute it again

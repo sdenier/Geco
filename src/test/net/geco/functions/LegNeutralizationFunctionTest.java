@@ -12,6 +12,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static test.net.geco.GecoFixtures.createCourse;
 import static test.net.geco.GecoFixtures.punch;
 
 import java.util.Arrays;
@@ -56,9 +57,7 @@ public class LegNeutralizationFunctionTest {
 	@Before
 	public void setUp() {
 		factory = new POFactory();
-		courseA = factory.createCourse();
-		courseA.setName("A");
-		courseA.setCodes(new int[]{ 42, 43, 45, 31, 45, 32 });
+		courseA = createCourse("A", 42, 43, 45, 31, 45, 32);
 	}
 	
 	@Test
@@ -72,12 +71,8 @@ public class LegNeutralizationFunctionTest {
 	
 	@Test
 	public void shouldSelectCoursesWithNeutralizedLeg() {
-		Course courseB = factory.createCourse();
-		courseB.setName("B");
-		courseB.setCodes(new int[]{ 42, 43, 31, 45, 32 });
-		Course courseC = factory.createCourse();
-		courseC.setName("C");
-		courseC.setCodes(new int[]{ 31, 45, 32, 45, 31 });
+		Course courseB = createCourse("B", 42, 43, 31, 45, 32);
+		Course courseC = createCourse("C", 31, 45, 32, 45, 31);
 		Registry registry = new Registry();
 		registry.addCourse(courseA);
 		registry.addCourse(courseB);
