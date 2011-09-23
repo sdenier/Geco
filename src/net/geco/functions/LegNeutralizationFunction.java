@@ -226,7 +226,7 @@ public class LegNeutralizationFunction extends GecoFunction {
 		Trace[] leg = raceData.retrieveLeg(legStart, legEnd);
 		if( leg!=null && !leg[1].isNeutralized() ){
 			if( raceData.officialRaceTime() != raceData.getResult().getRacetime() ){
-				geco().announcer().dataInfo(Messages.uiGet("LegNeutralizationFunction.31") + raceData.getRunner().idString()); //$NON-NLS-1$
+				geco().announcer().dataInfo(Messages.uiGet("LegNeutralizationFunction.MarkLabel") + raceData.getRunner().idString()); //$NON-NLS-1$
 				leg[1].setNeutralized(true);
 			}
 		}
