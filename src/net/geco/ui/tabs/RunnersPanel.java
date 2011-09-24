@@ -52,7 +52,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 
-import net.geco.basics.Announcer;
+import net.geco.basics.Announcer.CardListener;
+import net.geco.basics.Announcer.RunnerListener;
+import net.geco.basics.Announcer.StageConfigListener;
 import net.geco.basics.TimeManager;
 import net.geco.control.RunnerCreationException;
 import net.geco.framework.IGecoApp;
@@ -76,9 +78,9 @@ import net.geco.ui.framework.TabPanel;
  *
  */
 public class RunnersPanel extends TabPanel
-		implements Announcer.RunnerListener, Announcer.StageConfigListener, Announcer.CardListener,
-					HyperlinkListener {
+	implements RunnerListener, StageConfigListener, CardListener, HyperlinkListener {
 	
+	private RunnersTableAnnouncer announcer;
 	private JTable table;
 	private RunnersTableModel tableModel;
 	private TableRowSorter<RunnersTableModel> sorter;	
@@ -98,6 +100,7 @@ public class RunnersPanel extends TabPanel
 	
 	public RunnersPanel(IGecoApp geco, JFrame frame) {
 		super(geco, frame);
+		announcer = new RunnersTableAnnouncer();
 		initRunnersPanel(this);
 		geco().announcer().registerRunnerListener(this);
 		geco().announcer().registerStageConfigListener(this);
@@ -123,6 +126,8 @@ public class RunnersPanel extends TabPanel
 		pane.addTab(Messages.uiGet("RunnersPanel.RunnerDataTitle"), this.runnerPanel); //$NON-NLS-1$
 		pane.addTab(Messages.uiGet("RunnersPanel.RunnerTraceTitle"), tracePanel); //$NON-NLS-1$
 		pane.addTab(Messages.uiGet("RunnersPanel.StatsTitle"), new VStatsPanel(geco(), frame())); //$NON-NLS-1$
+		announcer.registerRunnersTableListener(runnerPanel);
+		announcer.registerRunnersTableListener(tracePanel);
 		
 		getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
 				KeyStroke.getKeyStroke(KeyEvent.VK_D,
@@ -397,11 +402,7 @@ public class RunnersPanel extends TabPanel
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				if (!e.getValueIsAdjusting() ) {
-					if( table.getSelectedRow()==-1 ){
-						runnerPanel.enablePanel(false);
-					} else {
-						updateRunnerPanel();
-					}
+					announcer.announceSelectedRunnerChange(selectedData());
 				}
 			}
 		});
@@ -487,7 +488,7 @@ public class RunnersPanel extends TabPanel
 	private void refreshTableIndex(int index) {
 		tableModel.fireTableRowsUpdated(index, index);
 		if( table.convertRowIndexToView(index) == table.getSelectedRow() ) {
-			updateRunnerPanel();	
+			announcer.announceSelectedRunnerChange(selectedData());
 		}
 	}
 	
@@ -521,12 +522,11 @@ public class RunnersPanel extends TabPanel
 		}
 		return null;
 	}
-
+	
+	@Deprecated
 	public void updateRunnerPanel() {
 		RunnerRaceData runnerData = selectedData();
 		if( runnerData!=null ){
-			runnerPanel.updateRunner(runnerData);
-			tracePanel.refreshPunches(runnerData);
 			if( gecoLiveMap!=null && gecoLiveMap.isShowing() ) {
 				gecoLiveMap.displayRunnerMap(runnerData);
 			}
