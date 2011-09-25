@@ -24,7 +24,10 @@ import net.geco.model.Messages;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.impl.POFactory;
 import net.geco.model.xml.CourseSaxImporter;
+import net.geco.ui.UIAnnouncers;
 import net.geco.ui.basics.SwingUtils;
+import net.geco.ui.tabs.RunnersTableAnnouncer;
+import net.geco.ui.tabs.RunnersTableAnnouncer.RunnersTableListener;
 
 
 /**
@@ -32,7 +35,7 @@ import net.geco.ui.basics.SwingUtils;
  * @since Aug 26, 2010
  *
  */
-public class LiveComponent {
+public class LiveComponent implements RunnersTableListener {
 
 	static {
 		Messages.put("live", "net.geco.live.messages"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -183,6 +186,17 @@ public class LiveComponent {
 				map.showTrace(course);
 			}
 		}
+	}
+
+	@Override
+	public void selectedRunnerChanged(RunnerRaceData raceData) {
+		if( raceData!=null && isShowing() ) {
+			displayRunnerMap(raceData);
+		}		
+	}
+
+	public void registerWith(UIAnnouncers announcers) {
+		announcers.getAnnouncer(RunnersTableAnnouncer.class).registerRunnersTableListener(this);
 	}
 	
 }

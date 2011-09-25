@@ -27,11 +27,13 @@ import net.geco.control.StageBuilder;
 import net.geco.framework.IGecoApp;
 import net.geco.model.Stage;
 import net.geco.ui.GecoWindow;
+import net.geco.ui.UIAnnouncers;
 import net.geco.ui.framework.ConfigPanel;
 import net.geco.ui.framework.TabPanel;
 import net.geco.ui.tabs.StagePanel;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -91,25 +93,25 @@ public class GecoBuilderTest {
 
 	@Test
 	public void gecoWindowInitialization(){
-		when(mockBuilder.buildUITabs(eq(mockGeco), any(JFrame.class))).thenReturn(new TabPanel[0]);
+		when(mockBuilder.buildUITabs(eq(mockGeco), any(JFrame.class), any(UIAnnouncers.class))).thenReturn(new TabPanel[0]);
 		when(mockBuilder.buildConfigPanels(eq(mockGeco), any(JFrame.class))).thenReturn(new ConfigPanel[0]);
 		GecoWindow window = new GecoWindow(mockGeco);
 		window.initGUI(mockBuilder);
-		verify(mockBuilder, times(1)).buildUITabs(eq(mockGeco), eq(window));
+		verify(mockBuilder, times(1)).buildUITabs(eq(mockGeco), eq(window), eq(window));
 		verify(mockBuilder, times(1)).buildConfigPanels(eq(mockGeco), eq(window));
 	}
 
 	// Disable mock test with Swing interactions
-//	@Test
-//	public void gecoUITabsInitialization(){
-////		Mockito.doNothing().when(mockStagePanel).checkGD(any(String.class));
-//		TabPanel mockTab = mock(TabPanel.class);
-//		GecoWindow window = new GecoWindow(mockGeco);
-//		StagePanel stagePanel = new StagePanel(mockGeco, window);
-//		window.buildGUI(stagePanel, new TabPanel[] { mockTab }, new ConfigPanel[0]);
-//		verify(mockTab, times(1)).getTabTitle();
-//		Assert.assertEquals(mockTab, window.getComponent(0));
-//	}
+	@Test @Ignore
+	public void gecoUITabsInitialization(){
+//		Mockito.doNothing().when(mockStagePanel).checkGD(any(String.class));
+		TabPanel mockTab = mock(TabPanel.class);
+		GecoWindow window = new GecoWindow(mockGeco);
+		StagePanel stagePanel = new StagePanel(mockGeco, window);
+		window.buildGUI(stagePanel, new TabPanel[] { mockTab }, new ConfigPanel[0]);
+		verify(mockTab, times(1)).getTabTitle();
+		Assert.assertEquals(mockTab, window.getComponent(0));
+	}
 
 	@Test
 	public void stagePanelSetupWithTabs(){

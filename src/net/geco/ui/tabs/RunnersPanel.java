@@ -58,13 +58,13 @@ import net.geco.basics.Announcer.StageConfigListener;
 import net.geco.basics.TimeManager;
 import net.geco.control.RunnerCreationException;
 import net.geco.framework.IGecoApp;
-import net.geco.live.LiveComponent;
 import net.geco.model.Course;
 import net.geco.model.Messages;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Stage;
 import net.geco.model.Status;
+import net.geco.ui.UIAnnouncers;
 import net.geco.ui.basics.HyperLog;
 import net.geco.ui.basics.PunchPanel;
 import net.geco.ui.basics.SwingUtils;
@@ -89,7 +89,6 @@ public class RunnersPanel extends TabPanel
 	private JCheckBox liveB;
 	private RunnerPanel runnerPanel;
 	private PunchPanel tracePanel;
-	private LiveComponent gecoLiveMap;
 
 
 	@Override
@@ -98,9 +97,10 @@ public class RunnersPanel extends TabPanel
 	}
 
 	
-	public RunnersPanel(IGecoApp geco, JFrame frame) {
+	public RunnersPanel(IGecoApp geco, JFrame frame, UIAnnouncers uiAnnouncers) {
 		super(geco, frame);
 		announcer = new RunnersTableAnnouncer();
+		uiAnnouncers.registerAnnouncer(announcer);
 		initRunnersPanel(this);
 		geco().announcer().registerRunnerListener(this);
 		geco().announcer().registerStageConfigListener(this);
@@ -523,31 +523,8 @@ public class RunnersPanel extends TabPanel
 		return null;
 	}
 	
-	@Deprecated
-	public void updateRunnerPanel() {
-		RunnerRaceData runnerData = selectedData();
-		if( runnerData!=null ){
-			if( gecoLiveMap!=null && gecoLiveMap.isShowing() ) {
-				gecoLiveMap.displayRunnerMap(runnerData);
-			}
-		}
-	}
-	
-	public void openMapWindow() {
-		if( gecoLiveMap==null ) {
-			gecoLiveMap = new LiveComponent().initWindow(geco().leisureModeOn());
-			gecoLiveMap.setStartDir(geco().getCurrentStagePath());
-		}
-		gecoLiveMap.openWindow();
-	}
-
-
 	@Override
 	public void changed(Stage previous, Stage next) {
-		if( gecoLiveMap!=null ) {
-			gecoLiveMap.closeWindow();
-		}
-		gecoLiveMap = null;
 		refreshRunnersPanel();
 	}
 
