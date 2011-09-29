@@ -46,13 +46,10 @@ public class ControlCircle {
 		return position;
 	}
 
-	/**
-	 * @param dx
-	 * @param dy
-	 */
-	public void translate(int dx, int dy) {
+	public Point translate(int dx, int dy) {
 		this.position.translate(dx, dy);
 		this.drawPosition.translate(dx, dy);
+		return this.position;
 	}
 
 	public void drawOn(Graphics2D g2) {

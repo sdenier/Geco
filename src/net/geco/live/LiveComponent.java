@@ -41,9 +41,9 @@ public class LiveComponent implements RunnersTableListener {
 		Messages.put("live", "net.geco.live.messages"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
-	public JFrame jFrame;
-	public LiveMapComponent map;
-	public ResultPanel runnerP;
+	private JFrame jFrame;
+	private LiveMapComponent map;
+	private ResultPanel runnerP;
 
 	private LiveMapControl mapControl;
 	private Map<String, Float[]> controlPos;
@@ -120,6 +120,10 @@ public class LiveComponent implements RunnersTableListener {
 		return controlPanel;
 	}
 	
+	public LiveMapComponent mapComponent() {
+		return map;
+	}
+	
 	public void loadMapImage(String mapfile) {
 		map.loadMapImage(mapfile);
 	}
@@ -136,12 +140,21 @@ public class LiveComponent implements RunnersTableListener {
 			e.printStackTrace();
 		}
 	}
-
-	public void createCourses(float xFactor, float yFactor, int dx, int dy) {
-		mapControl.setXFactor(xFactor);
-		mapControl.setYFactor(yFactor);
-		mapControl.createControlsFrom(controlPos, dx, dy);
+	
+	public void createControls(float dpmmFactor) {
+		mapControl.createControls(controlPos, dpmmFactor);
+	}
+	
+	public void createCourses() {
 		mapControl.createCoursesFrom(courses);
+	}
+
+	public void translateControls(int dx, int dy) {
+		mapControl.translateControls(dx, dy);
+	}
+
+	public void adjustControls(int ox, int oy, float xFactor, float yFactor) {
+		mapControl.adjustControls(ox, oy, xFactor, yFactor);
 	}
 	
 	public Vector<String> coursenames() {
