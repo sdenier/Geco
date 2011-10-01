@@ -50,12 +50,14 @@ public class LiveConfigPanel extends JPanel {
 	private JLabel coursefileL;
 
 	private JSpinner dpiS;
-	private JSpinner xfactorS;
-	private JSpinner yfactorS;
 	private JSpinner xtranS;
 	private JSpinner ytranS;
-	private Point mapPoint = new Point();
+	private Point mapPoint;
+	private JLabel controlL;
+	private JSpinner xfactorS;
+	private JSpinner yfactorS;
 	private JButton refreshB;
+	private JButton adjustB;
 	
 	private JButton showControlsB;
 	private JButton showMapB;
@@ -87,15 +89,17 @@ public class LiveConfigPanel extends JPanel {
 		// map config
 		dpiS = new JSpinner(new SpinnerNumberModel(150, 0, null, 50));
 		dpiS.setPreferredSize(new Dimension(75, SwingUtils.SPINNERHEIGHT));
-		xfactorS = new JSpinner(new SpinnerNumberModel(1.0f, 0f, null, 0.1f));
-		xfactorS.setPreferredSize(new Dimension(75, SwingUtils.SPINNERHEIGHT));
-		yfactorS = new JSpinner(new SpinnerNumberModel(1.0f, 0f, null, 0.1f));
-		yfactorS.setPreferredSize(new Dimension(75, SwingUtils.SPINNERHEIGHT));
 		xtranS = new JSpinner(new SpinnerNumberModel(0, null, null, 1));
 		xtranS.setPreferredSize(new Dimension(75, SwingUtils.SPINNERHEIGHT));
 		ytranS = new JSpinner(new SpinnerNumberModel(0, null, null, 1));
 		ytranS.setPreferredSize(new Dimension(75, SwingUtils.SPINNERHEIGHT));
+		controlL = new JLabel();
+		xfactorS = new JSpinner(new SpinnerNumberModel(1.0f, 0f, null, 0.1f));
+		xfactorS.setPreferredSize(new Dimension(75, SwingUtils.SPINNERHEIGHT));
+		yfactorS = new JSpinner(new SpinnerNumberModel(1.0f, 0f, null, 0.1f));
+		yfactorS.setPreferredSize(new Dimension(75, SwingUtils.SPINNERHEIGHT));
 		refreshB = new JButton(Messages.liveGet("LiveConfigPanel.RefreshLabel")); //$NON-NLS-1$
+		adjustB = new JButton("Adjust");
 		// course config
 		showControlsB = new JButton(Messages.liveGet("LiveConfigPanel.ShowControlsLabel")); //$NON-NLS-1$
 		showMapB = new JButton(Messages.liveGet("LiveConfigPanel.ShowMapLabel")); //$NON-NLS-1$
@@ -150,6 +154,75 @@ public class LiveConfigPanel extends JPanel {
 				refreshCourses();
 			}
 		});
+		adjustB.addActionListener(new ActionListener() {
+			private MouseAdapter mapAdjuster;
+
+			public void actionPerformed(ActionEvent e) {
+				if( adjustB.isSelected() ){ // stop adjusting
+					adjustB.setSelected(false);
+					liveComponent.mapComponent().removeMouseListener(mapAdjuster);
+					return;
+				}
+				
+				mapAdjuster = new MouseAdapter() {
+					private boolean startAdjusting = true;
+					private boolean endAdjusting = false;
+					private Point controlPoint;
+					private Point controlPoint2;
+
+					public void mouseClicked(MouseEvent e) {
+						super.mouseClicked(e);
+						if( startAdjusting && !endAdjusting ){
+							ControlCircle control = liveComponent.mapComponent().findControlNextTo(e.getPoint());
+							if( control!=null ){
+								controlL.setText(control.getCode());
+								controlPoint = control.getPosition();
+								startAdjusting = false;
+								return;
+							}
+						}
+						if( !startAdjusting && !endAdjusting ) {
+							mapPoint = e.getPoint();
+							int ddx = mapPoint.x - controlPoint.x;
+							xtranS.setValue(new Integer(((Integer) xtranS.getValue()).intValue() + ddx));
+							int ddy = mapPoint.y - controlPoint.y;
+							ytranS.setValue(new Integer(((Integer) ytranS.getValue()).intValue() + ddy));
+							translateControls(ddx, ddy);
+							liveComponent.displayAllControls();
+							endAdjusting = true;
+							return;
+						}
+						if( !startAdjusting && endAdjusting ) {
+							ControlCircle control = liveComponent.mapComponent().findControlNextTo(e.getPoint());
+							if( control!=null ){
+								controlPoint2 = control.getPosition();
+								startAdjusting = true;
+								return;								
+							}
+						}
+						if( startAdjusting && endAdjusting ) {
+							Point mapPoint2 = e.getPoint();
+							float controlDx = controlPoint2.x - mapPoint.x; // controlPoint.x;
+							float mapDx = mapPoint2.x - mapPoint.x;
+							xfactorS.setValue(new Float(mapDx / controlDx));
+
+							float controlDy = controlPoint2.y - mapPoint.y; // controlPoint.x;
+							float mapDy = mapPoint2.y - mapPoint.y;
+							yfactorS.setValue(new Float(mapDy / controlDy));
+							
+							endAdjusting = false;
+							adjustControls();
+							liveComponent.displayAllControls();
+							adjustB.setSelected(false);
+							liveComponent.mapComponent().removeMouseListener(this);
+							return;
+						}
+					}
+				};
+				adjustB.setSelected(true);
+				liveComponent.mapComponent().addMouseListener(mapAdjuster);
+			}
+		});
 		showControlsB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				liveComponent.displayAllControls();
@@ -178,11 +251,13 @@ public class LiveConfigPanel extends JPanel {
 	}
 
 	private void adjustControls() {
-		liveComponent.adjustControls(
-				mapPoint.x,
-				mapPoint.y,
-				((Number) xfactorS.getValue()).floatValue(),
-				((Number) yfactorS.getValue()).floatValue());
+		if( mapPoint!=null ){
+			liveComponent.adjustControls(
+					mapPoint.x,
+					mapPoint.y,
+					((Number) xfactorS.getValue()).floatValue(),
+					((Number) yfactorS.getValue()).floatValue());			
+		}
 	}
 	
 	private void refreshCourses() {
@@ -190,7 +265,7 @@ public class LiveConfigPanel extends JPanel {
 		liveComponent.createControls(factor);
 		liveComponent.createCourses();
 		translateControls();
-//		adjustControls();
+		adjustControls();
 		liveComponent.displayAllControls();
 	}
 
@@ -206,15 +281,18 @@ public class LiveConfigPanel extends JPanel {
 		mapConfigP.setBorder(BorderFactory.createTitledBorder(Messages.liveGet("LiveConfigPanel.SetupLabel"))); //$NON-NLS-1$
 		addComponent(mapConfigP, new JLabel(Messages.liveGet("LiveConfigPanel.ImageDpiLabel"))); //$NON-NLS-1$
 		addComponent(mapConfigP, dpiS);
-		addComponent(mapConfigP, new JLabel(Messages.liveGet("LiveConfigPanel.XFactorLabel"))); //$NON-NLS-1$
-		addComponent(mapConfigP, new JLabel(Messages.liveGet("LiveConfigPanel.YFactorLabel"))); //$NON-NLS-1$
-		addComponent(mapConfigP, xfactorS);
-		addComponent(mapConfigP, yfactorS);
 		addComponent(mapConfigP, new JLabel(Messages.liveGet("LiveConfigPanel.XTranslationLabel"))); //$NON-NLS-1$
 		addComponent(mapConfigP, new JLabel(Messages.liveGet("LiveConfigPanel.YTranslationLabel"))); //$NON-NLS-1$
 		addComponent(mapConfigP, xtranS);
 		addComponent(mapConfigP, ytranS);
+		addComponent(mapConfigP, new JLabel("Centered Control"));
+		addComponent(mapConfigP, controlL);
+		addComponent(mapConfigP, new JLabel(Messages.liveGet("LiveConfigPanel.XFactorLabel"))); //$NON-NLS-1$
+		addComponent(mapConfigP, new JLabel(Messages.liveGet("LiveConfigPanel.YFactorLabel"))); //$NON-NLS-1$
+		addComponent(mapConfigP, xfactorS);
+		addComponent(mapConfigP, yfactorS);
 		addComponent(mapConfigP, refreshB);
+		addComponent(mapConfigP, adjustB);
 		
 		JPanel courseConfigP = new JPanel(new GridLayout(0, 2));
 		courseConfigP.setBorder(BorderFactory.createTitledBorder(Messages.liveGet("LiveConfigPanel.CheckCoursesLabel"))); //$NON-NLS-1$
@@ -223,75 +301,10 @@ public class LiveConfigPanel extends JPanel {
 		addComponent(courseConfigP, new JLabel(Messages.liveGet("LiveConfigPanel.ShowCourseLabel"))); //$NON-NLS-1$
 		addComponent(courseConfigP, showCourseCB);
 		
-		final JButton adjustB = new JButton("Adjust Map");
-		adjustB.addActionListener(new ActionListener() {
-			private MouseAdapter mapAdjuster;
-
-			public void actionPerformed(ActionEvent e) {
-				if( adjustB.isSelected() ){ // stop adjusting
-					adjustB.setSelected(false);
-					liveComponent.mapComponent().removeMouseListener(mapAdjuster);
-					return;
-				}
-				
-				mapAdjuster = new MouseAdapter() {
-					private boolean startAdjusting = true;
-					private boolean endAdjusting = false;
-					private Point controlPoint;
-					private Point controlPoint2;
-
-					public void mouseClicked(MouseEvent e) {
-						super.mouseClicked(e);
-						if( startAdjusting && !endAdjusting ){
-							controlPoint = e.getPoint();
-							startAdjusting = false;
-							return;
-						}
-						if( !startAdjusting && !endAdjusting ) {
-							mapPoint = e.getPoint();
-							int ddx = mapPoint.x - controlPoint.x;
-							xtranS.setValue(new Integer(((Integer) xtranS.getValue()).intValue() + ddx));
-							int ddy = mapPoint.y - controlPoint.y;
-							ytranS.setValue(new Integer(((Integer) ytranS.getValue()).intValue() + ddy));
-							translateControls(ddx, ddy);
-							liveComponent.displayAllControls();
-							endAdjusting = true;
-							return;
-						}
-						if( !startAdjusting && endAdjusting ) {
-							controlPoint2 = e.getPoint();
-							startAdjusting = true;
-							return;
-						}
-						if( startAdjusting && endAdjusting ) {
-							Point mapPoint2 = e.getPoint();
-							float controlDx = controlPoint2.x - mapPoint.x; // controlPoint.x;
-							float mapDx = mapPoint2.x - mapPoint.x;
-							xfactorS.setValue(new Float(mapDx / controlDx));
-
-							float controlDy = controlPoint2.y - mapPoint.y; // controlPoint.x;
-							float mapDy = mapPoint2.y - mapPoint.y;
-							yfactorS.setValue(new Float(mapDy / controlDy));
-							
-							endAdjusting = false;
-							adjustControls();
-							liveComponent.displayAllControls();
-							adjustB.setSelected(false);
-							liveComponent.mapComponent().removeMouseListener(this);
-							return;
-						}
-					}
-				};
-				adjustB.setSelected(true);
-				liveComponent.mapComponent().addMouseListener(mapAdjuster);
-			}
-		});
-		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		add(datafileP);
 		add(mapConfigP);
 		add(courseConfigP);
-		add(adjustB);
 		
 		return this;
 	}

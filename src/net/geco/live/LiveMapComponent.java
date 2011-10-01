@@ -10,6 +10,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -54,6 +55,15 @@ public class LiveMapComponent extends Component {
 	
 	public Dimension getMinimumSize() {
 		return new Dimension(800, 500);
+	}
+	
+	public ControlCircle findControlNextTo(Point p) {
+		for (ControlCircle control : controls) {
+			if( p.distance(control.getPosition()) < 5 ){
+				return control;
+			}
+		}
+		return null;
 	}
 	
 	public void showControls(Collection<ControlCircle> controls) {
