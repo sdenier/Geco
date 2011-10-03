@@ -4,6 +4,7 @@
  */
 package net.geco.live;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -30,7 +31,9 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import net.geco.basics.Html;
 import net.geco.model.Messages;
+import net.geco.ui.basics.StartStopButton;
 import net.geco.ui.basics.SwingUtils;
 
 
@@ -40,6 +43,90 @@ import net.geco.ui.basics.SwingUtils;
  *
  */
 public class LiveConfigPanel extends JPanel {
+
+	public enum AdjustStep { START_CONTROL, START_MAP, END_CONTROL, END_MAP };
+	
+	public class AdjustButton extends StartStopButton {
+		private MouseAdapter mapAdjuster;
+		private Color defaultColor;
+		
+		@Override
+		public void initialize() {
+			super.initialize();
+			setText("Adjust");
+		}
+		@Override
+		public void actionOn() {
+			defaultColor = getBackground();
+			setBackground(Color.green);
+				
+			mapAdjuster = new MouseAdapter() {
+				private AdjustStep step = AdjustStep.START_CONTROL;
+				private Point controlPoint;
+				private Point controlPoint2;
+				
+				public void mouseClicked(MouseEvent e) {
+					ControlCircle control;
+					super.mouseClicked(e);
+					switch (step) {
+					case START_CONTROL:
+						control = liveComponent.mapComponent().findControlNextTo(e.getPoint());
+						if( control!=null ){
+							controlL.setText(control.getCode());
+							controlPoint = control.getPosition();
+							step = AdjustStep.START_MAP;
+						}
+						instructionsL.setText(Html.htmlTag("i", "Step 2/4. <br />Click on new map position<br /> for selected control."));
+						break;
+					case START_MAP:
+						mapPoint = e.getPoint(); // new origin
+						int ddx = mapPoint.x - controlPoint.x;
+						xtranS.setValue(new Integer(((Integer) xtranS.getValue()).intValue() + ddx));
+						int ddy = mapPoint.y - controlPoint.y;
+						ytranS.setValue(new Integer(((Integer) ytranS.getValue()).intValue() + ddy));
+						translateControls(ddx, ddy);
+						liveComponent.displayAllControls();
+						step = AdjustStep.END_CONTROL;
+						instructionsL.setText(Html.htmlTag("i", "Step 3/4. Click on a second control."));
+						break;
+					case END_CONTROL:
+						control = liveComponent.mapComponent().findControlNextTo(e.getPoint());
+						if( control!=null ){
+							controlPoint2 = control.getPosition();
+							step = AdjustStep.END_MAP;
+							instructionsL.setText(Html.htmlTag("i", "Step 4/4. <br />Click on new map position<br /> for the second control."));
+						}
+						break;
+					case END_MAP:
+						Point mapPoint2 = e.getPoint();
+						float controlDx = controlPoint2.x - mapPoint.x;
+						float mapDx = mapPoint2.x - mapPoint.x;
+						xfactorS.setValue(new Float(mapDx / controlDx));
+
+						float controlDy = controlPoint2.y - mapPoint.y;
+						float mapDy = mapPoint2.y - mapPoint.y;
+						yfactorS.setValue(new Float(mapDy / controlDy));
+						
+						step = AdjustStep.START_CONTROL;
+						adjustControls();
+						liveComponent.displayAllControls();
+						doOffAction();
+						break;
+					}
+				}
+			};
+			liveComponent.mapComponent().addMouseListener(mapAdjuster);
+			instructionsL.setText(Html.htmlTag("i", "Step 1/4. Click on a control to select it."));
+			instructionsL.setVisible(true);
+		}
+		
+		@Override
+		public void actionOff() {
+			instructionsL.setVisible(false);
+			liveComponent.mapComponent().removeMouseListener(mapAdjuster);
+			setBackground(defaultColor);
+		}
+	}
 
 	private Component frame;
 	private LiveComponent liveComponent;
@@ -57,11 +144,12 @@ public class LiveConfigPanel extends JPanel {
 	private JSpinner xfactorS;
 	private JSpinner yfactorS;
 	private JButton refreshB;
-	private JButton adjustB;
+	private AdjustButton adjustB;
 	
 	private JButton showControlsB;
 	private JButton showMapB;
 	private JComboBox showCourseCB;
+	private JLabel instructionsL;
 	
 
 	public LiveConfigPanel(JFrame frame, LiveComponent liveComp) {
@@ -99,7 +187,6 @@ public class LiveConfigPanel extends JPanel {
 		yfactorS = new JSpinner(new SpinnerNumberModel(1.0f, 0f, null, 0.1f));
 		yfactorS.setPreferredSize(new Dimension(75, SwingUtils.SPINNERHEIGHT));
 		refreshB = new JButton(Messages.liveGet("LiveConfigPanel.RefreshLabel")); //$NON-NLS-1$
-		adjustB = new JButton("Adjust");
 		// course config
 		showControlsB = new JButton(Messages.liveGet("LiveConfigPanel.ShowControlsLabel")); //$NON-NLS-1$
 		showMapB = new JButton(Messages.liveGet("LiveConfigPanel.ShowMapLabel")); //$NON-NLS-1$
@@ -154,75 +241,7 @@ public class LiveConfigPanel extends JPanel {
 				refreshCourses();
 			}
 		});
-		adjustB.addActionListener(new ActionListener() {
-			private MouseAdapter mapAdjuster;
-
-			public void actionPerformed(ActionEvent e) {
-				if( adjustB.isSelected() ){ // stop adjusting
-					adjustB.setSelected(false);
-					liveComponent.mapComponent().removeMouseListener(mapAdjuster);
-					return;
-				}
-				
-				mapAdjuster = new MouseAdapter() {
-					private boolean startAdjusting = true;
-					private boolean endAdjusting = false;
-					private Point controlPoint;
-					private Point controlPoint2;
-
-					public void mouseClicked(MouseEvent e) {
-						super.mouseClicked(e);
-						if( startAdjusting && !endAdjusting ){
-							ControlCircle control = liveComponent.mapComponent().findControlNextTo(e.getPoint());
-							if( control!=null ){
-								controlL.setText(control.getCode());
-								controlPoint = control.getPosition();
-								startAdjusting = false;
-								return;
-							}
-						}
-						if( !startAdjusting && !endAdjusting ) {
-							mapPoint = e.getPoint();
-							int ddx = mapPoint.x - controlPoint.x;
-							xtranS.setValue(new Integer(((Integer) xtranS.getValue()).intValue() + ddx));
-							int ddy = mapPoint.y - controlPoint.y;
-							ytranS.setValue(new Integer(((Integer) ytranS.getValue()).intValue() + ddy));
-							translateControls(ddx, ddy);
-							liveComponent.displayAllControls();
-							endAdjusting = true;
-							return;
-						}
-						if( !startAdjusting && endAdjusting ) {
-							ControlCircle control = liveComponent.mapComponent().findControlNextTo(e.getPoint());
-							if( control!=null ){
-								controlPoint2 = control.getPosition();
-								startAdjusting = true;
-								return;								
-							}
-						}
-						if( startAdjusting && endAdjusting ) {
-							Point mapPoint2 = e.getPoint();
-							float controlDx = controlPoint2.x - mapPoint.x; // controlPoint.x;
-							float mapDx = mapPoint2.x - mapPoint.x;
-							xfactorS.setValue(new Float(mapDx / controlDx));
-
-							float controlDy = controlPoint2.y - mapPoint.y; // controlPoint.x;
-							float mapDy = mapPoint2.y - mapPoint.y;
-							yfactorS.setValue(new Float(mapDy / controlDy));
-							
-							endAdjusting = false;
-							adjustControls();
-							liveComponent.displayAllControls();
-							adjustB.setSelected(false);
-							liveComponent.mapComponent().removeMouseListener(this);
-							return;
-						}
-					}
-				};
-				adjustB.setSelected(true);
-				liveComponent.mapComponent().addMouseListener(mapAdjuster);
-			}
-		});
+		adjustB = new AdjustButton();
 		showControlsB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				liveComponent.displayAllControls();
@@ -238,6 +257,8 @@ public class LiveConfigPanel extends JPanel {
 				liveComponent.displayCourse((String) showCourseCB.getSelectedItem());
 			}
 		});
+		instructionsL = new JLabel();
+		instructionsL.setVisible(false);
 	}
 	
 	private void translateControls() {
@@ -305,6 +326,9 @@ public class LiveConfigPanel extends JPanel {
 		add(datafileP);
 		add(mapConfigP);
 		add(courseConfigP);
+		
+		add(SwingUtils.embed(new JButton("Save parameters")));
+		add(SwingUtils.embed(instructionsL));
 		
 		return this;
 	}
