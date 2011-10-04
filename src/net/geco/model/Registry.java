@@ -237,6 +237,10 @@ public class Registry {
 		runnerRegistry.addRunnerSafely(runner);
 	}
 	
+	public void updateRunnerStartId(Integer oldId, Runner runner) {
+		runnerRegistry.updateRunnerStartId(oldId, runner);
+	}
+	
 	public void updateRunnerEcard(String oldEcard, Runner runner) {
 		runnerRegistry.updateRunnerEcard(oldEcard, runner);
 	}
