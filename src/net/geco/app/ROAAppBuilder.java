@@ -30,6 +30,7 @@ import net.geco.functions.StartTimeFunction;
 import net.geco.model.Factory;
 import net.geco.model.Messages;
 import net.geco.model.impl.POFactory;
+import net.geco.ui.UIAnnouncers;
 import net.geco.ui.config.CategoryConfigPanel;
 import net.geco.ui.config.ClubConfigPanel;
 import net.geco.ui.config.CourseConfigPanel;
@@ -95,9 +96,9 @@ public class ROAAppBuilder extends AppBuilder {
 	}
 
 	@Override
-	public TabPanel[] buildUITabs(IGecoApp geco, JFrame frame) {
+	public TabPanel[] buildUITabs(IGecoApp geco, JFrame frame, UIAnnouncers announcers) {
 		return new TabPanel[]{
-				new RunnersPanel(geco, frame),
+				new RunnersPanel(geco, frame, announcers),
 				new LogPanel(geco, frame),
 				new ResultsPanel(geco, frame),
 		};

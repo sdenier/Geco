@@ -38,13 +38,15 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import net.geco.app.AppBuilder;
-import net.geco.basics.Announcer;
+import net.geco.basics.Announcer.StageListener;
+import net.geco.basics.Announcer.StationListener;
 import net.geco.basics.GecoResources;
 import net.geco.basics.Html;
 import net.geco.framework.IGecoApp;
 import net.geco.framework.IStageLaunch;
 import net.geco.live.LiveClient;
 import net.geco.live.LiveClientDialog;
+import net.geco.live.LiveComponent;
 import net.geco.model.Messages;
 import net.geco.model.Stage;
 import net.geco.ui.basics.GecoLauncher;
@@ -52,6 +54,7 @@ import net.geco.ui.basics.GecoStatusBar;
 import net.geco.ui.basics.StartStopButton;
 import net.geco.ui.framework.ConfigPanel;
 import net.geco.ui.framework.TabPanel;
+import net.geco.ui.tabs.RunnersTableAnnouncer;
 import net.geco.ui.tabs.StagePanel;
 
 
@@ -63,7 +66,8 @@ import net.geco.ui.tabs.StagePanel;
  * @author Simon Denier
  * @since Jan 23, 2009
  */
-public class GecoWindow extends JFrame implements Announcer.StageListener, Announcer.StationListener {
+public class GecoWindow extends JFrame
+	implements StageListener, StationListener, UIAnnouncers {
 
 	static { // Just in case
 		Messages.put("ui", "net.geco.ui.messages"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -72,6 +76,10 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 	private IGecoApp geco;
 
 	private StartStopButton startB;
+	
+	private LiveComponent liveMap;
+
+	private RunnersTableAnnouncer announcer;
 
 	private static final String THEME = "crystal/"; //$NON-NLS-1$
 
@@ -142,7 +150,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 	public void initGUI(AppBuilder builder){
 		updateWindowTitle();
 		buildGUI(new StagePanel(this.geco, this),
-				 builder.buildUITabs(geco, this),
+				 builder.buildUITabs(geco, this, this),
 				 builder.buildConfigPanels(geco, this));
 	}
 
@@ -279,7 +287,7 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 		liveMapB.setToolTipText(Messages.uiGet("GecoWindow.LivemapTooltip")); //$NON-NLS-1$
 		liveMapB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				runnersPanel.openMapWindow(); // TODO: extract Map from RunnersPanel
+				openMapWindow();
 			}
 		});
 		toolBar.add(liveMapB);
@@ -460,6 +468,15 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 			startB.initialize();
 		}
 	}
+	
+	public void openMapWindow() {
+		if( liveMap==null ) {
+			liveMap = new LiveComponent().initWindow(geco.leisureModeOn());
+			liveMap.setStartDir(geco.getCurrentStagePath());
+			liveMap.registerWith(this);
+		}
+		liveMap.openWindow();
+	}
 
 	@Override
 	public void changed(Stage previous, Stage next) {
@@ -472,6 +489,20 @@ public class GecoWindow extends JFrame implements Announcer.StageListener, Annou
 
 	@Override
 	public void closing(Stage stage) {
+		if( liveMap!=null ) {
+			liveMap.closeWindow();
+			liveMap = null;
+		}
+	}
+
+	@Override
+	public void registerAnnouncer(RunnersTableAnnouncer announcer) {
+		this.announcer = announcer;
+	}
+
+	@Override
+	public RunnersTableAnnouncer getAnnouncer(Class<RunnersTableAnnouncer> announcerClass) {
+		return announcer;
 	}
 
 }

@@ -157,7 +157,9 @@ public class RunnerControl extends Control {
 		try {
 			Integer newStart = Integer.valueOf(newStartString);
 			if( verifyStartId(runner, newStart) ) {
+				Integer oldId = runner.getStartId();
 				runner.setStartId(newStart);
+				registry().updateRunnerStartId(oldId, runner);
 				return true;
 			}
 		} catch (NumberFormatException e) {

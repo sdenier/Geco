@@ -52,17 +52,20 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 
-import net.geco.basics.Announcer;
+import net.geco.basics.Announcer.CardListener;
+import net.geco.basics.Announcer.RunnerListener;
+import net.geco.basics.Announcer.StageConfigListener;
 import net.geco.basics.TimeManager;
 import net.geco.control.RunnerCreationException;
 import net.geco.framework.IGecoApp;
-import net.geco.live.LiveComponent;
 import net.geco.model.Course;
 import net.geco.model.Messages;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Stage;
 import net.geco.model.Status;
+import net.geco.ui.UIAnnouncers;
+import net.geco.ui.basics.EcardComparator;
 import net.geco.ui.basics.HyperLog;
 import net.geco.ui.basics.PunchPanel;
 import net.geco.ui.basics.SwingUtils;
@@ -76,9 +79,9 @@ import net.geco.ui.framework.TabPanel;
  *
  */
 public class RunnersPanel extends TabPanel
-		implements Announcer.RunnerListener, Announcer.StageConfigListener, Announcer.CardListener,
-					HyperlinkListener {
+	implements RunnerListener, StageConfigListener, CardListener, HyperlinkListener {
 	
+	private RunnersTableAnnouncer announcer;
 	private JTable table;
 	private RunnersTableModel tableModel;
 	private TableRowSorter<RunnersTableModel> sorter;	
@@ -87,7 +90,6 @@ public class RunnersPanel extends TabPanel
 	private JCheckBox liveB;
 	private RunnerPanel runnerPanel;
 	private PunchPanel tracePanel;
-	private LiveComponent gecoLiveMap;
 
 
 	@Override
@@ -96,8 +98,10 @@ public class RunnersPanel extends TabPanel
 	}
 
 	
-	public RunnersPanel(IGecoApp geco, JFrame frame) {
+	public RunnersPanel(IGecoApp geco, JFrame frame, UIAnnouncers uiAnnouncers) {
 		super(geco, frame);
+		announcer = new RunnersTableAnnouncer();
+		uiAnnouncers.registerAnnouncer(announcer);
 		initRunnersPanel(this);
 		geco().announcer().registerRunnerListener(this);
 		geco().announcer().registerStageConfigListener(this);
@@ -123,6 +127,8 @@ public class RunnersPanel extends TabPanel
 		pane.addTab(Messages.uiGet("RunnersPanel.RunnerDataTitle"), this.runnerPanel); //$NON-NLS-1$
 		pane.addTab(Messages.uiGet("RunnersPanel.RunnerTraceTitle"), tracePanel); //$NON-NLS-1$
 		pane.addTab(Messages.uiGet("RunnersPanel.StatsTitle"), new VStatsPanel(geco(), frame())); //$NON-NLS-1$
+		announcer.registerRunnersTableListener(runnerPanel);
+		announcer.registerRunnersTableListener(tracePanel);
 		
 		getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
 				KeyStroke.getKeyStroke(KeyEvent.VK_D,
@@ -397,11 +403,7 @@ public class RunnersPanel extends TabPanel
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				if (!e.getValueIsAdjusting() ) {
-					if( table.getSelectedRow()==-1 ){
-						runnerPanel.enablePanel(false);
-					} else {
-						updateRunnerPanel();
-					}
+					announcer.announceSelectedRunnerChange(selectedData());
 				}
 			}
 		});
@@ -411,23 +413,7 @@ public class RunnersPanel extends TabPanel
 
 	private void enableRowSorting() {
 		sorter = new TableRowSorter<RunnersTableModel>(tableModel);
-		sorter.setComparator(1, new Comparator<String>() { // Ecard column
-			@Override
-			public int compare(String o1, String o2) {
-				Integer n1 = null;
-				try {
-					n1 = Integer.valueOf(o1);
-					Integer n2 = Integer.valueOf(o2);
-					return n1.compareTo(n2);
-				} catch (NumberFormatException e) {
-					if( n1==null ){ // n1 is XXXXaa ecard
-						return 1;
-					} else {		// n2 is XXXXaa ecard
-						return -1;
-					}
-				}
-			}
-		});
+		sorter.setComparator(1, new EcardComparator()); // Ecard column
 		sorter.setComparator(7, new Comparator<String>() { // Date column
 			@Override
 			public int compare(String o1, String o2) {
@@ -487,7 +473,7 @@ public class RunnersPanel extends TabPanel
 	private void refreshTableIndex(int index) {
 		tableModel.fireTableRowsUpdated(index, index);
 		if( table.convertRowIndexToView(index) == table.getSelectedRow() ) {
-			updateRunnerPanel();	
+			announcer.announceSelectedRunnerChange(selectedData());
 		}
 	}
 	
@@ -521,33 +507,9 @@ public class RunnersPanel extends TabPanel
 		}
 		return null;
 	}
-
-	public void updateRunnerPanel() {
-		RunnerRaceData runnerData = selectedData();
-		if( runnerData!=null ){
-			runnerPanel.updateRunner(runnerData);
-			tracePanel.refreshPunches(runnerData);
-			if( gecoLiveMap!=null && gecoLiveMap.isShowing() ) {
-				gecoLiveMap.displayRunnerMap(runnerData);
-			}
-		}
-	}
 	
-	public void openMapWindow() {
-		if( gecoLiveMap==null ) {
-			gecoLiveMap = new LiveComponent().initWindow(geco().leisureModeOn());
-			gecoLiveMap.setStartDir(geco().getCurrentStagePath());
-		}
-		gecoLiveMap.openWindow();
-	}
-
-
 	@Override
 	public void changed(Stage previous, Stage next) {
-		if( gecoLiveMap!=null ) {
-			gecoLiveMap.closeWindow();
-		}
-		gecoLiveMap = null;
 		refreshRunnersPanel();
 	}
 

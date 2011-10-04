@@ -11,20 +11,21 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
-import net.geco.basics.GecoResources;
 import net.geco.model.Course;
 import net.geco.model.Messages;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.impl.POFactory;
 import net.geco.model.xml.CourseSaxImporter;
+import net.geco.ui.UIAnnouncers;
 import net.geco.ui.basics.SwingUtils;
+import net.geco.ui.tabs.RunnersTableAnnouncer;
+import net.geco.ui.tabs.RunnersTableAnnouncer.RunnersTableListener;
 
 
 /**
@@ -32,15 +33,15 @@ import net.geco.ui.basics.SwingUtils;
  * @since Aug 26, 2010
  *
  */
-public class LiveComponent {
+public class LiveComponent implements RunnersTableListener {
 
 	static {
 		Messages.put("live", "net.geco.live.messages"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
-	public JFrame jFrame;
-	public LiveMapComponent map;
-	public ResultPanel runnerP;
+	private JFrame jFrame;
+	private LiveMapComponent map;
+	private ResultPanel runnerP;
 
 	private LiveMapControl mapControl;
 	private Map<String, Float[]> controlPos;
@@ -61,18 +62,7 @@ public class LiveComponent {
 	}
 	
 	public void setStartDir(String dir) {
-		try {
-			Properties liveProp = new Properties();
-			liveProp.load(GecoResources.getReaderFor(dir + GecoResources.sep + "live.prop")); //$NON-NLS-1$
-			loadMapImage(dir + GecoResources.sep + liveProp.getProperty("MapFile")); //$NON-NLS-1$
-			importCourseData(dir + GecoResources.sep + liveProp.getProperty("CourseFile")); //$NON-NLS-1$
-			configP.setProperties(liveProp);
-		} catch (FileNotFoundException e) {
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		configP.loadFromProperties(dir);
 	}
 
 	public LiveComponent initWindow(boolean leisureMode) {
@@ -117,7 +107,11 @@ public class LiveComponent {
 		return controlPanel;
 	}
 	
-	public void loadMapImage(String mapfile) {
+	public LiveMapComponent mapComponent() {
+		return map;
+	}
+	
+	public void loadMapImage(String mapfile) throws FileNotFoundException, IOException {
 		map.loadMapImage(mapfile);
 	}
 
@@ -125,7 +119,7 @@ public class LiveComponent {
 		try {
 			controlPos.clear(); 
 			courses.clear();
-			CourseSaxImporter importer = new CourseSaxImporter(new POFactory()); // TODO: service
+			CourseSaxImporter importer = new CourseSaxImporter(new POFactory());
 			importer.importFromXml(filename);
 			controlPos = importer.controls();
 			courses = importer.courses();
@@ -133,12 +127,21 @@ public class LiveComponent {
 			e.printStackTrace();
 		}
 	}
-
-	public void createCourses(float xFactor, float yFactor, int dx, int dy) {
-		mapControl.setXFactor(xFactor);
-		mapControl.setYFactor(yFactor);
-		mapControl.createControlsFrom(controlPos, dx, dy);
+	
+	public void createControls(float dpmmFactor) {
+		mapControl.createControls(controlPos, dpmmFactor);
+	}
+	
+	public void createCourses() {
 		mapControl.createCoursesFrom(courses);
+	}
+
+	public void translateControls(int dx, int dy) {
+		mapControl.translateControls(dx, dy);
+	}
+
+	public void adjustControls(int ox, int oy, float xFactor, float yFactor) {
+		mapControl.adjustControls(ox, oy, xFactor, yFactor);
 	}
 	
 	public Vector<String> coursenames() {
@@ -178,11 +181,23 @@ public class LiveComponent {
 		if( course!=null ) {
 			mapControl.resetControls();
 			if( runnerData.hasTrace() ) {
-				map.showTrace( mapControl.createPunchTraceFor(course, runnerData.getResult().formatTrace().split(",")) ); //$NON-NLS-1$
+				map.showTrace( mapControl.createPunchTraceFor(course,
+										runnerData.getResult().formatTrace().split(",")) ); //$NON-NLS-1$
 			} else {
 				map.showTrace(course);
 			}
 		}
+	}
+
+	@Override
+	public void selectedRunnerChanged(RunnerRaceData raceData) {
+		if( raceData!=null && isShowing() ) {
+			displayRunnerMap(raceData);
+		}		
+	}
+
+	public void registerWith(UIAnnouncers announcers) {
+		announcers.getAnnouncer(RunnersTableAnnouncer.class).registerRunnersTableListener(this);
 	}
 	
 }

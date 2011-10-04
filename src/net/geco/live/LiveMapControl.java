@@ -20,59 +20,47 @@ import net.geco.model.Course;
  */
 public class LiveMapControl {
 
-	public Map<String, ControlCircle> controls;
-	public Map<String, LivePunch> courses;
+	private Map<String, ControlCircle> controls;
 
-	private float xFactor;
-	private float yFactor;
-
+	private Map<String, LivePunch> courses;
 	
 	public LiveMapControl() {	
 		controls = Collections.emptyMap();
 		courses = Collections.emptyMap();
 	}
 	
-	
-	public Map<String, ControlCircle> createControlsFrom(Map<String, Float[]> someControls, int dx, int dy) {
-		Point mapOrigin = new Point();
+	public void createControls(Map<String, Float[]> someControls, float dpmmFactor) {
+		Point origin = createPointFrom(someControls.get("Map"), dpmmFactor); //$NON-NLS-1$
 		controls = new HashMap<String, ControlCircle>();
 		for (String controlId : someControls.keySet()) {
-			Float[] origin = someControls.get(controlId);
-			 Point position = createPointFrom(origin);
-			if( controlId.equals("Map") ) { //$NON-NLS-1$
-				mapOrigin = position;
-			} else {
-				controls.put(controlId, new ControlCircle(controlId, position));
+			if( !controlId.equals("Map") ) { //$NON-NLS-1$
+				Point position = createPointFrom(someControls.get(controlId), dpmmFactor);
+				ControlCircle mapControl = new ControlCircle(controlId, position);
+				controls.put(controlId, mapControl);
+				mapControl.translate(-origin.x, -origin.y);
 			}
 		}
-		translateControls(dx - mapOrigin.x, dy - mapOrigin.y);
-		return controls;
 	}
 
+	private Point createPointFrom(Float[] position, float dpmmFactor) {
+		float x = position[0].floatValue() * dpmmFactor;
+		float y = position[1].floatValue() * -dpmmFactor; // inverse y coordinate
+		return new Point((int) x, (int) y);
+	}
+	
 	public void translateControls(int dx, int dy) {
-		for (ControlCircle mapControl : controls.values()) {
-			mapControl.translate( dx, dy);
+		for (ControlCircle control : controls.values()) {
+			control.translate(dx, dy);
 		}
 	}
 
-	public float xFactor() {
-		return xFactor;
-	}
-	public void setXFactor(float xFactor) {
-		this.xFactor = xFactor;
-	}
-	public float yFactor() {
-		return yFactor;
-	}
-	public void setYFactor(float yFactor) {
-		this.yFactor = - yFactor; // inverse coordinate in screen space
-	}
-
-	private Point createPointFrom(Float[] origin) {
-		// TODO: check, is is circle center or bounding box origin?
-		float x = origin[0].floatValue() * xFactor();
-		float y = origin[1].floatValue() * yFactor();
-		return new Point((int) x, (int) y);
+	public void adjustControls(int ox, int oy, float fx, float fy) {
+		for (ControlCircle control : controls.values()) {
+			Point point = control.getPosition();
+			float ddx = (point.x - ox) * (fx - 1);
+			float ddy = (point.y - oy) * (fy - 1);
+			control.translate((int) ddx, (int) ddy);
+		}
 	}
 
 	public Map<String, LivePunch> createCoursesFrom(Collection<Course> someCourses) {

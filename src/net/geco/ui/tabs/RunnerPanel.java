@@ -37,6 +37,7 @@ import net.geco.model.RunnerRaceData;
 import net.geco.ui.basics.SwingUtils;
 import net.geco.ui.components.MergeRunnerDialog;
 import net.geco.ui.framework.GecoPanel;
+import net.geco.ui.tabs.RunnersTableAnnouncer.RunnersTableListener;
 
 
 /**
@@ -44,7 +45,7 @@ import net.geco.ui.framework.GecoPanel;
  * @since Jan 24, 2009
  *
  */
-public class RunnerPanel extends GecoPanel {
+public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 
 	private RunnerRaceData runnerData;
 	private Runner runner;
@@ -108,13 +109,18 @@ public class RunnerPanel extends GecoPanel {
 			return panel;
 		}
 
-	public void updateRunner(RunnerRaceData runnerData) {
-		this.runnerData = runnerData;
-		this.runner = runnerData.getRunner();
-		if( ! isEnabled() ){
-			enablePanel(true);
+	@Override
+	public void selectedRunnerChanged(RunnerRaceData raceData) {
+		if( raceData==null ){
+			enablePanel(false);
+		} else {
+			this.runnerData = raceData;
+			this.runner = raceData.getRunner();
+			if( ! isEnabled() ){
+				enablePanel(true);
+			}
+			refreshPanel();
 		}
-		refreshPanel();
 	}
 	
 	public void enablePanel(boolean enabled) {

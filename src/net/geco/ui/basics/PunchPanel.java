@@ -19,6 +19,7 @@ import net.geco.basics.TimeManager;
 import net.geco.model.Messages;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Trace;
+import net.geco.ui.tabs.RunnersTableAnnouncer.RunnersTableListener;
 
 
 /**
@@ -26,7 +27,7 @@ import net.geco.model.Trace;
  * @since Jun 26, 2009
  *
  */
-public class PunchPanel extends JPanel {
+public class PunchPanel extends JPanel implements RunnersTableListener {
 
 	private JTable punchesT;
 	
@@ -43,7 +44,13 @@ public class PunchPanel extends JPanel {
 		return panel;
 	}
 
-	
+	@Override
+	public void selectedRunnerChanged(RunnerRaceData raceData) {
+		if( raceData!=null ){
+			refreshPunches(raceData);
+		}
+	}
+
 	public void refreshPunches(RunnerRaceData runnerData) {
 //		final int[] codes = runnerData.getCourse().getCodes();
 		final Trace[] trace = runnerData.getResult().getTrace();
