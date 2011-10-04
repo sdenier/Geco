@@ -11,14 +11,12 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
-import net.geco.basics.GecoResources;
 import net.geco.model.Course;
 import net.geco.model.Messages;
 import net.geco.model.RunnerRaceData;
@@ -64,18 +62,7 @@ public class LiveComponent implements RunnersTableListener {
 	}
 	
 	public void setStartDir(String dir) {
-		try {
-			Properties liveProp = new Properties();
-			liveProp.load(GecoResources.getReaderFor(dir + GecoResources.sep + "live.prop")); //$NON-NLS-1$
-			loadMapImage(dir + GecoResources.sep + liveProp.getProperty("MapFile")); //$NON-NLS-1$
-			importCourseData(dir + GecoResources.sep + liveProp.getProperty("CourseFile")); //$NON-NLS-1$
-			configP.setProperties(liveProp);
-		} catch (FileNotFoundException e) {
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		configP.loadFromProperties(dir);
 	}
 
 	public LiveComponent initWindow(boolean leisureMode) {
@@ -124,7 +111,7 @@ public class LiveComponent implements RunnersTableListener {
 		return map;
 	}
 	
-	public void loadMapImage(String mapfile) {
+	public void loadMapImage(String mapfile) throws FileNotFoundException, IOException {
 		map.loadMapImage(mapfile);
 	}
 
@@ -132,7 +119,7 @@ public class LiveComponent implements RunnersTableListener {
 		try {
 			controlPos.clear(); 
 			courses.clear();
-			CourseSaxImporter importer = new CourseSaxImporter(new POFactory()); // TODO: service
+			CourseSaxImporter importer = new CourseSaxImporter(new POFactory());
 			importer.importFromXml(filename);
 			controlPos = importer.controls();
 			courses = importer.courses();
@@ -194,7 +181,8 @@ public class LiveComponent implements RunnersTableListener {
 		if( course!=null ) {
 			mapControl.resetControls();
 			if( runnerData.hasTrace() ) {
-				map.showTrace( mapControl.createPunchTraceFor(course, runnerData.getResult().formatTrace().split(",")) ); //$NON-NLS-1$
+				map.showTrace( mapControl.createPunchTraceFor(course,
+										runnerData.getResult().formatTrace().split(",")) ); //$NON-NLS-1$
 			} else {
 				map.showTrace(course);
 			}

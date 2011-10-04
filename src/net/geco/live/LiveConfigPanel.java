@@ -14,6 +14,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -25,12 +29,14 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import net.geco.basics.GecoResources;
 import net.geco.basics.Html;
 import net.geco.model.Messages;
 import net.geco.ui.basics.StartStopButton;
@@ -131,6 +137,11 @@ public class LiveConfigPanel extends JPanel {
 	private Component frame;
 	private LiveComponent liveComponent;
 
+	private String baseDir;
+	private File mapFile;
+	private File courseFile;
+	private Point mapPoint;
+	
 	private JButton mapfileB;
 	private JButton coursefileB;
 	private JLabel mapfileL;
@@ -139,7 +150,6 @@ public class LiveConfigPanel extends JPanel {
 	private JSpinner dpiS;
 	private JSpinner xtranS;
 	private JSpinner ytranS;
-	private Point mapPoint;
 	private JLabel controlL;
 	private JSpinner xfactorS;
 	private JSpinner yfactorS;
@@ -149,6 +159,7 @@ public class LiveConfigPanel extends JPanel {
 	private JButton showControlsB;
 	private JButton showMapB;
 	private JComboBox showCourseCB;
+	private JButton saveB;
 	private JLabel instructionsL;
 	
 
@@ -187,10 +198,15 @@ public class LiveConfigPanel extends JPanel {
 		yfactorS = new JSpinner(new SpinnerNumberModel(1.0f, 0f, null, 0.1f));
 		yfactorS.setPreferredSize(new Dimension(75, SwingUtils.SPINNERHEIGHT));
 		refreshB = new JButton(Messages.liveGet("LiveConfigPanel.RefreshLabel")); //$NON-NLS-1$
+		adjustB = new AdjustButton();
 		// course config
 		showControlsB = new JButton(Messages.liveGet("LiveConfigPanel.ShowControlsLabel")); //$NON-NLS-1$
 		showMapB = new JButton(Messages.liveGet("LiveConfigPanel.ShowMapLabel")); //$NON-NLS-1$
 		showCourseCB = new JComboBox();
+		saveB = new JButton("Save parameters");
+		saveB.setToolTipText("Save LiveMap parameters in live.prop file");
+		instructionsL = new JLabel();
+		instructionsL.setVisible(false);
 	}
 	
 	private void initListeners() {
@@ -201,11 +217,11 @@ public class LiveConfigPanel extends JPanel {
 				int answer = fileChooser.showOpenDialog(frame);
 				if( answer==JFileChooser.APPROVE_OPTION ) {
 					try {
-						mapfileL.setText(fileChooser.getSelectedFile().getName());
-						liveComponent.loadMapImage(fileChooser.getSelectedFile().getCanonicalPath());
+						mapFile = fileChooser.getSelectedFile();
+						liveComponent.loadMapImage(mapFile.getCanonicalPath());
+						refreshMapfileName();
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						showFileErrorDialog(e1);
 					}
 				}
 			}
@@ -217,13 +233,12 @@ public class LiveConfigPanel extends JPanel {
 				int answer = fileChooser.showOpenDialog(frame);
 				if( answer==JFileChooser.APPROVE_OPTION ) {
 					try {
-						coursefileL.setText(fileChooser.getSelectedFile().getName());
-						liveComponent.importCourseData(fileChooser.getSelectedFile().getCanonicalPath());
-						showCourseCB.setModel(new DefaultComboBoxModel(liveComponent.coursenames()));
+						courseFile = fileChooser.getSelectedFile();
+						liveComponent.importCourseData(courseFile.getCanonicalPath());
+						refreshCourseNames();
 						refreshCourses();
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						showFileErrorDialog(e1);
 					}
 				}
 			}
@@ -241,7 +256,6 @@ public class LiveConfigPanel extends JPanel {
 				refreshCourses();
 			}
 		});
-		adjustB = new AdjustButton();
 		showControlsB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				liveComponent.displayAllControls();
@@ -257,8 +271,12 @@ public class LiveConfigPanel extends JPanel {
 				liveComponent.displayCourse((String) showCourseCB.getSelectedItem());
 			}
 		});
-		instructionsL = new JLabel();
-		instructionsL.setVisible(false);
+		saveB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				saveProperties();
+			}
+		});
 	}
 	
 	private void translateControls() {
@@ -281,7 +299,7 @@ public class LiveConfigPanel extends JPanel {
 		}
 	}
 	
-	private void refreshCourses() {
+	public void refreshCourses() {
 		float factor = dpi2dpmmFactor(((Number) dpiS.getValue()).floatValue());
 		liveComponent.createControls(factor);
 		liveComponent.createCourses();
@@ -327,24 +345,89 @@ public class LiveConfigPanel extends JPanel {
 		add(mapConfigP);
 		add(courseConfigP);
 		
-		add(SwingUtils.embed(new JButton("Save parameters")));
-		add(SwingUtils.embed(instructionsL));
+		addComponent(this, saveB);
+		addComponent(this, instructionsL);
 		
 		return this;
 	}
 	
-	public void addComponent(Container cont, Component comp) {
+	protected void addComponent(Container cont, Component comp) {
 		cont.add(SwingUtils.embed(comp));
 	}
+	
+	public void loadFromProperties(String dir) {
+		this.baseDir = dir;
+		try {
+			Properties liveProp = new Properties();
+			liveProp.load(GecoResources.getReaderFor(dir + GecoResources.sep + "live.prop")); //$NON-NLS-1$
+			liveComponent.loadMapImage(liveProp.getProperty("MapFile")); //$NON-NLS-1$
+			liveComponent.importCourseData(liveProp.getProperty("CourseFile")); //$NON-NLS-1$
+			setProperties(liveProp);
+		} catch (FileNotFoundException f) {
+			// do nothing
+		} catch (IOException e) {
+			showFileErrorDialog(e);
+		}
+	}
 
-	public void setProperties(Properties liveProp) {
-		mapfileL.setText(liveProp.getProperty("MapFile")); //$NON-NLS-1$
-		coursefileL.setText(liveProp.getProperty("CourseFile")); //$NON-NLS-1$
+	protected void setProperties(Properties liveProp) {
+		mapFile = new File(liveProp.getProperty("MapFile")); //$NON-NLS-1$
+		refreshMapfileName();
+		courseFile = new File(liveProp.getProperty("CourseFile")); //$NON-NLS-1$
+		refreshCourseNames();
 		dpiS.setValue(new Integer(liveProp.getProperty("DPI"))); //$NON-NLS-1$
 		xtranS.setValue(new Integer(liveProp.getProperty("XTrans"))); //$NON-NLS-1$
 		ytranS.setValue(new Integer(liveProp.getProperty("YTrans"))); //$NON-NLS-1$
-		showCourseCB.setModel(new DefaultComboBoxModel(liveComponent.coursenames()));
+		String control = liveProp.getProperty("Control");
+		if( control!=null ){
+			controlL.setText(control);
+			mapPoint = new Point(
+					Integer.parseInt(liveProp.getProperty("XMap")),
+					Integer.parseInt(liveProp.getProperty("YMap")));
+		}
+		xfactorS.setValue(new Float(liveProp.getProperty("XFactor", "1.0"))); //$NON-NLS-1$
+		yfactorS.setValue(new Float(liveProp.getProperty("YFactor", "1.0"))); //$NON-NLS-1$
 		refreshCourses();
+	}
+	
+	public void saveProperties() {
+		Properties prop = new Properties();
+		prop.setProperty("MapFile", mapFile.getAbsolutePath());
+		prop.setProperty("CourseFile", courseFile.getAbsolutePath());
+		prop.setProperty("DPI", dpiS.getValue().toString());
+		prop.setProperty("XTrans", xtranS.getValue().toString());
+		prop.setProperty("YTrans", ytranS.getValue().toString());
+		if( mapPoint!=null ){
+			prop.setProperty("Control", controlL.getText());
+			prop.setProperty("XMap", Integer.toString(mapPoint.x));
+			prop.setProperty("YMap", Integer.toString(mapPoint.y));
+		}
+		prop.setProperty("XFactor", xfactorS.getValue().toString());
+		prop.setProperty("YFactor", yfactorS.getValue().toString());
+		
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter(baseDir + GecoResources.sep + "live.prop")); //$NON-NLS-1$
+			prop.store(writer, "Geco LiveMap"); //$NON-NLS-1$
+		} catch (IOException e) {
+			showFileErrorDialog(e);
+		}
+	}
+
+	public void refreshMapfileName() {
+		mapfileL.setText(mapFile.getName());
+	}
+
+	public void refreshCourseNames() {
+		coursefileL.setText(courseFile.getName());
+		showCourseCB.setModel(new DefaultComboBoxModel(liveComponent.coursenames()));
+	}
+
+	public void showFileErrorDialog(IOException e) {
+		JOptionPane.showMessageDialog(
+				null,
+				"Error while loading the file " + e.getLocalizedMessage(),
+				"Error",
+				JOptionPane.ERROR_MESSAGE);
 	}
 	
 }
