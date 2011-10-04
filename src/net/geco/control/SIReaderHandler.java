@@ -278,7 +278,7 @@ public class SIReaderHandler extends Control
 		Status oldStatus = runnerData.getResult().getStatus();
 		geco().checker().check(runnerData);
 		geco().log("READING " + runnerData.infoString()); //$NON-NLS-1$
-		if( runnerData.getResult().is(Status.MP) ) {
+		if( runnerData.getResult().getNbMPs() > 0 ) {
 			geco().announcer().dataInfo(runnerData.getResult().formatMpTrace() + " (" + runnerData.getResult().getNbMPs() + " MP)"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		geco().announcer().announceCardRead(runnerData.getRunner().getEcard());
