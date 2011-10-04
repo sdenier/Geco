@@ -33,6 +33,7 @@ import net.geco.control.GecoControl;
 import net.geco.model.Messages;
 import net.geco.model.Registry;
 import net.geco.model.RunnerRaceData;
+import net.geco.ui.basics.EcardComparator;
 
 
 /**
@@ -126,19 +127,7 @@ public class GecoWebStart {
 	
 	private void enableRowSorting(ExtendedRunnersTableModel tableModel) {
 		TableRowSorter<ExtendedRunnersTableModel> sorter = new TableRowSorter<ExtendedRunnersTableModel>(tableModel);
-		sorter.setComparator(1, new Comparator<String>() { // Chip column
-			@Override
-			public int compare(String o1, String o2) {
-				try {
-					Integer n1 = Integer.valueOf(o1);
-					Integer n2 = Integer.valueOf(o2);
-					return n1.compareTo(n2);
-				} catch (NumberFormatException e) {
-					// TODO: hackish dealing with xxxxaa chip numbers
-					return 0;
-				}
-			}
-		});
+		sorter.setComparator(1, new EcardComparator()); // Chip column
 		sorter.setComparator(7, new Comparator<String>() { // Date column
 			@Override
 			public int compare(String o1, String o2) {

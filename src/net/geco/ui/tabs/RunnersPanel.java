@@ -65,6 +65,7 @@ import net.geco.model.RunnerRaceData;
 import net.geco.model.Stage;
 import net.geco.model.Status;
 import net.geco.ui.UIAnnouncers;
+import net.geco.ui.basics.EcardComparator;
 import net.geco.ui.basics.HyperLog;
 import net.geco.ui.basics.PunchPanel;
 import net.geco.ui.basics.SwingUtils;
@@ -412,23 +413,7 @@ public class RunnersPanel extends TabPanel
 
 	private void enableRowSorting() {
 		sorter = new TableRowSorter<RunnersTableModel>(tableModel);
-		sorter.setComparator(1, new Comparator<String>() { // Ecard column
-			@Override
-			public int compare(String o1, String o2) {
-				Integer n1 = null;
-				try {
-					n1 = Integer.valueOf(o1);
-					Integer n2 = Integer.valueOf(o2);
-					return n1.compareTo(n2);
-				} catch (NumberFormatException e) {
-					if( n1==null ){ // n1 is XXXXaa ecard
-						return 1;
-					} else {		// n2 is XXXXaa ecard
-						return -1;
-					}
-				}
-			}
-		});
+		sorter.setComparator(1, new EcardComparator()); // Ecard column
 		sorter.setComparator(7, new Comparator<String>() { // Date column
 			@Override
 			public int compare(String o1, String o2) {

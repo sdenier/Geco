@@ -42,6 +42,7 @@ import net.geco.control.StageBuilder;
 import net.geco.model.Messages;
 import net.geco.model.Registry;
 import net.geco.model.RunnerRaceData;
+import net.geco.ui.basics.EcardComparator;
 import net.geco.ui.basics.StartStopButton;
 
 
@@ -72,7 +73,7 @@ public class GecoLive implements LiveListener {
 		String startDir = null;
 		startDir = launcher();
 		if( startDir==null ){
-			System.out.println("Bye bye!");
+			System.out.println("Bye bye!"); //$NON-NLS-1$
 			System.exit(0);
 		}
 
@@ -82,7 +83,7 @@ public class GecoLive implements LiveListener {
 	}
 	
 	private String launcher() {
-		JFileChooser chooser = new JFileChooser(System.getProperty("user.dir"));
+		JFileChooser chooser = new JFileChooser(System.getProperty("user.dir")); //$NON-NLS-1$
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		chooser.setDialogTitle("Select a stage directory");
 		int returnValue = chooser.showDialog(null, "Open");
@@ -207,19 +208,7 @@ public class GecoLive implements LiveListener {
 
 	private void enableRowSorting(ExtendedRunnersTableModel tableModel) {
 		TableRowSorter<ExtendedRunnersTableModel> sorter = new TableRowSorter<ExtendedRunnersTableModel>(tableModel);
-		sorter.setComparator(1, new Comparator<String>() { // Chip column
-			@Override
-			public int compare(String o1, String o2) {
-				try {
-					Integer n1 = Integer.valueOf(o1);
-					Integer n2 = Integer.valueOf(o2);
-					return n1.compareTo(n2);
-				} catch (NumberFormatException e) {
-					// TODO: hackish dealing with xxxxaa chip numbers
-					return 0;
-				}
-			}
-		});
+		sorter.setComparator(1, new EcardComparator()); // Chip column
 		sorter.setComparator(7, new Comparator<String>() { // Date column
 			@Override
 			public int compare(String o1, String o2) {
