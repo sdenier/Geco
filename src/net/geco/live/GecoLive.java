@@ -85,15 +85,19 @@ public class GecoLive implements LiveListener {
 	private String launcher() {
 		JFileChooser chooser = new JFileChooser(System.getProperty("user.dir")); //$NON-NLS-1$
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		chooser.setDialogTitle("Select a stage directory");
-		int returnValue = chooser.showDialog(null, "Open");
+		chooser.setDialogTitle(Messages.liveGet("GecoLive.SelectStageTitle")); //$NON-NLS-1$
+		int returnValue = chooser.showDialog(null, Messages.uiGet("GecoLauncher.OpenLabel")); //$NON-NLS-1$
 		if( returnValue==JFileChooser.APPROVE_OPTION ) {
 			File baseFile = chooser.getSelectedFile();
 			String basePath = baseFile.getAbsolutePath();
 			if( baseFile.exists() && StageBuilder.directoryHasData(basePath) ) {
 				return basePath;
 			} else {
-				JOptionPane.showMessageDialog(chooser, "Directory does not contain Geco data", "Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(
+						chooser,
+						Messages.uiGet("GecoLauncher.NoGecoDataWarning"), //$NON-NLS-1$
+						Messages.uiGet("GecoLauncher.Error"), //$NON-NLS-1$
+						JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		return null;

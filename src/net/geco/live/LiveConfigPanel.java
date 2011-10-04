@@ -59,7 +59,7 @@ public class LiveConfigPanel extends JPanel {
 		@Override
 		public void initialize() {
 			super.initialize();
-			setText("Adjust");
+			setText(Messages.liveGet("LiveConfigPanel.AdjustLabel")); //$NON-NLS-1$
 		}
 		@Override
 		public void actionOn() {
@@ -82,7 +82,7 @@ public class LiveConfigPanel extends JPanel {
 							controlPoint = control.getPosition();
 							step = AdjustStep.START_MAP;
 						}
-						instructionsL.setText(Html.htmlTag("i", "Step 2/4. <br />Click on new map position<br /> for selected control."));
+						instructionsL.setText(Html.htmlTag("i", Messages.liveGet("LiveConfigPanel.Step2Instruction"))); //$NON-NLS-1$ //$NON-NLS-2$
 						break;
 					case START_MAP:
 						mapPoint = e.getPoint(); // new origin
@@ -93,14 +93,14 @@ public class LiveConfigPanel extends JPanel {
 						translateControls(ddx, ddy);
 						liveComponent.displayAllControls();
 						step = AdjustStep.END_CONTROL;
-						instructionsL.setText(Html.htmlTag("i", "Step 3/4. Click on a second control."));
+						instructionsL.setText(Html.htmlTag("i", Messages.liveGet("LiveConfigPanel.Step3Instruction"))); //$NON-NLS-1$ //$NON-NLS-2$
 						break;
 					case END_CONTROL:
 						control = liveComponent.mapComponent().findControlNextTo(e.getPoint());
 						if( control!=null ){
 							controlPoint2 = control.getPosition();
 							step = AdjustStep.END_MAP;
-							instructionsL.setText(Html.htmlTag("i", "Step 4/4. <br />Click on new map position<br /> for the second control."));
+							instructionsL.setText(Html.htmlTag("i", Messages.liveGet("LiveConfigPanel.Step4Instruction"))); //$NON-NLS-1$ //$NON-NLS-2$
 						}
 						break;
 					case END_MAP:
@@ -122,7 +122,7 @@ public class LiveConfigPanel extends JPanel {
 				}
 			};
 			liveComponent.mapComponent().addMouseListener(mapAdjuster);
-			instructionsL.setText(Html.htmlTag("i", "Step 1/4. Click on a control to select it."));
+			instructionsL.setText(Html.htmlTag("i", Messages.liveGet("LiveConfigPanel.Step1Instruction"))); //$NON-NLS-1$ //$NON-NLS-2$
 			instructionsL.setVisible(true);
 		}
 		
@@ -203,8 +203,8 @@ public class LiveConfigPanel extends JPanel {
 		showControlsB = new JButton(Messages.liveGet("LiveConfigPanel.ShowControlsLabel")); //$NON-NLS-1$
 		showMapB = new JButton(Messages.liveGet("LiveConfigPanel.ShowMapLabel")); //$NON-NLS-1$
 		showCourseCB = new JComboBox();
-		saveB = new JButton("Save parameters");
-		saveB.setToolTipText("Save LiveMap parameters in live.prop file");
+		saveB = new JButton(Messages.liveGet("LiveConfigPanel.SaveLabel")); //$NON-NLS-1$
+		saveB.setToolTipText(Messages.liveGet("LiveConfigPanel.SaveTooltip")); //$NON-NLS-1$
 		instructionsL = new JLabel();
 		instructionsL.setVisible(false);
 	}
@@ -324,7 +324,7 @@ public class LiveConfigPanel extends JPanel {
 		addComponent(mapConfigP, new JLabel(Messages.liveGet("LiveConfigPanel.YTranslationLabel"))); //$NON-NLS-1$
 		addComponent(mapConfigP, xtranS);
 		addComponent(mapConfigP, ytranS);
-		addComponent(mapConfigP, new JLabel("Centered Control"));
+		addComponent(mapConfigP, new JLabel(Messages.liveGet("LiveConfigPanel.CenteredControlLabel"))); //$NON-NLS-1$
 		addComponent(mapConfigP, controlL);
 		addComponent(mapConfigP, new JLabel(Messages.liveGet("LiveConfigPanel.XFactorLabel"))); //$NON-NLS-1$
 		addComponent(mapConfigP, new JLabel(Messages.liveGet("LiveConfigPanel.YFactorLabel"))); //$NON-NLS-1$
@@ -378,32 +378,32 @@ public class LiveConfigPanel extends JPanel {
 		dpiS.setValue(new Integer(liveProp.getProperty("DPI"))); //$NON-NLS-1$
 		xtranS.setValue(new Integer(liveProp.getProperty("XTrans"))); //$NON-NLS-1$
 		ytranS.setValue(new Integer(liveProp.getProperty("YTrans"))); //$NON-NLS-1$
-		String control = liveProp.getProperty("Control");
+		String control = liveProp.getProperty("Control"); //$NON-NLS-1$
 		if( control!=null ){
 			controlL.setText(control);
 			mapPoint = new Point(
-					Integer.parseInt(liveProp.getProperty("XMap")),
-					Integer.parseInt(liveProp.getProperty("YMap")));
+					Integer.parseInt(liveProp.getProperty("XMap")), //$NON-NLS-1$
+					Integer.parseInt(liveProp.getProperty("YMap"))); //$NON-NLS-1$
 		}
-		xfactorS.setValue(new Float(liveProp.getProperty("XFactor", "1.0"))); //$NON-NLS-1$
-		yfactorS.setValue(new Float(liveProp.getProperty("YFactor", "1.0"))); //$NON-NLS-1$
+		xfactorS.setValue(new Float(liveProp.getProperty("XFactor", "1.0"))); //$NON-NLS-1$ //$NON-NLS-2$
+		yfactorS.setValue(new Float(liveProp.getProperty("YFactor", "1.0"))); //$NON-NLS-1$ //$NON-NLS-2$
 		refreshCourses();
 	}
 	
 	public void saveProperties() {
 		Properties prop = new Properties();
-		prop.setProperty("MapFile", mapFile.getAbsolutePath());
-		prop.setProperty("CourseFile", courseFile.getAbsolutePath());
-		prop.setProperty("DPI", dpiS.getValue().toString());
-		prop.setProperty("XTrans", xtranS.getValue().toString());
-		prop.setProperty("YTrans", ytranS.getValue().toString());
+		prop.setProperty("MapFile", mapFile.getAbsolutePath()); //$NON-NLS-1$
+		prop.setProperty("CourseFile", courseFile.getAbsolutePath()); //$NON-NLS-1$
+		prop.setProperty("DPI", dpiS.getValue().toString()); //$NON-NLS-1$
+		prop.setProperty("XTrans", xtranS.getValue().toString()); //$NON-NLS-1$
+		prop.setProperty("YTrans", ytranS.getValue().toString()); //$NON-NLS-1$
 		if( mapPoint!=null ){
-			prop.setProperty("Control", controlL.getText());
-			prop.setProperty("XMap", Integer.toString(mapPoint.x));
-			prop.setProperty("YMap", Integer.toString(mapPoint.y));
+			prop.setProperty("Control", controlL.getText()); //$NON-NLS-1$
+			prop.setProperty("XMap", Integer.toString(mapPoint.x)); //$NON-NLS-1$
+			prop.setProperty("YMap", Integer.toString(mapPoint.y)); //$NON-NLS-1$
 		}
-		prop.setProperty("XFactor", xfactorS.getValue().toString());
-		prop.setProperty("YFactor", yfactorS.getValue().toString());
+		prop.setProperty("XFactor", xfactorS.getValue().toString()); //$NON-NLS-1$
+		prop.setProperty("YFactor", yfactorS.getValue().toString()); //$NON-NLS-1$
 		
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(baseDir + GecoResources.sep + "live.prop")); //$NON-NLS-1$
@@ -425,8 +425,8 @@ public class LiveConfigPanel extends JPanel {
 	public void showFileErrorDialog(IOException e) {
 		JOptionPane.showMessageDialog(
 				null,
-				"Error while loading the file " + e.getLocalizedMessage(),
-				"Error",
+				Messages.liveGet("LiveConfigPanel.FileErrorMessage") + e.getLocalizedMessage(), //$NON-NLS-1$
+				Messages.liveGet("LiveConfigPanel.Error"), //$NON-NLS-1$
 				JOptionPane.ERROR_MESSAGE);
 	}
 	
