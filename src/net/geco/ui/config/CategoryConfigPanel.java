@@ -11,7 +11,9 @@ import java.util.Vector;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -74,12 +76,34 @@ public class CategoryConfigPanel extends ConfigTablePanel<Category> implements C
 				}
 			}
 		};
-
+		ActionListener importAction = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser chooser = new JFileChooser(geco.getCurrentStagePath());
+				chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				int answer = chooser.showDialog(frame, "Import");
+				if( answer==JFileChooser.APPROVE_OPTION ) {
+					try {
+						geco.stageControl().importCategoryTemplate(chooser.getSelectedFile());
+					} catch (Exception e1) {
+						JOptionPane.showMessageDialog(
+								frame,
+								e1.getLocalizedMessage(),
+								"Error loading template file",
+								JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+		};
+		JButton importB = new JButton("Template");
+		importB.addActionListener(importAction);
+		
 		initialize(
 				Messages.uiGet("CategoryConfigPanel.Title"), //$NON-NLS-1$
 				tableModel,
 				addAction,
-				removeAction);
+				removeAction,
+				importB);
 		updateCoursesCBforCategories(geco, coursesCB);
 		table().getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(coursesCB));
 	}

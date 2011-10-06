@@ -4,7 +4,12 @@
  */
 package net.geco.control;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+
 import net.geco.basics.Announcer;
+import net.geco.basics.Util;
 import net.geco.model.Category;
 import net.geco.model.Club;
 import net.geco.model.Course;
@@ -72,13 +77,17 @@ public class StageControl extends Control {
 		return !clubHasRunners;
 	}
 
-	public Course createCourse() {
+	public Course createCourse(String name) {
 		Course course = factory().createCourse();
-		course.setName("Course" + (registry().getCourses().size() + 1)); //$NON-NLS-1$
+		course.setName(name);
 		course.setCodes(new int[0]);
 		registry().addCourse(course);
 		announcer().announceCoursesChanged();
 		return course;
+	}
+
+	public Course createCourse() {
+		return createCourse("Course" + (registry().getCourses().size() + 1));
 	}
 	
 	public Course addCourse(Course course) {
@@ -164,7 +173,7 @@ public class StageControl extends Control {
 	}
 
 	public Category createCategory() {
-		return createCategory("Category" + (registry().getCategories().size() + 1), ""); //$NON-NLS-1$ //$NON-NLS-2$
+		return createCategory("Category" + (registry().getCategories().size() + 1), "");
 	}
 
 	/**
@@ -222,6 +231,33 @@ public class StageControl extends Control {
 		if( !cat.getLongname().equals(newName) ) {
 			cat.setLongname(newName);
 			announcer().announceCategoriesChanged();
+		}
+	}
+
+	/**
+	 * @param file
+	 * @throws Exception 
+	 */
+	public void importCategoryTemplate(File file) throws Exception {
+		BufferedReader reader = new BufferedReader(new FileReader(file));
+		String line = reader.readLine();
+		while( line != null ){
+			String[] tokens = Util.splitAndTrim(line, ",");
+			if( tokens.length < 3 ){
+				throw new Exception("Invalid line (missing fields): " + line);
+			}
+			// TODO: extract/refactor OEImporter to use 'ensure...'
+			Category category = registry().findCategory(tokens[0]);
+			if( category==null ){
+				category = createCategory(tokens[0], tokens[1]);
+			}
+			Course course = registry().findCourse(tokens[2]);
+			if( course==null ){
+				course = createCourse(tokens[2]);
+			}
+			category.setLongname(tokens[1]);
+			category.setCourse(course);
+			line = reader.readLine();
 		}
 	}
 	
