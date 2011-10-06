@@ -234,10 +234,31 @@ public class StageControl extends Control {
 		}
 	}
 
-	/**
-	 * @param file
-	 * @throws Exception 
-	 */
+
+	public Club ensureClubInRegistry(String clubname, String shortname) {
+		Club rClub = registry().findClub(clubname);
+		if( rClub==null ) {
+			rClub = createClub(clubname, shortname);
+		}
+		return rClub;
+	}
+
+	public Course ensureCourseInRegistry(String coursename) {
+		Course course = registry().findCourse(coursename);
+		if( course==null ){
+			course = createCourse(coursename);
+		}
+		return course;
+	}
+
+	public Category ensureCategoryInRegistry(String categoryname, String longname) {
+		Category rCat = registry().findCategory(categoryname);
+		if( rCat==null ){
+			rCat = createCategory(categoryname, longname);
+		}
+		return rCat;
+	}
+	
 	public void importCategoryTemplate(File file) throws Exception {
 		BufferedReader reader = new BufferedReader(new FileReader(file));
 		String line = reader.readLine();
@@ -246,16 +267,9 @@ public class StageControl extends Control {
 			if( tokens.length < 3 ){
 				throw new Exception("Invalid line (missing fields): " + line);
 			}
-			// TODO: extract/refactor OEImporter to use 'ensure...'
-			Category category = registry().findCategory(tokens[0]);
-			if( category==null ){
-				category = createCategory(tokens[0], tokens[1]);
-			}
-			Course course = registry().findCourse(tokens[2]);
-			if( course==null ){
-				course = createCourse(tokens[2]);
-			}
-			category.setLongname(tokens[1]);
+			Category category = ensureCategoryInRegistry(tokens[0], tokens[1]);
+			Course course = ensureCourseInRegistry(tokens[2]);
+			category.setLongname(tokens[1]); // enforce long name
 			category.setCourse(course);
 			line = reader.readLine();
 		}

@@ -7,8 +7,6 @@ package net.geco.control;
 import java.io.File;
 import java.io.IOException;
 
-import net.geco.model.Category;
-import net.geco.model.Club;
 import net.geco.model.iocsv.CsvReader;
 
 
@@ -19,12 +17,19 @@ import net.geco.model.iocsv.CsvReader;
  */
 public abstract class OEImporter extends Control {
 
+	private RunnerControl runnerControl;
+	private StageControl stageControl;
+
 	protected OEImporter(GecoControl gecoControl) {
 		super(gecoControl);
+		runnerControl = geco().getService(RunnerControl.class);
+		stageControl = geco().getService(StageControl.class);
 	}
 
 	protected OEImporter(Class<? extends Control> clazz, GecoControl gecoControl) {
 		super(clazz, gecoControl);
+		runnerControl = geco().getService(RunnerControl.class);
+		stageControl = geco().getService(StageControl.class);
 	}
 
 	public void loadArchiveFrom(File importFile) throws IOException {
@@ -40,30 +45,17 @@ public abstract class OEImporter extends Control {
 	protected abstract void importRunnerRecord(String[] record);
 
 	protected RunnerControl runnerControl() {
-		return geco().getService(RunnerControl.class);
+		return runnerControl;
 	}
 
-	private StageControl stageControl() {
-		return geco().getService(StageControl.class);
+	protected StageControl stageControl() {
+		return stageControl;
 	}
 
-	protected Club ensureClubInRegistry(String clubname, String shortname) {
-		Club rClub = registry().findClub(clubname);
-		if( rClub==null ) {
-			rClub = stageControl().createClub(clubname, shortname);
-		}
-		return rClub;
-	}
-
-	protected Category ensureCategoryInRegistry(String categoryname, String longname) {
-		Category rCat = registry().findCategory(categoryname);
-		if( rCat==null ){
-			rCat = stageControl().createCategory(categoryname, longname);
-		}
-		return rCat;
-	}
-
-	protected String trimQuotes(String record) { // remove " in "record"
+	/**
+	 * Remove " in "record".
+	 */
+	protected String trimQuotes(String record) {
 		if( record.charAt(0)=='"' ){
 			return record.substring(1, record.length() - 1);
 		} else {

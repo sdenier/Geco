@@ -145,14 +145,14 @@ public class ArchiveManager extends OEImporter implements StageListener {
 	}
 	
 	private Category ensureCategoryInRegistry(Category category) {
-		return ensureCategoryInRegistry(category.getName(), category.getLongname());
+		return stageControl().ensureCategoryInRegistry(category.getName(), category.getLongname());
 	}
 
 	private Runner createRunner(ArchiveRunner arkRunner, Course course) {
 		Club club = arkRunner.getClub();
-		Club rClub = ensureClubInRegistry(club.getName(), club.getShortname());
+		Club rClub = stageControl().ensureClubInRegistry(club.getName(), club.getShortname());
 		Category category = arkRunner.getCategory();
-		Category rCat = ensureCategoryInRegistry(category.getName(), category.getLongname());
+		Category rCat = stageControl().ensureCategoryInRegistry(category.getName(), category.getLongname());
 		String ecard = arkRunner.getEcard();
 		if( ecard.equals("") ){ //$NON-NLS-1$
 			geco().log(Messages.getString("ArchiveManager.NoMatchingEcardWarning") + arkRunner.getName()); //$NON-NLS-1$

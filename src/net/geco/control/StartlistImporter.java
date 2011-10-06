@@ -54,8 +54,8 @@ public class StartlistImporter extends OEImporter {
 		Date relativeTime = TimeManager.safeParse(record[9]); // ! Time since zero hour
 		runner.setRegisteredStarttime( TimeManager.absoluteTime(relativeTime, stage().getZeroHour()) );
 
-		Club club = ensureClubInRegistry(record[15], record[14]);
-		Category cat = ensureCategoryInRegistry(record[18], record[19]);
+		Club club = stageControl().ensureClubInRegistry(record[15], record[14]);
+		Category cat = stageControl().ensureCategoryInRegistry(record[18], record[19]);
 		runner.setClub(club);
 		runner.setCategory(cat);
 		runner.setCourse(registry().getDefaultCourseOrAnyFor(cat));
