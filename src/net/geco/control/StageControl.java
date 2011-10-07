@@ -43,7 +43,8 @@ public class StageControl extends Control {
 	}
 	
 	public Club createClub() {
-		return createClub("Club" + (registry().getClubs().size() + 1), ""); //$NON-NLS-1$ //$NON-NLS-2$
+		return createClub(Messages.getString("StageControl.ClubLabel") //$NON-NLS-1$
+							+ (registry().getClubs().size() + 1), ""); //$NON-NLS-1$
 	}
 
 	public void updateName(Club club, String newName) {
@@ -87,7 +88,8 @@ public class StageControl extends Control {
 	}
 
 	public Course createCourse() {
-		return createCourse("Course" + (registry().getCourses().size() + 1));
+		return createCourse(Messages.getString("CourseImpl.CourseLabel") //$NON-NLS-1$
+							+ (registry().getCourses().size() + 1));
 	}
 	
 	public Course addCourse(Course course) {
@@ -173,7 +175,8 @@ public class StageControl extends Control {
 	}
 
 	public Category createCategory() {
-		return createCategory("Category" + (registry().getCategories().size() + 1), "");
+		return createCategory(Messages.getString("StageControl.CategoryLabel") //$NON-NLS-1$
+								+ (registry().getCategories().size() + 1), ""); //$NON-NLS-1$
 	}
 
 	/**
@@ -263,9 +266,9 @@ public class StageControl extends Control {
 		BufferedReader reader = new BufferedReader(new FileReader(file));
 		String line = reader.readLine();
 		while( line != null ){
-			String[] tokens = Util.splitAndTrim(line, ",");
+			String[] tokens = Util.splitAndTrim(line, ","); //$NON-NLS-1$
 			if( tokens.length < 3 ){
-				throw new Exception("Invalid line (missing fields): " + line);
+				throw new Exception(Messages.getString("StageControl.InvalidLineWarning") + line); //$NON-NLS-1$
 			}
 			Category category = ensureCategoryInRegistry(tokens[0], tokens[1]);
 			Course course = ensureCourseInRegistry(tokens[2]);

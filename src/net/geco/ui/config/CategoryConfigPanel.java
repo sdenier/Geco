@@ -81,7 +81,7 @@ public class CategoryConfigPanel extends ConfigTablePanel<Category> implements C
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser chooser = new JFileChooser(geco.getCurrentStagePath());
 				chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-				int answer = chooser.showDialog(frame, "Import");
+				int answer = chooser.showDialog(frame, Messages.uiGet("CategoryConfigPanel.ImportLabel")); //$NON-NLS-1$
 				if( answer==JFileChooser.APPROVE_OPTION ) {
 					try {
 						geco.stageControl().importCategoryTemplate(chooser.getSelectedFile());
@@ -89,13 +89,13 @@ public class CategoryConfigPanel extends ConfigTablePanel<Category> implements C
 						JOptionPane.showMessageDialog(
 								frame,
 								e1.getLocalizedMessage(),
-								"Error loading template file",
+								Messages.uiGet("CategoryConfigPanel.TemplateErrorTitle"), //$NON-NLS-1$
 								JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
 		};
-		JButton importB = new JButton("Template");
+		JButton importB = new JButton(Messages.uiGet("CategoryConfigPanel.TemplateLabel")); //$NON-NLS-1$
 		importB.addActionListener(importAction);
 		
 		initialize(

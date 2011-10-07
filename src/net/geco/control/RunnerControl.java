@@ -326,12 +326,16 @@ public class RunnerControl extends Control {
 				long oldRacetime = data.getResult().getRacetime();
 				geco().checker().check(data);
 				if( oldStatus!=data.getStatus() ){
-					geco().log("Status changed for " + data.getRunner().idString()
-								+ " " + oldStatus + " -> " + data.getStatus());
+					geco().log(Messages.getString("RunnerControl.StatusChangeMessage") //$NON-NLS-1$
+								+ data.getRunner().idString() + " " //$NON-NLS-1$
+								+ oldStatus + " -> " //$NON-NLS-1$
+								+ data.getStatus());
 				}
 				if( oldRacetime!=data.getResult().getRacetime() ){
-					geco().log("Racetime changed for " + data.getRunner().idString()
-						+ " " + TimeManager.time(oldRacetime) + " -> " + data.getResult().formatRacetime());
+					geco().log(Messages.getString("RunnerControl.RacetimeResetMessage") //$NON-NLS-1$
+								+ data.getRunner().idString() + " " //$NON-NLS-1$
+								+ TimeManager.time(oldRacetime) + " -> " //$NON-NLS-1$
+								+ data.getResult().formatRacetime());
 				}
 			}
 		}
