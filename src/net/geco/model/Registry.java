@@ -6,6 +6,7 @@ package net.geco.model;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 
@@ -82,7 +83,11 @@ public class Registry {
 	}
 	
 	public Course anyCourse() {
-		return courseRegistry.any();
+		try {
+			return courseRegistry.any();
+		} catch (NoSuchElementException e) {
+			return null;
+		}
 	}
 
 	
@@ -127,7 +132,11 @@ public class Registry {
 	}
 
 	public Club anyClub() {
-		return clubRegistry.any();
+		try {
+			return clubRegistry.any();
+		} catch (NoSuchElementException e) {
+			return null;
+		}
 	}
 
 	
@@ -174,7 +183,11 @@ public class Registry {
 	}
 	
 	public Category anyCategory() {
-		return categoryRegistry.any();
+		try {
+			return categoryRegistry.any();
+		} catch (NoSuchElementException e) {
+			return null;
+		}
 	}
 	
 	public Course getDefaultCourseOrAnyFor(Category cat) {
