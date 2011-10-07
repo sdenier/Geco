@@ -41,8 +41,12 @@ public class StartlistImporter extends OEImporter {
 		}
 		
 		Runner runner = runnerControl().buildBasicRunner(ecard); // ensure unique ecard
-		if( ! record[0].equals("") ){ //$NON-NLS-1$
-			runner.setStartId(Integer.valueOf(record[0])); // TODO: ensure unique start number here
+		Integer startId = Integer.valueOf(record[0]);
+		if( registry().findRunnerById(startId)!=null ){
+			geco().log("Another runner registered with start id " + startId);
+			geco().log("New registration made with start id " + runner.getStartId());
+		} else {
+			runner.setStartId(startId);
 		}
 		if( ! record[2].equals("") ){ //$NON-NLS-1$
 			runner.setArchiveId(new Integer(record[2]));			
