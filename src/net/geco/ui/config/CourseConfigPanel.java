@@ -75,7 +75,10 @@ public class CourseConfigPanel extends ConfigTablePanel<Course> implements Confi
 			public void actionPerformed(ActionEvent e) {
 				Course course = getSelectedData();
 				if( course!=null ) {
-					new CourseControlDialog(frame, course);
+					boolean change = new CourseControlDialog(frame, course).didChange();
+					if( change ){
+						geco.announcer().announceCourseChanged(course);
+					}
 				}
 			}
 		};

@@ -3,8 +3,8 @@
  */
 package net.geco.basics;
 
+import java.util.ArrayList;
 import java.util.Properties;
-import java.util.Vector;
 
 import net.geco.model.Course;
 import net.geco.model.Runner;
@@ -19,7 +19,7 @@ import net.geco.model.Status;
  *
  */
 public class Announcer {
-	
+
 	public interface Logging {
 		
 		public void log(String message, boolean warning);
@@ -65,6 +65,11 @@ public class Announcer {
 		public void categoriesChanged();
 		
 		public void clubsChanged();
+	}
+	
+	public interface CourseListener {
+
+		public void courseChanged(Course course);
 	}
 	
 	public interface RunnerListener {
@@ -138,25 +143,28 @@ public class Announcer {
 		public void stationStatus(String status);
 	}
 
-	private Vector<Logging> loggers;
+	private ArrayList<Logging> loggers;
 	
-	private Vector<StageListener> stageListeners;
+	private ArrayList<StageListener> stageListeners;
 	
-	private Vector<StageConfigListener> stageConfigListeners;
+	private ArrayList<StageConfigListener> stageConfigListeners;
 	
-	private Vector<RunnerListener> runnerListeners;
+	private ArrayList<RunnerListener> runnerListeners;
 	
-	private Vector<CardListener> cardListeners;
+	private ArrayList<CardListener> cardListeners;
 	
-	private Vector<StationListener> stationListeners;
+	private ArrayList<StationListener> stationListeners;
+
+	private ArrayList<CourseListener> courseListeners;
 	
 	public Announcer() {
-		this.loggers = new Vector<Logging>();
-		this.stageListeners = new Vector<StageListener>();
-		this.stageConfigListeners = new Vector<StageConfigListener>();
-		this.runnerListeners = new Vector<RunnerListener>();
-		this.cardListeners = new Vector<CardListener>();
-		this.stationListeners = new Vector<StationListener>();
+		this.loggers = new ArrayList<Logging>();
+		this.stageListeners = new ArrayList<StageListener>();
+		this.stageConfigListeners = new ArrayList<StageConfigListener>();
+		this.runnerListeners = new ArrayList<RunnerListener>();
+		this.cardListeners = new ArrayList<CardListener>();
+		this.stationListeners = new ArrayList<StationListener>();
+		this.courseListeners = new ArrayList<CourseListener>();
 	}
 	
 	public void registerLogger(Logging logger) {
@@ -185,6 +193,10 @@ public class Announcer {
 	
 	public void registerStationListener(StationListener listener) {
 		this.stationListeners.add(listener);
+	}
+	
+	public void registerCourseListener(CourseListener listener) {
+		this.courseListeners.add(listener);
 	}
 
 	
@@ -315,6 +327,12 @@ public class Announcer {
 		for (StationListener listener : this.stationListeners) {
 			listener.stationStatus(status);
 		}		
+	}
+
+	public void announceCourseChanged(Course course) {
+		for (CourseListener listener: this.courseListeners) {
+			listener.courseChanged(course);
+		}
 	}
 
 }

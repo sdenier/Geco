@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.geco.basics.Announcer.CourseListener;
 import net.geco.model.Course;
 import net.geco.model.Factory;
 import net.geco.model.Registry;
@@ -23,7 +24,7 @@ import net.geco.model.iocsv.CsvReader;
  * @since Sep 4, 2011
  *
  */
-public class CompositeChecker extends PenaltyChecker {
+public class CompositeChecker extends PenaltyChecker implements CourseListener {
 
 	private Map<Course,MultiCourse> multis = new HashMap<Course, MultiCourse>();
 
@@ -37,6 +38,7 @@ public class CompositeChecker extends PenaltyChecker {
 
 	public CompositeChecker(GecoControl gecoControl) {
 		super(gecoControl, new CompositeTracer(gecoControl.factory()));
+		gecoControl.announcer().registerCourseListener(this);
 	}
 
 	protected CompositeTracer tracer() {
@@ -109,6 +111,12 @@ public class CompositeChecker extends PenaltyChecker {
 	public MultiCourse registerMultiCourse(MultiCourse multiCourse) {
 		multis.put(multiCourse.getCourse(), multiCourse);
 		return multiCourse;
+	}
+
+	@Override
+	public void courseChanged(Course course) {
+		int joinCode = multis.get(course).joinCode();
+		registerMultiCourse(createMultiCourse(course, joinCode));
 	}
 
 }

@@ -33,6 +33,7 @@ import net.geco.model.Messages;
 public class CourseControlDialog extends JDialog {
 	
 	private JTextField controlsF;
+	private boolean changed = false;
 
 	public CourseControlDialog(JFrame frame, final Course course) {
 		super(frame, Messages.uiGet("CourseControlDialog.CourseEditorTitle"), true); //$NON-NLS-1$
@@ -59,9 +60,10 @@ public class CourseControlDialog extends JDialog {
 				int[] newCodes = new int[data.length];
 				try {
 					for (int i = 0; i < data.length; i++) {
-						newCodes[i] = new Integer(data[i]);
+						newCodes[i] = Integer.parseInt(data[i]);
 					}
 					course.setCodes(newCodes);
+					changed = true;
 					setVisible(false);
 				} catch (NumberFormatException e2) {
 					JOptionPane.showMessageDialog(
@@ -85,6 +87,10 @@ public class CourseControlDialog extends JDialog {
 		pack();
 		setLocationRelativeTo(null);
 		setVisible(true);
+	}
+	
+	public boolean didChange() {
+		return changed;
 	}
 
 }

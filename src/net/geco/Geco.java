@@ -107,6 +107,7 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 		}
 
 		try {
+			loadStageHistory();
 			GecoStageLaunch stageLaunch = initStageLauncher(startDir);
 			new Geco().startup(stageLaunch);
 		} catch (Exception e) {
@@ -145,22 +146,6 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 				stageLaunch.loadFromFileSystem(startDir);
 			}
 		} else {
-			try {
-				File historyFile = new File(historyFilePath());
-				historyFile.createNewFile();
-				BufferedReader reader = new BufferedReader(new FileReader(historyFile));
-				String line;
-				do {
-					line = reader.readLine();
-					if( StageBuilder.directoryHasData(line) ){
-						history.addLast(new GecoStageLaunch().loadFromFileSystem(line));
-					}
-				} while( line != null );
-			} catch (FileNotFoundException e) {
-				System.out.println(e);
-			} catch (IOException e) {
-				System.out.println(e);
-			}
 			boolean cancelled = new GecoLauncher(null, stageLaunch, history).showLauncher();
 			if( cancelled ){
 				System.out.println("Bye bye!"); //$NON-NLS-1$
@@ -168,6 +153,23 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 			}
 		}
 		return stageLaunch;
+	}
+
+	public static void loadStageHistory() {
+		try {
+			File historyFile = new File(historyFilePath());
+			historyFile.createNewFile();
+			BufferedReader reader = new BufferedReader(new FileReader(historyFile));
+			String line;
+			do {
+				line = reader.readLine();
+				if( StageBuilder.directoryHasData(line) ){
+					history.addLast(new GecoStageLaunch().loadFromFileSystem(line));
+				}
+			} while( line != null );
+		} catch (IOException e) {
+			System.out.println(e);
+		}
 	}
 
 	public static String historyFilePath() {

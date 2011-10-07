@@ -63,5 +63,9 @@ public class MultiCourse {
 	public Section secondSection() {
 		return secondSection;
 	}
+	
+	public int joinCode() {
+		return secondSection.codes[0];
+	}
 
 }
