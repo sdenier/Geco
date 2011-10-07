@@ -44,9 +44,14 @@ public class MultiCourse {
 		this.tracer1 = tracer;
 	}
 
-	public void joinRight(int startCode, Tracer tracer) {
+	public void joinRight(int startCode, Tracer tracer) throws Exception {
 		int[] codes = course.getCodes();
 		int joinIndex = Util.firstIndexOf(startCode, codes);
+		if( joinIndex==-1 ){
+			firstSection = new Section(new int[0], tracer1);
+			secondSection = new Section(codes, tracer);
+			throw new Exception("Missing join control " + startCode);
+		}
 		firstSection = new Section(Arrays.copyOfRange(codes, 0, joinIndex), tracer1);
 		secondSection = new Section(Arrays.copyOfRange(codes, joinIndex, codes.length), tracer);
 	}

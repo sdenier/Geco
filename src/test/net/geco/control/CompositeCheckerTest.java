@@ -66,7 +66,11 @@ public class CompositeCheckerTest {
 		course.setCodes(new int[] { 31, 32, 33, 34, 121, 122, 121, 123, 124, 121 });
 		MultiCourse multiCourse = new MultiCourse(course);
 		multiCourse.startWith(new FreeOrderTracer(factory));
-		multiCourse.joinRight(34, new InlineTracer(factory));
+		try {
+			multiCourse.joinRight(34, new InlineTracer(factory));
+		} catch (Exception e) {
+			Assert.fail(e.getMessage());
+		}
 		return multiCourse;
 	}
 
@@ -74,7 +78,11 @@ public class CompositeCheckerTest {
 		course.setCodes(new int[] { 61, 62, 63, 64, 65 });
 		MultiCourse multiCourse = new MultiCourse(course);
 		multiCourse.startWith(new FreeOrderTracer(factory));
-		multiCourse.joinRight(63, new InlineTracer(factory));
+		try {
+			multiCourse.joinRight(63, new InlineTracer(factory));
+		} catch (Exception e) {
+			Assert.fail(e.getMessage());
+		}
 		return multiCourse;
 	}
 	

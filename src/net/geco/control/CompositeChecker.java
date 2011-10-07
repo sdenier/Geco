@@ -98,7 +98,11 @@ public class CompositeChecker extends PenaltyChecker {
 	public MultiCourse createMultiCourse(Course course, int joinCode) {
 		MultiCourse multiCourse = new MultiCourse(course);
 		multiCourse.startWith(new FreeOrderTracer(factory()));
-		multiCourse.joinRight(joinCode, new InlineTracer(factory()));
+		try {
+			multiCourse.joinRight(joinCode, new InlineTracer(factory()));
+		} catch (Exception e) {
+			System.err.println(e.getLocalizedMessage());
+		}
 		return multiCourse;
 	}
 
