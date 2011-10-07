@@ -1,0 +1,32 @@
+H21E, H21E, A
+H21A, H21A, Abis
+H20E, H20E, Abis
+H20A, H20A, B
+H35 , H35 , B
+D21E, D21E, B
+D20E, D20E, Bbis
+H45 , H45 , Bbis
+H18 , H18 , C
+H40 , H40 , C
+D20A, D20A, D
+D21A, D21A, D
+D35 , D35 , D
+H50 , H50 , E
+H55 , H55 , E
+D18 , D18 , E
+D40 , D40 , E
+D45 , D45 , E
+D50 , D50 , F
+D55 , D55 , F
+H60 , H60 , F
+H65 , H65 , F
+D60 , D60 , G
+D65 , D65 , G
+D70 , D70 , G
+H70 , H70 , G
+H16 , H16 , H
+D16 , D16 , Hbis
+H14 , H14 , I
+D14 , D14 , I
+H12 , H12 , K
+D12 , D12 , K

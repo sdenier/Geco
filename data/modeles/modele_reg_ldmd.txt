@@ -1,0 +1,29 @@
+H20 , H20 , A
+H21 , H21 , A
+H35 , H35 , A
+D20 , D20 , B
+D21 , D21 , B
+D35 , D35 , B
+H18 , H18 , B
+H40 , H40 , B
+H45 , H45 , B
+H16 , H16 , C
+H50 , H50 , C
+H55 , H55 , C
+D18 , D18 , C
+D40 , D40 , C
+D45 , D45 , C
+D50 , D50 , D
+D55 , D55 , D
+D60+, D60+, D
+H60+, H60+, D
+D16 , D16 , D
+D14 , D14 , E
+H14 , H14 , E
+D12 , D12 , F
+H12 , H12 , F
+D10 , D10 , G
+H10 , H10 , G
+Jal , Jalonné , IJ
+Ini Court , Initiation Court , IC
+Ini Moyen , Initiation Moyen , IM

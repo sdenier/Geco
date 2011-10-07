@@ -1,0 +1,45 @@
+H21E, H21E, A
+H21A, H21A, Abis
+H20E, H20E, Abis
+H20A, H20A, B
+H35 , H35 , B
+D21E, D21E, B
+D20E, D20E, Bbis
+H45 , H45 , Bbis
+H18A, H18A, C
+H40 , H40 , C
+D20A, D20A, D
+D21A, D21A, D
+D35 , D35 , D
+H50 , H50 , E
+H55 , H55 , E
+D18A, D18A, F
+D40 , D40 , F
+D45 , D45 , F
+H21C, H21C, F
+D50 , D50 , G
+D55 , D55 , G
+H60 , H60 , G
+H65 , H65 , G
+HVC , HVC , G
+D21C, D21C, G
+D60 , D60 , H
+D65 , D65 , H
+D70 , D70 , H
+H70 , H70 , H
+DVC , DVC , H
+H16A, H16A, I
+H18B, H18B, I
+D16A, D16A, K
+H16B, H16B, K
+D18B, D18B, K
+H14 , H14 , L
+D14 , D14 , Lbis
+D16B, D16B, Lbis
+H12 , H12 , M
+D12 , D12 , M
+D10 , D10 , N
+H10 , H10 , N
+Jal , Jalonné , IJ
+Ini Court , Initiation Court , IC
+Ini Moyen , Initiation Moyen , IM

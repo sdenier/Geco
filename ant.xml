@@ -81,7 +81,6 @@
     		<fileset file="${geco.dir}/icu-license.txt"/>
     		<fileset dir="${geco.dir}" includes="help/"/>
     		<fileset dir="${geco.dir}" includes="data/template/"/>
-    		<fileset dir="${geco.dir}" includes="data/sample_stages.prop"/>
     	</zip>
 	</target>
 
@@ -98,7 +97,6 @@
     		<fileset file="${geco.dir}/icu-license.txt"/>
     		<fileset dir="${geco.dir}" includes="help/"/>
     		<fileset dir="${geco.dir}" includes="data/template/"/>
-    		<fileset dir="${geco.dir}" includes="data/sample_stages.prop"/>
     		<fileset dir="${geco.dir}" includes="data/CN-Ped-Base.csv"/>
     		<fileset dir="${geco.dir}" includes="demo/"/>
     	</zip>
