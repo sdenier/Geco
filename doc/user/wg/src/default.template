@@ -3,7 +3,7 @@
 
 <%
 analytics_tracking = false
-currentversion = '1.1'
+currentversion = '1.2'
 currentlink = 'http://bitbucket.org/sdenier/geco/downloads/geco1.1-383-20110405-demo.zip'
 translations = YAML::load(File.read(File.join(context.website.directory, 'default.languages')))
 trans = translations[context.node.lang]
@@ -49,13 +49,17 @@ trans = translations[context.node.lang]
 
           <div id="leftside">
             <a id="sectionmenu"></a>
-            <p class="soft">
-                <%= trans['version'] %> <a href="<%= currentlink %>"><%= currentversion %></a><br />
-                Preview <a href="http://geco.webou.net/geco/version12.html">1.2</a></p>
-            <% if context.node.level > 1 %>
+            <h1>Download</h1>
+            <div id="downloads">
+              <ul>
+                <li><a href="<%= currentlink %>"><%= trans['version'] + ' ' + currentversion %></a></li>
+                <li><%= trans['whatsnew'] %></li>
+              </ul>
+            </div>
+          <% if context.node.level > 1 %>
             <h1><%= trans['content'] %></h1>
             <div id="submenu">{menu: {start_level: 2, max_levels: 2}}</div>
-	    <% end %>
+          <% end %>
             <h1><%= trans['links'] %></h1>
             <div id="links">
                     <ul>
@@ -81,7 +85,7 @@ trans = translations[context.node.lang]
         </div>
 
         <div id="footer">
-                &copy; 2008-2010 Simon Denier | 
+                &copy; 2008-2011 Simon Denier | 
                 <%= trans['generated'] %> <a href="http://webgen.rubyforge.org">webgen</a> | 
                 <%= trans['design'] %> <a href="http://andreasviklund.com">Andreas Viklund</a>
         </div>

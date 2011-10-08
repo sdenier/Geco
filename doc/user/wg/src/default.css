@@ -252,18 +252,18 @@ text-decoration:underline;
 margin-bottom:10px;
 }
 
-#leftside #submenu ul, #leftside #links ul {
+#leftside #downloads ul, #leftside #submenu ul, #leftside #links ul {
 margin: 0px;
 padding: 0px;
 list-style-type: none;
 }
 
-#leftside #submenu li, #leftside #links li {
+#leftside #downloads li, #leftside #submenu li, #leftside #links li {
 margin: 0px;
 padding: 0px;
 }
 
-#leftside #links ul a {
+#leftside #downloads li, #leftside #links ul a {
 padding:2px 2px 2px 10px;
 }
 

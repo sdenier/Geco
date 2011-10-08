@@ -19,6 +19,7 @@ When you switch between tabs, Geco puts the focus on the most important widget i
 - `Mod+F`: focus on the filter field (start typing to filter entries)
 - `Mod+Shift+F`: cancel filter
 - `Mod+I`: insert new runner (runners panel)/insert selected runner (archive view)
+- `Mod+L`: toggle Live mode on/off (only runners panel)
 
 ## Keybindings in runners panel
 - `Mod+D`: switch to Data view in right panel

@@ -6,9 +6,27 @@ in_menu: true
 
 #What's new?
 
+##Version 1.2 - 2011/10/XX
+
+Geco 1.2 is an intermediate release, which nonetheless ships with significant changes.
+It paves the way for the future versions of Geco, providing some core changes in the UI and data model.
+
+Here is the list of visible changes.
+- Geco now explicitly handles [different formats](features.html) for orienteering races: in particular it adapts the UI to each format (config options, custom tabs...). Current formats include Classic inline, Orient'Show, and Free Order. Raid Orient'Alpin is a custom format but should be considered experimental.
+- Reworked [configuration tab](../guide/stage.html) (each configuration item now has its own panel). 
+- New [launch wizard](../guide/index.html) which enables to either open an existing stage (from an history of recent stages) or creates a new one for a given format.
+- Ecard number is no longer required and can be left empty.
+- First german translation by Philipp Walker.
+- [LiveMap](../howtos/live.html) calibration updated with an intuitive UI (click on controls and map).
+- Import [template](../guide/stage.html) for category+course.
+- Some other minor changes in the UI.
+
+Change in data file format: Geco 1.2 will automatically convert 1.1 stage files to the new format. Meaning also that Geco 1.1 can't load a 1.2 stage (don't forget your backups).
+
+
 ##Version 1.1 - 2011/04/05
 
-Geco 1.1 is a move from the custom app for Orient'Show to a full-featured app for regular Orienteering events, with many new features and UI improvements.
+[Geco 1.1](http://bitbucket.org/sdenier/geco/downloads/geco1.1-383-20110405-demo.zip) is a move from the custom app for Orient'Show to a full-featured app for regular Orienteering events, with many new features and UI improvements.
 
 The big changes:
 - easy registration through CSV import and competitors archive

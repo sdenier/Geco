@@ -1,4 +1,4 @@
-Geco readme file version 1.2
+Geco readme file version 1.5
 Copyright (c) 2008-2011 Simon Denier, Philipp Walker
 Contact: http://www.simondenier.eu
 
@@ -12,20 +12,20 @@ Geco is also geared towards the Orient'Show format:
 - it manages knockout qualifications.
 
 ----------
-ABOUT THE 1.2 'PREVIEW' RELEASE
+ABOUT THE 1.5 RELEASE
 
-Since the 1.1 release, there have been some major internal work in Geco to prepare the future.
-Such changes may not look important at first sight, however they are significant and we feel
-that providing a release would enable early field-testing by users to detect unforeseen problems.
-For this reason, the 1.2 release is labelled as a 'preview': we feel confident it is working well,
-however it is not as well tested as the 1.1. So be careful with your data.
+Geco 1.5 is an intermediate release, which nonetheless ships with significant changes.
+It paves the way for the future versions of Geco, providing some core changes in the UI and data model.
 
 Here is the list of visible changes:
 - Geco now explicitly handles the different formats of orienteering races: in particular it adapts the UI to each format (config options, custom tabs...).
-Current formats include Classic inline and Orient'Show. Free Order stages are coming soon.
+Current formats include Classic inline, Orient'Show, and Free Order. Raid Orient'Alpin is a custom format but should be considered experimental.
+- Reworked tab for configuration (each configuration item now has its own panel). 
 - New launch wizard which enables to either open an existing stage (from an history of recent stages) or creates a new one for a given format.
 - ecard number is no longer required and can be left empty.
 - First german translation by Philipp Walker.
+- LiveMap calibration updated with an intuitive UI (click on controls and map).
+- Import template for category+course.
 - Some other minor changes in the UI.
 
 - Change in data file format: Geco 1.2 will automatically convert 1.1 stage files to the new format.
@@ -33,8 +33,8 @@ Meaning also that Geco 1.1 can't load a 1.2 stage (use stage backups to be safe!
 - Documentation not updated.
 
 ----------
-Known bugs in 1.2
-- the LiveMap has been temporarily disabled.
+Fixed bugs in 1.5
+- Course detection may return the wrong course in Orient'Show format (this happened when similar courses would both mark the runner trace as OK, even with MPs > 0)
 
 ----------
 Install: unzip the archive file (should be done already if you can read this file).

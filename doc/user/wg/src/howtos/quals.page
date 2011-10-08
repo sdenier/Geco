@@ -7,7 +7,7 @@ in_menu: true
 
 # Create parallel pools for qualifications
 
-*Experimental feature*
+*Experimental feature - Use with care*
 
 1. Create one stage per pool (each runner has to run in each pool)
 1. Create a merging stage to merge all pool results
@@ -20,6 +20,8 @@ Notice that only runners having OK results in all pools can be qualified. See *h
 
 
 # Create a series of stages for qualifications
+
+**This feature is deprecated. The navigation between series has been superseded by the new [Launch wizard](../guide/index.html).**
 
 1. Create one stage for each step of the qualification (quarter-finals, semi-finals, finals, ...)
 1. Put all stage folders in the same parent folder
