@@ -68,7 +68,7 @@ public class CourseControlDialog extends JDialog {
 				} catch (NumberFormatException e2) {
 					JOptionPane.showMessageDialog(
 							CourseControlDialog.this,
-							e2.getMessage(), 
+							e2.getLocalizedMessage(), 
 							Messages.uiGet("CourseControlDialog.BadCodeNumberWarning"),  //$NON-NLS-1$
 							JOptionPane.ERROR_MESSAGE);
 				}

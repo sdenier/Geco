@@ -14,7 +14,6 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileFilter;
 
 import net.geco.basics.Announcer;
 import net.geco.framework.IGecoApp;
@@ -88,16 +87,7 @@ public class CourseConfigPanel extends ConfigTablePanel<Course> implements Confi
 				JFileChooser chooser = new JFileChooser();
 				chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 				chooser.setSelectedFile(new File(geco.getCurrentStagePath()));
-				chooser.setFileFilter(new FileFilter() {
-					@Override
-					public String getDescription() {
-						return Messages.uiGet("CourseConfigPanel.XMLFilesLabel"); //$NON-NLS-1$
-					}
-					@Override
-					public boolean accept(File f) {
-						return f.getName().endsWith(".xml"); //$NON-NLS-1$
-					}
-				});
+				chooser.setDialogTitle(Messages.uiGet("CourseConfigPanel.SelectXMLFileTitle")); //$NON-NLS-1$
 				int answer = chooser.showDialog(frame, Messages.uiGet("CourseConfigPanel.CourseImportXMLLabel")); //$NON-NLS-1$
 				if( answer==JFileChooser.APPROVE_OPTION ) {
 					String file = chooser.getSelectedFile().getAbsolutePath();
@@ -109,7 +99,7 @@ public class CourseConfigPanel extends ConfigTablePanel<Course> implements Confi
 					} catch (Exception e1) {
 						e1.printStackTrace();
 						JOptionPane.showMessageDialog(frame,
-								e1.getMessage(),
+								e1.getLocalizedMessage(),
 								Messages.uiGet("CourseConfigPanel.XMLLoadError"), //$NON-NLS-1$
 								JOptionPane.ERROR_MESSAGE);
 					}

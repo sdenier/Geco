@@ -81,6 +81,7 @@ public class CategoryConfigPanel extends ConfigTablePanel<Category> implements C
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser chooser = new JFileChooser(geco.getCurrentStagePath());
 				chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				chooser.setDialogTitle(Messages.uiGet("CategoryConfigPanel.SelectCSVFileTitle")); //$NON-NLS-1$
 				int answer = chooser.showDialog(frame, Messages.uiGet("CategoryConfigPanel.ImportLabel")); //$NON-NLS-1$
 				if( answer==JFileChooser.APPROVE_OPTION ) {
 					try {

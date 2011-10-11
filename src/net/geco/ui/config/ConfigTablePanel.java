@@ -62,7 +62,7 @@ public class ConfigTablePanel<T> extends JPanel {
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 		JScrollPane jsp = new JScrollPane(table);
 		//TODO PWA: Find a more elegant way to do this
-		jsp.setPreferredSize(new Dimension(250, 275));
+		jsp.setPreferredSize(new Dimension(350, 450));
 		add(jsp, BorderLayout.CENTER);
 	}
 	
