@@ -44,6 +44,7 @@ import net.geco.model.Registry;
 import net.geco.model.RunnerRaceData;
 import net.geco.ui.basics.EcardComparator;
 import net.geco.ui.basics.StartStopButton;
+import net.geco.ui.basics.SwingUtils;
 
 
 /**
@@ -63,6 +64,7 @@ public class GecoLive implements LiveListener {
 
 	
 	public static void main(String[] args) {
+		SwingUtils.setLookAndFeel();
 		Messages.put("live", "net.geco.live.messages"); //$NON-NLS-1$ //$NON-NLS-2$
 		Messages.put("ui", "net.geco.ui.messages"); //$NON-NLS-1$ //$NON-NLS-2$
 		GecoLive gecoLive = new GecoLive();

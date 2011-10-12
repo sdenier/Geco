@@ -56,6 +56,7 @@ import net.geco.model.Messages;
 public class GecoLauncher extends JDialog {
 	
 	static {
+		SwingUtils.setLookAndFeel();
 		Messages.put("ui", "net.geco.ui.messages"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 

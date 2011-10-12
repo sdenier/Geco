@@ -10,6 +10,9 @@ import java.awt.GridBagConstraints;
 
 import javax.swing.JPanel;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
+import net.geco.basics.GecoResources;
 
 /**
  * @author Simon Denier
@@ -18,13 +21,28 @@ import javax.swing.UIManager;
  */
 public class SwingUtils {
 	
-	public static int SPINNERHEIGHT;
+	public static int SPINNERHEIGHT = 25;
 	
-	static {
-		if( UIManager.getLookAndFeel().getID().equals("Nimbus") ) { //$NON-NLS-1$
-			SPINNERHEIGHT = 25;
-		} else {
+	public static void setLookAndFeel() {
+		if( GecoResources.platformIsMacOs() ) {
 			SPINNERHEIGHT = 20;
+		} else { // try to use Nimbus unless on Mac Os
+//			SPINNERHEIGHT = 25;
+			try {
+				UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"); //$NON-NLS-1$
+			} catch (Exception e) {
+				try {
+					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+				} catch (ClassNotFoundException e1) {
+					e1.printStackTrace();
+				} catch (InstantiationException e1) {
+					e1.printStackTrace();
+				} catch (IllegalAccessException e1) {
+					e1.printStackTrace();
+				} catch (UnsupportedLookAndFeelException e1) {
+					e1.printStackTrace();
+				}
+			}
 		}
 	}
 

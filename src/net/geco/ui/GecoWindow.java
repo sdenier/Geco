@@ -34,13 +34,10 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import net.geco.app.AppBuilder;
 import net.geco.basics.Announcer.StageListener;
 import net.geco.basics.Announcer.StationListener;
-import net.geco.basics.GecoResources;
 import net.geco.basics.Html;
 import net.geco.framework.IGecoApp;
 import net.geco.framework.IStageLaunch;
@@ -52,12 +49,11 @@ import net.geco.model.Stage;
 import net.geco.ui.basics.GecoLauncher;
 import net.geco.ui.basics.GecoStatusBar;
 import net.geco.ui.basics.StartStopButton;
+import net.geco.ui.basics.SwingUtils;
 import net.geco.ui.framework.ConfigPanel;
 import net.geco.ui.framework.TabPanel;
 import net.geco.ui.tabs.RunnersTableAnnouncer;
 import net.geco.ui.tabs.StagePanel;
-
-
 
 /**
  * GecoWindow is the main frame of the application and primarily responsible for initializing the main
@@ -69,7 +65,8 @@ import net.geco.ui.tabs.StagePanel;
 public class GecoWindow extends JFrame
 	implements StageListener, StationListener, UIAnnouncers {
 
-	static { // Just in case
+	static { // direct launch
+		SwingUtils.setLookAndFeel();
 		Messages.put("ui", "net.geco.ui.messages"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
@@ -107,7 +104,6 @@ public class GecoWindow extends JFrame
 
 	public GecoWindow(IGecoApp geco) {
 		this.geco = geco;
-		setLookAndFeel();
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -116,26 +112,6 @@ public class GecoWindow extends JFrame
 		});
 	}
 
-	private void setLookAndFeel() {
-		if( ! GecoResources.platformIsMacOs() ) { // try to use Nimbus unless on Mac Os
-			try {
-				UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"); //$NON-NLS-1$
-			} catch (Exception e) {
-				try {
-					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-				} catch (ClassNotFoundException e1) {
-					e1.printStackTrace();
-				} catch (InstantiationException e1) {
-					e1.printStackTrace();
-				} catch (IllegalAccessException e1) {
-					e1.printStackTrace();
-				} catch (UnsupportedLookAndFeelException e1) {
-					e1.printStackTrace();
-				}
-			}
-		}
-	}
-	
 	public void initAndLaunchGUI(final AppBuilder builder){		
 		geco.announcer().registerStageListener(this);
 		geco.announcer().registerStationListener(this);

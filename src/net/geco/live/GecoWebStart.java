@@ -34,6 +34,7 @@ import net.geco.model.Messages;
 import net.geco.model.Registry;
 import net.geco.model.RunnerRaceData;
 import net.geco.ui.basics.EcardComparator;
+import net.geco.ui.basics.SwingUtils;
 
 
 /**
@@ -51,6 +52,7 @@ public class GecoWebStart {
 
 	
 	public static void main(String[] args) {
+		SwingUtils.setLookAndFeel();
 		Messages.put("live", "net.geco.live.messages"); //$NON-NLS-1$ //$NON-NLS-2$
 		GecoResources.forWebstart();
 		GecoWebStart gecows = new GecoWebStart();
