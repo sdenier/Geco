@@ -9,6 +9,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -40,6 +42,7 @@ import net.geco.app.ClassicAppBuilder;
 import net.geco.app.FreeOrderAppBuilder;
 import net.geco.app.OrientShowAppBuilder;
 import net.geco.app.ROAAppBuilder;
+import net.geco.basics.GecoResources;
 import net.geco.control.StageBuilder;
 import net.geco.framework.IStageLaunch;
 import net.geco.model.Messages;
@@ -200,7 +203,6 @@ public class GecoLauncher extends JDialog {
 		GridBagConstraints c = SwingUtils.gbConstr(0);
 		creationWizard.add(stageNameL, c);
 		final JTextField stageNameF = new JTextField();
-		stageNameF.setText(createStage.getStageName());
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
 		creationWizard.add(stageNameF, c);
@@ -232,6 +234,16 @@ public class GecoLauncher extends JDialog {
 			}
 		});
 
+		stageNameF.addFocusListener(new FocusAdapter() {
+			public void focusLost(FocusEvent e) {
+				String stageName = stageNameF.getText().trim();
+				String proposedPath = createStage.getStageDir() + GecoResources.sep + stageName.replace(GecoResources.sep, "-");
+				createStage.setStageDir(proposedPath);
+				stagePathL.setText(proposedPath);
+			}
+		});
+		stageNameF.setText(createStage.getStageName());
+		
 		JPanel rulePanel = new JPanel();
 		rulePanel.setLayout(new BoxLayout(rulePanel, BoxLayout.Y_AXIS));
 		ButtonGroup builderGroup = new ButtonGroup();
