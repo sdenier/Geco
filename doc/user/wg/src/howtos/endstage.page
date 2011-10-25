@@ -11,4 +11,4 @@ The [Stats](../guide/log.html) views in Runners and Log panel give a detailed ac
 Towards the end of the stage, you should start looking for missing runners. In particular, you need to distinguish between those still running and those who did not start (DNS).
 In the classic method, you check the list of Not Started entries against the control list checked by the start team. You manually set the status to either **DNS** or **Running**.
 
-Currently, Geco does not support reading the backup memory of SI stations to handle DNS automatically (planned for 1.2).
+Currently, Geco does not support reading the backup memory of SI stations to handle DNS automatically.

@@ -1,4 +1,4 @@
-Geco readme file version 1.5
+Geco readme file version 1.2
 Copyright (c) 2008-2011 Simon Denier, Philipp Walker
 Contact: http://www.simondenier.eu
 
@@ -12,9 +12,9 @@ Geco is also geared towards the Orient'Show format:
 - it manages knockout qualifications.
 
 ----------
-ABOUT THE 1.5 RELEASE
+ABOUT THE 1.2 RELEASE
 
-Geco 1.5 is an intermediate release, which nonetheless ships with significant changes.
+Geco 1.2 is an intermediate release, which nonetheless ships with significant changes.
 It paves the way for the future versions of Geco, providing some core changes in the UI and data model.
 
 Here is the list of visible changes:
@@ -33,7 +33,7 @@ Meaning also that Geco 1.1 can't load a 1.2 stage (use stage backups to be safe!
 - Documentation not updated.
 
 ----------
-Fixed bugs in 1.5
+Fixed bugs in 1.2
 - Course detection may return the wrong course in Orient'Show format (this happened when similar courses would both mark the runner trace as OK, even with MPs > 0)
 
 ----------

@@ -26,6 +26,5 @@ For example, the heatset *Men* in the above figure indicates that the first two 
 All qualified runners will be dispatched in two heats, *A* and *B*, which correspond to courses in the next stage. 
 
 Hit the *Refresh* button to generate and view heats. Hit the *Export* button to export generated heats to a file.
-If there is a next stage, Geco will automatically propose to overwrite the startlist of the next stage.
 
-Use *Next stage/Previous stage* buttons in the toolbar to navigate to the next/previous stage in the qualifications. See [Qualifications](../howtos/quals.html) for how to manage qualification series in Geco.
+**Tip: you can directly export the startlist to the next stage by overwriting the *Competitors.csv* file in the next stage folder.**

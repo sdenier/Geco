@@ -21,16 +21,4 @@ Notice that only runners having OK results in all pools can be qualified. See *h
 
 # Create a series of stages for qualifications
 
-**This feature is deprecated. The navigation between series has been superseded by the new [Launch wizard](../guide/index.html).**
-
-1. Create one stage for each step of the qualification (quarter-finals, semi-finals, finals, ...)
-1. Put all stage folders in the same parent folder
-1. Create a file named `stages.prop` in the parent folder
-1. Open `stages.prop` and write stage folder names in order (from first quals to finals), one per line
-
-<img style="float:none; width:168px" src="../images/stages.png" />
-
-
-Content of `stages.prop` for the above example (where hellemmes\_df would be semi-finals and hellemmes\_f finals):  
-  `hellemmes_df`  
-  `hellemmes_f`  
+See the [Heats](../guide/heats.html) guide.

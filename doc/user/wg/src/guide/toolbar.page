@@ -6,13 +6,12 @@ in_menu: true
 
 # Toolbar
 
-<img src="../images/toolbar.png" />
+<img style="float:none; width:322px" src="../images/toolbar.png" />
 
 The toolbar offers global actions.
 
 - *New/Open* opens the [Launcher](index.html)
 - *Save* saves current data on disk. Note that data are [backuped and saved](../howtos/backup.html) automatically when you exit and at regular intervals
-- *Previous stage/Next stage* navigate to the indicated stage in qualifications (only available if current stage is detected as part of qualifications)
 - *Recheck OK|MP* resets all status and all official times for runners with OK or MP status, to be used when a problem affecting all runners has been detected and fixed.
 Be careful with this action as it will also discard manual modification to race time you may have made.
 

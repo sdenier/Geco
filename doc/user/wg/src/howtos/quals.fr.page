@@ -21,14 +21,4 @@ Seuls les coureurs classés OK dans toutes les poules peuvent être qualifiés. 
 
 # Créer une suite d'étape de qualifications
 
-1. Créez une course pour chaque étape de la qualification (quart, demi, finale, ...)
-1. Tous les dossiers de course doivent être dans le même dossier parent
-1. Créez un fichier `stages.prop` dans le dossier parent
-1. Ouvrir le fichier `stages.prop` et inscrire les noms des dossiers d'étape dans l'ordre (depuis la première étape jusqu'à la finale), un nom par ligne
-
-<img style="float:none; width:168px" src="../images/stages.png" />
-
-
-Un exemple  de contenu pour le fichier `stages.prop` (où hellemmes\_df représente les demi-finales et hellemmes\_f la finale):  
-  `hellemmes_df`  
-  `hellemmes_f`  
+**Cette fonctionnalité est désactivée. La navigation entre étapes se fait maintenant via le [lanceur](../guide/index.fr.html).**

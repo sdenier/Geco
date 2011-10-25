@@ -1,0 +1,29 @@
+---
+title: Adjusting the LiveMap
+sort_info: 9
+in_menu: false
+---
+
+# Adjusting map and controls in the LiveMap
+
+1\. click the *Adjust* button in the Map Parameters to start the calibration process
+
+2\. click a control on the map - it now appears as the *Centered Control* in the panel - here control 40
+
+<img style="float:none; width:440px" src="../images/livemap_step1.png" />
+
+3\. click on map to indicate the new position for the selected control - all controls are translated
+
+<img style="float:none; width:440px" src="../images/livemap_step2.png" />
+
+4\. click another control - here control 42 (preferably far away from the centered control)
+
+<img style="float:none; width:440px" src="../images/livemap_step3.png" />
+
+5\. click on map to indicate the new position for the second control - all controls are scaled so that centered control (40) stays on position and second control (42) is on its new position
+
+<img style="float:none; width:440px" src="../images/livemap_step4.png" />
+
+At any time, you can stop the calibration by clicking again on the *Adjust* button. For example, click on it after step 3 to just translate all controls, without scaling them.
+
+If you need to fine-tune the calibration, you can always play with the manual parameters but this can be tricky.

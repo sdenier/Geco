@@ -30,18 +30,7 @@ Configuration:
 
 It is recommended to export both files from OCAD. There are known problems with other programs.
 
-Adjusting map and controls:
-1. click the *Adjust* button in the Map Parameters to start the calibration process
-1. click a control on the map (it should appear as the *Centered Control* in the panel)
-1. click on map to indicate the new position for the control - it should translate all controls
-1. click another control (preferably far away from the centered control)
-1. click on map to indicate the new position for the control - it should scale all controls so that centered control stays on position and second control is on its new position
-
-At any time, you can stop the calibration by clicking again on the *Adjust* button. For example, click on it after step 3 to just translate all controls, without scaling them.
-
-If you need to fine-tune the calibration, you can always play with the manual parameters but this can be tricky.
-
-You can then check controls or courses with the last buttons.
+See [Adjusting the LiveMap](livemap_adjust.html) to adjust map and controls. You can then check controls or courses with the last buttons.
 
 Don't forget to *save* parameters once you are satisfied! Geco will create a `live.prop` in the stage directory so that parameters gets loaded automatically. You can reuse the file on any computer using LiveMap or GecoLive for this stage.
 
