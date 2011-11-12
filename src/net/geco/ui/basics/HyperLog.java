@@ -18,6 +18,7 @@ import javax.swing.event.HyperlinkListener;
 
 import net.geco.basics.Announcer;
 import net.geco.basics.Announcer.Logging;
+import net.geco.basics.Html;
 
 
 /**
@@ -84,11 +85,15 @@ public class HyperLog extends JTextPane implements Logging {
 
 	@Override
 	public void log(String message, boolean warning) {
+		if( warning )
+			message = Html.htmlTag("font", "color=red", message); //$NON-NLS-1$ //$NON-NLS-2$
 		update(message);
 	}
 
 	@Override
 	public void info(String message, boolean warning) {
+		if( warning )
+			message = Html.htmlTag("font", "color=red", message); //$NON-NLS-1$ //$NON-NLS-2$
 		update(message);
 	}
 

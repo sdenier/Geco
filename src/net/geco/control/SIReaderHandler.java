@@ -20,6 +20,7 @@ import net.geco.basics.GecoRequestHandler;
 import net.geco.basics.GecoResources;
 import net.geco.basics.TimeManager;
 import net.geco.basics.WindowsRegistryQuery;
+import net.geco.model.Messages;
 import net.geco.model.Punch;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
@@ -236,24 +237,26 @@ public class SIReaderHandler extends Control
 	
 	@Override
 	public void newCardRead(IResultData<PunchObject,PunchRecordData> card) {
-		Runner runner = registry().findRunnerByEcard(card.getSiIdent());
+		String cardNb = card.getSiIdent();
+		Runner runner = registry().findRunnerByEcard(cardNb);
 		if( runner!=null ) {
 			RunnerRaceData runnerData = registry().findRunnerData(runner);
 			if( runnerData.hasData() ) {
-				geco().log("READING AGAIN " + card.getSiIdent()); //$NON-NLS-1$
+				geco().log("READING AGAIN " + cardNb); //$NON-NLS-1$
 				String returnedCard = requestHandler.requestMergeExistingRunner(handleNewData(card), runner);
 				if( returnedCard!=null ) {
 					geco().announcer().announceCardReadAgain(returnedCard);
 				}
 			} else {
 				handleData(runnerData, card);
-				if( runner.rentedEcard() ){
-					geco().announcer().announceRentedCard(card.getSiIdent());
+				if( runner.rentedEcard() ){ //TODO: move message to core properties
+					geco().info(Messages.uiGet("RunnersPanel.RentedEcardMessage") + cardNb, true); //$NON-NLS-1$
+					geco().announcer().announceRentedCard(cardNb);
 				}
 			}
 		} else {
-			geco().log("READING UNKNOWN " + card.getSiIdent()); //$NON-NLS-1$
-			String returnedCard = requestHandler.requestMergeUnknownRunner(handleNewData(card), card.getSiIdent());
+			geco().log("READING UNKNOWN " + cardNb); //$NON-NLS-1$
+			String returnedCard = requestHandler.requestMergeUnknownRunner(handleNewData(card), cardNb);
 			if( returnedCard!=null ) {
 				geco().announcer().announceUnknownCardRead(returnedCard);
 			}

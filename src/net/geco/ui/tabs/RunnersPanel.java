@@ -573,7 +573,7 @@ public class RunnersPanel extends TabPanel
 	
 	@Override
 	public void rentedCard(String siIdent) {
-		JOptionPane.showMessageDialog(frame(), Messages.uiGet("RunnersPanel.RentedEcardMessage") + siIdent); //$NON-NLS-1$
+//		JOptionPane.showMessageDialog(frame(), Messages.uiGet("RunnersPanel.RentedEcardMessage") + siIdent); //$NON-NLS-1$
 	}
 
 
