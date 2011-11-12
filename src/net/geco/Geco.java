@@ -39,6 +39,7 @@ import net.geco.control.StageControl;
 import net.geco.control.StartlistImporter;
 import net.geco.framework.IGecoApp;
 import net.geco.framework.IStageLaunch;
+import net.geco.functions.GecoFunction;
 import net.geco.model.Messages;
 import net.geco.model.Registry;
 import net.geco.model.Runner;
@@ -184,6 +185,7 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 	}
 	
 	public void startup(GecoStageLaunch stageLaunch) throws Exception {
+		GecoFunction.resetAll();
 		AppBuilder builder = stageLaunch.getAppBuilder();
 		appName = builder.getAppName();
 		GecoControl gecoControl = new GecoControl(builder);

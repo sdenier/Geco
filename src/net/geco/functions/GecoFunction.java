@@ -26,7 +26,7 @@ public abstract class GecoFunction extends Control {
 		registerFunction(this);
 	}
 
-	private static Vector<GecoFunction> functions = new Vector<GecoFunction>();
+	private static Vector<GecoFunction> functions = resetAll();
 	
 	public static Vector<GecoFunction> functions() {
 		return functions;
@@ -34,6 +34,11 @@ public abstract class GecoFunction extends Control {
 	
 	public static void registerFunction(GecoFunction function) {
 		functions.add(function);
+	}
+	
+	public static Vector<GecoFunction> resetAll() {
+		functions = new Vector<GecoFunction>();
+		return functions;
 	}
 	
 	public abstract String toString();
