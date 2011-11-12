@@ -171,4 +171,10 @@ public class ResultExporter extends AResultExporter {
 		getService(SplitExporter.class).generateOECsvResult(config, false, writer);
 	}
 
+	@Override
+	public void generateXMLResult(ResultConfig config, String filename)
+			throws Exception {
+		new SplitXmlExporter(geco()).generateXMLResult(buildResults(config), filename, false);		
+	}
+	
 }

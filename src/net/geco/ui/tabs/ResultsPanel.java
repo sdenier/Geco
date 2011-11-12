@@ -14,7 +14,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.print.PrinterException;
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 
@@ -213,7 +212,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 					String filename = filePane.getSelectedFile().getAbsolutePath();
 					try {
 						resultExporter().exportFile(filename, exportFormat, createResultConfig(), -1);
-					} catch (IOException ex) {
+					} catch (Exception ex) {
 						JOptionPane.showMessageDialog(
 								frame(),
 								Messages.uiGet("ResultsPanel.FileSaveWarning1")//$NON-NLS-1$ 
@@ -378,35 +377,41 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 			BorderFactory.createTitledBorder(Messages.uiGet("ResultsPanel.FileFormatTitle"))); //$NON-NLS-1$
 		JRadioButton selectHtmlB = new JRadioButton("HTML"); //$NON-NLS-1$
 		selectHtmlB.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				exportFormat = "html"; //$NON-NLS-1$
 			}
 		});
 		JRadioButton selectCsvB = new JRadioButton("CSV"); //$NON-NLS-1$
 		selectCsvB.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				exportFormat = "csv"; //$NON-NLS-1$
 			}
 		});
-		JRadioButton selectCNCsvB = new JRadioButton("OE CSV"); //$NON-NLS-1$
-		selectCNCsvB.setToolTipText(Messages.uiGet("ResultsPanel.OECSVTooltip")); //$NON-NLS-1$
-		selectCNCsvB.addActionListener(new ActionListener() {
-			@Override
+		JRadioButton selectOECsvB = new JRadioButton("OE CSV"); //$NON-NLS-1$
+		selectOECsvB.setToolTipText(Messages.uiGet("ResultsPanel.OECSVTooltip")); //$NON-NLS-1$
+		selectOECsvB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				exportFormat = "oe.csv"; //$NON-NLS-1$
+			}
+		});
+		JRadioButton selectXmlB = new JRadioButton("XML"); //$NON-NLS-1$
+		selectXmlB.setToolTipText("XML with IOF standards (for RouteGadget etc.)");
+		selectXmlB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				exportFormat = "xml"; //$NON-NLS-1$
 			}
 		});
 		ButtonGroup group = new ButtonGroup();
 		group.add(selectHtmlB);
 		group.add(selectCsvB);
-		group.add(selectCNCsvB);
+		group.add(selectOECsvB);
+		group.add(selectXmlB);
 		group.setSelected(selectHtmlB.getModel(), true);
 		exportFormat = "html"; //$NON-NLS-1$
 		fileFormatRB.add(selectHtmlB);
 		fileFormatRB.add(selectCsvB);
-		fileFormatRB.add(selectCNCsvB);
+		fileFormatRB.add(selectOECsvB);
+		fileFormatRB.add(selectXmlB);
 		
 		filePane = new JFileChooser();
 		filePane.setAccessory(fileFormatRB);
@@ -453,7 +458,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 			try {
 				try {
 					resultExporter().exportFile(resultFile, exportFormat, createResultConfig(), refreshDelay);
-				} catch (IOException ex) {
+				} catch (Exception ex) {
 					geco().logger().debug(ex);
 				}
 				wait(delay);

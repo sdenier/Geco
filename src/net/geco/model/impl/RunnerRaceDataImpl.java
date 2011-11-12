@@ -185,6 +185,15 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 	public Status getStatus() {
 		return getResult().getStatus();
 	}
+	
+	@Override
+	public String getIofStatus() {
+		if( runner.isNC() ){
+			return "NotCompeting"; //$NON-NLS-1$
+		} else {
+			return getStatus().iofFormat();
+		}
+	}
 
 	public RunnerResult getResult() {
 		return result;

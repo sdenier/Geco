@@ -14,6 +14,7 @@ import net.geco.control.ResultBuilder.ResultConfig;
 import net.geco.model.Pool;
 import net.geco.model.RankedRunner;
 import net.geco.model.Result;
+import net.geco.model.ResultType;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.iocsv.CsvWriter;
@@ -34,7 +35,7 @@ public abstract class AResultExporter extends Control {
 	}
 
 	public void exportFile(String filename, String format, ResultConfig config, int refreshInterval)
-			throws IOException {
+			throws Exception {
 				if( !filename.endsWith(format) ) {
 					filename = filename + "." + format; //$NON-NLS-1$
 				}
@@ -45,7 +46,10 @@ public abstract class AResultExporter extends Control {
 					exportCsvFile(filename, config);
 				}
 				if( format.equals("oe.csv") ) { //$NON-NLS-1$
-					expoerOECsvFile(filename, config);
+					exportOECsvFile(filename, config);
+				}
+				if( format.equals("xml") ) { //$NON-NLS-1$
+					exportXmlFile(filename, config);
 				}
 			}
 
@@ -63,11 +67,24 @@ public abstract class AResultExporter extends Control {
 		writer.close();
 	}
 
-	protected void expoerOECsvFile(String filename, ResultConfig config)
+	protected void exportOECsvFile(String filename, ResultConfig config)
 			throws IOException {
 		CsvWriter writer = new CsvWriter(";", filename); //$NON-NLS-1$
 		generateOECsvResult(config, writer);
 		writer.close();
+	}
+	
+	protected void exportXmlFile(String filename, ResultConfig config)
+			throws Exception {
+		if( config.resultType==ResultType.CategoryResult ) {
+			try {
+				generateXMLResult(config, filename);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			throw new Exception("Can only export results by category in XML");
+		}
 	}
 
 	public abstract String generateHtmlResults(ResultConfig config, int refreshDelay);
@@ -150,6 +167,7 @@ public abstract class AResultExporter extends Control {
 
 	public abstract void generateOECsvResult(ResultConfig config, CsvWriter writer) throws IOException;
 
+	public abstract void generateXMLResult(ResultConfig config, String filename) throws Exception ;
 	
 	protected Vector<Result> buildResults(ResultConfig config) {
 		Vector<Pool> pools = new Vector<Pool>();

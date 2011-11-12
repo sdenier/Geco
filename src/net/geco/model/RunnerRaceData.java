@@ -59,6 +59,8 @@ public interface RunnerRaceData extends Cloneable {
 	
 	public Status getStatus();
 	
+	public String getIofStatus();
+	
 	public RunnerResult getResult();
 
 	public void setResult(RunnerResult result);

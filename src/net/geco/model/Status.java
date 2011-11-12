@@ -18,6 +18,9 @@ public enum Status {
 		public boolean isRecheckable() {
 			return true;
 		}
+		public String iofFormat() {
+			return "OK"; //$NON-NLS-1$
+		}
 	},
 	MP {
 		public Color color() {
@@ -29,6 +32,9 @@ public enum Status {
 		public boolean isRecheckable() {
 			return true;
 		}
+		public String iofFormat() {
+			return "MisPunch"; //$NON-NLS-1$
+		}
 	},
 	DNS {
 		public String toString() {
@@ -37,16 +43,25 @@ public enum Status {
 		public boolean isTraceable() {
 			return false;
 		}
+		public String iofFormat() {
+			return "DidNotStart"; //$NON-NLS-1$
+		}		
 	},
 	DNF {
 		public String toString() {
 			return Messages.getString("Status.DNFLabel"); //$NON-NLS-1$
 		}
+		public String iofFormat() {
+			return "DidNotFinish"; //$NON-NLS-1$
+		}		
 	},
 	DSQ {
 		public String toString() {
 			return Messages.getString("Status.DSQLabel"); //$NON-NLS-1$
 		}
+		public String iofFormat() {
+			return "Disqualified"; //$NON-NLS-1$
+		}		
 	},
 	NOS { 
 		public Color color() {
@@ -64,6 +79,9 @@ public enum Status {
 		public boolean isTraceable() {
 			return false;
 		}
+		public String iofFormat() {
+			return "Inactive"; //$NON-NLS-1$
+		}		
 	},
 	RUN { 
 		public Color color() {
@@ -81,6 +99,9 @@ public enum Status {
 		public boolean isTraceable() {
 			return false;
 		}
+		public String iofFormat() {
+			return "Active"; //$NON-NLS-1$
+		}		
 	},
 	UNK { 
 		public Color color() {
@@ -92,6 +113,9 @@ public enum Status {
 		public boolean isUnresolved() {
 			return true;
 		}
+		public String iofFormat() {
+			return "Finished"; //$NON-NLS-1$
+		}		
 	},
 	DUP { 
 		public Color color() {
@@ -103,6 +127,9 @@ public enum Status {
 		public boolean isUnresolved() {
 			return true;
 		}
+		public String iofFormat() {
+			return "Finished"; //$NON-NLS-1$
+		}		
 	};
 	
 	public Color color() {
@@ -127,6 +154,10 @@ public enum Status {
 	
 	public boolean isRecheckable() {
 		return false;
+	}
+
+	public String iofFormat() {
+		return null;
 	}
 	
 }

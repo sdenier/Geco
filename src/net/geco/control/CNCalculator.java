@@ -188,6 +188,12 @@ public class CNCalculator extends AResultExporter implements StageListener {
 	}
 
 	@Override
+	public void generateXMLResult(ResultConfig config, String filename)
+			throws Exception {
+		new SplitXmlExporter(geco()).generateXMLResult(buildResults(config), filename, false);		
+	}
+	
+	@Override
 	public void changed(Stage previous, Stage current) {
 		try {
 			setCnFile(new File( stage().getProperties().getProperty(cnFileProperty()) ));
