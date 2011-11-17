@@ -19,7 +19,7 @@ import net.geco.basics.TimeManager;
 import net.geco.model.Messages;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Trace;
-import net.geco.ui.tabs.RunnersTableAnnouncer.RunnersTableListener;
+import net.geco.ui.framework.RunnersTableAnnouncer.RunnersTableListener;
 
 
 /**

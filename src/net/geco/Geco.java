@@ -46,8 +46,8 @@ import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Stage;
 import net.geco.model.Status;
+import net.geco.ui.GecoLauncher;
 import net.geco.ui.GecoWindow;
-import net.geco.ui.basics.GecoLauncher;
 import net.geco.ui.components.MergeRunnerDialog;
 
 

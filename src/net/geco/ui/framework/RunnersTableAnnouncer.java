@@ -2,7 +2,7 @@
  * Copyright (c) 2011 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.ui.tabs;
+package net.geco.ui.framework;
 
 import java.util.LinkedList;
 import java.util.List;

@@ -2,9 +2,8 @@
  * Copyright (c) 2011 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.ui;
+package net.geco.ui.framework;
 
-import net.geco.ui.tabs.RunnersTableAnnouncer;
 
 /**
  * @author Simon Denier

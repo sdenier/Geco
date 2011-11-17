@@ -37,7 +37,7 @@ import net.geco.model.RunnerRaceData;
 import net.geco.ui.basics.SwingUtils;
 import net.geco.ui.components.MergeRunnerDialog;
 import net.geco.ui.framework.GecoPanel;
-import net.geco.ui.tabs.RunnersTableAnnouncer.RunnersTableListener;
+import net.geco.ui.framework.RunnersTableAnnouncer.RunnersTableListener;
 
 
 /**

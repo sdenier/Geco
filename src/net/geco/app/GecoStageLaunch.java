@@ -56,7 +56,7 @@ public class GecoStageLaunch implements IStageLaunch {
 	}
 
 	@Override
-	public GecoStageLaunch loadFromFileSystem(String dir) {
+	public IStageLaunch loadFromFileSystem(String dir) {
 		setStageDir(dir);
 		Properties properties = StageBuilder.loadProperties(dir);
 		setStageName(properties.getProperty(StageImpl.nameProperty(), Messages.getString("GecoStageLaunch.DefaultStageName"))); //$NON-NLS-1$

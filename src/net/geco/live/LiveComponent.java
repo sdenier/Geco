@@ -22,10 +22,10 @@ import net.geco.model.Messages;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.impl.POFactory;
 import net.geco.model.xml.CourseSaxImporter;
-import net.geco.ui.UIAnnouncers;
 import net.geco.ui.basics.SwingUtils;
-import net.geco.ui.tabs.RunnersTableAnnouncer;
-import net.geco.ui.tabs.RunnersTableAnnouncer.RunnersTableListener;
+import net.geco.ui.framework.RunnersTableAnnouncer;
+import net.geco.ui.framework.UIAnnouncers;
+import net.geco.ui.framework.RunnersTableAnnouncer.RunnersTableListener;
 
 
 /**

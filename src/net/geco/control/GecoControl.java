@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import net.geco.app.AppBuilder;
 import net.geco.basics.Announcer;
 import net.geco.basics.GService;
 import net.geco.basics.Logger;
@@ -110,7 +109,7 @@ public class GecoControl {
 		this(startDir, true);
 	}
 
-	public GecoControl(AppBuilder builder) {
+	public GecoControl(ControlBuilder builder) {
 		announcer = new Announcer();
 		factory = builder.getFactory();
 		stageBuilder = builder.createStageBuilder();

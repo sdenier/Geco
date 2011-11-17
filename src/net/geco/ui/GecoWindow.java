@@ -46,13 +46,13 @@ import net.geco.live.LiveClientDialog;
 import net.geco.live.LiveComponent;
 import net.geco.model.Messages;
 import net.geco.model.Stage;
-import net.geco.ui.basics.GecoLauncher;
 import net.geco.ui.basics.GecoStatusBar;
 import net.geco.ui.basics.StartStopButton;
 import net.geco.ui.basics.SwingUtils;
 import net.geco.ui.framework.ConfigPanel;
+import net.geco.ui.framework.RunnersTableAnnouncer;
 import net.geco.ui.framework.TabPanel;
-import net.geco.ui.tabs.RunnersTableAnnouncer;
+import net.geco.ui.framework.UIAnnouncers;
 import net.geco.ui.tabs.StagePanel;
 
 /**

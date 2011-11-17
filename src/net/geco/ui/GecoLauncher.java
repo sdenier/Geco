@@ -2,7 +2,7 @@
  * Copyright (c) 2010 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.ui.basics;
+package net.geco.ui;
 
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
@@ -46,6 +46,7 @@ import net.geco.basics.GecoResources;
 import net.geco.control.StageBuilder;
 import net.geco.framework.IStageLaunch;
 import net.geco.model.Messages;
+import net.geco.ui.basics.SwingUtils;
 
 
 /**
@@ -238,7 +239,7 @@ public class GecoLauncher extends JDialog {
 		stageNameF.addFocusListener(new FocusAdapter() {
 			public void focusLost(FocusEvent e) {
 				String stageName = stageNameF.getText().trim();
-				String proposedPath = createStage.getStageDir() + GecoResources.sep + stageName.replace(GecoResources.sep, "-");
+				String proposedPath = createStage.getStageDir() + GecoResources.sep + stageName.replace(GecoResources.sep, "-"); //$NON-NLS-1$
 				createStage.setStageDir(proposedPath);
 				stagePathL.setText(proposedPath);
 			}

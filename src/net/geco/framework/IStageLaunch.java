@@ -4,7 +4,6 @@
  */
 package net.geco.framework;
 
-import net.geco.app.GecoStageLaunch;
 
 
 /**
@@ -28,7 +27,7 @@ public interface IStageLaunch extends Cloneable {
 
 	public void initDirWithTemplateFiles();
 
-	public GecoStageLaunch loadFromFileSystem(String dir);
+	public IStageLaunch loadFromFileSystem(String dir);
 
 	public void copyFrom(IStageLaunch selectedValue);
 

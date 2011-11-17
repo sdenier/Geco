@@ -6,14 +6,11 @@ package net.geco.app;
 
 import javax.swing.JFrame;
 
-import net.geco.control.Checker;
-import net.geco.control.GecoControl;
-import net.geco.control.StageBuilder;
+import net.geco.control.ControlBuilder;
 import net.geco.framework.IGecoApp;
-import net.geco.model.Factory;
-import net.geco.ui.UIAnnouncers;
 import net.geco.ui.framework.ConfigPanel;
 import net.geco.ui.framework.TabPanel;
+import net.geco.ui.framework.UIAnnouncers;
 
 /**
  * I define the API to customize a Geco application for a given type of orienteering race.
@@ -30,26 +27,9 @@ import net.geco.ui.framework.TabPanel;
  * @since May 1, 2011
  *
  */
-public abstract class AppBuilder {
-
-	protected Factory factory;
-
-	public Factory getFactory() {
-		if( factory==null ){
-			factory = createFactory();
-		}
-		return factory;
-	}
+public abstract class AppBuilder extends ControlBuilder {
 
 	public abstract String getAppName();
-
-	protected abstract Factory createFactory();
-	
-	public abstract StageBuilder createStageBuilder();
-	
-	public abstract Checker createChecker(GecoControl gecoControl);
-	
-	public abstract void buildControls(GecoControl gecoControl);
 	
 	public abstract TabPanel[] buildUITabs(IGecoApp geco, JFrame frame, UIAnnouncers announcers);
 

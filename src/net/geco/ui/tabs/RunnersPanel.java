@@ -64,13 +64,14 @@ import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Stage;
 import net.geco.model.Status;
-import net.geco.ui.UIAnnouncers;
 import net.geco.ui.basics.EcardComparator;
 import net.geco.ui.basics.HyperLog;
 import net.geco.ui.basics.PunchPanel;
 import net.geco.ui.basics.SwingUtils;
 import net.geco.ui.components.ArchiveViewer;
+import net.geco.ui.framework.RunnersTableAnnouncer;
 import net.geco.ui.framework.TabPanel;
+import net.geco.ui.framework.UIAnnouncers;
 
 
 /**

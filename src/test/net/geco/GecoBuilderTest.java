@@ -27,9 +27,9 @@ import net.geco.control.StageBuilder;
 import net.geco.framework.IGecoApp;
 import net.geco.model.Stage;
 import net.geco.ui.GecoWindow;
-import net.geco.ui.UIAnnouncers;
 import net.geco.ui.framework.ConfigPanel;
 import net.geco.ui.framework.TabPanel;
+import net.geco.ui.framework.UIAnnouncers;
 import net.geco.ui.tabs.StagePanel;
 
 import org.junit.Before;
