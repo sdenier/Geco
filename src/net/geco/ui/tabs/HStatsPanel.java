@@ -18,6 +18,7 @@ import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -119,6 +120,7 @@ public class HStatsPanel extends StatsPanel {
 		// cant use default sorter with html-formatted content
 //		TableRowSorter<AbstractTableModel> sorter = new TableRowSorter<AbstractTableModel>(courseTableModel);
 //		table.setRowSorter(sorter);
+		((JLabel) table.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 		JScrollPane tableSP = new JScrollPane(table);
 		tableSP.setPreferredSize(new Dimension(STATS_WIDTH, STATS_HEIGHT));
@@ -128,7 +130,7 @@ public class HStatsPanel extends StatsPanel {
 		panel.add( SwingUtils.embed(controlP), BorderLayout.WEST );
 		panel.add( Box.createHorizontalStrut(MARGIN), BorderLayout.EAST );
 	}
-	
+
 	protected AbstractTableModel createCourseTableModel() {
 		return new AbstractTableModel() {
 			@Override

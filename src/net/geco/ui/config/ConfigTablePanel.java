@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -53,6 +54,7 @@ public class ConfigTablePanel<T> extends JPanel {
 		setLayout(new BorderLayout());
 		this.tableModel = tableModel;
 		table = new JTable(tableModel);
+		((JLabel) table.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
 
 		TableRowSorter<ConfigTableModel<T>> sorter = new TableRowSorter<ConfigTableModel<T>>(
 				tableModel);

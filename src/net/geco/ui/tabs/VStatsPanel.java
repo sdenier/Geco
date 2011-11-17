@@ -15,6 +15,7 @@ import java.awt.event.ItemListener;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -118,6 +119,7 @@ public class VStatsPanel extends StatsPanel {
 		
 		courseTableModel = createCourseTableModel();
 		JTable table = new JTable(courseTableModel);
+		((JLabel) table.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 		JScrollPane jsp = new JScrollPane(table);
 		jsp.setPreferredSize(new Dimension(250, 235));
