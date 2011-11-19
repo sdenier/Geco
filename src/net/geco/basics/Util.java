@@ -4,7 +4,6 @@
 package net.geco.basics;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -55,7 +54,7 @@ public class Util {
 
 	public static Vector<String> readLines(String filename) throws IOException {
 		Vector<String> lines = new Vector<String>();
-		BufferedReader reader = new BufferedReader(new FileReader(filename));
+		BufferedReader reader = GecoResources.getSafeReaderFor(filename);
 		String line = reader.readLine();
 		while( line!=null ) {
 			lines.add(line);

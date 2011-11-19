@@ -5,7 +5,6 @@
 package net.geco.basics;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 
 
@@ -196,7 +195,7 @@ public final class Html {
 	}
 	
 	public Html include(String filename) throws IOException {
-		BufferedReader reader = new BufferedReader(new FileReader(filename));
+		BufferedReader reader = GecoResources.getSafeReaderFor(filename);
 		String line = reader.readLine();
 		while( line!=null ) {
 			buffer.append(line).append("\n"); //$NON-NLS-1$

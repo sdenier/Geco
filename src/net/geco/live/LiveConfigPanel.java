@@ -359,7 +359,7 @@ public class LiveConfigPanel extends JPanel {
 		this.baseDir = dir;
 		try {
 			Properties liveProp = new Properties();
-			liveProp.load(GecoResources.getReaderFor(dir + GecoResources.sep + "live.prop")); //$NON-NLS-1$
+			liveProp.load(GecoResources.getSafeReaderFor(dir + GecoResources.sep + "live.prop")); //$NON-NLS-1$
 			liveComponent.loadMapImage(liveProp.getProperty("MapFile")); //$NON-NLS-1$
 			liveComponent.importCourseData(liveProp.getProperty("CourseFile")); //$NON-NLS-1$
 			setProperties(liveProp);

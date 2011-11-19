@@ -5,9 +5,6 @@
 package test.net.geco.control;
 
 import static org.junit.Assert.assertEquals;
-
-import java.io.File;
-
 import net.geco.basics.Announcer;
 import net.geco.control.GecoControl;
 import net.geco.control.StageControl;
@@ -51,7 +48,7 @@ public class StageControlTest {
 		
 		
 		try {
-			control.importCategoryTemplate(new File("testData/categoryTemplate.txt"));
+			control.importCategoryTemplate("testData/categoryTemplate.txt");
 		} catch (Exception e) {
 			e.printStackTrace();
 			Assert.fail(e.getMessage());
@@ -80,7 +77,7 @@ public class StageControlTest {
 		registry.addCategory(d35);
 		
 		try {
-			control.importCategoryTemplate(new File("testData/categoryTemplate.txt"));
+			control.importCategoryTemplate("testData/categoryTemplate.txt");
 		} catch (Exception e) {
 			e.printStackTrace();
 			Assert.fail(e.getMessage());

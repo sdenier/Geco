@@ -5,10 +5,9 @@
 package net.geco.control;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 
 import net.geco.basics.Announcer;
+import net.geco.basics.GecoResources;
 import net.geco.basics.Util;
 import net.geco.model.Category;
 import net.geco.model.Club;
@@ -262,8 +261,8 @@ public class StageControl extends Control {
 		return rCat;
 	}
 	
-	public void importCategoryTemplate(File file) throws Exception {
-		BufferedReader reader = new BufferedReader(new FileReader(file));
+	public void importCategoryTemplate(String filepath) throws Exception {
+		BufferedReader reader = GecoResources.getSafeReaderFor(filepath);
 		String line = reader.readLine();
 		while( line != null ){
 			String[] tokens = Util.splitAndTrim(line, ","); //$NON-NLS-1$

@@ -71,7 +71,7 @@ public class StageBuilder extends BasicControl {
 	public static Properties loadProperties(String baseDir) {
 		Properties props = new Properties();
 		try {
-			props.load( GecoResources.getReaderFor(propPath(baseDir)) );
+			props.load( GecoResources.getSafeReaderFor(propPath(baseDir)) );
 		} catch (IOException e) {
 			System.out.println(e); // TODO: !!!!!!!!!!!!!!!!!!!!! throw exception and handle in UI
 		}

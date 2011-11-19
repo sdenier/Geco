@@ -35,14 +35,10 @@ public class CsvReader {
 		this.csvSep = csvSep;
 	}
 	
-	public CsvReader(String csvSep, String filePath, boolean detectEndoding) throws IOException {
+	public CsvReader(String csvSep, String filePath) throws IOException {
 		this(csvSep);
 		initialize(filePath);
-		if( detectEndoding ){
-			safeOpen();
-		} else {
-			open();
-		}
+		open();
 	}
 
 	
@@ -70,10 +66,6 @@ public class CsvReader {
 	}
 
 	public void open() throws FileNotFoundException {
-		this.reader = GecoResources.getReaderFor(filePath());
-	}
-
-	public void safeOpen() throws FileNotFoundException {
 		this.reader = GecoResources.getSafeReaderFor(filePath());
 	}
 

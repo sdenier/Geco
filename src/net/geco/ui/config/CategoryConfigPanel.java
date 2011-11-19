@@ -85,7 +85,7 @@ public class CategoryConfigPanel extends ConfigTablePanel<Category> implements C
 				int answer = chooser.showDialog(frame, Messages.uiGet("CategoryConfigPanel.ImportLabel")); //$NON-NLS-1$
 				if( answer==JFileChooser.APPROVE_OPTION ) {
 					try {
-						geco.stageControl().importCategoryTemplate(chooser.getSelectedFile());
+						geco.stageControl().importCategoryTemplate(chooser.getSelectedFile().getAbsolutePath());
 					} catch (Exception e1) {
 						JOptionPane.showMessageDialog(
 								frame,

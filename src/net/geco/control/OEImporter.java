@@ -33,7 +33,7 @@ public abstract class OEImporter extends Control {
 	}
 
 	public void loadArchiveFrom(File importFile) throws IOException {
-		CsvReader reader = new CsvReader(";", importFile.getAbsolutePath(), true); //$NON-NLS-1$
+		CsvReader reader = new CsvReader(";", importFile.getAbsolutePath()); //$NON-NLS-1$
 		String[] record = reader.readRecord(); // bypass first line with headers
 		record = reader.readRecord();
 		while( record!=null ) {
