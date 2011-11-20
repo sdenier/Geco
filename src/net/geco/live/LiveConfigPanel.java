@@ -17,7 +17,6 @@ import java.awt.event.MouseEvent;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -406,7 +405,7 @@ public class LiveConfigPanel extends JPanel {
 		prop.setProperty("YFactor", yfactorS.getValue().toString()); //$NON-NLS-1$
 		
 		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(baseDir + GecoResources.sep + "live.prop")); //$NON-NLS-1$
+			BufferedWriter writer = GecoResources.getSafeWriterFor(baseDir + GecoResources.sep + "live.prop"); //$NON-NLS-1$
 			prop.store(writer, "Geco LiveMap"); //$NON-NLS-1$
 		} catch (IOException e) {
 			showFileErrorDialog(e);

@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Properties;
@@ -107,7 +106,7 @@ public class StageBuilder extends BasicControl {
 
 	public static void saveProperties(String baseDir, Properties properties) {
 		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(propFile(baseDir)));
+			BufferedWriter writer = GecoResources.getSafeWriterFor(propPath(baseDir));
 			properties.store(writer, "Geco " + new Date(System.currentTimeMillis()).toString()); //$NON-NLS-1$
 		} catch (IOException e) {
 			e.printStackTrace();

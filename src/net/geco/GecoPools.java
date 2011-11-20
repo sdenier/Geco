@@ -5,12 +5,12 @@
 package net.geco;
 
 import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Vector;
 
+import net.geco.basics.GecoResources;
 import net.geco.basics.Html;
 import net.geco.basics.Util;
 import net.geco.control.GecoControl;
@@ -79,7 +79,7 @@ public class GecoPools {
 		}
 		try {
 			String filepath = StageBuilder.filepath(gecoControl.stage().getBaseDir(), "merged_results.html"); //$NON-NLS-1$
-			BufferedWriter writer = new BufferedWriter(new FileWriter(filepath));
+			BufferedWriter writer = GecoResources.getSafeWriterFor(filepath);
 			writer.write(html.close());
 			writer.close();
 		} catch (IOException e) {

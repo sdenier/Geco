@@ -6,11 +6,14 @@ package net.geco.basics;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 
 import com.ibm.icu.text.CharsetDetector;
@@ -23,6 +26,16 @@ import com.ibm.icu.text.CharsetDetector;
 public class GecoResources {
 	
 	public final static String sep = "/"; //$NON-NLS-1$
+	
+	public static Charset CHARSET;
+	
+	static {
+		try {
+			CHARSET = Charset.forName("UTF-8");	
+		} catch (Exception e) {
+			CHARSET = Charset.defaultCharset();
+		}
+	}
 	
 	private static boolean webstart = false;
 
@@ -66,6 +79,11 @@ public class GecoResources {
 		} else {
 			return null;
 		}
+	}
+	
+	public static BufferedWriter getSafeWriterFor(String name) throws FileNotFoundException {
+		OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(name), CHARSET);
+		return new BufferedWriter(writer);
 	}
 	
 	public static void forWebstart() {

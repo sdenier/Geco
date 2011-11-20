@@ -6,10 +6,10 @@ package net.geco.model.iocsv;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
 
+import net.geco.basics.GecoResources;
 import net.geco.basics.Util;
 
 
@@ -66,7 +66,7 @@ public class CsvWriter {
 	}
 
 	public void open() throws IOException {
-		this.writer = new BufferedWriter(new FileWriter(filePath()));
+		this.writer = GecoResources.getSafeWriterFor(filePath());
 	}
 
 	public void close() throws IOException {
