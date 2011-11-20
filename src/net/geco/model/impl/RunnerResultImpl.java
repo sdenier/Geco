@@ -105,7 +105,7 @@ public class RunnerResultImpl implements RunnerResult {
 		if( nbMPs==0 ){
 			return ""; //$NON-NLS-1$
 		}
-		StringBuffer mpTrace = new StringBuffer();
+		StringBuilder mpTrace = new StringBuilder();
 		for (Trace t : trace) {
 			if( t.isMP() ){
 				mpTrace.append(t.getCode()).append(","); //$NON-NLS-1$

@@ -225,7 +225,7 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 	}
 	
 	public String punchSummary(int sumLength) {
-		StringBuffer buf = new StringBuffer("("); //$NON-NLS-1$
+		StringBuilder buf = new StringBuilder("("); //$NON-NLS-1$
 		int i = 0;
 		while( i<sumLength && i<punches.length ) {
 			buf.append(punches[i].getCode());
@@ -237,7 +237,7 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 	}
 	
 	public String infoString() {
-		StringBuffer buffer = new StringBuffer(getRunner().idString());
+		StringBuilder buffer = new StringBuilder(getRunner().idString());
 		buffer.append(", " + getCourse().getName() + " " + getResult().formatStatus()); //$NON-NLS-1$ //$NON-NLS-2$
 		buffer.append(Messages.getString("RunnerRaceDataImpl.InTimeLabel") + getResult().formatRacetime()); //$NON-NLS-1$
 		return buffer.toString();

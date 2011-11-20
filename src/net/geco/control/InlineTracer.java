@@ -120,7 +120,7 @@ public class InlineTracer extends AbstractTracer {
 	 * @see #getTraceAsString
 	 */
 	public String[] humanReadableTrace(int[] codes, Punch[] punches, int[][] matrix) {
-		StringBuffer path = new StringBuffer();
+		StringBuilder path = new StringBuilder();
 		int i = codes.length - 1;
 		int j = punches.length - 1;
 		

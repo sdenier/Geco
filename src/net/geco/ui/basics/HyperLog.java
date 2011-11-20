@@ -48,7 +48,7 @@ public class HyperLog extends JTextPane implements Logging {
 	}
 	
 	private void displayLog() {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		for (int i = 0; i < LOGSIZE; i++) {
 			buffer.append(logRing.get(i));
 		}
