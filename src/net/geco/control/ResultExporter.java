@@ -57,7 +57,7 @@ public class ResultExporter extends AResultExporter {
 	 */
 	private void appendHtmlResult(Result result, ResultConfig config, Html html) {
 		// compute basic stats
-		StringBuffer resultLabel = new StringBuffer(result.getIdentifier());
+		StringBuilder resultLabel = new StringBuilder(result.getIdentifier());
 		int finished = result.getRanking().size() + result.getNRRunners().size();
 		int present = finished;
 		for (RunnerRaceData other : result.getOtherRunners()) {

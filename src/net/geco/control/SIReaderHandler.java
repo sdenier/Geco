@@ -249,8 +249,8 @@ public class SIReaderHandler extends Control
 				}
 			} else {
 				handleData(runnerData, card);
-				if( runner.rentedEcard() ){ //TODO: move message to core properties
-					geco().info(Messages.uiGet("RunnersPanel.RentedEcardMessage") + cardNb, true); //$NON-NLS-1$
+				if( runner.rentedEcard() ){
+					geco().info(Messages.getString("SIReaderHandler.RentedEcardMessage") + cardNb, true); //$NON-NLS-1$
 					geco().announcer().announceRentedCard(cardNb);
 				}
 			}
