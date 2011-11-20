@@ -64,11 +64,11 @@ public class SplitExporter extends AResultExporter implements StageListener {
 	}
 	
 	@Override
-	public String generateHtmlResults(ResultConfig config, int refreshInterval) {
+	public String generateHtmlResults(ResultConfig config, int refreshInterval, boolean forFileExport) {
 		Vector<Result> results = buildResults(config);
 		this.refreshInterval = refreshInterval;
 		Html html = new Html();
-		includeHeader(html, "result.css"); //$NON-NLS-1$
+		includeHeader(html, "result.css", forFileExport); //$NON-NLS-1$
 		for (Result result : results) {
 			if( config.showEmptySets || !result.isEmpty() ) {
 				SplitTime[] bestSplits = null;
@@ -76,6 +76,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 					bestSplits = resultBuilder.initializeBestSplits(result, config.resultType);
 				}
 				Map<RunnerRaceData, SplitTime[]> allSplits = resultBuilder.buildAllNormalSplits(result, bestSplits);
+				bestSplits = bestSplits == null ? new SplitTime[0] : bestSplits;
 				appendHtmlResultsWithSplits(result, allSplits, bestSplits, config, html);
 			}
 		}
@@ -163,9 +164,8 @@ public class SplitExporter extends AResultExporter implements StageListener {
 			if( limit==0 )
 				break; // in case we have splits.length a multiple of nbColumns, we can stop now
 			
-			String trClass = ( i % 2 == 0 ) ? "col0" : "col1"; //$NON-NLS-1$ //$NON-NLS-2$
 			// first line with seq and control number/code
-			html.openTr(trClass).td(""); //$NON-NLS-1$
+			html.openTr("col1").td(""); //$NON-NLS-1$ //$NON-NLS-2$
 			for (int j = 0; j < limit; j++) {
 				SplitTime split = splits[j + rowStart];
 				String label = split.seq;
@@ -175,6 +175,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 				html.td(label);
 			}
 			html.closeTr();
+			String trClass = "col0"; //$NON-NLS-1$
 			// second line is cumulative split since start
 			html.openTr(trClass).td(""); //$NON-NLS-1$
 			for (int j = 0; j < limit; j++) {

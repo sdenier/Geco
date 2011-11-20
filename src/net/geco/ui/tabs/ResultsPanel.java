@@ -419,7 +419,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 
 
 	public void refreshResultView() {
-		String htmlResults = resultExporter().generateHtmlResults(createResultConfig(), -1);
+		String htmlResults = resultExporter().generateHtmlResults(createResultConfig(), -1, false);
 		resultTA.setText(htmlResults);
 	}
 

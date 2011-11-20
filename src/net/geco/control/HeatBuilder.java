@@ -5,12 +5,12 @@
 package net.geco.control;
 
 import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 import java.util.Vector;
 
+import net.geco.basics.GecoResources;
 import net.geco.basics.Html;
 import net.geco.model.Course;
 import net.geco.model.Heat;
@@ -130,7 +130,7 @@ public class HeatBuilder extends Control {
 	
 	public String refreshHtmlHeats(HeatSet[] selectedHeatsets) {
 		heats = null;
-		return generateHtmlHeats(selectedHeatsets);
+		return generateHtmlHeats(selectedHeatsets, false);
 	}
 	
 	public void exportFile(String filename, String format, HeatSet[] selectedHeatsets) throws IOException {
@@ -138,8 +138,8 @@ public class HeatBuilder extends Control {
 			filename = filename + "." + format; //$NON-NLS-1$
 		}
 		if( format.equals("html") ) { //$NON-NLS-1$
-			BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
-			writer.write(generateHtmlHeats(selectedHeatsets));	
+			BufferedWriter writer = GecoResources.getSafeWriterFor(filename);
+			writer.write(generateHtmlHeats(selectedHeatsets, true));	
 			writer.close();
 		}
 		if( format.equals("csv") ) { //$NON-NLS-1$
@@ -147,23 +147,30 @@ public class HeatBuilder extends Control {
 		}
 	}
 
-	public String generateHtmlHeats(HeatSet[] selectedHeatsets) {
+	public String generateHtmlHeats(HeatSet[] selectedHeatsets, boolean forFileExport) {
 		Vector<Heat> heats = getHeats(selectedHeatsets);
 		Html html = new Html();
+
+		html.open("head").nl(); //$NON-NLS-1$
+		if( forFileExport ){
+			html.contents("<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">");
+		}
+		html.close("head").nl(); //$NON-NLS-1$
+
 		for (Heat heat : heats) {
 			appendHtmlHeat(heat, html);
 		}
 		return html.close();
 	}
 	private void appendHtmlHeat(Heat heat, Html html) {
-		html.tag("h1", heat.getHeatSetName() + " " + heat.getName()); //$NON-NLS-1$ //$NON-NLS-2$
-		html.open("table"); //$NON-NLS-1$
+		html.tag("h1", heat.getHeatSetName() + " " + heat.getName()).nl(); //$NON-NLS-1$ //$NON-NLS-2$
+		html.open("table").nl(); //$NON-NLS-1$
 		int i = 1;
 		for (Runner runner : heat.getQualifiedRunners()) {
-			html.open("tr").td(Integer.toString(i)).td(runner.getName()).close("tr"); //$NON-NLS-1$ //$NON-NLS-2$
+			html.open("tr").td(Integer.toString(i)).td(runner.getName()).close("tr").nl(); //$NON-NLS-1$ //$NON-NLS-2$
 			i++;
 		}
-		html.close("table"); //$NON-NLS-1$
+		html.close("table").nl(); //$NON-NLS-1$
 	}
 	
 	public void generateCsvHeats(String filename, HeatSet[] selectedHeatsets) throws IOException {

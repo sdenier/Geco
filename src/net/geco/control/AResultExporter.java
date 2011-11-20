@@ -5,10 +5,10 @@
 package net.geco.control;
 
 import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Vector;
 
+import net.geco.basics.GecoResources;
 import net.geco.basics.Html;
 import net.geco.control.ResultBuilder.ResultConfig;
 import net.geco.model.Pool;
@@ -55,8 +55,8 @@ public abstract class AResultExporter extends Control {
 
 	protected void exportHtmlFile(String filename, ResultConfig config, int refreshInterval)
 			throws IOException {
-		BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
-		writer.write(generateHtmlResults(config, refreshInterval));
+		BufferedWriter writer = GecoResources.getSafeWriterFor(filename);
+		writer.write(generateHtmlResults(config, refreshInterval, true));
 		writer.close();
 	}
 
@@ -87,10 +87,13 @@ public abstract class AResultExporter extends Control {
 		}
 	}
 
-	public abstract String generateHtmlResults(ResultConfig config, int refreshDelay);
+	public abstract String generateHtmlResults(ResultConfig config, int refreshDelay, boolean forFileExport);
 	
-	public void includeHeader(Html html, String cssfile) {
-		html.open("head"); //$NON-NLS-1$
+	public void includeHeader(Html html, String cssfile, boolean forFileExport) {
+		html.open("head").nl(); //$NON-NLS-1$
+		if( forFileExport ){
+			html.contents("<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">");
+		}
 		generateHtmlHeader(html);
 		try {
 			html.inlineCss(stage().filepath(cssfile));

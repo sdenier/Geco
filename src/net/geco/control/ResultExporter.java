@@ -31,11 +31,11 @@ public class ResultExporter extends AResultExporter {
 	}
 
 	@Override
-	public String generateHtmlResults(ResultConfig config, int refreshInterval) {
+	public String generateHtmlResults(ResultConfig config, int refreshInterval, boolean forFileExport) {
 		Vector<Result> results = buildResults(config);
 		this.refreshInterval = refreshInterval;
 		Html html = new Html();
-		includeHeader(html, "result.css"); //$NON-NLS-1$
+		includeHeader(html, "result.css", forFileExport); //$NON-NLS-1$
 		for (Result result : results) {
 			if( config.showEmptySets || !result.isEmpty()) {
 				appendHtmlResult(result, config, html);	

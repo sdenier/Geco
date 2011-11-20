@@ -23,9 +23,9 @@ import javax.print.attribute.standard.MediaSizeName;
 import javax.swing.JFrame;
 import javax.swing.JTextPane;
 
-import net.geco.basics.Html;
 import net.geco.basics.Announcer.CardListener;
 import net.geco.basics.Announcer.StageListener;
+import net.geco.basics.Html;
 import net.geco.control.ResultBuilder.SplitTime;
 import net.geco.model.Messages;
 import net.geco.model.RunnerRaceData;
@@ -64,10 +64,10 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 		if( getSplitPrinter()!=null ) {
 			Html html = new Html();
 			if( splitFormat==SplitFormat.Ticket ) {
-				exporter.includeHeader(html, "ticket.css"); //$NON-NLS-1$
+				exporter.includeHeader(html, "ticket.css", false); //$NON-NLS-1$
 				printSingleSplitsInLine(data, html);
 			} else {
-				exporter.includeHeader(html, "result.css"); //$NON-NLS-1$
+				exporter.includeHeader(html, "result.css", false); //$NON-NLS-1$
 				printSingleSplitsInColumns(data, html);
 			}
 		
