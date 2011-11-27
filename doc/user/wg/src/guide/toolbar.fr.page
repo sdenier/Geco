@@ -6,13 +6,13 @@ in_menu: true
 # Barre d'outils
 
 
-<img src="../images/toolbar.fr.png" />
+<img style="float:none; width:360px" src="../images/toolbar.fr.png" />
+
 
 La barre d'outils présente les actions globales.
 
-- *Nouveau/Ouvrir* affiche le [Lanceur](index.fr.html)
+- *Nouveau/Ouvrir* affiche [l'assistant](index.fr.html)
 - *Sauver* enregistre les données sur disque. Les données sont aussi [sauvegardées](../howtos/backup.fr.html) automatiquement quand vous quittez l'application et à intervalles réguliers
-- *Précédent/Suivant* permet de naviguer parmi les étapes de qualification
 - *Vérifier OK|PM* recalcule le statut et le temps officiel de tous les coureurs OK ou MP (à utiliser quand un problème affectant tous les coureurs a été détecté et corrigé)
 Attention, cette action annule les modifications manuelles.
 

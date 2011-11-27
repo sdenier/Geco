@@ -22,8 +22,8 @@ Pressez le bouton *Créer* pour créer un nouveau **groupe**, ou bien éditez un
 
 Sauvez les paramètres du groupe. Finalement, sélectionnez dans la liste quels circuits (ou catégories) doivent être pris en compte pour constituer les séries.
 
-Par example, le groupe *H* dans l'image ci-dessus est configuré pour sélectionner les deux premiers concurrents de chaque catégorie H*. Les concurrents qualifiés seront répartis dans deux séries, *A* et *B*, qui correspondent à des circuits de l'étape suivante.
+Par example, le groupe *H* dans l'image ci-dessus est configuré pour sélectionner les deux premiers concurrents de chaque catégorie H\*. Les concurrents qualifiés seront répartis dans deux séries, *A* et *B*, qui correspondent à des circuits de l'étape suivante.
 
-Cliquez *Actualiser* pour générer et voir les séries. Cliquez *Exporter* pour exporter les séries générées dans un fichier. Si l'étape suivante est configurée, Geco propose d'écraser la liste de départ de l'étape suivante.
+Cliquez sur *Actualiser* pour générer et voir les séries. Cliquez sur *Exporter* pour exporter les séries générées dans un fichier. 
 
-Utilisez les boutons *Précédent/Suivant* dans la barre d'outils pour naviguer entre les étapes de qualification. Voir la page [Qualifications](../howtos/quals.fr.html) pour plus de détails sur la gestion des qualifications dans Geco.
+**Conseil : exportez directement la liste de départ vers le fichier *Competitors.csv* de l'étape suivante.**

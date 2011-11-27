@@ -1,16 +1,42 @@
 ---
-title: Lanceur
+title: Assistant
 sort_info: 1
 in_menu: true
 routed_title: Guide interface
 ---
-# Lanceur
 
-Le lanceur est la première fenêtre qui s'affiche à l'ouverture de Geco. Il permet d'ouvrir ou de créer un étape.
+# Assistant de lancement
 
-- Pour ouvrir une étape existante, sélectionnez le dossier de données et cliquez sur le bouton Ouvrir.
-- Pour créer une nouvelle étape, créez/sélectionnez le dossier (vide) où vous souhaitez enregistrer les données et cliquez sur le bouton Ouvrir : Geco vous proposera de créer une nouvelle étape en copiant un modèle des données.
+L'assistant est affiché au démarrage de Geco et en cliquant sur le bouton *Nouveau/Ouvrir*. Il permet de charger une course existante ou de créer une nouvelle course avec l'un des formats prédéfinis.
 
 <img src="../images/launcher.fr.png" />
 
-Pour repérer un dossier avec des données d'étape, rien de plus simple : il contient un fichier `geco.prop` et des fichiers CSV.
+## Historique des courses
+
+Geco affiche la liste des courses déjà ouvertes sur votre ordinateur.
+
+- Pour ouvrir une course précédente, sélectionnez la et cliquez sur le bouton *Ouvrir*.
+- Ou double-cliquez sur son nom dans la liste.
+- Si la course n'apparaît pas dans la liste (parce que vous venez de l'importer d'un autre média), <img style="float:right; width:32px" src="../images/launcher_folder.png" /> cliquez sur l'icône dossier à droite du *chemin d'accès* et sélectionnez le dossier avec les données ; puis cliquez sur le bouton *Ouvrir*.
+
+Pour repérer un dossier avec des données de course, rien de plus simple : il contient un fichier `geco.prop` et des fichiers CSV.
+
+
+## Nouvelle course
+
+Geco vous permet de créer une nouvelle course en rentrant le nom, le dossier de la course et son format.
+
+- Commencez par remplir le nom.
+- Pour changer le dossier de sauvegarde de la course, <img style="float:right; width:32px" src="../images/launcher_folder.png" />, cliquez sur l'icône dossier à côté du chemin d'accès et créez/sélectionnez un autre dossier. Ce dossier doit être **vide**.
+- Sélectionnez un format pour la course.
+- Cliquez sur le bouton "Créer" : Geco va créer les fichiers de base et lancer la fenêtre principale.
+
+Les trois formats suivant sont supportés.
+- Classique (course en ligne) : postes à prendre dans l'ordre du circuit
+- Ordre libre : le coureur choisit l'ordre dans lequel il prend les postes
+- Orient'Show : pénalités en temps et limite de PM, qualifications par élimination...
+
+Un quatrième format expérimental est disponible pour le Raid Orient'Alpin :
+- chaque circuit du raid peut commencer par un ordre libre
+- puis bascule sur une course classique à un poste donné
+- une fonction de neutralisation est utilisée pour neutraliser une section de repos/tir

@@ -1,27 +1,38 @@
 ---
-title: Étape
+title: Configuration
 sort_info: 3
 in_menu: true
 ---
-# Onglet Étape
+# Onglet Configuration
 
-L'onglet étape permet de configurer les informations générales de la course.
+Cet onglet permet de configurer tous les éléments de la course. Les éléments sont groupés par thème dans la liste à gauche. Sélectionnez un thème pour voir les options disponibles dans la fenêtre principale.
 
 <a href="../images/stage_panel.fr.png"><img src="../images/stage_panel.fr.png" /></a>
 (Cliquez pour zoomer)
 
-- Précédent/Suivant (non modifiable) : voir [Qualifications](../howtos/quals.fr.html)
-- Options Orient'Show
-  - Limites PM : nombre de postes manquant autorisés avant de marquer le coureur comme PM
-  - Pénalité : pénalité de temps en secondes par poste manquant
-- Lecture SI
-  - Port : *le boîtier maître SPORTident doit être connecté avant de lancer l'application pour que Geco détecte le port*
-  - Heure zéro : utilisée pour les puces V5 et les horaires de départ
-  - Format splits : multi-colonnes (voir option `SplitNbColumns` dans le fichier `geco.prop`) ou ticket (une seule colonne, pour imprimante thermique à ticket)
-- Circuit
-  - Geco peut importer des circuits décrits au format *[IOF XML](http://www.soenniksen.dk/iof-datastandard/index.shtml)*. Cliquez sur le bouton *XML* pour sélectionner le fichier de circuits
-  - Vous pouvez *Éditer* les circuits à la main, si besoin
-  - Vous pouvez *Revérifier* tous les coureurs d'un circuit après changement
-- Catégorie/Circuit : circuit par défaut pour les coureurs de la catégorie (utilisé en particulier pour l'import CSV ou depuis l'archive)
+## Général
+- Heure zéro : utilisée pour les puces V5 et les horaires de départ
+- Archive : chemin d'accès au fichier d'[archive des coureurs](archive.fr.html)
+- Base CN : chemin d'accès au fichier des [scores Classement Nationale](results.fr.html), au format [CSV](http://cn.ffcorientation.fr/classement)
+
+## Lecture SI
+- Port : *le boîtier maître SPORTident doit être connecté avant de lancer l'application pour que Geco détecte le port*
+- Format splits : multi-colonnes (voir option `SplitNbColumns` dans le fichier `geco.prop`) ou ticket (une seule colonne, pour imprimante thermique à ticket)
+
+## Pénalités (pour les formats Orient'Show, Ordre libre...)
+- Limites PM : nombre de postes manquant autorisés avant de marquer le coureur comme PM
+- Pas de limite PM : le coureur n'est jamais marqué PM, quelque soit le nombre de postes manqués
+- Pénalité : pénalité de temps en secondes par poste manquant (aussi affichée en minutes)
+
+<a href="../images/stage_panel_penalties.fr.png"><img src="../images/stage_panel_penalties.fr.png" /></a>
+
+## Circuit
+- Geco peut importer des circuits décrits au format *[IOF XML](http://www.soenniksen.dk/iof-datastandard/index.shtml)*. Cliquez sur le bouton *XML* pour sélectionner le fichier de circuits
+- Vous pouvez *Éditer* les circuits à la main, si besoin
+- Vous pouvez *Revérifier* tous les coureurs d'un circuit après changement
+
+## Catégorie
+- Colonne Circuit : circuit par défaut pour les coureurs de la catégorie (utilisé en particulier pour l'import CSV ou depuis l'archive)
+- Vous pouvez importer un modèle CSV avec les catégories courantes et leur circuit associé. Voir le répoertoire `data/modeles` pour des exemples de fichiers avec les formats pour courses régionales etc.
 
 Les données clubs, catégories, circuits peuvent aussi être éditées via un tableur. Voir les [formats fichiers](../howtos/fileformat.fr.html).

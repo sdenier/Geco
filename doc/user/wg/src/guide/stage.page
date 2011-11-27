@@ -1,12 +1,12 @@
 ---
-title: Stage
+title: Configuration
 sort_info: 3
 in_menu: true
 ---
 
-# Stage Panel
+# Configuration Panel
 
-The stage panel allows one to set up many configuration items for the stage, depending on the stage format. Configuration items are grouped by topics in the left list. Select one topic to see available options in the main pane.
+The configuration panel allows one to set up many configuration items for the stage, depending on the stage format. Configuration items are grouped by topics in the left list. Select one topic to see available options in the main pane.
 
 <a href="../images/stage_panel.png"><img src="../images/stage_panel.png" /></a>
 (Click to zoom in)

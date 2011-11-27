@@ -25,7 +25,7 @@ Geco lets you create a new stage by giving it a name, choosing a folder, and sel
 
 - Start by filling in the name.
 - When you change your focus, the launcher updates the *Path* field to show the default path to stage data (including the stage name).
-- If <img style="float:right; width:32px" src="../images/launcher_folder.png" /> you don't agree with the default path, you can change it by clicking the folder button next to it and create/select another folder.
+- If <img style="float:right; width:32px" src="../images/launcher_folder.png" /> you don't agree with the default path, you can change it by clicking the folder button next to it and create/select another folder. This folder must be **empty**.
 - Select a format for the stage.
 - Click the *Create* button: Geco will create the files and launch the main window.
 
