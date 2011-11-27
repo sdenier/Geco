@@ -6,9 +6,25 @@ in_menu: true
 
 # Quoi de neuf ?
 
+##Version 1.2 - XX/11/2011
+Geco 1.2 est une version intermédiaire qui contient quelques changements significatifs. C'est un pas vers les prochaines versions de Geco, avec des modifications profondes de l'interface et du modèle de données.
+
+Les changements visibles :
+- Geco supporte maintenant de façon explicite [différents formats](features.fr.html) de courses d'orientation (options de configuration, onglets spécifiques...). Les formats actuellement supportés sont la course classique (en ligne), l'Orient'Show et la course en ordre libre. Il existe aussi un format expérimental pour le Raid Orient'Alpin.
+- [L'onglet de configuration](../guide/stage.fr.html) a été complèment remanié.
+- Nouvel [assistant de lancement](../guide/index.fr.html) qui permet d'ouvrir une compétition existante ou d'en créer une nouvelle au format choisi.
+- Le numéro de puce n'est plus obligatoire et peut être laissé vide.
+- Processus plus intuitif pour la calibration de la [LiveMap](../howtos/live.fr.html) 
+- Import possible de [modèles](../guide/stage.fr.html) associant catégories et circuits.
+- Export des résultats au format IOF XML (pour RouteGadget et autres).
+- Plusieurs petits changements dans l'interface.
+
+Modification du format des fichiers de données : Geco 1.2 fera automatiquement la conversion des fichiers d'une compétition Geco 1.1 vers le nouveau format. Attention, Geco 1.1 ne peut pas ouvrir les fichiers de la version 1.2 (pensez à vos sauvegardes si besoin).
+
+
 ##Version 1.1 - 05/04/2011
 
-Geco 1.1 est une évolution de l'application dédiée à l'Orient'Show vers une application complète pour des CO classiques, avec plusieurs nouvelles fonctions et de multiples améliorations de l'interface.
+[Geco 1.1](http://bitbucket.org/sdenier/geco/downloads/geco1.1-383-20110405-demo.zip) est une évolution de l'application dédiée à l'Orient'Show vers une application complète pour des CO classiques, avec plusieurs nouvelles fonctions et de multiples améliorations de l'interface.
 
 Les grands changements :
 - inscriptions faciles par import CSV ou avec une archive de concurrents
