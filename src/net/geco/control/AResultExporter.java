@@ -11,6 +11,7 @@ import java.util.Vector;
 import net.geco.basics.GecoResources;
 import net.geco.basics.Html;
 import net.geco.control.ResultBuilder.ResultConfig;
+import net.geco.model.Messages;
 import net.geco.model.Pool;
 import net.geco.model.RankedRunner;
 import net.geco.model.Result;
@@ -83,7 +84,7 @@ public abstract class AResultExporter extends Control {
 				e.printStackTrace();
 			}
 		} else {
-			throw new Exception("Can only export results by category in XML");
+			throw new Exception(Messages.getString("AResultExporter.XmlCategoryExportWarning")); //$NON-NLS-1$
 		}
 	}
 
@@ -92,7 +93,7 @@ public abstract class AResultExporter extends Control {
 	public void includeHeader(Html html, String cssfile, boolean forFileExport) {
 		html.open("head").nl(); //$NON-NLS-1$
 		if( forFileExport ){
-			html.contents("<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">");
+			html.contents("<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">"); //$NON-NLS-1$
 		}
 		generateHtmlHeader(html);
 		try {

@@ -153,7 +153,7 @@ public class HeatBuilder extends Control {
 
 		html.open("head").nl(); //$NON-NLS-1$
 		if( forFileExport ){
-			html.contents("<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">");
+			html.contents("<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">"); //$NON-NLS-1$
 		}
 		html.close("head").nl(); //$NON-NLS-1$
 

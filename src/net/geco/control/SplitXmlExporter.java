@@ -96,9 +96,9 @@ public class SplitXmlExporter extends Control {
 //		personResult > clubid?
 		
 		Element result = createChildElement(personResult, "Result"); //$NON-NLS-1$
-		createContentChildElement(result, "StartTime",
+		createContentChildElement(result, "StartTime", //$NON-NLS-1$
 									TimeManager.time(runnerData.getOfficialStarttime())); //$NON-NLS-1$
-		createContentChildElement(result, "FinishTime",
+		createContentChildElement(result, "FinishTime", //$NON-NLS-1$
 									TimeManager.time(runnerData.getFinishtime())); //$NON-NLS-1$
 		createContentChildElement(result, "Time", runnerData.getResult().formatRacetime()); //$NON-NLS-1$
 		if( rank > 0 ) {

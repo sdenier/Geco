@@ -17,6 +17,7 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 
 import com.ibm.icu.text.CharsetDetector;
+import com.ibm.icu.text.CharsetMatch;
 
 /**
  * @author Simon Denier
@@ -31,7 +32,7 @@ public class GecoResources {
 	
 	static {
 		try {
-			CHARSET = Charset.forName("UTF-8");	
+			CHARSET = Charset.forName("UTF-8");	 //$NON-NLS-1$
 		} catch (Exception e) {
 			CHARSET = Charset.defaultCharset();
 		}
@@ -71,7 +72,12 @@ public class GecoResources {
 			try {
 				CharsetDetector detector = new CharsetDetector();
 				detector.setText(new BufferedInputStream(stream));
-				charset = Charset.forName( detector.detect().getName() );
+				CharsetMatch bestMatch = detector.detect();
+				if( bestMatch.getConfidence() < 50 && platformIsMacOs() ) {
+					charset = Charset.defaultCharset();	// MIGR12
+				} else {
+					charset = Charset.forName( bestMatch.getName() );
+				}
 			} catch (Exception e) {
 				charset = Charset.defaultCharset();
 			}

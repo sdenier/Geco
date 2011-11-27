@@ -395,7 +395,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 			}
 		});
 		JRadioButton selectXmlB = new JRadioButton("XML"); //$NON-NLS-1$
-		selectXmlB.setToolTipText("XML with IOF standards (for RouteGadget etc.)");
+		selectXmlB.setToolTipText(Messages.uiGet("ResultsPanel.XMLTooltip")); //$NON-NLS-1$
 		selectXmlB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				exportFormat = "xml"; //$NON-NLS-1$
