@@ -11,4 +11,4 @@ Les vues [Stats](../guide/log.fr.html) dans les onglets Coureurs et Log donnent 
 En fin de course, vous devez surveiller les coureurs manquants. En particulier, il faut distinguer entre coureurs en course et ceux qui sont absents.
 La méthode classique consiste à vérifier la liste des entrées 'Non parties' contre la liste de contrôle de l'atelier départ. Vous pouvez changer manuellement le statut à **Absent** ou **En course**.
 
-Dans sa version actuelle, Geco ne supporte pas la lecture de la mémoire des boîtiers SPORTident pour gérer automatiquement les absents (en prévision pour 1.2).
+Dans sa version actuelle, Geco ne supporte pas la lecture de la mémoire des boîtiers SPORTident pour gérer automatiquement les absents.

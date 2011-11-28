@@ -19,6 +19,7 @@ Quand vous passez d'un onglet à l'autre, Geco met le focus sur le widget le plu
 - `Mod+F` : focus sur le champ de recherche
 - `Mod+Shift+F` : annuler le filtre de recherche
 - `Mod+I` : insérer une nouvelle entrée (onglet coureurs)/insérer le coureur sélectionné (vue archive)
+- `Mod+L`: activer/désactiver le mode Live (seulement dans l'onglet coureurs)
 
 ## Raccourcis dans l'onglet coureurs
 - `Mod+D` : activer la vue Données du coureur

@@ -19,6 +19,6 @@ in_menu: true
 Seuls les coureurs classés OK dans toutes les poules peuvent être qualifiés. Voir *hellemmes\_poolmerge* dans les données de démo pour un example d'étape de fusion.
 
 
-# Créer une suite d'étape de qualifications
+# Créer une suite d'étapes de qualifications
 
-**Cette fonctionnalité est désactivée. La navigation entre étapes se fait maintenant via le [lanceur](../guide/index.fr.html).**
+Voir le guide sur les [séries](../guide/heats.fr.html).

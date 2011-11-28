@@ -31,23 +31,9 @@ Configuration :
 
 Il est recommandé d'exporter ces fichiers depuis OCAD. Des problèmes peuvent survenir avec d'autres logiciels.
 
-Maintenant la partie... fun (à changer dans une future version) :
-1. entrez la résolution en DPI de votre image, afin de régler grossièrement la mise à l'échelle des postes sur la carte
-1. faites varier les valeur Facteur X et Y, Translation X et Y
-1. pour afficher les postes et vérifier leur position, cliquer sur Actualiser
-1. répétez les étapes 2 et 3 jusqu'à obtenir un résultat satisfaisant. Bon courage !
+Voir [Calibration de la LiveMap](livemap_adjust.fr.html) pour ajuster la carte et les postes. Vous pouvez ensuite contrôler l'affichage des postes et circuits avec les boutons en base.
 
-Vous pouvez ensuite contrôler la position des postes et circuits avec les derniers boutons.
-
-Pour le moment, Geco *ne sauve pas* ces paramètres. Par conséquent, ils seront perdus à la prochaine ouverture de LiveMap ! Pour les enregistrer, créez un fichier `live.prop` dans le dossier de la course avec les informations suivantes (pour exemple):
-
-`MapFile=hellemmes.jpg`  
-`CourseFile=hellemmes.xml`  
-`DPI=150`  
-`XTrans=1`  
-`YTrans=-3`
-
-Il est possible de transférer ce fichier à n'importe quel autre ordinateur utilisant LiveMap ou GecoLive pour cette course.
+N'oubliez pas de *Sauver* les paramètres. Geco va créer un fichier `live.prop` dans le dossier de course pour charger les paramètres automatiquement la prochaine fois. Vous pouvez transférer ce fichier sur n'importe quel ordinateur utilisant la LiveMap ou GecoLive pour cette course.
 
 
 ## GecoLive pour l'animation
