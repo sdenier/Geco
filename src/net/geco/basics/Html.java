@@ -204,10 +204,14 @@ public final class Html {
 		return this;
 	}
 	
-	public Html inlineCss(String cssfile) throws IOException {
+	public Html inlineCss(String cssfile) {
 		nl();
 		open("style", "type=\"text/css\"").nl(); //$NON-NLS-1$ //$NON-NLS-2$
-		include(cssfile);
+		try {
+			include(cssfile);
+		} catch (IOException e) {
+			System.err.println(e.getLocalizedMessage());
+		}
 		return close("style"); //$NON-NLS-1$
 	}
 

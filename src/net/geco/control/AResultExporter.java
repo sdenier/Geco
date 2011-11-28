@@ -96,11 +96,7 @@ public abstract class AResultExporter extends Control {
 			html.contents("<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">"); //$NON-NLS-1$
 		}
 		generateHtmlHeader(html);
-		try {
-			html.inlineCss(stage().filepath(cssfile));
-		} catch (IOException e) {
-			geco().debug(e.toString());
-		}
+		html.inlineCss(stage().filepath(cssfile));
 		html.close("head"); //$NON-NLS-1$
 	}
 	
