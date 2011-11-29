@@ -27,13 +27,13 @@ Des utilisateurs ont reporté des temps de lecture des puces très longs sur cer
 
 Il faut télécharger le pilote Mac OS pour le chip USB des boîtiers SPORTident, puis changer quelques informations du pilote pour que Mac OS le reconnaisse pour le boîtier.
 
-1\. Télécharger et installer le pilote depuis [SI labs](https://www.silabs.com/products/interface/usbtouart/Pages/usb-to-uart-bridge.aspx), section *Design tools* à droite, liste déroulante *software downloads*, sélectionner *CP210x VCP Mac OSX Drivers*. L'installation demande un redémarrage.
+1\. Télécharger et installer le pilote depuis [SI labs](https://www.silabs.com/products/interface/usbtouart/Pages/usb-to-uart-bridge.aspx), section *Tools*, sélectionner *CP210x VCP Mac OSX Drivers* (ou essayer le lien direct [Mac\_OSX\_VCP\_Driver.zip](https://www.silabs.com/pages/DownloadDoc.aspx?FILEURL=Support%20Documents/Software/Mac_OSX_VCP_Driver.zip&src=SoftwardDownloadsWebPart)). L'installation demande un redémarrage.
 
 2\. Ouvrir le fichier `/System/Library/Extensions/SiLabsUSBDriver.kext/Contents/Info.plist` avec un éditeur de texte. Les fichiers plist de Mac OS contiennent des informations pour le système au format XML. Vous pouvez faire une copie de sauvegarde avant édition.
 
-Dans le fichier, copier l'entrée XML complète pour **SiLabsUSBDriver - SILabs 60000 CP210x** et coller la comme une nouvelle entrée. Changer le **idProduct** de 60000 (0xEA6) à 32778 (0x800A). Les boîtiers SPORTident ont un id produit à 32778 et seront ainsi liés au pilote.
+Dans le fichier, copier l'entrée XML complète pour **SiLabsUSBDriver - SILabs 60000 CP210x** et coller la comme une nouvelle entrée. Changer le **idProduct** de 60000 (0xEA6) à 32778 (0x800A). Les boîtiers SPORTident ont un identifiant produit à 32778 et seront ainsi liés au pilote.
 
-Alternativement, vous pouvez copier directement l'entrée suivante entre les balises :
+Vous pouvez aussi copier directement l'entrée suivante entre les balises :
 
 <pre>
 &lt;key&gt;SiLabsUSBDriver - SILabs 60000 CP210x&lt;/key&gt;
@@ -66,6 +66,20 @@ Alternativement, vous pouvez copier directement l'entrée suivante entre les bal
 </pre>
 
 
-3\. Redémarrer à nouveau pour que le système prenne en compte la nouvelle entrée.
+3\. Lancez la commande suivante dans un terminal pour recharger le pilote modifié:
+
+<pre>
+sudo kextunload -b com.silabs.driver.SiLabsUSBDriver
+sudo kextload -b com.silabs.driver.SiLabsUSBDriver
+</pre>
+
+Alternativement, le pilote peut avoir l'identifiant suivant (voir le contenu de Info.plist pour le bon identifiant):
+
+<pre>
+sudo kextunload -b com.silabs.driver.CP210xVCPDriver
+sudo kextload -b com.silabs.driver.CP210xVCPDriver
+</pre>
+
+Ou redémarrez à nouveau pour que le système prenne en compte la nouvelle entrée.
 
 Un boîtier apparaît sous l'identifiant **/dev/tty.SLAB\_USBtoUART** dans Geco (et aussi comme **SPORTident USB to UART Bridge Controller** dans le profile système).

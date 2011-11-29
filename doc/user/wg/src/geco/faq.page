@@ -28,7 +28,7 @@ Users can experience a long time to read SPORTident e-cards on some computers: i
 
 The trick is to download the Mac OS driver for the USB chip onboard SPORTident boxes, then changes some bits of the driver so that Mac OS links the SPORTident box with this driver.
 
-1\. Download and install the driver from [SI labs](https://www.silabs.com/products/interface/usbtouart/Pages/usb-to-uart-bridge.aspx), section *Design tools* on the right, *software downloads* combo box, choose *CP210x VCP Mac OSX Drivers*. The driver needs a restart.
+1\. Download and install the driver from [SI labs](https://www.silabs.com/products/interface/usbtouart/Pages/usb-to-uart-bridge.aspx), section *Tools*, choose *CP210x VCP Mac OSX Drivers* (or try the direct link to [Mac\_OSX\_VCP\_Driver.zip](https://www.silabs.com/pages/DownloadDoc.aspx?FILEURL=Support%20Documents/Software/Mac_OSX_VCP_Driver.zip&src=SoftwardDownloadsWebPart)). The driver needs a restart.
 
 2\. Open file `/System/Library/Extensions/SiLabsUSBDriver.kext/Contents/Info.plist` with a text editor. Plist files in Mac OS describes various kinds of property in a XML format.
 You can make a backup copy of the file before edition.
@@ -68,6 +68,20 @@ Alternatively, you can directly copy the following entry within the right tags:
 </pre>
 
 
-3\. Restart so that the system takes into account the new property. (There may be a way to avoid this double restart, either by directly patching the installer files with the product id, or asking Mac OS to refresh its list of driver, but I have no idea).
+3\. Run the following command in a terminal to reload the modified driver:
+
+<pre>
+sudo kextunload -b com.silabs.driver.SiLabsUSBDriver
+sudo kextload -b com.silabs.driver.SiLabsUSBDriver
+</pre>
+
+Alternatively, the driver may have the following identifier (see content of Info.plist for the right identifier):
+
+<pre>
+sudo kextunload -b com.silabs.driver.CP210xVCPDriver
+sudo kextload -b com.silabs.driver.CP210xVCPDriver
+</pre>
+
+Or you can restart your computer so that the system takes into account the new property.
 
 Now the station should appear as **/dev/tty.SLAB\_USBtoUART** in Geco (also appear in the System profiler as **SPORTident USB to UART Bridge Controller**).

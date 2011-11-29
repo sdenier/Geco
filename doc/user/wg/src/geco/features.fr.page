@@ -38,7 +38,7 @@ L'interface graphique de Geco est organisée autour d'une série d'onglets, chac
   - gérer les cas spéciaux grâce à la fenêtre de fusion
 - [Log] pour les statistiques de course et les opérations batch
 - [Résultats] pour générer les classements et temps intermédiaires
-  - export des résultats aux formats HTML et CSV, avec diverses options
+  - export des résultats aux formats HTML, CSV ou XML, avec diverses options
   - export automatique pour une mise à jour en direct
   - simulateur des points Classement National
 - [Séries] pour calculer des séries de qualification par élimination directe à partir des résultats

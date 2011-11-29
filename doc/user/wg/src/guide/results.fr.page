@@ -36,9 +36,10 @@ Les résultats peuvent s'afficher dans la fenêtre (bouton *Actualiser*), être 
 Geco propose trois formats d'export :
 - **HTML** pour la publication web
 - **CSV** pour tableurs
-- **OE CSV**, format reconnu par de nombreux outils d'analyse
+- **OE CSV**, format reconnu par certains outils d'analyse
+- **XML**, format standard de l'IOF pour échanger des résultats
 
-Par example, utilisez *Splits* et *OE CSV* pour un fichier compatible avec RouteGadget.
+Par example, utilisez *Splits* et *XML* pour un fichier compatible avec RouteGadget et d'autres outils d'analyse. *OE CSV* est une alternative mais pas forcément fiable.
 
 Pour le Classement National, utilisez *Classement* ou *CN* avec le format *OE CSV*. Le fichier produit contient l'essentiel et sera plus petit qu'un fichier splits.
 

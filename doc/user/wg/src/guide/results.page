@@ -37,9 +37,10 @@ Results can be displayed in the right panel (*Refresh* button), printed, or expo
 Geco proposes three formats for file export:
 - **HTML** for web publication
 - **CSV** for spreadsheets
-- **OE CSV**, which is recognized by many analysis applications
+- **OE CSV**, which is recognized by some analysis applications
+- **XML**, which is the standard IOF format for result exchange
 
-For example for RouteGadget, select *Splits* and *OE CSV*.
+For example for RouteGadget and other analysis tools, select *Splits* and *XML*. *OE CSV* is an alternative (not quite reliable).
 
 For French CN, select *Ranking* or *CN* and *OE CSV*. The resulting file will be much smaller.
 

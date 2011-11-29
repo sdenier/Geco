@@ -38,7 +38,7 @@ Geco UI is organized as a series of panels in tabs, each dedicated to one aspect
   - manage special cases using the merge dialog
 - [Log] to get race statistics and perform batch operations
 - [Results] to generate rankings and splits
-  - export results in HTML and CSV formats, with multiple options
+  - export results in HTML, CSV, and XML formats, with multiple options
   - automatically export results for live update
   - French National Ranking calculator
 - [Heats] to generate heats from results for the next stage in knockout qualifications
