@@ -26,11 +26,11 @@ Current formats include Classic inline, Orient'Show, and Free Order. Raid Orient
 - First german translation by Philipp Walker.
 - LiveMap calibration updated with an intuitive UI (click on controls and map).
 - Import template for category+course.
+- IOF XML export for results (for RouteGadget and others).
 - Some other minor changes in the UI.
 
 - Change in data file format: Geco 1.2 will automatically convert 1.1 stage files to the new format.
 Meaning also that Geco 1.1 can't load a 1.2 stage (use stage backups to be safe!).
-- Documentation not updated.
 
 ----------
 Fixed bugs in 1.2
