@@ -12,7 +12,7 @@ Pour faire tourner Geco, vous avez besoin :
 - des pilotes SPORTident 
   - Windows : voir le site SPORTident
   - Linux : les noyaux récents reconnaissent la puce utilisée par les boîtiers maîtres, plug'n'play !
-  - Mac OS X : il est possible d'installer un pilote pour reconnaître le boîtier maître sous Mac. Voir la [FAQ](FAQ.fr.html).
+  - Mac OS X : il est possible d'installer un pilote pour reconnaître le boîtier maître sous Mac. Voir la [FAQ](faq.fr.html).
 
 Pour lancer Geco, **exécuter le fichier geco.jar**. Il devrait se lancer directement si votre JRE est bien configuré.
 

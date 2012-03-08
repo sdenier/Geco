@@ -12,7 +12,7 @@ What do you need to run Geco?
 - SportIdent drivers 
   - Windows: check sportident website
   - Linux: recent kernels recognize the chip used by SI station, so it's plug'n'play
-  - Mac OS X: it's possible to install and tweak a USB driver to get Mac OS X to recognize the station. See the [FAQ](FAQ.html).
+  - Mac OS X: it's possible to install and tweak a USB driver to get Mac OS X to recognize the station. See the [FAQ](faq.html).
 
 To launch Geco, **execute the geco.jar file**. It should opens automatically if your JRE is correctly configured.
 
