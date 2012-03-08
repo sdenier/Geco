@@ -387,7 +387,7 @@ public class GecoWindow extends JFrame
 				Html html = new Html();
 				html.open("div", "align=center"); //$NON-NLS-1$ //$NON-NLS-2$
 				html.b("Geco version " + geco.version()).br().br(); //$NON-NLS-1$
-				html.contents("Copyright (c) 2008-2011 Simon Denier.").br(); //$NON-NLS-1$
+				html.contents("Copyright (c) 2008-2012 Simon Denier.").br(); //$NON-NLS-1$
 				html.contents(Messages.uiGet("GecoWindow.AboutLicenseText")).br(); //$NON-NLS-1$
 				html.contents(Messages.uiGet("GecoWindow.AboutReadmeText")); //$NON-NLS-1$
 				html.close("div"); //$NON-NLS-1$
