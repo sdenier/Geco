@@ -12,9 +12,12 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.InputVerifier;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import net.geco.control.SIReaderHandler.SerialPort;
 import net.geco.control.SingleSplitPrinter;
@@ -71,6 +74,44 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				geco.splitPrinter().setSplitFormat((SingleSplitPrinter.SplitFormat) splitFormatCB.getSelectedItem());
+			}
+		});
+		
+		c.gridy = 3;
+		add(new JLabel(Messages.uiGet("SIReaderConfigPanel.HeaderLabel")), c); //$NON-NLS-1$
+		final JTextField headerF = new JTextField(geco.splitPrinter().getHeaderMessage());
+		add(headerF, c);
+		headerF.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				geco.splitPrinter().setHeaderMessage(headerF.getText());
+			}
+		});
+		headerF.setInputVerifier(new InputVerifier() {
+			public boolean verify(JComponent arg0) {
+				return true;
+			}
+			public boolean shouldYieldFocus(JComponent input) {
+				geco.splitPrinter().setHeaderMessage(headerF.getText());
+				return super.shouldYieldFocus(input);
+			}
+		});
+
+		c.gridy = 4;
+		add(new JLabel(Messages.uiGet("SIReaderConfigPanel.FooterLabel")), c); //$NON-NLS-1$
+		final JTextField footerF = new JTextField(geco.splitPrinter().getFooterMessage());
+		add(footerF, c);
+		footerF.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				geco.splitPrinter().setFooterMessage(footerF.getText());
+			}
+		});
+		footerF.setInputVerifier(new InputVerifier() {
+			public boolean verify(JComponent arg0) {
+				return true;
+			}
+			public boolean shouldYieldFocus(JComponent input) {
+				geco.splitPrinter().setFooterMessage(footerF.getText());
+				return super.shouldYieldFocus(input);
 			}
 		});
 	}

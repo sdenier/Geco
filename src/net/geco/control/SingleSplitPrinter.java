@@ -41,12 +41,14 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 	
 	public static enum SplitFormat { MultiColumns, Ticket }
 
-	private static final boolean DEBUGMODE = false;
+	private static final boolean DEBUGMODE = true;
 	
 	private PrintService splitPrinter;
 	private boolean autoPrint;
 	private SplitFormat splitFormat = SplitFormat.MultiColumns;
 	private MediaSizeName[] splitMedia;
+	private String headerMessage;
+	private String footerMessage;
 	
 	private final ResultBuilder builder;
 	private final SplitExporter exporter;
@@ -98,11 +100,6 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 				jFrame.setVisible(true);
 			}
 			
-//			try {
-//				ticket.print(null, null, false, getSplitPrinter(), attributes, true);
-//			} catch (PrinterException e) {
-//				geco().debug(e.getLocalizedMessage());
-//			}
 			return content;
 		}
 		return ""; //$NON-NLS-1$
@@ -110,6 +107,7 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 
 
 	private void printSingleSplitsInColumns(RunnerRaceData data, Html html) {
+		appendMessage(getHeaderMessage(), html);
 		html.b(data.getRunner().getName() + " - " //$NON-NLS-1$
 				+ geco().stage().getName() + " - " //$NON-NLS-1$
 				+ data.getCourse().getName() + " - " //$NON-NLS-1$
@@ -121,29 +119,31 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 				exporter.nbColumns(),
 				html);
 		html.close("table"); //$NON-NLS-1$
-		html.tag("div", //$NON-NLS-1$
-				"align=\"center\"", //$NON-NLS-1$
-				"Geco for orienteering - http://geco.webou.net"); //$NON-NLS-1$
+		appendMessage(getFooterMessage(), html);
 	}
 
 
 	private void printSingleSplitsInLine(RunnerRaceData data, Html html) {
 	//		char[] chars = Character.toChars(0x2B15); // control flag char :)
-	//		html.contents(new String(chars));
-			html.open("div", "align=\"center\""); //$NON-NLS-1$ //$NON-NLS-2$
-			html.contents(geco().stage().getName()).br();
-			html.b(data.getRunner().getName()).br();
-			html.br();
-			html.b(data.getCourse().getName() + " - " //$NON-NLS-1$
-					+ data.getResult().shortFormat());
-			html.close("div"); // don't center table, it wastes too much space for some formats. //$NON-NLS-1$
-			html.open("table", "width=\"75%\""); //$NON-NLS-1$ //$NON-NLS-2$
-			exporter.appendHtmlSplitsInLine(builder.buildLinearSplits(data), html);
-			html.close("table").br(); //$NON-NLS-1$
-			html.contents(Messages.getString("SingleSplitPrinter.SplitBottomLine1")).br(); //$NON-NLS-1$
-			html.contents(Messages.getString("SingleSplitPrinter.SplitBottomLine2")); //$NON-NLS-1$
-		}
+		appendMessage(getHeaderMessage(), html);
+		html.open("div", "align=\"center\""); //$NON-NLS-1$ //$NON-NLS-2$
+		html.contents(geco().stage().getName()).br();
+		html.b(data.getRunner().getName()).br();
+		html.br();
+		html.b(data.getCourse().getName() + " - " //$NON-NLS-1$
+				+ data.getResult().shortFormat());
+		html.close("div"); // don't center table, it wastes too much space for some formats. //$NON-NLS-1$
+		html.open("table", "width=\"75%\""); //$NON-NLS-1$ //$NON-NLS-2$
+		exporter.appendHtmlSplitsInLine(builder.buildLinearSplits(data), html);
+		html.close("table").br(); //$NON-NLS-1$
+		appendMessage(getFooterMessage(), html);
+	}
 
+	private void appendMessage(String message, Html html) {
+		if( message.length() > 0 ){
+			html.tag("div", "align=\"center\"", message); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+	}
 
 	private void computeMediaForTicket(final JTextPane ticket,
 			final PrintRequestAttributeSet attributes) {
@@ -151,7 +151,6 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 		int dpi = Toolkit.getDefaultToolkit().getScreenResolution();
 		float height = ((float) preferredSize.height) / dpi;
 		float width = ((float) preferredSize.width) / dpi;
-//		float width = 2.76f;
 
 		if( DEBUGMODE ){
 			System.out.print("Request: "); //$NON-NLS-1$
@@ -269,6 +268,22 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 		this.splitFormat = format;
 	}
 
+	public String getHeaderMessage() {
+		return headerMessage;
+	}
+
+	public void setHeaderMessage(String headerMessage) {
+		this.headerMessage = headerMessage;
+	}
+
+	public String getFooterMessage() {
+		return footerMessage;
+	}
+
+	public void setFooterMessage(String footerMessage) {
+		this.footerMessage = footerMessage;
+	}
+
 
 	@Override
 	public void cardRead(String chip) {
@@ -292,11 +307,16 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 		if( format!=null ) {
 			setSplitFormat(SplitFormat.valueOf(format));
 		}
+		setHeaderMessage( props.getProperty(splitHeaderMessageProperty(), "Geco") ); //$NON-NLS-1$
+		setFooterMessage( props.getProperty(splitFooterMessageProperty(), "http://geco.webou.net") ); //$NON-NLS-1$
 	}
+
 	@Override
 	public void saving(Stage stage, Properties properties) {
 		properties.setProperty(splitPrinterProperty(), getSplitPrinterName());
 		properties.setProperty(splitFormatProperty(), getSplitFormat().name());
+		properties.setProperty(splitHeaderMessageProperty(), getHeaderMessage());
+		properties.setProperty(splitFooterMessageProperty(), getFooterMessage());
 	}
 	@Override
 	public void closing(Stage stage) {	}
@@ -306,6 +326,14 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 	}
 	public static String splitFormatProperty() {
 		return "SplitFormat"; //$NON-NLS-1$
+	}
+
+	public static String splitFooterMessageProperty() {
+		return "SplitHeaderMessage"; //$NON-NLS-1$
+	}
+
+	public static String splitHeaderMessageProperty() {
+		return "SplitFooterMessage"; //$NON-NLS-1$
 	}
 	
 }

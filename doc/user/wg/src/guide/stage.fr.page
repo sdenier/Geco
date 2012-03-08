@@ -18,6 +18,7 @@ Cet onglet permet de configurer tous les éléments de la course. Les éléments
 ## Lecture SI
 - Port : *le boîtier maître SPORTident doit être connecté avant de lancer l'application pour que Geco détecte le port*
 - Format splits : multi-colonnes (voir option `SplitNbColumns` dans le fichier `geco.prop`) ou ticket (une seule colonne, pour imprimante thermique à ticket)
+- Vous pouvez éditer l'en-tête et le pied de page de la feuille d'impression
 
 ## Pénalités (pour les formats Orient'Show, Ordre libre...)
 - Limites PM : nombre de postes manquant autorisés avant de marquer le coureur comme PM

@@ -19,6 +19,7 @@ The configuration panel allows one to set up many configuration items for the st
 ## SI Reader
 - Station port: *SPORTident master station must be connected before launching the app so that Geco can detect the port*
 - Split format: multi-columns (see `SplitNbColumns` in `geco.prop`) or ticket (single column, best for thermal printer)
+- You can customize header and footer of the split sheet
 
 ## Penalties (only for Orient'Show, Free Order, ...)
 - MP limit: number of missing punches authorized before marking the runner as MP
