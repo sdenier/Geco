@@ -4,6 +4,8 @@
  */
 package net.geco.model.xml;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -45,8 +47,8 @@ public class CourseSaxImporter extends DefaultHandler {
 	private Float[] coord;
 
 	public static void main(String args[]) throws Exception {
-//		importFromXml("testData/IOFdata-2.0.3/CourseData_example1.xml", new POFactory());
-		importFromXml("hellemmes.xml", new POFactory()); //$NON-NLS-1$
+		importFromXml("testData/IOFdata-2.0.3/CourseData_example1.xml", new POFactory());
+//		importFromXml("testData/IOFdata-2.0.3/SampleEvent-purplepen.xml", new POFactory());
 	}
 	
 	public CourseSaxImporter(Factory factory) {
@@ -74,12 +76,19 @@ public class CourseSaxImporter extends DefaultHandler {
 		XMLReader xr = XMLReaderFactory.createXMLReader();
 		xr.setContentHandler(this);
 		xr.setErrorHandler(this);
-//		if( ! new File("IOFdata.dtd").exists() ) {
-			xr.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false); //$NON-NLS-1$
-			xr.setFeature("http://xml.org/sax/features/validation", false); //$NON-NLS-1$
-//		}
-		xr.parse(new InputSource(GecoResources.getSafeReaderFor(xmlFile)));
+		xr.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false); //$NON-NLS-1$
+		xr.setFeature("http://xml.org/sax/features/validation", false); //$NON-NLS-1$
+		BufferedReader reader = consumeBOM(GecoResources.getSafeReaderFor(xmlFile));
+		xr.parse(new InputSource(reader));
 		return courses();
+	}
+	
+	private BufferedReader consumeBOM(BufferedReader reader) throws IOException {
+		// http://mark.koli.ch/2009/02/resolving-orgxmlsaxsaxparseexception-content-is-not-allowed-in-prolog.html
+		reader.mark(1);
+		while( reader.read() != '<' ) { reader.mark(1); }
+		reader.reset();
+		return reader;
 	}
 	
 	@Override
@@ -110,13 +119,21 @@ public class CourseSaxImporter extends DefaultHandler {
 	private void resetBuffer() {
     	buffer = new StringBuilder();
     }
-	
+
+	private Float importLocalizedFloat(String f) {
+		try {
+			return Float.valueOf(f);
+		} catch (NumberFormatException e) {
+			// handle float encoded as "65,22" instead of "65.22"
+			return Float.valueOf(f.replace(',', '.'));
+		}
+	}
 	
 	public void startElement(String uri, String name, String qName, Attributes atts) {
 		if( "MapPosition".equals(name) ) { //$NON-NLS-1$
 			coord = new Float[] {
-						new Float(atts.getValue("x")).floatValue(), //$NON-NLS-1$
-						new Float(atts.getValue("y")).floatValue() }; //$NON-NLS-1$
+					importLocalizedFloat(atts.getValue("x")), //$NON-NLS-1$
+					importLocalizedFloat(atts.getValue("y")) }; //$NON-NLS-1$
 			return;
 		}
 		if( "StartPoint".equals(name) ) { //$NON-NLS-1$
