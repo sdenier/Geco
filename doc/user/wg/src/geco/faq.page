@@ -24,64 +24,63 @@ The following features are not currently supported but should be part of future 
 Users can experience a long time to read SPORTident e-cards on some computers: it takes around 10 seconds to read one e-card instead of the normal 1 or 2 seconds. This makes Geco impractical for any event except testing. The problem seems to appear only when the SPORTident master station is plugged directly into the computer. Although the root cause of this problem is unknown (any tip welcomed!), the problem has always disappeared when plugging a USB hub between the computer and the SPORTident station. A typical set up we use is to plug the master station and the split printer into the hub: this leaves enough free plugs for other devices such as a regular printer or USB keys.
 
 
-## How to install SPORTident driver on Mac OS X?
+## Some split times have a 12h00 shift with SI 5 cards
+Times in SI 5 cards are saved with a 12 hours precision. Geco needs to compute the correct time using the zero hour of the competition.
+
+1. Update the zero hour for one nearer to the real time of the competition in the [configuration](../guide/stage.html).
+1. For affected runners, *reset official time* from the [runner data view](../guide/runners.html).
+
+
+## \[Windows\] Slow startup time (when Bluetooth is on)
+Geco scans serial ports on startup to detect a SPORTident station. This involves scanning Bluetooth port when it is active, which considerably slows down Geco startup (more than 10 seconds). You can either:
+
+- turn off Bluetooth before launching Geco
+- or launch Geco from the command line with for example  
+`java -Dgnu.io.rxtx.SerialPorts=COM1;COM3 -jar gecoXXXX.jar`  
+which means you expect the SPORTident station to be plugged in either `COM1` or `COM3` ports (adapt to your setup). You can create a batch file to avoid typing the launch command each time.
+
+
+## \[Mac OS X\] How to install a SPORTident driver?
 
 The trick is to download the Mac OS driver for the USB chip onboard SPORTident boxes, then changes some bits of the driver so that Mac OS links the SPORTident box with this driver.
 
 1\. Download and install the driver from [SI labs](https://www.silabs.com/products/interface/usbtouart/Pages/usb-to-uart-bridge.aspx), section *Tools*, choose *CP210x VCP Mac OSX Drivers* (or try the direct link to [Mac\_OSX\_VCP\_Driver.zip](https://www.silabs.com/pages/DownloadDoc.aspx?FILEURL=Support%20Documents/Software/Mac_OSX_VCP_Driver.zip&src=SoftwardDownloadsWebPart)). The driver needs a restart.
 
-2\. Open file `/System/Library/Extensions/SiLabsUSBDriver.kext/Contents/Info.plist` with a text editor. Plist files in Mac OS describes various kinds of property in a XML format.
-You can make a backup copy of the file before edition.
+Two drivers are actually installed, a 32 bits one in `/System/Library/Extensions/CP210xVCPDriver.kext` and a 64 bits one ine `/System/Library/Extensions/CP210xVCPDriver64.kext`. You can change either one or the other. The tutorial continues with the 64 bits version.
 
-Inside the file, copy the full XML entry for the **SiLabsUSBDriver - SILabs 60000 CP210x** and paste it as a new entry. Change the **idProduct** from 60000 (0xEA6) to 32778 (0x800A). SPORTident stations have a USB product id of 32778 and thus will be recognized and interfaced with this USB driver.
+2\. Open file `/System/Library/Extensions/CP210xVCPDriver64.kext/Contents/Info.plist` with a text editor (you must have admin rights). You can make a backup copy of the file before edition.
 
-Alternatively, you can directly copy the following entry within the right tags:
+Look for the following two lines by searching the 60000 string :
 
 <pre>
-&lt;key&gt;SiLabsUSBDriver - SILabs 60000 CP210x&lt;/key&gt;
-&lt;dict&gt;
-&lt;key&gt;CFBundleIdentifier&lt;/key&gt;
-&lt;string&gt;com.silabs.driver.SiLabsUSBDriver&lt;/string&gt;
-&lt;key&gt;IOClass&lt;/key&gt;
-&lt;string&gt;SiLabsUSBDriver&lt;/string&gt;
-&lt;key&gt;IOKitDebug&lt;/key&gt;
-&lt;integer&gt;0&lt;/integer&gt;
-&lt;key&gt;IOMatchCategory&lt;/key&gt;
-&lt;string&gt;SiLabsUSBSerial&lt;/string&gt;
-&lt;key&gt;IOProviderClass&lt;/key&gt;
-&lt;string&gt;IOUSBDevice&lt;/string&gt;
-&lt;key&gt;IOResourceMatch&lt;/key&gt;
-&lt;string&gt;IOKit&lt;/string&gt;
-&lt;key&gt;IOUserClientClass&lt;/key&gt;
-&lt;string&gt;SiLabsUSBUserClient&lt;/string&gt;
-&lt;key&gt;USB Product Name&lt;/key&gt;
-&lt;string&gt;CP210x USB to UART Bridge Controller&lt;/string&gt;
-&lt;key&gt;bConfigurationValue&lt;/key&gt;
-&lt;integer&gt;1&lt;/integer&gt;
-&lt;key&gt;bInterfaceNumber&lt;/key&gt;
-&lt;integer&gt;0&lt;/integer&gt;
+&lt;key&gt;idProduct&lt;/key&gt;
+&lt;integer&gt;60000&lt;/integer&gt;
+</pre>
+
+Replace 60000 with **32778** (id of SPORTident stations).
+
+<pre>
 &lt;key&gt;idProduct&lt;/key&gt;
 &lt;integer&gt;32778&lt;/integer&gt;
-&lt;key&gt;idVendor&lt;/key&gt;
-&lt;integer&gt;4292&lt;/integer&gt;
-&lt;/dict&gt;
 </pre>
 
-
-3\. Run the following command in a terminal to reload the modified driver:
+3\. *Only with Lion (Mac OSX 10.7)*, the cache should be updated so that the driver is automatically loaded when a station is plugged in. The last two commands take a while to run.
 
 <pre>
-sudo kextunload -b com.silabs.driver.SiLabsUSBDriver
-sudo kextload -b com.silabs.driver.SiLabsUSBDriver
+sudo kextload -b com.silabs.driver.CP210xVCPDriver64
+sudo kextcache -system-prelinked-kernel
+sudo kextcache -system-caches
 </pre>
 
-Alternatively, the driver may have the following identifier (see content of Info.plist for the right identifier):
-
-<pre>
-sudo kextunload -b com.silabs.driver.CP210xVCPDriver
-sudo kextload -b com.silabs.driver.CP210xVCPDriver
-</pre>
-
-Or you can restart your computer so that the system takes into account the new property.
+4\. Restart your computer to check that the system takes into account your modifications.
 
 Now the station should appear as **/dev/tty.SLAB\_USBtoUART** in Geco (also appear in the System profiler as **SPORTident USB to UART Bridge Controller**).
+
+
+## Geco misreads control code with code higher than 255
+This is a current limitation of Geco. If you reprogram a station with a code higher than 255, Geco can still read punches from this station, but will read the control code modulo 255 (the remainder of division by 255). For example:
+
+- 300 modulo 255 gives 45
+- 600 modulo 255 gives 90 (or, if you want, 255 * 2 + 90 = 600)
+
+It is not recommended to bypass this limit when using Geco. If you still want to use control code higher than 255, you will have to edit each course and replace control codes > 255 with their modulo.

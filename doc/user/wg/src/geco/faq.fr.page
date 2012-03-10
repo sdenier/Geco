@@ -23,63 +23,65 @@ Les fonctionnalités suivantes ne sont pas encore supportées mais devraient êt
 Des utilisateurs ont reporté des temps de lecture des puces très longs sur certains ordinateurs. Dans ces cas la lecture d'une seule prend environ 10 secondes au lieu des 1 à 2 secondes habituelles, ce qui rend Geco impraticable en compétition. Le problème semble apparaître uniquement quand le boîtier maître SPORTident est branché directement sur l'ordinateur. Bien que la cause du problème soit encore inconnue, il est possible de le résoudre en branchant un hub USB entre l'ordinateur et le boîtier maître. Une configuration typique de GEC est l'utilisation du hub pour le boîtier maître et l'imprimante à ticket, tandis que les autres ports USB sont libres de recevoir une imprimante normale ou des clés USB.
 
 
-## Comment installer le pilote SPORTident sous Mac OS X?
+## Certains temps sont décalés de 12h00 avec les puces SI 5
+Les temps dans les puces SI 5 sont enregistrés sur 12h00 et repartent ensuite à zéro. Geco doit recalculer le temps correct à partir de l'heure zéro de la compétition.
+
+1. Changer l'heure zéro pour une heure proche de l'heure réelle de la compétition dans la [configuration](../guide/stage.fr.html).
+1. Pour les coureurs concernés, *réinitialiser le temps officiel* à partir de la [vue des données coureur](../guide/runners.fr.html).
+
+
+## \[Windows\] Temps de démarrage lent (avec Bluetooth activé)
+Geco scanne les ports série au démarrage pour détecter une station SPORTident. Si Bluetooth est activé, il sera aussi scanné ce qui ralentit considérablement le lancement de Geco (plus de 10 secondes d'attente). Vous pouvez soit :
+
+- désactiver Bluetooth avant de lancer Geco
+- ou lancer Geco depuis la ligne de commande avec par exemple  
+`java -Dgnu.io.rxtx.SerialPorts=COM1;COM3 -jar gecoXXXX.jar`  
+où `COM1` et `COM3` sont les ports susceptibles d'accueillir votre station SPORTident (à adapter suivant votre configuration). Vous pouvez créer un fichier batch pour éviter de taper cette commande à chaque fois.
+
+
+## \[Mac OS X\] Comment installer un pilote pour SPORTident ?
+
+*Guy P. a écrit un [tutorial détaillé et pas à pas](http://geco.webou.net/procedure_installation_driver_sportident) si vous n'êtes pas habitué aux manipulations systèmes décrites ci-dessous.*
 
 Il faut télécharger le pilote Mac OS pour le chip USB des boîtiers SPORTident, puis changer quelques informations du pilote pour que Mac OS le reconnaisse pour le boîtier.
 
 1\. Télécharger et installer le pilote depuis [SI labs](https://www.silabs.com/products/interface/usbtouart/Pages/usb-to-uart-bridge.aspx), section *Tools*, sélectionner *CP210x VCP Mac OSX Drivers* (ou essayer le lien direct [Mac\_OSX\_VCP\_Driver.zip](https://www.silabs.com/pages/DownloadDoc.aspx?FILEURL=Support%20Documents/Software/Mac_OSX_VCP_Driver.zip&src=SoftwardDownloadsWebPart)). L'installation demande un redémarrage.
 
-2\. Ouvrir le fichier `/System/Library/Extensions/SiLabsUSBDriver.kext/Contents/Info.plist` avec un éditeur de texte. Les fichiers plist de Mac OS contiennent des informations pour le système au format XML. Vous pouvez faire une copie de sauvegarde avant édition.
+Deux pilotes sont installés, une version 32 bits `/System/Library/Extensions/CP210xVCPDriver.kext` et une version 64 bits `/System/Library/Extensions/CP210xVCPDriver64.kext`. Vous pouvez modifier l'un ou l'autre des pilotes. Le tutorial continue avec la version 64 bits.
 
-Dans le fichier, copier l'entrée XML complète pour **SiLabsUSBDriver - SILabs 60000 CP210x** et coller la comme une nouvelle entrée. Changer le **idProduct** de 60000 (0xEA6) à 32778 (0x800A). Les boîtiers SPORTident ont un identifiant produit à 32778 et seront ainsi liés au pilote.
+2\. Ouvrir le fichier `/System/Library/Extensions/CP210xVCPDriver64.kext/Contents/Info.plist` avec un éditeur de texte (il vous faut les droits admin). Vous pouvez faire une copie de sauvegarde avant édition.
 
-Vous pouvez aussi copier directement l'entrée suivante entre les balises :
+Dans le fichier, repérer les deux lignes suivantes en cherchant la chaîne 60000 :
 
 <pre>
-&lt;key&gt;SiLabsUSBDriver - SILabs 60000 CP210x&lt;/key&gt;
-&lt;dict&gt;
-&lt;key&gt;CFBundleIdentifier&lt;/key&gt;
-&lt;string&gt;com.silabs.driver.SiLabsUSBDriver&lt;/string&gt;
-&lt;key&gt;IOClass&lt;/key&gt;
-&lt;string&gt;SiLabsUSBDriver&lt;/string&gt;
-&lt;key&gt;IOKitDebug&lt;/key&gt;
-&lt;integer&gt;0&lt;/integer&gt;
-&lt;key&gt;IOMatchCategory&lt;/key&gt;
-&lt;string&gt;SiLabsUSBSerial&lt;/string&gt;
-&lt;key&gt;IOProviderClass&lt;/key&gt;
-&lt;string&gt;IOUSBDevice&lt;/string&gt;
-&lt;key&gt;IOResourceMatch&lt;/key&gt;
-&lt;string&gt;IOKit&lt;/string&gt;
-&lt;key&gt;IOUserClientClass&lt;/key&gt;
-&lt;string&gt;SiLabsUSBUserClient&lt;/string&gt;
-&lt;key&gt;USB Product Name&lt;/key&gt;
-&lt;string&gt;CP210x USB to UART Bridge Controller&lt;/string&gt;
-&lt;key&gt;bConfigurationValue&lt;/key&gt;
-&lt;integer&gt;1&lt;/integer&gt;
-&lt;key&gt;bInterfaceNumber&lt;/key&gt;
-&lt;integer&gt;0&lt;/integer&gt;
+&lt;key&gt;idProduct&lt;/key&gt;
+&lt;integer&gt;60000&lt;/integer&gt;
+</pre>
+
+Remplacer 60000 par **32778** (identifiant des boîtiers SPORTident).
+
+<pre>
 &lt;key&gt;idProduct&lt;/key&gt;
 &lt;integer&gt;32778&lt;/integer&gt;
-&lt;key&gt;idVendor&lt;/key&gt;
-&lt;integer&gt;4292&lt;/integer&gt;
-&lt;/dict&gt;
 </pre>
 
-
-3\. Lancez la commande suivante dans un terminal pour recharger le pilote modifié:
+3\. *Uniquement sous Lion (Mac OSX 10.7)*, il faut mettre à jour le cache pour que le chargement du pilote soit automatique au branchement du boîtier. Les deux dernières commandes prennent un peu de temps.
 
 <pre>
-sudo kextunload -b com.silabs.driver.SiLabsUSBDriver
-sudo kextload -b com.silabs.driver.SiLabsUSBDriver
+sudo kextload -b com.silabs.driver.CP210xVCPDriver64
+sudo kextcache -system-prelinked-kernel
+sudo kextcache -system-caches
 </pre>
 
-Alternativement, le pilote peut avoir l'identifiant suivant (voir le contenu de Info.plist pour le bon identifiant):
+4\. Redémarrer à nouveau pour vérifier que le système prenne en compte les modifications.
 
-<pre>
-sudo kextunload -b com.silabs.driver.CP210xVCPDriver
-sudo kextload -b com.silabs.driver.CP210xVCPDriver
-</pre>
+Le boîtier apparaît sous l'identifiant **/dev/tty.SLAB\_USBtoUART** dans Geco (et aussi comme **SPORTident USB to UART Bridge Controller** dans le profil système).
 
-Ou redémarrez à nouveau pour que le système prenne en compte la nouvelle entrée.
 
-Un boîtier apparaît sous l'identifiant **/dev/tty.SLAB\_USBtoUART** dans Geco (et aussi comme **SPORTident USB to UART Bridge Controller** dans le profile système).
+## Geco lit un mauvais code quand le code d'une station est supérieur à 255
+C'est une limite actuelle de Geco. Si une station est reprogrammée avec un code supérieur à 255, Geco peut toujours lire le poinçon de la puce mais affectera le code de la station modulo 255 (le reste de la division entière par 255). Par exemple :
+
+- 300 modulo 255 donne 45
+- 600 modulo 255 donne 90 (soit encore, 255 * 2 + 90 = 600)
+
+Pour éviter les risques de confusion, il n'est pas recommandé de dépasser cette limite avec Geco. Si vous voulez quand même utiliser des codes supérieurs à 255, il faut éditer chaque circuit pour remplacer les codes > 255 par leur modulo.
