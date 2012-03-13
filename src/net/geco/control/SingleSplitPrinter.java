@@ -41,7 +41,7 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 	
 	public static enum SplitFormat { MultiColumns, Ticket }
 
-	private static final boolean DEBUGMODE = true;
+	private static final boolean DEBUGMODE = false;
 	
 	private PrintService splitPrinter;
 	private boolean autoPrint;
