@@ -4,6 +4,20 @@
  */
 package net.geco.ui;
 
+import static net.geco.ui.basics.GecoIcon.Auto;
+import static net.geco.ui.basics.GecoIcon.LiveOff;
+import static net.geco.ui.basics.GecoIcon.LiveOn;
+import static net.geco.ui.basics.GecoIcon.Manual;
+import static net.geco.ui.basics.GecoIcon.Open;
+import static net.geco.ui.basics.GecoIcon.OpenLiveMap;
+import static net.geco.ui.basics.GecoIcon.RecheckAll;
+import static net.geco.ui.basics.GecoIcon.Save;
+import static net.geco.ui.basics.GecoIcon.SplitOff;
+import static net.geco.ui.basics.GecoIcon.SplitOn;
+import static net.geco.ui.basics.GecoIcon.StartReader;
+import static net.geco.ui.basics.GecoIcon.StopReader;
+import static net.geco.ui.basics.GecoIcon.createIcon;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Toolkit;
@@ -15,15 +29,12 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.net.URL;
-import java.util.Hashtable;
 import java.util.Properties;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -77,29 +88,6 @@ public class GecoWindow extends JFrame
 	private LiveComponent liveMap;
 
 	private RunnersTableAnnouncer announcer;
-
-	private static final String THEME = "crystal/"; //$NON-NLS-1$
-
-	private static Hashtable<String,String[]> ICONS;
-
-
-	{
-		ICONS = new Hashtable<String, String[]>();
-		ICONS.put("crystal/", new String[] { //$NON-NLS-1$
-			"folder_new.png", //$NON-NLS-1$
-			"folder_sent_mail.png", //$NON-NLS-1$
-			"quick_restart.png", //$NON-NLS-1$
-			"cnr.png", //$NON-NLS-1$
-			"exit.png", //$NON-NLS-1$
-			"search.png", //$NON-NLS-1$
-			"irkick.png", //$NON-NLS-1$
-			"irkickflash.png", //$NON-NLS-1$
-			"fileprint.png", //$NON-NLS-1$
-			"filequickprint.png", //$NON-NLS-1$
-			"advanced.png", //$NON-NLS-1$
-			"restart.png", //$NON-NLS-1$
-		});
-	}
 	
 
 	public GecoWindow(IGecoApp geco) {
@@ -198,7 +186,7 @@ public class GecoWindow extends JFrame
 		initNavigationToolbar(toolBar);
 		toolBar.addSeparator();
 		
-		JButton recheckB = new JButton(Messages.uiGet("GecoWindow.RecheckButton"), createIcon(2)); //$NON-NLS-1$
+		JButton recheckB = new JButton(Messages.uiGet("GecoWindow.RecheckButton"), createIcon(RecheckAll)); //$NON-NLS-1$
 		recheckB.setToolTipText(Messages.uiGet("GecoWindow.RecheckToolTip")); //$NON-NLS-1$
 		recheckB.addActionListener(new ActionListener() {
 			@Override
@@ -219,7 +207,7 @@ public class GecoWindow extends JFrame
 	}
 
 	private void initNavigationToolbar(JToolBar toolBar) {
-		JButton openB = new JButton(Messages.uiGet("GecoWindow.NewOpenButton"), createIcon(0)); //$NON-NLS-1$
+		JButton openB = new JButton(Messages.uiGet("GecoWindow.NewOpenButton"), createIcon(Open)); //$NON-NLS-1$
 		openB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -248,7 +236,7 @@ public class GecoWindow extends JFrame
 			}
 		});
 		toolBar.add(openB);
-		JButton saveB = new JButton(Messages.uiGet("GecoWindow.SaveButton"), createIcon(1)); //$NON-NLS-1$
+		JButton saveB = new JButton(Messages.uiGet("GecoWindow.SaveButton"), createIcon(Save)); //$NON-NLS-1$
 		toolBar.add(saveB);
 		saveB.addActionListener(new ActionListener() {
 			@Override
@@ -259,7 +247,7 @@ public class GecoWindow extends JFrame
 	}
 
 	private void initLiveToolbar(JToolBar toolBar) {
-		JButton liveMapB = new JButton(createIcon(5));
+		JButton liveMapB = new JButton(createIcon(OpenLiveMap));
 		liveMapB.setToolTipText(Messages.uiGet("GecoWindow.LivemapTooltip")); //$NON-NLS-1$
 		liveMapB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -267,20 +255,18 @@ public class GecoWindow extends JFrame
 			}
 		});
 		toolBar.add(liveMapB);
-		final ImageIcon offliveIcon = createIcon(6);
-		final ImageIcon onliveIcon = createIcon(7);
 		StartStopButton liveClientB = new StartStopButton() {
 			private LiveClient liveClient;
 			@Override
 			public void initialize() {
-				setIcon(offliveIcon);
+				setIcon(createIcon(LiveOff));
 				setToolTipText(Messages.uiGet("GecoWindow.StartLiveclientTooltip")); //$NON-NLS-1$
 			}
 			@Override
 			public void actionOn() {
 				liveClient = new LiveClient(geco, this);
 				if( new LiveClientDialog(GecoWindow.this, liveClient).open() ) {
-					setIcon(onliveIcon);
+					setIcon(createIcon(LiveOn));
 					setToolTipText(Messages.uiGet("GecoWindow.StopLiveclientTooltip")); //$NON-NLS-1$
 				} else {
 					setSelected(false);
@@ -298,8 +284,6 @@ public class GecoWindow extends JFrame
 	}
 
 	private void initReaderToolbar(JToolBar toolBar) {
-		final ImageIcon autoOff = createIcon(10);
-		final ImageIcon autoOn = createIcon(11);
 		final StartStopButton autoModeB = new StartStopButton() {
 			@Override
 			public void initialize() {
@@ -308,20 +292,18 @@ public class GecoWindow extends JFrame
 			@Override
 			public void actionOn() {
 				geco.siHandler().setRequestHandler(geco.autoMergeHandler());
-				setIcon(autoOn);
+				setIcon(createIcon(Auto));
 				setToolTipText(Messages.uiGet("GecoWindow.AutoMergeTooltip")); //$NON-NLS-1$
 			}
 			@Override
 			public void actionOff() {
 				geco.siHandler().setRequestHandler(geco.defaultMergeHandler());
-				setIcon(autoOff);
+				setIcon(createIcon(Manual));
 				setToolTipText(Messages.uiGet("GecoWindow.ManualMergeTooltip")); //$NON-NLS-1$
 			}
 		};
 		toolBar.add(autoModeB);
 		
-		final ImageIcon splitOff = createIcon(8);
-		final ImageIcon splitOn = createIcon(9);
 		final StartStopButton autoSplitB = new StartStopButton() {
 			@Override
 			public void initialize() {
@@ -330,25 +312,23 @@ public class GecoWindow extends JFrame
 			}
 			@Override
 			public void actionOn() {
-				setIcon(splitOn);
+				setIcon(createIcon(SplitOn));
 				geco.splitPrinter().enableAutoprint();
 			}
 			@Override
 			public void actionOff() {
 				geco.splitPrinter().disableAutoprint();
-				setIcon(splitOff);
+				setIcon(createIcon(SplitOff));
 			}
 		};
 		toolBar.add(autoSplitB);
 		
-		final ImageIcon startIcon = createIcon(3);
-		final ImageIcon stopIcon = createIcon(4);
 		startB = new StartStopButton() {
 			@Override
 			public void initialize() {
 				setSelected(false);
 				setText(Messages.uiGet("GecoWindow.StartReaderButton")); //$NON-NLS-1$
-				setIcon(startIcon);
+				setIcon(createIcon(StartReader));
 			}
 			@Override
 			public void actionOn() {
@@ -364,7 +344,7 @@ public class GecoWindow extends JFrame
 				}
 				geco.siHandler().start();
 				setText(Messages.uiGet("GecoWindow.StartingButton")); //$NON-NLS-1$
-				setIcon(stopIcon);				
+				setIcon(createIcon(StopReader));				
 			}
 			@Override
 			public void actionOff() {
@@ -409,15 +389,6 @@ public class GecoWindow extends JFrame
 			public void mouseClicked(MouseEvent e) { }
 		});
 		toolBar.add(versionL);
-	}
-
-	public ImageIcon createIcon(int i) {
-		return createImageIcon(THEME, ICONS.get(THEME)[i]);
-	}
-	
-	public ImageIcon createImageIcon(String theme, String path) {
-		URL url = getClass().getResource("/resources/icons/" + theme + path); //$NON-NLS-1$
-		return new ImageIcon(url);
 	}
 
 	@Override

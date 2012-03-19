@@ -14,7 +14,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
-import javax.swing.ImageIcon;
 import javax.swing.InputVerifier;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -27,6 +26,7 @@ import javax.swing.JTextField;
 import net.geco.basics.Html;
 import net.geco.framework.IGecoApp;
 import net.geco.model.Messages;
+import net.geco.ui.basics.GecoIcon;
 import net.geco.ui.basics.SwingUtils;
 import net.geco.ui.framework.ConfigPanel;
 
@@ -105,8 +105,7 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 		archiveF.setEditable(false);
 		archiveF.setText(geco.archiveManager().getArchiveName()); // TODO: refresh
 		add(archiveF, c);
-		JButton selectArchiveFileB = new JButton(
-				new ImageIcon(getClass().getResource("/resources/icons/crystal/db.png"))); //$NON-NLS-1$
+		JButton selectArchiveFileB = new JButton(GecoIcon.createIcon(GecoIcon.OpenArchive));
 		selectArchiveFileB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -127,8 +126,7 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 		cnScoreF.setEditable(false);
 		cnScoreF.setText(geco.cnCalculator().getCnFile().getName());
 		add(cnScoreF, c);
-		JButton selectCNFileB = new JButton(
-				new ImageIcon(getClass().getResource("/resources/icons/crystal/db.png"))); //$NON-NLS-1$
+		JButton selectCNFileB = new JButton(GecoIcon.createIcon(GecoIcon.OpenArchive));
 		selectCNFileB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {

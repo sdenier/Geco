@@ -15,13 +15,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.net.URL;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -46,6 +44,7 @@ import net.geco.basics.GecoResources;
 import net.geco.control.StageBuilder;
 import net.geco.framework.IStageLaunch;
 import net.geco.model.Messages;
+import net.geco.ui.basics.GecoIcon;
 import net.geco.ui.basics.SwingUtils;
 
 
@@ -149,8 +148,7 @@ public class GecoLauncher extends JDialog {
 			}
 		});
 		
-		URL url = getClass().getResource("/resources/icons/crystal/folder_small.png"); //$NON-NLS-1$
-		JButton selectPathB = new JButton(new ImageIcon(url));
+		JButton selectPathB = new JButton(GecoIcon.createIcon(GecoIcon.OpenSmall));
 		openWizard.add(selectPathB, c);
 		selectPathB.addActionListener(new ActionListener() {
 			@Override
@@ -218,8 +216,7 @@ public class GecoLauncher extends JDialog {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		creationWizard.add(stagePathL, c);
 		
-		URL url = getClass().getResource("/resources/icons/crystal/folder_small.png"); //$NON-NLS-1$
-		JButton selectPathB = new JButton(new ImageIcon(url));
+		JButton selectPathB = new JButton(GecoIcon.createIcon(GecoIcon.OpenSmall));
 		creationWizard.add(selectPathB, c);
 		selectPathB.addActionListener(new ActionListener() {
 			@Override

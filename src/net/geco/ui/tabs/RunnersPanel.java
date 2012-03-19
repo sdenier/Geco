@@ -27,7 +27,6 @@ import java.util.Vector;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -65,6 +64,7 @@ import net.geco.model.RunnerRaceData;
 import net.geco.model.Stage;
 import net.geco.model.Status;
 import net.geco.ui.basics.EcardComparator;
+import net.geco.ui.basics.GecoIcon;
 import net.geco.ui.basics.HyperLog;
 import net.geco.ui.basics.PunchPanel;
 import net.geco.ui.basics.SwingUtils;
@@ -194,9 +194,7 @@ public class RunnersPanel extends TabPanel
 		});
 		topPanel.add(deleteButton);
 		
-		ImageIcon importCsv = new ImageIcon(
-				getClass().getResource("/resources/icons/crystal/fileimport.png")); //$NON-NLS-1$
-		JButton importCsvB = new JButton(importCsv);
+		JButton importCsvB = new JButton(GecoIcon.createIcon(GecoIcon.ImportFile));
 		importCsvB.setToolTipText(Messages.uiGet("RunnersPanel.ImportCsvRunnersTooltip")); //$NON-NLS-1$
 		importCsvB.addActionListener(new ActionListener() {
 			@Override
@@ -215,9 +213,7 @@ public class RunnersPanel extends TabPanel
 		});
 		topPanel.add(importCsvB);
 		
-		ImageIcon archiveOpen = new ImageIcon(
-				getClass().getResource("/resources/icons/crystal/db.png")); //$NON-NLS-1$
-		JButton archiveB = new JButton(archiveOpen);
+		JButton archiveB = new JButton(GecoIcon.createIcon(GecoIcon.OpenArchive));
 		archiveB.setToolTipText(Messages.uiGet("RunnersPanel.ImportArchiveTooltip")); //$NON-NLS-1$
 		archiveB.addActionListener(new ActionListener() {
 			@Override

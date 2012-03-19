@@ -18,7 +18,6 @@ import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.ImageIcon;
 import javax.swing.InputVerifier;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -34,6 +33,7 @@ import net.geco.framework.IGeco;
 import net.geco.model.Messages;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
+import net.geco.ui.basics.GecoIcon;
 import net.geco.ui.basics.SwingUtils;
 import net.geco.ui.components.MergeRunnerDialog;
 import net.geco.ui.framework.GecoPanel;
@@ -430,9 +430,7 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 	}
 
 	private JButton createResetTimeButton() {
-		ImageIcon time = new ImageIcon(
-				getClass().getResource("/resources/icons/crystal/history.png")); //$NON-NLS-1$
-		JButton resetTimeB = new JButton(time);
+		JButton resetTimeB = new JButton(GecoIcon.createIcon(GecoIcon.ResetTime));
 		resetTimeB.setToolTipText(Messages.uiGet("RunnerPanel.ResetTimeTooltip")); //$NON-NLS-1$
 		resetTimeB.addActionListener(new ActionListener() {
 			@Override
@@ -447,9 +445,7 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 	}
 
 	private JButton createQuickPrintButton() {
-		ImageIcon splitPrint = new ImageIcon(
-				getClass().getResource("/resources/icons/crystal/filequickprint_small.png")); //$NON-NLS-1$
-		JButton splitPrintB = new JButton(splitPrint);
+		JButton splitPrintB = new JButton(GecoIcon.createIcon(GecoIcon.SplitPrint));
 		splitPrintB.setToolTipText(Messages.uiGet("RunnerPanel.SplitprintTooltip")); //$NON-NLS-1$
 		splitPrintB.addActionListener(new ActionListener() {
 			@Override

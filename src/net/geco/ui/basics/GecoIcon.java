@@ -1,0 +1,58 @@
+/**
+ * Copyright (c) 2012 Simon Denier
+ * Released under the MIT License (see LICENSE file)
+ */
+package net.geco.ui.basics;
+
+import java.net.URL;
+
+import javax.swing.ImageIcon;
+
+/**
+ * @author Simon Denier
+ * @since Mar 19, 2012
+ *
+ */
+public enum GecoIcon {
+	
+	Open 		("folder_new.png"), //$NON-NLS-1$
+	OpenSmall	("folder_small.png"), //$NON-NLS-1$
+	Save 		("folder_sent_mail.png"), //$NON-NLS-1$
+	RecheckAll	("quick_restart.png"), //$NON-NLS-1$
+	StartReader	("cnr.png"), //$NON-NLS-1$
+	StopReader	("exit.png"), //$NON-NLS-1$
+	Manual		("advanced.png"), //$NON-NLS-1$
+	Auto		("restart.png"), //$NON-NLS-1$
+	SplitOff	("fileprint.png"), //$NON-NLS-1$
+	SplitOn		("filequickprint.png"), //$NON-NLS-1$
+	OpenLiveMap	("search.png"), //$NON-NLS-1$
+	LiveOff		("irkick.png"), //$NON-NLS-1$
+	LiveOn		("irkickflash.png"), //$NON-NLS-1$
+	
+	ImportFile	("fileimport.png"), //$NON-NLS-1$
+	OpenArchive	("db.png"), //$NON-NLS-1$
+	ResetTime	("history.png"), //$NON-NLS-1$
+	SplitPrint	("filequickprint_small.png"); //$NON-NLS-1$
+
+	private String resourceName;
+		
+	GecoIcon(String resourceName) {
+		this.resourceName = resourceName;
+	}
+		
+	public String resourcePath() {
+		return THEME + this.resourceName;
+	}
+
+	private static final String THEME = "crystal/"; //$NON-NLS-1$
+	
+	public static ImageIcon createIcon(GecoIcon icon) {
+		return createImageIcon(icon.resourcePath());
+	}
+
+	public static ImageIcon createImageIcon(String path) {
+		URL url = GecoIcon.class.getResource("/resources/icons/" + path); //$NON-NLS-1$
+		return new ImageIcon(url);
+	}
+	
+}
