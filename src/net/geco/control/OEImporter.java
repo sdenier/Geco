@@ -53,13 +53,13 @@ public abstract class OEImporter extends Control {
 	}
 
 	/**
-	 * Remove " in "record".
+	 * Remove " in "field".
 	 */
-	protected String trimQuotes(String record) {
-		if( record.charAt(0)=='"' ){
-			return record.substring(1, record.length() - 1);
+	protected String trimQuotes(String field) {
+		if( field.charAt(0)=='"' ){
+			return field.substring(1, field.length() - 1);
 		} else {
-			return record;
+			return field;
 		}
 	}
 

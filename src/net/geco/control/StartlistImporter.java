@@ -26,7 +26,7 @@ public class StartlistImporter extends OEImporter {
 	}
 
 	@Override
-	protected void importRunnerRecord(String[] record) {
+	public void importRunnerRecord(String[] record) {
 		// [0-4] N° dép.;Puce;Ident. base de données;Nom;Prénom;
 		// [5-12] Né;S;Plage;nc;Départ;Arrivée;Temps;Evaluation;
 		// [13-19] N° club;Nom;Ville;Nat;N° cat.;Court;Long;
@@ -40,16 +40,18 @@ public class StartlistImporter extends OEImporter {
 			geco().log(Messages.getString("StartlistImporter.NoEcardWarning") + firstName + " " + lastName); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		
-		Runner runner = runnerControl().buildBasicRunner(ecard); // ensure unique ecard
-		Integer startId = Integer.valueOf(record[0]);
-		if( registry().findRunnerById(startId)!=null ){
-			geco().log(Messages.getString("StartlistImporter.ExistingStartIdMessage1") + startId); //$NON-NLS-1$
-			geco().log(Messages.getString("StartlistImporter.ExistingStartIdMessage2") + runner.getStartId()); //$NON-NLS-1$
-		} else {
-			runner.setStartId(startId);
+		Runner runner = runnerControl().buildBasicRunner(ecard); // ensure unique id and ecard
+		if( ! record[0].equals("") ){ //$NON-NLS-1$
+			Integer startId = Integer.valueOf(record[0]);
+			if( registry().findRunnerById(startId)!=null ){
+				geco().log(Messages.getString("StartlistImporter.ExistingStartIdMessage1") + startId); //$NON-NLS-1$
+				geco().log(Messages.getString("StartlistImporter.ExistingStartIdMessage2") + runner.getStartId()); //$NON-NLS-1$
+			} else {
+				runner.setStartId(startId);
+			}
 		}
 		if( ! record[2].equals("") ){ //$NON-NLS-1$
-			runner.setArchiveId(new Integer(record[2]));			
+			runner.setArchiveId(Integer.valueOf(record[2]));			
 		}
 		runner.setLastname(lastName);
 		runner.setFirstname(firstName);
