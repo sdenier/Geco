@@ -42,6 +42,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import net.geco.app.AppBuilder;
 import net.geco.basics.Announcer.StageListener;
@@ -57,6 +58,8 @@ import net.geco.model.Stage;
 import net.geco.ui.basics.GecoStatusBar;
 import net.geco.ui.basics.StartStopButton;
 import net.geco.ui.basics.SwingUtils;
+import net.geco.ui.components.AquaECardModeSelector;
+import net.geco.ui.components.DefaultECardModeSelector;
 import net.geco.ui.components.ECardModeSelector;
 import net.geco.ui.framework.ConfigPanel;
 import net.geco.ui.framework.RunnersTableAnnouncer;
@@ -83,6 +86,8 @@ public class GecoWindow extends JFrame
 
 	private ECardModeSelector modeSelector;
 	
+	private StartStopButton autoSplitB;
+
 	private LiveComponent liveMap;
 
 	private RunnersTableAnnouncer announcer;
@@ -286,7 +291,7 @@ public class GecoWindow extends JFrame
 	private void initReaderToolbar(JToolBar toolBar) {
 		final ImageIcon splitOnIcon = createIcon(SplitOn);
 		final ImageIcon splitOffIcon = createIcon(SplitOff);
-		final StartStopButton autoSplitB = new StartStopButton() {
+		autoSplitB = new StartStopButton() {
 			@Override
 			public void initialize() {
 				setToolTipText(Messages.uiGet("GecoWindow.AutoprintTooltip")); //$NON-NLS-1$
@@ -313,21 +318,36 @@ public class GecoWindow extends JFrame
 //				setText(Messages.uiGet("GecoWindow.StartingButton")); //$NON-NLS-1$
 //		startB.setText(Messages.uiGet("GecoWindow.StopReaderButton")); //$NON-NLS-1$
 		
-		modeSelector = new ECardModeSelector(geco) {
-			protected void beforeStartingReadMode() {
-				if( ! autoSplitB.isSelected() ) {
-					int confirm = JOptionPane.showConfirmDialog(
-												GecoWindow.this,
-												Messages.uiGet("GecoWindow.AutoprintConfirm1"), //$NON-NLS-1$
-												Messages.uiGet("GecoWindow.AutoprintConfirm2"), //$NON-NLS-1$
-												JOptionPane.YES_NO_OPTION);
-					if( confirm==JOptionPane.YES_OPTION ) {
-						autoSplitB.doOnAction();
-					}
+		if( UIManager.getLookAndFeel().getID().equals("Aqua") ){
+			AquaECardModeSelector aquaModeSelector = new AquaECardModeSelector(geco, this) {
+				public void beforeStartingReadMode() {
+					checkEnableAutoSplit();
 				}
+			};
+			modeSelector = aquaModeSelector;
+			toolBar.add(aquaModeSelector);			
+		} else {
+			DefaultECardModeSelector defaultModeSelector = new DefaultECardModeSelector(geco) {
+				public void beforeStartingReadMode() {
+					checkEnableAutoSplit();
+				}
+			};
+			modeSelector = defaultModeSelector;
+			toolBar.add(defaultModeSelector);		
+		}
+	}
+
+	private void checkEnableAutoSplit() {
+		if( ! autoSplitB.isSelected() ) {
+			int confirm = JOptionPane.showConfirmDialog(
+										GecoWindow.this,
+										Messages.uiGet("GecoWindow.AutoprintConfirm1"), //$NON-NLS-1$
+										Messages.uiGet("GecoWindow.AutoprintConfirm2"), //$NON-NLS-1$
+										JOptionPane.YES_NO_OPTION);
+			if( confirm==JOptionPane.YES_OPTION ) {
+				autoSplitB.doOnAction();
 			}
-		};
-		toolBar.add(modeSelector);
+		}
 	}
 
 	@Override
