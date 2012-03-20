@@ -19,15 +19,19 @@ public enum GecoIcon {
 	OpenSmall	("folder_small.png"), //$NON-NLS-1$
 	Save 		("folder_sent_mail.png"), //$NON-NLS-1$
 	RecheckAll	("quick_restart.png"), //$NON-NLS-1$
-	StartReader	("cnr.png"), //$NON-NLS-1$
-	StopReader	("exit.png"), //$NON-NLS-1$
-	Manual		("advanced.png"), //$NON-NLS-1$
-	Auto		("restart.png"), //$NON-NLS-1$
+	// TODO: remove unused icons
+//	Manual		("advanced.png"), //$NON-NLS-1$
+//	Auto		("restart.png"), //$NON-NLS-1$
 	SplitOff	("fileprint.png"), //$NON-NLS-1$
 	SplitOn		("filequickprint.png"), //$NON-NLS-1$
 	OpenLiveMap	("search.png"), //$NON-NLS-1$
 	LiveOff		("irkick.png"), //$NON-NLS-1$
 	LiveOn		("irkickflash.png"), //$NON-NLS-1$
+
+	EcardOffMode		("exit.png"), //$NON-NLS-1$
+	EcardReadingMode	("cnr.png"), //$NON-NLS-1$
+	EcardTrainingMode	("cnrgrey.png"), //$NON-NLS-1$
+	EcardRegisterMode	("graphic-design.png"), //$NON-NLS-1$
 	
 	ImportFile	("fileimport.png"), //$NON-NLS-1$
 	OpenArchive	("db.png"), //$NON-NLS-1$

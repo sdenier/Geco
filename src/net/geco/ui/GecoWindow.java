@@ -4,18 +4,14 @@
  */
 package net.geco.ui;
 
-import static net.geco.ui.basics.GecoIcon.Auto;
 import static net.geco.ui.basics.GecoIcon.LiveOff;
 import static net.geco.ui.basics.GecoIcon.LiveOn;
-import static net.geco.ui.basics.GecoIcon.Manual;
 import static net.geco.ui.basics.GecoIcon.Open;
 import static net.geco.ui.basics.GecoIcon.OpenLiveMap;
 import static net.geco.ui.basics.GecoIcon.RecheckAll;
 import static net.geco.ui.basics.GecoIcon.Save;
 import static net.geco.ui.basics.GecoIcon.SplitOff;
 import static net.geco.ui.basics.GecoIcon.SplitOn;
-import static net.geco.ui.basics.GecoIcon.StartReader;
-import static net.geco.ui.basics.GecoIcon.StopReader;
 import static net.geco.ui.basics.GecoIcon.createIcon;
 
 import java.awt.BorderLayout;
@@ -35,6 +31,7 @@ import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -60,6 +57,7 @@ import net.geco.model.Stage;
 import net.geco.ui.basics.GecoStatusBar;
 import net.geco.ui.basics.StartStopButton;
 import net.geco.ui.basics.SwingUtils;
+import net.geco.ui.components.ECardModeSelector;
 import net.geco.ui.framework.ConfigPanel;
 import net.geco.ui.framework.RunnersTableAnnouncer;
 import net.geco.ui.framework.TabPanel;
@@ -83,7 +81,7 @@ public class GecoWindow extends JFrame
 
 	private IGecoApp geco;
 
-	private StartStopButton startB;
+	private ECardModeSelector modeSelector;
 	
 	private LiveComponent liveMap;
 
@@ -144,7 +142,7 @@ public class GecoWindow extends JFrame
 		actionMap.put("focusReaderButton", new AbstractAction() { //$NON-NLS-1$
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				startB.requestFocusInWindow();
+				modeSelector.requestFocusInWindow();
 			}
 		});
 
@@ -255,18 +253,20 @@ public class GecoWindow extends JFrame
 			}
 		});
 		toolBar.add(liveMapB);
+		final ImageIcon liveOffIcon = createIcon(LiveOff);
+		final ImageIcon liveOnIcon = createIcon(LiveOn);
 		StartStopButton liveClientB = new StartStopButton() {
 			private LiveClient liveClient;
 			@Override
 			public void initialize() {
-				setIcon(createIcon(LiveOff));
+				setIcon(liveOffIcon);
 				setToolTipText(Messages.uiGet("GecoWindow.StartLiveclientTooltip")); //$NON-NLS-1$
 			}
 			@Override
 			public void actionOn() {
 				liveClient = new LiveClient(geco, this);
 				if( new LiveClientDialog(GecoWindow.this, liveClient).open() ) {
-					setIcon(createIcon(LiveOn));
+					setIcon(liveOnIcon);
 					setToolTipText(Messages.uiGet("GecoWindow.StopLiveclientTooltip")); //$NON-NLS-1$
 				} else {
 					setSelected(false);
@@ -284,26 +284,8 @@ public class GecoWindow extends JFrame
 	}
 
 	private void initReaderToolbar(JToolBar toolBar) {
-		final StartStopButton autoModeB = new StartStopButton() {
-			@Override
-			public void initialize() {
-				doOnAction();
-			}
-			@Override
-			public void actionOn() {
-				geco.siHandler().setRequestHandler(geco.autoMergeHandler());
-				setIcon(createIcon(Auto));
-				setToolTipText(Messages.uiGet("GecoWindow.AutoMergeTooltip")); //$NON-NLS-1$
-			}
-			@Override
-			public void actionOff() {
-				geco.siHandler().setRequestHandler(geco.defaultMergeHandler());
-				setIcon(createIcon(Manual));
-				setToolTipText(Messages.uiGet("GecoWindow.ManualMergeTooltip")); //$NON-NLS-1$
-			}
-		};
-		toolBar.add(autoModeB);
-		
+		final ImageIcon splitOnIcon = createIcon(SplitOn);
+		final ImageIcon splitOffIcon = createIcon(SplitOff);
 		final StartStopButton autoSplitB = new StartStopButton() {
 			@Override
 			public void initialize() {
@@ -312,26 +294,27 @@ public class GecoWindow extends JFrame
 			}
 			@Override
 			public void actionOn() {
-				setIcon(createIcon(SplitOn));
+				setIcon(splitOnIcon);
 				geco.splitPrinter().enableAutoprint();
 			}
 			@Override
 			public void actionOff() {
 				geco.splitPrinter().disableAutoprint();
-				setIcon(createIcon(SplitOff));
+				setIcon(splitOffIcon);
 			}
 		};
 		toolBar.add(autoSplitB);
+
+		// TODO: clean up deprecated messages
+//		setToolTipText(Messages.uiGet("GecoWindow.AutoMergeTooltip")); //$NON-NLS-1$
+//		setToolTipText(Messages.uiGet("GecoWindow.ManualMergeTooltip")); //$NON-NLS-1$
+
+//				setText(Messages.uiGet("GecoWindow.StartReaderButton")); //$NON-NLS-1$
+//				setText(Messages.uiGet("GecoWindow.StartingButton")); //$NON-NLS-1$
+//		startB.setText(Messages.uiGet("GecoWindow.StopReaderButton")); //$NON-NLS-1$
 		
-		startB = new StartStopButton() {
-			@Override
-			public void initialize() {
-				setSelected(false);
-				setText(Messages.uiGet("GecoWindow.StartReaderButton")); //$NON-NLS-1$
-				setIcon(createIcon(StartReader));
-			}
-			@Override
-			public void actionOn() {
+		modeSelector = new ECardModeSelector(geco) {
+			protected void beforeStartingReadMode() {
 				if( ! autoSplitB.isSelected() ) {
 					int confirm = JOptionPane.showConfirmDialog(
 												GecoWindow.this,
@@ -342,17 +325,34 @@ public class GecoWindow extends JFrame
 						autoSplitB.doOnAction();
 					}
 				}
-				geco.siHandler().start();
-				setText(Messages.uiGet("GecoWindow.StartingButton")); //$NON-NLS-1$
-				setIcon(createIcon(StopReader));				
-			}
-			@Override
-			public void actionOff() {
-				geco.siHandler().stop();
-				initialize();
 			}
 		};
-		toolBar.add(startB);
+		toolBar.add(modeSelector);
+	}
+
+	@Override
+	public void stationStatus(String status) {
+		if( status.equals("Ready") ) { //$NON-NLS-1$
+			modeSelector.modeActivated();
+			geco.info(Messages.uiGet("GecoWindow.StationReadyStatus"), false); //$NON-NLS-1$
+			return;
+		}
+		if( status.equals("NotFound") ) { //$NON-NLS-1$
+			geco.info(
+					Messages.uiGet("GecoWindow.StationNotFoundStatus") //$NON-NLS-1$
+					+ geco.siHandler().getPort(),
+					false);
+			modeSelector.recoverOffMode();
+			return;
+		}
+		if( status.equals("Failed") ) { //$NON-NLS-1$
+			geco.info(
+					Messages.uiGet("GecoWindow.StationOffline1Status") //$NON-NLS-1$
+					+ geco.siHandler().getPort()
+					+ Messages.uiGet("GecoWindow.StationOffline2Status"), //$NON-NLS-1$
+					false);
+			modeSelector.recoverOffMode();
+		}
 	}
 
 	private void initVersionDialog(JToolBar toolBar) {
@@ -389,31 +389,6 @@ public class GecoWindow extends JFrame
 			public void mouseClicked(MouseEvent e) { }
 		});
 		toolBar.add(versionL);
-	}
-
-	@Override
-	public void stationStatus(String status) {
-		if( status.equals("Ready") ) { //$NON-NLS-1$
-			startB.setText(Messages.uiGet("GecoWindow.StopReaderButton")); //$NON-NLS-1$
-			geco.info(Messages.uiGet("GecoWindow.StationReadyStatus"), false); //$NON-NLS-1$
-			return;
-		}
-		if( status.equals("NotFound") ) { //$NON-NLS-1$
-			geco.info(
-					Messages.uiGet("GecoWindow.StationNotFoundStatus") //$NON-NLS-1$
-					+ geco.siHandler().getPort(),
-					false);
-			startB.initialize();
-			return;
-		}
-		if( status.equals("Failed") ) { //$NON-NLS-1$
-			geco.info(
-					Messages.uiGet("GecoWindow.StationOffline1Status") //$NON-NLS-1$
-					+ geco.siHandler().getPort()
-					+ Messages.uiGet("GecoWindow.StationOffline2Status"), //$NON-NLS-1$
-					false);
-			startB.initialize();
-		}
 	}
 	
 	public void openMapWindow() {
