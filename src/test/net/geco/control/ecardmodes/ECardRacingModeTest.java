@@ -4,6 +4,7 @@
  */
 package test.net.geco.control.ecardmodes;
 
+import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import net.geco.basics.GecoRequestHandler;
@@ -55,28 +56,35 @@ public class ECardRacingModeTest extends ECardModeSetup {
 	@Test
 	public void handleDuplicateRequestsMerge() {
 		Runner runner = factory.createRunner();
-		ecardMode.handleDuplicate(danglingRunnerData, "998", runner);
+		ecardMode.handleDuplicate(danglingRunnerData, runner);
 		verify(requestHandler).requestMergeExistingRunner(danglingRunnerData, runner);
 	}
 
 	@Test
+	public void handleDuplicateSetsDuplicateStatus() {
+		Runner runner = factory.createRunner();
+		ecardMode.handleDuplicate(danglingRunnerData, runner);
+		assertEquals(Status.DUP, danglingRunnerData.getStatus());
+	}
+	
+	@Test
 	public void handleDuplicateCallsAnnouncer() {
 		Runner runner = factory.createRunner();
 		when(requestHandler.requestMergeExistingRunner(danglingRunnerData, runner)).thenReturn("998a");
-		ecardMode.handleDuplicate(danglingRunnerData, "998", runner);
+		ecardMode.handleDuplicate(danglingRunnerData, runner);
 		verify(announcer).announceCardReadAgain("998a");
 	}
 	
 	@Test
-	public void handleUnknownRequestsMerge() {
-		ecardMode.handleUnknown(danglingRunnerData, "997");
+	public void handleUnregisteredRequestsMerge() {
+		ecardMode.handleUnregistered(danglingRunnerData, "997");
 		verify(requestHandler).requestMergeUnknownRunner(danglingRunnerData, "997");
 	}
 
 	@Test
-	public void handleUnknownCallsAnnouncer() {
+	public void handleUnregisteredCallsAnnouncer() {
 		when(requestHandler.requestMergeUnknownRunner(danglingRunnerData, "997")).thenReturn("997");
-		ecardMode.handleUnknown(danglingRunnerData, "997");
+		ecardMode.handleUnregistered(danglingRunnerData, "997");
 		verify(announcer).announceUnknownCardRead("997");
 	}
 	

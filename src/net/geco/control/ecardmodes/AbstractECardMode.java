@@ -31,7 +31,7 @@ public abstract class AbstractECardMode extends Control implements ECardMode {
 		super(clazz, gecoControl);
 	}
 
-	protected ECardHandler finishHandler, duplicateHandler, unknownHandler;
+	protected ECardHandler finishHandler, duplicateHandler, unregisteredHandler;
 	
 	public void setFinishHandler(ECardHandler finishHandler) {
 		this.finishHandler = finishHandler;
@@ -41,8 +41,8 @@ public abstract class AbstractECardMode extends Control implements ECardMode {
 		this.duplicateHandler = duplicateHandler;
 	}
 
-	public void setUnknownHandler(ECardHandler unknownHandler) {
-		this.unknownHandler = unknownHandler;
+	public void setUnregisteredHandler(ECardHandler unregisteredHandler) {
+		this.unregisteredHandler = unregisteredHandler;
 	}
 
 	/**
@@ -67,7 +67,7 @@ public abstract class AbstractECardMode extends Control implements ECardMode {
 				geco().announcer().announceRentedCard(cardId);
 			}
 		} else {
-			processUnknown(card);
+			processUnregistered(card);
 		}
 	}
 
@@ -76,11 +76,11 @@ public abstract class AbstractECardMode extends Control implements ECardMode {
 	}
 	
 	protected void processDuplicate(IResultData<PunchObject, PunchRecordData> card, Runner runner) {
-		handleDuplicate(createUnregisteredData(card), card.getSiIdent(), runner);
+		handleDuplicate(createUnregisteredData(card), runner);
 	}
 
-	protected void processUnknown(IResultData<PunchObject, PunchRecordData> card) {
-		handleUnknown(createUnregisteredData(card), card.getSiIdent());
+	protected void processUnregistered(IResultData<PunchObject, PunchRecordData> card) {
+		handleUnregistered(createUnregisteredData(card), card.getSiIdent());
 	}
 
 	public RunnerRaceData updateRaceDataWith(RunnerRaceData runnerData, IResultData<PunchObject,PunchRecordData> card) {

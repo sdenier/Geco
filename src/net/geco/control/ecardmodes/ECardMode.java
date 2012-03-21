@@ -28,8 +28,8 @@ public interface ECardMode extends GService {
 
 	public void handleFinished(RunnerRaceData runnerData);
 
-	public void handleDuplicate(RunnerRaceData runnerData, String cardId, Runner runner);
+	public void handleDuplicate(RunnerRaceData runnerData, Runner runner);
 
-	public void handleUnknown(RunnerRaceData runnerData, String cardId);
+	public void handleUnregistered(RunnerRaceData runnerData, String cardId);
 
 }

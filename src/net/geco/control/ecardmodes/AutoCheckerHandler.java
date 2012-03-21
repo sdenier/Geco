@@ -6,6 +6,7 @@ package net.geco.control.ecardmodes;
 
 import net.geco.control.Control;
 import net.geco.control.GecoControl;
+import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 
 /**
@@ -20,9 +21,21 @@ public class AutoCheckerHandler extends Control implements ECardHandler {
 	}
 
 	@Override
-	public String handleECard(RunnerRaceData data) {
+	public String handleFinish(RunnerRaceData data) {
 		geco().checker().check(data);
 		return data.getRunner().getEcard();
+	}
+
+	@Override
+	public String handleDuplicate(RunnerRaceData data, Runner runner) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String handleUnregistered(RunnerRaceData data, String cardId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

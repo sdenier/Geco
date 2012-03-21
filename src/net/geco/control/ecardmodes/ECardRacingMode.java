@@ -32,7 +32,7 @@ public class ECardRacingMode extends AbstractECardMode {
 	@Override
 	public void handleFinished(RunnerRaceData runnerData) {
 		Status oldStatus = runnerData.getResult().getStatus();
-		finishHandler.handleECard(runnerData);
+		finishHandler.handleFinish(runnerData);
 		geco().log("READING " + runnerData.infoString()); //$NON-NLS-1$
 		if( runnerData.getResult().getNbMPs() > 0 ) {
 			geco().announcer().dataInfo(
@@ -44,8 +44,8 @@ public class ECardRacingMode extends AbstractECardMode {
 	}
 
 	@Override
-	public void handleDuplicate(RunnerRaceData runnerData, String cardId, Runner runner) {
-		geco().log("READING AGAIN " + cardId); //$NON-NLS-1$
+	public void handleDuplicate(RunnerRaceData runnerData, Runner runner) {
+		geco().log("READING AGAIN " + runner.getEcard()); //$NON-NLS-1$
 		String returnedCard = requestHandler.requestMergeExistingRunner(runnerData, runner);
 		if( returnedCard!=null ) {
 			geco().announcer().announceCardReadAgain(returnedCard);
@@ -53,7 +53,7 @@ public class ECardRacingMode extends AbstractECardMode {
 	}
 
 	@Override
-	public void handleUnknown(RunnerRaceData runnerData, String cardId) {
+	public void handleUnregistered(RunnerRaceData runnerData, String cardId) {
 		geco().log("READING UNKNOWN " + cardId); //$NON-NLS-1$
 		String returnedCard = requestHandler.requestMergeUnknownRunner(runnerData, cardId);
 		if( returnedCard!=null ) {

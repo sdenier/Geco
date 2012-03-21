@@ -37,19 +37,19 @@ public class AbstractECardModeTest extends ECardModeSetup {
 		private RunnerRaceData finishData;
 		private RunnerRaceData duplicateData;
 		private Runner runner;
-		private RunnerRaceData unknownData;
+		private RunnerRaceData unregisteredData;
 		public DummyECardHandler(GecoControl gecoControl) {
 			super(DummyECardHandler.class, gecoControl);
 		}
 		public void handleFinished(RunnerRaceData runnerData) {
 			this.finishData = runnerData;
 		}
-		public void handleDuplicate(RunnerRaceData runnerData, String cardId, Runner runner) {
+		public void handleDuplicate(RunnerRaceData runnerData, Runner runner) {
 			this.duplicateData = runnerData;
 			this.runner = runner;
 		}
-		public void handleUnknown(RunnerRaceData runnerData, String cardId) {
-			this.unknownData = runnerData;
+		public void handleUnregistered(RunnerRaceData runnerData, String cardId) {
+			this.unregisteredData = runnerData;
 		}
 	}
 	
@@ -97,11 +97,11 @@ public class AbstractECardModeTest extends ECardModeSetup {
 	}
 
 	@Test
-	public void processECardUnknownCase() {
+	public void processECardUnregisteredCase() {
 		when(card.getSiIdent()).thenReturn("999");
 		when(registry.findRunnerByEcard("999")).thenReturn(null);
 		ecardMode.processECard(card);
-		checkCardData(card, ecardMode.unknownData);
+		checkCardData(card, ecardMode.unregisteredData);
 	}
 
 	@Test

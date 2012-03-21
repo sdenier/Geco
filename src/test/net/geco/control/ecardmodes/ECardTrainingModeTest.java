@@ -54,26 +54,26 @@ public class ECardTrainingModeTest extends ECardModeSetup {
 	@Test
 	public void handleDuplicateCallsCopyRunner() {
 		Runner runner = factory.createRunner();
-		ecardMode.handleDuplicate(danglingRunnerData, "998", runner);
+		ecardMode.handleDuplicate(danglingRunnerData, runner);
 		fail();
 	}
 
 	@Test
 	public void handleDuplicateCallsAnnouncer() {
 		Runner runner = factory.createRunner();
-		ecardMode.handleDuplicate(danglingRunnerData, "998", runner);
+		ecardMode.handleDuplicate(danglingRunnerData, runner);
 		verify(announcer).announceCardReadAgain("998a");
 	}
 	
 	@Test
-	public void handleUnknownCallsAutoInsert() {
-		ecardMode.handleUnknown(danglingRunnerData, "997");
+	public void handleUnregisteredCallsAutoInsert() {
+		ecardMode.handleUnregistered(danglingRunnerData, "997");
 		fail();
 	}
 
 	@Test
-	public void handleUnknownCallsAnnouncer() {
-		ecardMode.handleUnknown(danglingRunnerData, "997");
+	public void handleUnregisteredCallsAnnouncer() {
+		ecardMode.handleUnregistered(danglingRunnerData, "997");
 		verify(announcer).announceUnknownCardRead("997");
 	}
 	

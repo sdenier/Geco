@@ -27,14 +27,13 @@ public class ECardTrainingMode extends AbstractECardMode {
 	}
 
 	@Override
-	public void handleDuplicate(RunnerRaceData runnerData, String cardId,
-			Runner runner) {
+	public void handleDuplicate(RunnerRaceData runnerData, Runner runner) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void handleUnknown(RunnerRaceData runnerData, String cardId) {
+	public void handleUnregistered(RunnerRaceData runnerData, String cardId) {
 		// TODO Auto-generated method stub
 		
 	}

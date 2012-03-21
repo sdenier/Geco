@@ -31,14 +31,14 @@ public class AutoCheckerHandlerTest extends ECardModeSetup {
 	}
 	
 	@Test
-	public void handleEcard() {
-		new AutoCheckerHandler(gecoControl).handleECard(fullRunnerData);
+	public void handleFinish() {
+		new AutoCheckerHandler(gecoControl).handleFinish(fullRunnerData);
 		verify(checker).check(fullRunnerData);
 	}
 
 	@Test
-	public void handleEcardReturnsId() {
-		String returnedEcard = new AutoCheckerHandler(gecoControl).handleECard(fullRunnerData);
+	public void handleFinishReturnsId() {
+		String returnedEcard = new AutoCheckerHandler(gecoControl).handleFinish(fullRunnerData);
 		assertEquals(fullRunnerData.getRunner().getEcard(), returnedEcard);
 	}
 

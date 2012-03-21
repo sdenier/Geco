@@ -4,6 +4,7 @@
  */
 package net.geco.control.ecardmodes;
 
+import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 
 /**
@@ -13,6 +14,10 @@ import net.geco.model.RunnerRaceData;
  */
 public interface ECardHandler {
 
-	public String handleECard(RunnerRaceData data);
+	public String handleFinish(RunnerRaceData data);
+	
+	public String handleDuplicate(RunnerRaceData data, Runner runner);
+	
+	public String handleUnregistered(RunnerRaceData data, String cardId);
 	
 }
