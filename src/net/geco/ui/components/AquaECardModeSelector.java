@@ -31,7 +31,7 @@ import net.geco.framework.IGeco;
  */
 public class AquaECardModeSelector extends JButton implements ECardModeSelector {
 
-	private ECardMode currentMode = ECardMode.OffMode;
+	private ECardModeUI currentMode = ECardModeUI.OffMode;
 
 	private IGeco geco;
 
@@ -52,7 +52,7 @@ public class AquaECardModeSelector extends JButton implements ECardModeSelector 
 		displayMode();
 	}
 	
-	private void selectMode(ECardMode selectedMode) {
+	private void selectMode(ECardModeUI selectedMode) {
 		if( currentMode != selectedMode ){
 			currentMode = selectedMode;
 			displayMode();
@@ -96,7 +96,7 @@ public class AquaECardModeSelector extends JButton implements ECardModeSelector 
 	
 	public void recoverOffMode() {
 		this.recovery = true;
-		selectMode(ECardMode.OffMode);
+		selectMode(ECardModeUI.OffMode);
 		modeActivated();
 		this.recovery = false;
 	}
@@ -115,7 +115,7 @@ public class AquaECardModeSelector extends JButton implements ECardModeSelector 
 			setUndecorated(true);
 			setResizable(false);
 
-			modesL = new JList(ECardMode.values());
+			modesL = new JList(ECardModeUI.values());
 			modesL.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			modesL.setCellRenderer(new ECardModeRenderer());
 			modesL.addMouseListener(new MouseAdapter() {
@@ -145,11 +145,11 @@ public class AquaECardModeSelector extends JButton implements ECardModeSelector 
 		}
 
 		private void applySelection() {
-			selectMode((ECardMode) modesL.getSelectedValue());
+			selectMode((ECardModeUI) modesL.getSelectedValue());
 			setVisible(false);
 		}
 
-		public void showPopup(ECardMode selectedMode) {
+		public void showPopup(ECardModeUI selectedMode) {
 			modesL.setSelectedValue(selectedMode, true);
 			Point bounds = AquaECardModeSelector.this.getLocationOnScreen();
 			setLocation(bounds.x, bounds.y + 32);

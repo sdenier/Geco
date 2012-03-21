@@ -18,7 +18,7 @@ import net.geco.framework.IGeco;
  */
 public class DefaultECardModeSelector extends JComboBox implements ECardModeSelector {
 
-	private ECardMode currentMode = ECardMode.OffMode;
+	private ECardModeUI currentMode = ECardModeUI.OffMode;
 
 	private IGeco geco;
 
@@ -27,18 +27,18 @@ public class DefaultECardModeSelector extends JComboBox implements ECardModeSele
 	private boolean recovery = false;
 	
 	public DefaultECardModeSelector(IGeco geco) {
-		super(ECardMode.values());
+		super(ECardModeUI.values());
 		this.geco = geco;
 		modeRenderer = new ECardModeRenderer();
 		setRenderer(modeRenderer);
 		addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				selectMode((ECardMode) getSelectedItem());
+				selectMode((ECardModeUI) getSelectedItem());
 			}
 		});
 	}
 
-	private void selectMode(ECardMode selectedMode) {
+	private void selectMode(ECardModeUI selectedMode) {
 		if( currentMode != selectedMode ){
 			currentMode = selectedMode;
 			if( !recovery ){
@@ -82,7 +82,7 @@ public class DefaultECardModeSelector extends JComboBox implements ECardModeSele
 	
 	public void recoverOffMode() {
 		this.recovery = true;
-		setSelectedItem(ECardMode.OffMode);
+		setSelectedItem(ECardModeUI.OffMode);
 		modeActivated();
 		this.recovery = false;
 	}

@@ -17,7 +17,7 @@ import net.geco.ui.basics.GecoIcon;
  * @since Mar 19, 2012
  *
  */
-public enum ECardMode {
+public enum ECardModeUI {
 	
 	OffMode			("OFF", GecoIcon.EcardOffMode, false) {
 		public void execute(SIReaderHandler handler) {
@@ -52,7 +52,7 @@ public enum ECardMode {
 	private ImageIcon icon;
 	private boolean readMode;
 
-	ECardMode(String title, GecoIcon icon, boolean readMode){
+	ECardModeUI(String title, GecoIcon icon, boolean readMode){
 		this.title = title;
 		this.icon = GecoIcon.createIcon(icon);
 		this.readMode = readMode;
