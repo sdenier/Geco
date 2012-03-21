@@ -15,12 +15,12 @@ import net.geco.model.Status;
  * @since Mar 11, 2012
  *
  */
-public class ECardReadingMode extends AbstractECardMode {
+public class ECardRacingMode extends AbstractECardMode {
 
 	private GecoRequestHandler requestHandler;
 	
-	public ECardReadingMode(GecoControl geco) {
-		super(ECardReadingMode.class, geco);
+	public ECardRacingMode(GecoControl geco) {
+		super(ECardRacingMode.class, geco);
 	}
 	
 	public void setRequestHandler(GecoRequestHandler requestHandler) {

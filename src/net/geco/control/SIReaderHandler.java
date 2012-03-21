@@ -71,9 +71,9 @@ public class SIReaderHandler extends Control
 	public SIReaderHandler(GecoControl geco) {
 		super(SIReaderHandler.class, geco);
 
-		new ECardReadingMode(geco);
+		new ECardRacingMode(geco);
 		new ECardTrainingMode(geco);
-		selectECardMode(ECardReadingMode.class);
+		selectECardMode(ECardRacingMode.class);
 		
 		changePortName();
 		geco.announcer().registerStageListener(this);

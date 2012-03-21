@@ -29,7 +29,7 @@ public enum GecoIcon {
 	LiveOn		("irkickflash.png"), //$NON-NLS-1$
 
 	EcardOffMode		("exit.png"), //$NON-NLS-1$
-	EcardReadingMode	("cnr.png"), //$NON-NLS-1$
+	EcardRacingMode	("cnr.png"), //$NON-NLS-1$
 	EcardTrainingMode	("cnrgrey.png"), //$NON-NLS-1$
 	EcardRegisterMode	("graphic-design.png"), //$NON-NLS-1$
 	

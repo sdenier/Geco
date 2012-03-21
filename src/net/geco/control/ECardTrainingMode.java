@@ -16,7 +16,7 @@ import net.geco.model.RunnerRaceData;
 public class ECardTrainingMode extends AbstractECardMode {
 
 	public ECardTrainingMode(GecoControl gecoControl) {
-		super(ECardReadingMode.class, gecoControl);
+		super(ECardTrainingMode.class, gecoControl);
 	}
 
 	@Override

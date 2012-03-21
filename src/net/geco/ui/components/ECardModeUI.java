@@ -7,7 +7,7 @@ package net.geco.ui.components;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import net.geco.control.ECardReadingMode;
+import net.geco.control.ECardRacingMode;
 import net.geco.control.ECardTrainingMode;
 import net.geco.control.SIReaderHandler;
 import net.geco.ui.basics.GecoIcon;
@@ -27,9 +27,9 @@ public enum ECardModeUI {
 			return false;
 		}
 	},
-	ReaderMode		("Reading", GecoIcon.EcardReadingMode, true) {
+	RaceMode		("Racing", GecoIcon.EcardRacingMode, true) {
 		public void execute(SIReaderHandler handler) {
-			handler.selectECardMode(ECardReadingMode.class);
+			handler.selectECardMode(ECardRacingMode.class);
 			handler.start();
 		}
 	},

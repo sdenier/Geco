@@ -8,7 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import net.geco.basics.GecoRequestHandler;
 import net.geco.control.Checker;
-import net.geco.control.ECardReadingMode;
+import net.geco.control.ECardRacingMode;
 import net.geco.model.Runner;
 import net.geco.model.Status;
 
@@ -21,9 +21,9 @@ import org.mockito.Mock;
  * @since Mar 12, 2012
  *
  */
-public class ECardReadingModeTest extends ECardModeSetup {
+public class ECardRacingModeTest extends ECardModeSetup {
 
-	private ECardReadingMode ecardMode;
+	private ECardRacingMode ecardMode;
 
 	@Mock private GecoRequestHandler requestHandler;
 	@Mock private Checker checker;
@@ -34,7 +34,7 @@ public class ECardReadingModeTest extends ECardModeSetup {
 		setUpMockCardData();
 		when(gecoControl.checker()).thenReturn(checker);
 		
-		ecardMode = new ECardReadingMode(gecoControl);
+		ecardMode = new ECardRacingMode(gecoControl);
 		ecardMode.setRequestHandler(requestHandler);
 	}
 
