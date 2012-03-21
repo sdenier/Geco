@@ -2,7 +2,7 @@
  * Copyright (c) 2012 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package test.net.geco.control;
+package test.net.geco.control.ecardmodes;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.when;
@@ -18,6 +18,8 @@ import org.martin.sireader.common.PunchObject;
 import org.martin.sireader.common.PunchRecordData;
 import org.martin.sireader.server.IResultData;
 import org.mockito.Mock;
+
+import test.net.geco.control.MockControlSetup;
 
 /**
  * @author Simon Denier

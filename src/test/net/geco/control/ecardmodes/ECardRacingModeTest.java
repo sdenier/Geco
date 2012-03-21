@@ -2,13 +2,13 @@
  * Copyright (c) 2012 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package test.net.geco.control;
+package test.net.geco.control.ecardmodes;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import net.geco.basics.GecoRequestHandler;
 import net.geco.control.Checker;
-import net.geco.control.ECardRacingMode;
+import net.geco.control.ecardmodes.ECardRacingMode;
 import net.geco.model.Runner;
 import net.geco.model.Status;
 

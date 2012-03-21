@@ -17,6 +17,9 @@ import net.geco.basics.Announcer;
 import net.geco.basics.GecoRequestHandler;
 import net.geco.basics.GecoResources;
 import net.geco.basics.WindowsRegistryQuery;
+import net.geco.control.ecardmodes.ECardMode;
+import net.geco.control.ecardmodes.ECardRacingMode;
+import net.geco.control.ecardmodes.ECardTrainingMode;
 import net.geco.model.Stage;
 
 import org.martin.sireader.common.PunchObject;

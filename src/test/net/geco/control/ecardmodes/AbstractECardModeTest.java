@@ -2,7 +2,7 @@
  * Copyright (c) 2012 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package test.net.geco.control;
+package test.net.geco.control.ecardmodes;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
@@ -16,8 +16,8 @@ import static org.mockito.Mockito.when;
 import java.util.Date;
 
 import net.geco.basics.TimeManager;
-import net.geco.control.AbstractECardMode;
 import net.geco.control.GecoControl;
+import net.geco.control.ecardmodes.AbstractECardMode;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Status;

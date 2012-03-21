@@ -2,10 +2,11 @@
  * Copyright (c) 2012 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.control;
+package net.geco.control.ecardmodes;
 
 
 import net.geco.basics.GecoRequestHandler;
+import net.geco.control.GecoControl;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Status;

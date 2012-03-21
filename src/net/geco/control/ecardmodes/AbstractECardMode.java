@@ -2,12 +2,14 @@
  * Copyright (c) 2012 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.control;
+package net.geco.control.ecardmodes;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 import net.geco.basics.TimeManager;
+import net.geco.control.Control;
+import net.geco.control.GecoControl;
 import net.geco.model.Messages;
 import net.geco.model.Punch;
 import net.geco.model.Runner;

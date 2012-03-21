@@ -7,9 +7,9 @@ package net.geco.ui.components;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import net.geco.control.ECardRacingMode;
-import net.geco.control.ECardTrainingMode;
 import net.geco.control.SIReaderHandler;
+import net.geco.control.ecardmodes.ECardRacingMode;
+import net.geco.control.ecardmodes.ECardTrainingMode;
 import net.geco.ui.basics.GecoIcon;
 
 /**
