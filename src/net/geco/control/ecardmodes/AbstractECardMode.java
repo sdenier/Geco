@@ -31,6 +31,20 @@ public abstract class AbstractECardMode extends Control implements ECardMode {
 		super(clazz, gecoControl);
 	}
 
+	protected ECardHandler finishHandler, duplicateHandler, unknownHandler;
+	
+	public void setFinishHandler(ECardHandler finishHandler) {
+		this.finishHandler = finishHandler;
+	}
+
+	public void setDuplicateHandler(ECardHandler duplicateHandler) {
+		this.duplicateHandler = duplicateHandler;
+	}
+
+	public void setUnknownHandler(ECardHandler unknownHandler) {
+		this.unknownHandler = unknownHandler;
+	}
+
 	/**
 	 * Entry point for the handler.
 	 * 

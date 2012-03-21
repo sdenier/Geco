@@ -22,6 +22,7 @@ public class ECardRacingMode extends AbstractECardMode {
 	
 	public ECardRacingMode(GecoControl geco) {
 		super(ECardRacingMode.class, geco);
+		finishHandler = new AutoCheckerHandler(geco);
 	}
 	
 	public void setRequestHandler(GecoRequestHandler requestHandler) {
@@ -31,7 +32,7 @@ public class ECardRacingMode extends AbstractECardMode {
 	@Override
 	public void handleFinished(RunnerRaceData runnerData) {
 		Status oldStatus = runnerData.getResult().getStatus();
-		geco().checker().check(runnerData);
+		finishHandler.handleECard(runnerData);
 		geco().log("READING " + runnerData.infoString()); //$NON-NLS-1$
 		if( runnerData.getResult().getNbMPs() > 0 ) {
 			geco().announcer().dataInfo(
