@@ -2,7 +2,7 @@
  * Copyright (c) 2011 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package test.net.geco.control;
+package test.net.geco.control.ecardmodes;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
@@ -10,11 +10,11 @@ import static test.net.geco.GecoFixtures.punch;
 
 import java.util.Date;
 
-import net.geco.control.AutoMergeHandler;
 import net.geco.control.FreeOrderTracer;
 import net.geco.control.GecoControl;
 import net.geco.control.PenaltyChecker;
 import net.geco.control.RunnerControl;
+import net.geco.control.ecardmodes.CourseDetector;
 import net.geco.model.Course;
 import net.geco.model.Punch;
 import net.geco.model.Registry;
@@ -33,7 +33,7 @@ import test.net.geco.GecoFixtures;
  * @since Sep 23, 2011
  *
  */
-public class AutoMergeHandlerTest {
+public class CourseDetectorTest {
 	
 	private POFactory factory;
 	private Course courseA;
@@ -68,8 +68,8 @@ public class AutoMergeHandlerTest {
 				punch(31), punch(33), punch(31), punch(32), punch(31), punch(34), punch(31), punch(35), punch(36)
 		});
 		when(geco.checker()).thenReturn(new PenaltyChecker(factory));
-		AutoMergeHandler handler = new AutoMergeHandler(geco);
-		assertEquals("should find perfect match with OK trace", courseC, handler.detectCourse(raceData));
+		CourseDetector detector = new CourseDetector(geco);
+		assertEquals("should find perfect match with OK trace", courseC, detector.detectCourse(raceData));
 		assertEquals(Status.OK, raceData.getStatus());
 	}
 	
@@ -79,8 +79,8 @@ public class AutoMergeHandlerTest {
 				punch(31), punch(31), punch(33), punch(31), punch(34), punch(31)
 		});
 		when(geco.checker()).thenReturn(new PenaltyChecker(factory));
-		AutoMergeHandler handler = new AutoMergeHandler(geco);
-		assertEquals("should find closest match with MP trace", courseA, handler.detectCourse(raceData));
+		CourseDetector detector = new CourseDetector(geco);
+		assertEquals("should find closest match with MP trace", courseA, detector.detectCourse(raceData));
 		assertEquals(Status.MP, raceData.getStatus());
 	}
 	
@@ -92,9 +92,9 @@ public class AutoMergeHandlerTest {
 		PenaltyChecker checker = new PenaltyChecker(factory);
 		checker.setMPLimit(2);
 		when(geco.checker()).thenReturn(checker);
-		AutoMergeHandler handler = new AutoMergeHandler(geco);
+		CourseDetector detector = new CourseDetector(geco);
 		
-		assertEquals("should find perfect match with OK trace", courseB, handler.detectCourse(raceData));
+		assertEquals("should find perfect match with OK trace", courseB, detector.detectCourse(raceData));
 		assertEquals(Status.OK, raceData.getStatus());
 
 		raceData.getRunner().setCourse(courseA);
@@ -118,9 +118,9 @@ public class AutoMergeHandlerTest {
 		PenaltyChecker checker = new PenaltyChecker(factory);
 		checker.setMPLimit(2);
 		when(geco.checker()).thenReturn(checker);
-		AutoMergeHandler handler = new AutoMergeHandler(geco);
+		CourseDetector detector = new CourseDetector(geco);
 		
-		Assert.assertEquals("should find closest match with MP trace", courseC, handler.detectCourse(raceData));
+		Assert.assertEquals("should find closest match with MP trace", courseC, detector.detectCourse(raceData));
 
 		raceData.getRunner().setCourse(courseB);
 		checker.check(raceData);
@@ -141,8 +141,8 @@ public class AutoMergeHandlerTest {
 				 punch(35), punch(36), punch(31), punch(34), punch(31), punch(33), punch(31), punch(32), punch(31)
 		});
 		when(geco.checker()).thenReturn(new PenaltyChecker(factory, new FreeOrderTracer(factory)));
-		AutoMergeHandler handler = new AutoMergeHandler(geco);
-		assertEquals("should find perfect match with OK trace", courseC, handler.detectCourse(raceData));
+		CourseDetector detector = new CourseDetector(geco);
+		assertEquals("should find perfect match with OK trace", courseC, detector.detectCourse(raceData));
 		assertEquals(Status.OK, raceData.getStatus());
 	}
 
@@ -152,8 +152,8 @@ public class AutoMergeHandlerTest {
 				 punch(35), punch(36), punch(31), punch(31), punch(33), punch(31), punch(32), punch(31), punch(37)
 		});
 		when(geco.checker()).thenReturn(new PenaltyChecker(factory, new FreeOrderTracer(factory)));
-		AutoMergeHandler handler = new AutoMergeHandler(geco);
-		assertEquals("should find closets match with MP trace", courseC, handler.detectCourse(raceData));
+		CourseDetector detector = new CourseDetector(geco);
+		assertEquals("should find closets match with MP trace", courseC, detector.detectCourse(raceData));
 		assertEquals(Status.MP, raceData.getStatus());
 	}
 	
