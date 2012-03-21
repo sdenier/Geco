@@ -5,6 +5,7 @@
 package test.net.geco.control;
 
 import static org.mockito.Mockito.when;
+import net.geco.basics.Announcer;
 import net.geco.control.GecoControl;
 import net.geco.model.Factory;
 import net.geco.model.Registry;
@@ -25,6 +26,7 @@ public class MockControlSetup {
 
 	@Mock protected Stage stage;
 	@Mock protected Registry registry;
+	@Mock protected Announcer announcer;
 	@Mock protected GecoControl gecoControl;
 	
 	public void setUpMockControls() {
@@ -32,7 +34,7 @@ public class MockControlSetup {
 		when(stage.registry()).thenReturn(registry);
 		when(gecoControl.stage()).thenReturn(stage);
 		when(gecoControl.factory()).thenReturn(factory);
+		when(gecoControl.announcer()).thenReturn(announcer);
 	}
-
 	
 }

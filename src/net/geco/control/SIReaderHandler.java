@@ -39,8 +39,6 @@ public class SIReaderHandler extends Control
 	private static final boolean DEBUGMODE = false;
 	
 
-	private ECardHandler ecardHandler;
-	
 	private SIPortHandler portHandler;
 
 	private SerialPort siPort;
@@ -50,6 +48,8 @@ public class SIReaderHandler extends Control
 	private int nbTry;
 	
 	private boolean starting;
+
+	private ECardMode currentEcardMode;
 
 	
 	public static class SerialPort {
@@ -70,14 +70,22 @@ public class SIReaderHandler extends Control
 	
 	public SIReaderHandler(GecoControl geco) {
 		super(SIReaderHandler.class, geco);
-		ecardHandler = new ECardHandler(geco);
+
+		new ECardReadingMode(geco);
+		new ECardTrainingMode(geco);
+		selectECardMode(ECardReadingMode.class);
+		
 		changePortName();
 		geco.announcer().registerStageListener(this);
 	}
 	
+	public void selectECardMode(Class<? extends ECardMode> modeClass) {
+		currentEcardMode = getService(modeClass);
+	}
+	
 	public void setRequestHandler(GecoRequestHandler requestHandler) {
 		// TODO: remove?
-		this.ecardHandler.setRequestHandler(requestHandler);
+//		this.currentEcardHandler.setRequestHandler(requestHandler);
 	}
 
 	public static String portNameProperty() {
@@ -214,7 +222,7 @@ public class SIReaderHandler extends Control
 	
 	@Override
 	public void newCardRead(IResultData<PunchObject,PunchRecordData> card) {
-		ecardHandler.handleECard(card);		
+		currentEcardMode.processECard(card);		
 	}
 
 
