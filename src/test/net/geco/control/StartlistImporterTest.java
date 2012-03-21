@@ -8,30 +8,23 @@ import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import net.geco.basics.Util;
-import net.geco.control.GecoControl;
 import net.geco.control.RunnerControl;
 import net.geco.control.StageControl;
 import net.geco.control.StartlistImporter;
-import net.geco.model.Registry;
 import net.geco.model.Runner;
-import net.geco.model.Stage;
 import net.geco.model.impl.POFactory;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 /**
  * @author Simon Denier
  * @since Mar 15, 2012
  *
  */
-public class StartlistImporterTest {
+public class StartlistImporterTest extends MockControlSetup {
 
-	@Mock private Stage stage;
-	@Mock private Registry registry;
-	@Mock private GecoControl geco;
 	@Mock private RunnerControl runnerControl;
 	@Mock private StageControl stageControl;
 	
@@ -39,13 +32,11 @@ public class StartlistImporterTest {
 
 	@Before
 	public void setUp() {
-		MockitoAnnotations.initMocks(this);
-		when(stage.registry()).thenReturn(registry);
-		when(geco.stage()).thenReturn(stage);
-		when(geco.getService(RunnerControl.class)).thenReturn(runnerControl);
-		when(geco.getService(StageControl.class)).thenReturn(stageControl);
+		setUpMockControls();
+		when(gecoControl.getService(RunnerControl.class)).thenReturn(runnerControl);
+		when(gecoControl.getService(StageControl.class)).thenReturn(stageControl);
 		
-		startlistImporter = new StartlistImporter(geco);
+		startlistImporter = new StartlistImporter(gecoControl);
 	}
 	
 	@Test

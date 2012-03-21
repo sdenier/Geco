@@ -7,44 +7,36 @@ package test.net.geco.control;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.HashSet;
 
-import net.geco.control.GecoControl;
 import net.geco.control.RunnerControl;
-import net.geco.model.Registry;
-import net.geco.model.Stage;
 import net.geco.model.impl.RunnerImpl;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 /**
  * @author Simon Denier
  * @since Jun 6, 2011
  *
  */
-public class RunnerControlTest {
+public class RunnerControlTest extends MockControlSetup {
 	
 	private RunnerControl runnerControl;
-	private Registry registry;
 
 	@Before
 	public void setUp(){
-		registry = Mockito.mock(Registry.class);
-		Stage stage = Mockito.mock(Stage.class);
-		GecoControl gecoControl = Mockito.mock(GecoControl.class);
-		Mockito.when(gecoControl.stage()).thenReturn(stage);
-		Mockito.when(stage.registry()).thenReturn(registry);
+		setUpMockControls();
 		runnerControl = new RunnerControl(gecoControl);		
 	}
 	
 	@Test
 	public void testValidateStartId(){
 		HashSet<Integer> startids = new HashSet<Integer>(Arrays.asList( new Integer[]{ 3 } ));
-		Mockito.when(registry.getStartIds()).thenReturn(startids);
+		when(registry.getStartIds()).thenReturn(startids);
 		RunnerImpl runner = new RunnerImpl();
 		runner.setStartId(1);
 		
@@ -61,7 +53,7 @@ public class RunnerControlTest {
 	@Test
 	public void testValidateEcard(){
 		HashSet<String> ecards = new HashSet<String>(Arrays.asList( new String[]{"3"} ));
-		Mockito.when(registry.getEcards()).thenReturn(ecards);
+		when(registry.getEcards()).thenReturn(ecards);
 		RunnerImpl runner = new RunnerImpl();
 		runner.setEcard("1");
 		
@@ -80,14 +72,14 @@ public class RunnerControlTest {
 	@Test
 	public void testDeriveUniqueEcard(){
 		HashSet<String> ecards = new HashSet<String>(Arrays.asList( new String[]{"3"} ));
-		Mockito.when(registry.getEcards()).thenReturn(ecards);
+		when(registry.getEcards()).thenReturn(ecards);
 
 		assertEquals("", runnerControl.deriveUniqueEcard(""));
 		assertEquals("2", runnerControl.deriveUniqueEcard("2"));
 		assertEquals("3a", runnerControl.deriveUniqueEcard("3"));
 
 		ecards = new HashSet<String>(Arrays.asList( new String[]{"3", "3a"} ));
-		Mockito.when(registry.getEcards()).thenReturn(ecards);
+		when(registry.getEcards()).thenReturn(ecards);
 		
 		assertEquals("3b", runnerControl.deriveUniqueEcard("3"));
 		

@@ -4,6 +4,9 @@
  */
 package test.net.geco;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.Date;
 
 import net.geco.app.AppBuilder;
@@ -21,8 +24,6 @@ import net.geco.model.RunnerRaceData;
 import net.geco.model.Stage;
 import net.geco.model.impl.POFactory;
 
-import org.mockito.Mockito;
-
 /**
  * @author Simon Denier
  * @since Aug 27, 2011
@@ -33,14 +34,14 @@ public class GecoFixtures {
 	private static Factory factory = new POFactory();
 
 	public static GecoControl mockGecoControl() {
-		return Mockito.mock(GecoControl.class);
+		return mock(GecoControl.class);
 	}
 	
 	public static GecoControl mockGecoControlWithRegistry(Registry registry) {
-		Stage mockStage = Mockito.mock(Stage.class);
-		Mockito.when(mockStage.registry()).thenReturn(registry);
-		GecoControl mockGecoControl = Mockito.mock(GecoControl.class);
-		Mockito.when(mockGecoControl.stage()).thenReturn(mockStage);
+		Stage mockStage = mock(Stage.class);
+		when(mockStage.registry()).thenReturn(registry);
+		GecoControl mockGecoControl = mockGecoControl();
+		when(mockGecoControl.stage()).thenReturn(mockStage);
 		return mockGecoControl;
 	}
 	
@@ -52,12 +53,12 @@ public class GecoFixtures {
 	public static GecoControl loadFixtures(String baseDir, AppBuilder builder) {
 		Factory factory = builder.getFactory();
 		GecoControl gecoControl = mockGecoControl();
-		Announcer announcer = Mockito.mock(Announcer.class);
-		Mockito.when(gecoControl.factory()).thenReturn(factory);
-		Mockito.when(gecoControl.announcer()).thenReturn(announcer);
+		Announcer announcer = mock(Announcer.class);
+		when(gecoControl.factory()).thenReturn(factory);
+		when(gecoControl.announcer()).thenReturn(announcer);
 		Stage stage = loadStageFrom(baseDir, builder, gecoControl);
-		Mockito.when(gecoControl.stage()).thenReturn(stage);
-		Mockito.when(gecoControl.registry()).thenReturn(stage.registry());
+		when(gecoControl.stage()).thenReturn(stage);
+		when(gecoControl.registry()).thenReturn(stage.registry());
 		return gecoControl;
 	}
 
