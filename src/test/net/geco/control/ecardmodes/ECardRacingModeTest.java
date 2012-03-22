@@ -12,6 +12,7 @@ import static org.mockito.Mockito.when;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import net.geco.control.ArchiveManager;
 import net.geco.control.Checker;
 import net.geco.control.PenaltyChecker;
 import net.geco.control.RunnerControl;
@@ -22,6 +23,7 @@ import net.geco.model.Status;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 /**
  * @author Simon Denier
@@ -31,6 +33,8 @@ import org.junit.Test;
 public class ECardRacingModeTest extends ECardModeSetup {
 
 	private ECardRacingMode ecardMode;
+
+	@Mock private ArchiveManager archive;
 
 	@Before
 	public void setUp() {
@@ -42,7 +46,8 @@ public class ECardRacingModeTest extends ECardModeSetup {
 		CourseDetector detector = new CourseDetector(gecoControl, runnerControl);
 		when(gecoControl.checker()).thenReturn(checker);
 		when(gecoControl.getService(RunnerControl.class)).thenReturn(runnerControl);
-
+		when(gecoControl.getService(ArchiveManager.class)).thenReturn(archive);
+		
 		when(registry.getCourses()).thenReturn(Arrays.asList(new Course[]{ testCourse }));
 		when(registry.noClub()).thenReturn(factory.createClub());
 		when(registry.noCategory()).thenReturn(factory.createCategory());
@@ -82,11 +87,18 @@ public class ECardRacingModeTest extends ECardModeSetup {
 	@Test
 	public void handleUnregisteredInsertsFromArchive() {
 		ecardMode.handleUnregistered(danglingRunnerData, "997");
-		assertEquals(Status.DUP, danglingRunnerData.getStatus());
+		verify(archive).findAndCreateRunner("997", testCourse);
+	}
+
+	@Test
+	public void handleUnregisteredCallsAnnouncer() {
+		when(archive.findAndCreateRunner("997", testCourse)).thenReturn(fullRunnerData.getRunner());
+		ecardMode.handleUnregistered(danglingRunnerData, "997");
+		verify(announcer).announceCardRead("997");
 	}
 	
 	@Test
-	public void handleUnregisteredCallsAnnouncer() {
+	public void handleUnregisteredCallsAnnouncerForUnknown() {
 		ecardMode.handleUnregistered(danglingRunnerData, "997");
 		verify(announcer).announceUnknownCardRead("997");
 	}

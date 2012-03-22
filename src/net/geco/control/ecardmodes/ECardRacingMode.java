@@ -21,6 +21,7 @@ public class ECardRacingMode extends AbstractECardMode {
 		super(ECardRacingMode.class, geco);
 		finishHandler = new AutoCheckerHandler(geco);
 		duplicateHandler = new AnonCreationHandler(geco, detector);
+		unregisteredHandler = new ArchiveLookupHandler(geco, detector);
 	}
 	
 	@Override
@@ -51,7 +52,11 @@ public class ECardRacingMode extends AbstractECardMode {
 		geco().log("READING UNKNOWN " + cardId); //$NON-NLS-1$
 		String returnedCard = unregisteredHandler.handleUnregistered(runnerData, cardId);
 		if( returnedCard!=null ) {
-			geco().announcer().announceUnknownCardRead(returnedCard);
+			if( unregisteredHandler.foundInArchive() ){
+				geco().announcer().announceCardRead(returnedCard);
+			} else {
+				geco().announcer().announceUnknownCardRead(returnedCard);
+			}
 		}
 	}
 	
