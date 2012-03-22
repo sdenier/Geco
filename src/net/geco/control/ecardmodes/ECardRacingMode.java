@@ -5,7 +5,6 @@
 package net.geco.control.ecardmodes;
 
 
-import net.geco.basics.GecoRequestHandler;
 import net.geco.control.GecoControl;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
@@ -18,17 +17,12 @@ import net.geco.model.Status;
  */
 public class ECardRacingMode extends AbstractECardMode {
 
-	private GecoRequestHandler requestHandler;
-	
-	public ECardRacingMode(GecoControl geco) {
+	public ECardRacingMode(GecoControl geco, CourseDetector detector) {
 		super(ECardRacingMode.class, geco);
 		finishHandler = new AutoCheckerHandler(geco);
+		duplicateHandler = new AnonCreationHandler(geco, detector);
 	}
 	
-	public void setRequestHandler(GecoRequestHandler requestHandler) {
-		this.requestHandler = requestHandler;
-	}
-
 	@Override
 	public void handleFinished(RunnerRaceData runnerData) {
 		Status oldStatus = runnerData.getResult().getStatus();
@@ -46,7 +40,7 @@ public class ECardRacingMode extends AbstractECardMode {
 	@Override
 	public void handleDuplicate(RunnerRaceData runnerData, Runner runner) {
 		geco().log("READING AGAIN " + runner.getEcard()); //$NON-NLS-1$
-		String returnedCard = requestHandler.requestMergeExistingRunner(runnerData, runner);
+		String returnedCard = duplicateHandler.handleDuplicate(runnerData, runner);
 		if( returnedCard!=null ) {
 			geco().announcer().announceCardReadAgain(returnedCard);
 		}
@@ -55,7 +49,7 @@ public class ECardRacingMode extends AbstractECardMode {
 	@Override
 	public void handleUnregistered(RunnerRaceData runnerData, String cardId) {
 		geco().log("READING UNKNOWN " + cardId); //$NON-NLS-1$
-		String returnedCard = requestHandler.requestMergeUnknownRunner(runnerData, cardId);
+		String returnedCard = unregisteredHandler.handleUnregistered(runnerData, cardId);
 		if( returnedCard!=null ) {
 			geco().announcer().announceUnknownCardRead(returnedCard);
 		}

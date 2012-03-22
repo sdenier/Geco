@@ -5,17 +5,23 @@
 package test.net.geco.control.ecardmodes;
 
 import static junit.framework.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import net.geco.basics.GecoRequestHandler;
+
+import java.util.Arrays;
+import java.util.HashSet;
+
 import net.geco.control.Checker;
+import net.geco.control.PenaltyChecker;
+import net.geco.control.RunnerControl;
+import net.geco.control.ecardmodes.CourseDetector;
 import net.geco.control.ecardmodes.ECardRacingMode;
-import net.geco.model.Runner;
+import net.geco.model.Course;
 import net.geco.model.Status;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 
 /**
  * @author Simon Denier
@@ -26,23 +32,30 @@ public class ECardRacingModeTest extends ECardModeSetup {
 
 	private ECardRacingMode ecardMode;
 
-	@Mock private GecoRequestHandler requestHandler;
-	@Mock private Checker checker;
-	
 	@Before
 	public void setUp() {
 		setUpMockControls();
 		setUpMockCardData();
-		when(gecoControl.checker()).thenReturn(checker);
 		
-		ecardMode = new ECardRacingMode(gecoControl);
-		ecardMode.setRequestHandler(requestHandler);
+		Checker checker = new PenaltyChecker(factory);
+		RunnerControl runnerControl = new RunnerControl(gecoControl);
+		CourseDetector detector = new CourseDetector(gecoControl, runnerControl);
+		when(gecoControl.checker()).thenReturn(checker);
+		when(gecoControl.getService(RunnerControl.class)).thenReturn(runnerControl);
+
+		when(registry.getCourses()).thenReturn(Arrays.asList(new Course[]{ testCourse }));
+		when(registry.noClub()).thenReturn(factory.createClub());
+		when(registry.noCategory()).thenReturn(factory.createCategory());
+		
+		ecardMode = new ECardRacingMode(gecoControl, detector);
 	}
 
 	@Test
 	public void handleFinishedCallsChecker() {
+		Checker mockChecker = mock(Checker.class);
+		when(gecoControl.checker()).thenReturn(mockChecker);
 		ecardMode.handleFinished(fullRunnerData);
-		verify(checker).check(fullRunnerData);
+		verify(mockChecker).check(fullRunnerData);
 	}
 
 	@Test
@@ -54,38 +67,34 @@ public class ECardRacingModeTest extends ECardModeSetup {
 	}
 	
 	@Test
-	public void handleDuplicateRequestsMerge() {
-		Runner runner = factory.createRunner();
-		ecardMode.handleDuplicate(danglingRunnerData, runner);
-		verify(requestHandler).requestMergeExistingRunner(danglingRunnerData, runner);
-	}
-
-	@Test
 	public void handleDuplicateSetsDuplicateStatus() {
-		Runner runner = factory.createRunner();
-		ecardMode.handleDuplicate(danglingRunnerData, runner);
+		ecardMode.handleDuplicate(danglingRunnerData, fullRunnerData.getRunner());
 		assertEquals(Status.DUP, danglingRunnerData.getStatus());
 	}
 	
 	@Test
 	public void handleDuplicateCallsAnnouncer() {
-		Runner runner = factory.createRunner();
-		when(requestHandler.requestMergeExistingRunner(danglingRunnerData, runner)).thenReturn("998a");
-		ecardMode.handleDuplicate(danglingRunnerData, runner);
-		verify(announcer).announceCardReadAgain("998a");
+		when(registry.getEcards()).thenReturn(new HashSet<String>(Arrays.asList(new String[]{ "999" })));
+		ecardMode.handleDuplicate(danglingRunnerData, fullRunnerData.getRunner());
+		verify(announcer).announceCardReadAgain("999a");
 	}
 	
 	@Test
-	public void handleUnregisteredRequestsMerge() {
+	public void handleUnregisteredInsertsFromArchive() {
 		ecardMode.handleUnregistered(danglingRunnerData, "997");
-		verify(requestHandler).requestMergeUnknownRunner(danglingRunnerData, "997");
+		assertEquals(Status.DUP, danglingRunnerData.getStatus());
 	}
-
+	
 	@Test
 	public void handleUnregisteredCallsAnnouncer() {
-		when(requestHandler.requestMergeUnknownRunner(danglingRunnerData, "997")).thenReturn("997");
 		ecardMode.handleUnregistered(danglingRunnerData, "997");
 		verify(announcer).announceUnknownCardRead("997");
+	}
+	
+	@Test
+	public void handleUnregisteredSetsUnkownStatusOtherwise() {
+		ecardMode.handleUnregistered(danglingRunnerData, "997");
+		assertEquals(Status.UNK, danglingRunnerData.getStatus());
 	}
 	
 }

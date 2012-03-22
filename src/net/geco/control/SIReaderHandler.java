@@ -14,9 +14,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.geco.basics.Announcer;
-import net.geco.basics.GecoRequestHandler;
 import net.geco.basics.GecoResources;
 import net.geco.basics.WindowsRegistryQuery;
+import net.geco.control.ecardmodes.CourseDetector;
 import net.geco.control.ecardmodes.ECardMode;
 import net.geco.control.ecardmodes.ECardRacingMode;
 import net.geco.control.ecardmodes.ECardTrainingMode;
@@ -52,6 +52,8 @@ public class SIReaderHandler extends Control
 	
 	private boolean starting;
 
+	private CourseDetector courseDetector;
+	
 	private ECardMode currentEcardMode;
 
 	
@@ -74,8 +76,9 @@ public class SIReaderHandler extends Control
 	public SIReaderHandler(GecoControl geco) {
 		super(SIReaderHandler.class, geco);
 
-		new ECardRacingMode(geco);
-		new ECardTrainingMode(geco);
+		courseDetector = new CourseDetector(geco, getService(RunnerControl.class));
+		new ECardRacingMode(geco, courseDetector);
+		new ECardTrainingMode(geco, courseDetector);
 		selectECardMode(ECardRacingMode.class);
 		
 		changePortName();
@@ -86,11 +89,6 @@ public class SIReaderHandler extends Control
 		currentEcardMode = getService(modeClass);
 	}
 	
-	public void setRequestHandler(GecoRequestHandler requestHandler) {
-		// TODO: remove?
-//		this.currentEcardHandler.setRequestHandler(requestHandler);
-	}
-
 	public static String portNameProperty() {
 		return "SIPortname"; //$NON-NLS-1$
 	}
