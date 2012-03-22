@@ -23,9 +23,9 @@ public class CourseDetector extends Control {
 
 	private RunnerControl runnerControl;
 
-	public CourseDetector(GecoControl gecoControl) {
-		super(CourseDetector.class, gecoControl);
-		runnerControl = gecoControl.getService(RunnerControl.class);
+	public CourseDetector(GecoControl gecoControl, RunnerControl runnerControl) {
+		super(gecoControl);
+		this.runnerControl = runnerControl;
 	}
 
 	private static class CourseResult implements Comparable<CourseResult> {

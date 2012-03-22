@@ -39,8 +39,11 @@ public class CourseDetectorTest {
 	private Course courseA;
 	private Course courseB;
 	private Course courseC;
-	private GecoControl geco;
 	private RunnerRaceData raceData;
+
+	private GecoControl geco;
+	private RunnerControl runnerControl;
+	private CourseDetector detector;
 
 	@Before
 	public void setUp() {
@@ -54,8 +57,9 @@ public class CourseDetectorTest {
 		registry.addCourse(courseC);
 		geco = GecoFixtures.mockGecoControlWithRegistry(registry);
 		when(geco.factory()).thenReturn(factory);
-		RunnerControl runnerControl = new RunnerControl(geco);
-		when(geco.getService(RunnerControl.class)).thenReturn(runnerControl);
+		runnerControl = new RunnerControl(geco);
+		
+		detector = new CourseDetector(geco, runnerControl);
 		
 		raceData = factory.createRunnerRaceData();
 		raceData.setStarttime(new Date(10000));
@@ -68,7 +72,6 @@ public class CourseDetectorTest {
 				punch(31), punch(33), punch(31), punch(32), punch(31), punch(34), punch(31), punch(35), punch(36)
 		});
 		when(geco.checker()).thenReturn(new PenaltyChecker(factory));
-		CourseDetector detector = new CourseDetector(geco);
 		assertEquals("should find perfect match with OK trace", courseC, detector.detectCourse(raceData));
 		assertEquals(Status.OK, raceData.getStatus());
 	}
@@ -79,7 +82,6 @@ public class CourseDetectorTest {
 				punch(31), punch(31), punch(33), punch(31), punch(34), punch(31)
 		});
 		when(geco.checker()).thenReturn(new PenaltyChecker(factory));
-		CourseDetector detector = new CourseDetector(geco);
 		assertEquals("should find closest match with MP trace", courseA, detector.detectCourse(raceData));
 		assertEquals(Status.MP, raceData.getStatus());
 	}
@@ -92,7 +94,6 @@ public class CourseDetectorTest {
 		PenaltyChecker checker = new PenaltyChecker(factory);
 		checker.setMPLimit(2);
 		when(geco.checker()).thenReturn(checker);
-		CourseDetector detector = new CourseDetector(geco);
 		
 		assertEquals("should find perfect match with OK trace", courseB, detector.detectCourse(raceData));
 		assertEquals(Status.OK, raceData.getStatus());
@@ -118,7 +119,6 @@ public class CourseDetectorTest {
 		PenaltyChecker checker = new PenaltyChecker(factory);
 		checker.setMPLimit(2);
 		when(geco.checker()).thenReturn(checker);
-		CourseDetector detector = new CourseDetector(geco);
 		
 		Assert.assertEquals("should find closest match with MP trace", courseC, detector.detectCourse(raceData));
 
@@ -141,7 +141,6 @@ public class CourseDetectorTest {
 				 punch(35), punch(36), punch(31), punch(34), punch(31), punch(33), punch(31), punch(32), punch(31)
 		});
 		when(geco.checker()).thenReturn(new PenaltyChecker(factory, new FreeOrderTracer(factory)));
-		CourseDetector detector = new CourseDetector(geco);
 		assertEquals("should find perfect match with OK trace", courseC, detector.detectCourse(raceData));
 		assertEquals(Status.OK, raceData.getStatus());
 	}
@@ -152,7 +151,6 @@ public class CourseDetectorTest {
 				 punch(35), punch(36), punch(31), punch(31), punch(33), punch(31), punch(32), punch(31), punch(37)
 		});
 		when(geco.checker()).thenReturn(new PenaltyChecker(factory, new FreeOrderTracer(factory)));
-		CourseDetector detector = new CourseDetector(geco);
 		assertEquals("should find closets match with MP trace", courseC, detector.detectCourse(raceData));
 		assertEquals(Status.MP, raceData.getStatus());
 	}
