@@ -19,5 +19,7 @@ public interface ECardHandler {
 	public String handleDuplicate(RunnerRaceData data, Runner runner);
 	
 	public String handleUnregistered(RunnerRaceData data, String cardId);
+
+	public boolean foundInArchive();
 	
 }

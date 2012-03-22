@@ -38,4 +38,9 @@ public class AutoCheckerHandler extends Control implements ECardHandler {
 		return null;
 	}
 
+	@Override
+	public boolean foundInArchive() {
+		return false;
+	}
+
 }

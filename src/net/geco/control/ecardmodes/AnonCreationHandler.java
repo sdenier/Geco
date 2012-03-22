@@ -20,8 +20,8 @@ import net.geco.model.Status;
  */
 public class AnonCreationHandler extends Control implements ECardHandler {
 
-	private RunnerControl runnerControl;
-	private CourseDetector courseDetector;
+	protected RunnerControl runnerControl;
+	protected CourseDetector courseDetector;
 
 	public AnonCreationHandler(GecoControl gecoControl, CourseDetector detector) {
 		super(gecoControl);
@@ -41,9 +41,7 @@ public class AnonCreationHandler extends Control implements ECardHandler {
 		data.getResult().setStatus(Status.DUP);
 		String uniqueEcard = runnerControl.deriveUniqueEcard(runner.getEcard());
 		try {
-			Runner newRunner = runnerControl.buildAnonymousRunner(uniqueEcard, course);
-			runnerControl.registerRunner(newRunner, data);
-			geco().log("Creation " + data.infoString()); //$NON-NLS-1$
+			registerAnonymousRunner(data, course, uniqueEcard);
 		} catch (RunnerCreationException e1) {
 			geco().log(e1.getLocalizedMessage());
 			return null;
@@ -51,10 +49,22 @@ public class AnonCreationHandler extends Control implements ECardHandler {
 		return uniqueEcard;
 	}
 
+	protected void registerAnonymousRunner(RunnerRaceData data, Course course, String ecard)
+			throws RunnerCreationException {
+		Runner newRunner = runnerControl.buildAnonymousRunner(ecard, course);
+		runnerControl.registerRunner(newRunner, data);
+		geco().log("Creation " + data.infoString()); //$NON-NLS-1$
+	}
+
 	@Override
 	public String handleUnregistered(RunnerRaceData data, String cardId) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean foundInArchive() {
+		return false;
 	}
 
 }
