@@ -184,11 +184,20 @@ public class RunnersPanel extends TabPanel
 			public void actionPerformed(ActionEvent e) {
 				RunnerRaceData data = selectedData();
 				if( data!=null ) {
-					int previousSel = table.getSelectedRow();
-					// announce runner deletion and remove from tablemodel
-					geco().runnerControl().deleteRunner(data);
-					int nextSelection = Math.min(table.getModel().getRowCount() - 1, previousSel);
-					table.getSelectionModel().setSelectionInterval(nextSelection, nextSelection);
+					int confirm = JOptionPane.showConfirmDialog(
+							frame(),
+							Messages.uiGet("RunnersPanel.DeleteConfirmMessage") //$NON-NLS-1$
+								+ data.getRunner().idString(),
+							Messages.uiGet("RunnersPanel.DeleteConfirmTitle") //$NON-NLS-1$
+								+ data.getRunner().getName(),
+							JOptionPane.YES_NO_OPTION);
+					if( confirm==JOptionPane.YES_OPTION ) {
+						int previousSel = table.getSelectedRow();
+						// announce runner deletion and remove from tablemodel
+						geco().runnerControl().deleteRunner(data);
+						int nextSelection = Math.min(table.getModel().getRowCount() - 1, previousSel);
+						table.getSelectionModel().setSelectionInterval(nextSelection, nextSelection);
+					}
 				}
 			}
 		});
