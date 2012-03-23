@@ -7,7 +7,6 @@ package net.geco.app;
 import javax.swing.JFrame;
 
 import net.geco.control.ArchiveManager;
-import net.geco.control.AutoMergeHandler;
 import net.geco.control.CNCalculator;
 import net.geco.control.FreeOrderTracer;
 import net.geco.control.GecoControl;
@@ -82,9 +81,8 @@ public class FreeOrderAppBuilder extends AppBuilder {
 		new SplitExporter(gecoControl).withoutBestSplits();
 		new SingleSplitPrinter(gecoControl);
 		new RegistryStats(gecoControl);
-		new AutoMergeHandler(gecoControl);
-		new SIReaderHandler(gecoControl);
 		new ArchiveManager(gecoControl);
+		new SIReaderHandler(gecoControl);
 		new StartlistImporter(gecoControl);
 		new CNCalculator(gecoControl);
 		

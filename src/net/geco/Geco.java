@@ -22,7 +22,6 @@ import net.geco.basics.GecoRequestHandler;
 import net.geco.basics.GecoResources;
 import net.geco.basics.Logger;
 import net.geco.control.ArchiveManager;
-import net.geco.control.AutoMergeHandler;
 import net.geco.control.CNCalculator;
 import net.geco.control.Checker;
 import net.geco.control.GecoControl;
@@ -319,9 +318,6 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 	
 	public GecoRequestHandler defaultMergeHandler() {
 		return this;
-	}
-	public GecoRequestHandler autoMergeHandler() {
-		return getService(AutoMergeHandler.class);
 	}
 	
 	public Logger logger() {

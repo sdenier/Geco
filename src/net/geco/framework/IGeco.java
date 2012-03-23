@@ -32,7 +32,6 @@ public interface IGeco {
 	public Registry registry();
 	public Announcer announcer();
 	public GecoRequestHandler defaultMergeHandler();
-	public GecoRequestHandler autoMergeHandler();
 	
 	public Logger logger();
 	public void debug(String message);
