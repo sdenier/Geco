@@ -31,12 +31,14 @@ public class ECardModeSetup extends MockControlSetup {
 
 	protected Course testCourse;
 	@Mock protected IResultData<PunchObject, PunchRecordData> card;
+	protected Runner fullRunner;
 	protected RunnerRaceData fullRunnerData;
 	protected RunnerRaceData danglingRunnerData;
 
 	public void setUpMockCardData() {
 		setUpCardPunches(card);
 		testCourse = createCourse();
+		fullRunner = createRunner();
 		fullRunnerData = createFullRunnerData();
 		danglingRunnerData = factory.createRunnerRaceData();
 	}
@@ -59,14 +61,17 @@ public class ECardModeSetup extends MockControlSetup {
 		return course;
 	}
 
-	protected RunnerRaceData createFullRunnerData() {
+	protected Runner createRunner() {
 		Runner runner = factory.createRunner();
 		runner.setStartId(1);
 		runner.setEcard("999");
 		runner.setCourse(testCourse);
+		return runner;
+	}
 
+	protected RunnerRaceData createFullRunnerData() {
 		RunnerRaceData runnerData = factory.createRunnerRaceData();
-		runnerData.setRunner(runner);
+		runnerData.setRunner(fullRunner);
 		runnerData.setResult(factory.createRunnerResult());
 		return runnerData;
 	}

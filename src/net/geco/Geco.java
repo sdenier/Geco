@@ -220,6 +220,7 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 
 	public void initControls(AppBuilder builder, GecoControl gecoControl) {
 		this.gecoControl = gecoControl;
+		this.gecoControl.registerService(GecoRequestHandler.class, (GecoRequestHandler) this);
 		builder.buildControls(gecoControl);
 		stageControl = getService(StageControl.class);
 		runnerControl = getService(RunnerControl.class);
