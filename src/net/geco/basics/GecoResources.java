@@ -88,7 +88,11 @@ public class GecoResources {
 	}
 	
 	public static BufferedWriter getSafeWriterFor(String name) throws FileNotFoundException {
-		OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(name), CHARSET);
+		return getSafeWriterFor(name, CHARSET);
+	}
+
+	public static BufferedWriter getSafeWriterFor(String name, Charset charset) throws FileNotFoundException {
+		OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(name), charset);
 		return new BufferedWriter(writer);
 	}
 	

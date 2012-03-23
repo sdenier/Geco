@@ -6,6 +6,7 @@ package net.geco.control;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Vector;
 
 import net.geco.basics.GecoResources;
@@ -70,7 +71,8 @@ public abstract class AResultExporter extends Control {
 
 	protected void exportOECsvFile(String filename, ResultConfig config)
 			throws IOException {
-		CsvWriter writer = new CsvWriter(";", filename); //$NON-NLS-1$
+		CsvWriter writer = new CsvWriter(";").initialize(filename); //$NON-NLS-1$
+		writer.open(Charset.forName("windows-1252")); //$NON-NLS-1$
 		generateOECsvResult(config, writer);
 		writer.close();
 	}

@@ -7,6 +7,7 @@ package net.geco.model.iocsv;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Collection;
 
 import net.geco.basics.GecoResources;
@@ -67,6 +68,10 @@ public class CsvWriter {
 
 	public void open() throws IOException {
 		this.writer = GecoResources.getSafeWriterFor(filePath());
+	}
+
+	public void open(Charset charset) throws IOException {
+		this.writer = GecoResources.getSafeWriterFor(filePath(), charset);
 	}
 
 	public void close() throws IOException {

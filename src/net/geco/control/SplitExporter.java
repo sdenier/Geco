@@ -384,11 +384,24 @@ public class SplitExporter extends AResultExporter implements StageListener {
 	}
 
 	private String oeEvaluationCode(Status status) {
-		if( status==Status.OK ) {
+		switch (status) {
+		case OK:
 			return "0"; //$NON-NLS-1$
-		} else {
+		case DNS:
+		case NOS:
+		case DUP:
+		case UNK:
 			return "1"; //$NON-NLS-1$
+		case DNF:
+			return "2"; //$NON-NLS-1$
+		case MP:
+			return "3"; //$NON-NLS-1$
+		case DSQ:
+			return "4"; //$NON-NLS-1$
+		case RUN:
+			return "5"; //$NON-NLS-1$
 		}
+		return "1"; //$NON-NLS-1$
 	}
 	
 	@Override
