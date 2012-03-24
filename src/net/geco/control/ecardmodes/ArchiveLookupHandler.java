@@ -20,6 +20,7 @@ import net.geco.model.Status;
 public class ArchiveLookupHandler extends AnonCreationHandler implements ECardHandler {
 
 	private ArchiveManager archiveManager;
+	private Status customStatus;
 	private boolean foundInArchive = false;
 
 	public ArchiveLookupHandler(GecoControl gecoControl, CourseDetector detector) {
@@ -27,6 +28,11 @@ public class ArchiveLookupHandler extends AnonCreationHandler implements ECardHa
 		this.archiveManager = getService(ArchiveManager.class);
 	}
 
+	public ArchiveLookupHandler(GecoControl gecoControl, CourseDetector detector, Status custom) {
+		this(gecoControl, detector);
+		this.customStatus = custom;
+	}
+	
 	@Override
 	public String handleFinish(RunnerRaceData data) {
 		// TODO Auto-generated method stub
@@ -49,7 +55,7 @@ public class ArchiveLookupHandler extends AnonCreationHandler implements ECardHa
 			geco().log("Insertion " + data.infoString()); //$NON-NLS-1$
 		} else {
 			foundInArchive = false;
-			data.getResult().setStatus(Status.UNK);
+			checkCustomStatus(data);
 			try {
 				registerAnonymousRunner(data, course, cardId);
 			} catch (RunnerCreationException e) {
@@ -58,6 +64,12 @@ public class ArchiveLookupHandler extends AnonCreationHandler implements ECardHa
 			}
 		}
 		return cardId;
+	}
+
+	public void checkCustomStatus(RunnerRaceData data) {
+		if( customStatus!=null ){
+			data.getResult().setStatus(customStatus);
+		}
 	}
 
 	@Override

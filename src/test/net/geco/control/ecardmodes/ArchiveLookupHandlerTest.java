@@ -41,9 +41,6 @@ public class ArchiveLookupHandlerTest extends ECardModeSetup {
 		when(gecoControl.getService(ArchiveManager.class)).thenReturn(archive);
 		when(gecoControl.getService(RunnerControl.class)).thenReturn(runnerControl);
 		when(detector.detectCourse(fullRunnerData)).thenReturn(testCourse);
-//		
-//		runner = factory.createRunner();
-//		runner.setEcard("500");
 	}
 
 	@Test
@@ -80,8 +77,18 @@ public class ArchiveLookupHandlerTest extends ECardModeSetup {
 	}
 
 	@Test
+	public void setCustomStatus() {
+		Status currentStatus = fullRunnerData.getStatus();
+		new ArchiveLookupHandler(gecoControl, detector).checkCustomStatus(fullRunnerData);
+		assertEquals(currentStatus, fullRunnerData.getStatus());
+
+		new ArchiveLookupHandler(gecoControl, detector, Status.UNK).checkCustomStatus(fullRunnerData);
+		assertEquals(Status.UNK, fullRunnerData.getStatus());
+	}
+	
+	@Test
 	public void handleUnregisteredSetsCustomStatusOtherwise() {
-		new ArchiveLookupHandler(gecoControl, detector).handleUnregistered(fullRunnerData, "2000");
+		new ArchiveLookupHandler(gecoControl, detector, Status.UNK).handleUnregistered(fullRunnerData, "2000");
 		assertEquals(Status.UNK, fullRunnerData.getStatus());
 	}
 
