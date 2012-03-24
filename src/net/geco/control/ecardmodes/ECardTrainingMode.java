@@ -16,26 +16,32 @@ import net.geco.model.RunnerRaceData;
  */
 public class ECardTrainingMode extends AbstractECardMode {
 
-	public ECardTrainingMode(GecoControl gecoControl) {
+	public ECardTrainingMode(GecoControl gecoControl, CourseDetector detector) {
 		super(ECardTrainingMode.class, gecoControl);
+		finishHandler = new AutoCheckerHandler(gecoControl);
+		duplicateHandler = new CopyRunnerHandler(gecoControl, detector);
+		unregisteredHandler = new ArchiveLookupHandler(gecoControl, detector);
 	}
 
 	@Override
 	public void handleFinished(RunnerRaceData runnerData) {
-		// TODO Auto-generated method stub
-		
+		defaultHandle(runnerData);
 	}
 
 	@Override
 	public void handleDuplicate(RunnerRaceData runnerData, Runner runner) {
-		// TODO Auto-generated method stub
-		
+		String returnedCard = duplicateHandler.handleDuplicate(runnerData, runner);
+		if( returnedCard!=null ){
+			geco().announcer().announceCardReadAgain(returnedCard);
+		}
 	}
 
 	@Override
 	public void handleUnregistered(RunnerRaceData runnerData, String cardId) {
-		// TODO Auto-generated method stub
-		
+		String returnedCard = unregisteredHandler.handleUnregistered(runnerData, cardId);
+		if( returnedCard!=null ) {
+			geco().announcer().announceCardRead(returnedCard);
+		}		
 	}
 
 }

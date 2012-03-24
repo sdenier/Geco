@@ -4,11 +4,24 @@
  */
 package test.net.geco.control.ecardmodes;
 
-import static org.junit.Assert.fail;
+import static junit.framework.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
+import java.util.HashSet;
+
+import net.geco.control.ArchiveManager;
 import net.geco.control.Checker;
+import net.geco.control.PenaltyChecker;
+import net.geco.control.RunnerControl;
+import net.geco.control.ecardmodes.CourseDetector;
 import net.geco.control.ecardmodes.ECardTrainingMode;
+import net.geco.model.Course;
 import net.geco.model.Runner;
 import net.geco.model.Status;
 
@@ -25,22 +38,33 @@ public class ECardTrainingModeTest extends ECardModeSetup {
 
 	private ECardTrainingMode ecardMode;
 
-	@Mock private Checker checker;
+	@Mock private ArchiveManager archive;
 	
 	@Before
 	public void setUp() {
 		setUpMockControls();
 		setUpMockCardData();
-		when(gecoControl.checker()).thenReturn(checker);
 		
-		ecardMode = new ECardTrainingMode(gecoControl);
+		Checker checker = new PenaltyChecker(factory);
+		RunnerControl runnerControl = new RunnerControl(gecoControl);
+		CourseDetector detector = new CourseDetector(gecoControl, runnerControl);
+		when(gecoControl.checker()).thenReturn(checker);
+		when(gecoControl.getService(RunnerControl.class)).thenReturn(runnerControl);
+		when(gecoControl.getService(ArchiveManager.class)).thenReturn(archive);
+		
+		when(registry.getCourses()).thenReturn(Arrays.asList(new Course[]{ testCourse }));
+		when(registry.noClub()).thenReturn(factory.createClub());
+		when(registry.noCategory()).thenReturn(factory.createCategory());
+		
+		ecardMode = new ECardTrainingMode(gecoControl, detector);
 	}
 
 	@Test
 	public void handleFinishedCallsChecker() {
+		Checker mockChecker = mock(Checker.class);
+		when(gecoControl.checker()).thenReturn(mockChecker);
 		ecardMode.handleFinished(fullRunnerData);
-		fail();
-//		verify(checker).check(fullRunnerData);
+		verify(mockChecker).check(fullRunnerData);	
 	}
 	
 	@Test
@@ -53,28 +77,48 @@ public class ECardTrainingModeTest extends ECardModeSetup {
 	
 	@Test
 	public void handleDuplicateCallsCopyRunner() {
-		Runner runner = factory.createRunner();
-		ecardMode.handleDuplicate(danglingRunnerData, runner);
-		fail();
+		Runner mockRunner = mock(Runner.class);
+		when(mockRunner.getEcard()).thenReturn("999");
+		when(mockRunner.copyWith(anyInt(), anyString(), any(Course.class))).thenReturn(fullRunner);
+		when(registry.nextStartId()).thenReturn(100);
+		when(registry.getEcards()).thenReturn(new HashSet<String>(Arrays.asList(new String[]{ "999" })));
+		ecardMode.handleDuplicate(danglingRunnerData, mockRunner);
+		verify(mockRunner).copyWith(100, "999a", testCourse);
+	}
+
+	@Test
+	public void handleDuplicateSetsResolvedStatus() {
+		ecardMode.handleDuplicate(danglingRunnerData, fullRunner);
+		assertTrue(danglingRunnerData.getStatus().isResolved());
 	}
 
 	@Test
 	public void handleDuplicateCallsAnnouncer() {
-		Runner runner = factory.createRunner();
-		ecardMode.handleDuplicate(danglingRunnerData, runner);
-		verify(announcer).announceCardReadAgain("998a");
+		when(registry.getEcards()).thenReturn(new HashSet<String>(Arrays.asList(new String[]{ "999" })));
+		ecardMode.handleDuplicate(danglingRunnerData, fullRunner);
+		verify(announcer).announceCardReadAgain("999a");
 	}
-	
+
 	@Test
-	public void handleUnregisteredCallsAutoInsert() {
+	public void handleUnregisteredInsertsFromArchive() {
 		ecardMode.handleUnregistered(danglingRunnerData, "997");
-		fail();
+		verify(archive).findAndCreateRunner("997", testCourse);
 	}
 
 	@Test
 	public void handleUnregisteredCallsAnnouncer() {
+		when(archive.findAndCreateRunner("997", testCourse)).thenReturn(fullRunnerData.getRunner());
 		ecardMode.handleUnregistered(danglingRunnerData, "997");
-		verify(announcer).announceUnknownCardRead("997");
+		verify(announcer).announceCardRead("997");
+
+		ecardMode.handleUnregistered(danglingRunnerData, "998");
+		verify(announcer).announceCardRead("998");
+	}
+	
+	@Test
+	public void handleUnregisteredSetsResolvedStatus() {
+		ecardMode.handleUnregistered(danglingRunnerData, "997");
+		assertTrue(danglingRunnerData.getStatus().isResolved());
 	}
 	
 }
