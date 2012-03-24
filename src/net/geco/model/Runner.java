@@ -10,7 +10,7 @@ import java.util.Date;
  * @since Jun 30, 2009
  *
  */
-public interface Runner extends AbstractRunner {
+public interface Runner extends AbstractRunner, Cloneable {
 
 	public Integer getStartId();
 
@@ -31,5 +31,7 @@ public interface Runner extends AbstractRunner {
 	public boolean rentedEcard();
 	
 	public void setRentedEcard(boolean rented);
+	
+	public Runner copyWith(Integer startId, String ecard, Course course);
 
 }

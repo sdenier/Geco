@@ -193,16 +193,7 @@ public class HeatBuilder extends Control {
 		}
 	}
 	private Runner cloneRunnerForHeat(Runner runner, Course heatCourse) {
-		Runner newRunner = factory().createRunner();
-		newRunner.setStartId(newStartId());
-		newRunner.setEcard(runner.getEcard());
-		newRunner.setFirstname(runner.getFirstname());
-		newRunner.setLastname(runner.getLastname());
-		newRunner.setCategory(runner.getCategory());
-		newRunner.setClub(runner.getClub());
-		newRunner.setNC(runner.isNC());
-		newRunner.setCourse(heatCourse);
-		return newRunner;
+		return runner.copyWith(newStartId(), runner.getEcard(), heatCourse);
 	}
 	
 	private void resetStartId() {

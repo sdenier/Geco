@@ -84,5 +84,19 @@ public class RunnerImpl extends AbstractRunnerImpl implements Runner {
 	public String idString() {
 		return getNameR() + ", " + getStartId().toString() + ", " + getEcard();   //$NON-NLS-1$ //$NON-NLS-2$
 	}
+
+	@Override
+	public Runner copyWith(Integer startId, String ecard, Course course) {
+		Runner newRunner = null;
+		try {
+			newRunner = (Runner) clone();
+			newRunner.setStartId(startId);
+			newRunner.setEcard(ecard);
+			newRunner.setCourse(course);
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return newRunner;
+	}
 	
 }
