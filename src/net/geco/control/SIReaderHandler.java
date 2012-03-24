@@ -19,6 +19,7 @@ import net.geco.basics.WindowsRegistryQuery;
 import net.geco.control.ecardmodes.CourseDetector;
 import net.geco.control.ecardmodes.ECardMode;
 import net.geco.control.ecardmodes.ECardRacingMode;
+import net.geco.control.ecardmodes.ECardRegisterMode;
 import net.geco.control.ecardmodes.ECardTrainingMode;
 import net.geco.model.Stage;
 
@@ -79,6 +80,7 @@ public class SIReaderHandler extends Control
 		courseDetector = new CourseDetector(geco, getService(RunnerControl.class));
 		new ECardRacingMode(geco, courseDetector);
 		new ECardTrainingMode(geco, courseDetector);
+		new ECardRegisterMode(geco);
 		selectECardMode(ECardRacingMode.class);
 		
 		changePortName();

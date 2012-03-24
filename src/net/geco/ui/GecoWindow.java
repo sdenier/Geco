@@ -318,7 +318,7 @@ public class GecoWindow extends JFrame
 //				setText(Messages.uiGet("GecoWindow.StartingButton")); //$NON-NLS-1$
 //		startB.setText(Messages.uiGet("GecoWindow.StopReaderButton")); //$NON-NLS-1$
 		
-		if( UIManager.getLookAndFeel().getID().equals("Aqua") ){
+		if( UIManager.getLookAndFeel().getID().equals("Aqua") ){ //$NON-NLS-1$
 			AquaECardModeSelector aquaModeSelector = new AquaECardModeSelector(geco, this) {
 				public void beforeStartingReadMode() {
 					checkEnableAutoSplit();

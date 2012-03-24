@@ -9,6 +9,7 @@ import javax.swing.ImageIcon;
 
 import net.geco.control.SIReaderHandler;
 import net.geco.control.ecardmodes.ECardRacingMode;
+import net.geco.control.ecardmodes.ECardRegisterMode;
 import net.geco.control.ecardmodes.ECardTrainingMode;
 import net.geco.ui.basics.GecoIcon;
 
@@ -41,9 +42,8 @@ public enum ECardModeUI {
 	},
 	RegisterMode	("Register", GecoIcon.EcardRegisterMode, false) {
 		public void execute(SIReaderHandler handler) {
-			handler.stop(); // TODO: enable
-//			handler.selectECardHandler(ECardRegisterHandler.class);
-//			handler.start();
+			handler.selectECardMode(ECardRegisterMode.class);
+			handler.start();
 		}
 	},
 	;
