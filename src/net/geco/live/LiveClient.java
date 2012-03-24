@@ -151,5 +151,7 @@ public class LiveClient implements Announcer.CardListener {
 	@Override
 	public void rentedCard(String siIdent) {	}
 	
+	@Override
+	public void registeredCard(String ecard) {	}
 	
 }

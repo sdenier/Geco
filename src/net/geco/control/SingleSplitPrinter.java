@@ -297,7 +297,8 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 	public void cardReadAgain(String chip) {	}
 	@Override
 	public void rentedCard(String siIdent) {	}
-
+	@Override
+	public void registeredCard(String ecard) {	}
 
 	@Override
 	public void changed(Stage previous, Stage current) {

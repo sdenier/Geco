@@ -576,6 +576,11 @@ public class RunnersPanel extends TabPanel
 	public void cardReadAgain(String ecard) {
 		focusOnReadCard(ecard);
 	}
+
+	@Override
+	public void registeredCard(String ecard) {
+		focusOnRegisteredCard(ecard);
+	}
 	
 	@Override
 	public void rentedCard(String siIdent) {
@@ -592,6 +597,11 @@ public class RunnersPanel extends TabPanel
 		}
 	}
 
+	private void focusOnRegisteredCard(String ecard) {
+		RunnerRaceData data = registry().findRunnerData(ecard);
+		focusTableOnRunner(data);
+	}
+	
 	@Override
 	public void componentShown(ComponentEvent e) {
 		table.requestFocusInWindow();

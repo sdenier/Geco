@@ -113,30 +113,36 @@ public class Announcer {
 		/**
 		 * Signal a card has been read by the handler.
 		 * 
-		 * @param chip
+		 * @param ecard
 		 */
-		public void cardRead(String chip);
+		public void cardRead(String ecard);
 
 		
 		/**
 		 * Signal a card with an unregistered number has been read by the handler.
 		 * 
-		 * @param chip
+		 * @param ecard
 		 */
-		public void unknownCardRead(String chip);
+		public void unknownCardRead(String ecard);
 
 		/**
 		 * Signal a card with existing data in registry has been read again by the handler.
 		 * 
-		 * @param chip
+		 * @param ecard
 		 */
-		public void cardReadAgain(String chip);
+		public void cardReadAgain(String ecard);
 
 
 		/**
-		 * @param siIdent
+		 * @param ecard
 		 */
-		public void rentedCard(String siIdent);
+		public void rentedCard(String ecard);
+
+
+		/**
+		 * @param ecard
+		 */
+		public void registeredCard(String ecard);
 	}
 	
 	public interface StationListener {
@@ -299,28 +305,34 @@ public class Announcer {
 	/*
 	 * Card announcements
 	 */
-	public void announceCardRead(String chip) {
+	public void announceCardRead(String ecard) {
 		for (CardListener listener : this.cardListeners) {
-			listener.cardRead(chip);
+			listener.cardRead(ecard);
 		}
 	}
 
-	public void announceUnknownCardRead(String chip) {
+	public void announceUnknownCardRead(String ecard) {
 		for (CardListener listener : this.cardListeners) {
-			listener.unknownCardRead(chip);
+			listener.unknownCardRead(ecard);
 		}
 	}
 
-	public void announceCardReadAgain(String chip) {
+	public void announceCardReadAgain(String ecard) {
 		for (CardListener listener : this.cardListeners) {
-			listener.cardReadAgain(chip);
+			listener.cardReadAgain(ecard);
 		}
 	}
 
-	public void announceRentedCard(String siIdent) {
+	public void announceRentedCard(String ecard) {
 		for (CardListener listener : this.cardListeners) {
-			listener.rentedCard(siIdent);
+			listener.rentedCard(ecard);
 		}		
+	}
+
+	public void announceCardRegistered(String ecard) {
+		for (CardListener listener : this.cardListeners) {
+			listener.registeredCard(ecard);
+		}
 	}
 	
 	public void announceStationStatus(String status) {
