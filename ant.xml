@@ -18,14 +18,20 @@
 			<fileset dir="demo" includes="**/backups/*.zip"/>
 		</delete>
     </target>
+
+	<target name="cleanWebgen">
+		<delete dir="${wg.dir}/out" />
+		<delete file="${wg.dir}/webgen.cache" />
+    </target>
 	
     <target name="webgen">
     	<exec dir="${wg.dir}" executable="webgen"></exec>
     </target>
 
-	<target name="cleanWebgen">
-		<delete dir="${wg.dir}/out" />
-		<delete file="${wg.dir}/webgen.cache" />
+	<target name="webgen with analytics">
+		<exec dir="${wg.dir}" executable="webgen">
+			<env key="analytics_tracking" value="true" />
+		</exec>
     </target>
 	
 	<target name="userHelp" depends="cleanWebgen,webgen">

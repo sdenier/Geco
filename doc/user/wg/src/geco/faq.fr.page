@@ -41,7 +41,7 @@ où `COM1` et `COM3` sont les ports susceptibles d'accueillir votre station SPOR
 
 ## \[Mac OS X\] Comment installer un pilote pour SPORTident ?
 
-*Guy P. a écrit un [tutorial détaillé et pas à pas](http://geco.webou.net/procedure_installation_driver_sportident) si vous n'êtes pas habitué aux manipulations systèmes décrites ci-dessous.*
+*Guy P. a écrit un [tutorial détaillé et pas à pas](http://geco.webou.net/procedure_installation_driver_sportident.pdf) si vous n'êtes pas habitué aux manipulations systèmes décrites ci-dessous.*
 
 Il faut télécharger le pilote Mac OS pour le chip USB des boîtiers SPORTident, puis changer quelques informations du pilote pour que Mac OS le reconnaisse pour le boîtier.
 

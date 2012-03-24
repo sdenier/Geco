@@ -2,7 +2,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 
 <%
-analytics_tracking = false
 currentversion = '1.2'
 currentlink = 'http://bitbucket.org/sdenier/geco/downloads/geco1.2-571-20111130-demo.zip'
 translations = YAML::load(File.read(File.join(context.website.directory, 'default.languages')))
@@ -19,7 +18,7 @@ trans = translations[context.node.lang]
     <link rel="stylesheet" href="{relocatable: default.css}" type="text/css" media="screen,projection" />
     <title>Geco - {title:}</title>
       <%=
-        if analytics_tracking
+        if ENV['analytics_tracking']
             script = File.read(File.join(context.website.directory, 'analytics.jscript'))
         else
             script = ''
@@ -85,7 +84,7 @@ trans = translations[context.node.lang]
         </div>
 
         <div id="footer">
-                &copy; 2008-2011 Simon Denier | 
+                &copy; 2008-2012 Simon Denier | 
                 <%= trans['generated'] %> <a href="http://webgen.rubyforge.org">webgen</a> | 
                 <%= trans['design'] %> <a href="http://andreasviklund.com">Andreas Viklund</a>
         </div>
