@@ -21,21 +21,12 @@ public class ECardRacingMode extends AbstractECardMode {
 		super(ECardRacingMode.class, geco);
 		finishHandler = new AutoCheckerHandler(geco);
 		duplicateHandler = new AnonCreationHandler(geco, detector);
-		unregisteredHandler = new ArchiveLookupHandler(geco, detector);
+		unregisteredHandler = new ArchiveLookupHandler(geco, detector, Status.UNK);
 	}
 	
 	@Override
 	public void handleFinished(RunnerRaceData runnerData) {
-		Status oldStatus = runnerData.getResult().getStatus();
-		finishHandler.handleFinish(runnerData);
-		geco().log("READING " + runnerData.infoString()); //$NON-NLS-1$
-		if( runnerData.getResult().getNbMPs() > 0 ) {
-			geco().announcer().dataInfo(
-					runnerData.getResult().formatMpTrace()
-					+ " (" + runnerData.getResult().getNbMPs() + " MP)"); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-		geco().announcer().announceCardRead(runnerData.getRunner().getEcard());
-		geco().announcer().announceStatusChange(runnerData, oldStatus);
+		defaultHandle(runnerData);
 	}
 
 	@Override
