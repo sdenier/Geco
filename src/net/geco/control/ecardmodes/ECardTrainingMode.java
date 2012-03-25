@@ -18,7 +18,7 @@ public class ECardTrainingMode extends AbstractECardMode {
 
 	public ECardTrainingMode(GecoControl gecoControl, CourseDetector detector) {
 		super(ECardTrainingMode.class, gecoControl);
-		finishHandler = new AutoCheckerHandler(gecoControl);
+		finishHandler = new AutoCheckerHandler(gecoControl, detector);
 		duplicateHandler = new CopyRunnerHandler(gecoControl, detector);
 		unregisteredHandler = new ArchiveLookupHandler(gecoControl, detector);
 	}

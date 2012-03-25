@@ -16,6 +16,7 @@ import net.geco.control.ArchiveManager;
 import net.geco.control.Checker;
 import net.geco.control.PenaltyChecker;
 import net.geco.control.RunnerControl;
+import net.geco.control.StageControl;
 import net.geco.control.ecardmodes.CourseDetector;
 import net.geco.control.ecardmodes.ECardRacingMode;
 import net.geco.model.Course;
@@ -42,9 +43,11 @@ public class ECardRacingModeTest extends ECardModeSetup {
 		setUpMockCardData();
 		
 		Checker checker = new PenaltyChecker(factory);
+		StageControl stageControl = new StageControl(gecoControl);
 		RunnerControl runnerControl = new RunnerControl(gecoControl);
 		CourseDetector detector = new CourseDetector(gecoControl, runnerControl);
 		when(gecoControl.checker()).thenReturn(checker);
+		when(gecoControl.getService(StageControl.class)).thenReturn(stageControl);
 		when(gecoControl.getService(RunnerControl.class)).thenReturn(runnerControl);
 		when(gecoControl.getService(ArchiveManager.class)).thenReturn(archive);
 		

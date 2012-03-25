@@ -19,7 +19,7 @@ public class ECardRacingMode extends AbstractECardMode {
 
 	public ECardRacingMode(GecoControl geco, CourseDetector detector) {
 		super(ECardRacingMode.class, geco);
-		finishHandler = new AutoCheckerHandler(geco);
+		finishHandler = new AutoCheckerHandler(geco, detector);
 		duplicateHandler = new AnonCreationHandler(geco, detector);
 		unregisteredHandler = new ArchiveLookupHandler(geco, detector, Status.UNK);
 	}

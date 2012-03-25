@@ -6,6 +6,9 @@ package net.geco.control.ecardmodes;
 
 import net.geco.control.Control;
 import net.geco.control.GecoControl;
+import net.geco.control.RunnerControl;
+import net.geco.control.StageControl;
+import net.geco.model.Course;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 
@@ -16,14 +19,29 @@ import net.geco.model.RunnerRaceData;
  */
 public class AutoCheckerHandler extends Control implements ECardHandler {
 
-	public AutoCheckerHandler(GecoControl gecoControl) {
+	private StageControl stageControl;
+
+	private RunnerControl runnerControl;
+
+	private CourseDetector courseDetector;
+
+	public AutoCheckerHandler(GecoControl gecoControl, CourseDetector detector) {
 		super(gecoControl);
+		this.stageControl = getService(StageControl.class);
+		this.runnerControl = getService(RunnerControl.class);
+		this.courseDetector = detector;
 	}
 
 	@Override
 	public String handleFinish(RunnerRaceData data) {
-		geco().checker().check(data);
-		return data.getRunner().getEcard();
+		Runner runner = data.getRunner();
+		Course autoCourse = stageControl.getAutoCourse();
+		if( runner.getCourse() == autoCourse ) {
+			runnerControl.updateCourse(runner, autoCourse, courseDetector.detectCourse(data));
+		} else {
+			geco().checker().check(data);
+		}
+		return runner.getEcard();
 	}
 
 	@Override
