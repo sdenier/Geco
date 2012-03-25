@@ -41,7 +41,7 @@ public class AbstractECardModeTest extends ECardModeSetup {
 		public DummyECardHandler(GecoControl gecoControl) {
 			super(DummyECardHandler.class, gecoControl);
 		}
-		public void handleFinished(RunnerRaceData runnerData) {
+		public void handleRegistered(RunnerRaceData runnerData) {
 			this.finishData = runnerData;
 		}
 		public void handleDuplicate(RunnerRaceData runnerData, Runner runner) {

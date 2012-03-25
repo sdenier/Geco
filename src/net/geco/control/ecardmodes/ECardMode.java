@@ -26,7 +26,7 @@ public interface ECardMode extends GService {
 	 */
 	public void processECard(IResultData<PunchObject, PunchRecordData> card);
 
-	public void handleFinished(RunnerRaceData runnerData);
+	public void handleRegistered(RunnerRaceData runnerData);
 
 	public void handleDuplicate(RunnerRaceData runnerData, Runner runner);
 

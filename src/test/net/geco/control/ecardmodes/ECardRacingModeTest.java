@@ -59,17 +59,17 @@ public class ECardRacingModeTest extends ECardModeSetup {
 	}
 
 	@Test
-	public void handleFinishedCallsChecker() {
+	public void handleRegisteredCallsChecker() {
 		Checker mockChecker = mock(Checker.class);
 		when(gecoControl.checker()).thenReturn(mockChecker);
-		ecardMode.handleFinished(fullRunnerData);
+		ecardMode.handleRegistered(fullRunnerData);
 		verify(mockChecker).check(fullRunnerData);
 	}
 
 	@Test
-	public void handleFinishedCallsAnnouncer() {
+	public void handleRegisteredCallsAnnouncer() {
 		Status oldStatus = fullRunnerData.getStatus();
-		ecardMode.handleFinished(fullRunnerData);
+		ecardMode.handleRegistered(fullRunnerData);
 		verify(announcer).announceCardRead("999");
 		verify(announcer).announceStatusChange(fullRunnerData, oldStatus);
 	}

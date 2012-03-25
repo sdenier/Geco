@@ -53,8 +53,8 @@ public class ECardRegisterModeTest extends ECardModeSetup {
 	}
 	
 	@Test
-	public void handleFinishedCallsAnnouncer() {
-		new ECardRegisterMode(gecoControl).handleFinished(fullRunnerData);
+	public void handleRegisteredCallsAnnouncer() {
+		new ECardRegisterMode(gecoControl).handleRegistered(fullRunnerData);
 		verify(announcer).announceCardRegistered(fullRunnerData.getRunner().getEcard());
 	}
 

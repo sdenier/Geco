@@ -24,7 +24,7 @@ public class ECardTrainingMode extends AbstractECardMode {
 	}
 
 	@Override
-	public void handleFinished(RunnerRaceData runnerData) {
+	public void handleRegistered(RunnerRaceData runnerData) {
 		defaultHandle(runnerData);
 	}
 

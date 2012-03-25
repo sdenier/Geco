@@ -60,7 +60,7 @@ public abstract class AbstractECardMode extends Control implements ECardMode {
 			if( runnerData.hasData() ) {
 				processDuplicate(card, runner);
 			} else {
-				processFinished(card, runnerData);
+				processRegistered(card, runnerData);
 			}
 			// TODO: update runner before check
 			if( runner.rentedEcard() ){
@@ -72,8 +72,8 @@ public abstract class AbstractECardMode extends Control implements ECardMode {
 		}
 	}
 
-	protected void processFinished(IResultData<PunchObject,PunchRecordData> card, RunnerRaceData data) {
-		handleFinished(updateRaceDataWith(data, card));
+	protected void processRegistered(IResultData<PunchObject,PunchRecordData> card, RunnerRaceData data) {
+		handleRegistered(updateRaceDataWith(data, card));
 	}
 	
 	protected void processDuplicate(IResultData<PunchObject, PunchRecordData> card, Runner runner) {

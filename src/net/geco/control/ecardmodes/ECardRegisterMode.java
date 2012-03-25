@@ -25,8 +25,8 @@ public class ECardRegisterMode extends AbstractECardMode {
 	}
 
 	@Override
-	protected void processFinished(IResultData<PunchObject, PunchRecordData> card, RunnerRaceData data) {
-		handleFinished(data);
+	protected void processRegistered(IResultData<PunchObject, PunchRecordData> card, RunnerRaceData data) {
+		handleRegistered(data);
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class ECardRegisterMode extends AbstractECardMode {
 
 
 	@Override
-	public void handleFinished(RunnerRaceData runnerData) {
+	public void handleRegistered(RunnerRaceData runnerData) {
 		geco().announcer().announceCardRegistered(runnerData.getRunner().getEcard());
 	}
 
