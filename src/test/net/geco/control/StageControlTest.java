@@ -4,7 +4,7 @@
  */
 package test.net.geco.control;
 
-import static org.junit.Assert.assertEquals;
+import static junit.framework.Assert.assertEquals;
 import net.geco.basics.Announcer;
 import net.geco.control.GecoControl;
 import net.geco.control.StageControl;
@@ -41,6 +41,21 @@ public class StageControlTest {
 		Mockito.when(geco.factory()).thenReturn(factory);
 		Mockito.when(geco.announcer()).thenReturn(new Announcer());
 		control = new StageControl(geco);
+	}
+
+	@Test
+	public void getAutoCourseReturnsAutoCourse() {
+		Course autoCourse = factory.createCourse();
+		autoCourse.setName("[Auto]");
+		autoCourse.setCodes(new int[0]);
+		registry.addCourse(autoCourse);
+		assertEquals(autoCourse, control.getAutoCourse());
+	}
+
+	@Test
+	public void getAutoCourseCreatesOneIfNecessary() {
+		Course autoCourse = control.getAutoCourse();
+		assertEquals("[Auto]", autoCourse.getName());
 	}
 	
 	@Test

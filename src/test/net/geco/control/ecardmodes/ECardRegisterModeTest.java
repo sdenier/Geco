@@ -11,6 +11,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import net.geco.control.ArchiveManager;
 import net.geco.control.RunnerControl;
+import net.geco.control.StageControl;
 import net.geco.control.ecardmodes.ECardRegisterMode;
 import net.geco.model.Course;
 import net.geco.model.Runner;
@@ -33,14 +34,16 @@ public class ECardRegisterModeTest extends ECardModeSetup {
 
 	@Mock
 	private ArchiveManager archive;
-	
+
 	@Before
 	public void setUp() {
 		setUpMockControls();
 		setUpMockCardData();
 	
 		autoCourse = factory.createCourse();
+		StageControl stageControl = new StageControl(gecoControl);
 		when(registry.findCourse("[Auto]")).thenReturn(autoCourse);
+		when(gecoControl.getService(StageControl.class)).thenReturn(stageControl);
 		RunnerControl runnerControl = new RunnerControl(gecoControl);
 		when(gecoControl.getService(RunnerControl.class)).thenReturn(runnerControl);
 		when(gecoControl.getService(ArchiveManager.class)).thenReturn(archive);

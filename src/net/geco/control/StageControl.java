@@ -90,7 +90,15 @@ public class StageControl extends Control {
 		return createCourse(Messages.getString("CourseImpl.CourseLabel") //$NON-NLS-1$
 							+ (registry().getCourses().size() + 1));
 	}
-	
+
+	public Course getAutoCourse() {
+		Course autoCourse = registry().findCourse("[Auto]");
+		if( autoCourse==null ){
+			autoCourse = createCourse("[Auto]");
+		}
+		return autoCourse;
+	}
+
 	public Course addCourse(Course course) {
 		Course previousCourse = registry().findCourse(course.getName());
 		registry().addCourse(course);

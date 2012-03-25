@@ -8,7 +8,6 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.fail;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import net.geco.control.ArchiveManager;
@@ -36,6 +35,7 @@ public class RegisterRunnerHandlerTest extends ECardModeSetup {
 	private Course autoCourse;
 
 	@Mock private ArchiveManager archive;
+	@Mock private StageControl stageControl;
 	@Mock private RunnerControl runnerControl;
 
 	@Before
@@ -46,8 +46,9 @@ public class RegisterRunnerHandlerTest extends ECardModeSetup {
 		autoCourse = factory.createCourse();
 		autoCourse.setName("[Auto]");
 		autoCourse.setCodes(new int[0]);
-		when(registry.findCourse("[Auto]")).thenReturn(autoCourse);
+		when(stageControl.getAutoCourse()).thenReturn(autoCourse);
 		when(gecoControl.getService(ArchiveManager.class)).thenReturn(archive);
+		when(gecoControl.getService(StageControl.class)).thenReturn(stageControl);
 		when(gecoControl.getService(RunnerControl.class)).thenReturn(runnerControl);
 	}
 
@@ -56,20 +57,6 @@ public class RegisterRunnerHandlerTest extends ECardModeSetup {
 		runner.setStartId(32);
 		runner.setCourse(autoCourse);
 		return runner;
-	}
-	
-	@Test
-	public void ensureAutoCourseInRegistryReturnsAutoCourse() {
-		assertEquals(autoCourse, new RegisterRunnerHandler(gecoControl).ensureAutoCourseInRegistry());
-	}
-
-	@Test
-	public void ensureAutoCourseInRegistryCreatesIfNecessary() {
-		when(registry.findCourse("[Auto]")).thenReturn(null);
-		StageControl stageControl = mock(StageControl.class);
-		when(gecoControl.getService(StageControl.class)).thenReturn(stageControl);
-		new RegisterRunnerHandler(gecoControl);
-		verify(stageControl).createCourse("[Auto]");
 	}
 	
 	@Test
