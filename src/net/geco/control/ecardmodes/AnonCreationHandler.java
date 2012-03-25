@@ -4,9 +4,7 @@
  */
 package net.geco.control.ecardmodes;
 
-import net.geco.control.Control;
 import net.geco.control.GecoControl;
-import net.geco.control.RunnerControl;
 import net.geco.control.RunnerCreationException;
 import net.geco.model.Course;
 import net.geco.model.Runner;
@@ -18,22 +16,14 @@ import net.geco.model.Status;
  * @since Mar 21, 2012
  *
  */
-public class AnonCreationHandler extends Control implements ECardHandler {
-
-	protected RunnerControl runnerControl;
-	protected CourseDetector courseDetector;
+public class AnonCreationHandler extends AbstractHandlerWithCourseDetector implements ECardHandler {
 
 	public AnonCreationHandler(GecoControl gecoControl, CourseDetector detector) {
-		super(gecoControl);
-		runnerControl = getService(RunnerControl.class);
-		courseDetector = detector;		
+		super(gecoControl, detector);
 	}
 	
 	@Override
-	public String handleFinish(RunnerRaceData data) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public String handleFinish(RunnerRaceData data) {return null;}
 
 	@Override
 	public String handleDuplicate(RunnerRaceData data, Runner runner) {
@@ -57,10 +47,7 @@ public class AnonCreationHandler extends Control implements ECardHandler {
 	}
 
 	@Override
-	public String handleUnregistered(RunnerRaceData data, String cardId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public String handleUnregistered(RunnerRaceData data, String cardId) {return null;}
 
 	@Override
 	public boolean foundInArchive() {

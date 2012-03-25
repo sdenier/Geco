@@ -27,7 +27,7 @@ public class RegisterRunnerHandler extends Control implements ECardHandler {
 	
 	private RunnerControl runnerControl;
 
-	private ArchiveManager archive;
+	private ArchiveManager archiveManager;
 
 	private RunnerBuilder builder;
 
@@ -35,26 +35,20 @@ public class RegisterRunnerHandler extends Control implements ECardHandler {
 		super(gecoControl);
 		stageControl = getService(StageControl.class);
 		runnerControl = getService(RunnerControl.class);
-		archive = getService(ArchiveManager.class);
+		archiveManager = getService(ArchiveManager.class);
 		builder = new RunnerBuilder(factory());
 	}
 
 	@Override
-	public String handleFinish(RunnerRaceData data) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public String handleFinish(RunnerRaceData data) {return null;}
 
 	@Override
-	public String handleDuplicate(RunnerRaceData data, Runner runner) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public String handleDuplicate(RunnerRaceData data, Runner runner) {return null;}
 
 	@Override
-	public String handleUnregistered(RunnerRaceData d, String cardId) {
+	public String handleUnregistered(RunnerRaceData nullRunner, String cardId) {
 		Course autoCourse = stageControl.getAutoCourse();
-		Runner runner = archive.findAndCreateRunner(cardId, autoCourse);
+		Runner runner = archiveManager.findAndCreateRunner(cardId, autoCourse);
 		RunnerRaceData runnerData = builder.buildRunnerData();
 		runnerData.getResult().setStatus(Status.RUN);
 		if( runner == null ) {

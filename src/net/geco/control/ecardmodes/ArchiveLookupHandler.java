@@ -20,7 +20,9 @@ import net.geco.model.Status;
 public class ArchiveLookupHandler extends AnonCreationHandler implements ECardHandler {
 
 	private ArchiveManager archiveManager;
+	
 	private Status customStatus;
+	
 	private boolean foundInArchive = false;
 
 	public ArchiveLookupHandler(GecoControl gecoControl, CourseDetector detector) {
@@ -34,16 +36,10 @@ public class ArchiveLookupHandler extends AnonCreationHandler implements ECardHa
 	}
 	
 	@Override
-	public String handleFinish(RunnerRaceData data) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public String handleFinish(RunnerRaceData data) {return null;}
 
 	@Override
-	public String handleDuplicate(RunnerRaceData data, Runner runner) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public String handleDuplicate(RunnerRaceData data, Runner runner) {return null;}
 
 	@Override
 	public String handleUnregistered(RunnerRaceData data, String cardId) {

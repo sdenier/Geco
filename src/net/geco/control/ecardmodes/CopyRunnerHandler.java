@@ -4,9 +4,7 @@
  */
 package net.geco.control.ecardmodes;
 
-import net.geco.control.Control;
 import net.geco.control.GecoControl;
-import net.geco.control.RunnerControl;
 import net.geco.model.Course;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
@@ -16,22 +14,14 @@ import net.geco.model.RunnerRaceData;
  * @since Mar 23, 2012
  *
  */
-public class CopyRunnerHandler extends Control implements ECardHandler {
-
-	private RunnerControl runnerControl;
-	private CourseDetector courseDetector;
+public class CopyRunnerHandler extends AbstractHandlerWithCourseDetector implements ECardHandler {
 
 	public CopyRunnerHandler(GecoControl gecoControl, CourseDetector detector) {
-		super(gecoControl);
-		runnerControl = getService(RunnerControl.class);
-		courseDetector = detector;		
+		super(gecoControl, detector);
 	}
 
 	@Override
-	public String handleFinish(RunnerRaceData data) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public String handleFinish(RunnerRaceData data) {return null;}
 
 	@Override
 	public String handleDuplicate(RunnerRaceData data, Runner runner) {
@@ -44,10 +34,7 @@ public class CopyRunnerHandler extends Control implements ECardHandler {
 	}
 
 	@Override
-	public String handleUnregistered(RunnerRaceData data, String cardId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public String handleUnregistered(RunnerRaceData data, String cardId) {return null;}
 
 	@Override
 	public boolean foundInArchive() {
