@@ -231,17 +231,15 @@ public class RunnerControl extends Control {
 		return false;
 	}
 	
-	public boolean validateCourse(RunnerRaceData runnerData, String newCourse) {
+	public boolean validateCourse(RunnerRaceData runnerData, String newCourseName) {
 		Runner runner = runnerData.getRunner();
 		Course oldCourse = runner.getCourse();
-		if( !oldCourse.getName().equals(newCourse) ) {
-			runner.setCourse(registry().findCourse(newCourse));
-			registry().updateRunnerCourse(oldCourse, runner);
-			announcer().announceCourseChange(runner, oldCourse);
+		if( !oldCourse.getName().equals(newCourseName) ) {
+			updateCourse(runner, oldCourse, registry().findCourse(newCourseName));
 			geco().log(Messages.getString("RunnerControl.CourseChangeMessage") //$NON-NLS-1$
 						+ runner.idString() + Messages.getString("RunnerControl.FromMessage") //$NON-NLS-1$
 						+ oldCourse.getName() + Messages.getString("RunnerControl.ToMessage") //$NON-NLS-1$
-						+ newCourse);
+						+ newCourseName);
 			// Proceed by checking the new status
 			if( runnerData.statusIsRecheckable() ) {
 				Status oldStatus = runnerData.getResult().getStatus();
@@ -251,6 +249,12 @@ public class RunnerControl extends Control {
 			return true;
 		}
 		return false;
+	}
+
+	public void updateCourse(Runner runner, Course oldCourse, Course newCourse) {
+		runner.setCourse(newCourse);
+		registry().updateRunnerCourse(oldCourse, runner);
+		announcer().announceCourseChange(runner, oldCourse);
 	}
 
 	public boolean validateNCStatus(Runner runner, boolean nc) {

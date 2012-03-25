@@ -4,15 +4,18 @@
  */
 package test.net.geco.control;
 
-import static org.junit.Assert.assertEquals;
+import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.HashSet;
 
 import net.geco.control.RunnerControl;
+import net.geco.model.Course;
+import net.geco.model.Runner;
 import net.geco.model.impl.RunnerImpl;
 
 import org.junit.Before;
@@ -90,4 +93,16 @@ public class RunnerControlTest extends MockControlSetup {
 		
 	}
 
+	@Test
+	public void updateCourse() {
+		Runner runner = factory.createRunner();
+		Course oldCourse = factory.createCourse();
+		Course newCourse = factory.createCourse();
+		runnerControl.updateCourse(runner, oldCourse, newCourse);
+
+		assertEquals(newCourse, runner.getCourse());
+		verify(registry).updateRunnerCourse(oldCourse, runner);
+		verify(announcer).announceCourseChange(runner, oldCourse);
+	}
+	
 }
