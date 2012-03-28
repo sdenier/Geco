@@ -16,7 +16,7 @@ public interface ECardModeSelector {
 	
 	public void beforeStartingReadMode();
 	
-	public void modeStarted();
+	public void modeStarting();
 	
 	public void modeActivated();
 

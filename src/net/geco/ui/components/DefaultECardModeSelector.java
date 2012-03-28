@@ -46,32 +46,18 @@ public class DefaultECardModeSelector extends JComboBox implements ECardModeSele
 					beforeStartingReadMode();
 				}
 				if( currentMode.isActiveMode() ){
-					modeStarted();
+					modeStarting();
 				}
-				dummyActivation(); // TODO: remove
 				currentMode.execute(geco.siHandler());
 			}
 		}
-	}
-
-	private void dummyActivation() {
-		new Thread() {
-			public void run() {
-				try {
-					sleep(3000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				modeActivated();
-			}
-		}.start();
 	}
 
 	public void beforeStartingReadMode() {
 		// can be overridden to perform external UI actions
 	}
 	
-	public void modeStarted() {
+	public void modeStarting() {
 		modeRenderer.setTemporaryLabel("Starting...");
 	}
 	

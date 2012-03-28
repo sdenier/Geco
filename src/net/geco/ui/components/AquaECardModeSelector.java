@@ -61,32 +61,18 @@ public class AquaECardModeSelector extends JButton implements ECardModeSelector 
 					beforeStartingReadMode();
 				}
 				if( currentMode.isActiveMode() ){
-					modeStarted();
+					modeStarting();
 				}
-				dummyActivation(); // TODO: remove
 				currentMode.execute(geco.siHandler());
 			}
 		}
-	}
-
-	private void dummyActivation() {
-		new Thread() {
-			public void run() {
-				try {
-					sleep(3000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				modeActivated();
-			}
-		}.start();
 	}
 
 	public void beforeStartingReadMode() {
 		// can be overridden to perform external UI actions
 	}
 	
-	public void modeStarted() {
+	public void modeStarting() {
 		setText("Starting...");
 	}
 	
