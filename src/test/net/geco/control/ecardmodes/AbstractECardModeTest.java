@@ -131,13 +131,14 @@ public class AbstractECardModeTest extends ECardModeSetup {
 
 	@Test
 	public void processStarttime() {
+		RunnerRaceData unlinkedRunnerData = factory.createRunnerRaceData();
 		when(card.getStartTime()).thenReturn(1000l, PunchObject.INVALID);
 		
-		ecardMode.processStarttime(danglingRunnerData, card);
-		assertEquals("Set Start time", new Date(1000), danglingRunnerData.getStarttime());
+		ecardMode.processStarttime(unlinkedRunnerData, card);
+		assertEquals("Set Start time", new Date(1000), unlinkedRunnerData.getStarttime());
 		
-		ecardMode.processStarttime(danglingRunnerData, card);
-		assertEquals("Set no time when invalid", TimeManager.NO_TIME, danglingRunnerData.getStarttime());
+		ecardMode.processStarttime(unlinkedRunnerData, card);
+		assertEquals("Set no time when invalid", TimeManager.NO_TIME, unlinkedRunnerData.getStarttime());
 		verify(gecoControl, times(1)).log(anyString());
 	}
 

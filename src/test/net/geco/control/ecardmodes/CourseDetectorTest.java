@@ -18,6 +18,7 @@ import net.geco.control.ecardmodes.CourseDetector;
 import net.geco.model.Course;
 import net.geco.model.Punch;
 import net.geco.model.Registry;
+import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Status;
 import net.geco.model.impl.POFactory;
@@ -64,6 +65,7 @@ public class CourseDetectorTest {
 		raceData = factory.createRunnerRaceData();
 		raceData.setStarttime(new Date(10000));
 		raceData.setFinishtime(new Date(20000));
+		raceData.setResult(factory.createRunnerResult());
 	}
 	
 	@Test
@@ -98,6 +100,9 @@ public class CourseDetectorTest {
 		assertEquals("should find perfect match with OK trace", courseB, detector.detectCourse(raceData));
 		assertEquals(Status.OK, raceData.getStatus());
 
+		// Other OK courses
+		raceData.setRunner(factory.createRunner());
+		
 		raceData.getRunner().setCourse(courseA);
 		checker.check(raceData);
 		assertEquals(Status.OK, raceData.getStatus());
@@ -122,6 +127,9 @@ public class CourseDetectorTest {
 		
 		Assert.assertEquals("should find closest match with MP trace", courseC, detector.detectCourse(raceData));
 
+		// Other OK courses
+		raceData.setRunner(factory.createRunner());
+		
 		raceData.getRunner().setCourse(courseB);
 		checker.check(raceData);
 		assertEquals(Status.OK, raceData.getStatus());
@@ -155,4 +163,12 @@ public class CourseDetectorTest {
 		assertEquals(Status.MP, raceData.getStatus());
 	}
 	
+	@Test
+	public void detectCourse_shouldNotChangeRunnerReference() {
+		Runner runner = factory.createRunner();
+		raceData.setRunner(runner);
+		when(geco.checker()).thenReturn(new PenaltyChecker(factory));
+		detector.detectCourse(raceData);
+		assertEquals(runner, raceData.getRunner());
+	}
 }

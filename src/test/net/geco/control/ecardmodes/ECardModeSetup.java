@@ -41,6 +41,7 @@ public class ECardModeSetup extends MockControlSetup {
 		fullRunner = createRunner();
 		fullRunnerData = createFullRunnerData();
 		danglingRunnerData = factory.createRunnerRaceData();
+		danglingRunnerData.setResult(factory.createRunnerResult());
 	}
 
 	protected void setUpCardPunches(IResultData<PunchObject, PunchRecordData> card) {

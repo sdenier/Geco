@@ -52,21 +52,23 @@ public class CourseDetector extends Control {
 		
 		int minMps = Integer.MAX_VALUE;
 		CourseResult bestResult = null;
-		data.setRunner(runnerControl.buildMockRunner());
+		RunnerRaceData testData = data.clone();
+		testData.setRunner(runnerControl.buildMockRunner());
 		for (CourseResult cResult : distances) {
-			data.getRunner().setCourse(cResult.course);
-			geco().checker().check(data);
-			if( data.getResult().getNbMPs()==0 ){
+			testData.getRunner().setCourse(cResult.course);
+			geco().checker().check(testData);
+			if( testData.getResult().getNbMPs()==0 ){
 				// early stop only if no MP detected
 				// in some race case with orient'show, one trace may be ok with multiple courses (as soon as MPs < MP limit)
 				// so we should continue to look for a better match even if status == OK
+				data.setResult(testData.getResult());
 				return cResult.course;
 			}
-			int nbMPs = data.getResult().getNbMPs();
+			int nbMPs = testData.getResult().getNbMPs();
 			if( nbMPs < minMps ){
 				minMps = nbMPs;
 				bestResult = cResult;
-				bestResult.result = data.getResult(); // memoize result so we don't have to compute it again
+				bestResult.result = testData.getResult(); // memoize result so we don't have to compute it again
 			}
 		}
 		data.setResult(bestResult.result);
