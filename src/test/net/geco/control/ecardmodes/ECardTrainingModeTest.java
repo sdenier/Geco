@@ -49,7 +49,7 @@ public class ECardTrainingModeTest extends ECardModeSetup {
 		Checker checker = new PenaltyChecker(factory);
 		StageControl stageControl = new StageControl(gecoControl);
 		RunnerControl runnerControl = new RunnerControl(gecoControl);
-		CourseDetector detector = new CourseDetector(gecoControl, runnerControl);
+		CourseDetector detector = new CourseDetector(gecoControl, runnerControl, null);
 		when(gecoControl.checker()).thenReturn(checker);
 		when(gecoControl.getService(StageControl.class)).thenReturn(stageControl);
 		when(gecoControl.getService(RunnerControl.class)).thenReturn(runnerControl);

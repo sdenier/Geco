@@ -14,6 +14,7 @@ import net.geco.control.FreeOrderTracer;
 import net.geco.control.GecoControl;
 import net.geco.control.PenaltyChecker;
 import net.geco.control.RunnerControl;
+import net.geco.control.StageControl;
 import net.geco.control.ecardmodes.CourseDetector;
 import net.geco.model.Course;
 import net.geco.model.Punch;
@@ -40,11 +41,13 @@ public class CourseDetectorTest {
 	private Course courseA;
 	private Course courseB;
 	private Course courseC;
+	private Course autoC;
 	private RunnerRaceData raceData;
 
 	private GecoControl geco;
 	private RunnerControl runnerControl;
 	private CourseDetector detector;
+	private Registry registry;
 
 	@Before
 	public void setUp() {
@@ -52,7 +55,8 @@ public class CourseDetectorTest {
 		courseA = GecoFixtures.createCourse("A", 31, 34, 31, 33, 31, 32, 31);
 		courseB = GecoFixtures.createCourse("B", 31, 33, 31, 32, 31, 34, 31);
 		courseC = GecoFixtures.createCourse("C", 31, 33, 31, 32, 31, 34, 31, 35, 36);
-		Registry registry = new Registry();
+		autoC   = GecoFixtures.createCourse(StageControl.autoCourseName());
+		registry = new Registry();
 		registry.addCourse(courseA);
 		registry.addCourse(courseB);
 		registry.addCourse(courseC);
@@ -60,7 +64,7 @@ public class CourseDetectorTest {
 		when(geco.factory()).thenReturn(factory);
 		runnerControl = new RunnerControl(geco);
 		
-		detector = new CourseDetector(geco, runnerControl);
+		detector = new CourseDetector(geco, runnerControl, autoC);
 		
 		raceData = factory.createRunnerRaceData();
 		raceData.setStarttime(new Date(10000));
@@ -171,4 +175,30 @@ public class CourseDetectorTest {
 		detector.detectCourse(raceData);
 		assertEquals(runner, raceData.getRunner());
 	}
+
+	@Test
+	public void detectCourse_shouldNotReturnAutoCourseWhenOtherCoursesExist() {
+		registry.addCourse(autoC);
+		raceData.setPunches(new Punch[]{
+				punch(31), punch(31), punch(33), punch(31), punch(34), punch(31)
+		});
+		when(geco.checker()).thenReturn(new PenaltyChecker(factory));
+		assertEquals("should not match Auto course even if OK", courseA, detector.detectCourse(raceData));
+	}
+
+	@Test
+	public void detectCourse_shouldReturnAutoCourseWhenSingle() {
+		registry.addCourse(autoC);
+		registry.removeCourse(courseA);
+		registry.removeCourse(courseB);
+		registry.removeCourse(courseC);
+		assertEquals(1, registry.getCourses().size());
+		
+		raceData.setPunches(new Punch[]{
+				punch(31), punch(31), punch(33), punch(31), punch(34), punch(31)
+		});
+		when(geco.checker()).thenReturn(new PenaltyChecker(factory));
+		assertEquals("should return Auto course if it's the only course", autoC, detector.detectCourse(raceData));
+	}
+
 }

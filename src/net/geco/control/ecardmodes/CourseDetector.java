@@ -23,9 +23,12 @@ public class CourseDetector extends Control {
 
 	private RunnerControl runnerControl;
 
-	public CourseDetector(GecoControl gecoControl, RunnerControl runnerControl) {
+	private Course autoCourse;
+
+	public CourseDetector(GecoControl gecoControl, RunnerControl runnerControl, Course autoCourse) {
 		super(gecoControl);
 		this.runnerControl = runnerControl;
+		this.autoCourse = autoCourse;
 	}
 
 	private static class CourseResult implements Comparable<CourseResult> {
@@ -46,14 +49,19 @@ public class CourseDetector extends Control {
 		Vector<CourseResult> distances = new Vector<CourseResult>();
 		int nbPunches = data.getPunches().length;
 		for (Course course : registry().getCourses()) {
-			distances.add(new CourseResult(Math.abs(nbPunches - course.nbControls()), course));
+			if( course != autoCourse ){
+				// don't include Auto course in matching course - will match all MP traces with OK
+				distances.add(new CourseResult(Math.abs(nbPunches - course.nbControls()), course));
+			}
 		}
 		Collections.sort(distances);
 		
 		int minMps = Integer.MAX_VALUE;
-		CourseResult bestResult = null;
 		RunnerRaceData testData = data.clone();
 		testData.setRunner(runnerControl.buildMockRunner());
+		CourseResult bestResult = new CourseResult(minMps, testData.getCourse());
+		bestResult.result = data.getResult(); // default value
+
 		for (CourseResult cResult : distances) {
 			testData.getRunner().setCourse(cResult.course);
 			geco().checker().check(testData);
