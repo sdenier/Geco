@@ -22,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 
+import net.geco.control.SIReaderHandler;
 import net.geco.framework.IGeco;
 
 /**
@@ -57,15 +58,28 @@ public class AquaECardModeSelector extends JButton implements ECardModeSelector 
 			currentMode = selectedMode;
 			displayMode();
 			if( !recovery ){
-				if( currentMode.isReadMode() ){
-					beforeStartingReadMode();
-				}
-				if( currentMode.isActiveMode() ){
+				SIReaderHandler siHandler = geco.siHandler();
+				currentMode.select(siHandler);
+				if( shouldStart() ) {
+					if( currentMode.isReadMode() ){
+						beforeStartingReadMode();
+					}
 					modeStarting();
+					siHandler.start();					
 				}
-				currentMode.execute(geco.siHandler());
+				if( shouldStop() ) {
+					siHandler.stop();
+				}
 			}
 		}
+	}
+	
+	public boolean shouldStart() {
+		return currentMode.isActiveMode() && ! geco.siHandler().isOn();
+	}
+	
+	public boolean shouldStop() {
+		return ! currentMode.isActiveMode() && geco.siHandler().isOn();
 	}
 
 	public void beforeStartingReadMode() {

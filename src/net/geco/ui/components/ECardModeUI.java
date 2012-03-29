@@ -21,29 +21,24 @@ import net.geco.ui.basics.GecoIcon;
 public enum ECardModeUI {
 	
 	OffMode			("OFF", GecoIcon.EcardOffMode, false) {
-		public void execute(SIReaderHandler handler) {
-			handler.stop();
-		}
+		public void select(SIReaderHandler handler) {}
 		public boolean isActiveMode() {
 			return false;
 		}
 	},
 	RaceMode		("Racing", GecoIcon.EcardRacingMode, true) {
-		public void execute(SIReaderHandler handler) {
+		public void select(SIReaderHandler handler) {
 			handler.selectECardMode(ECardRacingMode.class);
-			handler.start();
 		}
 	},
 	TrainingMode	("Training", GecoIcon.EcardTrainingMode, true) {
-		public void execute(SIReaderHandler handler) {
+		public void select(SIReaderHandler handler) {
 			handler.selectECardMode(ECardTrainingMode.class);
-			handler.start();
 		}
 	},
 	RegisterMode	("Register", GecoIcon.EcardRegisterMode, false) {
-		public void execute(SIReaderHandler handler) {
+		public void select(SIReaderHandler handler) {
 			handler.selectECardMode(ECardRegisterMode.class);
-			handler.start();
 		}
 	},
 	;
@@ -74,6 +69,6 @@ public enum ECardModeUI {
 		return true;
 	}
 
-	public abstract void execute(SIReaderHandler handler);
+	public abstract void select(SIReaderHandler handler);
 
 }

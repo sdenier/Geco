@@ -207,14 +207,12 @@ public class SIReaderHandler extends Control
 		configure();
 		nbTry = 0;
 		starting = true;
-		if (!portHandler.isAlive())
-			portHandler.start();
+		portHandler.start();
 		PortMessage m = new PortMessage(SIPortHandler.START);
 		portHandler.sendMessage(m);
 	}
 	
 	public void stop() {
-		// TODO: announce station status
 		if( portHandler==null )
 			return;
 		try {
@@ -223,6 +221,10 @@ public class SIReaderHandler extends Control
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public boolean isOn() {
+		return portHandler!=null && portHandler.isAlive();
 	}
 	
 	@Override
