@@ -40,6 +40,24 @@ import net.geco.model.iocsv.CsvWriter;
  */
 public class SplitExporter extends AResultExporter implements StageListener {
 	
+	public static class Names {
+		protected List<String> clubNames;
+		protected List<String> categoryNames;
+		protected List<String> courseNames;
+		
+		public Names(List<String> clubNames, List<String> categoryNames, List<String> courseNames) {
+			this.clubNames = clubNames;
+			this.categoryNames = categoryNames;
+			this.courseNames = courseNames;
+		}
+		public String clubIndex(String clubName) {
+			return Integer.toString(clubNames.indexOf(clubName)); }
+		public String categoryIndex(String categoryName) {
+			return Integer.toString(categoryNames.indexOf(categoryName)); }
+		public String courseIndex(String courseName) {
+			return Integer.toString(courseNames.indexOf(courseName)); }
+	}
+	
 	private int nbColumns = 12;
 	private int refreshInterval = 0;
 	private boolean withBestSplits;
@@ -284,70 +302,100 @@ public class SplitExporter extends AResultExporter implements StageListener {
 	
 	public void generateOECsvResult(ResultConfig config, boolean withSplits, CsvWriter writer)
 																						throws IOException {
-		writer.write("N° dép.;Puce;Ident. base de données;Nom;Prénom;Né;S;Plage;nc;Départ;Arrivée;Temps;"); //$NON-NLS-1$
-		writer.write("Evaluation;N° club;Nom;Ville;Nat;N° cat.;Court;Long;Num1;Num2;Num3;Text1;Text2;Text3;"); //$NON-NLS-1$
-		writer.write("Adr. nom;Rue;Ligne2;Code Post.;Ville;Tél.;Fax;E-mail;Id/Club;Louée;Engagement;Payé;"); //$NON-NLS-1$
-		writer.write("Circuit N°;Circuit;km;m;Postes du circuit;Pl"); //$NON-NLS-1$
+		writer.write("N° dép.;Puce;Ident. base de données;Nom;Prénom;Né;S;Plage;nc;Départ;Arrivée;Temps;" //$NON-NLS-1$
+				+ "Evaluation;N° club;Nom;Ville;Nat;N° cat.;Court;Long;Num1;Num2;Num3;Text1;Text2;Text3;" //$NON-NLS-1$
+				+ "Adr. nom;Rue;Ligne2;Code Post.;Ville;Tél.;Fax;E-mail;Id/Club;Louée;Engagement;Payé;" //$NON-NLS-1$
+				+ "Circuit N°;Circuit;km;m;Postes du circuit;Pl"); //$NON-NLS-1$
+		if( withSplits ){
+			writer.write(";Poinçon de départ;Arrivée (P);Poste1;Poinçon1;Poste2;Poinçon2;Poste3;Poinçon3;" //$NON-NLS-1$
+				+ "Poste4;Poinçon4;Poste5;Poinçon5;Poste6;Poinçon6;Poste7;Poinçon7;Poste8;Poinçon8;" //$NON-NLS-1$
+				+ "Poste9;Poinçon9;Poste10;Poinçon10;(peut être plus) ..."); //$NON-NLS-1$
+		}
 		writer.write("\n"); //$NON-NLS-1$
 		
-		List<String> clubnames = registry().getClubNames();
-		List<String> categorynames = registry().getCategoryNames();
-		List<String> coursenames = registry().getCourseNames();
-		
-		for (RunnerRaceData runnerData : registry().getRunnersData()) {
-			Runner runner = runnerData.getRunner();
-			if( runnerData.hasResult() ) {
-				Club club = runner.getClub();
-				Category category = runner.getCategory();
-				Course course = runner.getCourse();
-				
-				Collection<String> record = saveRecord(
-						runner.getStartId().toString(),
-						runner.getEcard(),
-						( runner.getArchiveId()!=null )? runner.getArchiveId().toString() : "", //$NON-NLS-1$
-						runner.getLastname(),
-						runner.getFirstname(),
-						"", //$NON-NLS-1$ // ark.getBirthYear(),
-						"", //$NON-NLS-1$ // ark.getSex(),
-						"", //$NON-NLS-1$
-						( runner.isNC() ) ? "X" : "0", //$NON-NLS-1$ //$NON-NLS-2$
-						oeTime(runnerData.getOfficialStarttime()),
-						oeTime(runnerData.getFinishtime()),
-						oeTime(new Date(runnerData.getResult().getRacetime())),
-						oeEvaluationCode(runnerData.getStatus()),
-						Integer.toString(clubnames.indexOf(club.getName())),
-						club.getShortname(),
-						club.getName(),
-						"", //$NON-NLS-1$
-						Integer.toString(categorynames.indexOf(category.getName())),
-						category.getShortname(),
-						category.getLongname(),
-						"", "", "", "", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-						"", "", "", "", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-						"", "", "", "", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-						"", "", "",  	//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-						"0", //$NON-NLS-1$
-						"0", //$NON-NLS-1$
-						"0", //$NON-NLS-1$
-						Integer.toString(coursenames.indexOf(course.getName())),
-						course.getName(),
-						Integer.toString(course.getLength()),
-						Integer.toString(course.getClimb())
-						);
-				if( withSplits ) {
-					addSplits(runnerData, record);
-				} else {
-					record.add("1"); //$NON-NLS-1$
-					record.add("1"); //$NON-NLS-1$
-				}
-				writer.writeRecord(record);
+		Vector<Result> results = buildResults(config);
+		Names names = new Names(registry().getClubNames(), registry().getCategoryNames(), registry().getCourseNames());
+		for (Result result : results) {
+			if( config.showEmptySets || !result.isEmpty()) {
+				appendOECsvResult(result, names, config, withSplits, writer);
 			}
 		}
 	}
-	
-	private void addSplits(RunnerRaceData runnerData, Collection<String> record) {
+
+	public void appendOECsvResult(Result result, Names names, ResultConfig config,
+			boolean withSplits, CsvWriter writer) throws IOException {
+		for (RankedRunner rRunner : result.getRanking()) {
+			RunnerRaceData runnerData = rRunner.getRunnerData();
+			writeOECsvResult(runnerData, Integer.toString(rRunner.getRank()), names, withSplits, writer);
+		}
+		for (RunnerRaceData runnerData : result.getNRRunners()) {
+			Runner runner = runnerData.getRunner();
+			if( !runner.isNC() ) {
+				writeOECsvResult(runnerData, "", names, withSplits, writer);
+			} else if( config.showNC ) {
+				writeOECsvResult(runnerData, "", names, withSplits, writer);
+			}
+		}
+		if( config.showOthers ) {
+			for (RunnerRaceData runnerData : result.getOtherRunners()) {
+				writeOECsvResult(runnerData, "", names, withSplits, writer);
+			}			
+		}
+	}
+
+	public void writeOECsvResult(RunnerRaceData runnerData, String rank, Names names,
+			boolean withSplits, CsvWriter writer) throws IOException {
+		Runner runner = runnerData.getRunner();
+		Club club = runner.getClub();
+		Category category = runner.getCategory();
+		Course course = runner.getCourse();
+		
+		Collection<String> record = saveRecord(
+				runner.getStartId().toString(),
+				runner.getEcard(),
+				( runner.getArchiveId()!=null )? runner.getArchiveId().toString() : "", //$NON-NLS-1$
+				runner.getLastname(),
+				runner.getFirstname(),
+				"", //$NON-NLS-1$ // ark.getBirthYear(),
+				"", //$NON-NLS-1$ // ark.getSex(),
+				"", //$NON-NLS-1$
+				( runner.isNC() ) ? "X" : "0", //$NON-NLS-1$ //$NON-NLS-2$
+				oeTime(runnerData.getOfficialStarttime()),
+				oeTime(runnerData.getFinishtime()),
+				oeTime(new Date(runnerData.getResult().getRacetime())),
+				oeEvaluationCode(runnerData.getStatus()),
+				names.clubIndex(club.getName()),
+				club.getShortname(),
+				club.getName(),
+				"", //$NON-NLS-1$
+				names.categoryIndex(category.getName()),
+				category.getShortname(),
+				category.getLongname(),
+				"", "", "", "", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+				"", "", "", "", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+				"", "", "", "", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+				"", "", "",  	//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				"0", //$NON-NLS-1$
+				"0", //$NON-NLS-1$
+				"0", //$NON-NLS-1$
+				names.courseIndex(course.getName()),
+				course.getName(),
+				Integer.toString(course.getLength()),
+				Integer.toString(course.getClimb())
+				);
+		if( withSplits ) {
+			addSplits(runnerData, rank, record);
+		} else {
+			record.add(Integer.toString(course.nbControls())); //$NON-NLS-1$
+			record.add(rank);
+		}
+		record.add(""); //$NON-NLS-1$ // force semi-colon at end of line otherwise RouteGadget can't parse the line
+		writer.writeRecord(record);
+	}
+
+	private void addSplits(RunnerRaceData runnerData, String rank, Collection<String> record) {
 		record.add(Integer.toString(runnerData.getCourse().nbControls()));
-		record.add("1"); //$NON-NLS-1$
+		record.add(rank);
 		record.add(oeTime(runnerData.getOfficialStarttime()));
 		record.add(oeTime(runnerData.getFinishtime()));
 		SplitTime[] splits = resultBuilder.buildNormalSplits(runnerData, null);
