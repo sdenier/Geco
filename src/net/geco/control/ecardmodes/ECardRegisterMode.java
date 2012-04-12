@@ -21,7 +21,7 @@ public class ECardRegisterMode extends AbstractECardMode {
 
 	public ECardRegisterMode(GecoControl gecoControl) {
 		super(ECardRegisterMode.class, gecoControl);
-		unregisteredHandler = new RegisterRunnerHandler(gecoControl);
+		unregisteredHandler = finishHandler = new RegisterRunnerHandler(gecoControl);
 	}
 
 	@Override
@@ -42,6 +42,7 @@ public class ECardRegisterMode extends AbstractECardMode {
 
 	@Override
 	public void handleRegistered(RunnerRaceData runnerData) {
+		finishHandler.handleFinish(runnerData);
 		geco().announcer().announceCardRegistered(runnerData.getRunner().getEcard());
 	}
 

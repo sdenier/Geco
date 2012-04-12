@@ -40,7 +40,12 @@ public class RegisterRunnerHandler extends Control implements ECardHandler {
 	}
 
 	@Override
-	public String handleFinish(RunnerRaceData data) {return null;}
+	public String handleFinish(RunnerRaceData data) {
+		if( data.getResult().is(Status.NOS) ) {
+			data.getResult().setStatus(Status.RUN);
+			geco().announcer().announceStatusChange(data, Status.NOS);
+		}
+		return null;}
 
 	@Override
 	public String handleDuplicate(RunnerRaceData data, Runner runner) {return null;}

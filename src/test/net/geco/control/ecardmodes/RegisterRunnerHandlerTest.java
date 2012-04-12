@@ -7,6 +7,7 @@ package test.net.geco.control.ecardmodes;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.fail;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -57,6 +58,20 @@ public class RegisterRunnerHandlerTest extends ECardModeSetup {
 		runner.setStartId(32);
 		runner.setCourse(autoCourse);
 		return runner;
+	}
+	
+	@Test
+	public void handleFinish_setsRunningStatusForNotStartedRunner() {
+		fullRunnerData.getResult().setStatus(Status.NOS);
+		new RegisterRunnerHandler(gecoControl).handleFinish(fullRunnerData);
+		assertTrue(fullRunnerData.getResult().is(Status.RUN));
+	}
+
+	@Test
+	public void handleFinish_dontChangeStatusOtherwise() {
+		fullRunnerData.getResult().setStatus(Status.DNS);
+		new RegisterRunnerHandler(gecoControl).handleFinish(fullRunnerData);
+		assertTrue(fullRunnerData.getResult().is(Status.DNS));
 	}
 	
 	@Test
