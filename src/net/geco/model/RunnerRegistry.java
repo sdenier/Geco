@@ -4,6 +4,7 @@
  */
 package net.geco.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -40,7 +41,7 @@ public class RunnerRegistry {
 		maxStartId = 0;
 	}
 
-	public int maxStartId() {
+	public synchronized int maxStartId() {
 		return maxStartId;
 	}
 
@@ -55,11 +56,11 @@ public class RunnerRegistry {
 		}
 	}
 
-	public Set<Integer> getStartIds() {
+	public synchronized Set<Integer> getStartIds() {
 		return runnersById.keySet();
 	}
 
-	public Set<String> getEcards() {
+	public synchronized Set<String> getEcards() {
 		return runnersByEcard.keySet();
 	}
 
@@ -217,4 +218,13 @@ public class RunnerRegistry {
 		return map;
 	}
 
+	public synchronized List<RunnerRaceData> getRunnerDataFromCourse(Course course) {
+		List<Runner> runners = getRunnersFromCourse(course);
+		ArrayList<RunnerRaceData> runnerDataFromCourse = new ArrayList<RunnerRaceData>(runners.size());
+		for (Runner runner : runners) {
+			runnerDataFromCourse.add(findRunnerData(runner));
+		}
+		return runnerDataFromCourse;
+	}
+	
 }

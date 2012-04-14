@@ -318,6 +318,9 @@ public class Registry {
 		return getRunnersFromCourse(findCourse(courseName));
 	}
 
+	public List<RunnerRaceData> getRunnerDataFromCourse(Course course) {
+		return runnerRegistry.getRunnerDataFromCourse(course);
+	}
 	
 	/*
 	 * HeatSet
