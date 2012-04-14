@@ -10,7 +10,6 @@ import net.geco.control.GecoControl;
 import net.geco.control.RunnerBuilder;
 import net.geco.control.RunnerControl;
 import net.geco.control.RunnerCreationException;
-import net.geco.control.StageControl;
 import net.geco.model.Course;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
@@ -23,20 +22,20 @@ import net.geco.model.Status;
  */
 public class RegisterRunnerHandler extends Control implements ECardHandler {
 
-	private StageControl stageControl;
-	
 	private RunnerControl runnerControl;
 
 	private ArchiveManager archiveManager;
 
 	private RunnerBuilder builder;
 
+	private Course autoCourse;
+
 	public RegisterRunnerHandler(GecoControl gecoControl) {
 		super(gecoControl);
-		stageControl = getService(StageControl.class);
 		runnerControl = getService(RunnerControl.class);
 		archiveManager = getService(ArchiveManager.class);
 		builder = new RunnerBuilder(factory());
+		autoCourse = registry().autoCourse();
 	}
 
 	@Override
@@ -52,7 +51,6 @@ public class RegisterRunnerHandler extends Control implements ECardHandler {
 
 	@Override
 	public String handleUnregistered(RunnerRaceData nullRunner, String cardId) {
-		Course autoCourse = stageControl.getAutoCourse();
 		Runner runner = archiveManager.findAndCreateRunner(cardId, autoCourse);
 		RunnerRaceData runnerData = builder.buildRunnerData();
 		runnerData.getResult().setStatus(Status.RUN);

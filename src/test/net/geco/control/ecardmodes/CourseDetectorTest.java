@@ -14,7 +14,6 @@ import net.geco.control.FreeOrderTracer;
 import net.geco.control.GecoControl;
 import net.geco.control.PenaltyChecker;
 import net.geco.control.RunnerControl;
-import net.geco.control.StageControl;
 import net.geco.control.ecardmodes.CourseDetector;
 import net.geco.model.Course;
 import net.geco.model.Punch;
@@ -55,7 +54,7 @@ public class CourseDetectorTest {
 		courseA = GecoFixtures.createCourse("A", 31, 34, 31, 33, 31, 32, 31);
 		courseB = GecoFixtures.createCourse("B", 31, 33, 31, 32, 31, 34, 31);
 		courseC = GecoFixtures.createCourse("C", 31, 33, 31, 32, 31, 34, 31, 35, 36);
-		autoC   = GecoFixtures.createCourse(StageControl.autoCourseName());
+		autoC   = GecoFixtures.createCourse(Registry.autoCourseName());
 		registry = new Registry();
 		registry.addCourse(courseA);
 		registry.addCourse(courseB);

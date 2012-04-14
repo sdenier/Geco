@@ -42,21 +42,6 @@ public class StageControlTest {
 		Mockito.when(geco.announcer()).thenReturn(new Announcer());
 		control = new StageControl(geco);
 	}
-
-	@Test
-	public void getAutoCourseReturnsAutoCourse() {
-		Course autoCourse = factory.createCourse();
-		autoCourse.setName("[Auto]");
-		autoCourse.setCodes(new int[0]);
-		registry.addCourse(autoCourse);
-		assertEquals(autoCourse, control.getAutoCourse());
-	}
-
-	@Test
-	public void getAutoCourseCreatesOneIfNecessary() {
-		Course autoCourse = control.getAutoCourse();
-		assertEquals("[Auto]", autoCourse.getName());
-	}
 	
 	@Test
 	public void importCategoryTemplateWithLazyCreation(){

@@ -43,7 +43,7 @@ public class AutoCheckerHandlerTest extends ECardModeSetup {
 		Course auto = factory.createCourse();
 		auto.setName("[Auto]");
 		auto.setCodes(new int[0]);
-		when(stageControl.getAutoCourse()).thenReturn(auto);
+		when(registry.autoCourse()).thenReturn(auto);
 		fullRunner.setCourse(auto);
 		return auto;
 	}

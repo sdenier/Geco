@@ -21,7 +21,6 @@ import net.geco.control.ecardmodes.ECardMode;
 import net.geco.control.ecardmodes.ECardRacingMode;
 import net.geco.control.ecardmodes.ECardRegisterMode;
 import net.geco.control.ecardmodes.ECardTrainingMode;
-import net.geco.model.Course;
 import net.geco.model.Stage;
 
 import org.martin.sireader.common.PunchObject;
@@ -78,8 +77,7 @@ public class SIReaderHandler extends Control
 	public SIReaderHandler(GecoControl geco) {
 		super(SIReaderHandler.class, geco);
 
-		Course autoCourse = getService(StageControl.class).getAutoCourse();
-		courseDetector = new CourseDetector(geco, getService(RunnerControl.class), autoCourse);
+		courseDetector = new CourseDetector(geco, getService(RunnerControl.class), registry().autoCourse());
 		new ECardRacingMode(geco, courseDetector);
 		new ECardTrainingMode(geco, courseDetector);
 		new ECardRegisterMode(geco);

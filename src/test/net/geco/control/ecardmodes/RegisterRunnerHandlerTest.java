@@ -14,7 +14,6 @@ import static org.mockito.Mockito.when;
 import net.geco.control.ArchiveManager;
 import net.geco.control.RunnerControl;
 import net.geco.control.RunnerCreationException;
-import net.geco.control.StageControl;
 import net.geco.control.ecardmodes.RegisterRunnerHandler;
 import net.geco.model.Course;
 import net.geco.model.Runner;
@@ -36,7 +35,6 @@ public class RegisterRunnerHandlerTest extends ECardModeSetup {
 	private Course autoCourse;
 
 	@Mock private ArchiveManager archive;
-	@Mock private StageControl stageControl;
 	@Mock private RunnerControl runnerControl;
 
 	@Before
@@ -47,9 +45,8 @@ public class RegisterRunnerHandlerTest extends ECardModeSetup {
 		autoCourse = factory.createCourse();
 		autoCourse.setName("[Auto]");
 		autoCourse.setCodes(new int[0]);
-		when(stageControl.getAutoCourse()).thenReturn(autoCourse);
+		when(registry.autoCourse()).thenReturn(autoCourse);
 		when(gecoControl.getService(ArchiveManager.class)).thenReturn(archive);
-		when(gecoControl.getService(StageControl.class)).thenReturn(stageControl);
 		when(gecoControl.getService(RunnerControl.class)).thenReturn(runnerControl);
 	}
 

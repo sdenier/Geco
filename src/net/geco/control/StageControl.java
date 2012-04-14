@@ -15,6 +15,7 @@ import net.geco.model.Course;
 import net.geco.model.HeatSet;
 import net.geco.model.Messages;
 import net.geco.model.Pool;
+import net.geco.model.Registry;
 import net.geco.model.Runner;
 
 /**
@@ -24,8 +25,6 @@ import net.geco.model.Runner;
  */
 public class StageControl extends Control {
 	
-	private Course autoCourse;
-
 	public StageControl(GecoControl gecoControl) {
 		super(StageControl.class, gecoControl);
 	}
@@ -93,25 +92,6 @@ public class StageControl extends Control {
 							+ (registry().getCourses().size() + 1));
 	}
 
-	public Course getAutoCourse() {
-		if( this.autoCourse == null ){
-			this.autoCourse = ensureAutoCourse();
-		}
-		return this.autoCourse;
-	}
-
-	private Course ensureAutoCourse() {
-		Course autoCourse = registry().findCourse(autoCourseName());
-		if( autoCourse==null ){
-			autoCourse = createCourse(autoCourseName());
-		}
-		return autoCourse;
-	}
-
-	public static String autoCourseName() {
-		return "[Auto]";
-	}
-
 	public Course addCourse(Course course) {
 		Course previousCourse = registry().findCourse(course.getName());
 		registry().addCourse(course);
@@ -155,8 +135,8 @@ public class StageControl extends Control {
 	}
 
 	public boolean canRemoveCourse(Course course) throws Exception {
-		if( course==getAutoCourse() ){
-			throw new Exception(autoCourseName() + " course is uneditable");
+		if( course == registry().autoCourse() ){
+			throw new Exception(Registry.autoCourseName() + " course is uneditable");
 		}
 		for (Category cat : registry().getCategories()) {
 			if( cat.getCourse() == course ) {
@@ -181,7 +161,7 @@ public class StageControl extends Control {
 	}
 	
 	public void updateName(Course course, String newName) {
-		if( course==getAutoCourse() ){
+		if( course == registry().autoCourse() ){
 			return;
 		}
 		if( !course.getName().equals(newName) && registry().findCourse(newName)==null ) {
