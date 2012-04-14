@@ -64,7 +64,7 @@ public class ECardRegisterModeTest extends ECardModeSetup {
 	@Test
 	public void handleUnregisteredInsertsFromArchive() {
 		new ECardRegisterMode(gecoControl).handleUnregistered(null, "600");
-		verify(archive).findAndCreateRunner("600", autoCourse);
+		verify(archive).findAndCreateRunner("600");
 	}
 	
 	@Test
@@ -74,7 +74,7 @@ public class ECardRegisterModeTest extends ECardModeSetup {
 		Runner runner = factory.createRunner();
 		runner.setStartId(32);
 		runner.setCourse(autoCourse);
-		when(archive.findAndCreateRunner("600", autoCourse)).thenReturn(runner);
+		when(archive.findAndCreateRunner("600")).thenReturn(runner);
 		new ECardRegisterMode(gecoControl).handleUnregistered(null, "600");
 		
 		ArgumentCaptor<RunnerRaceData> runnerData = ArgumentCaptor.forClass(RunnerRaceData.class);

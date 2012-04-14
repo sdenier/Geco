@@ -51,7 +51,7 @@ public class RegisterRunnerHandler extends Control implements ECardHandler {
 
 	@Override
 	public String handleUnregistered(RunnerRaceData nullRunner, String cardId) {
-		Runner runner = archiveManager.findAndCreateRunner(cardId, autoCourse);
+		Runner runner = archiveManager.findAndCreateRunner(cardId);
 		RunnerRaceData runnerData = builder.buildRunnerData();
 		runnerData.getResult().setStatus(Status.RUN);
 		if( runner == null ) {

@@ -129,6 +129,9 @@ public class ArchiveManager extends OEImporter implements StageListener {
 			if( arkRunner==null ){
 				return null;
 			}
+			if( course==null ) {
+				course = registry().getDefaultCourseOrAutoFor(arkRunner.getCategory());
+			}
 			return createRunner(arkRunner, course);			
 		} catch (IOException e) {
 			geco().log(e.toString());
@@ -136,9 +139,13 @@ public class ArchiveManager extends OEImporter implements StageListener {
 		}
 	}
 	
+	public Runner findAndCreateRunner(String ecard) {
+		return findAndCreateRunner(ecard, null);
+	}
+	
 	public Runner insertRunner(ArchiveRunner arkRunner) {
 		Category rCat = ensureCategoryInRegistry(arkRunner.getCategory());
-		Course course = registry().getDefaultCourseOrAnyFor(rCat);
+		Course course = registry().getDefaultCourseOrAutoFor(rCat);
 		Runner runner = createRunner(arkRunner, course);
 		runnerControl().registerNewRunner(runner);
 		return runner;
