@@ -34,6 +34,8 @@ public class Registry {
 	
 	private GroupRegistry<HeatSet> heatsetRegistry;
 
+	private Course autoCourse;
+
 	
 	public Registry() {
 		runnerRegistry = new RunnerRegistry();
@@ -80,6 +82,30 @@ public class Registry {
 	
 	public void updateCourseName(Course course, String newName) {
 		courseRegistry.updateName(course, newName);
+	}
+	
+	public Course autoCourse() {
+		return this.autoCourse;
+	}
+	
+	public Course ensureAutoCourse(Factory factory) {
+		this.autoCourse = findCourse(autoCourseName());
+		if( autoCourse==null ){
+			autoCourse = createCourse(autoCourseName(), factory);
+		}
+		return this.autoCourse;
+	}
+	
+	private Course createCourse(String name, Factory factory) {
+		Course course = factory.createCourse();
+		course.setName(name);
+		course.setCodes(new int[0]);
+		addCourse(course);
+		return course;
+	}
+
+	public static String autoCourseName() {
+		return "[Auto]";
 	}
 	
 	public Course anyCourse() {

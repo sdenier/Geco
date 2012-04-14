@@ -13,6 +13,7 @@ import java.util.Properties;
 import net.geco.basics.TimeManager;
 import net.geco.control.PenaltyChecker;
 import net.geco.control.StageBuilder;
+import net.geco.model.Course;
 import net.geco.model.Registry;
 import net.geco.model.Stage;
 import net.geco.model.impl.POFactory;
@@ -91,10 +92,19 @@ public class StageBuilderTest {
 		Registry registry = stage.registry();
 		assertEquals(32, registry.getCategories().size());
 		assertEquals(13, registry.getClubs().size());
-		assertEquals(2, registry.getCourses().size());
+		assertEquals(3, registry.getCourses().size());
 		assertEquals(60, registry.getRunners().size());
 	}
 
+	@Test
+	public void ensureAutoCourse() {
+		StageBuilder stageBuilder = new StageBuilder(factory);
+		stage = stageBuilder.loadStage("testData/belfield", new PenaltyChecker(factory));
+		
+		Course autoCourse = stage.registry().autoCourse();
+		assertEquals("[Auto]", autoCourse.getName());
+	}
+	
 	@Test @Ignore
 	public void testLoadStageWithMissingData() {
 		StageBuilder stageBuilder = new StageBuilder(factory);

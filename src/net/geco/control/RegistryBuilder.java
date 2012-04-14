@@ -58,6 +58,8 @@ public class RegistryBuilder extends BasicControl{
 			e.printStackTrace();
 		}
 		
+		registry.ensureAutoCourse(factory());
+		
 		try {
 			reader.initialize(baseDir, CategoryIO.sourceFilename());
 			new CategoryIO(factory(), reader, null, registry).importData();
