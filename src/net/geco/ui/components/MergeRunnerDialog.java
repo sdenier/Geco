@@ -269,7 +269,7 @@ public class MergeRunnerDialog extends JDialog {
 				if( updateStatus ) {
 					String selectedCoursename = getSelectedCoursename();
 					if( selectedCoursename.equals(Messages.uiGet("MergeRunnerDialog.UnknownCourseItem"))) { //$NON-NLS-1$
-						mockRunner.setCourse(registry().anyCourse());
+						mockRunner.setCourse(registry().autoCourse());
 						runnerData.getResult().setStatus(defaultCreationStatus);
 						geco.checker().normalTrace(runnerData);
 					} else {
@@ -289,7 +289,7 @@ public class MergeRunnerDialog extends JDialog {
 				String uniqueEcardNumber = runnerControl().deriveUniqueEcard(ecard);
 				String selectedCoursename = getSelectedCoursename();
 				Course course = selectedCoursename.equals(Messages.uiGet("MergeRunnerDialog.UnknownCourseItem")) ? //$NON-NLS-1$
-					registry().anyCourse() :
+					registry().autoCourse() :
 					registry().findCourse(selectedCoursename);
 				try {
 					// Create from scratch a brand new runner
@@ -335,7 +335,7 @@ public class MergeRunnerDialog extends JDialog {
 				RunnerRaceData updatedData = runnerControl().updateRunnerDataFor(getTargetRunner(), runnerData);
 				String selectedCoursename = getSelectedCoursename();
 				selectedCoursename = selectedCoursename.equals(Messages.uiGet("MergeRunnerDialog.UnknownCourseItem")) ? //$NON-NLS-1$
-					registry().anyCourse().getName() :
+					registry().autoCourse().getName() :
 					selectedCoursename;
 				runnerControl().validateCourse(updatedData, selectedCoursename);
 				if( existingRunner != null ) {// offer to delete previous runner if applicable

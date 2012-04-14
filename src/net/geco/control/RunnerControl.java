@@ -83,7 +83,7 @@ public class RunnerControl extends Control {
 	}
 
 	public Runner createAnonymousRunner() throws RunnerCreationException {
-		return createAnonymousRunner(registry().anyCourse());
+		return createAnonymousRunner(registry().autoCourse());
 	}
 
 	public String newUniqueEcard() {

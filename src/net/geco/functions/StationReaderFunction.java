@@ -11,6 +11,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import net.geco.basics.Html;
+import net.geco.control.ArchiveManager;
 import net.geco.control.GecoControl;
 import net.geco.control.RunnerControl;
 import net.geco.control.RunnerCreationException;
@@ -54,10 +55,10 @@ public class StationReaderFunction extends GecoFunction {
 			Runner runner = registry().findRunnerByEcard(ecard);
 			if( runner==null ) {
 				if( autoInsertB.isSelected() ){
-//					runner = getService(ArchiveManager.class).findAndCreateRunner(ecard); // default course
+					runner = getService(ArchiveManager.class).findAndCreateRunner(ecard);
 					if( runner==null ){
 						try {
-							runner = runnerControl().buildAnonymousRunner(ecard, registry().anyCourse());
+							runner = runnerControl().buildAnonymousRunner(ecard, registry().autoCourse());
 						} catch (RunnerCreationException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -65,7 +66,6 @@ public class StationReaderFunction extends GecoFunction {
 					}
 					runnerControl().registerNewRunner(runner);
 					runnerControl().validateStatus(registry().findRunnerData(runner), Status.RUN);
-				// 	TODO: need a flag to tell sireaderhandler to detect course when reading this ecard
 				}
 			} else {
 				RunnerRaceData runnerData = registry().findRunnerData(runner);

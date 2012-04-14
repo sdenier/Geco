@@ -51,7 +51,7 @@ public class RunnerIO extends AbstractIO<Runner> {
 		}
 		Course course = registry.findCourse(record[5]);
 		if( course == null ) {
-			runner.setCourse(registry.anyCourse());
+			runner.setCourse(registry.autoCourse());
 			System.err.println("Unknown course " + record[5] + " for runner " + runner.idString()); //$NON-NLS-1$ //$NON-NLS-2$
 		} else {
 			runner.setCourse(course);

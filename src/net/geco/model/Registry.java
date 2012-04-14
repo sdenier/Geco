@@ -216,10 +216,10 @@ public class Registry {
 		}
 	}
 	
-	public Course getDefaultCourseOrAnyFor(Category cat) {
+	public Course getDefaultCourseOrAutoFor(Category cat) {
 		return ( cat.getCourse()!=null ) ?
 				cat.getCourse() :
-				anyCourse();
+				autoCourse();
 	}
 
 	
