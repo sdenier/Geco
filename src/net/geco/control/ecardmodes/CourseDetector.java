@@ -25,10 +25,10 @@ public class CourseDetector extends Control {
 
 	private Course autoCourse;
 
-	public CourseDetector(GecoControl gecoControl, RunnerControl runnerControl, Course autoCourse) {
+	public CourseDetector(GecoControl gecoControl) {
 		super(gecoControl);
-		this.runnerControl = runnerControl;
-		this.autoCourse = autoCourse;
+		this.runnerControl = getService(RunnerControl.class);
+		this.autoCourse = registry().autoCourse();
 	}
 
 	private static class CourseResult implements Comparable<CourseResult> {

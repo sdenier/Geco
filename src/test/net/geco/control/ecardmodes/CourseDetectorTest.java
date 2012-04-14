@@ -40,11 +40,9 @@ public class CourseDetectorTest {
 	private Course courseA;
 	private Course courseB;
 	private Course courseC;
-	private Course autoC;
 	private RunnerRaceData raceData;
 
 	private GecoControl geco;
-	private RunnerControl runnerControl;
 	private CourseDetector detector;
 	private Registry registry;
 
@@ -54,16 +52,17 @@ public class CourseDetectorTest {
 		courseA = GecoFixtures.createCourse("A", 31, 34, 31, 33, 31, 32, 31);
 		courseB = GecoFixtures.createCourse("B", 31, 33, 31, 32, 31, 34, 31);
 		courseC = GecoFixtures.createCourse("C", 31, 33, 31, 32, 31, 34, 31, 35, 36);
-		autoC   = GecoFixtures.createCourse(Registry.autoCourseName());
 		registry = new Registry();
+		registry.ensureAutoCourse(factory);
 		registry.addCourse(courseA);
 		registry.addCourse(courseB);
 		registry.addCourse(courseC);
 		geco = GecoFixtures.mockGecoControlWithRegistry(registry);
+		RunnerControl runnerControl = new RunnerControl(geco);
 		when(geco.factory()).thenReturn(factory);
-		runnerControl = new RunnerControl(geco);
+		when(geco.getService(RunnerControl.class)).thenReturn(runnerControl);
 		
-		detector = new CourseDetector(geco, runnerControl, autoC);
+		detector = new CourseDetector(geco);
 		
 		raceData = factory.createRunnerRaceData();
 		raceData.setStarttime(new Date(10000));
@@ -177,7 +176,6 @@ public class CourseDetectorTest {
 
 	@Test
 	public void detectCourse_shouldNotReturnAutoCourseWhenOtherCoursesExist() {
-		registry.addCourse(autoC);
 		raceData.setPunches(new Punch[]{
 				punch(31), punch(31), punch(33), punch(31), punch(34), punch(31)
 		});
@@ -187,7 +185,6 @@ public class CourseDetectorTest {
 
 	@Test
 	public void detectCourse_shouldReturnAutoCourseWhenSingle() {
-		registry.addCourse(autoC);
 		registry.removeCourse(courseA);
 		registry.removeCourse(courseB);
 		registry.removeCourse(courseC);
@@ -197,7 +194,7 @@ public class CourseDetectorTest {
 				punch(31), punch(31), punch(33), punch(31), punch(34), punch(31)
 		});
 		when(geco.checker()).thenReturn(new PenaltyChecker(factory));
-		assertEquals("should return Auto course if it's the only course", autoC, detector.detectCourse(raceData));
+		assertEquals("should return Auto course if it's the only course", registry.autoCourse(), detector.detectCourse(raceData));
 	}
 
 }

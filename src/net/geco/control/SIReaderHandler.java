@@ -53,8 +53,6 @@ public class SIReaderHandler extends Control
 	
 	private boolean starting;
 
-	private CourseDetector courseDetector;
-	
 	private ECardMode currentEcardMode;
 
 	
@@ -77,7 +75,7 @@ public class SIReaderHandler extends Control
 	public SIReaderHandler(GecoControl geco) {
 		super(SIReaderHandler.class, geco);
 
-		courseDetector = new CourseDetector(geco, getService(RunnerControl.class), registry().autoCourse());
+		CourseDetector courseDetector = new CourseDetector(geco);
 		new ECardRacingMode(geco, courseDetector);
 		new ECardTrainingMode(geco, courseDetector);
 		new ECardRegisterMode(geco);
