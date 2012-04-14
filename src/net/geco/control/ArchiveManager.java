@@ -130,7 +130,8 @@ public class ArchiveManager extends OEImporter implements StageListener {
 				return null;
 			}
 			if( course==null ) {
-				course = registry().getDefaultCourseOrAutoFor(arkRunner.getCategory());
+				Category rCat = ensureCategoryInRegistry(arkRunner.getCategory());
+				course = registry().getDefaultCourseOrAutoFor(rCat);
 			}
 			return createRunner(arkRunner, course);			
 		} catch (IOException e) {
