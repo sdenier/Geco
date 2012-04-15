@@ -50,20 +50,6 @@ public abstract class GecoFunction extends Control {
 	public abstract JComponent getParametersConfig();
 	
 	public JComponent getFunctionUI() {
-//		JButton execB = new JButton("Execute");
-//		execB.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				execute();
-//			}
-//		});
-//		Box box = Box.createVerticalBox();
-//		box.add(execB);
-//		JPanel layout = new JPanel(new BorderLayout());
-//		layout.add(getParametersConfig(), BorderLayout.CENTER);
-//		layout.add(box, BorderLayout.EAST);
-//		layout.setBorder(BorderFactory.createTitledBorder("Parameters"));
-//		return layout;
 		JComponent parametersConfig = getParametersConfig();
 		parametersConfig.setBorder(BorderFactory.createTitledBorder(Messages.uiGet("GecoFunction.ParameterLabel"))); //$NON-NLS-1$
 		return parametersConfig;
