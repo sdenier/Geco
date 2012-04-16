@@ -31,6 +31,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -143,8 +144,8 @@ public class LiveConfigPanel extends JPanel {
 	
 	private JButton mapfileB;
 	private JButton coursefileB;
-	private JLabel mapfileL;
-	private JLabel coursefileL;
+	private JTextField mapfileL;
+	private JTextField coursefileL;
 
 	private JSpinner dpiS;
 	private JSpinner xtranS;
@@ -181,9 +182,11 @@ public class LiveConfigPanel extends JPanel {
 	private void createComponents(boolean withLiveNetwork) {
 		// data files
 		mapfileB = new JButton(Messages.liveGet("LiveConfigPanel.MapImageLabel")); //$NON-NLS-1$
-		mapfileL = new JLabel();
+		mapfileL = new JTextField(10);
+		mapfileL.setEditable(false);
 		coursefileB = new JButton(Messages.liveGet("LiveConfigPanel.CourseFileLabel")); //$NON-NLS-1$
-		coursefileL = new JLabel();
+		coursefileL = new JTextField(10);
+		coursefileL.setEditable(false);
 		// map config
 		dpiS = new JSpinner(new SpinnerNumberModel(150, 0, null, 50));
 		dpiS.setPreferredSize(new Dimension(75, SwingUtils.SPINNERHEIGHT));
