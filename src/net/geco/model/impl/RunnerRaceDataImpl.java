@@ -203,6 +203,10 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 		this.result = result;
 	}
 
+	public long getRacetime() {
+		return this.result.getRacetime();
+	}
+
 	public long realRaceTime() {
 		Date finish = getFinishtime();
 		if( finish.equals(TimeManager.NO_TIME) ) {
@@ -247,9 +251,17 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 		return getRunner().toString();
 	}
 
-	@Override
 	public Trace[] retrieveLeg(int legStart, int legEnd) {
 		return result.retrieveLeg(Integer.toString(legStart), Integer.toString(legEnd));
+	}
+
+	public float getMillisecondPace() {
+		float km = getCourse().getLength() / 1000.0f;
+		return getRacetime() / km;
+	}
+
+	public String formatPace() {
+		return TimeManager.time(Math.round(getMillisecondPace()));
 	}
 
 }

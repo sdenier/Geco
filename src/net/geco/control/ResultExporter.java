@@ -13,6 +13,7 @@ import net.geco.control.ResultBuilder.ResultConfig;
 import net.geco.model.Messages;
 import net.geco.model.RankedRunner;
 import net.geco.model.Result;
+import net.geco.model.ResultType;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.iocsv.CsvWriter;
@@ -56,6 +57,9 @@ public class ResultExporter extends AResultExporter {
 	 * @param html
 	 */
 	private void appendHtmlResult(Result result, ResultConfig config, Html html) {
+		boolean paceComputable = ! result.isEmpty()
+								&& ! config.resultType.equals(ResultType.CategoryResult)
+								&& result.anyCourse().hasDistance();
 		// compute basic stats
 		StringBuilder resultLabel = new StringBuilder(result.getIdentifier());
 		int finished = result.getRanking().size() + result.getNRRunners().size();
@@ -67,27 +71,37 @@ public class ResultExporter extends AResultExporter {
 		}
 		resultLabel.append(" (").append(Integer.toString(finished)).append("/") //$NON-NLS-1$ //$NON-NLS-2$
 					.append(Integer.toString(present)).append(")"); //$NON-NLS-1$
+		if( paceComputable ){			
+			resultLabel.append(" - ").append(result.anyRunner().getCourse().formatDistanceClimb());
+		}
 		html.nl().tag("h2", "class=\"pool\"", resultLabel.toString()).nl(); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		html.open("table").nl(); //$NON-NLS-1$
-		if( config.showPenalties ){
-			html.openTr("runner") //$NON-NLS-1$
-				.th("") //$NON-NLS-1$
-				.th(Messages.getString("ResultBuilder.NameHeader")) //$NON-NLS-1$
-				.th(Messages.getString("ResultBuilder.ClubHeader")) //$NON-NLS-1$
-				.th(Messages.getString("ResultBuilder.CategoryHeader")) //$NON-NLS-1$
-				.th(Messages.getString("ResultBuilder.TimeHeader"), "class=\"right\"") //$NON-NLS-1$ //$NON-NLS-2$
-				.th(Messages.getString("ResultBuilder.MPHeader"), "class=\"right\"") //$NON-NLS-1$ //$NON-NLS-2$
-				.th(Messages.getString("ResultBuilder.RacetimeHeader"), "class=\"right\"") //$NON-NLS-1$ //$NON-NLS-2$
-				.closeTr();
+		html.openTr("runner") //$NON-NLS-1$
+			.th("") //$NON-NLS-1$
+			.th(Messages.getString("ResultBuilder.NameHeader")) //$NON-NLS-1$
+			.th(Messages.getString("ResultBuilder.ClubHeader")) //$NON-NLS-1$
+			.th(Messages.getString("ResultBuilder.CategoryHeader")) //$NON-NLS-1$
+			.th(Messages.getString("ResultBuilder.TimeHeader"), "class=\"right\"") //$NON-NLS-1$ //$NON-NLS-2$
+			.th("Diff", "class=\"right\"");
+		if( paceComputable ){
+			html.th("min/km", "class=\"right\"");
 		}
-		// Format: rank, first name + last name, club [, real time, nb mps], time/status
+		if( config.showPenalties ){
+			html.th(Messages.getString("ResultBuilder.MPHeader"), "class=\"right\"") //$NON-NLS-1$ //$NON-NLS-2$
+				.th(Messages.getString("ResultBuilder.RacetimeHeader"), "class=\"right\""); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		html.closeTr();
+		// Format: rank, first name + last name, club, cat, time/status, diff, pace [, real time, nb mps]
+		long bestTime = result.bestTime();
 		for (RankedRunner runner : result.getRanking()) {
 			RunnerRaceData data = runner.getRunnerData();
 			writeHtml(
 					data,
 					Integer.toString(runner.getRank()),
 					data.getResult().formatRacetime(),
+					runner.formatDiffTime(bestTime),
+					(paceComputable ? data.formatPace() : ""), //$NON-NLS-1$
 					config.showPenalties,
 					html);
 		}
@@ -99,6 +113,8 @@ public class ResultExporter extends AResultExporter {
 						runnerData,
 						"", //$NON-NLS-1$
 						runnerData.getResult().formatStatus(),
+						"", //$NON-NLS-1$
+						"", //$NON-NLS-1$
 						config.showPenalties,
 						html);
 			} else if( config.showNC ) {
@@ -106,6 +122,8 @@ public class ResultExporter extends AResultExporter {
 						runnerData,
 						"NC", //$NON-NLS-1$
 						runnerData.getResult().shortFormat(),
+						"", //$NON-NLS-1$
+						"", //$NON-NLS-1$
 						config.showPenalties,
 						html);
 			}
@@ -117,6 +135,8 @@ public class ResultExporter extends AResultExporter {
 						runnerData,
 						"", //$NON-NLS-1$
 						runnerData.getResult().formatStatus(),
+						"", //$NON-NLS-1$
+						"", //$NON-NLS-1$
 						config.showPenalties,
 						html);
 			}			
@@ -124,14 +144,16 @@ public class ResultExporter extends AResultExporter {
 		html.close("table").nl(); //$NON-NLS-1$
 	}
 	
-	private void writeHtml(RunnerRaceData runnerData, String rank, String timeOrStatus,
-																		boolean showPenalties, Html html) {
+	private void writeHtml(RunnerRaceData runnerData, String rank, String timeOrStatus, String diffTime,
+															String pace, boolean showPenalties, Html html) {
 		html.openTr("runner"); //$NON-NLS-1$
 		html.td(rank);
 		html.td(runnerData.getRunner().getName());
 		html.td(runnerData.getRunner().getClub().getName());
 		html.td(runnerData.getRunner().getCategory().getName());
 		html.td(timeOrStatus, "class=\"time\""); //$NON-NLS-1$
+		html.td(diffTime, "class=\"diff\""); //$NON-NLS-1$
+		html.td(pace, "class=\"pace\""); //$NON-NLS-1$
 		if( showPenalties ){
 			html.td(Integer.toString(runnerData.getResult().getNbMPs()), "class=\"right\""); //$NON-NLS-1$
 			html.td(TimeManager.time(runnerData.realRaceTime()), "class=\"right\""); //$NON-NLS-1$

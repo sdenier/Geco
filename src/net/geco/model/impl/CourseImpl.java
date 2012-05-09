@@ -47,7 +47,6 @@ public class CourseImpl implements Course {
 		return codes.length;
 	}
 
-
 	public void setClimb(int climb) {
 		this.climb = climb;
 	}
@@ -64,7 +63,6 @@ public class CourseImpl implements Course {
 		this.name = name;
 	}
 
-	@Override
 	public String toString() {
 		return Messages.getString("CourseImpl.CourseLabel")	 //$NON-NLS-1$
 				+ name + ", "			 //$NON-NLS-1$
@@ -74,7 +72,6 @@ public class CourseImpl implements Course {
 				+ Arrays.toString(codes);
 	}
 
-	@Override
 	public boolean hasLeg(int start, int end) {
 		for (int i = 0; i < codes.length - 1; i++) {
 			if( codes[i]==start && codes[i+1]==end ){
@@ -82,6 +79,14 @@ public class CourseImpl implements Course {
 			}
 		}
 		return false;
+	}
+
+	public String formatDistanceClimb() {
+		return length + "m, " + climb + "m"; //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	public boolean hasDistance() {
+		return length > 0;
 	}
 
 }

@@ -9,6 +9,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Vector;
 
+import net.geco.model.Course;
 import net.geco.model.RankedRunner;
 import net.geco.model.Result;
 import net.geco.model.RunnerRaceData;
@@ -89,7 +90,6 @@ public class ResultImpl implements Result {
 	
 	public void addNRRunner(RunnerRaceData runner) {
 		this.nrRunners.add(runner);
-		this.memoRanking = null; // invalidate cache
 	}
 
 	public void clearNrRunners() {
@@ -103,7 +103,6 @@ public class ResultImpl implements Result {
 
 	public void addOtherRunner(RunnerRaceData runner) {
 		this.otherRunners.add(runner);
-		this.memoRanking = null; // invalidate cache
 	}
 
 	public void clearOtherRunners() {
@@ -133,6 +132,19 @@ public class ResultImpl implements Result {
 			return this.nrRunners.get(0);
 		}
 		return null;
+	}
+
+	public Course anyCourse() {
+		return anyRunner().getCourse();
+	}
+	
+	@Override
+	public long bestTime() {
+		if( this.rankedRunners.isEmpty() ){
+			return 0;
+		} else {
+			return getRanking().get(0).getRunnerData().getRacetime();
+		}
 	}
 
 }

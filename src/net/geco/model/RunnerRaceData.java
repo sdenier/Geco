@@ -65,6 +65,8 @@ public interface RunnerRaceData extends Cloneable {
 
 	public void setResult(RunnerResult result);
 	
+	public long getRacetime();
+	
 	public long realRaceTime();
 	
 	public long officialRaceTime();
@@ -78,5 +80,9 @@ public interface RunnerRaceData extends Cloneable {
 	public String infoString();
 
 	public Trace[] retrieveLeg(int legStart, int legEnd);
+
+	public float getMillisecondPace();
+
+	public String formatPace();
 
 }

@@ -42,4 +42,8 @@ public interface Result {
 	
 	public RunnerRaceData anyRunner();
 
+	public Course anyCourse();
+	
+	public long bestTime();
+
 }

@@ -23,6 +23,10 @@ public interface Course extends Pool, Group {
 
 	public void setClimb(int climb);
 
+	public boolean hasDistance();
+
+	public String formatDistanceClimb();
+
 	public int[] getCodes();
 
 	public void setCodes(int[] codes);

@@ -14,4 +14,6 @@ public interface RankedRunner {
 
 	public int getRank();
 
+	public String formatDiffTime(long bestTime);
+
 }
