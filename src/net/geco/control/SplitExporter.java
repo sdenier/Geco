@@ -82,11 +82,11 @@ public class SplitExporter extends AResultExporter implements StageListener {
 	}
 	
 	@Override
-	public String generateHtmlResults(ResultConfig config, int refreshInterval, boolean forFileExport) {
+	public String generateHtmlResults(ResultConfig config, int refreshInterval, OutputType outputType) {
 		Vector<Result> results = buildResults(config);
 		this.refreshInterval = refreshInterval;
 		Html html = new Html();
-		includeHeader(html, "result.css", forFileExport); //$NON-NLS-1$
+		includeHeader(html, "result.css", outputType); //$NON-NLS-1$
 		for (Result result : results) {
 			if( config.showEmptySets || !result.isEmpty() ) {
 				SplitTime[] bestSplits = null;
@@ -383,19 +383,16 @@ public class SplitExporter extends AResultExporter implements StageListener {
 				Integer.toString(course.getLength()),
 				Integer.toString(course.getClimb())
 				);
+		record.add(Integer.toString(course.nbControls()));
+		record.add(rank);
 		if( withSplits ) {
-			addSplits(runnerData, rank, record);
-		} else {
-			record.add(Integer.toString(course.nbControls())); //$NON-NLS-1$
-			record.add(rank);
+			addSplits(runnerData, record);
 		}
 		record.add(""); //$NON-NLS-1$ // force semi-colon at end of line otherwise RouteGadget can't parse the line
 		writer.writeRecord(record);
 	}
 
-	private void addSplits(RunnerRaceData runnerData, String rank, Collection<String> record) {
-		record.add(Integer.toString(runnerData.getCourse().nbControls()));
-		record.add(rank);
+	private void addSplits(RunnerRaceData runnerData, Collection<String> record) {
 		record.add(oeTime(runnerData.getOfficialStarttime()));
 		record.add(oeTime(runnerData.getFinishtime()));
 		SplitTime[] splits = resultBuilder.buildNormalSplits(runnerData, null);
