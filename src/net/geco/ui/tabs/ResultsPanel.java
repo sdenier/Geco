@@ -14,6 +14,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.print.PrinterException;
 import java.io.File;
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -38,6 +41,7 @@ import javax.swing.SpinnerNumberModel;
 
 import net.geco.basics.Announcer.StageConfigListener;
 import net.geco.control.AResultExporter;
+import net.geco.control.AResultExporter.OutputType;
 import net.geco.control.ResultBuilder;
 import net.geco.control.ResultBuilder.ResultConfig;
 import net.geco.framework.IGecoApp;
@@ -191,7 +195,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		});
 		refreshB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				refreshResultView();
+				refreshResultView(OutputType.DISPLAY);
 			}
 		});
 		exportB.addActionListener(new ActionListener() {
@@ -292,8 +296,9 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					refreshResultView();
-					resultTA.print();
+					refreshResultView(OutputType.PRINTER);
+					SimpleDateFormat tsFormat = new SimpleDateFormat("H:mm"); //$NON-NLS-1$
+					resultTA.print(null, new MessageFormat("Page {0} - Last update " + tsFormat.format(new Date())));
 				} catch (PrinterException e1) {
 					JOptionPane.showMessageDialog(
 							frame(),
@@ -418,8 +423,8 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	}
 
 
-	public void refreshResultView() {
-		String htmlResults = resultExporter().generateHtmlResults(createResultConfig(), -1, false);
+	public void refreshResultView(OutputType outputType) {
+		String htmlResults = resultExporter().generateHtmlResults(createResultConfig(), -1, outputType);
 		resultTA.setText(htmlResults);
 	}
 
@@ -442,7 +447,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		long delay = 1000 * autoexportDelay;
 		while( true ){
 			try {
-				refreshResultView();
+				refreshResultView(OutputType.DISPLAY);
 				wait(delay);
 			} catch (InterruptedException e) {
 				return;

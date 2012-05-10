@@ -32,11 +32,14 @@ public class ResultExporter extends AResultExporter {
 	}
 
 	@Override
-	public String generateHtmlResults(ResultConfig config, int refreshInterval, boolean forFileExport) {
+	public String generateHtmlResults(ResultConfig config, int refreshInterval, OutputType outputType) {
 		Vector<Result> results = buildResults(config);
 		this.refreshInterval = refreshInterval;
 		Html html = new Html();
-		includeHeader(html, "result.css", forFileExport); //$NON-NLS-1$
+		includeHeader(html, "result.css", outputType); //$NON-NLS-1$
+		if( outputType != OutputType.DISPLAY ) {
+			html.nl().tag("h1", stage().getName() + " - " + "Results");
+		}
 		for (Result result : results) {
 			if( config.showEmptySets || !result.isEmpty()) {
 				appendHtmlResult(result, config, html);	
@@ -79,9 +82,9 @@ public class ResultExporter extends AResultExporter {
 		html.open("table").nl(); //$NON-NLS-1$
 		html.openTr("runner") //$NON-NLS-1$
 			.th("") //$NON-NLS-1$
-			.th(Messages.getString("ResultBuilder.NameHeader")) //$NON-NLS-1$
-			.th(Messages.getString("ResultBuilder.ClubHeader")) //$NON-NLS-1$
-			.th(Messages.getString("ResultBuilder.CategoryHeader")) //$NON-NLS-1$
+			.th(Messages.getString("ResultBuilder.NameHeader"), "class=\"left\"") //$NON-NLS-1$ //$NON-NLS-2$
+			.th(Messages.getString("ResultBuilder.ClubHeader"), "class=\"left\"") //$NON-NLS-1$ //$NON-NLS-2$
+			.th(Messages.getString("ResultBuilder.CategoryHeader"), "class=\"left\"") //$NON-NLS-1$ //$NON-NLS-2$
 			.th(Messages.getString("ResultBuilder.TimeHeader"), "class=\"right\"") //$NON-NLS-1$ //$NON-NLS-2$
 			.th("Diff", "class=\"right\"");
 		if( paceComputable ){

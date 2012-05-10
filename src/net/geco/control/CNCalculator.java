@@ -86,13 +86,13 @@ public class CNCalculator extends AResultExporter implements StageListener {
 	 * @see valmo.geco.control.IResultBuilder#generateHtmlResults(valmo.geco.control.ResultBuilder.ResultConfig, int)
 	 */
 	@Override
-	public String generateHtmlResults(ResultConfig config, int refreshDelay, boolean forFileExport) {
+	public String generateHtmlResults(ResultConfig config, int refreshDelay, OutputType outputType) {
 		if( config.resultType!=ResultType.CourseResult )
 			return Messages.getString("CNCalculator.CNCourseWarning"); //$NON-NLS-1$
 
 		importCN();
 		Html html = new Html();
-		includeHeader(html, "result.css", forFileExport); //$NON-NLS-1$
+		includeHeader(html, "result.css", outputType); //$NON-NLS-1$
 		Vector<Result> results = buildResults(config);
 		for (Result result : results) {
 			double courseScore = computeCourseScore(result);

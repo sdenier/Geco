@@ -29,6 +29,10 @@ import net.geco.model.iocsv.CsvWriter;
  */
 public abstract class AResultExporter extends Control {
 
+	public enum OutputType {
+		DISPLAY, FILE, PRINTER
+	}
+	
 	protected final ResultBuilder resultBuilder;
 
 	protected AResultExporter(Class<? extends Control> clazz, GecoControl gecoControl) {
@@ -58,7 +62,7 @@ public abstract class AResultExporter extends Control {
 	protected void exportHtmlFile(String filename, ResultConfig config, int refreshInterval)
 			throws IOException {
 		BufferedWriter writer = GecoResources.getSafeWriterFor(filename);
-		writer.write(generateHtmlResults(config, refreshInterval, true));
+		writer.write(generateHtmlResults(config, refreshInterval, OutputType.FILE));
 		writer.close();
 	}
 
@@ -90,11 +94,11 @@ public abstract class AResultExporter extends Control {
 		}
 	}
 
-	public abstract String generateHtmlResults(ResultConfig config, int refreshDelay, boolean forFileExport);
+	public abstract String generateHtmlResults(ResultConfig config, int refreshDelay, OutputType outputType);
 	
-	public void includeHeader(Html html, String cssfile, boolean forFileExport) {
+	public void includeHeader(Html html, String cssfile, OutputType outputType) {
 		html.open("head").nl(); //$NON-NLS-1$
-		if( forFileExport ){
+		if( outputType == OutputType.FILE ){
 			html.contents("<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">"); //$NON-NLS-1$
 		}
 		generateHtmlHeader(html);
