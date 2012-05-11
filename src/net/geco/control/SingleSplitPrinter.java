@@ -45,7 +45,7 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 	
 	public static enum SplitFormat { MultiColumns, Ticket }
 
-	private static final boolean DEBUGMODE = false;
+	private static final boolean DEBUGMODE = true;
 	
 	private PrintService splitPrinter;
 	private boolean autoPrint;
@@ -119,7 +119,6 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 		if( data.getResult().is(Status.OK) && course.hasDistance() ) {
 			pace = data.formatPace() + " min/km"; //$NON-NLS-1$
 		}
-		
 		html.br()
 			.open("table") //$NON-NLS-1$
 			.openTr("runner") //$NON-NLS-1$
@@ -151,13 +150,22 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 	private void printSingleSplitsInLine(RunnerRaceData data, Html html) {
 	//		char[] chars = Character.toChars(0x2B15); // control flag char :)
 		appendMessage(getHeaderMessage(), html);
-		html.open("div", "align=\"center\""); //$NON-NLS-1$ //$NON-NLS-2$
-		html.contents(geco().stage().getName()).br();
-		html.b(data.getRunner().getName()).br();
-		html.br();
-		html.b(data.getCourse().getName() + " - " //$NON-NLS-1$
-				+ data.getResult().shortFormat());
-		html.close("div"); // don't center table, it wastes too much space for some formats. //$NON-NLS-1$
+		Runner runner = data.getRunner();
+		Course course = data.getCourse();
+		html.br()
+			.open("div", "align=\"center\"") //$NON-NLS-1$ //$NON-NLS-2$
+			.b(runner.getName())
+			.tag("div", runner.getClub().getName()) //$NON-NLS-1$
+			.tag("div", course.getName() + " - " + runner.getCategory().getName()) //$NON-NLS-1$ //$NON-NLS-2$
+			.tag("div", course.formatDistanceClimb()) //$NON-NLS-1$
+			.br()
+			.b(data.getResult().shortFormat());
+		if( data.getResult().is(Status.OK) && course.hasDistance() ) {
+			html.tag("div", data.formatPace() + " min/km"); //$NON-NLS-1$ //$NON-NLS-2$
+		}		
+		html.close("div") //$NON-NLS-1$
+			.br();
+		// don't center table, it wastes too much space for some formats.
 		html.open("table", "width=\"75%\""); //$NON-NLS-1$ //$NON-NLS-2$
 		exporter.appendHtmlSplitsInLine(builder.buildLinearSplits(data), html);
 		html.close("table").br(); //$NON-NLS-1$

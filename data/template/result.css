@@ -4,6 +4,7 @@ h2 { font-size: 15 }
 table { border-collapse:collapse; width: 100%; font-size: 10 }
 .runner td, .runner th { padding: 0px 10px }
 .left { text-align: left }
+.center { text-align: center }
 .right, .time, .pace, .diff, .controls, .times, .splits { text-align: right }
 .diff, .splits { font-style: italic }
 .controls { background-color: #F0F0F0 }

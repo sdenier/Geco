@@ -239,7 +239,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 	
 	protected void appendHtmlSplitsInLine(SplitTime[] linearSplits, Html html) {
 		for (SplitTime splitTime : linearSplits) {
-			html.openTr("lin"); //$NON-NLS-1$
+			html.openTr(); //$NON-NLS-1$
 			Trace trace = splitTime.trace;
 			String time = TimeManager.time(splitTime.time);
 			if( trace!=null ) {
