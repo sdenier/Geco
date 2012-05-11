@@ -87,6 +87,9 @@ public class SplitExporter extends AResultExporter implements StageListener {
 		this.refreshInterval = refreshInterval;
 		Html html = new Html();
 		includeHeader(html, "result.css", outputType); //$NON-NLS-1$
+		if( outputType != OutputType.DISPLAY ) {
+			html.nl().tag("h1", stage().getName() + " - " + "Splits");
+		}
 		for (Result result : results) {
 			if( config.showEmptySets || !result.isEmpty() ) {
 				SplitTime[] bestSplits = null;
@@ -110,7 +113,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 
 	private void appendHtmlResultsWithSplits(Result result, Map<RunnerRaceData, SplitTime[]> allSplits,
 													SplitTime[] bestSplit, ResultConfig config, Html html) {
-		html.nl().tag("h2", "class=\"pool\"", result.getIdentifier()).nl(); //$NON-NLS-1$ //$NON-NLS-2$
+		html.nl().tag("h2", result.getIdentifier()).nl(); //$NON-NLS-1$
 		html.open("table").nl(); //$NON-NLS-1$
 		for (RankedRunner runner : result.getRanking()) {
 			RunnerRaceData data = runner.getRunnerData();
@@ -183,7 +186,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 				break; // in case we have splits.length a multiple of nbColumns, we can stop now
 			
 			// first line with seq and control number/code
-			html.openTr("col1").td(""); //$NON-NLS-1$ //$NON-NLS-2$
+			html.openTr("controls").td(""); //$NON-NLS-1$ //$NON-NLS-2$
 			for (int j = 0; j < limit; j++) {
 				SplitTime split = splits[j + rowStart];
 				String label = split.seq;
@@ -193,9 +196,8 @@ public class SplitExporter extends AResultExporter implements StageListener {
 				html.td(label);
 			}
 			html.closeTr();
-			String trClass = "col0"; //$NON-NLS-1$
 			// second line is cumulative split since start
-			html.openTr(trClass).td(""); //$NON-NLS-1$
+			html.openTr("times").td(""); //$NON-NLS-1$ //$NON-NLS-2$
 			for (int j = 0; j < limit; j++) {
 				int k = j + rowStart;
 				SplitTime split = splits[k];
@@ -208,7 +210,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 			}
 			html.closeTr();
 			// third line is partial split since previous ok punch
-			html.openTr(trClass).td(""); //$NON-NLS-1$
+			html.openTr("splits").td(""); //$NON-NLS-1$ //$NON-NLS-2$
 			for (int j = 0; j < limit; j++) {
 				int k = j + rowStart;
 				SplitTime split = splits[k];

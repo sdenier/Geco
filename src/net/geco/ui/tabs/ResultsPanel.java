@@ -14,9 +14,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.print.PrinterException;
 import java.io.File;
-import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -297,8 +294,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					refreshResultView(OutputType.PRINTER);
-					SimpleDateFormat tsFormat = new SimpleDateFormat("H:mm"); //$NON-NLS-1$
-					resultTA.print(null, new MessageFormat("Page {0} - Last update " + tsFormat.format(new Date())));
+					resultTA.print();
 				} catch (PrinterException e1) {
 					JOptionPane.showMessageDialog(
 							frame(),

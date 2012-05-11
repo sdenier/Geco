@@ -5,6 +5,8 @@
 package net.geco.control;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Vector;
 
 import net.geco.basics.Html;
@@ -40,9 +42,14 @@ public class ResultExporter extends AResultExporter {
 		if( outputType != OutputType.DISPLAY ) {
 			html.nl().tag("h1", stage().getName() + " - " + "Results");
 		}
+		String timestamp = null;
+		if( outputType == OutputType.PRINTER ) {
+			SimpleDateFormat tsFormat = new SimpleDateFormat("H:mm"); //$NON-NLS-1$
+			timestamp = tsFormat.format(new Date());
+		}
 		for (Result result : results) {
 			if( config.showEmptySets || !result.isEmpty()) {
-				appendHtmlResult(result, config, html);	
+				appendHtmlResult(result, config, html, timestamp);
 			}
 		}
 		return html.close();
@@ -58,8 +65,9 @@ public class ResultExporter extends AResultExporter {
 	/**
 	 * @param result
 	 * @param html
+	 * @param appendTimestamp 
 	 */
-	private void appendHtmlResult(Result result, ResultConfig config, Html html) {
+	private void appendHtmlResult(Result result, ResultConfig config, Html html, String timestamp) {
 		boolean paceComputable = ! result.isEmpty()
 								&& ! config.resultType.equals(ResultType.CategoryResult)
 								&& result.anyCourse().hasDistance();
@@ -77,7 +85,7 @@ public class ResultExporter extends AResultExporter {
 		if( paceComputable ){			
 			resultLabel.append(" - ").append(result.anyRunner().getCourse().formatDistanceClimb());
 		}
-		html.nl().tag("h2", "class=\"pool\"", resultLabel.toString()).nl(); //$NON-NLS-1$ //$NON-NLS-2$
+		html.nl().tag("h2", resultLabel.toString()).nl(); //$NON-NLS-1$
 		
 		html.open("table").nl(); //$NON-NLS-1$
 		html.openTr("runner") //$NON-NLS-1$
@@ -145,6 +153,9 @@ public class ResultExporter extends AResultExporter {
 			}			
 		}
 		html.close("table").nl(); //$NON-NLS-1$
+		if( timestamp != null ) {
+			html.nl().tag("p", "Last update " + timestamp); //$NON-NLS-1$
+		}
 	}
 	
 	private void writeHtml(RunnerRaceData runnerData, String rank, String timeOrStatus, String diffTime,

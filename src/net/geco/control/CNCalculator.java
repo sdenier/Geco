@@ -90,14 +90,26 @@ public class CNCalculator extends AResultExporter implements StageListener {
 		if( config.resultType!=ResultType.CourseResult )
 			return Messages.getString("CNCalculator.CNCourseWarning"); //$NON-NLS-1$
 
+		Vector<Result> results = buildResults(config);
 		importCN();
 		Html html = new Html();
 		includeHeader(html, "result.css", outputType); //$NON-NLS-1$
-		Vector<Result> results = buildResults(config);
+		if( outputType != OutputType.DISPLAY ) {
+			html.nl().tag("h1", stage().getName() + " - " + "Estimation CN");
+		}
 		for (Result result : results) {
 			double courseScore = computeCourseScore(result);
-			html.nl().tag("h2", "class=\"pool\"", result.getIdentifier()).nl(); //$NON-NLS-1$ //$NON-NLS-2$
+			html.nl().tag("h2", result.getIdentifier()).nl(); //$NON-NLS-1$
 			html.open("table").nl(); //$NON-NLS-1$
+			html.openTr("runner") //$NON-NLS-1$
+				.th("") //$NON-NLS-1$
+				.th(Messages.getString("ResultBuilder.NameHeader"), "class=\"left\"") //$NON-NLS-1$ //$NON-NLS-2$
+				.th(Messages.getString("ResultBuilder.ClubHeader"), "class=\"left\"") //$NON-NLS-1$ //$NON-NLS-2$
+				.th(Messages.getString("ResultBuilder.CategoryHeader"), "class=\"left\"") //$NON-NLS-1$ //$NON-NLS-2$
+				.th(Messages.getString("ResultBuilder.TimeHeader"), "class=\"right\"") //$NON-NLS-1$ //$NON-NLS-2$
+				.th("CN", "class=\"right\"")
+				.th("Score", "class=\"right\"")
+				.closeTr();
 			for (RankedRunner data : result.getRanking()) {
 				RunnerResult r = data.getRunnerData().getResult();
 				writeHtml(
@@ -126,9 +138,9 @@ public class CNCalculator extends AResultExporter implements StageListener {
 		html.td(runner.getName());
 		html.td(runner.getClub().getName());
 		html.td(runner.getCategory().getName());
-		html.td(yScore);
-		html.td(score);
 		html.td(timeOrStatus, "class=\"time\""); //$NON-NLS-1$
+		html.td(yScore, "class=\"right\""); //$NON-NLS-1$
+		html.td(score, "class=\"time\""); //$NON-NLS-1$
 		html.closeTr();
 	}
 
