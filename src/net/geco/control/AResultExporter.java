@@ -12,11 +12,9 @@ import java.util.Vector;
 import net.geco.basics.GecoResources;
 import net.geco.basics.Html;
 import net.geco.control.ResultBuilder.ResultConfig;
-import net.geco.model.Messages;
 import net.geco.model.Pool;
 import net.geco.model.RankedRunner;
 import net.geco.model.Result;
-import net.geco.model.ResultType;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.iocsv.CsvWriter;
@@ -83,15 +81,7 @@ public abstract class AResultExporter extends Control {
 	
 	protected void exportXmlFile(String filename, ResultConfig config)
 			throws Exception {
-		if( config.resultType==ResultType.CategoryResult ) {
-			try {
-				generateXMLResult(config, filename);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else {
-			throw new Exception(Messages.getString("AResultExporter.XmlCategoryExportWarning")); //$NON-NLS-1$
-		}
+		generateXMLResult(config, filename);
 	}
 
 	public abstract String generateHtmlResults(ResultConfig config, int refreshDelay, OutputType outputType);

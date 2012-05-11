@@ -53,7 +53,7 @@ public class SplitXmlExporter extends Control {
 		Element root = documentPreamble();
 		
 		for (Result result : results) {
-			generateCategoryResult(root, result);
+			generatePoolResult(root, result);
 		}
 		
 		Transformer transformer = TransformerFactory.newInstance().newTransformer();
@@ -73,7 +73,7 @@ public class SplitXmlExporter extends Control {
 		return root;
 	}
 	
-	protected void generateCategoryResult(Element root, Result result) {
+	protected void generatePoolResult(Element root, Result result) {
 		Element classResult = createChildElement(root, "ClassResult"); //$NON-NLS-1$
 		createContentChildElement(classResult, "ClassShortName", result.getIdentifier()); //$NON-NLS-1$
 		for (RankedRunner runner : result.getRanking()) {
