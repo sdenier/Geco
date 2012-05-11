@@ -28,9 +28,12 @@ import net.geco.basics.Announcer.StageListener;
 import net.geco.basics.Html;
 import net.geco.control.AResultExporter.OutputType;
 import net.geco.control.ResultBuilder.SplitTime;
+import net.geco.model.Course;
 import net.geco.model.Messages;
+import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Stage;
+import net.geco.model.Status;
 
 
 /**
@@ -109,17 +112,38 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 
 	private void printSingleSplitsInColumns(RunnerRaceData data, Html html) {
 		appendMessage(getHeaderMessage(), html);
-		html.b(data.getRunner().getName() + " - " //$NON-NLS-1$
-				+ geco().stage().getName() + " - " //$NON-NLS-1$
-				+ data.getCourse().getName() + " - " //$NON-NLS-1$
-				+ data.getResult().shortFormat());
+
+		Runner runner = data.getRunner();
+		Course course = data.getCourse();
+		String pace = ""; //$NON-NLS-1$
+		if( data.getResult().is(Status.OK) && course.hasDistance() ) {
+			pace = data.formatPace() + " min/km"; //$NON-NLS-1$
+		}
+		
+		html.br()
+			.open("table") //$NON-NLS-1$
+			.openTr("runner") //$NON-NLS-1$
+			.th(runner.getName(), "colspan=\"2\"") //$NON-NLS-1$
+			.th(course.getName())
+			.th(runner.getCategory().getName())
+			.closeTr()
+			.openTr("runner") //$NON-NLS-1$
+			.td(data.getResult().shortFormat(), "class=\"time\"") //$NON-NLS-1$
+			.td(pace, "class=\"center\"") //$NON-NLS-1$
+			.td(course.formatDistanceClimb(), "class=\"center\"") //$NON-NLS-1$
+			.td(runner.getClub().getName(), "class=\"center\"") //$NON-NLS-1$
+			.closeTr()
+			.close("table") //$NON-NLS-1$
+			.br();
+
 		html.open("table"); //$NON-NLS-1$
 		exporter.appendHtmlSplitsInColumns(
 				builder.buildNormalSplits(data, null),
 				new SplitTime[0],
 				exporter.nbColumns(),
 				html);
-		html.close("table"); //$NON-NLS-1$
+		html.close("table") //$NON-NLS-1$
+			.br();
 		appendMessage(getFooterMessage(), html);
 	}
 
@@ -309,8 +333,8 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 		if( format!=null ) {
 			setSplitFormat(SplitFormat.valueOf(format));
 		}
-		setHeaderMessage( props.getProperty(splitHeaderMessageProperty(), "Geco") ); //$NON-NLS-1$
-		setFooterMessage( props.getProperty(splitFooterMessageProperty(), "http://geco.webou.net") ); //$NON-NLS-1$
+		setHeaderMessage( props.getProperty(splitHeaderMessageProperty(), stage().getName()) );
+		setFooterMessage( props.getProperty(splitFooterMessageProperty(), "Geco - http://geco.webou.net") ); //$NON-NLS-1$
 	}
 
 	@Override
