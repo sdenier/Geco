@@ -243,7 +243,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 			Trace trace = splitTime.trace;
 			String time = TimeManager.time(splitTime.time);
 			if( trace!=null ) {
-				html.td(splitTime.seq);
+				html.td(splitTime.seq, "class=\"code\""); //$NON-NLS-1$
 				html.td(splitTime.trace.getCode());
 				String timeClass = "class=\""; //$NON-NLS-1$
 				if( trace.isOK() ) {
@@ -258,7 +258,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 				html.td(time, timeClass + "\""); //$NON-NLS-1$
 				html.td(TimeManager.time(splitTime.split), "class=\"sp\""); //$NON-NLS-1$
 			} else {
-				html.td(splitTime.seq);
+				html.td(splitTime.seq, "class=\"code\""); //$NON-NLS-1$
 				html.td(""); //$NON-NLS-1$
 				html.td(time, "class=\"time\""); //$NON-NLS-1$
 				html.td(TimeManager.time(splitTime.split), "class=\"sp\""); //$NON-NLS-1$
