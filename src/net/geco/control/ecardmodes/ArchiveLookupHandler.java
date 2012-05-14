@@ -10,29 +10,24 @@ import net.geco.control.RunnerCreationException;
 import net.geco.model.Course;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
-import net.geco.model.Status;
 
 /**
  * @author Simon Denier
  * @since Mar 22, 2012
  *
  */
-public class ArchiveLookupHandler extends AnonCreationHandler implements ECardHandler {
+public class ArchiveLookupHandler extends AbstractHandlerWithCourseDetector implements ECardHandler {
+
+	private AnonCreationHandler anonHandler;
 
 	private ArchiveManager archiveManager;
 	
-	private Status customStatus;
-	
 	private boolean foundInArchive = false;
 
-	public ArchiveLookupHandler(GecoControl gecoControl, CourseDetector detector) {
+	public ArchiveLookupHandler(GecoControl gecoControl, CourseDetector detector, AnonCreationHandler anonHandler) {
 		super(gecoControl, detector);
+		this.anonHandler = anonHandler;
 		this.archiveManager = getService(ArchiveManager.class);
-	}
-
-	public ArchiveLookupHandler(GecoControl gecoControl, CourseDetector detector, Status custom) {
-		this(gecoControl, detector);
-		this.customStatus = custom;
 	}
 	
 	@Override
@@ -50,22 +45,15 @@ public class ArchiveLookupHandler extends AnonCreationHandler implements ECardHa
 			runnerControl.registerRunner(runner, data);
 			geco().log("Insertion " + data.infoString()); //$NON-NLS-1$
 		} else {
-			foundInArchive = false;
-			checkCustomStatus(data);
 			try {
-				registerAnonymousRunner(data, course, cardId);
+				foundInArchive = false;
+				this.anonHandler.registerAnonymousRunner(data, course, cardId);
 			} catch (RunnerCreationException e) {
 				geco().log(e.getLocalizedMessage());
 				return null;
 			}
 		}
 		return cardId;
-	}
-
-	public void checkCustomStatus(RunnerRaceData data) {
-		if( customStatus!=null ){
-			data.getResult().setStatus(customStatus);
-		}
 	}
 
 	@Override

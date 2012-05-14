@@ -8,7 +8,6 @@ package net.geco.control.ecardmodes;
 import net.geco.control.GecoControl;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
-import net.geco.model.Status;
 
 /**
  * @author Simon Denier
@@ -20,8 +19,9 @@ public class ECardRacingMode extends AbstractECardMode {
 	public ECardRacingMode(GecoControl geco, CourseDetector detector) {
 		super(ECardRacingMode.class, geco);
 		finishHandler = new AutoCheckerHandler(geco, detector);
-		duplicateHandler = new AnonCreationHandler(geco, detector);
-		unregisteredHandler = new ArchiveLookupHandler(geco, detector, Status.UNK);
+		duplicateHandler = new AnonCreationHandler.DuplicateCreationHandler(geco, detector);
+		unregisteredHandler = new ArchiveLookupHandler(geco, detector,
+								new AnonCreationHandler.UnknownCreationHandler(geco, detector));
 	}
 	
 	@Override

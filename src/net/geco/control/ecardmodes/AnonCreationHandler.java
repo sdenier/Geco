@@ -18,6 +18,35 @@ import net.geco.model.Status;
  */
 public class AnonCreationHandler extends AbstractHandlerWithCourseDetector implements ECardHandler {
 
+	public static class UnknownCreationHandler extends AnonCreationHandler {
+		public UnknownCreationHandler(GecoControl gecoControl, CourseDetector detector) {
+			super(gecoControl, detector);
+		}
+
+		@Override
+		protected void setCustomStatus(RunnerRaceData data) {
+			data.getResult().setStatus(Status.UNK);
+		}
+		
+	}
+	
+	public static class DuplicateCreationHandler extends AnonCreationHandler {
+		public DuplicateCreationHandler(GecoControl gecoControl, CourseDetector detector) {
+			super(gecoControl, detector);
+		}
+
+		@Override
+		public String handleDuplicate(RunnerRaceData data, Runner runner) {
+			return handleData(data, runner.getEcard());
+		}
+
+		@Override
+		protected void setCustomStatus(RunnerRaceData data) {
+			data.getResult().setStatus(Status.DUP);
+		}
+	
+	}
+	
 	public AnonCreationHandler(GecoControl gecoControl, CourseDetector detector) {
 		super(gecoControl, detector);
 	}
@@ -26,28 +55,33 @@ public class AnonCreationHandler extends AbstractHandlerWithCourseDetector imple
 	public String handleFinish(RunnerRaceData data) {return null;}
 
 	@Override
-	public String handleDuplicate(RunnerRaceData data, Runner runner) {
+	public String handleDuplicate(RunnerRaceData data, Runner runner) {return null;}
+
+	@Override
+	public String handleUnregistered(RunnerRaceData data, String cardId) {
+		return handleData(data, cardId);
+	}
+
+	protected String handleData(RunnerRaceData data, String ecard) {
 		Course course = courseDetector.detectCourse(data);
-		data.getResult().setStatus(Status.DUP);
-		String uniqueEcard = runnerControl.deriveUniqueEcard(runner.getEcard());
 		try {
-			registerAnonymousRunner(data, course, uniqueEcard);
+			registerAnonymousRunner(data, course, ecard);
 		} catch (RunnerCreationException e1) {
 			geco().log(e1.getLocalizedMessage());
 			return null;
 		}
-		return uniqueEcard;
+		return data.getRunner().getEcard();
 	}
 
-	protected void registerAnonymousRunner(RunnerRaceData data, Course course, String ecard)
+	protected void setCustomStatus(RunnerRaceData data) {	}
+
+	public void registerAnonymousRunner(RunnerRaceData data, Course course, String ecard)
 			throws RunnerCreationException {
-		Runner newRunner = runnerControl.buildAnonymousRunner(ecard, course);
+		setCustomStatus(data);
+		Runner newRunner = runnerControl.buildAnonymousRunner(ecard, course); // derive unique ecard
 		runnerControl.registerRunner(newRunner, data);
 		geco().log("Creation " + data.infoString()); //$NON-NLS-1$
 	}
-
-	@Override
-	public String handleUnregistered(RunnerRaceData data, String cardId) {return null;}
 
 	@Override
 	public boolean foundInArchive() {

@@ -20,7 +20,8 @@ public class ECardTrainingMode extends AbstractECardMode {
 		super(ECardTrainingMode.class, gecoControl);
 		finishHandler = new AutoCheckerHandler(gecoControl, detector);
 		duplicateHandler = new CopyRunnerHandler(gecoControl, detector);
-		unregisteredHandler = new ArchiveLookupHandler(gecoControl, detector);
+		unregisteredHandler = new ArchiveLookupHandler(gecoControl, detector,
+								new AnonCreationHandler(gecoControl, detector));
 	}
 
 	@Override

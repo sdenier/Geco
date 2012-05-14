@@ -27,66 +27,85 @@ import org.mockito.Mock;
  */
 public class AnonCreationHandlerTest extends ECardModeSetup {
 	
-	@Mock private RunnerControl runnerControl;
-	@Mock private CourseDetector detector;
-	private Runner runner;
+	@Mock protected RunnerControl runnerControl;
+	@Mock protected CourseDetector detector;
 
 	@Before
 	public void setUp() {
 		setUpMockControls();
 		setUpMockCardData();
+		fullRunner.setEcard("500");
 		when(gecoControl.getService(RunnerControl.class)).thenReturn(runnerControl);
-		when(runnerControl.deriveUniqueEcard("500")).thenReturn("500a");
+		when(runnerControl.deriveUniqueEcard("500")).thenReturn("500");
 		when(detector.detectCourse(fullRunnerData)).thenReturn(testCourse);
-		
-		runner = factory.createRunner();
-		runner.setEcard("500");
-		
+	}
+
+	protected AnonCreationHandler subject() {
+		return new AnonCreationHandler(gecoControl, detector);
 	}
 	
 	@Test
-	public void handleDuplicateCallsDetector() {
-		new AnonCreationHandler(gecoControl, detector).handleDuplicate(fullRunnerData, runner);
+	public void handleUnregisteredCallsDetector() {
+		subject().handleUnregistered(fullRunnerData, "500");
 		verify(detector).detectCourse(fullRunnerData);
 	}
 	
 	@Test
-	public void handleDuplicateSetsCustomStatus() {
-		new AnonCreationHandler(gecoControl, detector).handleDuplicate(fullRunnerData, runner);
-		assertEquals(Status.DUP, fullRunnerData.getStatus());
+	public void handleUnregisteredDontChangeStatus() {
+		fullRunnerData.getResult().setStatus(Status.OK);
+		subject().handleUnregistered(fullRunnerData, "500");
+		assertEquals(Status.OK, fullRunnerData.getStatus());
 	}
 
 	@Test
-	public void handleDuplicateCreatesNewRunner() {
-		new AnonCreationHandler(gecoControl, detector).handleDuplicate(fullRunnerData, runner);
+	public void handleUnregisteredCreatesNewRunner() {
+		subject().handleUnregistered(fullRunnerData, "500");
 		try {
-			verify(runnerControl).buildAnonymousRunner("500a", testCourse);
+			verify(runnerControl).buildAnonymousRunner("500", testCourse);
 		} catch (RunnerCreationException e) { fail(); }
 	}
 
 	@Test
-	public void handleDuplicateRegisterNewRunner() {
+	public void handleUnregisteredRegisterNewRunner() {
 		Runner newRunner = factory.createRunner();
 		try {
-			when(runnerControl.buildAnonymousRunner("500a", testCourse)).thenReturn(newRunner);
+			when(runnerControl.buildAnonymousRunner("500", testCourse)).thenReturn(newRunner);
 		} catch (RunnerCreationException e) { fail(); }
-		new AnonCreationHandler(gecoControl, detector).handleDuplicate(fullRunnerData, runner);
+		subject().handleUnregistered(fullRunnerData, "500");
 		verify(runnerControl).registerRunner(newRunner, fullRunnerData);
 	}
 	
 	@Test
-	public void handleDuplicateReturnsId() {
-		String returnedEcard = new AnonCreationHandler(gecoControl, detector).handleDuplicate(fullRunnerData, runner);
-		assertEquals("500a", returnedEcard);
+	public void handleUnregisteredReturnsCardId() {
+		String returnedEcard = subject().handleUnregistered(fullRunnerData, "500");
+		assertEquals("500", returnedEcard);
 	}
 
 	@Test
-	public void handleDuplicateReturnsNullWhenCreationGoesWrong() {
+	public void handleUnregisteredReturnsNullWhenCreationGoesWrong() {
 		try {
-			when(runnerControl.buildAnonymousRunner("500a", testCourse)).thenThrow(new RunnerCreationException("Error"));
+			when(runnerControl.buildAnonymousRunner("500", testCourse)).thenThrow(new RunnerCreationException("Error"));
 		} catch (RunnerCreationException e) { fail(); }
-		String returnedEcard = new AnonCreationHandler(gecoControl, detector).handleDuplicate(fullRunnerData, runner);
+		String returnedEcard = subject().handleUnregistered(fullRunnerData, "500");
 		assertNull(returnedEcard);
 	}
 
+	@Test
+	public void registerAnonymousRunnerCreatesNewRunner() {
+		try {
+			subject().registerAnonymousRunner(fullRunnerData, testCourse, "5000");
+			verify(runnerControl).buildAnonymousRunner("5000", testCourse);
+		} catch (RunnerCreationException e) { fail(); }
+	}
+
+	@Test
+	public void registerAnonymousRunnerRegisterNewRunner() {
+		Runner newRunner = factory.createRunner();
+		try {
+			when(runnerControl.buildAnonymousRunner("5000", testCourse)).thenReturn(newRunner);
+			subject().registerAnonymousRunner(fullRunnerData, testCourse, "5000");
+		} catch (RunnerCreationException e) { fail(); }
+		verify(runnerControl).registerRunner(newRunner, fullRunnerData);
+	}
+	
 }
