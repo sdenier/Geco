@@ -12,11 +12,15 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.ButtonGroup;
 import javax.swing.InputVerifier;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import net.geco.control.SIReaderHandler.SerialPort;
@@ -114,6 +118,33 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 				return super.shouldYieldFocus(input);
 			}
 		});
+		
+		c.gridy = 5;
+		c.gridwidth = 3;
+		c.insets = new Insets(15, 0, 5, 5);
+		Box modeConfigBox = Box.createVerticalBox();
+		add(modeConfigBox, c);
+		modeConfigBox.setBorder(BorderFactory.createTitledBorder("Mode Behavior"));
+		modeConfigBox.add(new JLabel("When reading an unregistered ecard in Racing or Training mode"));
+		modeConfigBox.add(Box.createVerticalStrut(5));
+		JRadioButton archiveLookupB = new JRadioButton("Lookup and insert matching entry from archive, create an anonymous entry otherwise");
+		modeConfigBox.add(archiveLookupB);
+		archiveLookupB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				geco.siHandler().enableArchiveLookup();
+			}
+		});
+		JRadioButton alwaysCreateB = new JRadioButton("Dont lookup in archive, always create an anonymous entry");
+		modeConfigBox.add(alwaysCreateB);
+		alwaysCreateB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				geco.siHandler().disableArchiveLookup();
+			}
+		});
+		ButtonGroup modeConfig = new ButtonGroup();
+		modeConfig.add(archiveLookupB);
+		modeConfig.add(alwaysCreateB);
+		archiveLookupB.setSelected(true);
 	}
 
 	@Override

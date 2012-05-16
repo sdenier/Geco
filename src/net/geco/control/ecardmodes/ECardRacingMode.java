@@ -16,12 +16,14 @@ import net.geco.model.RunnerRaceData;
  */
 public class ECardRacingMode extends AbstractECardMode {
 
+	private CourseDetector detector;
+	
 	public ECardRacingMode(GecoControl geco, CourseDetector detector) {
 		super(ECardRacingMode.class, geco);
+		this.detector = detector;
 		finishHandler = new AutoCheckerHandler(geco, detector);
 		duplicateHandler = new AnonCreationHandler.DuplicateCreationHandler(geco, detector);
-		unregisteredHandler = new ArchiveLookupHandler(geco, detector,
-								new AnonCreationHandler.UnknownCreationHandler(geco, detector));
+		toggleArchiveLookup(true);
 	}
 	
 	@Override
@@ -48,6 +50,15 @@ public class ECardRacingMode extends AbstractECardMode {
 			} else {
 				geco().announcer().announceUnknownCardRead(returnedCard);
 			}
+		}
+	}
+
+	public void toggleArchiveLookup(boolean toggle) {
+		if( toggle ){
+			unregisteredHandler = new ArchiveLookupHandler(geco(), detector,
+					new AnonCreationHandler.UnknownCreationHandler(geco(), detector));			
+		} else {
+			unregisteredHandler = new AnonCreationHandler.UnknownCreationHandler(geco(), detector); 
 		}
 	}
 	

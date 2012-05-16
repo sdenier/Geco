@@ -89,6 +89,16 @@ public class SIReaderHandler extends Control
 		currentEcardMode = getService(modeClass);
 	}
 	
+	public void enableArchiveLookup() {
+		getService(ECardRacingMode.class).toggleArchiveLookup(true);
+		getService(ECardTrainingMode.class).toggleArchiveLookup(true);
+	}
+	
+	public void disableArchiveLookup() {
+		getService(ECardRacingMode.class).toggleArchiveLookup(false);
+		getService(ECardTrainingMode.class).toggleArchiveLookup(false);
+	}
+	
 	public static String portNameProperty() {
 		return "SIPortname"; //$NON-NLS-1$
 	}
