@@ -86,14 +86,14 @@ public class HyperLog extends JTextPane implements Logging {
 	@Override
 	public void log(String message, boolean warning) {
 		if( warning )
-			message = Html.htmlTag("font", "color=red", message); //$NON-NLS-1$ //$NON-NLS-2$
+			message = Html.tag("font", "color=red", message, new StringBuilder()).toString(); //$NON-NLS-1$ //$NON-NLS-2$
 		update(message);
 	}
 
 	@Override
 	public void info(String message, boolean warning) {
 		if( warning )
-			message = Html.htmlTag("font", "color=red", message); //$NON-NLS-1$ //$NON-NLS-2$
+			message = Html.tag("font", "color=red", message, new StringBuilder()).toString(); //$NON-NLS-1$ //$NON-NLS-2$
 		update(message);
 	}
 
