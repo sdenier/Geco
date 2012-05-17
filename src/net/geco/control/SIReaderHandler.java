@@ -54,6 +54,8 @@ public class SIReaderHandler extends Control
 	private boolean starting;
 
 	private ECardMode currentEcardMode;
+	
+	private boolean archiveLookupOn;
 
 	
 	public static class SerialPort {
@@ -80,23 +82,41 @@ public class SIReaderHandler extends Control
 		new ECardTrainingMode(geco, courseDetector);
 		new ECardRegisterMode(geco);
 		selectECardMode(ECardRacingMode.class);
+		toggleArchiveLookup();
 		
 		changePortName();
 		geco.announcer().registerStageListener(this);
 	}
-	
+
 	public void selectECardMode(Class<? extends ECardMode> modeClass) {
 		currentEcardMode = getService(modeClass);
 	}
 	
+	public boolean archiveLookupEnabled() {
+		return archiveLookupOn;
+	}
+	
+	private void toggleArchiveLookup() {
+		toggleArchiveLookup(Boolean.parseBoolean(
+				stage().getProperties().getProperty(archiveLookupProperty(), "true"))); //$NON-NLS-1$
+	}
+	
+	private void toggleArchiveLookup(boolean toggle) {
+		archiveLookupOn = toggle;
+		getService(ECardRacingMode.class).toggleArchiveLookup(toggle);
+		getService(ECardTrainingMode.class).toggleArchiveLookup(toggle);		
+	}
+	
 	public void enableArchiveLookup() {
-		getService(ECardRacingMode.class).toggleArchiveLookup(true);
-		getService(ECardTrainingMode.class).toggleArchiveLookup(true);
+		toggleArchiveLookup(true);
 	}
 	
 	public void disableArchiveLookup() {
-		getService(ECardRacingMode.class).toggleArchiveLookup(false);
-		getService(ECardTrainingMode.class).toggleArchiveLookup(false);
+		toggleArchiveLookup(false);
+	}
+	
+	public static String archiveLookupProperty() {
+		return "ArchiveLookup"; //$NON-NLS-1$
 	}
 	
 	public static String portNameProperty() {
@@ -268,6 +288,7 @@ public class SIReaderHandler extends Control
 
 	@Override
 	public void saving(Stage stage, Properties properties) {
+		properties.setProperty(archiveLookupProperty(), Boolean.toString(archiveLookupOn));
 		properties.setProperty(portNameProperty(), getPort().name());
 	}
 

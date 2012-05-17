@@ -144,7 +144,11 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 		ButtonGroup modeConfig = new ButtonGroup();
 		modeConfig.add(archiveLookupB);
 		modeConfig.add(alwaysCreateB);
-		archiveLookupB.setSelected(true);
+		if ( geco.siHandler().archiveLookupEnabled() ) {
+			archiveLookupB.setSelected(true);
+		} else {
+			alwaysCreateB.setSelected(true);
+		}
 	}
 
 	@Override
