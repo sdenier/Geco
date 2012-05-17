@@ -24,8 +24,8 @@ import net.geco.model.impl.POFactory;
 import net.geco.model.xml.CourseSaxImporter;
 import net.geco.ui.basics.SwingUtils;
 import net.geco.ui.framework.RunnersTableAnnouncer;
-import net.geco.ui.framework.UIAnnouncers;
 import net.geco.ui.framework.RunnersTableAnnouncer.RunnersTableListener;
+import net.geco.ui.framework.UIAnnouncers;
 
 
 /**
@@ -186,6 +186,8 @@ public class LiveComponent implements RunnersTableListener {
 			} else {
 				map.showTrace(course);
 			}
+		} else {
+			displayMap();
 		}
 	}
 
