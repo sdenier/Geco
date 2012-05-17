@@ -358,11 +358,12 @@ public class RunnerControl extends Control {
 	}
 	
 	public boolean validateRegisteredStartTime(Runner runner, String startTime) {
-		if( startTime.equals("") ) //$NON-NLS-1$
-			return false;
 		try {
 			Date oldTime = runner.getRegisteredStarttime();
-			Date newTime = TimeManager.userParse(startTime);
+			Date newTime = (startTime.equals("")) ? //$NON-NLS-1$
+				TimeManager.NO_TIME
+				:
+				TimeManager.userParse(startTime);
 			if( ! oldTime.equals(newTime) ) {
 				runner.setRegisteredStarttime(newTime);
 				geco().log(Messages.getString("RunnerControl.RegisteredStartimeChangeMessage") //$NON-NLS-1$
