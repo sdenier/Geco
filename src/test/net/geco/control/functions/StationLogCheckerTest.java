@@ -5,11 +5,15 @@
 package test.net.geco.control.functions;
 
 import static junit.framework.Assert.assertEquals;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
+
 import net.geco.control.GecoControl;
 import net.geco.control.RunnerControl;
-import net.geco.control.functions.StationLogFunction;
+import net.geco.control.functions.StationLogChecker;
 import net.geco.model.Registry;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
@@ -28,7 +32,7 @@ import test.net.geco.testfactory.RunnerFactory;
  * @since May 24, 2012
  *
  */
-public class StationLogFunctionTest {
+public class StationLogCheckerTest {
 
 	private GecoControl geco;
 
@@ -38,8 +42,8 @@ public class StationLogFunctionTest {
 	@Mock
 	private RunnerControl runnerControl;
 	
-	protected StationLogFunction subject() {
-		return new StationLogFunction(geco);
+	protected StationLogChecker subject() {
+		return new StationLogChecker(geco);
 	}
 	
 	@Before
@@ -95,4 +99,13 @@ public class StationLogFunctionTest {
 		verify(geco).info("WARNING: ecard 1000000 is unregistered, yet found in running log", false);
 	}
 
+	@Test
+	public void markNotStartedEntriesAsDNS() {
+		RunnerRaceData okRunner = RunnerFactory.createWithStatus("1", Status.OK);
+		RunnerRaceData dnsRunner = RunnerFactory.createWithStatus("2", Status.NOS);
+		when(registry.getRunnersData()).thenReturn(Arrays.asList(new RunnerRaceData[]{okRunner, dnsRunner}));
+		subject().markNotStartedEntriesAsDNS();
+		verify(runnerControl).validateStatus(dnsRunner, Status.DNS);
+		verify(runnerControl, never()).validateStatus(okRunner, Status.DNS);
+	}
 }

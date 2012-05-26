@@ -4,6 +4,8 @@
  */
 package net.geco.control.functions;
 
+import java.util.Set;
+
 import net.geco.control.Control;
 import net.geco.control.GecoControl;
 import net.geco.control.RunnerControl;
@@ -17,13 +19,19 @@ import net.geco.model.Status;
  * @since May 24, 2012
  *
  */
-public class StationLogFunction extends Control {
+public class StationLogChecker extends Control {
 
 	private RunnerControl runnerControl;
 
-	public StationLogFunction(GecoControl gecoControl) {
+	public StationLogChecker(GecoControl gecoControl) {
 		super(gecoControl);
 		runnerControl = getService(RunnerControl.class);
+	}
+	
+	public void checkECards(Set<String> ecards) {
+		for (String ecard : ecards) {
+			checkECardStatus(ecard);
+		}
 	}
 
 	public void checkECardStatus(String ecard) {
@@ -39,8 +47,16 @@ public class StationLogFunction extends Control {
 										runner.idString(), Status.DNS.toString()));
 			}
 		} else {
-			geco().info(String.format("WARNING: ecard %s is unregistered, yet found in running log", ecard),
-						false);
+			geco().announcer().dataInfo(
+					String.format("WARNING: ecard %s is unregistered, yet found in running log", ecard));
+		}
+	}
+
+	public void markNotStartedEntriesAsDNS() {
+		for (RunnerRaceData runnerData : registry().getRunnersData()) {
+			if( runnerData.getResult().is(Status.NOS) ){
+				runnerControl.validateStatus(runnerData, Status.DNS);
+			}
 		}
 	}
 
