@@ -29,14 +29,18 @@ public enum GecoIcon {
 	LiveOn		("irkickflash.png"), //$NON-NLS-1$
 
 	EcardOffMode		("exit.png"), //$NON-NLS-1$
-	EcardRacingMode	("cnr.png"), //$NON-NLS-1$
+	EcardRacingMode		("cnr.png"), //$NON-NLS-1$
 	EcardTrainingMode	("cnrgrey.png"), //$NON-NLS-1$
 	EcardRegisterMode	("graphic-design.png"), //$NON-NLS-1$
 	
 	ImportFile	("fileimport.png"), //$NON-NLS-1$
 	OpenArchive	("db.png"), //$NON-NLS-1$
 	ResetTime	("history.png"), //$NON-NLS-1$
-	SplitPrint	("filequickprint_small.png"); //$NON-NLS-1$
+	SplitPrint	("filequickprint_small.png"), //$NON-NLS-1$
+
+	SelectFiles	("fileopen.png"), //$NON-NLS-1$
+	Reset		("cancel.png"), //$NON-NLS-1$
+	Help		("documentinfo.png"); //$NON-NLS-1$
 
 	private String resourceName;
 		

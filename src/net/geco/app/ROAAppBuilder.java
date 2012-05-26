@@ -27,6 +27,7 @@ import net.geco.functions.LegNeutralizationFunction;
 import net.geco.functions.RecheckFunction;
 import net.geco.functions.RefereeLogFunction;
 import net.geco.functions.StartTimeFunction;
+import net.geco.functions.StationLogFunction;
 import net.geco.model.Factory;
 import net.geco.model.Messages;
 import net.geco.model.impl.POFactory;
@@ -91,6 +92,7 @@ public class ROAAppBuilder extends AppBuilder {
 		new RefereeLogFunction(gecoControl);
 		new StartTimeFunction(gecoControl);
 		new LegNeutralizationFunction(gecoControl);
+		new StationLogFunction(gecoControl);
 		new RecheckFunction(gecoControl);
 		new GeneratorFunction(gecoControl);
 	}
