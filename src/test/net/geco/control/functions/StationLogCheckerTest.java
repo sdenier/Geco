@@ -24,7 +24,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import test.net.geco.GecoFixtures;
+import test.net.geco.testfactory.MockControls;
 import test.net.geco.testfactory.RunnerFactory;
 
 /**
@@ -49,7 +49,7 @@ public class StationLogCheckerTest {
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-		geco = GecoFixtures.mockGecoControlWithRegistry(registry);
+		geco = MockControls.mockGecoControlWithRegistry(registry);
 		when(geco.getService(RunnerControl.class)).thenReturn(runnerControl);
 	}
 	
@@ -96,7 +96,7 @@ public class StationLogCheckerTest {
 	public void checkECardStatus_reportUnregisteredECardFoundInLog() {
 		when(registry.findRunnerByEcard("1000000")).thenReturn(null);
 		subject().checkECardStatus("1000000");
-		verify(geco).info("WARNING: ecard 1000000 is unregistered, yet found in running log", false);
+		verify(geco.announcer()).dataInfo("WARNING: ecard 1000000 is unregistered, yet found in running log");
 	}
 
 	@Test
