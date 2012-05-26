@@ -23,9 +23,12 @@ public class StationLogChecker extends Control {
 
 	private RunnerControl runnerControl;
 
-	public StationLogChecker(GecoControl gecoControl) {
+	private boolean simulationMode;
+
+	public StationLogChecker(GecoControl gecoControl, boolean simulation) {
 		super(gecoControl);
 		runnerControl = getService(RunnerControl.class);
+		simulationMode = simulation;
 	}
 	
 	public void checkECards(Set<String> ecards) {
@@ -43,7 +46,12 @@ public class StationLogChecker extends Control {
 			RunnerRaceData runnerData = registry().findRunnerData(runner);
 			RunnerResult result = runnerData.getResult();
 			if( result.is(Status.NOS) ){
-				runnerControl.validateStatus(runnerData, Status.RUN);
+				if( simulationMode ){
+					geco().announcer().dataInfo(String.format("Would change %s to Running status",
+																runnerData.getRunner().idString()));
+				} else {
+					runnerControl.validateStatus(runnerData, Status.RUN);
+				}
 				return 1;
 			} else
 			if( result.is(Status.DNS) ){
@@ -57,13 +65,21 @@ public class StationLogChecker extends Control {
 		return 0;
 	}
 
-	public void markNotStartedEntriesAsDNS() {
+	public void markNotStartedEntriesAsDNS(Set<String> ecards) {
 		geco().announcer().dataInfo("Marking remaining entries as DNS");
 		int nbDns = 0;
 		for (RunnerRaceData runnerData : registry().getRunnersData()) {
 			if( runnerData.getResult().is(Status.NOS) ){
-				runnerControl.validateStatus(runnerData, Status.DNS);
-				nbDns++;
+				if( simulationMode ) {
+					Runner runner = runnerData.getRunner();
+					if( ! ecards.contains(runner.getEcard()) ) {
+						geco().announcer().dataInfo(String.format("Would change %s to DNS status", runner.idString()));
+						nbDns++;
+					} // else would have been set to Running
+				} else {
+					runnerControl.validateStatus(runnerData, Status.DNS);
+					nbDns++;
+				}
 			}
 		}
 		geco().log(String.format("%d runners set to DNS status", nbDns));

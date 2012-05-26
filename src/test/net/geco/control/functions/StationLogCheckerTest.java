@@ -4,12 +4,13 @@
  */
 package test.net.geco.control.functions;
 
-import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.fail;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import net.geco.control.GecoControl;
 import net.geco.control.RunnerControl;
@@ -43,8 +44,12 @@ public class StationLogCheckerTest {
 	private RunnerControl runnerControl;
 	
 	protected StationLogChecker subject() {
-		return new StationLogChecker(geco);
+		return new StationLogChecker(geco, false);
 	}
+	
+	protected StationLogChecker subjectForSimulation() {
+		return new StationLogChecker(geco, true);
+	}	
 	
 	@Before
 	public void setUp() {
@@ -64,7 +69,7 @@ public class StationLogCheckerTest {
 		RunnerRaceData runnerData = RunnerFactory.createWithStatus("1000000", Status.OK);
 		setUpRegistry(runnerData);
 		subject().checkECardStatus("1000000");
-		assertEquals("should not change status if already finished", Status.OK, runnerData.getStatus());
+		verify(runnerControl, never()).validateStatus(runnerData, Status.RUN);
 	}
 
 	@Test
@@ -73,7 +78,7 @@ public class StationLogCheckerTest {
 		setUpRegistry(runnerData);
 		when(registry.findRunnerByEcard("1000000")).thenReturn(null);
 		subject().checkECardStatus("1000000");
-		assertEquals("should not change not started entries if not in log", Status.NOS, runnerData.getStatus());		
+		verify(runnerControl, never()).validateStatus(runnerData, Status.RUN);
 	}
 	
 	@Test
@@ -104,8 +109,32 @@ public class StationLogCheckerTest {
 		RunnerRaceData okRunner = RunnerFactory.createWithStatus("1", Status.OK);
 		RunnerRaceData dnsRunner = RunnerFactory.createWithStatus("2", Status.NOS);
 		when(registry.getRunnersData()).thenReturn(Arrays.asList(new RunnerRaceData[]{okRunner, dnsRunner}));
-		subject().markNotStartedEntriesAsDNS();
+		subject().markNotStartedEntriesAsDNS(Collections.<String> emptySet());
 		verify(runnerControl).validateStatus(dnsRunner, Status.DNS);
 		verify(runnerControl, never()).validateStatus(okRunner, Status.DNS);
 	}
+	
+	@Test
+	public void checkECardStatus_simulationDontChangeStatus() {
+		RunnerRaceData runnerData = RunnerFactory.createWithStatus("1000000", Status.NOS);
+		setUpRegistry(runnerData);
+		subjectForSimulation().checkECardStatus("1000000");
+		verify(runnerControl, never()).validateStatus(runnerData, Status.RUN);
+	}
+
+	@Test
+	public void checkECardStatus_simulationDontRegisterNewECard() {
+		when(registry.findRunnerByEcard("1000000")).thenReturn(null);
+		subjectForSimulation().checkECardStatus("1000000");
+		fail("Pending test...");
+	}
+
+	@Test
+	public void markNotStartedEntriesAsDNS_simulationDontChangeStatus() {
+		RunnerRaceData runnerData = RunnerFactory.createWithStatus("1000000", Status.NOS);
+		when(registry.getRunnersData()).thenReturn(Arrays.asList(new RunnerRaceData[]{runnerData}));
+		subjectForSimulation().markNotStartedEntriesAsDNS(Collections.<String> emptySet());
+		verify(runnerControl, never()).validateStatus(runnerData, Status.DNS);
+	}
+	
 }

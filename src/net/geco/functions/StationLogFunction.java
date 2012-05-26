@@ -62,10 +62,18 @@ public class StationLogFunction extends GecoFunction {
 	
 	@Override
 	public void execute() {
-		StationLogChecker func = new StationLogChecker(geco());
-		func.checkECards(readEcardsFromFiles());
+		boolean simulationMode = simulateB.isSelected();
+		if( simulationMode ) {
+			geco().announcer().dataInfo("SIMULATION BEGINS");
+		}
+		StationLogChecker func = new StationLogChecker(geco(), simulationMode);
+		Set<String> ecards = readEcardsFromFiles();
+		func.checkECards(ecards);
 		if( setDnsB.isSelected() ){
-			func.markNotStartedEntriesAsDNS();
+			func.markNotStartedEntriesAsDNS(ecards);
+		}
+		if( simulationMode ) {
+			geco().announcer().dataInfo("SIMULATION ENDS HERE");
 		}
 	}
 
@@ -173,18 +181,18 @@ public class StationLogFunction extends GecoFunction {
 		help.open("ul");
 		help.tag("li", "registered runners which are still running (started but not yet arrived)");
 		help.tag("li", "registered runners which did not start (check option \"Mark...\")");
-		help.tag("li", "unregistered e-cards (check option to create new entries)");
+		help.tag("li", "unregistered e-cards (check option \"Insert...\")");
 		help.close("ul");
 		JLabel listL = new JLabel(help.close());
 
 		Object[] message = new Object[] {
-				"Select log files from Start, Check, or Clear stations. " +
-						"Function reads ecards from logs to detect:",
+				"Select log files from Start, Check, or Clear stations. ",
+				"This function reads ecards from logs to detect:",
 				listL,
 				new JLabel(Html.htmlTag("font", "color=\"red\"",
 						"Import log files only if station memories have been erased before the stage.")),
 				new JLabel(Html.htmlTag("font", "color=\"red\"",
-						"Do not check DNS option until all logs have been checked in."))
+						"Do not check the \"Mark DNS\" option until all logs have been checked in."))
 		};
 		JOptionPane.showMessageDialog(null,
 									  message,
