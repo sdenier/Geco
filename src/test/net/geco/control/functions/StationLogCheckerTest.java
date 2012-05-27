@@ -4,7 +4,8 @@
  */
 package test.net.geco.control.functions;
 
-import static junit.framework.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -12,6 +13,7 @@ import static org.mockito.Mockito.when;
 import java.util.Arrays;
 import java.util.Collections;
 
+import net.geco.control.ArchiveManager;
 import net.geco.control.GecoControl;
 import net.geco.control.RunnerControl;
 import net.geco.control.functions.StationLogChecker;
@@ -68,7 +70,7 @@ public class StationLogCheckerTest {
 	public void checkECardStatus_dontChangeFinishedEntry() {
 		RunnerRaceData runnerData = RunnerFactory.createWithStatus("1000000", Status.OK);
 		setUpRegistry(runnerData);
-		subject().checkECardStatus("1000000");
+		subject().checkECardStatus("1000000", false);
 		verify(runnerControl, never()).validateStatus(runnerData, Status.RUN);
 	}
 
@@ -77,7 +79,7 @@ public class StationLogCheckerTest {
 		RunnerRaceData runnerData = RunnerFactory.createWithStatus("5000", Status.NOS);
 		setUpRegistry(runnerData);
 		when(registry.findRunnerByEcard("1000000")).thenReturn(null);
-		subject().checkECardStatus("1000000");
+		subject().checkECardStatus("1000000", false);
 		verify(runnerControl, never()).validateStatus(runnerData, Status.RUN);
 	}
 	
@@ -85,7 +87,7 @@ public class StationLogCheckerTest {
 	public void checkECardStatus_setNotStartedEntryToRunning() {
 		RunnerRaceData runnerData = RunnerFactory.createWithStatus("1000000", Status.NOS);
 		setUpRegistry(runnerData);
-		subject().checkECardStatus("1000000");
+		subject().checkECardStatus("1000000", false);
 		verify(runnerControl).validateStatus(runnerData, Status.RUN);
 	}
 	
@@ -93,15 +95,26 @@ public class StationLogCheckerTest {
 	public void checkECardStatus_reportInconsistentDNSEntryFoundInLog() {
 		RunnerRaceData runnerData = RunnerFactory.createWithStatus("1000000", Status.DNS);
 		setUpRegistry(runnerData);
-		subject().checkECardStatus("1000000");
+		subject().checkECardStatus("1000000", false);
 		verify(geco).log("WARNING: " + runnerData.getRunner().idString() + " found in running log, but set as DNS in registry");
 	}
 
 	@Test
 	public void checkECardStatus_reportUnregisteredECardFoundInLog() {
 		when(registry.findRunnerByEcard("1000000")).thenReturn(null);
-		subject().checkECardStatus("1000000");
+		subject().checkECardStatus("1000000", false);
 		verify(geco.announcer()).dataInfo("WARNING: ecard 1000000 is unregistered, yet found in running log");
+		verify(runnerControl, never()).registerRunner(any(Runner.class), any(RunnerRaceData.class));
+	}
+	@Test
+	public void checkECardStatus_registerUnregisteredECardOnDemand() {
+		ArchiveManager archive = mock(ArchiveManager.class);
+		Runner runner = mock(Runner.class);
+		when(archive.findAndCreateRunner("1000000")).thenReturn(runner);
+		when(geco.getService(ArchiveManager.class)).thenReturn(archive);
+		when(registry.findRunnerByEcard("1000000")).thenReturn(null);
+		subject().checkECardStatus("1000000", true);
+		verify(runnerControl).registerRunner(any(Runner.class), any(RunnerRaceData.class));
 	}
 
 	@Test
@@ -118,15 +131,15 @@ public class StationLogCheckerTest {
 	public void checkECardStatus_simulationDontChangeStatus() {
 		RunnerRaceData runnerData = RunnerFactory.createWithStatus("1000000", Status.NOS);
 		setUpRegistry(runnerData);
-		subjectForSimulation().checkECardStatus("1000000");
+		subjectForSimulation().checkECardStatus("1000000", false);
 		verify(runnerControl, never()).validateStatus(runnerData, Status.RUN);
 	}
 
 	@Test
 	public void checkECardStatus_simulationDontRegisterNewECard() {
 		when(registry.findRunnerByEcard("1000000")).thenReturn(null);
-		subjectForSimulation().checkECardStatus("1000000");
-		fail("Pending test...");
+		subjectForSimulation().checkECardStatus("1000000", true);
+		verify(runnerControl, never()).registerRunner(any(Runner.class), any(RunnerRaceData.class));
 	}
 
 	@Test

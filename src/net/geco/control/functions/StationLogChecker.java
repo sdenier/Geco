@@ -9,6 +9,7 @@ import java.util.Set;
 import net.geco.control.Control;
 import net.geco.control.GecoControl;
 import net.geco.control.RunnerControl;
+import net.geco.control.ecardmodes.RegisterRunnerHandler;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.RunnerResult;
@@ -23,6 +24,8 @@ public class StationLogChecker extends Control {
 
 	private RunnerControl runnerControl;
 
+	private RegisterRunnerHandler registerHandler;
+
 	private boolean simulationMode;
 
 	public StationLogChecker(GecoControl gecoControl, boolean simulation) {
@@ -31,16 +34,16 @@ public class StationLogChecker extends Control {
 		simulationMode = simulation;
 	}
 	
-	public void checkECards(Set<String> ecards) {
+	public void checkECards(Set<String> ecards, boolean autoInsert) {
 		geco().announcer().dataInfo("Reading e-cards log from stations");
 		int nbRunning = 0;
 		for (String ecard : ecards) {
-			nbRunning += checkECardStatus(ecard);
+			nbRunning += checkECardStatus(ecard, autoInsert);
 		}
 		geco().log(String.format("%d runners set to Running status", nbRunning));
 	}
 
-	public int checkECardStatus(String ecard) {
+	public int checkECardStatus(String ecard, boolean autoInsert) {
 		Runner runner = registry().findRunnerByEcard(ecard);
 		if( runner!=null ){
 			RunnerRaceData runnerData = registry().findRunnerData(runner);
@@ -59,10 +62,26 @@ public class StationLogChecker extends Control {
 										runner.idString()));
 			}
 		} else {
-			geco().announcer().dataInfo(
+			if( autoInsert ) {
+				if( simulationMode ) {
+					geco().announcer().dataInfo(
+						String.format("Would lookup ecard %s in archive and register a new entry", ecard));
+				} else {
+					registerHandler().handleUnregistered(null, ecard);
+				}
+			} else {
+				geco().announcer().dataInfo(
 					String.format("WARNING: ecard %s is unregistered, yet found in running log", ecard));
+			}
 		}
 		return 0;
+	}
+	
+	private RegisterRunnerHandler registerHandler() {
+		if( registerHandler == null ) {
+			registerHandler = new RegisterRunnerHandler(geco());
+		}
+		return registerHandler;
 	}
 
 	public void markNotStartedEntriesAsDNS(Set<String> ecards) {
@@ -73,7 +92,8 @@ public class StationLogChecker extends Control {
 				if( simulationMode ) {
 					Runner runner = runnerData.getRunner();
 					if( ! ecards.contains(runner.getEcard()) ) {
-						geco().announcer().dataInfo(String.format("Would change %s to DNS status", runner.idString()));
+						geco().announcer().dataInfo(
+								String.format("Would change %s to DNS status", runner.idString()));
 						nbDns++;
 					} // else would have been set to Running
 				} else {

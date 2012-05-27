@@ -68,7 +68,7 @@ public class StationLogFunction extends GecoFunction {
 		}
 		StationLogChecker func = new StationLogChecker(geco(), simulationMode);
 		Set<String> ecards = readEcardsFromFiles();
-		func.checkECards(ecards);
+		func.checkECards(ecards, autoInsertB.isSelected());
 		if( setDnsB.isSelected() ){
 			func.markNotStartedEntriesAsDNS(ecards);
 		}
