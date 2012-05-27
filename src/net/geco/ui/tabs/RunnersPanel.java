@@ -208,7 +208,7 @@ public class RunnersPanel extends TabPanel
 		importCsvB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir")); //$NON-NLS-1$
+				JFileChooser fileChooser = new JFileChooser(geco().getCurrentStagePath());
 				fileChooser.setDialogTitle(Messages.uiGet("RunnersPanel.ImportStartlistTitle")); //$NON-NLS-1$
 				int answer = fileChooser.showOpenDialog(frame());
 				if( answer==JFileChooser.APPROVE_OPTION ) {

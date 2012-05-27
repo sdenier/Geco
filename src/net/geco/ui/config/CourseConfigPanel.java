@@ -7,7 +7,6 @@ package net.geco.ui.config;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -84,9 +83,8 @@ public class CourseConfigPanel extends ConfigTablePanel<Course> implements Confi
 		ActionListener importAction = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser chooser = new JFileChooser();
+				JFileChooser chooser = new JFileChooser(geco.getCurrentStagePath());
 				chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-				chooser.setSelectedFile(new File(geco.getCurrentStagePath()));
 				chooser.setDialogTitle(Messages.uiGet("CourseConfigPanel.SelectXMLFileTitle")); //$NON-NLS-1$
 				int answer = chooser.showDialog(frame, Messages.uiGet("CourseConfigPanel.CourseImportXMLLabel")); //$NON-NLS-1$
 				if( answer==JFileChooser.APPROVE_OPTION ) {

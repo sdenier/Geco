@@ -109,7 +109,7 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 		selectArchiveFileB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir")); //$NON-NLS-1$
+				JFileChooser fileChooser = new JFileChooser(geco.getCurrentStagePath());
 				fileChooser.setDialogTitle(Messages.uiGet("ArchiveViewer.SelectArchiveLabel")); //$NON-NLS-1$
 				int answer = fileChooser.showOpenDialog(frame);
 				if( answer==JFileChooser.APPROVE_OPTION ) {
@@ -130,7 +130,7 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 		selectCNFileB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir")); //$NON-NLS-1$
+				JFileChooser fileChooser = new JFileChooser(geco.getCurrentStagePath());
 				fileChooser.setDialogTitle(Messages.uiGet("StageConfigPanel.SelectCNfileLabel")); //$NON-NLS-1$
 				int answer = fileChooser.showOpenDialog(frame);
 				if( answer==JFileChooser.APPROVE_OPTION ) {
