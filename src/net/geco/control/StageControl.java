@@ -5,6 +5,7 @@
 package net.geco.control;
 
 import java.io.BufferedReader;
+import java.util.ArrayList;
 
 import net.geco.basics.Announcer;
 import net.geco.basics.GecoResources;
@@ -76,6 +77,16 @@ public class StageControl extends Control {
 			clubHasRunners |= (runner.getClub() == club);
 		}
 		return !clubHasRunners;
+	}
+
+	public void removeAllClubs() {
+		geco().log("Removing all clubs");
+		ArrayList<Club> clubs = new ArrayList<Club>(registry().getClubs());
+		for (Club club : clubs) {
+			if( ! removeClub(club) ){
+				geco().info("Some runners belong to " + club.getName(), true);
+			}
+		}
 	}
 
 	public Course createCourse(String name) {
@@ -159,6 +170,20 @@ public class StageControl extends Control {
 		}
 		return true;
 	}
+
+	public void removeAllCourses() {
+		geco().log("Removing all courses");
+		ArrayList<Course> courses = new ArrayList<Course>(registry().getCourses());
+		for (Course course : courses) {
+			try {
+				if( course != registry().autoCourse() ){
+					removeCourse(course);
+				}
+			} catch (Exception e) {
+				geco().info(String.format("%s %s", e.getLocalizedMessage(), course.getName()), true);
+			}
+		}
+	}
 	
 	public void updateName(Course course, String newName) {
 		if( course == registry().autoCourse() ){
@@ -221,6 +246,18 @@ public class StageControl extends Control {
 		return true;
 	}
 
+	public void removeAllCategories() {
+		geco().log("Removing all categories");
+		ArrayList<Category> categories = new ArrayList<Category>(registry().getCategories());
+		for (Category category : categories) {
+			try {
+				removeCategory(category);
+			} catch (Exception e) {
+				geco().info(String.format("%s %s", e.getLocalizedMessage(), category.getName()), true);
+			}
+		}
+	}
+	
 	/**
 	 * @param cat
 	 * @param value

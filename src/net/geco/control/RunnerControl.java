@@ -5,6 +5,7 @@
 package net.geco.control;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -132,6 +133,15 @@ public class RunnerControl extends Control {
 		registry().removeRunner(data.getRunner());
 		registry().removeRunnerData(data);
 		announcer().announceRunnerDeletion(data);
+	}
+	
+
+	public void deleteAllRunners() {
+		geco().log("Removing all runners");
+		ArrayList<RunnerRaceData> runnerData = new ArrayList<RunnerRaceData>(registry().getRunnersData());
+		for (RunnerRaceData runner : runnerData) {
+			deleteRunner(runner);
+		}
 	}
 	
 	public RunnerRaceData updateRunnerDataFor(Runner runner, RunnerRaceData newData) {

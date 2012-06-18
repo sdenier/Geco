@@ -15,6 +15,8 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
 import net.geco.control.GecoControl;
+import net.geco.control.RunnerControl;
+import net.geco.control.StageControl;
 import net.geco.ui.basics.SwingUtils;
 
 
@@ -50,6 +52,22 @@ public class DeleteFunction extends GecoFunction {
 	public void execute() {
 		geco().saveCurrentStage();
 		geco().info("Backup saved", false);
+		if( deleteRunnerB.isSelected() ){
+			getService(RunnerControl.class).deleteAllRunners();
+		}
+		if( deleteCategoryB.isSelected() ){
+			getService(StageControl.class).removeAllCategories();
+		}
+		if( deleteClubB.isSelected() ){
+			getService(StageControl.class).removeAllClubs();
+		}
+		if( deleteCourseB.isSelected() ){
+			getService(StageControl.class).removeAllCourses();
+		}
+		if( deleteBackupB.isSelected() ){
+			SpinnerNumberModel spinnerNumber = (SpinnerNumberModel) olderBackupS.getModel();
+			geco().deleteOldBackups(spinnerNumber.getNumber().intValue());
+		}
 	}
 
 	@Override
