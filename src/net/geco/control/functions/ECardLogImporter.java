@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import net.geco.basics.TimeManager;
+import net.geco.basics.Util;
 import net.geco.control.Control;
 import net.geco.control.GecoControl;
 import net.geco.control.ecardmodes.ECardMode;
@@ -39,7 +40,7 @@ public class ECardLogImporter extends Control {
 			try {
 				processor.processECard(convertRecord(record));
 			} catch (IndexOutOfBoundsException e) {
-				geco().info("Wrong record " + record, true);
+				geco().debug("Wrong record " + Util.join(record, ",", new StringBuilder()));
 			}
 			record = reader.readRecord();
 		}
