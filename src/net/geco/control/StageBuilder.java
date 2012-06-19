@@ -10,9 +10,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Properties;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -143,6 +145,22 @@ public class StageBuilder extends BasicControl {
 			zipStream.write(buffer, 0, len);
 		}
 		zipStream.closeEntry();
+	}
+
+	public void deleteOldBackups(Stage stage, String backupDir, String backupRegex, Date deadline) {
+		final Pattern pattern = Pattern.compile(backupRegex);
+		File backupPath = new File(filepath(stage.getBaseDir(), backupDir));
+		File[] backupFiles = backupPath.listFiles(new FilenameFilter() {
+			public boolean accept(File dir, String filename) {
+				return pattern.matcher(filename).matches();
+			}
+		});
+		for (File backup : backupFiles) {
+			Date lastModified = new Date(backup.lastModified());
+			if( lastModified.before(deadline) ){
+				backup.delete();
+			}
+		}
 	}
 
 	public static String propName() {

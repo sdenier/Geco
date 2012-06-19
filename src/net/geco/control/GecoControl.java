@@ -4,8 +4,8 @@
  */
 package net.geco.control;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +13,7 @@ import java.util.Properties;
 
 import net.geco.basics.Announcer;
 import net.geco.basics.GService;
+import net.geco.basics.GecoResources;
 import net.geco.basics.Logger;
 import net.geco.model.Factory;
 import net.geco.model.Registry;
@@ -26,7 +27,7 @@ import net.geco.model.impl.POFactory;
  *
  */
 public class GecoControl {
-	
+
 	private static class RuntimeStage {
 		private Stage stage;
 		
@@ -61,6 +62,8 @@ public class GecoControl {
 	private Thread autosaveThread;
 
 	private final SimpleDateFormat backupDateFormat = new SimpleDateFormat("yyMMdd-HHmmss"); //$NON-NLS-1$
+	
+	public static final String BACKUPDIR = "backups"; //$NON-NLS-1$
 	
 	
 	/*
@@ -159,7 +162,13 @@ public class GecoControl {
 	}
 
 	private String backupFilename(String id) {
-		return "backups" + File.separator + "backup" + id + ".zip"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		return BACKUPDIR + GecoResources.sep + "backup" + id + ".zip"; //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	public void deleteOldBackups(int daysOlder) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DATE, -1 * daysOlder);
+		stageBuilder.deleteOldBackups(stage(), BACKUPDIR, "backup.+zip", calendar.getTime()); //$NON-NLS-1$
 	}
 	
 	private void saveStage(String backupName) {
