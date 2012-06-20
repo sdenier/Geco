@@ -1,0 +1,1656 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CourseData xmlns="http://www.orienteering.org/datastandard/3.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" iofVersion="3.0" createTime="2012-05-21T23:23:58.394+02:00" creator="OCAD 11.0.1.1131">
+  <Event>
+    <Name>Event</Name>
+  </Event>
+  <RaceCourseData>
+    <Map>
+      <Scale>10000</Scale>
+      <!-- extent of ocad map-->
+      <MapPositionTopLeft x="-115.6" y="127.1" unit="mm"/>
+      <MapPositionBottomRight x="63.2" y="-103.0" unit="mm"/>
+    </Map>
+    <Control>
+      <Id>S1</Id>
+      <MapPosition x="-3.0" y="120.6" unit="mm" />
+    </Control>
+    <Control>
+      <Id>31</Id>
+      <MapPosition x="-46.9" y="89.3" unit="mm" />
+    </Control>
+    <Control>
+      <Id>32</Id>
+      <MapPosition x="4.6" y="88.0" unit="mm" />
+    </Control>
+    <Control>
+      <Id>33</Id>
+      <MapPosition x="50.7" y="89.3" unit="mm" />
+    </Control>
+    <Control>
+      <Id>34</Id>
+      <MapPosition x="-1.1" y="36.5" unit="mm" />
+    </Control>
+    <Control>
+      <Id>35</Id>
+      <MapPosition x="-43.7" y="-7.4" unit="mm" />
+    </Control>
+    <Control>
+      <Id>36</Id>
+      <MapPosition x="6.9" y="-9.6" unit="mm" />
+    </Control>
+    <Control>
+      <Id>37</Id>
+      <MapPosition x="59.4" y="-9.6" unit="mm" />
+    </Control>
+    <Control>
+      <Id>38</Id>
+      <MapPosition x="2.4" y="-38.4" unit="mm" />
+    </Control>
+    <Control>
+      <Id>39</Id>
+      <MapPosition x="-101.6" y="-39.7" unit="mm" />
+    </Control>
+    <Control>
+      <Id>40</Id>
+      <MapPosition x="-111.8" y="98.2" unit="mm" />
+    </Control>
+    <Control>
+      <Id>41</Id>
+      <MapPosition x="-33.8" y="62.1" unit="mm" />
+    </Control>
+    <Control>
+      <Id>42</Id>
+      <MapPosition x="39.2" y="-26.6" unit="mm" />
+    </Control>
+    <Control>
+      <Id>43</Id>
+      <MapPosition x="-41.4" y="-63.4" unit="mm" />
+    </Control>
+    <Control>
+      <Id>44</Id>
+      <MapPosition x="3.4" y="-64.3" unit="mm" />
+    </Control>
+    <Control>
+      <Id>45</Id>
+      <MapPosition x="40.5" y="-63.4" unit="mm" />
+    </Control>
+    <Control>
+      <Id>46</Id>
+      <MapPosition x="-62.6" y="-99.2" unit="mm" />
+    </Control>
+    <Control>
+      <Id>F1</Id>
+      <MapPosition x="-10.1" y="122.9" unit="mm" />
+    </Control>
+    <CourseAssignment>
+      <Course>
+        <Name>1_AAA</Name>
+        <CourseGroup>1</CourseGroup>
+        <Length>6480</Length>
+        <Climb>0</Climb>
+        <CourseControl type="Start">
+          <Control>S1</Control>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>31</Control>
+          <LegLength>539</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>41</Control>
+          <LegLength>302</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>34</Control>
+          <LegLength>415</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>35</Control>
+          <LegLength>611</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>38</Control>
+          <LegLength>556</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>43</Control>
+          <LegLength>504</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>46</Control>
+          <LegLength>416</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>39</Control>
+          <LegLength>712</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>40</Control>
+          <LegLength>1383</LegLength>
+        </CourseControl>
+        <CourseControl type="Finish">
+          <Control>F1</Control>
+          <LegLength>1047</LegLength>
+        </CourseControl>
+      </Course>
+      <Class numberOfCompetitors="10">
+        <Name>1</Name>
+      </Class>
+
+    </CourseAssignment>
+    <CourseAssignment>
+      <Course>
+        <Name>1_AAB</Name>
+        <CourseGroup>1</CourseGroup>
+        <Length>6570</Length>
+        <Climb>0</Climb>
+        <CourseControl type="Start">
+          <Control>S1</Control>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>31</Control>
+          <LegLength>539</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>41</Control>
+          <LegLength>302</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>34</Control>
+          <LegLength>415</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>35</Control>
+          <LegLength>611</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>38</Control>
+          <LegLength>556</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>44</Control>
+          <LegLength>259</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>46</Control>
+          <LegLength>746</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>39</Control>
+          <LegLength>712</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>40</Control>
+          <LegLength>1383</LegLength>
+        </CourseControl>
+        <CourseControl type="Finish">
+          <Control>F1</Control>
+          <LegLength>1047</LegLength>
+        </CourseControl>
+      </Course>
+      <Class numberOfCompetitors="10">
+        <Name>1</Name>
+      </Class>
+      <Person>
+        <BibNumber>10</BibNumber>
+        <Leg>2</Leg>
+      </Person>
+
+    </CourseAssignment>
+    <CourseAssignment>
+      <Course>
+        <Name>1_AAC</Name>
+        <CourseGroup>1</CourseGroup>
+        <Length>7110</Length>
+        <Climb>0</Climb>
+        <CourseControl type="Start">
+          <Control>S1</Control>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>31</Control>
+          <LegLength>539</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>41</Control>
+          <LegLength>302</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>34</Control>
+          <LegLength>415</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>35</Control>
+          <LegLength>611</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>38</Control>
+          <LegLength>556</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>45</Control>
+          <LegLength>455</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>46</Control>
+          <LegLength>1091</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>39</Control>
+          <LegLength>712</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>40</Control>
+          <LegLength>1383</LegLength>
+        </CourseControl>
+        <CourseControl type="Finish">
+          <Control>F1</Control>
+          <LegLength>1047</LegLength>
+        </CourseControl>
+      </Course>
+      <Class numberOfCompetitors="10">
+        <Name>1</Name>
+      </Class>
+
+    </CourseAssignment>
+    <CourseAssignment>
+      <Course>
+        <Name>1_ABA</Name>
+        <CourseGroup>1</CourseGroup>
+        <Length>6080</Length>
+        <Climb>0</Climb>
+        <CourseControl type="Start">
+          <Control>S1</Control>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>31</Control>
+          <LegLength>539</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>41</Control>
+          <LegLength>302</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>34</Control>
+          <LegLength>415</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>36</Control>
+          <LegLength>468</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>38</Control>
+          <LegLength>291</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>43</Control>
+          <LegLength>504</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>46</Control>
+          <LegLength>416</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>39</Control>
+          <LegLength>712</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>40</Control>
+          <LegLength>1383</LegLength>
+        </CourseControl>
+        <CourseControl type="Finish">
+          <Control>F1</Control>
+          <LegLength>1047</LegLength>
+        </CourseControl>
+      </Course>
+      <Class numberOfCompetitors="10">
+        <Name>1</Name>
+      </Class>
+
+    </CourseAssignment>
+    <CourseAssignment>
+      <Course>
+        <Name>1_ABB</Name>
+        <CourseGroup>1</CourseGroup>
+        <Length>6160</Length>
+        <Climb>0</Climb>
+        <CourseControl type="Start">
+          <Control>S1</Control>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>31</Control>
+          <LegLength>539</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>41</Control>
+          <LegLength>302</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>34</Control>
+          <LegLength>415</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>36</Control>
+          <LegLength>468</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>38</Control>
+          <LegLength>291</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>44</Control>
+          <LegLength>259</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>46</Control>
+          <LegLength>746</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>39</Control>
+          <LegLength>712</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>40</Control>
+          <LegLength>1383</LegLength>
+        </CourseControl>
+        <CourseControl type="Finish">
+          <Control>F1</Control>
+          <LegLength>1047</LegLength>
+        </CourseControl>
+      </Course>
+      <Class numberOfCompetitors="10">
+        <Name>1</Name>
+      </Class>
+
+    </CourseAssignment>
+    <CourseAssignment>
+      <Course>
+        <Name>1_ABC</Name>
+        <CourseGroup>1</CourseGroup>
+        <Length>6700</Length>
+        <Climb>0</Climb>
+        <CourseControl type="Start">
+          <Control>S1</Control>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>31</Control>
+          <LegLength>539</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>41</Control>
+          <LegLength>302</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>34</Control>
+          <LegLength>415</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>36</Control>
+          <LegLength>468</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>38</Control>
+          <LegLength>291</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>45</Control>
+          <LegLength>455</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>46</Control>
+          <LegLength>1091</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>39</Control>
+          <LegLength>712</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>40</Control>
+          <LegLength>1383</LegLength>
+        </CourseControl>
+        <CourseControl type="Finish">
+          <Control>F1</Control>
+          <LegLength>1047</LegLength>
+        </CourseControl>
+      </Course>
+      <Class numberOfCompetitors="10">
+        <Name>1</Name>
+      </Class>
+      <Person>
+        <BibNumber>1</BibNumber>
+        <Leg>1</Leg>
+      </Person>
+      <Person>
+        <BibNumber>2</BibNumber>
+        <Leg>3</Leg>
+      </Person>
+      <Person>
+        <BibNumber>3</BibNumber>
+        <Leg>2</Leg>
+      </Person>
+
+    </CourseAssignment>
+    <CourseAssignment>
+      <Course>
+        <Name>1_ACA</Name>
+        <CourseGroup>1</CourseGroup>
+        <Length>6730</Length>
+        <Climb>0</Climb>
+        <CourseControl type="Start">
+          <Control>S1</Control>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>31</Control>
+          <LegLength>539</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>41</Control>
+          <LegLength>302</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>34</Control>
+          <LegLength>415</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>37</Control>
+          <LegLength>760</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>42</Control>
+          <LegLength>263</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>38</Control>
+          <LegLength>387</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>43</Control>
+          <LegLength>504</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>46</Control>
+          <LegLength>416</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>39</Control>
+          <LegLength>712</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>40</Control>
+          <LegLength>1383</LegLength>
+        </CourseControl>
+        <CourseControl type="Finish">
+          <Control>F1</Control>
+          <LegLength>1047</LegLength>
+        </CourseControl>
+      </Course>
+      <Class numberOfCompetitors="10">
+        <Name>1</Name>
+      </Class>
+
+    </CourseAssignment>
+    <CourseAssignment>
+      <Course>
+        <Name>1_ACB</Name>
+        <CourseGroup>1</CourseGroup>
+        <Length>6810</Length>
+        <Climb>0</Climb>
+        <CourseControl type="Start">
+          <Control>S1</Control>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>31</Control>
+          <LegLength>539</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>41</Control>
+          <LegLength>302</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>34</Control>
+          <LegLength>415</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>37</Control>
+          <LegLength>760</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>42</Control>
+          <LegLength>263</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>38</Control>
+          <LegLength>387</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>44</Control>
+          <LegLength>259</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>46</Control>
+          <LegLength>746</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>39</Control>
+          <LegLength>712</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>40</Control>
+          <LegLength>1383</LegLength>
+        </CourseControl>
+        <CourseControl type="Finish">
+          <Control>F1</Control>
+          <LegLength>1047</LegLength>
+        </CourseControl>
+      </Course>
+      <Class numberOfCompetitors="10">
+        <Name>1</Name>
+      </Class>
+      <Person>
+        <BibNumber>4</BibNumber>
+        <Leg>2</Leg>
+      </Person>
+      <Person>
+        <BibNumber>5</BibNumber>
+        <Leg>3</Leg>
+      </Person>
+      <Person>
+        <BibNumber>6</BibNumber>
+        <Leg>1</Leg>
+      </Person>
+
+    </CourseAssignment>
+    <CourseAssignment>
+      <Course>
+        <Name>1_ACC</Name>
+        <CourseGroup>1</CourseGroup>
+        <Length>7350</Length>
+        <Climb>0</Climb>
+        <CourseControl type="Start">
+          <Control>S1</Control>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>31</Control>
+          <LegLength>539</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>41</Control>
+          <LegLength>302</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>34</Control>
+          <LegLength>415</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>37</Control>
+          <LegLength>760</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>42</Control>
+          <LegLength>263</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>38</Control>
+          <LegLength>387</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>45</Control>
+          <LegLength>455</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>46</Control>
+          <LegLength>1091</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>39</Control>
+          <LegLength>712</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>40</Control>
+          <LegLength>1383</LegLength>
+        </CourseControl>
+        <CourseControl type="Finish">
+          <Control>F1</Control>
+          <LegLength>1047</LegLength>
+        </CourseControl>
+      </Course>
+      <Class numberOfCompetitors="10">
+        <Name>1</Name>
+      </Class>
+      <Person>
+        <BibNumber>7</BibNumber>
+        <Leg>1</Leg>
+      </Person>
+      <Person>
+        <BibNumber>8</BibNumber>
+        <Leg>3</Leg>
+      </Person>
+      <Person>
+        <BibNumber>9</BibNumber>
+        <Leg>2</Leg>
+      </Person>
+
+    </CourseAssignment>
+    <CourseAssignment>
+      <Course>
+        <Name>1_BAA</Name>
+        <CourseGroup>1</CourseGroup>
+        <Length>6080</Length>
+        <Climb>0</Climb>
+        <CourseControl type="Start">
+          <Control>S1</Control>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>32</Control>
+          <LegLength>335</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>34</Control>
+          <LegLength>518</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>35</Control>
+          <LegLength>611</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>38</Control>
+          <LegLength>556</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>43</Control>
+          <LegLength>504</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>46</Control>
+          <LegLength>416</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>39</Control>
+          <LegLength>712</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>40</Control>
+          <LegLength>1383</LegLength>
+        </CourseControl>
+        <CourseControl type="Finish">
+          <Control>F1</Control>
+          <LegLength>1047</LegLength>
+        </CourseControl>
+      </Course>
+      <Class numberOfCompetitors="10">
+        <Name>1</Name>
+      </Class>
+      <Person>
+        <BibNumber>7</BibNumber>
+        <Leg>2</Leg>
+      </Person>
+      <Person>
+        <BibNumber>8</BibNumber>
+        <Leg>1</Leg>
+      </Person>
+
+    </CourseAssignment>
+    <CourseAssignment>
+      <Course>
+        <Name>1_BAB</Name>
+        <CourseGroup>1</CourseGroup>
+        <Length>6170</Length>
+        <Climb>0</Climb>
+        <CourseControl type="Start">
+          <Control>S1</Control>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>32</Control>
+          <LegLength>335</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>34</Control>
+          <LegLength>518</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>35</Control>
+          <LegLength>611</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>38</Control>
+          <LegLength>556</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>44</Control>
+          <LegLength>259</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>46</Control>
+          <LegLength>746</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>39</Control>
+          <LegLength>712</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>40</Control>
+          <LegLength>1383</LegLength>
+        </CourseControl>
+        <CourseControl type="Finish">
+          <Control>F1</Control>
+          <LegLength>1047</LegLength>
+        </CourseControl>
+      </Course>
+      <Class numberOfCompetitors="10">
+        <Name>1</Name>
+      </Class>
+
+    </CourseAssignment>
+    <CourseAssignment>
+      <Course>
+        <Name>1_BAC</Name>
+        <CourseGroup>1</CourseGroup>
+        <Length>6710</Length>
+        <Climb>0</Climb>
+        <CourseControl type="Start">
+          <Control>S1</Control>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>32</Control>
+          <LegLength>335</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>34</Control>
+          <LegLength>518</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>35</Control>
+          <LegLength>611</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>38</Control>
+          <LegLength>556</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>45</Control>
+          <LegLength>455</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>46</Control>
+          <LegLength>1091</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>39</Control>
+          <LegLength>712</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>40</Control>
+          <LegLength>1383</LegLength>
+        </CourseControl>
+        <CourseControl type="Finish">
+          <Control>F1</Control>
+          <LegLength>1047</LegLength>
+        </CourseControl>
+      </Course>
+      <Class numberOfCompetitors="10">
+        <Name>1</Name>
+      </Class>
+      <Person>
+        <BibNumber>4</BibNumber>
+        <Leg>1</Leg>
+      </Person>
+      <Person>
+        <BibNumber>5</BibNumber>
+        <Leg>2</Leg>
+      </Person>
+      <Person>
+        <BibNumber>6</BibNumber>
+        <Leg>3</Leg>
+      </Person>
+
+    </CourseAssignment>
+    <CourseAssignment>
+      <Course>
+        <Name>1_BBA</Name>
+        <CourseGroup>1</CourseGroup>
+        <Length>5680</Length>
+        <Climb>0</Climb>
+        <CourseControl type="Start">
+          <Control>S1</Control>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>32</Control>
+          <LegLength>335</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>34</Control>
+          <LegLength>518</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>36</Control>
+          <LegLength>468</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>38</Control>
+          <LegLength>291</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>43</Control>
+          <LegLength>504</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>46</Control>
+          <LegLength>416</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>39</Control>
+          <LegLength>712</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>40</Control>
+          <LegLength>1383</LegLength>
+        </CourseControl>
+        <CourseControl type="Finish">
+          <Control>F1</Control>
+          <LegLength>1047</LegLength>
+        </CourseControl>
+      </Course>
+      <Class numberOfCompetitors="10">
+        <Name>1</Name>
+      </Class>
+      <Person>
+        <BibNumber>9</BibNumber>
+        <Leg>3</Leg>
+      </Person>
+
+    </CourseAssignment>
+    <CourseAssignment>
+      <Course>
+        <Name>1_BBB</Name>
+        <CourseGroup>1</CourseGroup>
+        <Length>5760</Length>
+        <Climb>0</Climb>
+        <CourseControl type="Start">
+          <Control>S1</Control>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>32</Control>
+          <LegLength>335</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>34</Control>
+          <LegLength>518</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>36</Control>
+          <LegLength>468</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>38</Control>
+          <LegLength>291</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>44</Control>
+          <LegLength>259</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>46</Control>
+          <LegLength>746</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>39</Control>
+          <LegLength>712</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>40</Control>
+          <LegLength>1383</LegLength>
+        </CourseControl>
+        <CourseControl type="Finish">
+          <Control>F1</Control>
+          <LegLength>1047</LegLength>
+        </CourseControl>
+      </Course>
+      <Class numberOfCompetitors="10">
+        <Name>1</Name>
+      </Class>
+
+    </CourseAssignment>
+    <CourseAssignment>
+      <Course>
+        <Name>1_BBC</Name>
+        <CourseGroup>1</CourseGroup>
+        <Length>6300</Length>
+        <Climb>0</Climb>
+        <CourseControl type="Start">
+          <Control>S1</Control>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>32</Control>
+          <LegLength>335</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>34</Control>
+          <LegLength>518</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>36</Control>
+          <LegLength>468</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>38</Control>
+          <LegLength>291</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>45</Control>
+          <LegLength>455</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>46</Control>
+          <LegLength>1091</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>39</Control>
+          <LegLength>712</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>40</Control>
+          <LegLength>1383</LegLength>
+        </CourseControl>
+        <CourseControl type="Finish">
+          <Control>F1</Control>
+          <LegLength>1047</LegLength>
+        </CourseControl>
+      </Course>
+      <Class numberOfCompetitors="10">
+        <Name>1</Name>
+      </Class>
+      <Person>
+        <BibNumber>10</BibNumber>
+        <Leg>1</Leg>
+      </Person>
+
+    </CourseAssignment>
+    <CourseAssignment>
+      <Course>
+        <Name>1_BCA</Name>
+        <CourseGroup>1</CourseGroup>
+        <Length>6330</Length>
+        <Climb>0</Climb>
+        <CourseControl type="Start">
+          <Control>S1</Control>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>32</Control>
+          <LegLength>335</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>34</Control>
+          <LegLength>518</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>37</Control>
+          <LegLength>760</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>42</Control>
+          <LegLength>263</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>38</Control>
+          <LegLength>387</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>43</Control>
+          <LegLength>504</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>46</Control>
+          <LegLength>416</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>39</Control>
+          <LegLength>712</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>40</Control>
+          <LegLength>1383</LegLength>
+        </CourseControl>
+        <CourseControl type="Finish">
+          <Control>F1</Control>
+          <LegLength>1047</LegLength>
+        </CourseControl>
+      </Course>
+      <Class numberOfCompetitors="10">
+        <Name>1</Name>
+      </Class>
+      <Person>
+        <BibNumber>1</BibNumber>
+        <Leg>2</Leg>
+      </Person>
+      <Person>
+        <BibNumber>2</BibNumber>
+        <Leg>1</Leg>
+      </Person>
+      <Person>
+        <BibNumber>3</BibNumber>
+        <Leg>3</Leg>
+      </Person>
+
+    </CourseAssignment>
+    <CourseAssignment>
+      <Course>
+        <Name>1_BCB</Name>
+        <CourseGroup>1</CourseGroup>
+        <Length>6410</Length>
+        <Climb>0</Climb>
+        <CourseControl type="Start">
+          <Control>S1</Control>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>32</Control>
+          <LegLength>335</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>34</Control>
+          <LegLength>518</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>37</Control>
+          <LegLength>760</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>42</Control>
+          <LegLength>263</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>38</Control>
+          <LegLength>387</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>44</Control>
+          <LegLength>259</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>46</Control>
+          <LegLength>746</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>39</Control>
+          <LegLength>712</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>40</Control>
+          <LegLength>1383</LegLength>
+        </CourseControl>
+        <CourseControl type="Finish">
+          <Control>F1</Control>
+          <LegLength>1047</LegLength>
+        </CourseControl>
+      </Course>
+      <Class numberOfCompetitors="10">
+        <Name>1</Name>
+      </Class>
+
+    </CourseAssignment>
+    <CourseAssignment>
+      <Course>
+        <Name>1_BCC</Name>
+        <CourseGroup>1</CourseGroup>
+        <Length>6950</Length>
+        <Climb>0</Climb>
+        <CourseControl type="Start">
+          <Control>S1</Control>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>32</Control>
+          <LegLength>335</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>34</Control>
+          <LegLength>518</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>37</Control>
+          <LegLength>760</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>42</Control>
+          <LegLength>263</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>38</Control>
+          <LegLength>387</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>45</Control>
+          <LegLength>455</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>46</Control>
+          <LegLength>1091</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>39</Control>
+          <LegLength>712</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>40</Control>
+          <LegLength>1383</LegLength>
+        </CourseControl>
+        <CourseControl type="Finish">
+          <Control>F1</Control>
+          <LegLength>1047</LegLength>
+        </CourseControl>
+      </Course>
+      <Class numberOfCompetitors="10">
+        <Name>1</Name>
+      </Class>
+
+    </CourseAssignment>
+    <CourseAssignment>
+      <Course>
+        <Name>1_CAA</Name>
+        <CourseGroup>1</CourseGroup>
+        <Length>6590</Length>
+        <Climb>0</Climb>
+        <CourseControl type="Start">
+          <Control>S1</Control>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>33</Control>
+          <LegLength>622</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>34</Control>
+          <LegLength>740</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>35</Control>
+          <LegLength>611</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>38</Control>
+          <LegLength>556</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>43</Control>
+          <LegLength>504</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>46</Control>
+          <LegLength>416</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>39</Control>
+          <LegLength>712</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>40</Control>
+          <LegLength>1383</LegLength>
+        </CourseControl>
+        <CourseControl type="Finish">
+          <Control>F1</Control>
+          <LegLength>1047</LegLength>
+        </CourseControl>
+      </Course>
+      <Class numberOfCompetitors="10">
+        <Name>1</Name>
+      </Class>
+
+    </CourseAssignment>
+    <CourseAssignment>
+      <Course>
+        <Name>1_CAB</Name>
+        <CourseGroup>1</CourseGroup>
+        <Length>6680</Length>
+        <Climb>0</Climb>
+        <CourseControl type="Start">
+          <Control>S1</Control>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>33</Control>
+          <LegLength>622</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>34</Control>
+          <LegLength>740</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>35</Control>
+          <LegLength>611</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>38</Control>
+          <LegLength>556</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>44</Control>
+          <LegLength>259</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>46</Control>
+          <LegLength>746</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>39</Control>
+          <LegLength>712</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>40</Control>
+          <LegLength>1383</LegLength>
+        </CourseControl>
+        <CourseControl type="Finish">
+          <Control>F1</Control>
+          <LegLength>1047</LegLength>
+        </CourseControl>
+      </Course>
+      <Class numberOfCompetitors="10">
+        <Name>1</Name>
+      </Class>
+      <Person>
+        <BibNumber>1</BibNumber>
+        <Leg>3</Leg>
+      </Person>
+      <Person>
+        <BibNumber>2</BibNumber>
+        <Leg>2</Leg>
+      </Person>
+      <Person>
+        <BibNumber>3</BibNumber>
+        <Leg>1</Leg>
+      </Person>
+      <Person>
+        <BibNumber>9</BibNumber>
+        <Leg>1</Leg>
+      </Person>
+
+    </CourseAssignment>
+    <CourseAssignment>
+      <Course>
+        <Name>1_CAC</Name>
+        <CourseGroup>1</CourseGroup>
+        <Length>7220</Length>
+        <Climb>0</Climb>
+        <CourseControl type="Start">
+          <Control>S1</Control>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>33</Control>
+          <LegLength>622</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>34</Control>
+          <LegLength>740</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>35</Control>
+          <LegLength>611</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>38</Control>
+          <LegLength>556</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>45</Control>
+          <LegLength>455</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>46</Control>
+          <LegLength>1091</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>39</Control>
+          <LegLength>712</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>40</Control>
+          <LegLength>1383</LegLength>
+        </CourseControl>
+        <CourseControl type="Finish">
+          <Control>F1</Control>
+          <LegLength>1047</LegLength>
+        </CourseControl>
+      </Course>
+      <Class numberOfCompetitors="10">
+        <Name>1</Name>
+      </Class>
+
+    </CourseAssignment>
+    <CourseAssignment>
+      <Course>
+        <Name>1_CBA</Name>
+        <CourseGroup>1</CourseGroup>
+        <Length>6180</Length>
+        <Climb>0</Climb>
+        <CourseControl type="Start">
+          <Control>S1</Control>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>33</Control>
+          <LegLength>622</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>34</Control>
+          <LegLength>740</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>36</Control>
+          <LegLength>468</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>38</Control>
+          <LegLength>291</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>43</Control>
+          <LegLength>504</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>46</Control>
+          <LegLength>416</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>39</Control>
+          <LegLength>712</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>40</Control>
+          <LegLength>1383</LegLength>
+        </CourseControl>
+        <CourseControl type="Finish">
+          <Control>F1</Control>
+          <LegLength>1047</LegLength>
+        </CourseControl>
+      </Course>
+      <Class numberOfCompetitors="10">
+        <Name>1</Name>
+      </Class>
+      <Person>
+        <BibNumber>4</BibNumber>
+        <Leg>3</Leg>
+      </Person>
+      <Person>
+        <BibNumber>5</BibNumber>
+        <Leg>1</Leg>
+      </Person>
+      <Person>
+        <BibNumber>6</BibNumber>
+        <Leg>2</Leg>
+      </Person>
+
+    </CourseAssignment>
+    <CourseAssignment>
+      <Course>
+        <Name>1_CBB</Name>
+        <CourseGroup>1</CourseGroup>
+        <Length>6270</Length>
+        <Climb>0</Climb>
+        <CourseControl type="Start">
+          <Control>S1</Control>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>33</Control>
+          <LegLength>622</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>34</Control>
+          <LegLength>740</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>36</Control>
+          <LegLength>468</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>38</Control>
+          <LegLength>291</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>44</Control>
+          <LegLength>259</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>46</Control>
+          <LegLength>746</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>39</Control>
+          <LegLength>712</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>40</Control>
+          <LegLength>1383</LegLength>
+        </CourseControl>
+        <CourseControl type="Finish">
+          <Control>F1</Control>
+          <LegLength>1047</LegLength>
+        </CourseControl>
+      </Course>
+      <Class numberOfCompetitors="10">
+        <Name>1</Name>
+      </Class>
+      <Person>
+        <BibNumber>7</BibNumber>
+        <Leg>3</Leg>
+      </Person>
+      <Person>
+        <BibNumber>8</BibNumber>
+        <Leg>2</Leg>
+      </Person>
+
+    </CourseAssignment>
+    <CourseAssignment>
+      <Course>
+        <Name>1_CBC</Name>
+        <CourseGroup>1</CourseGroup>
+        <Length>6810</Length>
+        <Climb>0</Climb>
+        <CourseControl type="Start">
+          <Control>S1</Control>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>33</Control>
+          <LegLength>622</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>34</Control>
+          <LegLength>740</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>36</Control>
+          <LegLength>468</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>38</Control>
+          <LegLength>291</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>45</Control>
+          <LegLength>455</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>46</Control>
+          <LegLength>1091</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>39</Control>
+          <LegLength>712</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>40</Control>
+          <LegLength>1383</LegLength>
+        </CourseControl>
+        <CourseControl type="Finish">
+          <Control>F1</Control>
+          <LegLength>1047</LegLength>
+        </CourseControl>
+      </Course>
+      <Class numberOfCompetitors="10">
+        <Name>1</Name>
+      </Class>
+
+    </CourseAssignment>
+    <CourseAssignment>
+      <Course>
+        <Name>1_CCA</Name>
+        <CourseGroup>1</CourseGroup>
+        <Length>6830</Length>
+        <Climb>0</Climb>
+        <CourseControl type="Start">
+          <Control>S1</Control>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>33</Control>
+          <LegLength>622</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>34</Control>
+          <LegLength>740</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>37</Control>
+          <LegLength>760</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>42</Control>
+          <LegLength>263</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>38</Control>
+          <LegLength>387</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>43</Control>
+          <LegLength>504</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>46</Control>
+          <LegLength>416</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>39</Control>
+          <LegLength>712</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>40</Control>
+          <LegLength>1383</LegLength>
+        </CourseControl>
+        <CourseControl type="Finish">
+          <Control>F1</Control>
+          <LegLength>1047</LegLength>
+        </CourseControl>
+      </Course>
+      <Class numberOfCompetitors="10">
+        <Name>1</Name>
+      </Class>
+      <Person>
+        <BibNumber>10</BibNumber>
+        <Leg>3</Leg>
+      </Person>
+
+    </CourseAssignment>
+    <CourseAssignment>
+      <Course>
+        <Name>1_CCB</Name>
+        <CourseGroup>1</CourseGroup>
+        <Length>6920</Length>
+        <Climb>0</Climb>
+        <CourseControl type="Start">
+          <Control>S1</Control>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>33</Control>
+          <LegLength>622</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>34</Control>
+          <LegLength>740</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>37</Control>
+          <LegLength>760</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>42</Control>
+          <LegLength>263</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>38</Control>
+          <LegLength>387</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>44</Control>
+          <LegLength>259</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>46</Control>
+          <LegLength>746</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>39</Control>
+          <LegLength>712</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>40</Control>
+          <LegLength>1383</LegLength>
+        </CourseControl>
+        <CourseControl type="Finish">
+          <Control>F1</Control>
+          <LegLength>1047</LegLength>
+        </CourseControl>
+      </Course>
+      <Class numberOfCompetitors="10">
+        <Name>1</Name>
+      </Class>
+
+    </CourseAssignment>
+    <CourseAssignment>
+      <Course>
+        <Name>1_CCC</Name>
+        <CourseGroup>1</CourseGroup>
+        <Length>7460</Length>
+        <Climb>0</Climb>
+        <CourseControl type="Start">
+          <Control>S1</Control>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>33</Control>
+          <LegLength>622</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>34</Control>
+          <LegLength>740</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>37</Control>
+          <LegLength>760</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>42</Control>
+          <LegLength>263</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>38</Control>
+          <LegLength>387</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>45</Control>
+          <LegLength>455</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>46</Control>
+          <LegLength>1091</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>39</Control>
+          <LegLength>712</LegLength>
+        </CourseControl>
+        <CourseControl type="Control">
+          <Control>40</Control>
+          <LegLength>1383</LegLength>
+        </CourseControl>
+        <CourseControl type="Finish">
+          <Control>F1</Control>
+          <LegLength>1047</LegLength>
+        </CourseControl>
+      </Course>
+      <Class numberOfCompetitors="10">
+        <Name>1</Name>
+      </Class>
+
+    </CourseAssignment>
+
+  </RaceCourseData>
+</CourseData>
