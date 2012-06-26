@@ -30,7 +30,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
  * @since Jun 20, 2012
  *
  */
-public class V3CourseSaxImporter extends DefaultHandler {
+public class V3CourseSaxImporter extends DefaultHandler implements XMLCourseImporter {
 
 	// Memoized data for clients
 	private List<Course> courses;

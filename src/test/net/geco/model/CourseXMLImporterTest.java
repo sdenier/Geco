@@ -34,8 +34,8 @@ public class CourseXMLImporterTest {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		courses1 = CourseSaxImporter.importFromXml("testData/IOFdata-2.0.3/CourseData_example1.xml", new POFactory());
-		courses2 = CourseSaxImporter.importFromXml("testData/IOFdata-2.0.3/CourseData_example2.xml", new POFactory());
+		courses1 = new CourseSaxImporter(new POFactory()).importFromXml("testData/IOFdata-2.0.3/CourseData_example1.xml");
+		courses2 = new CourseSaxImporter(new POFactory()).importFromXml("testData/IOFdata-2.0.3/CourseData_example2.xml");
 	}
 
 	@Test

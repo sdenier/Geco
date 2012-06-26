@@ -29,7 +29,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
  * @since Feb 19, 2010
  *
  */
-public class CourseSaxImporter extends DefaultHandler {
+public class CourseSaxImporter extends DefaultHandler implements XMLCourseImporter {
 
 	private Vector<Course> courses;
 	private StringBuilder buffer;
@@ -47,8 +47,8 @@ public class CourseSaxImporter extends DefaultHandler {
 	private Float[] coord;
 
 	public static void main(String args[]) throws Exception {
-		importFromXml("testData/IOFdata-2.0.3/CourseData_example1.xml", new POFactory());
-//		importFromXml("testData/IOFdata-2.0.3/SampleEvent-purplepen.xml", new POFactory());
+		new CourseSaxImporter(new POFactory()).importFromXml("testData/IOFdata-2.0.3/CourseData_example1.xml");
+//		new CourseSaxImporter(new POFactory()).importFromXml("testData/IOFdata-2.0.3/SampleEvent-purplepen.xml");
 	}
 	
 	public CourseSaxImporter(Factory factory) {
@@ -68,10 +68,7 @@ public class CourseSaxImporter extends DefaultHandler {
 		return controls;
 	}
 	
-	public static Vector<Course> importFromXml(String xmlFile, Factory factory) throws Exception {
-		return new CourseSaxImporter(factory).importFromXml(xmlFile);
-	}
-	
+	@Override
 	public Vector<Course> importFromXml(String xmlFile) throws Exception {
 		XMLReader xr = XMLReaderFactory.createXMLReader();
 		xr.setContentHandler(this);

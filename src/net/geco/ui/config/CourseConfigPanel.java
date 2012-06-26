@@ -7,18 +7,26 @@ package net.geco.ui.config;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 
 import net.geco.basics.Announcer;
 import net.geco.framework.IGecoApp;
 import net.geco.model.Course;
 import net.geco.model.Messages;
 import net.geco.model.xml.CourseSaxImporter;
+import net.geco.model.xml.V3CourseSaxImporter;
+import net.geco.model.xml.XMLCourseImporter;
 import net.geco.ui.basics.CourseControlDialog;
 import net.geco.ui.framework.ConfigPanel;
 
@@ -83,14 +91,38 @@ public class CourseConfigPanel extends ConfigTablePanel<Course> implements Confi
 		ActionListener importAction = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
+				JRadioButton xmlV2 = new JRadioButton("XML V2"); //$NON-NLS-1$
+				xmlV2.setToolTipText("IOF XML V2.0.3"); //$NON-NLS-1$
+				JRadioButton xmlV3 = new JRadioButton("XML V3"); //$NON-NLS-1$
+				xmlV3.setToolTipText("IOF XML V3 Beta"); //$NON-NLS-1$
+				ButtonGroup xmlChoice = new ButtonGroup();
+				xmlChoice.add(xmlV2);
+				xmlChoice.add(xmlV3);
+				xmlV2.setSelected(true);
+				JPanel xmlImporterPanel = new JPanel();
+				
+				xmlImporterPanel.setLayout(new BoxLayout(xmlImporterPanel, BoxLayout.Y_AXIS));
+				xmlImporterPanel.setBorder(
+					BorderFactory.createTitledBorder("IOF XML")); //$NON-NLS-1$
+				xmlImporterPanel.add(xmlV2);
+				xmlImporterPanel.add(xmlV3);
+				
 				JFileChooser chooser = new JFileChooser(geco.getCurrentStagePath());
+				chooser.setAccessory(xmlImporterPanel);
 				chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 				chooser.setDialogTitle(Messages.uiGet("CourseConfigPanel.SelectXMLFileTitle")); //$NON-NLS-1$
 				int answer = chooser.showDialog(frame, Messages.uiGet("CourseConfigPanel.CourseImportXMLLabel")); //$NON-NLS-1$
 				if( answer==JFileChooser.APPROVE_OPTION ) {
 					String file = chooser.getSelectedFile().getAbsolutePath();
 					try {
-						Vector<Course> courses = CourseSaxImporter.importFromXml(file, geco.stageControl().factory());
+						XMLCourseImporter courseImporter;
+						if( xmlV2.isSelected() ){
+							courseImporter = new CourseSaxImporter(geco.stageControl().factory());
+						} else {
+							courseImporter = new V3CourseSaxImporter(geco.stageControl().factory());
+						}
+						List<Course> courses = courseImporter.importFromXml(file);
 						for (Course course : courses) {
 							geco.stageControl().addCourse(course);	
 						}
