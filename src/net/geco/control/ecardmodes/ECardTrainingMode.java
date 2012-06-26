@@ -19,11 +19,18 @@ public class ECardTrainingMode extends AbstractECardMode {
 	private CourseDetector detector;
 	
 	public ECardTrainingMode(GecoControl gecoControl, CourseDetector detector) {
-		super(ECardTrainingMode.class, gecoControl);
+		this(gecoControl, detector, true);
+		toggleArchiveLookup(true);
+	}
+	
+	public ECardTrainingMode(GecoControl gecoControl, CourseDetector detector, boolean register) {
+		super(gecoControl);
+		if( register ) {
+			gecoControl.registerService(ECardTrainingMode.class, this);
+		}
 		this.detector = detector;
 		finishHandler = new AutoCheckerHandler(gecoControl, detector);
 		duplicateHandler = new CopyRunnerHandler(gecoControl, detector);
-		toggleArchiveLookup(true);
 	}
 
 	@Override
@@ -47,13 +54,14 @@ public class ECardTrainingMode extends AbstractECardMode {
 		}		
 	}
 
-	public void toggleArchiveLookup(boolean toggle) {
+	public ECardTrainingMode toggleArchiveLookup(boolean toggle) {
 		if( toggle ){
 			unregisteredHandler = new ArchiveLookupHandler(geco(), detector,
 					new AnonCreationHandler(geco(), detector));
 		} else {
 			unregisteredHandler = new AnonCreationHandler(geco(), detector); 
 		}
+		return this;
 	}
 
 }

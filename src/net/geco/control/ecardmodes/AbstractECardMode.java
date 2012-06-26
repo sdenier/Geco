@@ -28,6 +28,10 @@ import org.martin.sireader.server.IResultData;
  */
 public abstract class AbstractECardMode extends Control implements ECardMode {
 
+	public AbstractECardMode(GecoControl gecoControl) {
+		super(gecoControl);
+	}
+	
 	public AbstractECardMode(Class<? extends Control> clazz, GecoControl gecoControl) {
 		super(clazz, gecoControl);
 	}

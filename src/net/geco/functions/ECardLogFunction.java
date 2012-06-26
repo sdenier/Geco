@@ -21,6 +21,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import net.geco.control.GecoControl;
+import net.geco.control.ecardmodes.CourseDetector;
 import net.geco.control.ecardmodes.ECardMode;
 import net.geco.control.ecardmodes.ECardRacingMode;
 import net.geco.control.ecardmodes.ECardTrainingMode;
@@ -55,13 +56,14 @@ public class ECardLogFunction extends GecoFunction {
 	
 	@Override
 	public void execute() {
+		CourseDetector detector = new CourseDetector(geco());
+		boolean autoInsert = autoInsertB.isSelected();
 		ECardMode processor;
 		if( trainingB.isSelected() ){
-			processor = getService(ECardTrainingMode.class);
+			processor = new ECardTrainingMode(geco(), detector, false).toggleArchiveLookup(autoInsert);
 		} else {
-			processor = getService(ECardRacingMode.class);
+			processor = new ECardRacingMode(geco(), detector, false).toggleArchiveLookup(autoInsert);
 		}
-		// TODO: setup lookup (temporary)
 		try {
 			new ECardLogImporter(geco()).processECardData(processor, new File(logFileF.getText()));
 		} catch (IOException e) {
