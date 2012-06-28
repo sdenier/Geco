@@ -45,11 +45,7 @@ public class HStatsPanel extends StatsPanel {
 	private static final int STATS_WIDTH = 600;
 	private static final int MARGIN = (800 - STATS_WIDTH) / 2;
 
-	private AbstractTableModel courseTableModel;
-
-	private String[] courseKeys;
-	
-	private StatItem[] statusKeys;
+	private HStatsTableModel courseTableModel;
 
 	private JCheckBox viewCh;
 	
@@ -60,7 +56,6 @@ public class HStatsPanel extends StatsPanel {
 	 */
 	public HStatsPanel(IGecoApp geco, JFrame frame, JButton clearLogB) {
 		super(geco, frame);
-		refreshTableKeys();
 		initStatsPanel(this, clearLogB);
 		startAutoUpdate();
 	}
@@ -86,9 +81,9 @@ public class HStatsPanel extends StatsPanel {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				if( viewCh.isSelected() ){
-					statusKeys = stats().shortStatuses();
+					courseTableModel.setShortStatuses();
 				} else {
-					statusKeys = stats().longStatuses();
+					courseTableModel.setLongStatuses();
 				}
 				courseTableModel.fireTableStructureChanged();
 			}
@@ -131,58 +126,80 @@ public class HStatsPanel extends StatsPanel {
 		panel.add( Box.createHorizontalStrut(MARGIN), BorderLayout.EAST );
 	}
 
-	protected AbstractTableModel createCourseTableModel() {
-		return new AbstractTableModel() {
-			@Override
-			public Object getValueAt(int rowIndex, int columnIndex) {
-				String content;
-				if( columnIndex==0 )
-					content = courseKeys[rowIndex];
-				else 
-					content = stats().getCourseStatsFor(courseKeys[rowIndex],
-														statusKeys[columnIndex-1]).toString();
-				if( courseKeys[rowIndex]==RegistryStats.totalName() ){
-					return Html.htmlTag("b", content); //$NON-NLS-1$
-				} else {
-					return content;
-				}
-
-			}
-			@Override
-			public int getRowCount() {
-				return courseKeys.length;
-			}
-			@Override
-			public int getColumnCount() {
-				return statusKeys.length + 1;
-			}
-			@Override
-			public String getColumnName(int column) {
-				if( column==0 )
-					return Messages.uiGet("StatsPanel.CourseHeader"); //$NON-NLS-1$
-				else
-					return statusKeys[column-1].toString();
-			}
-			@Override
-			public Class<?> getColumnClass(int columnIndex) {
-				if( columnIndex==0 ){
-					return String.class;
-				} else {
-					return Integer.class;
-				}
-			}
-		};
+	protected HStatsTableModel createCourseTableModel() {
+		return new HStatsTableModel();
 	}
 	
-	protected void refreshTableKeys() {
-		courseKeys = stats().sortedEntries();
-		statusKeys = stats().shortStatuses();
-	}
-
 	@Override
 	public void changed(Stage previous, Stage next) {
-		refreshTableKeys();
-		viewCh.setSelected(true);
+		courseTableModel.refreshCourseKeys();
+	}
+
+	public class HStatsTableModel extends AbstractTableModel {
+
+		public HStatsTableModel() {
+			setShortStatuses();
+			refreshCourseKeys();
+		}
+
+		private String[] courseKeys;
+		
+		private StatItem[] statusKeys;
+
+		public void setShortStatuses() {
+			statusKeys = stats().shortStatuses();
+		}
+		
+		public void setLongStatuses() {
+			statusKeys = stats().longStatuses();
+		}
+
+		public void refreshCourseKeys() {
+			courseKeys = stats().sortedEntries();
+		}
+		
+		@Override
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			String content;
+			if( columnIndex==0 )
+				content = courseKeys[rowIndex];
+			else 
+				content = stats().getCourseStatsFor(courseKeys[rowIndex],
+													statusKeys[columnIndex-1]).toString();
+			if( courseKeys[rowIndex]==RegistryStats.totalName() ){
+				return Html.htmlTag("b", content); //$NON-NLS-1$
+			} else {
+				return content;
+			}
+	
+		}
+	
+		@Override
+		public int getRowCount() {
+			return courseKeys.length;
+		}
+	
+		@Override
+		public int getColumnCount() {
+			return statusKeys.length + 1;
+		}
+	
+		@Override
+		public String getColumnName(int column) {
+			if( column==0 )
+				return Messages.uiGet("StatsPanel.CourseHeader"); //$NON-NLS-1$
+			else
+				return statusKeys[column-1].toString();
+		}
+	
+		@Override
+		public Class<?> getColumnClass(int columnIndex) {
+			if( columnIndex==0 ){
+				return String.class;
+			} else {
+				return Integer.class;
+			}
+		}
 	}
 
 
