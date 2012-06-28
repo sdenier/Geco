@@ -7,6 +7,7 @@ package net.geco.functions;
 import java.awt.Component;
 import java.awt.Dimension;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
@@ -72,13 +73,21 @@ public class DeleteFunction extends GecoFunction {
 
 	@Override
 	public JComponent getParametersConfig() {
-		deleteRunnerB = new JCheckBox("Delete all runners");
-		deleteCategoryB = new JCheckBox("Delete all categories");
+		deleteRunnerB = new JCheckBox("Runners");
+		deleteCategoryB = new JCheckBox("Categories");
 		deleteCategoryB.setToolTipText("Can only delete categories without runners");
-		deleteClubB = new JCheckBox("Delete all clubs");
+		deleteClubB = new JCheckBox("Clubs");
 		deleteClubB.setToolTipText("Can only delete clubs without runners");
-		deleteCourseB = new JCheckBox("Delete all courses");
+		deleteCourseB = new JCheckBox("Courses");
 		deleteCourseB.setToolTipText("Can only delete courses without runners or linked categories");
+		Box deleteBox = Box.createHorizontalBox();
+		deleteBox.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 0));
+		deleteBox.add(new JLabel("Delete all "));
+		deleteBox.add(deleteRunnerB);
+		deleteBox.add(deleteCategoryB);
+		deleteBox.add(deleteClubB);
+		deleteBox.add(deleteCourseB);
+		deleteBox.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
 		deleteBackupB = new JCheckBox();
 		olderBackupS = new JSpinner(new SpinnerNumberModel(15, 0, null, 1));
@@ -93,12 +102,7 @@ public class DeleteFunction extends GecoFunction {
 
 		Box configBox = Box.createVerticalBox();
 		configBox.add(new JLabel("Geco will perform a backup before deleting any data"));
-		configBox.add(Box.createVerticalStrut(5));
-		configBox.add(deleteRunnerB);
-		configBox.add(deleteCategoryB);
-		configBox.add(deleteClubB);
-		configBox.add(deleteCourseB);
-		configBox.add(Box.createVerticalStrut(5));
+		configBox.add(deleteBox);
 		configBox.add(cleanupBox);
 		return configBox;
 	}
