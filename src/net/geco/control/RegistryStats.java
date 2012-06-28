@@ -34,6 +34,10 @@ public class RegistryStats extends Control
 			public String toString() {
 				return Messages.getString("RegistryStats.RegisteredLabel"); //$NON-NLS-1$
 			}},
+		DNS {
+			public String toString() {
+				return Messages.getString("Status.DNSLabel"); //$NON-NLS-1$
+			}},
 		Present {
 			public String toString() {
 				return Messages.getString("RegistryStats.PresentLabel"); //$NON-NLS-1$
@@ -50,6 +54,14 @@ public class RegistryStats extends Control
 			public String toString() {
 				return Messages.getString("Status.RunningLabel"); //$NON-NLS-1$
 			}},
+		UNK {
+			public String toString() {
+				return Messages.getString("Status.UnknownLabel"); //$NON-NLS-1$
+			}},
+		DUP {
+			public String toString() {
+				return Messages.getString("Status.DuplicateLabel"); //$NON-NLS-1$
+			}},
 		Finished {
 			public String toString() {
 				return Messages.getString("RegistryStats.FinishedLabel"); //$NON-NLS-1$
@@ -62,10 +74,6 @@ public class RegistryStats extends Control
 			public String toString() {
 				return Messages.getString("Status.MPLabel"); //$NON-NLS-1$
 			}},
-		DNS {
-			public String toString() {
-				return Messages.getString("Status.DNSLabel"); //$NON-NLS-1$
-			}},
 		DNF {
 			public String toString() {
 				return Messages.getString("Status.DNFLabel"); //$NON-NLS-1$
@@ -74,18 +82,19 @@ public class RegistryStats extends Control
 			public String toString() {
 				return Messages.getString("Status.DSQLabel"); //$NON-NLS-1$
 			}},
-		UNK {
-			public String toString() {
-				return Messages.getString("Status.UnknownLabel"); //$NON-NLS-1$
-			}},
-		DUP {
-			public String toString() {
-				return Messages.getString("Status.DuplicateLabel"); //$NON-NLS-1$
-			}};
 	}
 
-	public static final StatItem[] shortStatusList = new StatItem[] {
+	public static final StatItem[] summaryStatusList = new StatItem[] {
 		StatItem.Present, StatItem.Unresolved, StatItem.NOS, StatItem.Finished, StatItem.OK, StatItem.MP,
+	};
+
+	public static final StatItem[] unresolvedStatusList = new StatItem[] {
+		StatItem.Unresolved, StatItem.NOS, StatItem.RUN, StatItem.UNK, StatItem.DUP, 
+	};
+
+	public static final StatItem[] resultsStatusList = new StatItem[] {
+		StatItem.Registered, StatItem.DNS, StatItem.Finished,
+		StatItem.OK, StatItem.MP, StatItem.DNF,StatItem.DSQ, 
 	};
 	
 	// Courses stats
@@ -111,12 +120,20 @@ public class RegistryStats extends Control
 		fullUpdate();
 	}
 	
-	public StatItem[] longStatuses() {
+	public StatItem[] allStatuses() {
 		return StatItem.values();
 	}
 	
-	public StatItem[] shortStatuses() {
-		return shortStatusList;
+	public StatItem[] summaryStatuses() {
+		return summaryStatusList;
+	}
+	
+	public StatItem[] unresolvedStatuses() {
+		return unresolvedStatusList;
+	}
+	
+	public StatItem[] resultsStatuses() {
+		return resultsStatusList;
 	}
 	
 	public String[] sortedEntries() {

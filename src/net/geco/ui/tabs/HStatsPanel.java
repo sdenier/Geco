@@ -9,7 +9,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -100,11 +99,9 @@ public class HStatsPanel extends StatsPanel {
 		});
 		
 		Box controlP = Box.createVerticalBox();
-		controlP.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 		controlP.add(summaryB);
 		controlP.add(unresolvedB);
 		controlP.add(resultsB);
-		controlP.add(Box.createVerticalStrut(5));
 		controlP.add(refreshB);
 		controlP.add(clearLogB);
 		
@@ -146,15 +143,15 @@ public class HStatsPanel extends StatsPanel {
 		}
 
 		public void selectSummaryStatuses() {
-			refreshStatusKeys(stats().shortStatuses());			
-		}
-
-		public void selectResultsStatuses() {
-			refreshStatusKeys(stats().longStatuses());			
+			refreshStatusKeys(stats().summaryStatuses());			
 		}
 
 		public void selectUnresolvedStatuses() {
-			refreshStatusKeys(stats().shortStatuses());
+			refreshStatusKeys(stats().unresolvedStatuses());
+		}
+
+		public void selectResultsStatuses() {
+			refreshStatusKeys(stats().resultsStatuses());			
 		}
 
 		protected void refreshStatusKeys(StatItem[] statItems) {

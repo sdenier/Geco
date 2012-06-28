@@ -137,15 +137,15 @@ public class VStatsPanel extends StatsPanel {
 		private StatItem[] statusKeys;
 
 		public VStatsTableModel() {
-			statusKeys = stats().shortStatuses();
+			selectSummaryStatuses();
 		}
 		
 		public void selectSummaryStatuses() {
-			refreshStatusKeys(stats().shortStatuses());			
+			refreshStatusKeys(stats().summaryStatuses());			
 		}
 
 		public void selectAllStatuses() {
-			refreshStatusKeys(stats().longStatuses());			
+			refreshStatusKeys(stats().allStatuses());			
 		}
 
 		protected void refreshStatusKeys(StatItem[] statItems) {
