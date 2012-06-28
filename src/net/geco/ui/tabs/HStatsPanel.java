@@ -6,20 +6,17 @@ package net.geco.ui.tabs;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
@@ -46,8 +43,6 @@ public class HStatsPanel extends StatsPanel {
 	private static final int MARGIN = (800 - STATS_WIDTH) / 2;
 
 	private HStatsTableModel courseTableModel;
-
-	private JCheckBox viewCh;
 	
 	/**
 	 * @param geco
@@ -68,32 +63,32 @@ public class HStatsPanel extends StatsPanel {
 
 	protected void initStatsPanel(JPanel panel, JButton clearLogB) {
 		// control panel
-		JPanel controlP = new JPanel();
-		controlP.setLayout(new GridBagLayout());
-		GridBagConstraints c = SwingUtils.gbConstr();
-		c.insets = new Insets(0, 10, 0, 0);
-		controlP.add(Box.createRigidArea(new Dimension(MARGIN, 30)), c);
-		
-		viewCh = new JCheckBox(Messages.uiGet("StatsPanel.ShortViewLabel")); //$NON-NLS-1$
-		viewCh.setToolTipText(Messages.uiGet("StatsPanel.ShortViewTooltip")); //$NON-NLS-1$
-		viewCh.setSelected(true);
-		viewCh.addItemListener(new ItemListener() {
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				if( viewCh.isSelected() ){
-					courseTableModel.setShortStatuses();
-				} else {
-					courseTableModel.setLongStatuses();
-				}
-				courseTableModel.fireTableStructureChanged();
+		JRadioButton summaryB = new JRadioButton("Summary", true);
+		summaryB.setToolTipText("Display a summary with most important stats");
+		JRadioButton unresolvedB = new JRadioButton("Unresolved");
+		unresolvedB.setToolTipText("Display a report with all unresolved statuses");
+		JRadioButton resultsB = new JRadioButton("Results");
+		resultsB.setToolTipText("Display a report with all definitive statuses");
+		ButtonGroup reportGroup = new ButtonGroup();
+		reportGroup.add(summaryB);
+		reportGroup.add(unresolvedB);
+		reportGroup.add(resultsB);
+		summaryB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				courseTableModel.selectSummaryStatuses();
 			}
 		});
-		c.gridy = 1;
-		controlP.add(viewCh, c);
-		
-		c.gridy = 2;
-		controlP.add(Box.createVerticalStrut(15), c);
-		
+		unresolvedB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				courseTableModel.selectUnresolvedStatuses();
+			}
+		});
+		resultsB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				courseTableModel.selectResultsStatuses();
+			}
+		});
+	
 		JButton refreshB = new JButton(Messages.uiGet("StatsPanel.RefreshLabel")); //$NON-NLS-1$
 		refreshB.setToolTipText(Messages.uiGet("StatsPanel.RefreshTooltip")); //$NON-NLS-1$
 		refreshB.addActionListener(new ActionListener() {
@@ -103,11 +98,15 @@ public class HStatsPanel extends StatsPanel {
 				updateTable();
 			}
 		});
-		c.gridy = 3;
-		controlP.add(refreshB, c);
 		
-		c.gridy = 4;
-		controlP.add(clearLogB, c);
+		Box controlP = Box.createVerticalBox();
+		controlP.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
+		controlP.add(summaryB);
+		controlP.add(unresolvedB);
+		controlP.add(resultsB);
+		controlP.add(Box.createVerticalStrut(5));
+		controlP.add(refreshB);
+		controlP.add(clearLogB);
 		
 		// Stats table
 		courseTableModel = createCourseTableModel();
@@ -137,23 +136,32 @@ public class HStatsPanel extends StatsPanel {
 
 	public class HStatsTableModel extends AbstractTableModel {
 
-		public HStatsTableModel() {
-			setShortStatuses();
-			refreshCourseKeys();
-		}
-
 		private String[] courseKeys;
 		
 		private StatItem[] statusKeys;
 
-		public void setShortStatuses() {
-			statusKeys = stats().shortStatuses();
-		}
-		
-		public void setLongStatuses() {
-			statusKeys = stats().longStatuses();
+		public HStatsTableModel() {
+			selectSummaryStatuses();
+			refreshCourseKeys();
 		}
 
+		public void selectSummaryStatuses() {
+			refreshStatusKeys(stats().shortStatuses());			
+		}
+
+		public void selectResultsStatuses() {
+			refreshStatusKeys(stats().longStatuses());			
+		}
+
+		public void selectUnresolvedStatuses() {
+			refreshStatusKeys(stats().shortStatuses());
+		}
+
+		protected void refreshStatusKeys(StatItem[] statItems) {
+			statusKeys = statItems;
+			fireTableStructureChanged();
+		}
+		
 		public void refreshCourseKeys() {
 			courseKeys = stats().sortedEntries();
 		}
@@ -171,7 +179,6 @@ public class HStatsPanel extends StatsPanel {
 			} else {
 				return content;
 			}
-	
 		}
 	
 		@Override
