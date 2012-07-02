@@ -44,12 +44,17 @@ public class V3CourseSaxImporter extends DefaultHandler implements XMLCourseImpo
 	// Internal state for Map description
 	private Float[] mapCoordTL;
 	private Float[] mapCoordBR;
+
+	@SuppressWarnings("unused")
 	private String mapUnitTL;
+	@SuppressWarnings("unused")
 	private String mapUnitBR;
 	
 	// Internal state for Control description
 	private String controlId;
 	private Float[] coord;
+
+	@SuppressWarnings("unused")
 	private String unit;
 
 	// Internal state for Course description
