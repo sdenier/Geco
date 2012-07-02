@@ -23,6 +23,7 @@ import net.geco.control.StageBuilder;
 import net.geco.control.StageControl;
 import net.geco.control.StartlistImporter;
 import net.geco.framework.IGecoApp;
+import net.geco.functions.DeleteFunction;
 import net.geco.functions.ECardLogFunction;
 import net.geco.functions.GeneratorFunction;
 import net.geco.functions.RecheckFunction;
@@ -97,6 +98,7 @@ public class OrientShowAppBuilder extends AppBuilder {
 		new StationLogFunction(gecoControl);
 		new ECardLogFunction(gecoControl);
 		new RecheckFunction(gecoControl);
+		new DeleteFunction(gecoControl);
 		new GeneratorFunction(gecoControl);
 	}
 
