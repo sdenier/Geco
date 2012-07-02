@@ -63,6 +63,14 @@ public enum Status {
 			return "Disqualified"; //$NON-NLS-1$
 		}		
 	},
+	OOT {
+		public String toString() {
+			return "OOT";
+		}
+		public String iofFormat() {
+			return "OverTime";
+		}
+	},
 	NOS { 
 		public Color color() {
 			return new Color(1, 1, 0.5f);
