@@ -445,6 +445,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 			return "3"; //$NON-NLS-1$
 		case DSQ:
 			return "4"; //$NON-NLS-1$
+		case OOT:
 		case RUN:
 			return "5"; //$NON-NLS-1$
 		}

@@ -104,6 +104,7 @@ public class ResultBuilder extends Control {
 				case DNF:
 				case DSQ:
 				case MP:
+				case OOT:
 					result.addNRRunner(data);
 					break;
 				case DNS:
