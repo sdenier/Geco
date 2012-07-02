@@ -82,6 +82,10 @@ public class RegistryStats extends Control
 			public String toString() {
 				return Messages.getString("Status.DSQLabel"); //$NON-NLS-1$
 			}},
+		OOT {
+			public String toString() {
+				return "OOT";
+			}},
 	}
 
 	public static final StatItem[] summaryStatusList = new StatItem[] {
@@ -94,7 +98,7 @@ public class RegistryStats extends Control
 
 	public static final StatItem[] resultsStatusList = new StatItem[] {
 		StatItem.Registered, StatItem.DNS, StatItem.Finished,
-		StatItem.OK, StatItem.MP, StatItem.DNF,StatItem.DSQ, 
+		StatItem.OK, StatItem.MP, StatItem.DNF,StatItem.DSQ, StatItem.OOT, 
 	};
 	
 	// Courses stats
@@ -106,6 +110,7 @@ public class RegistryStats extends Control
 	private int totalDns;
 	private int totalDnf;
 	private int totalDsq;
+	private int totalOot;
 	private int totalNos;
 	private int totalRun;
 	private int totalUnk;
@@ -180,6 +185,7 @@ public class RegistryStats extends Control
 		totalDns = 0;
 		totalDnf = 0;
 		totalDsq = 0;
+		totalOot = 0;
 		totalNos = 0;
 		totalRun = 0;
 		totalUnk = 0;
@@ -187,7 +193,7 @@ public class RegistryStats extends Control
 	}
 	
 	private void computeCourseStats(Course course) {
-		int courseOk = 0, courseMp = 0, courseDns = 0, courseDnf = 0, courseDsq = 0;
+		int courseOk = 0, courseMp = 0, courseDns = 0, courseDnf = 0, courseDsq = 0, courseOot = 0;
 		int courseNos = 0, courseRun = 0, courseUnk = 0, courseDup = 0;
 		List<Runner> courseData = registry().getRunnersFromCourse(course);
 		int total = courseData.size();
@@ -198,6 +204,7 @@ public class RegistryStats extends Control
 			case DNS: courseDns++; totalDns++; break;
 			case DNF: courseDnf++; totalDnf++; break;
 			case DSQ: courseDsq++; totalDsq++; break;
+			case OOT: courseOot++; totalOot++; break;
 			case NOS: courseNos++; totalNos++; break;
 			case RUN: courseRun++; totalRun++; break;
 			case UNK: courseUnk++; totalUnk++; break;
@@ -205,23 +212,24 @@ public class RegistryStats extends Control
 			}
 		}
 		Map<StatItem, Integer> courseStats = stats.get(course.getName());
-		storeStats(courseOk, courseMp, courseDns, courseDnf, courseDsq, courseNos, courseRun, courseUnk, courseDup,
-					total, courseStats);
+		storeStats(courseOk, courseMp, courseDns, courseDnf, courseDsq, courseOot,
+				   courseNos, courseRun, courseUnk, courseDup, total, courseStats);
 	}
 
 	private void computeTotalStats() {
 		int total = registry().getRunners().size();
-		storeStats(totalOk, totalMp, totalDns, totalDnf, totalDsq, totalNos, totalRun, totalUnk, totalDup,
-					total, getTotalCourse());
+		storeStats(totalOk, totalMp, totalDns, totalDnf, totalDsq, totalOot,
+				   totalNos, totalRun, totalUnk, totalDup, total, getTotalCourse());
 	}
 	
-	private void storeStats(int ok, int mp, int dns, int dnf, int dsq, int nos, int run, int unk, int dup, 
-			int total, Map<StatItem, Integer> courseStats) {
+	private void storeStats(int ok, int mp, int dns, int dnf, int dsq, int oot,
+			int nos, int run, int unk, int dup, int total, Map<StatItem, Integer> courseStats) {
 		courseStats.put(StatItem.OK, ok);
 		courseStats.put(StatItem.MP, mp);
 		courseStats.put(StatItem.DNS, dns);
 		courseStats.put(StatItem.DNF, dnf);
 		courseStats.put(StatItem.DSQ, dsq);
+		courseStats.put(StatItem.OOT, oot);
 		courseStats.put(StatItem.NOS, nos);
 		courseStats.put(StatItem.RUN, run);
 		courseStats.put(StatItem.UNK, unk);
