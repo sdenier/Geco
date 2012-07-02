@@ -71,6 +71,7 @@ public class RefereeLogFunction extends GecoFunction {
 			int nbChanges = findAndWriteManualChanges(runnerData, log);
 			writeRunners(runnerData, Status.DNF, log);
 			writeRunners(runnerData, Status.DSQ, log);
+			writeRunners(runnerData, Status.OOT, log);
 			writeCourseSummary(course, stats, nbChanges, log);
 			log.writeLine("");
 		}
@@ -126,6 +127,7 @@ public class RefereeLogFunction extends GecoFunction {
 		appendItemStat("MP", StatItem.MP, courseStats, string).append(", ");
 		appendItemStat("DNF", StatItem.DNF, courseStats, string).append(", ");
 		appendItemStat("DSQ", StatItem.DSQ, courseStats, string).append(", ");
+		appendItemStat("OOT", StatItem.OOT, courseStats, string).append(", ");
 		string.append("Manual Changes " + nbChanges);
 		log.writeLine(string.toString());
 	}

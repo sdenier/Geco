@@ -40,27 +40,20 @@ import net.geco.ui.framework.StatsPanel;
  */
 public class VStatsPanel extends StatsPanel {
 
-	private AbstractTableModel courseTableModel;
-	
-	private StatItem[] statusKeys = new StatItem[0];
-
-	private JCheckBox viewCh;
-
 	private String selectedCourse;
 
 	private JList coursesL;
+
+	private VStatsTableModel courseTableModel;
+
+	private JCheckBox viewCh;
 	
-	/**
-	 * @param geco
-	 * @param frame
-	 */
 	public VStatsPanel(IGecoApp geco, JFrame frame) {
 		super(geco, frame);
 		initStatsPanel(this);
-		refreshTableKeys();
+		refreshCourseKeys();
 		startAutoUpdate();
 	}
-
 
 	@Override
 	protected void updateTable() {
@@ -77,12 +70,11 @@ public class VStatsPanel extends StatsPanel {
 		viewCh.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				if( viewCh.isSelected() ){
-					statusKeys = stats().shortStatuses();
+				if( viewCh.isSelected() ) {
+					courseTableModel.selectSummaryStatuses();
 				} else {
-					statusKeys = stats().longStatuses();
+					courseTableModel.selectAllStatuses();
 				}
-				courseTableModel.fireTableStructureChanged();
 			}
 		});
 		controlP.add(viewCh);
@@ -112,7 +104,7 @@ public class VStatsPanel extends StatsPanel {
 		
 		JPanel listP = new JPanel(new BorderLayout());
 		JScrollPane jsp1 = new JScrollPane(coursesL);
-		jsp1.setPreferredSize(new Dimension(250, 195));
+		jsp1.setPreferredSize(new Dimension(250, 185));
 		listP.add(jsp1, BorderLayout.CENTER);
 		listP.add(controlP, BorderLayout.SOUTH);
 		panel.add( SwingUtils.embed(listP), BorderLayout.NORTH);
@@ -122,60 +114,82 @@ public class VStatsPanel extends StatsPanel {
 		((JLabel) table.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 		JScrollPane jsp = new JScrollPane(table);
-		jsp.setPreferredSize(new Dimension(250, 235));
+		jsp.setPreferredSize(new Dimension(250, 245));
 		panel.add( SwingUtils.embed(jsp), BorderLayout.CENTER );
 	}
 	
-	protected AbstractTableModel createCourseTableModel() {
-		return new AbstractTableModel() {
-			@Override
-			public Object getValueAt(int rowIndex, int columnIndex) {
-				String content;
-				if( columnIndex==0 )
-					content = statusKeys[rowIndex].toString();
-				else 
-					content = stats().getCourseStatsFor(selectedCourse,
-														statusKeys[rowIndex]).toString();
-				return content;
-
-			}
-			@Override
-			public int getRowCount() {
-				return statusKeys.length;
-			}
-			@Override
-			public int getColumnCount() {
-				return 2;
-			}
-			@Override
-			public String getColumnName(int column) {
-				if( column==0 )
-					return Messages.uiGet("StatsPanel.StatusHeader"); //$NON-NLS-1$
-				else
-					return Messages.uiGet("StatsPanel.CountHeader"); //$NON-NLS-1$
-			}
-			@Override
-			public Class<?> getColumnClass(int columnIndex) {
-				if( columnIndex==0 ){
-					return String.class;
-				} else {
-					return Integer.class;
-				}
-			}
-		};
+	protected VStatsTableModel createCourseTableModel() {
+		return new VStatsTableModel();
 	}
 	
-	protected void refreshTableKeys() {
-		statusKeys = stats().shortStatuses();
+	protected void refreshCourseKeys() {
 		coursesL.setListData(stats().sortedEntries());
 		coursesL.setSelectedValue("Total", true); //$NON-NLS-1$
 	}
 
 	@Override
 	public void changed(Stage previous, Stage next) {
-		refreshTableKeys();
-		viewCh.setSelected(true);
-//		courseTableModel.fireTableStructureChanged(); // called by viewCh item listener
+		refreshCourseKeys();
+	}
+
+	public class VStatsTableModel extends AbstractTableModel {
+		
+		private StatItem[] statusKeys;
+
+		public VStatsTableModel() {
+			selectSummaryStatuses();
+		}
+		
+		public void selectSummaryStatuses() {
+			refreshStatusKeys(stats().summaryStatuses());			
+		}
+
+		public void selectAllStatuses() {
+			refreshStatusKeys(stats().allStatuses());			
+		}
+
+		protected void refreshStatusKeys(StatItem[] statItems) {
+			statusKeys = statItems;
+			fireTableStructureChanged();
+		}
+		
+		@Override
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			String content;
+			if( columnIndex==0 )
+				content = statusKeys[rowIndex].toString();
+			else 
+				content = stats().getCourseStatsFor(selectedCourse,
+													statusKeys[rowIndex]).toString();
+			return content;
+		}
+	
+		@Override
+		public int getRowCount() {
+			return statusKeys.length;
+		}
+	
+		@Override
+		public int getColumnCount() {
+			return 2;
+		}
+	
+		@Override
+		public String getColumnName(int column) {
+			if( column==0 )
+				return Messages.uiGet("StatsPanel.StatusHeader"); //$NON-NLS-1$
+			else
+				return Messages.uiGet("StatsPanel.CountHeader"); //$NON-NLS-1$
+		}
+	
+		@Override
+		public Class<?> getColumnClass(int columnIndex) {
+			if( columnIndex==0 ){
+				return String.class;
+			} else {
+				return Integer.class;
+			}
+		}
 	}
 
 
