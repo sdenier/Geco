@@ -1,12 +1,15 @@
-#Geco Sun May 15 20:26:14 CEST 2011
-#Sun May 15 20:26:14 CEST 2011
+#Geco Wed Jul 04 23:43:17 CEST 2012
+#Wed Jul 04 23:43:17 CEST 2012
+Version=V1.2
 SplitFormat=MultiColumns
+AppBuilder=net.geco.app.OrientShowAppBuilder
 name=Belfield
 NbAutoBackups=9
+CNFile=/Users/deniersi/Documents/Geco 1.x/data/CN-Ped-Base.csv
 AutosaveDelay=2
 SIZeroTime=32400000
 MPPenalty=0
 MPLimit=0
 SplitNbColumns=12
 SIPortname=
-SplitPrinter=Lexmark E260
+SplitPrinter=Canon MP560 wifi

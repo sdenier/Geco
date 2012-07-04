@@ -76,7 +76,7 @@ public class OrFixture {
 			new RunnerIO(factory, reader, null, registry, 0).importData();
 
 			reader.initialize(baseDir, CardDataIO.sourceFilename());
-			new CardDataIO(factory, reader, null, registry, false).importData();
+			new CardDataIO(factory, reader, null, registry).importData();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

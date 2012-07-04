@@ -158,25 +158,6 @@ public class CSVFormatTest {
 	}
 
 	@Test
-	public void testCardDataImportMigration12(){ // MIGR12
-		CardDataIO cardDataIO = new CardDataIO(factory, null, null, registry, false);
-		runnerFactory(67, "501aa");
-		RunnerRaceData runnerData = cardDataIO.importTData(new String[]{
-			"501aa", "1:00:00", "--:--", "1:00:15", "1:05:00", "2:10:05", "33", "1:06:15"				
-		});
-		cardDataIO.register(runnerData, registry);
-		assertEquals(TimeManager.safeParse("1:00:00"), runnerData.getReadtime());
-		assertEquals(TimeManager.NO_TIME, runnerData.getErasetime());
-		assertEquals(TimeManager.safeParse("1:00:15"), runnerData.getControltime());
-		assertEquals(TimeManager.safeParse("1:05:00"), runnerData.getStarttime());
-		assertEquals(TimeManager.safeParse("2:10:05"), runnerData.getFinishtime());
-		Punch[] punches = runnerData.getPunches();
-		assertEquals(1, punches.length);
-		assertEquals(33, punches[0].getCode());
-		assertEquals(TimeManager.safeParse("1:06:15"), punches[0].getTime());
-	}
-	
-	@Test
 	public void testCardDataRoundtrip(){
 		runnerFactory(66);
 		CardDataIO cardDataIO = new CardDataIO(factory, null, null, registry);
@@ -200,17 +181,6 @@ public class CSVFormatTest {
 		assertEquals(TimeManager.safeParse("0:59:25").getTime(), raceData.getResult().getRacetime());
 	}
 
-	@Test
-	public void testResultDataImportMigration12(){ // MIGR12
-		testCardDataImportMigration12();
-		ResultDataIO resultDataIO = new ResultDataIO(factory, null, null, registry, false);
-		RunnerRaceData raceData = resultDataIO.importTData(new String[]{
-			"501aa", "NOS", "0:59:25" 
-		});
-		assertEquals(Status.NOS, raceData.getStatus());
-		assertEquals(TimeManager.safeParse("0:59:25").getTime(), raceData.getResult().getRacetime());
-	}
-	
 	@Test
 	public void testResultDataRoundtrip(){
 		testCardDataImport();

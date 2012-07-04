@@ -66,7 +66,7 @@ public class RunnerIO extends AbstractIO<Runner> {
 		runner.setRegisteredStarttime( TimeManager.absoluteTime(TimeManager.safeParse(record[8]), zeroTime) );
 		runner.setRentedEcard(Boolean.parseBoolean(record[6]));
 		runner.setNC(Boolean.parseBoolean(record[11]));
-		if( record.length>=13 && ! record[12].equals("") ) { //$NON-NLS-1$ // MIGR12
+		if( record.length==13 && ! record[12].equals("") ) { //$NON-NLS-1$
 			runner.setArchiveId(new Integer(record[12]));
 		} else {
 			runner.setArchiveId(null);

@@ -41,7 +41,7 @@ public interface Stage {
 	
 	public String filepath(String filename);
 	
-	public boolean version12(); // MIGR12
+	public boolean version12();
 
 
 	/**

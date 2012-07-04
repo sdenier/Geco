@@ -23,7 +23,7 @@ public class StageImpl implements Stage {
 	private int nbBackups;
 	private int autosaveDelay; // in minutes
 	
-	private boolean version12; // MIGR12
+	private boolean version12;
 	private String appBuilderName;
 
 	
@@ -175,7 +175,7 @@ public class StageImpl implements Stage {
 		return "name"; //$NON-NLS-1$
 	}
 	
-	public static String zerohourProperty() { // MIGR12
+	public static String zerohourProperty() {
 		return "SIZeroTime"; //$NON-NLS-1$
 	}
 
