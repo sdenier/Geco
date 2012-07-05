@@ -36,7 +36,7 @@ public class DeleteFunction extends GecoFunction {
 	private JSpinner olderBackupS;
 
 	public DeleteFunction(GecoControl gecoControl) {
-		super(gecoControl);
+		super(gecoControl, FunctionCategory.BATCH);
 	}
 
 	@Override
@@ -106,8 +106,5 @@ public class DeleteFunction extends GecoFunction {
 		configBox.add(cleanupBox);
 		return configBox;
 	}
-
-	@Override
-	public void updateUI() {	}
 
 }

@@ -20,10 +20,12 @@ import javax.swing.JTextArea;
 
 import net.geco.basics.Announcer.Logging;
 import net.geco.framework.IGecoApp;
+import net.geco.functions.GecoFunction.FunctionCategory;
 import net.geco.model.Messages;
 import net.geco.model.Stage;
 import net.geco.ui.components.FunctionsPanel;
 import net.geco.ui.framework.TabPanel;
+import net.geco.ui.framework.TabbedSubpane;
 
 
 /**
@@ -33,7 +35,7 @@ import net.geco.ui.framework.TabPanel;
  */
 public class LogPanel extends TabPanel implements Logging {
 
-	private FunctionsPanel funtionsPanel;
+	private JTabbedPane tabbedFunctions;
 
 	private JTextArea logArea;
 	
@@ -49,23 +51,24 @@ public class LogPanel extends TabPanel implements Logging {
 	}
 
 	public void initPanels(JPanel panel) {
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.BOTTOM);
-		tabbedPane.add(Messages.uiGet("LogPanel.StatsTitle"), initStatsPanel()); //$NON-NLS-1$
-		tabbedPane.add(Messages.uiGet("LogPanel.FunctionsTitle"), initFunctionsPanel()); //$NON-NLS-1$
+		tabbedFunctions = new JTabbedPane(JTabbedPane.BOTTOM);
+		tabbedFunctions.add(Messages.uiGet("LogPanel.StatsTitle"), initStatsPanel()); //$NON-NLS-1$
+		for (FunctionCategory functionCategory : FunctionCategory.values()) {
+			tabbedFunctions.add(functionCategory.toString(), createFunctionsPanel(functionCategory)); //$NON-NLS-1$
+		}
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-		splitPane.add(tabbedPane);
+		splitPane.add(tabbedFunctions);
 		splitPane.add(initLogArea());
 		splitPane.setBorder(BorderFactory.createEmptyBorder());
 		panel.add(splitPane);
 	}
-	
-	private FunctionsPanel initFunctionsPanel() {
-		funtionsPanel = new FunctionsPanel(frame(), createClearLogButton());
-		return funtionsPanel;
-	}
 
 	private JPanel initStatsPanel() {
 		return new HStatsPanel(geco(), frame(), createClearLogButton());
+	}
+	
+	private FunctionsPanel createFunctionsPanel(FunctionCategory functionCategory) {
+		return new FunctionsPanel(functionCategory, frame(), createClearLogButton());
 	}
 
 	public JPanel initLogArea() {
@@ -75,7 +78,6 @@ public class LogPanel extends TabPanel implements Logging {
 
 		JPanel logPanel = new JPanel(new BorderLayout());
 		logPanel.add(new JScrollPane(logArea), BorderLayout.CENTER);
-//		logPanel.add(SwingUtils.embed(initClearLogButton()), BorderLayout.SOUTH);
 
 		return logPanel;
 	}
@@ -118,7 +120,7 @@ public class LogPanel extends TabPanel implements Logging {
 
 	@Override
 	public void componentShown(ComponentEvent e) {
-		funtionsPanel.componentShown();
+		((TabbedSubpane) tabbedFunctions.getSelectedComponent()).componentShown();
 		logArea.requestFocusInWindow();
 	}
 

@@ -42,7 +42,7 @@ public class RefereeLogFunction extends GecoFunction {
 
 	
 	public RefereeLogFunction(GecoControl gecoControl) {
-		super(gecoControl);
+		super(gecoControl, FunctionCategory.REFEREE);
 	}
 
 	@Override
@@ -187,10 +187,6 @@ public class RefereeLogFunction extends GecoFunction {
 		return config;
 	}
 
-	@Override
-	public void updateUI() {}
-
-	
 	public class LogStream {
 		public void writeLine(String string) {
 			geco().announcer().log(string, false);

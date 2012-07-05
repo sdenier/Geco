@@ -8,7 +8,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -19,7 +18,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import net.geco.functions.GecoFunction;
+import net.geco.functions.GecoFunction.FunctionCategory;
 import net.geco.model.Messages;
+import net.geco.ui.framework.TabbedSubpane;
 
 
 /**
@@ -27,21 +28,20 @@ import net.geco.model.Messages;
  * @since Nov 11, 2010
  *
  */
-public class FunctionsPanel extends JPanel {
+public class FunctionsPanel extends JPanel implements TabbedSubpane {
 
 	private GecoFunction gFunction;
 	
 	private JComponent functionUI;
 
-	public FunctionsPanel(JFrame frame, JButton clearLogB) {
-		initFunctionsPanel(frame, clearLogB);
+	public FunctionsPanel(FunctionCategory functionCategory, JFrame frame, JButton clearLogB) {
+		initFunctionsPanel(functionCategory, frame, clearLogB);
 	}
 
-	public JComponent initFunctionsPanel(final JFrame frame, JButton clearLogB) {
+	public JComponent initFunctionsPanel(FunctionCategory functionCategory, final JFrame frame, JButton clearLogB) {
 		setLayout(new BorderLayout());
 
-		Vector<GecoFunction> functions = GecoFunction.functions();
-		final JComboBox gecoFunctionsCB = new JComboBox(functions);
+		final JComboBox gecoFunctionsCB = new JComboBox(GecoFunction.getFunctions(functionCategory));
 
 		final JButton execB = new JButton(Messages.uiGet("FunctionsPanel.ExecuteLabel")); //$NON-NLS-1$
 		execB.addActionListener(new ActionListener() {

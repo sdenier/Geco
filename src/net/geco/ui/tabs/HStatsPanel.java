@@ -28,6 +28,7 @@ import net.geco.model.Messages;
 import net.geco.model.Stage;
 import net.geco.ui.basics.SwingUtils;
 import net.geco.ui.framework.StatsPanel;
+import net.geco.ui.framework.TabbedSubpane;
 
 
 /**
@@ -35,7 +36,7 @@ import net.geco.ui.framework.StatsPanel;
  * @since Sep 13, 2009
  *
  */
-public class HStatsPanel extends StatsPanel {
+public class HStatsPanel extends StatsPanel implements TabbedSubpane {
 
 	private static final int STATS_HEIGHT = 120;
 	private static final int STATS_WIDTH = 600;
@@ -131,6 +132,9 @@ public class HStatsPanel extends StatsPanel {
 		courseTableModel.refreshCourseKeys();
 	}
 
+	@Override
+	public void componentShown() {}
+
 	public class HStatsTableModel extends AbstractTableModel {
 
 		private String[] courseKeys;
@@ -205,6 +209,5 @@ public class HStatsPanel extends StatsPanel {
 			}
 		}
 	}
-
 
 }

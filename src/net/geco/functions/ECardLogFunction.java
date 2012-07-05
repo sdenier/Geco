@@ -41,7 +41,7 @@ public class ECardLogFunction extends GecoFunction {
 	private JRadioButton trainingB;
 
 	public ECardLogFunction(GecoControl gecoControl) {
-		super(gecoControl);
+		super(gecoControl, FunctionCategory.BATCH);
 	}
 
 	@Override
@@ -123,8 +123,5 @@ public class ECardLogFunction extends GecoFunction {
 		configBox.add(archiveBox);
 		return configBox;
 	}
-
-	@Override
-	public void updateUI() {	}
 
 }

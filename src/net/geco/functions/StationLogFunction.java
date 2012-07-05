@@ -47,7 +47,7 @@ public class StationLogFunction extends GecoFunction {
 	private JCheckBox setDnsB;
 
 	public StationLogFunction(GecoControl gecoControl) {
-		super(gecoControl);
+		super(gecoControl, FunctionCategory.STAGE);
 	}
 
 	@Override
@@ -199,8 +199,5 @@ public class StationLogFunction extends GecoFunction {
 									  "About Checking Station Log",
 									  JOptionPane.INFORMATION_MESSAGE);
 	}
-
-	@Override
-	public void updateUI() {	}
 
 }

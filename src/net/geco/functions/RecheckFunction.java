@@ -17,7 +17,7 @@ import net.geco.model.RunnerRaceData;
 public class RecheckFunction extends AbstractRunnerFunction {
 
 	public RecheckFunction(GecoControl gecoControl) {
-		super(gecoControl);
+		super(gecoControl, FunctionCategory.BATCH);
 	}
 
 	@Override

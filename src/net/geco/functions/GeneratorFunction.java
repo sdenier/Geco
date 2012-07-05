@@ -64,7 +64,7 @@ public class GeneratorFunction extends GecoFunction {
 
 
 	public GeneratorFunction(GecoControl gecoControl){
-		super(gecoControl);
+		super(gecoControl, FunctionCategory.BATCH);
 		this.runnerControl = getService(RunnerControl.class);
 		this.siHandler = getService(SIReaderHandler.class);
 		this.mutationX = 40;
@@ -163,10 +163,6 @@ public class GeneratorFunction extends GecoFunction {
 		return hBox;
 	}
 
-	@Override
-	public void updateUI() { }
-	
-	
 	public void setMutationX(int mutationX) {
 		this.mutationX = mutationX;
 	}

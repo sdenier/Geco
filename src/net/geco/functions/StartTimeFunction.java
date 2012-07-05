@@ -32,7 +32,7 @@ public class StartTimeFunction extends AbstractRunnerFunction {
 	private JTextField starttimeF;
 
 	public StartTimeFunction(GecoControl gecoControl) {
-		super(gecoControl);
+		super(gecoControl, FunctionCategory.STAGE);
 	}
 
 	@Override

@@ -45,7 +45,7 @@ public class LegNeutralizationFunction extends GecoFunction {
 	private JCheckBox simulateCB;
 
 	public LegNeutralizationFunction(GecoControl gecoControl) {
-		super(gecoControl);
+		super(gecoControl, FunctionCategory.REFEREE);
 	}
 
 	@Override
@@ -131,9 +131,6 @@ public class LegNeutralizationFunction extends GecoFunction {
 
 		return hBox;
 	}
-
-	@Override
-	public void updateUI() {}
 
 	public void setNeutralizedLeg(int legStart, int legEnd) {
 		this.legStart = legStart;

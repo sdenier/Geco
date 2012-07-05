@@ -38,8 +38,8 @@ public abstract class AbstractRunnerFunction extends GecoFunction {
 	protected JRadioButton categoriesRB;
 	protected JRadioButton runnersRB;
 
-	public AbstractRunnerFunction(GecoControl gecoControl) {
-		super(gecoControl);
+	public AbstractRunnerFunction(GecoControl gecoControl, FunctionCategory category) {
+		super(gecoControl, category);
 	}
 
 	protected boolean acceptRunnerData(RunnerRaceData runnerRaceData) {
@@ -90,7 +90,7 @@ public abstract class AbstractRunnerFunction extends GecoFunction {
 		data = new JList();
 		data.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		JScrollPane dataSP = new JScrollPane(data);
-		dataSP.setPreferredSize(new Dimension(350, 100));
+		dataSP.setPreferredSize(new Dimension(325, 100));
 		dataSP.setMaximumSize(dataSP.getPreferredSize());
 		dataSP.setAlignmentY(Component.TOP_ALIGNMENT);
 		

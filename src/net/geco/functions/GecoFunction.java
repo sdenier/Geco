@@ -4,6 +4,8 @@
  */
 package net.geco.functions;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -21,24 +23,41 @@ import net.geco.model.Messages;
  */
 public abstract class GecoFunction extends Control {
 
-	public GecoFunction(GecoControl gecoControl) {
+	public GecoFunction(GecoControl gecoControl, FunctionCategory fc) {
 		super(gecoControl);
-		registerFunction(this);
+		registerFunction(this, fc);
 	}
 
-	private static Vector<GecoFunction> functions = resetAll();
-	
-	public static Vector<GecoFunction> functions() {
-		return functions;
+	public static enum FunctionCategory {
+		STAGE {
+			public String toString() {
+				return "Stage";
+			}},
+		REFEREE {
+			public String toString() {
+				return "Referee";
+			}},
+		BATCH {
+			public String toString() {
+				return "Batch";
+			}}
 	}
 	
-	public static void registerFunction(GecoFunction function) {
-		functions.add(function);
+	private static Map<FunctionCategory, Vector<GecoFunction>> functions =	resetAll();	
+
+	public static Map<FunctionCategory, Vector<GecoFunction>> resetAll() {
+		return new HashMap<GecoFunction.FunctionCategory, Vector<GecoFunction>>();
 	}
 	
-	public static Vector<GecoFunction> resetAll() {
-		functions = new Vector<GecoFunction>();
-		return functions;
+	public static Vector<GecoFunction> getFunctions(FunctionCategory fc) {
+		return functions.get(fc);
+	}
+	
+	public static void registerFunction(GecoFunction function, FunctionCategory fc) {
+		if( !functions.containsKey(fc) ){
+			functions.put(fc, new Vector<GecoFunction>(5));
+		}
+		functions.get(fc).add(function);
 	}
 	
 	public abstract String toString();
@@ -55,6 +74,6 @@ public abstract class GecoFunction extends Control {
 		return parametersConfig;
 	}
 	
-	public abstract void updateUI();
+	public void updateUI() {}
 	
 }
