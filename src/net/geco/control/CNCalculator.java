@@ -34,7 +34,7 @@ import net.geco.model.iocsv.CsvWriter;
  */
 public class CNCalculator extends AResultExporter implements StageListener {
 
-	private File cnFile = new File("data/CN-Ped-Base.csv"); //$NON-NLS-1$
+	private File cnFile = new File(""); //$NON-NLS-1$
 	
 	private Map<Integer, Integer> cnScores;
 	
@@ -210,13 +210,15 @@ public class CNCalculator extends AResultExporter implements StageListener {
 		try {
 			setCnFile(new File( stage().getProperties().getProperty(cnFileProperty()) ));
 		} catch (NullPointerException e) {
-			
+			setCnFile(new File("")); //$NON-NLS-1$
 		}
 	}
 
 	@Override
 	public void saving(Stage stage, Properties properties) {
-		properties.setProperty(cnFileProperty(), getCnFile().getAbsolutePath());
+		if( getCnFile().exists() ){
+			properties.setProperty(cnFileProperty(), getCnFile().getAbsolutePath());
+		}
 	}
 
 	@Override
