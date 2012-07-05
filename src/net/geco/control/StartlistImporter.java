@@ -52,8 +52,9 @@ public class StartlistImporter extends OEImporter {
 					runner.setStartId(startId);
 				}
 			}
-			if( ! record[2].equals("") ){ //$NON-NLS-1$
-				runner.setArchiveId(Integer.valueOf(record[2]));			
+			String archiveNum = trimQuotes(record[2]);
+			if( ! archiveNum.equals("") ){ //$NON-NLS-1$
+				runner.setArchiveId(Integer.valueOf(archiveNum));			
 			}
 			runner.setLastname(lastName);
 			runner.setFirstname(firstName);
@@ -62,8 +63,8 @@ public class StartlistImporter extends OEImporter {
 			Date relativeTime = TimeManager.safeParse(record[9]); // ! Time since zero hour
 			runner.setRegisteredStarttime( TimeManager.absoluteTime(relativeTime, stage().getZeroHour()) );
 
-			Club club = stageControl().ensureClubInRegistry(record[15], record[14]);
-			Category cat = stageControl().ensureCategoryInRegistry(record[18], record[19]);
+			Club club = stageControl().ensureClubInRegistry(trimQuotes(record[15]), trimQuotes(record[14]));
+			Category cat = stageControl().ensureCategoryInRegistry(trimQuotes(record[18]), trimQuotes(record[19]));
 			runner.setClub(club);
 			runner.setCategory(cat);
 			runner.setCourse(registry().getDefaultCourseOrAutoFor(cat));
