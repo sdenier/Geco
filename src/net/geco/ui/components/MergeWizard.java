@@ -8,6 +8,8 @@ import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -43,6 +45,7 @@ public class MergeWizard extends JDialog {
 		wizard.pack();
 		wizard.setLocationRelativeTo(null);
 		wizard.setVisible(true);
+		System.exit(0);
 	}
 
 	public MergeWizard(IGeco geco, JFrame frame, String title) {
@@ -68,6 +71,7 @@ public class MergeWizard extends JDialog {
 	}
 	
 	private void close() {
+//		mergedCard = null;
 		setVisible(false);
 	}
 
@@ -76,24 +80,9 @@ public class MergeWizard extends JDialog {
 		setLocationRelativeTo(null);
 		setVisible(true);		
 	}
-	
-	public static class DataField extends JTextField {
-		public DataField(String data) {
-			super(data, 5);
-			setEditable(false);
-			setHorizontalAlignment(CENTER);
-		}
-	}
-
-	public static class StatusField extends DataField {
-		public StatusField(Status status) {
-			super(status.toString());
-			setBackground(status.color());
-		}
-	}
 
 
-	public static abstract class MergeSubpanel {
+	public abstract class MergeSubpanel {
 
 		protected int nextLine;
 		
@@ -107,6 +96,7 @@ public class MergeWizard extends JDialog {
 		protected void initTitle(JComponent panel, String title) {
 			Box titleBox = Box.createHorizontalBox();
 			titleBox.add(new JLabel(title));
+			titleBox.add(Box.createHorizontalStrut(INSET));
 			titleBox.add(new JSeparator());
 			GridBagConstraints c = gridLine();
 			c.insets = new Insets(INSET, 2 * INSET, INSET, 2 * INSET);
@@ -133,7 +123,7 @@ public class MergeWizard extends JDialog {
 
 		protected GridBagConstraints buttonsCol(int colHeight) {
 			GridBagConstraints c = SwingUtils.gbConstr(nextLine);
-			setInsets(c, 2 * INSET, 20);
+			setInsets(c, 15, 15);
 			c.anchor = GridBagConstraints.NORTH;
 			c.gridheight = colHeight;
 			return c;
@@ -153,16 +143,25 @@ public class MergeWizard extends JDialog {
 		
 	}
 	
-	public static class ECardPanel extends MergeSubpanel {
+	public class ECardPanel extends MergeSubpanel {
 
 		public ECardPanel(JComponent panel, int firstLine) {
 			super(panel, "ECard Data", firstLine);
 		}
 
 		protected void initButtons(JComponent panel) {
+			JButton createAnonB = new JButton(GecoIcon.createIcon(GecoIcon.CreateAnon));
+			createAnonB.setToolTipText("Create anonymous runner with ecard data");
+			JButton cancelB = new JButton(GecoIcon.createIcon(GecoIcon.Cancel));
+			cancelB.setToolTipText("Close wizard and cancel the merge");
+			cancelB.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					close();
+				}
+			});
 			Box buttons = Box.createVerticalBox();
-			buttons.add(new JButton(GecoIcon.createIcon(GecoIcon.CreateAnon)));
-			buttons.add(new JButton(GecoIcon.createIcon(GecoIcon.Cancel)));
+			buttons.add(createAnonB);
+			buttons.add(cancelB);
 			panel.add(buttons, buttonsCol(3));
 		}
 
@@ -181,7 +180,9 @@ public class MergeWizard extends JDialog {
 			panel.add(new JComboBox(new String[]{"Course A", "Course B"}), c);
 			c.gridwidth = 1;
 			resetInsets(c);
-			panel.add(new JButton(GecoIcon.createIcon(GecoIcon.DetectCourse)), c);
+			JButton detectCourseB = new JButton(GecoIcon.createIcon(GecoIcon.DetectCourse));
+			detectCourseB.setToolTipText("Detect course with best match");
+			panel.add(detectCourseB, c);
 		}
 
 		private void initDataLine2(JComponent panel) {
@@ -206,20 +207,22 @@ public class MergeWizard extends JDialog {
 		
 	}
 
-	public static class RegistryPanel extends MergeSubpanel {
+	public class RegistryPanel extends MergeSubpanel {
 
 		public RegistryPanel(JComponent panel, int firstLine) {
 			super(panel, "Registry", firstLine);
 		}
 
 		protected void initButtons(JComponent panel) {
-			JButton mergeB = new JButton(GecoIcon.createIcon(GecoIcon.MergeRunner));
-			JLabel warningL = new JLabel(GecoIcon.createIcon(GecoIcon.Overwrite));
-			mergeB.setAlignmentX(CENTER_ALIGNMENT);
-			warningL.setAlignmentX(CENTER_ALIGNMENT);
+			JButton mergeRunnerB = new JButton(GecoIcon.createIcon(GecoIcon.MergeRunner));
+			mergeRunnerB.setToolTipText("Merge ecard data into selected runner");
+			JLabel overwriteWarningL = new JLabel(GecoIcon.createIcon(GecoIcon.Overwrite));
+			overwriteWarningL.setToolTipText("Warning! Runner already has ecard data. Merging will overwrite existing data");
+			mergeRunnerB.setAlignmentX(CENTER_ALIGNMENT);
+			overwriteWarningL.setAlignmentX(CENTER_ALIGNMENT);
 			Box buttons = Box.createVerticalBox();
-			buttons.add(mergeB);
-			buttons.add(warningL);
+			buttons.add(mergeRunnerB);
+			buttons.add(overwriteWarningL);
 			panel.add(buttons, buttonsCol(3));
 		}
 
@@ -234,9 +237,9 @@ public class MergeWizard extends JDialog {
 			c.anchor = GridBagConstraints.WEST;
 			setInsets(c, 0, 0);
 			c.gridwidth = 4;
-			JComboBox searchRegistry = new JComboBox(new String[]{"Runner 1", "Runner 2", "Runner 3"});
-			searchRegistry.setEditable(true);
-			panel.add(searchRegistry, c);
+			JComboBox searchRegistryCB = new JComboBox(new String[]{"Runner 1", "Runner 2", "Runner 3"});
+			searchRegistryCB.setEditable(true);
+			panel.add(searchRegistryCB, c);
 		}
 
 		private void initDataLine2(JComponent panel) {
@@ -259,7 +262,7 @@ public class MergeWizard extends JDialog {
 		
 	}
 
-	public static class ArchivePanel extends MergeSubpanel {
+	public class ArchivePanel extends MergeSubpanel {
 
 		public ArchivePanel(JComponent panel, int firstLine) {
 			super(panel, "Archive", firstLine);
@@ -267,6 +270,7 @@ public class MergeWizard extends JDialog {
 
 		protected void initButtons(JComponent panel) {
 			JButton insertArchiveB = new JButton(GecoIcon.createIcon(GecoIcon.ArchiveAdd));
+			insertArchiveB.setToolTipText("Insert runner from archive with ecard data");
 			panel.add(insertArchiveB, buttonsCol(2));
 		}
 
@@ -278,12 +282,13 @@ public class MergeWizard extends JDialog {
 		private void initDataLine1(JComponent panel) {
 			GridBagConstraints c = gridLine();
 			c.gridwidth = 4;
-			JComboBox searchArchive = new JComboBox(new String[]{"", "Runner 1", "Runner 2", "Runner 3"});
-			searchArchive.setEditable(true);
-			panel.add(searchArchive, c);
+			JComboBox searchArchiveCB = new JComboBox(new String[]{"", "Runner 1", "Runner 2", "Runner 3"});
+			searchArchiveCB.setEditable(true);
+			panel.add(searchArchiveCB, c);
 			c.gridwidth = 1;
-			JButton searchB = new JButton(GecoIcon.createIcon(GecoIcon.ArchiveSearch));
-			panel.add(searchB, c);
+			JButton lookupArchiveB = new JButton(GecoIcon.createIcon(GecoIcon.ArchiveSearch));
+			lookupArchiveB.setToolTipText("Lookup ecard in archive");
+			panel.add(lookupArchiveB, c);
 		}
 
 		private void initDataLine2(JComponent panel) {
@@ -294,6 +299,22 @@ public class MergeWizard extends JDialog {
 			panel.add(new DataField(""), c);
 		}
 
+	}
+
+	
+	public static class DataField extends JTextField {
+		public DataField(String data) {
+			super(data, 5);
+			setEditable(false);
+			setHorizontalAlignment(CENTER);
+		}
+	}
+
+	public static class StatusField extends DataField {
+		public StatusField(Status status) {
+			super(status.toString());
+			setBackground(status.color());
+		}
 	}
 
 }
