@@ -24,7 +24,11 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
+import net.geco.basics.TimeManager;
+import net.geco.control.RunnerControl;
 import net.geco.framework.IGeco;
+import net.geco.model.Registry;
+import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Status;
 import net.geco.ui.basics.GecoIcon;
@@ -38,7 +42,13 @@ import net.geco.ui.basics.SwingUtils;
  */
 public class MergeWizard extends JDialog {
 
+	private RunnerRaceData ecardData;
+
 	private IGeco geco;
+	private RunnerControl runnerControl;
+
+	private ECardPanel ecardPanel;
+	private PunchPanel punchPanel;
 	
 	public static void main(String[] args) {
 		MergeWizard wizard = new MergeWizard(null, null, "Merge");
@@ -51,23 +61,37 @@ public class MergeWizard extends JDialog {
 	public MergeWizard(IGeco geco, JFrame frame, String title) {
 		super(frame, title, true);
 		this.geco = geco;
-		setResizable(false);
+		this.runnerControl = geco.runnerControl();
+		
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				close();
 			}
 		});
-
+		setResizable(false);
 		add(createMergePanel(), BorderLayout.CENTER);
-		add(new PunchPanel(), BorderLayout.EAST);
+		add(createPunchPanel(), BorderLayout.EAST);
+		pack();
+		setLocationRelativeTo(null);
 	}
 
 	private JPanel createMergePanel() {
 		JPanel mergePanel = new JPanel(new GridBagLayout());
-		new ECardPanel(mergePanel, 0);
+		ecardPanel = new ECardPanel(mergePanel, 0);
 		new RegistryPanel(mergePanel, 4);
 		new ArchivePanel(mergePanel, 8);
 		return mergePanel;
+	}
+	
+	private JPanel createPunchPanel() {
+		punchPanel = new PunchPanel();
+		return punchPanel;
+	}
+
+	public void showMergeDialogFor(RunnerRaceData data, String ecard, Status status) {
+		initMockRunner(data, ecard);
+		updatePanels();
+		setVisible(true);		
 	}
 	
 	private void close() {
@@ -75,13 +99,32 @@ public class MergeWizard extends JDialog {
 		setVisible(false);
 	}
 
-	public void showMergeDialogFor(RunnerRaceData clone, String ecard, Status status) {
-		pack();
-		setLocationRelativeTo(null);
-		setVisible(true);		
+	private void initMockRunner(RunnerRaceData data, String ecard) {
+		this.ecardData = data;
+		Runner mockRunner = runnerControl().buildMockRunner();
+		mockRunner.setEcard(ecard);
+		mockRunner.setCourse(data.getCourse());
+		data.setRunner(mockRunner);
 	}
 
+	private void updatePanels() {
+		updateResults();
+	}
+	
+	private void updateResults() {
+		ecardPanel.updatePanel();
+		punchPanel.refreshPunches(this.ecardData);		
+	}
 
+	protected Registry registry() {
+		return geco.registry();
+	}
+	
+	protected RunnerControl runnerControl() {
+		return runnerControl;
+	}
+	
+	
 	public abstract class MergeSubpanel {
 
 		protected int nextLine;
@@ -145,10 +188,38 @@ public class MergeWizard extends JDialog {
 	
 	public class ECardPanel extends MergeSubpanel {
 
+		private DataField ecardF;
+		private DataField startTimeF;
+		private DataField finishTimeF;
+		private DataField raceTimeF;
+		private StatusField statusF;
+		private JComboBox coursesCB;
+
 		public ECardPanel(JComponent panel, int firstLine) {
 			super(panel, "ECard Data", firstLine);
 		}
 
+		public void updatePanel() {
+			ecardF.setText(ecardData.getRunner().getEcard());
+			startTimeF.setText(TimeManager.fullTime(ecardData.getStarttime()));
+			finishTimeF.setText(TimeManager.fullTime(ecardData.getFinishtime()));
+			raceTimeF.setText(ecardData.getResult().formatRacetime());
+			statusF.update(ecardData.getStatus());
+			initCoursesComboBox();
+		}
+
+		protected void initCoursesComboBox() {
+			coursesCB.setSelectedItem(ecardData.getCourse().getName());
+			coursesCB.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					String selectedCoursename = (String) coursesCB.getSelectedItem();
+					ecardData.getRunner().setCourse(registry().findCourse(selectedCoursename));
+					geco.checker().check(ecardData);
+					updateResults();
+				}
+			});
+		}
+		
 		protected void initButtons(JComponent panel) {
 			JButton createAnonB = new JButton(GecoIcon.createIcon(GecoIcon.CreateAnon));
 			createAnonB.setToolTipText("Create anonymous runner with ecard data");
@@ -174,10 +245,12 @@ public class MergeWizard extends JDialog {
 		private void initDataLine1(JComponent panel) {
 			GridBagConstraints c = gridLine();
 			panel.add(new JLabel("ECard"), c);
-			panel.add(new DataField("1651011"), c);
+			ecardF = new DataField();
+			panel.add(ecardF, c);
 			c.gridwidth = 2;
 			setInsets(c, 0, 0);
-			panel.add(new JComboBox(new String[]{"Course A", "Course B"}), c);
+			coursesCB = new JComboBox(geco.registry().getSortedCourseNames().toArray());
+			panel.add(coursesCB, c);
 			c.gridwidth = 1;
 			resetInsets(c);
 			JButton detectCourseB = new JButton(GecoIcon.createIcon(GecoIcon.DetectCourse));
@@ -188,21 +261,25 @@ public class MergeWizard extends JDialog {
 		private void initDataLine2(JComponent panel) {
 			GridBagConstraints c = gridLine();
 			panel.add(new JLabel("Start"), c);
-			panel.add(new DataField("12:31:00"), c);
+			startTimeF = new DataField();
+			panel.add(startTimeF, c);
 			setInsets(c, INSET, INSET);
 			panel.add(new JLabel("Finish"), c);
 			resetInsets(c);
-			panel.add(new DataField("14:02:32"), c);
+			finishTimeF = new DataField();
+			panel.add(finishTimeF, c);
 		}
 
 		private void initDataLine3(JComponent panel) {
 			GridBagConstraints c = gridLine();
 			panel.add(new JLabel("Status"), c);
-			panel.add(new StatusField(Status.OK), c);
+			statusF = new StatusField();
+			panel.add(statusF, c);
 			setInsets(c, INSET, INSET);
 			panel.add(new JLabel("Time"), c);
 			resetInsets(c);
-			panel.add(new DataField("1:31:32"), c);
+			raceTimeF = new DataField();
+			panel.add(raceTimeF, c);
 		}
 		
 	}
@@ -246,18 +323,18 @@ public class MergeWizard extends JDialog {
 			GridBagConstraints c = gridLine();
 			c.anchor = GridBagConstraints.WEST;
 			panel.add(new JLabel("Category"), c);
-			panel.add(new DataField("H21"), c);
+			panel.add(new DataField(), c);
 			panel.add(new JLabel("Club"), c);
-			panel.add(new DataField("Orient'Alp"), c);
+			panel.add(new DataField(), c);
 		}
 
 		private void initDataLine3(JComponent panel) {
 			GridBagConstraints c = gridLine();
 			c.anchor = GridBagConstraints.WEST;
 			panel.add(new JLabel("Status"), c);
-			panel.add(new StatusField(Status.DSQ), c);
+			panel.add(new StatusField(), c);
 			panel.add(new JLabel("Time"), c);
-			panel.add(new DataField("--:--"), c);
+			panel.add(new DataField(), c);
 		}
 		
 	}
@@ -294,26 +371,26 @@ public class MergeWizard extends JDialog {
 		private void initDataLine2(JComponent panel) {
 			GridBagConstraints c = gridLine();
 			panel.add(new JLabel("Category"), c);
-			panel.add(new DataField(""), c);
+			panel.add(new DataField(), c);
 			panel.add(new JLabel("Club"), c);
-			panel.add(new DataField(""), c);
+			panel.add(new DataField(), c);
 		}
 
 	}
 
 	
 	public static class DataField extends JTextField {
-		public DataField(String data) {
-			super(data, 5);
+		public DataField() {
+			super(5);
 			setEditable(false);
 			setHorizontalAlignment(CENTER);
 		}
 	}
 
 	public static class StatusField extends DataField {
-		public StatusField(Status status) {
-			super(status.toString());
-			setBackground(status.color());
+		public void update(Status status) {
+			setText(status.toString());
+			setBackground(status.color());			
 		}
 	}
 
