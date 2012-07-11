@@ -37,4 +37,14 @@ public class MergeControl extends Control {
 		Course bestMatch = courseDetector.detectCourse(ecardData);
 		ecardData.getRunner().setCourse(bestMatch);
 	}
+
+	public void registerAnonymousRunner(RunnerRaceData ecardData) {
+		try {
+			Runner anonymousRunner = runnerControl.buildAnonymousRunner(ecardData.getRunner().getEcard(), ecardData.getCourse());
+			runnerControl.registerRunner(anonymousRunner, ecardData);
+		} catch (RunnerCreationException e) {
+			geco().debug(e.getLocalizedMessage());
+		}
+//		geco.log("Creation " + runnerData.infoString()); //$NON-NLS-1$
+	}
 }

@@ -77,6 +77,12 @@ public class ECardBoard extends AbstractMergeBoard {
 	protected void initButtons(JComponent panel) {
 		JButton createAnonB = new JButton(GecoIcon.createIcon(GecoIcon.CreateAnon));
 		createAnonB.setToolTipText("Create anonymous runner with ecard data");
+		createAnonB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mergeControl.registerAnonymousRunner(ecardData);
+				wizard.close();
+			}
+		});
 		JButton cancelB = new JButton(GecoIcon.createIcon(GecoIcon.Cancel));
 		cancelB.setToolTipText("Close wizard and cancel the merge");
 		cancelB.addActionListener(new ActionListener() {
