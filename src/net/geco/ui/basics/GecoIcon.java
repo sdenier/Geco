@@ -16,6 +16,7 @@ import javax.swing.ImageIcon;
 public enum GecoIcon {
 	
 	Open 		("folder_new.png"), //$NON-NLS-1$
+// TODO: remove duplicate icon?
 	OpenSmall	("folder_small.png"), //$NON-NLS-1$
 	Save 		("folder_sent_mail.png"), //$NON-NLS-1$
 	RecheckAll	("quick_restart.png"), //$NON-NLS-1$
@@ -40,8 +41,16 @@ public enum GecoIcon {
 
 	SelectFiles	("fileopen.png"), //$NON-NLS-1$
 	Reset		("cancel.png"), //$NON-NLS-1$
-	Help		("documentinfo.png"); //$NON-NLS-1$
+	Help		("documentinfo.png"), //$NON-NLS-1$
 
+	CreateAnon		("edit_add.png"), //$NON-NLS-1$
+	Cancel			("button_cancel.png"), //$NON-NLS-1$
+	DetectCourse	("restart_small.png"), //$NON-NLS-1$
+	MergeRunner		("apply.png"), //$NON-NLS-1$
+	Overwrite		("messagebox_warning.png"), //$NON-NLS-1$
+	ArchiveAdd		("db_add.png"), //$NON-NLS-1$
+	ArchiveSearch	("find_small.png"); //$NON-NLS-1$
+	
 	private String resourceName;
 		
 	GecoIcon(String resourceName) {
