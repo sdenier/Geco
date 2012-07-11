@@ -35,9 +35,9 @@ import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.ui.basics.GecoIcon;
 import net.geco.ui.basics.SwingUtils;
-import net.geco.ui.components.MergeRunnerDialog;
 import net.geco.ui.framework.GecoPanel;
 import net.geco.ui.framework.RunnersTableAnnouncer.RunnersTableListener;
+import net.geco.ui.merge.MergeWizard;
 
 
 /**
@@ -416,7 +416,7 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 		mergeDialogB.setToolTipText(Messages.uiGet("RunnerPanel.MergeTooltip")); //$NON-NLS-1$
 		mergeDialogB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new MergeRunnerDialog(
+				new MergeWizard(
 						geco(),
 						frame(),
 						Messages.uiGet("RunnerPanel.MergeCardTitle")) //$NON-NLS-1$

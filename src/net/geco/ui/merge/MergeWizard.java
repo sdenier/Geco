@@ -36,14 +36,6 @@ public class MergeWizard extends JDialog {
 	private ECardBoard ecardBoard;
 	private PunchPanel punchPanel;
 	
-	public static void main(String[] args) {
-		MergeWizard wizard = new MergeWizard(null, null, "Merge");
-		wizard.pack();
-		wizard.setLocationRelativeTo(null);
-		wizard.setVisible(true);
-		System.exit(0);
-	}
-
 	public MergeWizard(IGeco geco, JFrame frame, String title) {
 		super(frame, title, true);
 		this.geco = geco;
