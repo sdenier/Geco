@@ -11,6 +11,7 @@ import net.geco.control.CNCalculator;
 import net.geco.control.GecoControl;
 import net.geco.control.HeatBuilder;
 import net.geco.control.InlineTracer;
+import net.geco.control.MergeControl;
 import net.geco.control.PenaltyChecker;
 import net.geco.control.RegistryStats;
 import net.geco.control.ResultBuilder;
@@ -92,6 +93,7 @@ public class OrientShowAppBuilder extends AppBuilder {
 		new SIReaderHandler(gecoControl);
 		new StartlistImporter(gecoControl);
 		new CNCalculator(gecoControl);
+		new MergeControl(gecoControl);
 		
 		new RefereeLogFunction(gecoControl);
 		new StartTimeFunction(gecoControl);

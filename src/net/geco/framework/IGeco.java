@@ -11,6 +11,7 @@ import net.geco.control.ArchiveManager;
 import net.geco.control.CNCalculator;
 import net.geco.control.Checker;
 import net.geco.control.HeatBuilder;
+import net.geco.control.MergeControl;
 import net.geco.control.RegistryStats;
 import net.geco.control.ResultBuilder;
 import net.geco.control.ResultExporter;
@@ -51,5 +52,6 @@ public interface IGeco {
 	public ArchiveManager archiveManager();
 	public StartlistImporter startlistImporter();
 	public CNCalculator cnCalculator();
+	public MergeControl mergeControl();
 	
 }

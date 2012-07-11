@@ -26,6 +26,7 @@ import net.geco.control.CNCalculator;
 import net.geco.control.Checker;
 import net.geco.control.GecoControl;
 import net.geco.control.HeatBuilder;
+import net.geco.control.MergeControl;
 import net.geco.control.RegistryStats;
 import net.geco.control.ResultBuilder;
 import net.geco.control.ResultExporter;
@@ -314,6 +315,9 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 	}
 	public CNCalculator cnCalculator() {
 		return getService(CNCalculator.class);
+	}
+	public MergeControl mergeControl() {
+		return getService(MergeControl.class);
 	}
 	
 	public GecoRequestHandler defaultMergeHandler() {

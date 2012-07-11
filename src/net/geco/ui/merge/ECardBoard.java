@@ -16,13 +16,16 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import net.geco.basics.TimeManager;
+import net.geco.control.MergeControl;
 import net.geco.model.RunnerRaceData;
 import net.geco.ui.basics.GecoIcon;
 
 public class ECardBoard extends AbstractMergeBoard {
 
-	private final MergeWizard wizard;
 	private RunnerRaceData ecardData;
+
+	private final MergeWizard wizard;
+	private MergeControl mergeControl;
 	
 	private JComboBox coursesCB;
 	private DataField ecardF;
@@ -34,6 +37,7 @@ public class ECardBoard extends AbstractMergeBoard {
 	public ECardBoard(JComponent panel, int firstLine, MergeWizard wizard) {
 		super(panel, "ECard Data", firstLine);
 		this.wizard = wizard;
+		this.mergeControl = wizard.mergeControl();
 	}
 
 	public void updatePanel(RunnerRaceData data) {
@@ -52,8 +56,7 @@ public class ECardBoard extends AbstractMergeBoard {
 		coursesCB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String selectedCoursename = (String) coursesCB.getSelectedItem();
-				ecardData.getRunner().setCourse(wizard.registry().findCourse(selectedCoursename));
-//				wizard.geco.checker().check(ecardData);
+				mergeControl.checkTentativeCourse(ecardData, selectedCoursename);
 				wizard.updateResults();
 			}
 		});

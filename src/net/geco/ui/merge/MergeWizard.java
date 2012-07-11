@@ -13,7 +13,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import net.geco.control.RunnerControl;
+import net.geco.control.MergeControl;
 import net.geco.framework.IGeco;
 import net.geco.model.Registry;
 import net.geco.model.Runner;
@@ -31,15 +31,16 @@ public class MergeWizard extends JDialog {
 	private RunnerRaceData ecardData;
 
 	private IGeco geco;
-	private RunnerControl runnerControl;
+	private MergeControl mergeControl;
 
 	private ECardBoard ecardBoard;
 	private PunchPanel punchPanel;
+
 	
 	public MergeWizard(IGeco geco, JFrame frame, String title) {
 		super(frame, title, true);
 		this.geco = geco;
-		this.runnerControl = geco.runnerControl();
+		this.mergeControl = geco.mergeControl();
 		
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -79,7 +80,7 @@ public class MergeWizard extends JDialog {
 
 	private void initMockRunner(RunnerRaceData data, String ecard) {
 		this.ecardData = data;
-		Runner mockRunner = runnerControl().buildMockRunner();
+		Runner mockRunner = mergeControl().buildMockRunner();
 		mockRunner.setEcard(ecard);
 		mockRunner.setCourse(data.getCourse());
 		data.setRunner(mockRunner);
@@ -97,9 +98,9 @@ public class MergeWizard extends JDialog {
 	protected Registry registry() {
 		return geco.registry();
 	}
-	
-	protected RunnerControl runnerControl() {
-		return runnerControl;
-	}
 
+	protected MergeControl mergeControl() {
+		return mergeControl;
+	}
+	
 }
