@@ -87,11 +87,12 @@ public class MergeWizard extends JDialog {
 	}
 
 	public void updatePanels() {
-		updateResults();
+		ecardBoard.updatePanel(this.ecardData);
+		punchPanel.refreshPunches(this.ecardData);
 	}
 	
 	public void updateResults() {
-		ecardBoard.updatePanel(this.ecardData);
+		ecardBoard.updateResults();
 		punchPanel.refreshPunches(this.ecardData);		
 	}
 

@@ -4,6 +4,8 @@
  */
 package net.geco.control;
 
+import net.geco.control.ecardmodes.CourseDetector;
+import net.geco.model.Course;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 
@@ -28,5 +30,11 @@ public class MergeControl extends Control {
 	public void checkTentativeCourse(RunnerRaceData ecardData, String coursename) {
 		ecardData.getRunner().setCourse(registry().findCourse(coursename));
 		geco().checker().check(ecardData);
+	}
+
+	public void detectCourse(RunnerRaceData ecardData) {
+		CourseDetector courseDetector = new CourseDetector(geco());
+		Course bestMatch = courseDetector.detectCourse(ecardData);
+		ecardData.getRunner().setCourse(bestMatch);
 	}
 }

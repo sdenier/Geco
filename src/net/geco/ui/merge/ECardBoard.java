@@ -33,6 +33,8 @@ public class ECardBoard extends AbstractMergeBoard {
 	private DataField finishTimeF;
 	private DataField raceTimeF;
 	private StatusField statusF;
+	
+	private boolean recheckCourseOnChange = true;
 
 	public ECardBoard(JComponent panel, int firstLine, MergeWizard wizard) {
 		super(panel, "ECard Data", firstLine);
@@ -45,21 +47,31 @@ public class ECardBoard extends AbstractMergeBoard {
 		ecardF.setText(ecardData.getRunner().getEcard());
 		startTimeF.setText(TimeManager.fullTime(ecardData.getStarttime()));
 		finishTimeF.setText(TimeManager.fullTime(ecardData.getFinishtime()));
-		raceTimeF.setText(ecardData.getResult().formatRacetime());
-		statusF.update(ecardData.getStatus());
+		updateResults();
 		initCoursesComboBox();
 	}
 
 	protected void initCoursesComboBox() {
 		coursesCB.setModel(new DefaultComboBoxModel(wizard.registry().getSortedCourseNames().toArray()));
-		coursesCB.setSelectedItem(ecardData.getCourse().getName());
+		updateCourseSelection();
 		coursesCB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String selectedCoursename = (String) coursesCB.getSelectedItem();
-				mergeControl.checkTentativeCourse(ecardData, selectedCoursename);
+				if( recheckCourseOnChange ) {
+					String selectedCoursename = (String) coursesCB.getSelectedItem();
+					mergeControl.checkTentativeCourse(ecardData, selectedCoursename);					
+				}
 				wizard.updateResults();
 			}
 		});
+	}
+
+	protected void updateCourseSelection() {
+		coursesCB.setSelectedItem(ecardData.getCourse().getName());
+	}
+
+	public void updateResults() {
+		raceTimeF.setText(ecardData.getResult().formatRacetime());
+		statusF.update(ecardData.getStatus());
 	}
 	
 	protected void initButtons(JComponent panel) {
@@ -97,6 +109,14 @@ public class ECardBoard extends AbstractMergeBoard {
 		resetInsets(c);
 		JButton detectCourseB = new JButton(GecoIcon.createIcon(GecoIcon.DetectCourse));
 		detectCourseB.setToolTipText("Detect course with best match");
+		detectCourseB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				mergeControl.detectCourse(ecardData);
+				recheckCourseOnChange = false; // temporarily disabled coursesCB recheck
+				updateCourseSelection();
+				recheckCourseOnChange = true;
+			}
+		});
 		panel.add(detectCourseB, c);
 	}
 
