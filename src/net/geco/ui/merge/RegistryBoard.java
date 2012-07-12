@@ -8,6 +8,8 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.Box;
 import javax.swing.DefaultComboBoxModel;
@@ -22,38 +24,55 @@ import net.geco.ui.basics.SwingUtils;
 
 public class RegistryBoard extends AbstractMergeBoard {
 
+	private JButton mergeRunnerB;
+	private JLabel overwriteWarningL;
+
 	private JComboBox searchRegistryCB;
 	private DataField categoryF;
 	private DataField courseF;
 	private DataField raceTimeF;
 	private StatusField statusF;
-	private JLabel overwriteWarningL;
 
 	public RegistryBoard(MergeWizard wizard, JComponent panel, int firstLine) {
 		super("Registry", wizard, panel, firstLine);
 	}
 
 	public void updatePanel() {
-		searchRegistryCB.setModel(new DefaultComboBoxModel(registry().getRunnersData().toArray()));
+		searchRegistryCB.getEditor().getEditorComponent().addFocusListener(new FocusListener() {
+			public void focusLost(FocusEvent e) {}
+			public void focusGained(FocusEvent e) {
+				searchRegistryCB.getEditor().getEditorComponent().removeFocusListener(this);
+				searchRegistryCB.setModel(new DefaultComboBoxModel(registry().getRunnersData().toArray()));
+				searchRegistryCB.setSelectedIndex(-1);
+			}
+		});
 		searchRegistryCB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				RunnerRaceData runnerData = (RunnerRaceData) searchRegistryCB.getSelectedItem();
-				categoryF.setText(runnerData.getRunner().getCategory().getName());
-				courseF.setText(runnerData.getCourse().getName());
-				raceTimeF.setText(runnerData.getResult().formatRacetime());
-				statusF.update(runnerData.getStatus());
-				checkOverwritingWarning(runnerData);
-			}
-
-			private void checkOverwritingWarning(RunnerRaceData runnerData) {
-				overwriteWarningL.setVisible(runnerData.hasData());
+				Object selectedItem = searchRegistryCB.getSelectedItem();
+				if( selectedItem instanceof RunnerRaceData ) {
+					RunnerRaceData runnerData = (RunnerRaceData) selectedItem;
+					categoryF.setText(runnerData.getRunner().getCategory().getName());
+					courseF.setText(runnerData.getCourse().getName());
+					raceTimeF.setText(runnerData.getResult().formatRacetime());
+					statusF.update(runnerData.getStatus());
+					overwriteWarningL.setVisible(runnerData.hasData());
+					mergeRunnerB.setEnabled(true);					
+				} else {
+					categoryF.setText("");
+					courseF.setText("");
+					raceTimeF.setText("");
+					statusF.reset();
+					overwriteWarningL.setVisible(false);
+					mergeRunnerB.setEnabled(false);
+				}
 			}
 		});
 	}
 	
 	protected void initButtons(JComponent panel) {
-		JButton mergeRunnerB = new JButton(GecoIcon.createIcon(GecoIcon.MergeRunner));
+		mergeRunnerB = new JButton(GecoIcon.createIcon(GecoIcon.MergeRunner));
 		mergeRunnerB.setToolTipText("Merge ecard data into selected runner");
+		mergeRunnerB.setEnabled(false);
 		overwriteWarningL = new JLabel(GecoIcon.createIcon(GecoIcon.Overwrite));
 		overwriteWarningL.setToolTipText("Warning! Runner already has ecard data. Merging will overwrite existing data");
 		overwriteWarningL.setVisible(false);
