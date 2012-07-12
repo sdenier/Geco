@@ -11,6 +11,7 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import net.geco.control.MergeControl;
@@ -34,7 +35,9 @@ public class MergeWizard extends JDialog {
 	private MergeControl mergeControl;
 
 	private ECardBoard ecardBoard;
+	private RegistryBoard registryBoard;
 	private PunchPanel punchPanel;
+
 
 	
 	public MergeWizard(IGeco geco, JFrame frame, String title) {
@@ -48,6 +51,7 @@ public class MergeWizard extends JDialog {
 			}
 		});
 		setResizable(false);
+		add(new JLabel("Merge Runner"), BorderLayout.NORTH);
 		add(createMergePanel(), BorderLayout.CENTER);
 		add(createPunchPanel(), BorderLayout.EAST);
 		pack();
@@ -56,14 +60,15 @@ public class MergeWizard extends JDialog {
 
 	private JPanel createMergePanel() {
 		JPanel mergePanel = new JPanel(new GridBagLayout());
-		ecardBoard = new ECardBoard(mergePanel, 0, this);
-		new RegistryBoard(mergePanel, 4);
-		new ArchiveBoard(mergePanel, 8);
+		ecardBoard = new ECardBoard(this, mergePanel, 0);
+		registryBoard = new RegistryBoard(this, mergePanel, 4);
+		new ArchiveBoard(this, mergePanel, 9);
 		return mergePanel;
 	}
 	
 	private JPanel createPunchPanel() {
 		punchPanel = new PunchPanel();
+//		punchPanel.setBorder(BorderFactory.createTitledBorder("Trace"));
 		return punchPanel;
 	}
 
@@ -88,6 +93,7 @@ public class MergeWizard extends JDialog {
 
 	public void updatePanels() {
 		ecardBoard.updatePanel(this.ecardData);
+		registryBoard.updatePanel();
 		punchPanel.refreshPunches(this.ecardData);
 	}
 	

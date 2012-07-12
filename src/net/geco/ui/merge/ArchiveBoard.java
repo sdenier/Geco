@@ -15,8 +15,8 @@ import net.geco.ui.basics.GecoIcon;
 
 public class ArchiveBoard extends AbstractMergeBoard {
 
-	public ArchiveBoard(JComponent panel, int firstLine) {
-		super(panel, "Archive", firstLine);
+	public ArchiveBoard(MergeWizard wizard, JComponent panel, int firstLine) {
+		super("Archive", wizard, panel, firstLine);
 	}
 
 	protected void initButtons(JComponent panel) {

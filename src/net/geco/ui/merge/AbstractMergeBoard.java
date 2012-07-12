@@ -12,19 +12,39 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
 
+import net.geco.control.MergeControl;
+import net.geco.model.Registry;
 import net.geco.ui.basics.SwingUtils;
 
 public abstract class AbstractMergeBoard {
 
 	protected int nextLine;
+
+	private MergeWizard mergeWizard;
+
+	private MergeControl mergeControl;
 	
-	public AbstractMergeBoard(JComponent panel, String title, int firstLineY) {
+	public AbstractMergeBoard(String title, MergeWizard wizard, JComponent panel, int firstLineY) {
+		this.mergeWizard = wizard;
+		this.mergeControl = wizard.mergeControl();
 		this.nextLine = firstLineY;
 		initTitle(panel, title);
 		initButtons(panel);
 		initDataPanel(panel);
 	}
 
+	protected MergeWizard wizard() {
+		return mergeWizard;
+	}
+	
+	protected MergeControl control() {
+		return mergeControl;
+	}
+	
+	protected Registry registry() {
+		return mergeWizard.registry();
+	}
+	
 	protected void initTitle(JComponent panel, String title) {
 		Box titleBox = Box.createHorizontalBox();
 		titleBox.add(new JLabel(title));

@@ -16,7 +16,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import net.geco.basics.TimeManager;
-import net.geco.control.MergeControl;
 import net.geco.model.RunnerRaceData;
 import net.geco.ui.basics.GecoIcon;
 
@@ -24,9 +23,6 @@ public class ECardBoard extends AbstractMergeBoard {
 
 	private RunnerRaceData ecardData;
 
-	private final MergeWizard wizard;
-	private MergeControl mergeControl;
-	
 	private JComboBox coursesCB;
 	private DataField ecardF;
 	private DataField startTimeF;
@@ -36,10 +32,8 @@ public class ECardBoard extends AbstractMergeBoard {
 	
 	private boolean recheckCourseOnChange = true;
 
-	public ECardBoard(JComponent panel, int firstLine, MergeWizard wizard) {
-		super(panel, "ECard Data", firstLine);
-		this.wizard = wizard;
-		this.mergeControl = wizard.mergeControl();
+	public ECardBoard(MergeWizard wizard, JComponent panel, int firstLine) {
+		super("ECard Data", wizard, panel, firstLine);
 	}
 
 	public void updatePanel(RunnerRaceData data) {
@@ -52,15 +46,15 @@ public class ECardBoard extends AbstractMergeBoard {
 	}
 
 	protected void initCoursesComboBox() {
-		coursesCB.setModel(new DefaultComboBoxModel(wizard.registry().getSortedCourseNames().toArray()));
+		coursesCB.setModel(new DefaultComboBoxModel(registry().getSortedCourseNames().toArray()));
 		updateCourseSelection();
 		coursesCB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if( recheckCourseOnChange ) {
 					String selectedCoursename = (String) coursesCB.getSelectedItem();
-					mergeControl.checkTentativeCourse(ecardData, selectedCoursename);					
+					control().checkTentativeCourse(ecardData, selectedCoursename);					
 				}
-				wizard.updateResults();
+				wizard().updateResults();
 			}
 		});
 	}
@@ -79,15 +73,15 @@ public class ECardBoard extends AbstractMergeBoard {
 		createAnonB.setToolTipText("Create anonymous runner with ecard data");
 		createAnonB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				mergeControl.registerAnonymousRunner(ecardData);
-				wizard.close();
+				control().registerAnonymousRunner(ecardData);
+				wizard().close();
 			}
 		});
 		JButton cancelB = new JButton(GecoIcon.createIcon(GecoIcon.Cancel));
 		cancelB.setToolTipText("Close wizard and cancel the merge");
 		cancelB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				wizard.close();
+				wizard().close();
 			}
 		});
 		Box buttons = Box.createVerticalBox();
@@ -117,7 +111,7 @@ public class ECardBoard extends AbstractMergeBoard {
 		detectCourseB.setToolTipText("Detect course with best match");
 		detectCourseB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				mergeControl.detectCourse(ecardData);
+				control().detectCourse(ecardData);
 				recheckCourseOnChange = false; // temporarily disabled coursesCB recheck
 				updateCourseSelection();
 				recheckCourseOnChange = true;
