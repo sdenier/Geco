@@ -18,6 +18,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
+import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.ui.basics.GecoIcon;
 import net.geco.ui.basics.SwingUtils;
@@ -69,10 +70,26 @@ public class RegistryBoard extends AbstractMergeBoard {
 		});
 	}
 	
+	protected Runner getSelectedRunner() {
+		Object selectedItem = searchRegistryCB.getSelectedItem();
+		if( selectedItem instanceof RunnerRaceData ) {
+			return ((RunnerRaceData) selectedItem).getRunner();
+		} else {
+			return null;
+		}
+	}
+	
 	protected void initButtons(JComponent panel) {
 		mergeRunnerB = new JButton(GecoIcon.createIcon(GecoIcon.MergeRunner));
 		mergeRunnerB.setToolTipText("Merge ecard data into selected runner");
 		mergeRunnerB.setEnabled(false);
+		mergeRunnerB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Runner targetRunner = getSelectedRunner();
+				control().mergeRunnerWithData(targetRunner, wizard().getECardData());
+				wizard().closeAfterMerge();
+			}
+		});
 		overwriteWarningL = new JLabel(GecoIcon.createIcon(GecoIcon.Overwrite));
 		overwriteWarningL.setToolTipText("Warning! Runner already has ecard data. Merging will overwrite existing data");
 		overwriteWarningL.setVisible(false);

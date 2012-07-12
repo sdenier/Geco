@@ -82,6 +82,11 @@ public class MergeWizard extends JDialog {
 //		mergedCard = null;
 		setVisible(false);
 	}
+	
+	public void closeAfterMerge() {
+		// TODO: request deletion
+		close();
+	}
 
 	private void initMockRunner(RunnerRaceData data, String ecard) {
 		this.ecardData = data;
@@ -108,6 +113,10 @@ public class MergeWizard extends JDialog {
 
 	protected MergeControl mergeControl() {
 		return mergeControl;
+	}
+	
+	protected RunnerRaceData getECardData() {
+		return ecardData;
 	}
 	
 }
