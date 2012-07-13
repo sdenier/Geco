@@ -48,10 +48,13 @@ public class MergeControl extends Control {
 //		geco.log("Creation " + runnerData.infoString()); //$NON-NLS-1$
 	}
 	
-	public void mergeRunnerWithData(Runner targetRunner, RunnerRaceData eCardData) {
-		// unless same runner
-//		runnerControl.validateEcard(sourceRunner, ""); TODO
-		runnerControl.validateEcard(targetRunner, eCardData.getRunner().getEcard());
+	public void mergeRunnerWithData(Runner targetRunner, RunnerRaceData eCardData, Runner sourceRunner) {
+		if( sourceRunner != targetRunner ) {
+			if( sourceRunner != null) {
+				runnerControl.validateEcard(sourceRunner, "");
+			}
+			runnerControl.validateEcard(targetRunner, eCardData.getRunner().getEcard());			
+		}
 		runnerControl.updateCourse(targetRunner, targetRunner.getCourse(), eCardData.getCourse());
 		runnerControl.updateRunnerDataFor(targetRunner, eCardData);
 	}

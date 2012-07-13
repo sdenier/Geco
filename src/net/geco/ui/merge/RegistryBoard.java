@@ -86,7 +86,7 @@ public class RegistryBoard extends AbstractMergeBoard {
 		mergeRunnerB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Runner targetRunner = getSelectedRunner();
-				control().mergeRunnerWithData(targetRunner, wizard().getECardData());
+				control().mergeRunnerWithData(targetRunner, wizard().getECardData(), wizard().getSourceRunner());
 				wizard().closeAfterMerge();
 			}
 		});
