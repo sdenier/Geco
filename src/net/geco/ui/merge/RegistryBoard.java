@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.Arrays;
+import java.util.Comparator;
 
 import javax.swing.Box;
 import javax.swing.DefaultComboBoxModel;
@@ -37,23 +39,34 @@ public class RegistryBoard extends AbstractMergeBoard {
 	public RegistryBoard(MergeWizard wizard, JComponent panel, int firstLine) {
 		super("Registry", wizard, panel, firstLine);
 	}
+	
+	private Object[] sortedRunners() {
+		Runner[] runners = registry().getRunners().toArray(new Runner[0]);
+		Arrays.sort(runners, new Comparator<Runner>() {
+			public int compare(Runner o1, Runner o2) {
+				return o1.getLastname().compareTo(o2.getLastname());
+			}
+		});
+		return runners;
+	}
 
 	public void updatePanel() {
 		searchRegistryCB.getEditor().getEditorComponent().addFocusListener(new FocusListener() {
 			public void focusLost(FocusEvent e) {}
 			public void focusGained(FocusEvent e) {
 				searchRegistryCB.getEditor().getEditorComponent().removeFocusListener(this);
-				searchRegistryCB.setModel(new DefaultComboBoxModel(registry().getRunnersData().toArray()));
+				searchRegistryCB.setModel(new DefaultComboBoxModel(sortedRunners()));
 				searchRegistryCB.setSelectedIndex(-1);
 			}
 		});
 		searchRegistryCB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Object selectedItem = searchRegistryCB.getSelectedItem();
-				if( selectedItem instanceof RunnerRaceData ) {
-					RunnerRaceData runnerData = (RunnerRaceData) selectedItem;
-					categoryF.setText(runnerData.getRunner().getCategory().getName());
-					courseF.setText(runnerData.getCourse().getName());
+				if( selectedItem instanceof Runner ) {
+					Runner runner = (Runner) selectedItem;
+					categoryF.setText(runner.getCategory().getName());
+					courseF.setText(runner.getCourse().getName());
+					RunnerRaceData runnerData = registry().findRunnerData(runner);
 					raceTimeF.setText(runnerData.getResult().formatRacetime());
 					statusF.update(runnerData.getStatus());
 					overwriteWarningL.setVisible(runnerData.hasData());
@@ -72,8 +85,8 @@ public class RegistryBoard extends AbstractMergeBoard {
 	
 	protected Runner getSelectedRunner() {
 		Object selectedItem = searchRegistryCB.getSelectedItem();
-		if( selectedItem instanceof RunnerRaceData ) {
-			return ((RunnerRaceData) selectedItem).getRunner();
+		if( selectedItem instanceof Runner ) {
+			return (Runner) selectedItem;
 		} else {
 			return null;
 		}
