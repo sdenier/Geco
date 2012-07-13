@@ -14,6 +14,7 @@ import javax.swing.JSeparator;
 
 import net.geco.control.MergeControl;
 import net.geco.model.Registry;
+import net.geco.model.RunnerRaceData;
 import net.geco.ui.basics.SwingUtils;
 
 public abstract class AbstractMergeBoard {
@@ -44,7 +45,11 @@ public abstract class AbstractMergeBoard {
 	protected Registry registry() {
 		return mergeWizard.registry();
 	}
-	
+
+	protected RunnerRaceData ecardData() {
+		return mergeWizard.getECardData();
+	}
+
 	protected void initTitle(JComponent panel, String title) {
 		Box titleBox = Box.createHorizontalBox();
 		titleBox.add(new JLabel(title));

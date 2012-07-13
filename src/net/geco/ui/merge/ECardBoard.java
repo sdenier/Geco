@@ -16,7 +16,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import net.geco.basics.TimeManager;
-import net.geco.model.RunnerRaceData;
 import net.geco.ui.basics.GecoIcon;
 
 public class ECardBoard extends AbstractMergeBoard {
@@ -32,10 +31,6 @@ public class ECardBoard extends AbstractMergeBoard {
 
 	public ECardBoard(MergeWizard wizard, JComponent panel, int firstLine) {
 		super("ECard Data", wizard, panel, firstLine);
-	}
-
-	private RunnerRaceData ecardData() {
-		return wizard().getECardData();
 	}
 	
 	public void updatePanel() {
