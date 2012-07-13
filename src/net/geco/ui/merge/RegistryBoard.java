@@ -8,29 +8,27 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.util.Arrays;
 import java.util.Comparator;
 
 import javax.swing.Box;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
+import net.geco.ui.basics.FilterComboBox;
 import net.geco.ui.basics.GecoIcon;
 import net.geco.ui.basics.SwingUtils;
+import net.geco.ui.basics.FilterComboBox.LazyLoader;
 
 public class RegistryBoard extends AbstractMergeBoard {
 
 	private JButton mergeRunnerB;
 	private JLabel overwriteWarningL;
 
-	private JComboBox searchRegistryCB;
+	private FilterComboBox searchRegistryCB;
 	private DataField categoryF;
 	private DataField courseF;
 	private DataField raceTimeF;
@@ -51,12 +49,9 @@ public class RegistryBoard extends AbstractMergeBoard {
 	}
 
 	public void updatePanel() {
-		searchRegistryCB.getEditor().getEditorComponent().addFocusListener(new FocusListener() {
-			public void focusLost(FocusEvent e) {}
-			public void focusGained(FocusEvent e) {
-				searchRegistryCB.getEditor().getEditorComponent().removeFocusListener(this);
-				searchRegistryCB.setModel(new DefaultComboBoxModel(sortedRunners()));
-				searchRegistryCB.setSelectedIndex(-1);
+		searchRegistryCB.lazyLoadItems(new LazyLoader() {
+			public Object[] loadItems() {
+				return sortedRunners();
 			}
 		});
 		searchRegistryCB.addActionListener(new ActionListener() {
@@ -99,7 +94,9 @@ public class RegistryBoard extends AbstractMergeBoard {
 		mergeRunnerB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Runner targetRunner = getSelectedRunner();
-				control().mergeRunnerWithData(targetRunner, wizard().getECardData(), wizard().getSourceRunner());
+				control().mergeRunnerWithData(targetRunner,
+											  wizard().getECardData(),
+											  wizard().getSourceRunner());
 				wizard().closeAfterMerge();
 			}
 		});
@@ -124,9 +121,8 @@ public class RegistryBoard extends AbstractMergeBoard {
 		GridBagConstraints c = gridLine();
 		setInsets(c, 0, 0);
 		c.gridwidth = 4;
-		searchRegistryCB = new JComboBox();
+		searchRegistryCB = new FilterComboBox();
 		searchRegistryCB.setPreferredSize(new Dimension(100, SwingUtils.SPINNERHEIGHT));
-		searchRegistryCB.setEditable(true);
 		panel.add(searchRegistryCB, c);
 	}
 
