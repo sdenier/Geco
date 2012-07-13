@@ -4,6 +4,7 @@
  */
 package net.geco.ui.merge;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +18,7 @@ import javax.swing.JLabel;
 
 import net.geco.basics.TimeManager;
 import net.geco.ui.basics.GecoIcon;
+import net.geco.ui.basics.SwingUtils;
 
 public class ECardBoard extends AbstractMergeBoard {
 
@@ -100,6 +102,7 @@ public class ECardBoard extends AbstractMergeBoard {
 		c.gridwidth = 2;
 		setInsets(c, 0, 0);
 		coursesCB = new JComboBox();
+		coursesCB.setPreferredSize(new Dimension(50, SwingUtils.SPINNERHEIGHT));
 		panel.add(coursesCB, c);
 		c.gridwidth = 1;
 		resetInsets(c);
