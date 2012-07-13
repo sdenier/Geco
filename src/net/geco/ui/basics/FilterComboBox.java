@@ -10,7 +10,6 @@ import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
@@ -103,27 +102,4 @@ public class FilterComboBox extends JComboBox {
 		setSelectedIndex(-1); // no default selection
 	}
 
-    /* Testing Codes */
-    public static List<String> populateArray() {
-        List<String> test = new ArrayList<String>();
-        test.add("");
-        test.add("Mountain Flight");
-        test.add("Mount Climbing");
-        test.add("Trekking");
-        test.add("Rafting");
-        test.add("Jungle Safari");
-        test.add("Bungie Jumping");
-        test.add("Para Gliding");
-        return test;
-    }
-
-    public static void main(String[] args) throws Exception {
-        JFrame frame = new JFrame("Adventure in Nepal - Combo Filter Test");
-        FilterComboBox acb = new FilterComboBox();
-        acb.setItems(populateArray().toArray());
-        frame.getContentPane().add(acb);
-        frame.pack();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-    }
 }
