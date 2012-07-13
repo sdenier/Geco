@@ -149,7 +149,6 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 		} else {
 			boolean cancelled = new GecoLauncher(null, stageLaunch, history).showLauncher();
 			if( cancelled ){
-				System.out.println("Bye bye!"); //$NON-NLS-1$
 				System.exit(0);				
 			}
 		}
