@@ -420,10 +420,7 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 						geco(),
 						frame(),
 						Messages.uiGet("RunnerPanel.MergeCardTitle")) //$NON-NLS-1$
-					.showMergeDialogFor(
-							runnerData.clone(),
-							runner.getEcard(),
-							runnerData.getResult().getStatus());
+					.showMergeRunnerWizard(runnerData);
 			}
 		});
 		return mergeDialogB;

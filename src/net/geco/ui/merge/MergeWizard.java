@@ -19,7 +19,6 @@ import net.geco.framework.IGeco;
 import net.geco.model.Registry;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
-import net.geco.model.Status;
 import net.geco.ui.basics.PunchPanel;
 
 /**
@@ -30,6 +29,7 @@ import net.geco.ui.basics.PunchPanel;
 public class MergeWizard extends JDialog {
 
 	private RunnerRaceData ecardData;
+	private Runner sourceRunner;
 
 	private IGeco geco;
 	private MergeControl mergeControl;
@@ -37,7 +37,6 @@ public class MergeWizard extends JDialog {
 	private ECardBoard ecardBoard;
 	private RegistryBoard registryBoard;
 	private PunchPanel punchPanel;
-
 
 	
 	public MergeWizard(IGeco geco, JFrame frame, String title) {
@@ -71,16 +70,14 @@ public class MergeWizard extends JDialog {
 //		punchPanel.setBorder(BorderFactory.createTitledBorder("Trace"));
 		return punchPanel;
 	}
-
-	public void showMergeDialogFor(RunnerRaceData data, String ecard, Status status) {
-		initMockRunner(data, ecard);
-		updatePanels();
-		setVisible(true);		
-	}
 	
 	public void close() {
 //		mergedCard = null;
 		setVisible(false);
+	}
+
+	public void closeAfterCreate() {
+		close();
 	}
 	
 	public void closeAfterMerge() {
@@ -88,6 +85,13 @@ public class MergeWizard extends JDialog {
 		close();
 	}
 
+	public void showMergeRunnerWizard(RunnerRaceData data) {
+		sourceRunner = data.getRunner();
+		initMockRunner(data, sourceRunner.getEcard());
+		updatePanels();
+		setVisible(true);		
+	}
+	
 	private void initMockRunner(RunnerRaceData data, String ecard) {
 		this.ecardData = data;
 		Runner mockRunner = mergeControl().buildMockRunner();
@@ -97,7 +101,7 @@ public class MergeWizard extends JDialog {
 	}
 
 	public void updatePanels() {
-		ecardBoard.updatePanel(this.ecardData);
+		ecardBoard.updatePanel();
 		registryBoard.updatePanel();
 		punchPanel.refreshPunches(this.ecardData);
 	}
@@ -117,6 +121,10 @@ public class MergeWizard extends JDialog {
 	
 	protected RunnerRaceData getECardData() {
 		return ecardData;
+	}
+	
+	protected Runner getSourceRunner() {
+		return sourceRunner;
 	}
 	
 }
