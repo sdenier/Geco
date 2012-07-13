@@ -12,10 +12,12 @@ import java.awt.event.WindowEvent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import net.geco.control.MergeControl;
 import net.geco.framework.IGeco;
+import net.geco.model.Messages;
 import net.geco.model.Registry;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
@@ -77,11 +79,22 @@ public class MergeWizard extends JDialog {
 	}
 
 	public void closeAfterCreate() {
+		// TODO: log creation ?
 		close();
 	}
 	
 	public void closeAfterMerge() {
-		// TODO: request deletion
+		if( sourceRunner != null ) {// offer to delete source runner if applicable
+			int confirm = JOptionPane.showConfirmDialog(
+							this,
+							Messages.uiGet("MergeRunnerDialog.RunnerDeletionLabel") + sourceRunner.idString(), //$NON-NLS-1$
+							Messages.uiGet("MergeRunnerDialog.RunnerDeletionTitle"), //$NON-NLS-1$
+							JOptionPane.YES_NO_OPTION);
+			if( confirm == JOptionPane.YES_OPTION ) {
+				mergeControl().deleteRunner(sourceRunner);
+			}
+		}
+		// TODO: log deletion, merge ?
 		close();
 	}
 

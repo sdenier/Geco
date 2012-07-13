@@ -58,4 +58,8 @@ public class MergeControl extends Control {
 		runnerControl.updateCourse(targetRunner, targetRunner.getCourse(), eCardData.getCourse());
 		runnerControl.updateRunnerDataFor(targetRunner, eCardData);
 	}
+
+	public void deleteRunner(Runner sourceRunner) {
+		runnerControl.deleteRunner(registry().findRunnerData(sourceRunner));
+	}
 }
