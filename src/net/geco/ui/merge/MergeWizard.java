@@ -82,10 +82,23 @@ public class MergeWizard extends JDialog {
 
 	public void closeAfterCreate() {
 		// TODO: log creation ?
+//		geco.log("Creation " + runnerData.infoString()); //$NON-NLS-1$
 		close();
 	}
 	
 	public void closeAfterMerge() {
+		askForRunnerDeletion();
+		// TODO: log deletion, merge ?
+		close();
+	}
+
+	public void closeAfterInsert() {
+		askForRunnerDeletion();
+		// TODO log insert
+		close();
+	}
+
+	private void askForRunnerDeletion() {
 		if( sourceRunner != null ) {// offer to delete source runner if applicable
 			int confirm = JOptionPane.showConfirmDialog(
 							this,
@@ -96,8 +109,6 @@ public class MergeWizard extends JDialog {
 				mergeControl().deleteRunner(sourceRunner);
 			}
 		}
-		// TODO: log deletion, merge ?
-		close();
 	}
 
 	public void showMergeRunnerWizard(RunnerRaceData data) {

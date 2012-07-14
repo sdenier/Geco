@@ -133,7 +133,7 @@ public class ArchiveManager extends OEImporter implements StageListener {
 				Category rCat = ensureCategoryInRegistry(arkRunner.getCategory());
 				course = registry().getDefaultCourseOrAutoFor(rCat);
 			}
-			return createRunner(arkRunner, course);			
+			return buildRunner(arkRunner, arkRunner.getEcard(), course);			
 		} catch (IOException e) {
 			geco().log(e.toString());
 			return null;
@@ -147,7 +147,7 @@ public class ArchiveManager extends OEImporter implements StageListener {
 	public Runner insertRunner(ArchiveRunner arkRunner) {
 		Category rCat = ensureCategoryInRegistry(arkRunner.getCategory());
 		Course course = registry().getDefaultCourseOrAutoFor(rCat);
-		Runner runner = createRunner(arkRunner, course);
+		Runner runner = buildRunner(arkRunner, arkRunner.getEcard(), course);
 		runnerControl().registerNewRunner(runner);
 		return runner;
 	}
@@ -156,12 +156,11 @@ public class ArchiveManager extends OEImporter implements StageListener {
 		return stageControl().ensureCategoryInRegistry(category.getName(), category.getLongname());
 	}
 
-	private Runner createRunner(ArchiveRunner arkRunner, Course course) {
+	public Runner buildRunner(ArchiveRunner arkRunner, String ecard, Course course) {
 		Club club = arkRunner.getClub();
 		Club rClub = stageControl().ensureClubInRegistry(club.getName(), club.getShortname());
 		Category category = arkRunner.getCategory();
 		Category rCat = stageControl().ensureCategoryInRegistry(category.getName(), category.getLongname());
-		String ecard = arkRunner.getEcard();
 		if( ecard.equals("") ){ //$NON-NLS-1$
 			geco().log(Messages.getString("ArchiveManager.NoMatchingEcardWarning") + arkRunner.getName()); //$NON-NLS-1$
 		}

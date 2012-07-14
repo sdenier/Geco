@@ -79,10 +79,27 @@ public class ArchiveBoard extends AbstractMergeBoard {
 		});
 	}
 
+	protected ArchiveRunner getSelectedRunner() {
+		Object selectedItem = searchArchiveCB.getSelectedItem();
+		if( selectedItem instanceof ArchiveRunner ) {
+			return (ArchiveRunner) selectedItem;
+		} else {
+			return null;
+		}
+	}
+	
 	protected void initButtons(JComponent panel) {
 		insertArchiveB = new JButton(GecoIcon.createIcon(GecoIcon.ArchiveAdd));
 		insertArchiveB.setToolTipText("Insert runner from archive with ecard data");
 		insertArchiveB.setEnabled(false);
+		insertArchiveB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				control().insertArchiveRunner(getSelectedRunner(),
+											  wizard().getECardData(),
+											  wizard().getSourceRunner());
+				wizard().closeAfterInsert();
+			}
+		});
 		panel.add(insertArchiveB, buttonsCol(2));
 	}
 

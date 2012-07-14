@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import net.geco.control.ecardmodes.CourseDetector;
 import net.geco.model.Archive;
+import net.geco.model.ArchiveRunner;
 import net.geco.model.Course;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
@@ -48,7 +49,6 @@ public class MergeControl extends Control {
 		} catch (RunnerCreationException e) {
 			geco().debug(e.getLocalizedMessage());
 		}
-//		geco.log("Creation " + runnerData.infoString()); //$NON-NLS-1$
 	}
 	
 	public void mergeRunnerWithData(Runner targetRunner, RunnerRaceData eCardData, Runner sourceRunner) {
@@ -60,6 +60,14 @@ public class MergeControl extends Control {
 		}
 		runnerControl.updateCourse(targetRunner, targetRunner.getCourse(), eCardData.getCourse());
 		runnerControl.updateRunnerDataFor(targetRunner, eCardData);
+	}
+
+	public void insertArchiveRunner(ArchiveRunner selectedRunner, RunnerRaceData eCardData, Runner sourceRunner) {
+		if( sourceRunner != null) {
+			runnerControl.validateEcard(sourceRunner, "");
+		}
+		Runner runner = getService(ArchiveManager.class).buildRunner(selectedRunner, eCardData.getRunner().getEcard(), eCardData.getCourse());
+		runnerControl.registerRunner(runner, eCardData);
 	}
 
 	public void deleteRunner(Runner sourceRunner) {
