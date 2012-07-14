@@ -6,7 +6,7 @@ package test.net.geco.control.ecardmodes;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import net.geco.basics.GecoRequestHandler;
+import net.geco.basics.MergeRequestHandler;
 import net.geco.control.ecardmodes.ManualHandler;
 
 import org.junit.Before;
@@ -20,13 +20,13 @@ import org.mockito.Mock;
  */
 public class ManualHandlerTest extends ECardModeSetup {
 
-	@Mock private GecoRequestHandler requestHandler;
+	@Mock private MergeRequestHandler requestHandler;
 	
 	@Before
 	public void setUp() {
 		setUpMockControls();
 		setUpMockCardData();
-		when(gecoControl.getService(GecoRequestHandler.class)).thenReturn(requestHandler);
+		when(gecoControl.getService(MergeRequestHandler.class)).thenReturn(requestHandler);
 	}
 	
 	@Test

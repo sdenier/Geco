@@ -18,7 +18,7 @@ import net.geco.app.AppBuilder;
 import net.geco.app.GecoStageLaunch;
 import net.geco.basics.Announcer;
 import net.geco.basics.GService;
-import net.geco.basics.GecoRequestHandler;
+import net.geco.basics.MergeRequestHandler;
 import net.geco.basics.GecoResources;
 import net.geco.basics.Logger;
 import net.geco.control.ArchiveManager;
@@ -58,7 +58,7 @@ import net.geco.ui.components.MergeRunnerDialog;
  * @author Simon Denier
  * @since Jan 25, 2009
  */
-public class Geco implements IGecoApp, GecoRequestHandler {
+public class Geco implements IGecoApp, MergeRequestHandler {
 	
 	public static String VERSION;
 
@@ -219,7 +219,7 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 
 	public void initControls(AppBuilder builder, GecoControl gecoControl) {
 		this.gecoControl = gecoControl;
-		this.gecoControl.registerService(GecoRequestHandler.class, (GecoRequestHandler) this);
+		this.gecoControl.registerService(MergeRequestHandler.class, (MergeRequestHandler) this);
 		builder.buildControls(gecoControl);
 		stageControl = getService(StageControl.class);
 		runnerControl = getService(RunnerControl.class);
@@ -319,7 +319,7 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 		return getService(MergeControl.class);
 	}
 	
-	public GecoRequestHandler defaultMergeHandler() {
+	public MergeRequestHandler defaultMergeHandler() {
 		return this;
 	}
 	

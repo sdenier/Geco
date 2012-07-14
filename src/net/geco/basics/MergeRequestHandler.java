@@ -12,7 +12,7 @@ import net.geco.model.RunnerRaceData;
  * @since Aug 21, 2010
  *
  */
-public interface GecoRequestHandler extends GService {
+public interface MergeRequestHandler extends GService {
 
 	public String requestMergeUnknownRunner(RunnerRaceData data, String chip);
 	

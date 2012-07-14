@@ -5,7 +5,7 @@
 package net.geco.framework;
 
 import net.geco.basics.Announcer;
-import net.geco.basics.GecoRequestHandler;
+import net.geco.basics.MergeRequestHandler;
 import net.geco.basics.Logger;
 import net.geco.control.ArchiveManager;
 import net.geco.control.CNCalculator;
@@ -32,7 +32,7 @@ public interface IGeco {
 
 	public Registry registry();
 	public Announcer announcer();
-	public GecoRequestHandler defaultMergeHandler();
+	public MergeRequestHandler defaultMergeHandler();
 	
 	public Logger logger();
 	public void debug(String message);

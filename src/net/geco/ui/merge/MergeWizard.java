@@ -111,7 +111,7 @@ public class MergeWizard extends JDialog {
 		}
 	}
 
-	public void showMergeRunnerWizard(RunnerRaceData data) {
+	public void showMergeRunner(RunnerRaceData data) {
 		sourceRunner = data.getRunner();
 		initMockRunner(data, sourceRunner.getEcard());
 		updatePanels();
