@@ -4,7 +4,10 @@
  */
 package net.geco.control;
 
+import java.io.IOException;
+
 import net.geco.control.ecardmodes.CourseDetector;
+import net.geco.model.Archive;
 import net.geco.model.Course;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
@@ -62,4 +65,9 @@ public class MergeControl extends Control {
 	public void deleteRunner(Runner sourceRunner) {
 		runnerControl.deleteRunner(registry().findRunnerData(sourceRunner));
 	}
+	
+	public Archive archive() throws IOException {
+		return getService(ArchiveManager.class).archive();
+	}
+	
 }

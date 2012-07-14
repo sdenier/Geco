@@ -8,6 +8,7 @@ import java.awt.BorderLayout;
 import java.awt.GridBagLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -39,6 +40,7 @@ public class MergeWizard extends JDialog {
 	private ECardBoard ecardBoard;
 	private RegistryBoard registryBoard;
 	private PunchPanel punchPanel;
+	private ArchiveBoard archiveBoard;
 
 	
 	public MergeWizard(IGeco geco, JFrame frame, String title) {
@@ -63,7 +65,7 @@ public class MergeWizard extends JDialog {
 		JPanel mergePanel = new JPanel(new GridBagLayout());
 		ecardBoard = new ECardBoard(this, mergePanel, 0);
 		registryBoard = new RegistryBoard(this, mergePanel, 4);
-		new ArchiveBoard(this, mergePanel, 9);
+		archiveBoard = new ArchiveBoard(this, mergePanel, 9);
 		return mergePanel;
 	}
 	
@@ -116,6 +118,7 @@ public class MergeWizard extends JDialog {
 	public void updatePanels() {
 		ecardBoard.updatePanel();
 		registryBoard.updatePanel();
+		archiveBoard.updatePanel();
 		punchPanel.refreshPunches(this.ecardData);
 	}
 	
@@ -138,6 +141,14 @@ public class MergeWizard extends JDialog {
 	
 	protected Runner getSourceRunner() {
 		return sourceRunner;
+	}
+
+	public void catchException(IOException ex) {
+		JOptionPane.showMessageDialog(
+				this,
+				ex.toString(),
+				"Exception in wizard",
+				JOptionPane.ERROR_MESSAGE);
 	}
 	
 }
