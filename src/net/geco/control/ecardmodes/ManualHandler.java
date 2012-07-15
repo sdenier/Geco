@@ -4,7 +4,7 @@
  */
 package net.geco.control.ecardmodes;
 
-import net.geco.basics.GecoRequestHandler;
+import net.geco.basics.MergeRequestHandler;
 import net.geco.control.GecoControl;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
@@ -16,10 +16,12 @@ import net.geco.model.RunnerRaceData;
  */
 public class ManualHandler implements ECardHandler {
 
-	private GecoRequestHandler requestHandler;
+	private MergeRequestHandler requestHandler;
+	private CourseDetector detector;
 
-	public ManualHandler(GecoControl geco) {
-		this.requestHandler = geco.getService(GecoRequestHandler.class);
+	public ManualHandler(GecoControl geco, CourseDetector detector) {
+		this.requestHandler = geco.getService(MergeRequestHandler.class);
+		this.detector = detector;
 	}
 	
 	@Override
@@ -29,12 +31,12 @@ public class ManualHandler implements ECardHandler {
 
 	@Override
 	public String handleDuplicate(RunnerRaceData data, Runner runner) {
-		return requestHandler.requestMergeExistingRunner(data, runner);
+		return requestHandler.requestMergeExistingRunner(data, runner, detector.detectCourse(data));
 	}
 
 	@Override
 	public String handleUnregistered(RunnerRaceData data, String cardId) {
-		return requestHandler.requestMergeUnknownRunner(data, cardId);
+		return requestHandler.requestMergeUnknownRunner(data, cardId, detector.detectCourse(data));
 	}
 
 	@Override

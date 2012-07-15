@@ -18,14 +18,15 @@ import net.geco.app.AppBuilder;
 import net.geco.app.GecoStageLaunch;
 import net.geco.basics.Announcer;
 import net.geco.basics.GService;
-import net.geco.basics.GecoRequestHandler;
 import net.geco.basics.GecoResources;
 import net.geco.basics.Logger;
+import net.geco.basics.MergeRequestHandler;
 import net.geco.control.ArchiveManager;
 import net.geco.control.CNCalculator;
 import net.geco.control.Checker;
 import net.geco.control.GecoControl;
 import net.geco.control.HeatBuilder;
+import net.geco.control.MergeControl;
 import net.geco.control.RegistryStats;
 import net.geco.control.ResultBuilder;
 import net.geco.control.ResultExporter;
@@ -39,15 +40,15 @@ import net.geco.control.StartlistImporter;
 import net.geco.framework.IGecoApp;
 import net.geco.framework.IStageLaunch;
 import net.geco.functions.GecoFunction;
+import net.geco.model.Course;
 import net.geco.model.Messages;
 import net.geco.model.Registry;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Stage;
-import net.geco.model.Status;
 import net.geco.ui.GecoLauncher;
 import net.geco.ui.GecoWindow;
-import net.geco.ui.components.MergeRunnerDialog;
+import net.geco.ui.merge.MergeWizard;
 
 
 /**
@@ -57,7 +58,7 @@ import net.geco.ui.components.MergeRunnerDialog;
  * @author Simon Denier
  * @since Jan 25, 2009
  */
-public class Geco implements IGecoApp, GecoRequestHandler {
+public class Geco implements IGecoApp, MergeRequestHandler {
 	
 	public static String VERSION;
 
@@ -148,7 +149,6 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 		} else {
 			boolean cancelled = new GecoLauncher(null, stageLaunch, history).showLauncher();
 			if( cancelled ){
-				System.out.println("Bye bye!"); //$NON-NLS-1$
 				System.exit(0);				
 			}
 		}
@@ -219,7 +219,7 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 
 	public void initControls(AppBuilder builder, GecoControl gecoControl) {
 		this.gecoControl = gecoControl;
-		this.gecoControl.registerService(GecoRequestHandler.class, (GecoRequestHandler) this);
+		this.gecoControl.registerService(MergeRequestHandler.class, (MergeRequestHandler) this);
 		builder.buildControls(gecoControl);
 		stageControl = getService(StageControl.class);
 		runnerControl = getService(RunnerControl.class);
@@ -315,8 +315,11 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 	public CNCalculator cnCalculator() {
 		return getService(CNCalculator.class);
 	}
+	public MergeControl mergeControl() {
+		return getService(MergeControl.class);
+	}
 	
-	public GecoRequestHandler defaultMergeHandler() {
+	public MergeRequestHandler defaultMergeHandler() {
 		return this;
 	}
 	
@@ -338,21 +341,13 @@ public class Geco implements IGecoApp, GecoRequestHandler {
 	}
 	
 	@Override
-	public String requestMergeUnknownRunner(RunnerRaceData data, String ecard) {
-		return new MergeRunnerDialog(
-					this,
-					window,
-					Messages.getString("Geco.UnknownEcardTitle")) //$NON-NLS-1$
-						.showMergeDialogFor(data, ecard, Status.UNK);
+	public String requestMergeUnknownRunner(RunnerRaceData data, String ecard, Course course) {
+		return new MergeWizard(this, window).showMergeUnknownECard(data, ecard, course);
 	}
 
 	@Override
-	public String requestMergeExistingRunner(RunnerRaceData data,	Runner target) {
-		return new MergeRunnerDialog(
-					this,
-					window,
-					Messages.getString("Geco.ExistingRunnerDataTitle")) //$NON-NLS-1$
-						.showOverwriteDialogFor(data, target);
+	public String requestMergeExistingRunner(RunnerRaceData data, Runner target, Course course) {
+		return new MergeWizard(this, window).showMergeDuplicateECard(data, target, course);
 	}
 	
 }

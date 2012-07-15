@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import net.geco.basics.Html;
 import net.geco.control.SIReaderHandler.SerialPort;
 import net.geco.control.SingleSplitPrinter;
 import net.geco.framework.IGecoApp;
@@ -124,31 +125,69 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 		c.insets = new Insets(15, 0, 5, 5);
 		Box modeConfigBox = Box.createVerticalBox();
 		add(modeConfigBox, c);
+		
+		JRadioButton manualB = new JRadioButton("Use manual handler: pop-up the Merge Wizard to resolve the entry");
+		JRadioButton autoB = new JRadioButton("Use auto handler: let Geco automatically resolves the entry");
+		final JRadioButton archiveLookupB = new JRadioButton("Lookup and insert matching entry from archive, create an anonymous entry otherwise");
+		final JRadioButton alwaysCreateB = new JRadioButton("Dont lookup in archive, always create an anonymous entry");
+
+		manualB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				geco.siHandler().enableManualHandler();
+				archiveLookupB.setEnabled(false);
+				alwaysCreateB.setEnabled(false);
+			}
+		});
+		autoB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				geco.siHandler().enableAutoHandler();
+				archiveLookupB.setEnabled(true);
+				alwaysCreateB.setEnabled(true);
+			}
+		});
+		ButtonGroup modeConfigGroup = new ButtonGroup();
+		modeConfigGroup.add(manualB);
+		modeConfigGroup.add(autoB);
+		if ( geco.siHandler().autoHandlerEnabled() ) {
+			autoB.doClick();
+		} else {
+			manualB.doClick();
+		}
+		
 		modeConfigBox.setBorder(BorderFactory.createTitledBorder("Mode Behavior"));
-		modeConfigBox.add(new JLabel("When reading an unregistered ecard in Racing or Training mode"));
+		modeConfigBox.add(new JLabel(Html.htmlTag("i", "When reading unregistered and duplicate ecards in Racing or Training mode")));
 		modeConfigBox.add(Box.createVerticalStrut(5));
-		JRadioButton archiveLookupB = new JRadioButton("Lookup and insert matching entry from archive, create an anonymous entry otherwise");
-		modeConfigBox.add(archiveLookupB);
+		modeConfigBox.add(manualB);
+		modeConfigBox.add(autoB);
+		
 		archiveLookupB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				geco.siHandler().enableArchiveLookup();
 			}
 		});
-		JRadioButton alwaysCreateB = new JRadioButton("Dont lookup in archive, always create an anonymous entry");
-		modeConfigBox.add(alwaysCreateB);
 		alwaysCreateB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				geco.siHandler().disableArchiveLookup();
 			}
 		});
-		ButtonGroup modeConfig = new ButtonGroup();
-		modeConfig.add(archiveLookupB);
-		modeConfig.add(alwaysCreateB);
+		ButtonGroup insertConfigGroup = new ButtonGroup();
+		insertConfigGroup.add(archiveLookupB);
+		insertConfigGroup.add(alwaysCreateB);
 		if ( geco.siHandler().archiveLookupEnabled() ) {
 			archiveLookupB.setSelected(true);
 		} else {
 			alwaysCreateB.setSelected(true);
 		}
+		
+		Box insertConfigBox = Box.createVerticalBox();
+		insertConfigBox.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
+		insertConfigBox.add(new JLabel(Html.htmlTag("i", "With unregistered ecards (auto handler only)")));
+		insertConfigBox.add(Box.createVerticalStrut(5));
+		insertConfigBox.add(archiveLookupB);
+		insertConfigBox.add(alwaysCreateB);
+		
+		modeConfigBox.add(Box.createVerticalStrut(10));
+		modeConfigBox.add(insertConfigBox);
 	}
 
 	@Override

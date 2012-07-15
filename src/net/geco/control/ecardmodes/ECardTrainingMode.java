@@ -14,34 +14,38 @@ import net.geco.model.RunnerRaceData;
  * @since Mar 14, 2012
  *
  */
-public class ECardTrainingMode extends AbstractECardMode {
+public class ECardTrainingMode extends AbstractEcardReadingMode {
 
-	private CourseDetector detector;
-	
-	public ECardTrainingMode(GecoControl gecoControl, CourseDetector detector) {
-		this(gecoControl, detector, true);
-		toggleArchiveLookup(true);
+	public ECardTrainingMode(GecoControl geco, CourseDetector detector) {
+		this(geco, detector, true);
 	}
 	
-	public ECardTrainingMode(GecoControl gecoControl, CourseDetector detector, boolean register) {
-		super(gecoControl);
+	public ECardTrainingMode(GecoControl geco, CourseDetector detector, boolean register) {
+		super(geco, detector);
 		if( register ) {
-			gecoControl.registerService(ECardTrainingMode.class, this);
+			geco.registerService(ECardTrainingMode.class, this);
 		}
-		this.detector = detector;
-		finishHandler = new AutoCheckerHandler(gecoControl, detector);
-		duplicateHandler = new CopyRunnerHandler(gecoControl, detector);
 	}
-
-	@Override
-	public void handleRegistered(RunnerRaceData runnerData) {
-		defaultHandle(runnerData);
+	
+	public void enableAutoHandler(boolean archiveLookupOn) {
+		duplicateHandler = new CopyRunnerHandler(geco(), detector);
+		toggleArchiveLookup(archiveLookupOn);
+	}
+	
+	public ECardTrainingMode toggleArchiveLookup(boolean toggle) {
+		if( toggle ){
+			unregisteredHandler = new ArchiveLookupHandler(geco(), detector,
+										new AnonCreationHandler(geco(), detector));
+		} else {
+			unregisteredHandler = new AnonCreationHandler(geco(), detector); 
+		}
+		return this;
 	}
 
 	@Override
 	public void handleDuplicate(RunnerRaceData runnerData, Runner runner) {
 		String returnedCard = duplicateHandler.handleDuplicate(runnerData, runner);
-		if( returnedCard!=null ){
+		if( returnedCard!=null ) {
 			geco().announcer().announceCardReadAgain(returnedCard);
 		}
 	}
@@ -51,17 +55,7 @@ public class ECardTrainingMode extends AbstractECardMode {
 		String returnedCard = unregisteredHandler.handleUnregistered(runnerData, cardId);
 		if( returnedCard!=null ) {
 			geco().announcer().announceCardRead(returnedCard);
-		}		
-	}
-
-	public ECardTrainingMode toggleArchiveLookup(boolean toggle) {
-		if( toggle ){
-			unregisteredHandler = new ArchiveLookupHandler(geco(), detector,
-					new AnonCreationHandler(geco(), detector));
-		} else {
-			unregisteredHandler = new AnonCreationHandler(geco(), detector); 
 		}
-		return this;
 	}
 
 }

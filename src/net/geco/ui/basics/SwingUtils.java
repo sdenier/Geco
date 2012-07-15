@@ -12,8 +12,6 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import net.geco.basics.GecoResources;
-
 /**
  * @author Simon Denier
  * @since Aug 19, 2010
@@ -24,10 +22,9 @@ public class SwingUtils {
 	public static int SPINNERHEIGHT = 25;
 	
 	public static void setLookAndFeel() {
-		if( GecoResources.platformIsMacOs() ) {
+		if( UIManager.getLookAndFeel().getID().equals("Aqua") ) { //$NON-NLS-1$
 			SPINNERHEIGHT = 20;
 		} else { // try to use Nimbus unless on Mac Os
-//			SPINNERHEIGHT = 25;
 			try {
 				UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"); //$NON-NLS-1$
 			} catch (Exception e) {

@@ -5,12 +5,13 @@
 package net.geco.framework;
 
 import net.geco.basics.Announcer;
-import net.geco.basics.GecoRequestHandler;
+import net.geco.basics.MergeRequestHandler;
 import net.geco.basics.Logger;
 import net.geco.control.ArchiveManager;
 import net.geco.control.CNCalculator;
 import net.geco.control.Checker;
 import net.geco.control.HeatBuilder;
+import net.geco.control.MergeControl;
 import net.geco.control.RegistryStats;
 import net.geco.control.ResultBuilder;
 import net.geco.control.ResultExporter;
@@ -31,7 +32,7 @@ public interface IGeco {
 
 	public Registry registry();
 	public Announcer announcer();
-	public GecoRequestHandler defaultMergeHandler();
+	public MergeRequestHandler defaultMergeHandler();
 	
 	public Logger logger();
 	public void debug(String message);
@@ -51,5 +52,6 @@ public interface IGeco {
 	public ArchiveManager archiveManager();
 	public StartlistImporter startlistImporter();
 	public CNCalculator cnCalculator();
+	public MergeControl mergeControl();
 	
 }
