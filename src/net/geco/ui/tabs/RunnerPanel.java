@@ -416,11 +416,7 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 		mergeDialogB.setToolTipText(Messages.uiGet("RunnerPanel.MergeTooltip")); //$NON-NLS-1$
 		mergeDialogB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new MergeWizard(
-						geco(),
-						frame(),
-						Messages.uiGet("RunnerPanel.MergeCardTitle")) //$NON-NLS-1$
-					.showMergeRunner(runnerData.clone());
+				new MergeWizard(geco(),	frame()).showMergeRunner(runnerData.clone());
 			}
 		});
 		return mergeDialogB;

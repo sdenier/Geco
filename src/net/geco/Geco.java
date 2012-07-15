@@ -342,20 +342,12 @@ public class Geco implements IGecoApp, MergeRequestHandler {
 	
 	@Override
 	public String requestMergeUnknownRunner(RunnerRaceData data, String ecard, Course course) {
-		return new MergeWizard(
-					this,
-					window,
-					Messages.getString("Geco.UnknownEcardTitle")) //$NON-NLS-1$
-						.showMergeUnknownECard(data, ecard, course);
+		return new MergeWizard(this, window).showMergeUnknownECard(data, ecard, course);
 	}
 
 	@Override
 	public String requestMergeExistingRunner(RunnerRaceData data, Runner target, Course course) {
-		return new MergeWizard(
-					this,
-					window,
-					Messages.getString("Geco.ExistingRunnerDataTitle")) //$NON-NLS-1$
-						.showMergeDuplicateECard(data, target, course);
+		return new MergeWizard(this, window).showMergeDuplicateECard(data, target, course);
 	}
 	
 }

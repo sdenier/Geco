@@ -48,8 +48,8 @@ public class MergeWizard extends JDialog {
 	private ArchiveBoard archiveBoard;
 
 	
-	public MergeWizard(IGeco geco, JFrame frame, String title) {
-		super(frame, title, true);
+	public MergeWizard(IGeco geco, JFrame frame) {
+		super(frame, "Merge Wizard", true);
 		this.geco = geco;
 		this.mergeControl = geco.mergeControl();
 		
@@ -122,7 +122,7 @@ public class MergeWizard extends JDialog {
 	}
 
 	public String showMergeRunner(RunnerRaceData data) {
-		setInfo("Merge runner " + data.getRunner().idString());
+		setInfo("Selected runner " + data.getRunner().idString());
 		sourceRunner = data.getRunner();
 		initMockRunner(data, sourceRunner.getEcard(), data.getCourse());
 		openMergeWizard();
@@ -130,14 +130,14 @@ public class MergeWizard extends JDialog {
 	}
 
 	public String showMergeUnknownECard(RunnerRaceData data, String ecard, Course course) {
-		setInfo("Merge unknown ecard " + ecard);
+		setInfo("Unknown ecard " + ecard);
 		initMockRunner(data, ecard, course);
 		openMergeWizard();
 		return mergedECard;
 	}
 
 	public String showMergeDuplicateECard(RunnerRaceData data, Runner target, Course course) {
-		setInfo("Merge duplicate ecard " + target.idString());
+		setInfo("Duplicate ecard " + target.idString());
 		initMockRunner(data, target.getEcard(), course);
 		openMergeWizard();
 //		selectTargetRunner(target); TODO
