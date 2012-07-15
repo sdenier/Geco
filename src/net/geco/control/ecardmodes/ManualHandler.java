@@ -17,9 +17,11 @@ import net.geco.model.RunnerRaceData;
 public class ManualHandler implements ECardHandler {
 
 	private MergeRequestHandler requestHandler;
+	private CourseDetector detector;
 
-	public ManualHandler(GecoControl geco) {
+	public ManualHandler(GecoControl geco, CourseDetector detector) {
 		this.requestHandler = geco.getService(MergeRequestHandler.class);
+		this.detector = detector;
 	}
 	
 	@Override
@@ -29,12 +31,12 @@ public class ManualHandler implements ECardHandler {
 
 	@Override
 	public String handleDuplicate(RunnerRaceData data, Runner runner) {
-		return requestHandler.requestMergeExistingRunner(data, runner);
+		return requestHandler.requestMergeExistingRunner(data, runner, detector.detectCourse(data));
 	}
 
 	@Override
 	public String handleUnregistered(RunnerRaceData data, String cardId) {
-		return requestHandler.requestMergeUnknownRunner(data, cardId);
+		return requestHandler.requestMergeUnknownRunner(data, cardId, detector.detectCourse(data));
 	}
 
 	@Override
