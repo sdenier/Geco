@@ -76,7 +76,7 @@ public class ECardLogFunction extends GecoFunction {
 		logFileF = new JTextField(15);
 		logFileF.setMaximumSize(logFileF.getPreferredSize());
 		logFileF.setEnabled(false);
-		JButton selectB = new JButton(GecoIcon.createIcon(GecoIcon.SelectFiles));
+		JButton selectB = new JButton(GecoIcon.createIcon(GecoIcon.OpenSmall));
 		selectB.setToolTipText("Select log file exported from master station");
 		selectB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

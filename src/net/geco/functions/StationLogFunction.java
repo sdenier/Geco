@@ -116,7 +116,7 @@ public class StationLogFunction extends GecoFunction {
 		fileScroll.setPreferredSize(new Dimension(200, 50));
 		fileScroll.setMaximumSize(fileScroll.getPreferredSize());
 
-		JButton selectB = new JButton(GecoIcon.createIcon(GecoIcon.SelectFiles));
+		JButton selectB = new JButton(GecoIcon.createIcon(GecoIcon.OpenSmall));
 		selectB.setToolTipText("Select log files");
 		selectB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
