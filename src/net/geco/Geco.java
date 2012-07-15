@@ -18,9 +18,9 @@ import net.geco.app.AppBuilder;
 import net.geco.app.GecoStageLaunch;
 import net.geco.basics.Announcer;
 import net.geco.basics.GService;
-import net.geco.basics.MergeRequestHandler;
 import net.geco.basics.GecoResources;
 import net.geco.basics.Logger;
+import net.geco.basics.MergeRequestHandler;
 import net.geco.control.ArchiveManager;
 import net.geco.control.CNCalculator;
 import net.geco.control.Checker;
@@ -40,15 +40,15 @@ import net.geco.control.StartlistImporter;
 import net.geco.framework.IGecoApp;
 import net.geco.framework.IStageLaunch;
 import net.geco.functions.GecoFunction;
+import net.geco.model.Course;
 import net.geco.model.Messages;
 import net.geco.model.Registry;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Stage;
-import net.geco.model.Status;
 import net.geco.ui.GecoLauncher;
 import net.geco.ui.GecoWindow;
-import net.geco.ui.components.MergeRunnerDialog;
+import net.geco.ui.merge.MergeWizard;
 
 
 /**
@@ -341,21 +341,21 @@ public class Geco implements IGecoApp, MergeRequestHandler {
 	}
 	
 	@Override
-	public String requestMergeUnknownRunner(RunnerRaceData data, String ecard) {
-		return new MergeRunnerDialog(
+	public String requestMergeUnknownRunner(RunnerRaceData data, String ecard, Course course) {
+		return new MergeWizard(
 					this,
 					window,
 					Messages.getString("Geco.UnknownEcardTitle")) //$NON-NLS-1$
-						.showMergeDialogFor(data, ecard, Status.UNK);
+						.showMergeUnknownECard(data, ecard, course);
 	}
 
 	@Override
-	public String requestMergeExistingRunner(RunnerRaceData data,	Runner target) {
-		return new MergeRunnerDialog(
+	public String requestMergeExistingRunner(RunnerRaceData data, Runner target, Course course) {
+		return new MergeWizard(
 					this,
 					window,
 					Messages.getString("Geco.ExistingRunnerDataTitle")) //$NON-NLS-1$
-						.showOverwriteDialogFor(data, target);
+						.showMergeDuplicateECard(data, target, course);
 	}
 	
 }

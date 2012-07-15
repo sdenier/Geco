@@ -4,6 +4,7 @@
  */
 package net.geco.basics;
 
+import net.geco.model.Course;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 
@@ -14,8 +15,8 @@ import net.geco.model.RunnerRaceData;
  */
 public interface MergeRequestHandler extends GService {
 
-	public String requestMergeUnknownRunner(RunnerRaceData data, String chip);
+	public String requestMergeUnknownRunner(RunnerRaceData data, String ecard, Course course);
 	
-	public String requestMergeExistingRunner(RunnerRaceData data, Runner target);
+	public String requestMergeExistingRunner(RunnerRaceData data, Runner target, Course course);
 	
 }
