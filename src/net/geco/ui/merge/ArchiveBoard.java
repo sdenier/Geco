@@ -112,7 +112,7 @@ public class ArchiveBoard extends AbstractMergeBoard {
 		GridBagConstraints c = gridLine();
 		c.gridwidth = 4;
 		searchArchiveCB = new FilterComboBox();
-		searchArchiveCB.setPreferredSize(new Dimension(100, SwingUtils.SPINNERHEIGHT));
+		searchArchiveCB.setPreferredSize(new Dimension(100, SwingUtils.SPINNERHEIGHT + 3));
 		panel.add(searchArchiveCB, c);
 		c.gridwidth = 1;
 		lookupArchiveB = new JButton(GecoIcon.createIcon(GecoIcon.ArchiveSearch));

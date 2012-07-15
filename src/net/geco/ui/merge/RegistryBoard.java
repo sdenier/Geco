@@ -19,9 +19,9 @@ import javax.swing.JLabel;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.ui.basics.FilterComboBox;
+import net.geco.ui.basics.FilterComboBox.LazyLoader;
 import net.geco.ui.basics.GecoIcon;
 import net.geco.ui.basics.SwingUtils;
-import net.geco.ui.basics.FilterComboBox.LazyLoader;
 
 public class RegistryBoard extends AbstractMergeBoard {
 
@@ -121,7 +121,7 @@ public class RegistryBoard extends AbstractMergeBoard {
 		setInsets(c, 0, 0);
 		c.gridwidth = 4;
 		searchRegistryCB = new FilterComboBox();
-		searchRegistryCB.setPreferredSize(new Dimension(100, SwingUtils.SPINNERHEIGHT));
+		searchRegistryCB.setPreferredSize(new Dimension(100, SwingUtils.SPINNERHEIGHT + 3));
 		panel.add(searchRegistryCB, c);
 	}
 

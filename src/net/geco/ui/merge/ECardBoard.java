@@ -79,7 +79,7 @@ public class ECardBoard extends AbstractMergeBoard {
 		cancelB.setToolTipText("Close wizard and cancel the merge");
 		cancelB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				wizard().close();
+				wizard().closeAndReturn(null);
 			}
 		});
 		Box buttons = Box.createVerticalBox();
@@ -102,7 +102,7 @@ public class ECardBoard extends AbstractMergeBoard {
 		c.gridwidth = 2;
 		setInsets(c, 0, 0);
 		coursesCB = new JComboBox();
-		coursesCB.setPreferredSize(new Dimension(50, SwingUtils.SPINNERHEIGHT));
+		coursesCB.setPreferredSize(new Dimension(50, SwingUtils.SPINNERHEIGHT + 2));
 		panel.add(coursesCB, c);
 		c.gridwidth = 1;
 		resetInsets(c);
