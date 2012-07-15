@@ -10,14 +10,17 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 
+import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import net.geco.basics.Html;
 import net.geco.control.MergeControl;
 import net.geco.framework.IGeco;
+import net.geco.model.Course;
 import net.geco.model.Messages;
 import net.geco.model.Registry;
 import net.geco.model.Runner;
@@ -33,10 +36,12 @@ public class MergeWizard extends JDialog {
 
 	private RunnerRaceData ecardData;
 	private Runner sourceRunner;
+	private String mergedECard;
 
 	private IGeco geco;
 	private MergeControl mergeControl;
 
+	private JLabel mergeInfo;
 	private ECardBoard ecardBoard;
 	private RegistryBoard registryBoard;
 	private PunchPanel punchPanel;
@@ -50,11 +55,13 @@ public class MergeWizard extends JDialog {
 		
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				close();
+				closeAndReturn(null);
 			}
 		});
 		setResizable(false);
-		add(new JLabel("Merge Runner"), BorderLayout.NORTH);
+		mergeInfo = new JLabel("");
+		mergeInfo.setBorder(BorderFactory.createEmptyBorder(10, 100, 0, 0));
+		add(mergeInfo, BorderLayout.NORTH);
 		add(createMergePanel(), BorderLayout.CENTER);
 		add(createPunchPanel(), BorderLayout.EAST);
 		pack();
@@ -71,31 +78,34 @@ public class MergeWizard extends JDialog {
 	
 	private JPanel createPunchPanel() {
 		punchPanel = new PunchPanel();
-//		punchPanel.setBorder(BorderFactory.createTitledBorder("Trace"));
 		return punchPanel;
 	}
 	
-	public void close() {
-//		mergedCard = null;
+	private void setInfo(String text) {
+		mergeInfo.setText(Html.htmlTag("b", text));
+	}
+	
+	public void closeAndReturn(String ecard) {
+		mergedECard = ecard;
 		setVisible(false);
 	}
 
 	public void closeAfterCreate() {
 		// TODO: log creation ?
 //		geco.log("Creation " + runnerData.infoString()); //$NON-NLS-1$
-		close();
+		closeAndReturn(ecardData.getRunner().getEcard());
 	}
 	
 	public void closeAfterMerge() {
 		askForRunnerDeletion();
 		// TODO: log deletion, merge ?
-		close();
+		closeAndReturn(ecardData.getRunner().getEcard());
 	}
 
 	public void closeAfterInsert() {
 		askForRunnerDeletion();
 		// TODO log insert
-		close();
+		closeAndReturn(ecardData.getRunner().getEcard());
 	}
 
 	private void askForRunnerDeletion() {
@@ -111,19 +121,40 @@ public class MergeWizard extends JDialog {
 		}
 	}
 
-	public void showMergeRunner(RunnerRaceData data) {
+	public String showMergeRunner(RunnerRaceData data) {
+		setInfo("Merge runner " + data.getRunner().idString());
 		sourceRunner = data.getRunner();
-		initMockRunner(data, sourceRunner.getEcard());
-		updatePanels();
-		setVisible(true);		
+		initMockRunner(data, sourceRunner.getEcard(), data.getCourse());
+		openMergeWizard();
+		return mergedECard;
 	}
-	
-	private void initMockRunner(RunnerRaceData data, String ecard) {
+
+	public String showMergeUnknownECard(RunnerRaceData data, String ecard, Course course) {
+		setInfo("Merge unknown ecard " + ecard);
+		initMockRunner(data, ecard, course);
+		openMergeWizard();
+		return mergedECard;
+	}
+
+	public String showMergeDuplicateECard(RunnerRaceData data, Runner target, Course course) {
+		setInfo("Merge duplicate ecard " + target.idString());
+		initMockRunner(data, target.getEcard(), course);
+		openMergeWizard();
+//		selectTargetRunner(target); TODO
+		return mergedECard;
+	}
+
+	private void initMockRunner(RunnerRaceData data, String ecard, Course course) {
 		this.ecardData = data;
 		Runner mockRunner = mergeControl().buildMockRunner();
 		mockRunner.setEcard(ecard);
-		mockRunner.setCourse(data.getCourse());
+		mockRunner.setCourse(course);
 		data.setRunner(mockRunner);
+	}
+
+	private void openMergeWizard() {
+		updatePanels();
+		setVisible(true);
 	}
 
 	public void updatePanels() {
