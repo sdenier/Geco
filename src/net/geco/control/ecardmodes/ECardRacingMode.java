@@ -14,30 +14,19 @@ import net.geco.model.RunnerRaceData;
  * @since Mar 11, 2012
  *
  */
-public class ECardRacingMode extends AbstractECardMode {
+public class ECardRacingMode extends AbstractEcardReadingMode {
 
-	private CourseDetector detector;
-	
 	public ECardRacingMode(GecoControl geco, CourseDetector detector) {
 		this(geco, detector, true);
 	}
 
 	public ECardRacingMode(GecoControl geco, CourseDetector detector, boolean register) {
-		super(geco);
+		super(geco, detector);
 		if( register ) {
 			geco.registerService(ECardRacingMode.class, this);
 		}
-		this.detector = detector;
-		finishHandler = new AutoCheckerHandler(geco, detector);
-		enableAutoHandler(true);
 	}
 	
-	public void enableManualHandler() {
-		ManualHandler manualHandler = new ManualHandler(geco(), detector);
-		duplicateHandler = manualHandler;
-		unregisteredHandler = manualHandler;
-	}
-
 	public void enableAutoHandler(boolean archiveLookupOn) {
 		duplicateHandler = new AnonCreationHandler.DuplicateCreationHandler(geco(), detector);
 		toggleArchiveLookup(archiveLookupOn);
@@ -53,11 +42,6 @@ public class ECardRacingMode extends AbstractECardMode {
 		return this;
 	}
 	
-	@Override
-	public void handleRegistered(RunnerRaceData runnerData) {
-		defaultHandle(runnerData);
-	}
-
 	@Override
 	public void handleDuplicate(RunnerRaceData runnerData, Runner runner) {
 		geco().log("READING AGAIN " + runner.getEcard()); //$NON-NLS-1$

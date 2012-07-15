@@ -14,7 +14,6 @@ import net.geco.model.Messages;
 import net.geco.model.Punch;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
-import net.geco.model.Status;
 
 import org.martin.sireader.common.PunchObject;
 import org.martin.sireader.common.PunchRecordData;
@@ -131,19 +130,6 @@ public abstract class AbstractECardMode extends Control implements ECardMode {
 			punches[i].setTime(new Date(punchObject.getTime()));
 		}
 		runnerData.setPunches(punches);
-	}
-
-	protected void defaultHandle(RunnerRaceData runnerData) {
-		Status oldStatus = runnerData.getResult().getStatus();
-		finishHandler.handleFinish(runnerData);
-		geco().log("READING " + runnerData.infoString()); //$NON-NLS-1$
-		if( runnerData.getResult().getNbMPs() > 0 ) {
-			geco().announcer().dataInfo(
-					runnerData.getResult().formatMpTrace()
-					+ " (" + runnerData.getResult().getNbMPs() + " MP)"); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-		geco().announcer().announceCardRead(runnerData.getRunner().getEcard());
-		geco().announcer().announceStatusChange(runnerData, oldStatus);
 	}
 
 }
