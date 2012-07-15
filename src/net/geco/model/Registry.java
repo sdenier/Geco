@@ -107,14 +107,6 @@ public class Registry {
 	public static String autoCourseName() {
 		return "[Auto]";
 	}
-	
-	public Course anyCourse() {
-		try {
-			return courseRegistry.any();
-		} catch (NoSuchElementException e) {
-			return null;
-		}
-	}
 
 	
 	/*

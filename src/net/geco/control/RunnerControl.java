@@ -40,7 +40,7 @@ public class RunnerControl extends Control {
 
 	public Runner buildMockRunner() {
 		Runner runner = factory().createRunner();
-		runner.setCourse(registry().anyCourse()); // TODO: autoCourse?
+		runner.setCourse(registry().autoCourse());
 		return runner;		
 	}
 
