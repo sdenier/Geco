@@ -53,8 +53,11 @@ public class SIReaderHandler extends Control
 	
 	private boolean starting;
 
+	
 	private ECardMode currentEcardMode;
 	
+	private boolean autoHandlerOn;
+
 	private boolean archiveLookupOn;
 
 	
@@ -81,8 +84,8 @@ public class SIReaderHandler extends Control
 		new ECardRacingMode(geco, courseDetector);
 		new ECardTrainingMode(geco, courseDetector);
 		new ECardRegisterMode(geco);
+		setupHandlers();
 		selectECardMode(ECardRacingMode.class);
-		toggleArchiveLookup();
 		
 		changePortName();
 		geco.announcer().registerStageListener(this);
@@ -92,13 +95,24 @@ public class SIReaderHandler extends Control
 		currentEcardMode = getService(modeClass);
 	}
 	
-	public boolean archiveLookupEnabled() {
-		return archiveLookupOn;
+	public boolean autoHandlerEnabled() {
+		return autoHandlerOn;
 	}
 	
-	private void toggleArchiveLookup() {
-		toggleArchiveLookup(Boolean.parseBoolean(
-				stage().getProperties().getProperty(archiveLookupProperty(), "true"))); //$NON-NLS-1$
+	public void enableAutoHandler() {
+		autoHandlerOn = true;
+		getService(ECardRacingMode.class).enableAutoHandler(archiveLookupOn);
+		getService(ECardTrainingMode.class).enableAutoHandler(archiveLookupOn);		
+	}
+	
+	public void enableManualHandler() {
+		autoHandlerOn = false;
+		getService(ECardRacingMode.class).enableManualHandler();
+		getService(ECardTrainingMode.class).enableManualHandler();
+	}
+	
+	public boolean archiveLookupEnabled() {
+		return archiveLookupOn;
 	}
 	
 	private void toggleArchiveLookup(boolean toggle) {
@@ -113,6 +127,22 @@ public class SIReaderHandler extends Control
 	
 	public void disableArchiveLookup() {
 		toggleArchiveLookup(false);
+	}
+	
+	private void setupHandlers() {
+		autoHandlerOn = Boolean.parseBoolean(
+						stage().getProperties().getProperty(autoHandlerProperty(), "true")); //$NON-NLS-1$
+		archiveLookupOn = Boolean.parseBoolean(
+						stage().getProperties().getProperty(archiveLookupProperty(), "true")); //$NON-NLS-1$
+		if( autoHandlerOn ) {
+			enableAutoHandler();
+		} else {
+			enableManualHandler();
+		}
+	}
+	
+	public static String autoHandlerProperty() {
+		return "AutoHandler"; //$NON-NLS-1$
 	}
 	
 	public static String archiveLookupProperty() {
@@ -288,6 +318,7 @@ public class SIReaderHandler extends Control
 
 	@Override
 	public void saving(Stage stage, Properties properties) {
+		properties.setProperty(autoHandlerProperty(), Boolean.toString(autoHandlerOn));
 		properties.setProperty(archiveLookupProperty(), Boolean.toString(archiveLookupOn));
 		properties.setProperty(portNameProperty(), getPort().name());
 	}

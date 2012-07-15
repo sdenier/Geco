@@ -28,26 +28,14 @@ import org.martin.sireader.server.IResultData;
  */
 public abstract class AbstractECardMode extends Control implements ECardMode {
 
+	protected ECardHandler finishHandler, duplicateHandler, unregisteredHandler;
+
 	public AbstractECardMode(GecoControl gecoControl) {
 		super(gecoControl);
 	}
 	
 	public AbstractECardMode(Class<? extends Control> clazz, GecoControl gecoControl) {
 		super(clazz, gecoControl);
-	}
-
-	protected ECardHandler finishHandler, duplicateHandler, unregisteredHandler;
-	
-	public void setFinishHandler(ECardHandler finishHandler) {
-		this.finishHandler = finishHandler;
-	}
-
-	public void setDuplicateHandler(ECardHandler duplicateHandler) {
-		this.duplicateHandler = duplicateHandler;
-	}
-
-	public void setUnregisteredHandler(ECardHandler unregisteredHandler) {
-		this.unregisteredHandler = unregisteredHandler;
 	}
 
 	/**

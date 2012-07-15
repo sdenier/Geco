@@ -20,7 +20,6 @@ public class ECardRacingMode extends AbstractECardMode {
 	
 	public ECardRacingMode(GecoControl geco, CourseDetector detector) {
 		this(geco, detector, true);
-		toggleArchiveLookup(true);
 	}
 
 	public ECardRacingMode(GecoControl geco, CourseDetector detector, boolean register) {
@@ -30,7 +29,28 @@ public class ECardRacingMode extends AbstractECardMode {
 		}
 		this.detector = detector;
 		finishHandler = new AutoCheckerHandler(geco, detector);
-		duplicateHandler = new AnonCreationHandler.DuplicateCreationHandler(geco, detector);
+		enableAutoHandler(true);
+	}
+	
+	public void enableManualHandler() {
+		ManualHandler manualHandler = new ManualHandler(geco(), detector);
+		duplicateHandler = manualHandler;
+		unregisteredHandler = manualHandler;
+	}
+
+	public void enableAutoHandler(boolean archiveLookupOn) {
+		duplicateHandler = new AnonCreationHandler.DuplicateCreationHandler(geco(), detector);
+		toggleArchiveLookup(archiveLookupOn);
+	}
+	
+	public ECardRacingMode toggleArchiveLookup(boolean toggle) {
+		if( toggle ){
+			unregisteredHandler = new ArchiveLookupHandler(geco(), detector,
+										new AnonCreationHandler.UnknownCreationHandler(geco(), detector));
+		} else {
+			unregisteredHandler = new AnonCreationHandler.UnknownCreationHandler(geco(), detector); 
+		}
+		return this;
 	}
 	
 	@Override
@@ -58,16 +78,6 @@ public class ECardRacingMode extends AbstractECardMode {
 				geco().announcer().announceUnknownCardRead(returnedCard);
 			}
 		}
-	}
-
-	public ECardRacingMode toggleArchiveLookup(boolean toggle) {
-		if( toggle ){
-			unregisteredHandler = new ArchiveLookupHandler(geco(), detector,
-					new AnonCreationHandler.UnknownCreationHandler(geco(), detector));			
-		} else {
-			unregisteredHandler = new AnonCreationHandler.UnknownCreationHandler(geco(), detector); 
-		}
-		return this;
 	}
 	
 }
