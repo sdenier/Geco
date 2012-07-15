@@ -27,6 +27,8 @@ public class FilterComboBox extends JComboBox {
 
 	private JTextField searchField;
 
+	private FocusListener focusListener;
+
 	public FilterComboBox() {
         setEditable(true);
         searchField = (JTextField) this.getEditor().getEditorComponent();
@@ -34,19 +36,21 @@ public class FilterComboBox extends JComboBox {
     }
 
     public void setItems(Object[] items) {
+    	// disable lazy load
+    	searchField.removeFocusListener(focusListener);
     	this.allItems = items;
     	setModel(new DefaultComboBoxModel(items));
     }
 
     public void lazyLoadItems(final LazyLoader loader) {
-    	searchField.addFocusListener(new FocusListener() {
+    	focusListener = new FocusListener() {
     		public void focusLost(FocusEvent e) {}
     		public void focusGained(FocusEvent e) {
-    			searchField.removeFocusListener(this);
     			setItems(loader.loadItems());
     			unsetDefaultSelection();
     		}
-    	});    	
+    	};
+		searchField.addFocusListener(focusListener);
     }
     
     private void setupSearchBehavior() {

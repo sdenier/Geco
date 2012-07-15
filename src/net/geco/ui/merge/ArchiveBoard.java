@@ -73,7 +73,8 @@ public class ArchiveBoard extends AbstractMergeBoard {
 
 			private Course getDefaultCourseForArchiveCategory(Category category) {
 				Category regCategory = registry().findCategory(category.getName());
-				Course course = regCategory == null ? registry().autoCourse() : registry().getDefaultCourseOrAutoFor(regCategory);
+				Course course = (regCategory == null) ?
+								registry().autoCourse() : registry().getDefaultCourseOrAutoFor(regCategory);
 				return course;
 			}
 		});

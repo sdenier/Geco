@@ -25,6 +25,8 @@ import net.geco.ui.basics.SwingUtils;
 
 public class RegistryBoard extends AbstractMergeBoard {
 
+	private Runner initialTarget;
+
 	private JButton mergeRunnerB;
 	private JLabel overwriteWarningL;
 
@@ -49,11 +51,6 @@ public class RegistryBoard extends AbstractMergeBoard {
 	}
 
 	public void updatePanel() {
-		searchRegistryCB.lazyLoadItems(new LazyLoader() {
-			public Object[] loadItems() {
-				return sortedRunners();
-			}
-		});
 		searchRegistryCB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Object selectedItem = searchRegistryCB.getSelectedItem();
@@ -76,8 +73,22 @@ public class RegistryBoard extends AbstractMergeBoard {
 				}
 			}
 		});
+		if( initialTarget==null ) {
+			searchRegistryCB.lazyLoadItems(new LazyLoader() {
+				public Object[] loadItems() {
+					return sortedRunners();
+				}
+			});
+		} else {
+			searchRegistryCB.setItems(sortedRunners());
+			searchRegistryCB.setSelectedItem(initialTarget);
+		}
 	}
-	
+
+	public void selectTargetRunner(Runner target) {
+		initialTarget = target;
+	}
+
 	protected Runner getSelectedRunner() {
 		Object selectedItem = searchRegistryCB.getSelectedItem();
 		if( selectedItem instanceof Runner ) {

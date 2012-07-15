@@ -91,20 +91,19 @@ public class MergeWizard extends JDialog {
 	}
 
 	public void closeAfterCreate() {
-		// TODO: log creation ?
-//		geco.log("Creation " + runnerData.infoString()); //$NON-NLS-1$
+		geco.log("Creation " + ecardData.infoString()); //$NON-NLS-1$
 		closeAndReturn(ecardData.getRunner().getEcard());
 	}
 	
 	public void closeAfterMerge() {
 		askForRunnerDeletion();
-		// TODO: log deletion, merge ?
+		geco.log("Merge " + ecardData.infoString()); //$NON-NLS-1$
 		closeAndReturn(ecardData.getRunner().getEcard());
 	}
 
 	public void closeAfterInsert() {
 		askForRunnerDeletion();
-		// TODO log insert
+		geco.log("Insert " + ecardData.infoString()); //$NON-NLS-1$
 		closeAndReturn(ecardData.getRunner().getEcard());
 	}
 
@@ -116,6 +115,7 @@ public class MergeWizard extends JDialog {
 							Messages.uiGet("MergeRunnerDialog.RunnerDeletionTitle"), //$NON-NLS-1$
 							JOptionPane.YES_NO_OPTION);
 			if( confirm == JOptionPane.YES_OPTION ) {
+				geco.log("Delete " + ecardData.infoString()); //$NON-NLS-1$
 				mergeControl().deleteRunner(sourceRunner);
 			}
 		}
@@ -139,8 +139,8 @@ public class MergeWizard extends JDialog {
 	public String showMergeDuplicateECard(RunnerRaceData data, Runner target, Course course) {
 		setInfo("Duplicate ecard " + target.idString());
 		initMockRunner(data, target.getEcard(), course);
+		selectTargetRunner(target);
 		openMergeWizard();
-//		selectTargetRunner(target); TODO
 		return mergedECard;
 	}
 
@@ -162,6 +162,10 @@ public class MergeWizard extends JDialog {
 		registryBoard.updatePanel();
 		archiveBoard.updatePanel();
 		punchPanel.refreshPunches(this.ecardData);
+	}
+
+	private void selectTargetRunner(Runner target) {
+		registryBoard.selectTargetRunner(target);
 	}
 	
 	public void updateResults() {
