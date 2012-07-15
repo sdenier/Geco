@@ -10,7 +10,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 
-import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -26,6 +25,7 @@ import net.geco.model.Registry;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.ui.basics.PunchPanel;
+import net.geco.ui.basics.SwingUtils;
 
 /**
  * @author Simon Denier
@@ -60,8 +60,7 @@ public class MergeWizard extends JDialog {
 		});
 		setResizable(false);
 		mergeInfo = new JLabel("");
-		mergeInfo.setBorder(BorderFactory.createEmptyBorder(10, 100, 0, 0));
-		add(mergeInfo, BorderLayout.NORTH);
+		add(SwingUtils.embed(mergeInfo), BorderLayout.NORTH);
 		add(createMergePanel(), BorderLayout.CENTER);
 		add(createPunchPanel(), BorderLayout.EAST);
 		pack();
@@ -90,21 +89,21 @@ public class MergeWizard extends JDialog {
 		setVisible(false);
 	}
 
-	public void closeAfterCreate() {
-		geco.log("Creation " + ecardData.infoString()); //$NON-NLS-1$
-		closeAndReturn(ecardData.getRunner().getEcard());
+	public void closeAfterCreate(RunnerRaceData data) {
+		geco.log("Creation " + data.infoString()); //$NON-NLS-1$
+		closeAndReturn(data.getRunner().getEcard());
 	}
 	
-	public void closeAfterMerge() {
+	public void closeAfterMerge(RunnerRaceData data) {
 		askForRunnerDeletion();
-		geco.log("Merge " + ecardData.infoString()); //$NON-NLS-1$
-		closeAndReturn(ecardData.getRunner().getEcard());
+		geco.log("Merge " + data.infoString()); //$NON-NLS-1$
+		closeAndReturn(data.getRunner().getEcard());
 	}
 
-	public void closeAfterInsert() {
+	public void closeAfterInsert(RunnerRaceData data) {
 		askForRunnerDeletion();
-		geco.log("Insert " + ecardData.infoString()); //$NON-NLS-1$
-		closeAndReturn(ecardData.getRunner().getEcard());
+		geco.log("Insert " + data.infoString()); //$NON-NLS-1$
+		closeAndReturn(data.getRunner().getEcard());
 	}
 
 	private void askForRunnerDeletion() {
@@ -115,7 +114,7 @@ public class MergeWizard extends JDialog {
 							Messages.uiGet("MergeRunnerDialog.RunnerDeletionTitle"), //$NON-NLS-1$
 							JOptionPane.YES_NO_OPTION);
 			if( confirm == JOptionPane.YES_OPTION ) {
-				geco.log("Delete " + ecardData.infoString()); //$NON-NLS-1$
+				geco.log("Delete " + sourceRunner.idString()); //$NON-NLS-1$
 				mergeControl().deleteRunner(sourceRunner);
 			}
 		}

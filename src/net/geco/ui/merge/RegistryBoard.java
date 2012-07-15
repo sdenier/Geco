@@ -104,10 +104,10 @@ public class RegistryBoard extends AbstractMergeBoard {
 		mergeRunnerB.setEnabled(false);
 		mergeRunnerB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				control().mergeRunnerWithData(getSelectedRunner(),
-											  wizard().getECardData(),
-											  wizard().getSourceRunner());
-				wizard().closeAfterMerge();
+				RunnerRaceData mergedData = control().mergeRunnerWithData(getSelectedRunner(),
+																		  wizard().getECardData(),
+																		  wizard().getSourceRunner());
+				wizard().closeAfterMerge(mergedData);
 			}
 		});
 		overwriteWarningL = new JLabel(GecoIcon.createIcon(GecoIcon.Overwrite));

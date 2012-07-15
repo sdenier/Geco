@@ -42,16 +42,20 @@ public class MergeControl extends Control {
 		ecardData.getRunner().setCourse(bestMatch);
 	}
 
-	public void registerAnonymousRunner(RunnerRaceData ecardData) {
+	public RunnerRaceData registerAnonymousRunner(RunnerRaceData ecardData) {
 		try {
-			Runner anonymousRunner = runnerControl.buildAnonymousRunner(ecardData.getRunner().getEcard(), ecardData.getCourse());
+			Runner anonymousRunner = runnerControl.buildAnonymousRunner(ecardData.getRunner().getEcard(),
+																		ecardData.getCourse());
 			runnerControl.registerRunner(anonymousRunner, ecardData);
 		} catch (RunnerCreationException e) {
 			geco().debug(e.getLocalizedMessage());
 		}
+		return ecardData;
 	}
 	
-	public void mergeRunnerWithData(Runner targetRunner, RunnerRaceData eCardData, Runner sourceRunner) {
+	public RunnerRaceData mergeRunnerWithData(Runner targetRunner,
+											  RunnerRaceData eCardData,
+											  Runner sourceRunner) {
 		if( sourceRunner != targetRunner ) {
 			if( sourceRunner != null) {
 				runnerControl.validateEcard(sourceRunner, "");
@@ -59,15 +63,19 @@ public class MergeControl extends Control {
 			runnerControl.validateEcard(targetRunner, eCardData.getRunner().getEcard());			
 		}
 		runnerControl.updateCourse(targetRunner, targetRunner.getCourse(), eCardData.getCourse());
-		runnerControl.updateRunnerDataFor(targetRunner, eCardData);
+		return runnerControl.updateRunnerDataFor(targetRunner, eCardData);
 	}
 
-	public void insertArchiveRunner(ArchiveRunner selectedRunner, RunnerRaceData eCardData, Runner sourceRunner) {
+	public RunnerRaceData insertArchiveRunner(ArchiveRunner selectedRunner,
+											  RunnerRaceData eCardData,
+											  Runner sourceRunner) {
 		if( sourceRunner != null) {
 			runnerControl.validateEcard(sourceRunner, "");
 		}
-		Runner runner = getService(ArchiveManager.class).buildRunner(selectedRunner, eCardData.getRunner().getEcard(), eCardData.getCourse());
-		runnerControl.registerRunner(runner, eCardData);
+		Runner runner = getService(ArchiveManager.class).buildRunner(selectedRunner,
+																	 eCardData.getRunner().getEcard(),
+																	 eCardData.getCourse());
+		return runnerControl.registerRunner(runner, eCardData);
 	}
 
 	public void deleteRunner(Runner sourceRunner) {

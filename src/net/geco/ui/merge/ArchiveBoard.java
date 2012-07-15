@@ -18,6 +18,7 @@ import net.geco.model.Archive;
 import net.geco.model.ArchiveRunner;
 import net.geco.model.Category;
 import net.geco.model.Course;
+import net.geco.model.RunnerRaceData;
 import net.geco.ui.basics.FilterComboBox;
 import net.geco.ui.basics.FilterComboBox.LazyLoader;
 import net.geco.ui.basics.GecoIcon;
@@ -95,10 +96,10 @@ public class ArchiveBoard extends AbstractMergeBoard {
 		insertArchiveB.setEnabled(false);
 		insertArchiveB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				control().insertArchiveRunner(getSelectedRunner(),
-											  wizard().getECardData(),
-											  wizard().getSourceRunner());
-				wizard().closeAfterInsert();
+				RunnerRaceData returnedData = control().insertArchiveRunner(getSelectedRunner(),
+																		  wizard().getECardData(),
+																		  wizard().getSourceRunner());
+				wizard().closeAfterInsert(returnedData);
 			}
 		});
 		panel.add(insertArchiveB, buttonsCol(2));

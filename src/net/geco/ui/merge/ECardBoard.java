@@ -17,6 +17,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import net.geco.basics.TimeManager;
+import net.geco.model.RunnerRaceData;
 import net.geco.ui.basics.GecoIcon;
 import net.geco.ui.basics.SwingUtils;
 
@@ -71,8 +72,8 @@ public class ECardBoard extends AbstractMergeBoard {
 		createAnonB.setToolTipText("Create anonymous runner with ecard data");
 		createAnonB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				control().registerAnonymousRunner(ecardData());
-				wizard().closeAfterCreate();
+				RunnerRaceData returnedData = control().registerAnonymousRunner(ecardData());
+				wizard().closeAfterCreate(returnedData);
 			}
 		});
 		JButton cancelB = new JButton(GecoIcon.createIcon(GecoIcon.Cancel));
