@@ -46,7 +46,8 @@ public abstract class GecoFunction extends Control {
 	private static Map<FunctionCategory, Vector<GecoFunction>> functions =	resetAll();	
 
 	public static Map<FunctionCategory, Vector<GecoFunction>> resetAll() {
-		return new HashMap<GecoFunction.FunctionCategory, Vector<GecoFunction>>();
+		functions = new HashMap<GecoFunction.FunctionCategory, Vector<GecoFunction>>();
+		return functions;
 	}
 	
 	public static Vector<GecoFunction> getFunctions(FunctionCategory fc) {
