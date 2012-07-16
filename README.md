@@ -20,20 +20,20 @@ Geco 1.3 builds upon its course detection algorithm to provide more abilities fo
 
 ### Main changes
 - 3 modes when reading ecards:
-  - racing (classic mode)
-  - training (handle multiple reads for the same ecard, create one entry per read without asking question)
-  - register (handle onsite registration)
+    - racing (classic mode)
+    - training (handle multiple reads for the same ecard, create one entry per read without asking question)
+    - register (handle onsite registration)
 - Brand new merge wizard, replacing the old merge dialog from 1.0
-  - displays more information
-  - provides course detection
-  - incremental search in registry and archive
+    - displays more information
+    - provides course detection
+    - incremental search in registry and archive
 - Auto course available by default
 - Import of XML IOF V3 (beta) course file (OCAD 11...)
 - New batch functions
-  - import station logs and check DNS/Running
-  - import ecard logs to recreate a race/training from the master station backup memory
-  - export a referee log with all manual modifications
-  - delete data
+    - import station logs and check DNS/Running
+    - import ecard logs to recreate a race/training from the master station backup memory
+    - export a referee log with all manual modifications
+    - delete data
 
 ### Enhancements
 - add an *Out of Time* status
