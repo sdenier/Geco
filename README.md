@@ -1,5 +1,5 @@
-Geco release 1.3
-================
+Geco beta 1.3
+=============
 Copyright (c) 2008-2012 Simon Denier, Philipp Walker  
 Contact: http://geco.webou.net
 
@@ -13,8 +13,8 @@ The Geco UI is designed to provide a lean user experience: navigate through stag
 Geco can handle multiple race formats: classic inline, free order, Orient'Show (penalty count, knockout qualifications).
 
 
-About the 1.3 release
----------------------
+About the 1.3 beta
+------------------
 
 Geco 1.3 builds upon its course detection algorithm to provide more abilities for course management. Especially some new features provide a better support for training (training mode, import of ecard logs).
 
