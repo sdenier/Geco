@@ -63,12 +63,12 @@ public class HStatsPanel extends StatsPanel implements TabbedSubpane {
 
 	protected void initStatsPanel(JPanel panel, JButton clearLogB) {
 		// control panel
-		JRadioButton summaryB = new JRadioButton("Summary", true);
-		summaryB.setToolTipText("Display a summary with most important stats");
-		JRadioButton unresolvedB = new JRadioButton("Unresolved");
-		unresolvedB.setToolTipText("Display a report with all unresolved statuses");
-		JRadioButton resultsB = new JRadioButton("Results");
-		resultsB.setToolTipText("Display a report with all definitive statuses");
+		JRadioButton summaryB = new JRadioButton(Messages.uiGet("HStatsPanel.SummaryButton"), true); //$NON-NLS-1$
+		summaryB.setToolTipText(Messages.uiGet("HStatsPanel.SummaryTooltip")); //$NON-NLS-1$
+		JRadioButton unresolvedB = new JRadioButton(Messages.uiGet("HStatsPanel.UnresolvedButton")); //$NON-NLS-1$
+		unresolvedB.setToolTipText(Messages.uiGet("HStatsPanel.UnresolvedTooltip")); //$NON-NLS-1$
+		JRadioButton resultsB = new JRadioButton(Messages.uiGet("HStatsPanel.ResultsButton")); //$NON-NLS-1$
+		resultsB.setToolTipText(Messages.uiGet("HStatsPanel.ResultsTooltip")); //$NON-NLS-1$
 		ButtonGroup reportGroup = new ButtonGroup();
 		reportGroup.add(summaryB);
 		reportGroup.add(unresolvedB);

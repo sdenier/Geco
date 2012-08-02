@@ -84,7 +84,7 @@ public class RegistryStats extends Control
 			}},
 		OOT {
 			public String toString() {
-				return "OOT";
+				return Messages.getString("Status.OOTLabel"); //$NON-NLS-1$
 			}},
 	}
 
