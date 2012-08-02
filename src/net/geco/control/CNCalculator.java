@@ -82,9 +82,6 @@ public class CNCalculator extends AResultExporter implements StageListener {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see valmo.geco.control.IResultBuilder#generateHtmlResults(valmo.geco.control.ResultBuilder.ResultConfig, int)
-	 */
 	@Override
 	public String generateHtmlResults(ResultConfig config, int refreshDelay, OutputType outputType) {
 		if( config.resultType!=ResultType.CourseResult )
@@ -95,7 +92,9 @@ public class CNCalculator extends AResultExporter implements StageListener {
 		Html html = new Html();
 		includeHeader(html, "result.css", outputType); //$NON-NLS-1$
 		if( outputType != OutputType.DISPLAY ) {
-			html.nl().tag("h1", stage().getName() + " - " + "Estimation CN");
+			html.nl().tag("h1", stage().getName() //$NON-NLS-1$
+								+ " - "			  //$NON-NLS-1$
+								+ Messages.getString("CNCalculator.CNOutputTitle")); //$NON-NLS-1$
 		}
 		for (Result result : results) {
 			double courseScore = computeCourseScore(result);
@@ -107,8 +106,8 @@ public class CNCalculator extends AResultExporter implements StageListener {
 				.th(Messages.getString("ResultBuilder.ClubHeader"), "class=\"left\"") //$NON-NLS-1$ //$NON-NLS-2$
 				.th(Messages.getString("ResultBuilder.CategoryHeader"), "class=\"left\"") //$NON-NLS-1$ //$NON-NLS-2$
 				.th(Messages.getString("ResultBuilder.TimeHeader"), "class=\"right\"") //$NON-NLS-1$ //$NON-NLS-2$
-				.th("CN", "class=\"right\"")
-				.th("Score", "class=\"right\"")
+				.th(Messages.getString("CNCalculator.CNHeader"), "class=\"right\"") //$NON-NLS-1$ //$NON-NLS-2$
+				.th(Messages.getString("CNCalculator.ScoreHeader"), "class=\"right\"") //$NON-NLS-1$ //$NON-NLS-2$
 				.closeTr();
 			for (RankedRunner data : result.getRanking()) {
 				RunnerResult r = data.getRunnerData().getResult();

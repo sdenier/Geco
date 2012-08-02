@@ -71,9 +71,9 @@ public class StartlistImporter extends OEImporter {
 			
 			runnerControl().registerNewRunner(runner);	
 		} catch (Exception e) {
-			geco().announcer().log("Error during import", false);
+			geco().announcer().log(Messages.getString("StartlistImporter.ImportError"), false); //$NON-NLS-1$
 			geco().announcer().log(e.toString(), false);
-			geco().announcer().log(Util.join(record, ";", new StringBuilder()), false);
+			geco().announcer().log(Util.join(record, ";", new StringBuilder()), false); //$NON-NLS-1$
 		}
 	}
 

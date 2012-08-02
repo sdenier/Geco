@@ -88,7 +88,9 @@ public class SplitExporter extends AResultExporter implements StageListener {
 		Html html = new Html();
 		includeHeader(html, "result.css", outputType); //$NON-NLS-1$
 		if( outputType != OutputType.DISPLAY ) {
-			html.nl().tag("h1", stage().getName() + " - " + "Splits");
+			html.nl().tag("h1", stage().getName() //$NON-NLS-1$
+								+ " - "			  //$NON-NLS-1$
+								+ Messages.getString("SplitExporter.SplitsOutputTitle")); //$NON-NLS-1$
 		}
 		for (Result result : results) {
 			if( config.showEmptySets || !result.isEmpty() ) {
@@ -333,14 +335,14 @@ public class SplitExporter extends AResultExporter implements StageListener {
 		for (RunnerRaceData runnerData : result.getNRRunners()) {
 			Runner runner = runnerData.getRunner();
 			if( !runner.isNC() ) {
-				writeOECsvResult(runnerData, "", names, withSplits, writer);
+				writeOECsvResult(runnerData, "", names, withSplits, writer); //$NON-NLS-1$
 			} else if( config.showNC ) {
-				writeOECsvResult(runnerData, "", names, withSplits, writer);
+				writeOECsvResult(runnerData, "", names, withSplits, writer); //$NON-NLS-1$
 			}
 		}
 		if( config.showOthers ) {
 			for (RunnerRaceData runnerData : result.getOtherRunners()) {
-				writeOECsvResult(runnerData, "", names, withSplits, writer);
+				writeOECsvResult(runnerData, "", names, withSplits, writer); //$NON-NLS-1$
 			}			
 		}
 	}

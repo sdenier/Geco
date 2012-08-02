@@ -40,7 +40,9 @@ public class ResultExporter extends AResultExporter {
 		Html html = new Html();
 		includeHeader(html, "result.css", outputType); //$NON-NLS-1$
 		if( outputType != OutputType.DISPLAY ) {
-			html.nl().tag("h1", stage().getName() + " - " + "Results");
+			html.nl().tag("h1", stage().getName() //$NON-NLS-1$
+								+ " - "			  //$NON-NLS-1$
+								+ Messages.getString("ResultExporter.ResultsOutputTitle")); //$NON-NLS-1$
 		}
 		String timestamp = null;
 		if( outputType == OutputType.PRINTER ) {
@@ -83,7 +85,7 @@ public class ResultExporter extends AResultExporter {
 		resultLabel.append(" (").append(Integer.toString(finished)).append("/") //$NON-NLS-1$ //$NON-NLS-2$
 					.append(Integer.toString(present)).append(")"); //$NON-NLS-1$
 		if( paceComputable ){			
-			resultLabel.append(" - ").append(result.anyRunner().getCourse().formatDistanceClimb());
+			resultLabel.append(" - ").append(result.anyRunner().getCourse().formatDistanceClimb()); //$NON-NLS-1$
 		}
 		html.nl().tag("h2", resultLabel.toString()).nl(); //$NON-NLS-1$
 		
@@ -94,9 +96,9 @@ public class ResultExporter extends AResultExporter {
 			.th(Messages.getString("ResultBuilder.ClubHeader"), "class=\"left\"") //$NON-NLS-1$ //$NON-NLS-2$
 			.th(Messages.getString("ResultBuilder.CategoryHeader"), "class=\"left\"") //$NON-NLS-1$ //$NON-NLS-2$
 			.th(Messages.getString("ResultBuilder.TimeHeader"), "class=\"right\"") //$NON-NLS-1$ //$NON-NLS-2$
-			.th("Diff", "class=\"right\"");
+			.th(Messages.getString("ResultExporter.DiffHeader"), "class=\"right\""); //$NON-NLS-1$ //$NON-NLS-2$
 		if( paceComputable ){
-			html.th("min/km", "class=\"right\"");
+			html.th(Messages.getString("ResultExporter.minkmLabel"), "class=\"right\""); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		if( config.showPenalties ){
 			html.th(Messages.getString("ResultBuilder.MPHeader"), "class=\"right\"") //$NON-NLS-1$ //$NON-NLS-2$
@@ -154,7 +156,7 @@ public class ResultExporter extends AResultExporter {
 		}
 		html.close("table").nl(); //$NON-NLS-1$
 		if( timestamp != null ) {
-			html.nl().tag("p", "Last update " + timestamp); //$NON-NLS-1$
+			html.nl().tag("p", Messages.getString("ResultExporter.LastUpdateLabel") + timestamp); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 	

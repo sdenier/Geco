@@ -58,7 +58,7 @@ public class MergeControl extends Control {
 											  Runner sourceRunner) {
 		if( sourceRunner != targetRunner ) {
 			if( sourceRunner != null) {
-				runnerControl.validateEcard(sourceRunner, "");
+				runnerControl.validateEcard(sourceRunner, ""); //$NON-NLS-1$
 			}
 			runnerControl.validateEcard(targetRunner, eCardData.getRunner().getEcard());			
 		}
@@ -70,7 +70,7 @@ public class MergeControl extends Control {
 											  RunnerRaceData eCardData,
 											  Runner sourceRunner) {
 		if( sourceRunner != null) {
-			runnerControl.validateEcard(sourceRunner, "");
+			runnerControl.validateEcard(sourceRunner, ""); //$NON-NLS-1$
 		}
 		Runner runner = getService(ArchiveManager.class).buildRunner(selectedRunner,
 																	 eCardData.getRunner().getEcard(),
