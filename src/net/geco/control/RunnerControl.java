@@ -137,7 +137,7 @@ public class RunnerControl extends Control {
 	
 
 	public void deleteAllRunners() {
-		geco().log("Removing all runners");
+		geco().log(Messages.getString("RunnerControl.RemovingAllRunnersLabel")); //$NON-NLS-1$
 		ArrayList<RunnerRaceData> runnerData = new ArrayList<RunnerRaceData>(registry().getRunnersData());
 		for (RunnerRaceData runner : runnerData) {
 			deleteRunner(runner);

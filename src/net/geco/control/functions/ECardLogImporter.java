@@ -30,7 +30,7 @@ public class ECardLogImporter extends Control {
 	}
 
 	public void processECardData(ECardMode processor, File file) throws IOException {
-		processECardData(processor, new CsvReader(";", file.getAbsolutePath()));
+		processECardData(processor, new CsvReader(";", file.getAbsolutePath())); //$NON-NLS-1$
 	}
 
 	public void processECardData(ECardMode processor, CsvReader reader) throws IOException {
@@ -40,7 +40,7 @@ public class ECardLogImporter extends Control {
 			try {
 				processor.processECard(convertRecord(record));
 			} catch (IndexOutOfBoundsException e) {
-				geco().debug("Wrong record " + Util.join(record, ",", new StringBuilder()));
+				geco().debug("Wrong record " + Util.join(record, ",", new StringBuilder())); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			record = reader.readRecord();
 		}

@@ -80,11 +80,11 @@ public class StageControl extends Control {
 	}
 
 	public void removeAllClubs() {
-		geco().log("Removing all clubs");
+		geco().log(Messages.getString("StageControl.RemovingAllClubsLabel")); //$NON-NLS-1$
 		ArrayList<Club> clubs = new ArrayList<Club>(registry().getClubs());
 		for (Club club : clubs) {
 			if( ! removeClub(club) ){
-				geco().info("Some runners belong to " + club.getName(), true);
+				geco().info(Messages.getString("StageControl.RunnersBelongToClubWarning") + club.getName(), true); //$NON-NLS-1$
 			}
 		}
 	}
@@ -147,7 +147,7 @@ public class StageControl extends Control {
 
 	public boolean canRemoveCourse(Course course) throws Exception {
 		if( course == registry().autoCourse() ){
-			throw new Exception(Registry.autoCourseName() + " course is uneditable");
+			throw new Exception(Registry.autoCourseName() + Messages.getString("StageControl.UneditableCourseWarning")); //$NON-NLS-1$
 		}
 		for (Category cat : registry().getCategories()) {
 			if( cat.getCourse() == course ) {
@@ -172,7 +172,7 @@ public class StageControl extends Control {
 	}
 
 	public void removeAllCourses() {
-		geco().log("Removing all courses");
+		geco().log(Messages.getString("StageControl.RemovingAllCoursesLabel")); //$NON-NLS-1$
 		ArrayList<Course> courses = new ArrayList<Course>(registry().getCourses());
 		for (Course course : courses) {
 			try {
@@ -180,7 +180,7 @@ public class StageControl extends Control {
 					removeCourse(course);
 				}
 			} catch (Exception e) {
-				geco().info(String.format("%s %s", e.getLocalizedMessage(), course.getName()), true);
+				geco().info(String.format("%s %s", e.getLocalizedMessage(), course.getName()), true); //$NON-NLS-1$
 			}
 		}
 	}
@@ -247,13 +247,13 @@ public class StageControl extends Control {
 	}
 
 	public void removeAllCategories() {
-		geco().log("Removing all categories");
+		geco().log(Messages.getString("StageControl.RemovingAllCategoriesLabel")); //$NON-NLS-1$
 		ArrayList<Category> categories = new ArrayList<Category>(registry().getCategories());
 		for (Category category : categories) {
 			try {
 				removeCategory(category);
 			} catch (Exception e) {
-				geco().info(String.format("%s %s", e.getLocalizedMessage(), category.getName()), true);
+				geco().info(String.format("%s %s", e.getLocalizedMessage(), category.getName()), true); //$NON-NLS-1$
 			}
 		}
 	}
