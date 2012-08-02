@@ -24,6 +24,7 @@ import javax.swing.ListSelectionModel;
 
 import net.geco.control.SIReaderHandler;
 import net.geco.framework.IGeco;
+import net.geco.model.Messages;
 
 /**
  * @author Simon Denier
@@ -87,7 +88,7 @@ public class AquaECardModeSelector extends JButton implements ECardModeSelector 
 	}
 	
 	public void modeStarting() {
-		setText("Starting...");
+		setText(Messages.uiGet("ECardModeUI.ReaderButtonStarting")); //$NON-NLS-1$
 	}
 	
 	public void modeActivated() {

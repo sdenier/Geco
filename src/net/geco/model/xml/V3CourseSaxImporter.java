@@ -166,14 +166,14 @@ public class V3CourseSaxImporter extends DefaultHandler implements XMLCourseImpo
 			mapCoordTL = new Float[] {
 						importLocalizedFloat(atts.getValue("x")), //$NON-NLS-1$
 						importLocalizedFloat(atts.getValue("y")) }; //$NON-NLS-1$
-			mapUnitTL  = atts.getValue("unit");
+			mapUnitTL  = atts.getValue("unit"); //$NON-NLS-1$
 			return;
 		}
 		if( "MapPositionBottomRight".equals(name) ) { //$NON-NLS-1$
 			mapCoordBR = new Float[] {
 						importLocalizedFloat(atts.getValue("x")), //$NON-NLS-1$
 						importLocalizedFloat(atts.getValue("y")) }; //$NON-NLS-1$
-			mapUnitBR  = atts.getValue("unit");
+			mapUnitBR  = atts.getValue("unit"); //$NON-NLS-1$
 			return;
 		}
 		if( "Scale".equals(name) ) { //$NON-NLS-1$
@@ -199,11 +199,11 @@ public class V3CourseSaxImporter extends DefaultHandler implements XMLCourseImpo
 			resetBuffer();
 			return;
 		}
-		if( "MapPosition".equals(name) ) {
+		if( "MapPosition".equals(name) ) { //$NON-NLS-1$
 			coord = new Float[] {
 					importLocalizedFloat(atts.getValue("x")), //$NON-NLS-1$
 					importLocalizedFloat(atts.getValue("y")) }; //$NON-NLS-1$
-			unit  = atts.getValue("unit");
+			unit  = atts.getValue("unit"); //$NON-NLS-1$
 			return;
 		}
 	}
@@ -238,7 +238,7 @@ public class V3CourseSaxImporter extends DefaultHandler implements XMLCourseImpo
 			return;
 		}
 		if( "CourseControl".equals(name) ) { //$NON-NLS-1$
-			controlType = atts.getValue("type");
+			controlType = atts.getValue("type"); //$NON-NLS-1$
 		}
 		if( "Control".equals(name) ) { //$NON-NLS-1$
 			resetBuffer();

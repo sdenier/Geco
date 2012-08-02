@@ -105,7 +105,7 @@ public class Registry {
 	}
 
 	public static String autoCourseName() {
-		return "[Auto]";
+		return Messages.getString("Registry.AutoCourseName"); //$NON-NLS-1$
 	}
 
 	

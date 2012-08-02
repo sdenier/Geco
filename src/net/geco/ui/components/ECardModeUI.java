@@ -11,6 +11,7 @@ import net.geco.control.SIReaderHandler;
 import net.geco.control.ecardmodes.ECardRacingMode;
 import net.geco.control.ecardmodes.ECardRegisterMode;
 import net.geco.control.ecardmodes.ECardTrainingMode;
+import net.geco.model.Messages;
 import net.geco.ui.basics.GecoIcon;
 
 /**
@@ -20,23 +21,23 @@ import net.geco.ui.basics.GecoIcon;
  */
 public enum ECardModeUI {
 	
-	OffMode			("OFF", GecoIcon.EcardOffMode, false) {
+	OffMode			(Messages.uiGet("ECardModeUI.ReaderButtonOFF"), GecoIcon.EcardOffMode, false) { //$NON-NLS-1$
 		public void select(SIReaderHandler handler) {}
 		public boolean isActiveMode() {
 			return false;
 		}
 	},
-	RaceMode		("Racing", GecoIcon.EcardRacingMode, true) {
+	RaceMode		(Messages.uiGet("ECardModeUI.ReaderButtonRacing"), GecoIcon.EcardRacingMode, true) { //$NON-NLS-1$
 		public void select(SIReaderHandler handler) {
 			handler.selectECardMode(ECardRacingMode.class);
 		}
 	},
-	TrainingMode	("Training", GecoIcon.EcardTrainingMode, true) {
+	TrainingMode	(Messages.uiGet("ECardModeUI.ReaderButtonTraining"), GecoIcon.EcardTrainingMode, true) { //$NON-NLS-1$
 		public void select(SIReaderHandler handler) {
 			handler.selectECardMode(ECardTrainingMode.class);
 		}
 	},
-	RegisterMode	("Register", GecoIcon.EcardRegisterMode, false) {
+	RegisterMode	(Messages.uiGet("ECardModeUI.ReaderButtonRegister"), GecoIcon.EcardRegisterMode, false) { //$NON-NLS-1$
 		public void select(SIReaderHandler handler) {
 			handler.selectECardMode(ECardRegisterMode.class);
 		}

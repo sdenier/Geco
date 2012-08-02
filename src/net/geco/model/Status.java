@@ -65,10 +65,10 @@ public enum Status {
 	},
 	OOT {
 		public String toString() {
-			return "OOT";
+			return Messages.getString("Status.OOTLabel"); //$NON-NLS-1$
 		}
 		public String iofFormat() {
-			return "OverTime";
+			return "OverTime"; //$NON-NLS-1$
 		}
 	},
 	NOS { 
