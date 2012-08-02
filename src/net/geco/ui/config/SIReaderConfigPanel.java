@@ -126,10 +126,10 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 		Box modeConfigBox = Box.createVerticalBox();
 		add(modeConfigBox, c);
 		
-		JRadioButton manualB = new JRadioButton("Use manual handler: pop-up the Merge Wizard to resolve the entry");
-		JRadioButton autoB = new JRadioButton("Use auto handler: let Geco automatically resolves the entry");
-		final JRadioButton archiveLookupB = new JRadioButton("Lookup and insert matching entry from archive, create an anonymous entry otherwise");
-		final JRadioButton alwaysCreateB = new JRadioButton("Dont lookup in archive, always create an anonymous entry");
+		JRadioButton manualB = new JRadioButton(Messages.uiGet("SIReaderConfigPanel.ManualHandlerConfig")); //$NON-NLS-1$
+		JRadioButton autoB = new JRadioButton(Messages.uiGet("SIReaderConfigPanel.AutoHandlerConfig")); //$NON-NLS-1$
+		final JRadioButton archiveLookupB = new JRadioButton(Messages.uiGet("SIReaderConfigPanel.ArchiveLookupConfig")); //$NON-NLS-1$
+		final JRadioButton alwaysCreateB = new JRadioButton(Messages.uiGet("SIReaderConfigPanel.NoLookupConfig")); //$NON-NLS-1$
 
 		manualB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -154,8 +154,8 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 			manualB.doClick();
 		}
 		
-		modeConfigBox.setBorder(BorderFactory.createTitledBorder("Mode Behavior"));
-		modeConfigBox.add(new JLabel(Html.htmlTag("i", "When reading unregistered and duplicate ecards in Racing or Training mode")));
+		modeConfigBox.setBorder(BorderFactory.createTitledBorder(Messages.uiGet("SIReaderConfigPanel.ModeBehaviorTitle"))); //$NON-NLS-1$
+		modeConfigBox.add(new JLabel(Html.htmlTag("i", Messages.uiGet("SIReaderConfigPanel.ModeBehaviorLabel")))); //$NON-NLS-1$ //$NON-NLS-2$
 		modeConfigBox.add(Box.createVerticalStrut(5));
 		modeConfigBox.add(manualB);
 		modeConfigBox.add(autoB);
@@ -181,7 +181,7 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 		
 		Box insertConfigBox = Box.createVerticalBox();
 		insertConfigBox.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
-		insertConfigBox.add(new JLabel(Html.htmlTag("i", "With unregistered ecards (auto handler only)")));
+		insertConfigBox.add(new JLabel(Html.htmlTag("i", Messages.uiGet("SIReaderConfigPanel.ArchiveLookupLabel")))); //$NON-NLS-1$ //$NON-NLS-2$
 		insertConfigBox.add(Box.createVerticalStrut(5));
 		insertConfigBox.add(archiveLookupB);
 		insertConfigBox.add(alwaysCreateB);
