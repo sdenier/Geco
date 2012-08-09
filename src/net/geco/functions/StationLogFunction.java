@@ -30,6 +30,7 @@ import javax.swing.JScrollPane;
 import net.geco.basics.Html;
 import net.geco.control.GecoControl;
 import net.geco.control.functions.StationLogChecker;
+import net.geco.model.Messages;
 import net.geco.model.iocsv.CsvReader;
 import net.geco.ui.basics.GecoIcon;
 
@@ -52,19 +53,19 @@ public class StationLogFunction extends GecoFunction {
 
 	@Override
 	public String toString() {
-		return "Check Station Log";
+		return Messages.uiGet("StationLogFunction.CheckStationLogTitle"); //$NON-NLS-1$
 	}
 
 	@Override
 	public String executeTooltip() {
-		return "Check e-cards from stations log and update status of found and not found e-cards";
+		return Messages.uiGet("StationLogFunction.CheckStationLogTooltip"); //$NON-NLS-1$
 	}
 	
 	@Override
 	public void execute() {
 		boolean simulationMode = simulateB.isSelected();
 		if( simulationMode ) {
-			geco().announcer().dataInfo("SIMULATION BEGINS");
+			geco().announcer().dataInfo(Messages.uiGet("StationLogFunction.StartSimMessage")); //$NON-NLS-1$
 		}
 		StationLogChecker func = new StationLogChecker(geco(), simulationMode);
 		Set<String> ecards = readEcardsFromFiles();
@@ -73,7 +74,7 @@ public class StationLogFunction extends GecoFunction {
 			func.markNotStartedEntriesAsDNS(ecards);
 		}
 		if( simulationMode ) {
-			geco().announcer().dataInfo("SIMULATION ENDS HERE");
+			geco().announcer().dataInfo(Messages.uiGet("StationLogFunction.EndSimMessage")); //$NON-NLS-1$
 		}
 	}
 
@@ -84,7 +85,7 @@ public class StationLogFunction extends GecoFunction {
 		while (logs.hasMoreElements()) {
 			File file = (File) logs.nextElement();
 			try {
-				CsvReader reader = new CsvReader(";", file.getAbsolutePath());
+				CsvReader reader = new CsvReader(";", file.getAbsolutePath()); //$NON-NLS-1$
 				retrieveEcardsFromFile(ecards, reader);
 			} catch (IOException e) {
 				geco().info(e.getLocalizedMessage(), true);
@@ -101,7 +102,7 @@ public class StationLogFunction extends GecoFunction {
 				ecards.add(record[1]);
 				record = reader.readRecord();
 			} catch(IndexOutOfBoundsException e) {
-				geco().info("Wrong record " + record, true);
+				geco().info(Messages.uiGet("StationLogFunction.WrongRecordMessage") + record, true); //$NON-NLS-1$
 			}
 		}
 	}
@@ -110,20 +111,20 @@ public class StationLogFunction extends GecoFunction {
 	public JComponent getParametersConfig() {
 		logFiles = new DefaultListModel();
 		JList logFilesL = new JList(logFiles);
-		logFilesL.setToolTipText("Select log files using the file button on right");
+		logFilesL.setToolTipText(Messages.uiGet("StationLogFunction.SelectLogFilesHelp")); //$NON-NLS-1$
 		logFilesL.setEnabled(false);
 		JScrollPane fileScroll = new JScrollPane(logFilesL);
 		fileScroll.setPreferredSize(new Dimension(200, 50));
 		fileScroll.setMaximumSize(fileScroll.getPreferredSize());
 
 		JButton selectB = new JButton(GecoIcon.createIcon(GecoIcon.OpenSmall));
-		selectB.setToolTipText("Select log files");
+		selectB.setToolTipText(Messages.uiGet("StationLogFunction.SelectLogFilesTooltip")); //$NON-NLS-1$
 		selectB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser chooser = new JFileChooser(stage().getBaseDir());
-				chooser.setDialogTitle("Select CSV log files from stations backup memory");
+				chooser.setDialogTitle(Messages.uiGet("StationLogFunction.SelectLogFilesTitle")); //$NON-NLS-1$
 				chooser.setMultiSelectionEnabled(true);
-				int answer = chooser.showDialog(null, "Select");
+				int answer = chooser.showDialog(null, Messages.uiGet("StationLogFunction.SelectLabel")); //$NON-NLS-1$
 				if( answer == JFileChooser.APPROVE_OPTION ){
 					for (File file : chooser.getSelectedFiles()) {
 						logFiles.addElement(file);
@@ -132,7 +133,7 @@ public class StationLogFunction extends GecoFunction {
 			}
 		});
 		JButton resetB = new JButton(GecoIcon.createIcon(GecoIcon.Reset));
-		resetB.setToolTipText("Reset the list of log files");
+		resetB.setToolTipText(Messages.uiGet("StationLogFunction.ResetLogFilesTooltip")); //$NON-NLS-1$
 		resetB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				logFiles.removeAllElements();
@@ -155,14 +156,12 @@ public class StationLogFunction extends GecoFunction {
 		filePanel.add(fileScroll, BorderLayout.CENTER);
 		filePanel.add(fileButtons, BorderLayout.EAST);
 		
-		simulateB = new JCheckBox("Simulate");
-		simulateB.setToolTipText("Show what would be done but don't actually change statuses or insert new entry");
-		autoInsertB = new JCheckBox("Insert unregistered e-cards, with archive lookup");
-		autoInsertB.setToolTipText("If an unknown e-card is detected in station memory, add a new entry with e-card."
-								 + " Function will also fill in data from archive if available");
-		setDnsB = new JCheckBox(Html.htmlTag("b", "Mark remaining Not Started as DNS"));
-		setDnsB.setToolTipText("Mark remaining Not Started entries as DNS."
-							+ " Check this option only if all log files have been checked in");
+		simulateB = new JCheckBox(Messages.uiGet("StationLogFunction.SimulateLabel")); //$NON-NLS-1$
+		simulateB.setToolTipText(Messages.uiGet("StationLogFunction.SimulateTooltip")); //$NON-NLS-1$
+		autoInsertB = new JCheckBox(Messages.uiGet("StationLogFunction.ArchiveLookupLabel")); //$NON-NLS-1$
+		autoInsertB.setToolTipText(Messages.uiGet("StationLogFunction.ArchiveLookupTooltip")); //$NON-NLS-1$
+		setDnsB = new JCheckBox(Html.htmlTag("b", Messages.uiGet("StationLogFunction.MarkDNSLabel"))); //$NON-NLS-1$ //$NON-NLS-2$
+		setDnsB.setToolTipText(Messages.uiGet("StationLogFunction.MarkDNSTooltip")); //$NON-NLS-1$
 
 		Box optionsBox = Box.createVerticalBox();
 		optionsBox.setBorder(BorderFactory.createEmptyBorder(5, 10, 0, 0));
@@ -178,25 +177,25 @@ public class StationLogFunction extends GecoFunction {
 
 	private void showInformationMessage() {
 		Html help = new Html();
-		help.open("ul");
-		help.tag("li", "registered runners which are still running (started but not yet arrived)");
-		help.tag("li", "registered runners which did not start (check option \"Mark...\")");
-		help.tag("li", "unregistered e-cards (check option \"Insert...\")");
-		help.close("ul");
+		help.open("ul"); //$NON-NLS-1$
+		help.tag("li", Messages.uiGet("StationLogFunction.AboutItem1")); //$NON-NLS-1$ //$NON-NLS-2$
+		help.tag("li", Messages.uiGet("StationLogFunction.AboutItem2")); //$NON-NLS-1$ //$NON-NLS-2$
+		help.tag("li", Messages.uiGet("StationLogFunction.AboutItem3")); //$NON-NLS-1$ //$NON-NLS-2$
+		help.close("ul"); //$NON-NLS-1$
 		JLabel listL = new JLabel(help.close());
 
 		Object[] message = new Object[] {
-				"Select log files from Start, Check, or Clear stations. ",
-				"This function reads ecards from logs to detect:",
+				Messages.uiGet("StationLogFunction.AboutLine1"), //$NON-NLS-1$
+				Messages.uiGet("StationLogFunction.AboutLine2"), //$NON-NLS-1$
 				listL,
-				new JLabel(Html.htmlTag("font", "color=\"red\"",
-						"Import log files only if station memories have been erased before the stage.")),
-				new JLabel(Html.htmlTag("font", "color=\"red\"",
-						"Do not check the \"Mark DNS\" option until all logs have been checked in."))
+				new JLabel(Html.htmlTag("font", "color=\"red\"", //$NON-NLS-1$ //$NON-NLS-2$
+						Messages.uiGet("StationLogFunction.AboutWarning1"))), //$NON-NLS-1$
+				new JLabel(Html.htmlTag("font", "color=\"red\"", //$NON-NLS-1$ //$NON-NLS-2$
+						Messages.uiGet("StationLogFunction.AboutWarning2"))) //$NON-NLS-1$
 		};
 		JOptionPane.showMessageDialog(null,
 									  message,
-									  "About Checking Station Log",
+									  Messages.uiGet("StationLogFunction.AboutTitle"), //$NON-NLS-1$
 									  JOptionPane.INFORMATION_MESSAGE);
 	}
 

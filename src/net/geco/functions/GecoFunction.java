@@ -31,15 +31,15 @@ public abstract class GecoFunction extends Control {
 	public static enum FunctionCategory {
 		STAGE {
 			public String toString() {
-				return "Stage";
+				return Messages.uiGet("GecoFunction.StageLabel"); //$NON-NLS-1$
 			}},
 		REFEREE {
 			public String toString() {
-				return "Referee";
+				return Messages.uiGet("GecoFunction.RefereeLabel"); //$NON-NLS-1$
 			}},
 		BATCH {
 			public String toString() {
-				return "Batch";
+				return Messages.uiGet("GecoFunction.BatchLabel"); //$NON-NLS-1$
 			}}
 	}
 	
@@ -71,7 +71,8 @@ public abstract class GecoFunction extends Control {
 	
 	public JComponent getFunctionUI() {
 		JComponent parametersConfig = getParametersConfig();
-		parametersConfig.setBorder(BorderFactory.createTitledBorder(Messages.uiGet("GecoFunction.ParameterLabel"))); //$NON-NLS-1$
+		parametersConfig.setBorder(
+			BorderFactory.createTitledBorder(Messages.uiGet("GecoFunction.ParameterLabel"))); //$NON-NLS-1$
 		return parametersConfig;
 	}
 	

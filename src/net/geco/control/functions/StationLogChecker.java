@@ -10,6 +10,7 @@ import net.geco.control.Control;
 import net.geco.control.GecoControl;
 import net.geco.control.RunnerControl;
 import net.geco.control.ecardmodes.RegisterRunnerHandler;
+import net.geco.model.Messages;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.RunnerResult;
@@ -35,12 +36,12 @@ public class StationLogChecker extends Control {
 	}
 	
 	public void checkECards(Set<String> ecards, boolean autoInsert) {
-		geco().announcer().dataInfo("Reading e-cards log from stations");
+		geco().announcer().dataInfo(Messages.getString("StationLogChecker.ReadingEcardLogMessage")); //$NON-NLS-1$
 		int nbRunning = 0;
 		for (String ecard : ecards) {
 			nbRunning += checkECardStatus(ecard, autoInsert);
 		}
-		geco().log(String.format("%d runners set to Running status", nbRunning));
+		geco().log(String.format(Messages.getString("StationLogChecker.RunningStatusSetMessage"), nbRunning)); //$NON-NLS-1$
 	}
 
 	public int checkECardStatus(String ecard, boolean autoInsert) {
@@ -50,7 +51,7 @@ public class StationLogChecker extends Control {
 			RunnerResult result = runnerData.getResult();
 			if( result.is(Status.NOS) ){
 				if( simulationMode ){
-					geco().announcer().dataInfo(String.format("Would change %s to Running status",
+					geco().announcer().dataInfo(String.format(Messages.getString("StationLogChecker.WouldSetRunningStatusMessage"), //$NON-NLS-1$
 																runnerData.getRunner().idString()));
 				} else {
 					runnerControl.validateStatus(runnerData, Status.RUN);
@@ -58,20 +59,20 @@ public class StationLogChecker extends Control {
 				return 1;
 			} else
 			if( result.is(Status.DNS) ){
-				geco().log(String.format("WARNING: %s found in running log, but set as DNS in registry",
+				geco().log(String.format(Messages.getString("StationLogChecker.FoundDnsStatusInLogWarning"), //$NON-NLS-1$
 										runner.idString()));
 			}
 		} else {
 			if( autoInsert ) {
 				if( simulationMode ) {
 					geco().announcer().dataInfo(
-						String.format("Would lookup ecard %s in archive and register a new entry", ecard));
+						String.format(Messages.getString("StationLogChecker.WouldInsertEcardMessage"), ecard)); //$NON-NLS-1$
 				} else {
 					registerHandler().handleUnregistered(null, ecard);
 				}
 			} else {
 				geco().announcer().dataInfo(
-					String.format("WARNING: ecard %s is unregistered, yet found in running log", ecard));
+					String.format(Messages.getString("StationLogChecker.UnregisteredEcardLogWarning"), ecard)); //$NON-NLS-1$
 			}
 		}
 		return 0;
@@ -85,7 +86,7 @@ public class StationLogChecker extends Control {
 	}
 
 	public void markNotStartedEntriesAsDNS(Set<String> ecards) {
-		geco().announcer().dataInfo("Marking remaining entries as DNS");
+		geco().announcer().dataInfo(Messages.getString("StationLogChecker.MarkDnsMessage")); //$NON-NLS-1$
 		int nbDns = 0;
 		for (RunnerRaceData runnerData : registry().getRunnersData()) {
 			if( runnerData.getResult().is(Status.NOS) ){
@@ -93,7 +94,7 @@ public class StationLogChecker extends Control {
 					Runner runner = runnerData.getRunner();
 					if( ! ecards.contains(runner.getEcard()) ) {
 						geco().announcer().dataInfo(
-								String.format("Would change %s to DNS status", runner.idString()));
+								String.format(Messages.getString("StationLogChecker.WouldMarkDnsMessage"), runner.idString())); //$NON-NLS-1$
 						nbDns++;
 					} // else would have been set to Running
 				} else {
@@ -102,7 +103,7 @@ public class StationLogChecker extends Control {
 				}
 			}
 		}
-		geco().log(String.format("%d runners set to DNS status", nbDns));
+		geco().log(String.format(Messages.getString("StationLogChecker.DnsStatusSetMessage"), nbDns)); //$NON-NLS-1$
 	}
 
 }
