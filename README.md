@@ -69,7 +69,7 @@ Launch
 
 Double-click the jar file.
 
-Geco 1.3 can work with 1.2 data but not with 1.1.
+Geco 1.3 can load 1.2 data but not 1.1 data.
 
 User documentation
 ------------------
@@ -85,12 +85,12 @@ Directory structure
 
 - `geco*.jar` - application
 - `README.md` - this file
-- `LICENSE` - license info (source code)
-- `gpl-2.0.txt` - license info (application)
-- `icu-license.txt` - license info
-- `data/template/` - sample stage files editable with a spreadsheet application 
+- `data/template/` - sample stage files editable with a spreadsheet application
+- `data/modeles/` - french models for course-category associations
 - `help/` - documentation in html format
-
+- `licences/LICENSE` - license info (source code)
+- `licences/gpl-2.0.txt` - license info (application)
+- `licences/icu-license.txt` - more license info
 
 Thanks
 ------

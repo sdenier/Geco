@@ -88,11 +88,9 @@
     	<echo message="${geco.jarname}" />
     	<zip destfile="${geco.dir}/geco_${version.num}.zip">
     		<fileset file="${geco.dir}/${geco.jarname}"/>
-    		<fileset file="${geco.dir}/readme.txt"/>
-    		<fileset file="${geco.dir}/LICENSE"/>
-    		<fileset file="${geco.dir}/gpl-2.0.txt"/>
-    		<fileset file="${geco.dir}/icu-license.txt"/>
+    		<fileset file="${geco.dir}/README.md"/>
     		<fileset dir="${geco.dir}" includes="help/"/>
+    		<fileset dir="${geco.dir}" includes="licenses/"/>
     		<fileset dir="${geco.dir}" includes="data/template/"/>
     		<fileset dir="${geco.dir}" includes="data/modeles/"/>
     	</zip>
@@ -105,11 +103,9 @@
 		</delete>
     	<zip destfile="${geco.dir}/geco_${version.num}_demo.zip">
     		<fileset file="${geco.dir}/${geco.jarname}"/>
-        	<fileset file="${geco.dir}/readme.txt"/>
-        	<fileset file="${geco.dir}/LICENSE"/>
-    		<fileset file="${geco.dir}/gpl-2.0.txt"/>
-    		<fileset file="${geco.dir}/icu-license.txt"/>
+        	<fileset file="${geco.dir}/README.md"/>
     		<fileset dir="${geco.dir}" includes="help/"/>
+    		<fileset dir="${geco.dir}" includes="licenses/"/>
     		<fileset dir="${geco.dir}" includes="data/template/"/>
     		<fileset dir="${geco.dir}" includes="data/modeles/"/>
     		<fileset dir="${geco.dir}" includes="demo/"/>

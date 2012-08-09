@@ -40,3 +40,5 @@ syntax: regexp
 ^Geco 1\.x alias$
 syntax: regexp
 \.jar$
+syntax: regexp
+^data/samples$
