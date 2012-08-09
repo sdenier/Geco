@@ -105,7 +105,8 @@ public class LogPanel extends TabPanel implements Logging {
 
 	@Override
 	public void info(String message, boolean warning) {
-//		displayLog(message);
+		String header = warning ? "[warn] " : "[info] ";
+		displayLog(header + message);
 	}
 
 	@Override
