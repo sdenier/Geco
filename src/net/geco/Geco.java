@@ -61,6 +61,8 @@ import net.geco.ui.merge.MergeWizard;
 public class Geco implements IGecoApp, MergeRequestHandler {
 	
 	public static String VERSION;
+	
+	public static String BUILDNUMBER;
 
 	private static boolean leisureMode = false;
 
@@ -71,9 +73,11 @@ public class Geco implements IGecoApp, MergeRequestHandler {
 	{
 		Properties prop = new Properties();
 		VERSION = "x.x"; //$NON-NLS-1$
+		BUILDNUMBER	= "x"; //$NON-NLS-1$
 		try {
 			prop.load(getClass().getResourceAsStream("/version.prop")); //$NON-NLS-1$
 			VERSION = prop.getProperty("version.num"); //$NON-NLS-1$
+			BUILDNUMBER	= prop.getProperty("build.num"); //$NON-NLS-1$
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -228,6 +232,10 @@ public class Geco implements IGecoApp, MergeRequestHandler {
 	
 	public String version() {
 		return VERSION;
+	}
+	
+	public String buildNumber() {
+		return BUILDNUMBER;
 	}
 
 	public boolean leisureModeOn() {
