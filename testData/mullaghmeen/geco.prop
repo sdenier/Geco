@@ -1,7 +1,8 @@
-#Geco Wed Jul 04 23:46:17 CEST 2012
-#Wed Jul 04 23:46:17 CEST 2012
+#Geco Thu Jul 19 18:37:18 CEST 2012
+#Thu Jul 19 18:37:18 CEST 2012
 Version=V1.2
 SplitFormat=MultiColumns
+SplitHeaderMessage=http\://geco.webou.net
 AppBuilder=net.geco.app.OrientShowAppBuilder
 name=LL Mullagmmeen 12 Oct 2008
 NbAutoBackups=9
@@ -13,3 +14,4 @@ MPLimit=0
 SplitNbColumns=12
 SIPortname=
 SplitPrinter=Canon MP560 wifi
+SplitFooterMessage=Geco
