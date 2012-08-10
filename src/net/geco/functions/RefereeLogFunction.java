@@ -25,6 +25,7 @@ import net.geco.control.GecoControl;
 import net.geco.control.RegistryStats;
 import net.geco.control.RegistryStats.StatItem;
 import net.geco.model.Course;
+import net.geco.model.Messages;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.RunnerResult;
 import net.geco.model.Status;
@@ -47,7 +48,7 @@ public class RefereeLogFunction extends GecoFunction {
 
 	@Override
 	public String toString() {
-		return "Referee Log";
+		return Messages.uiGet("RefereeLogFunction.RefereeLogTitle"); //$NON-NLS-1$
 	}
 
 	@Override
@@ -67,20 +68,20 @@ public class RefereeLogFunction extends GecoFunction {
 		RegistryStats stats = getService(RegistryStats.class);
 		for (Course course : registry().getCourses()) {
 			List<RunnerRaceData> runnerData = registry().getRunnerDataFromCourse(course);
-			log.writeLine("Course " + course.getName());
+			log.writeLine(Messages.uiGet("RefereeLogFunction.CourseLabel") + course.getName()); //$NON-NLS-1$
 			int nbChanges = findAndWriteManualChanges(runnerData, log);
 			writeRunners(runnerData, Status.DNF, log);
 			writeRunners(runnerData, Status.DSQ, log);
 			writeRunners(runnerData, Status.OOT, log);
 			writeCourseSummary(course, stats, nbChanges, log);
-			log.writeLine("");
+			log.writeLine(""); //$NON-NLS-1$
 		}
 		log.close();
 	}
 
 	private int findAndWriteManualChanges(List<RunnerRaceData> runnersData, LogStream log) {
 		int nbChanges = 0;
-		log.writeLine("* Runners with manual modifications");
+		log.writeLine(Messages.uiGet("RefereeLogFunction.RunnersManualModsMessage")); //$NON-NLS-1$
 		for (RunnerRaceData officialData : runnersData) {
 			if( officialData.statusIsRecheckable() ) {
 				RunnerRaceData autoData = officialData.clone();
@@ -99,10 +100,10 @@ public class RefereeLogFunction extends GecoFunction {
 		if( statusChanged || timeChanged ) {
 			StringBuilder string = new StringBuilder(officialData.getRunner().idString());
 			if( statusChanged ) {
-				string.append(", ").append(autoResult.formatStatus() + " -> " + officialResult.formatStatus());
+				string.append(", ").append(autoResult.formatStatus() + " -> " + officialResult.formatStatus()); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			if( timeChanged ) {
-				string.append(", ").append(autoResult.formatRacetime() + " -> " + officialResult.formatRacetime());
+				string.append(", ").append(autoResult.formatRacetime() + " -> " + officialResult.formatRacetime()); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			log.writeLine(string.toString());	
 			return 1;
@@ -111,7 +112,7 @@ public class RefereeLogFunction extends GecoFunction {
 	}
 
 	private void writeRunners(List<RunnerRaceData> runnerData, Status status, LogStream log) {
-		log.writeLine("* Runners " + status.toString());
+		log.writeLine(Messages.uiGet("RefereeLogFunction.RunnersStatutsMessage") + status.toString()); //$NON-NLS-1$
 		for (RunnerRaceData data : runnerData) {
 			if( data.getStatus() == status ) {
 				log.writeLine(data.getRunner().idString());
@@ -121,39 +122,39 @@ public class RefereeLogFunction extends GecoFunction {
 
 	private void writeCourseSummary(Course course, RegistryStats stats, int nbChanges, LogStream log) {
 		Map<StatItem, Integer> courseStats = stats.getCourseStatsFor(course.getName());
-		StringBuilder string = new StringBuilder("* Statistics, ");
-		appendItemStat("Present", StatItem.Present, courseStats, string).append(", ");
-		appendItemStat("OK", StatItem.OK, courseStats, string).append(", ");
-		appendItemStat("MP", StatItem.MP, courseStats, string).append(", ");
-		appendItemStat("DNF", StatItem.DNF, courseStats, string).append(", ");
-		appendItemStat("DSQ", StatItem.DSQ, courseStats, string).append(", ");
-		appendItemStat("OOT", StatItem.OOT, courseStats, string).append(", ");
-		string.append("Manual Changes " + nbChanges);
+		StringBuilder string = new StringBuilder(Messages.uiGet("RefereeLogFunction.StatisticsMessage")); //$NON-NLS-1$
+		appendItemStat(Messages.uiGet("RefereeLogFunction.PresentLabel"), StatItem.Present, courseStats, string).append(", "); //$NON-NLS-1$ //$NON-NLS-2$
+		appendItemStat(Messages.uiGet("RefereeLogFunction.OKLabel"), StatItem.OK, courseStats, string).append(", "); //$NON-NLS-1$ //$NON-NLS-2$
+		appendItemStat(Messages.uiGet("RefereeLogFunction.MPLabel"), StatItem.MP, courseStats, string).append(", "); //$NON-NLS-1$ //$NON-NLS-2$
+		appendItemStat(Messages.uiGet("RefereeLogFunction.DNFLabel"), StatItem.DNF, courseStats, string).append(", "); //$NON-NLS-1$ //$NON-NLS-2$
+		appendItemStat(Messages.uiGet("RefereeLogFunction.DSQLabel"), StatItem.DSQ, courseStats, string).append(", "); //$NON-NLS-1$ //$NON-NLS-2$
+		appendItemStat(Messages.uiGet("RefereeLogFunction.OOTLabel"), StatItem.OOT, courseStats, string).append(", "); //$NON-NLS-1$ //$NON-NLS-2$
+		string.append(Messages.uiGet("RefereeLogFunction.ManualChangesMessage") + nbChanges); //$NON-NLS-1$
 		log.writeLine(string.toString());
 	}
 	
 	private StringBuilder appendItemStat(String title, StatItem item, Map<StatItem, Integer> courseStats, StringBuilder string) {
-		string.append(title).append(" ").append(courseStats.get(item));
+		string.append(title).append(" ").append(courseStats.get(item)); //$NON-NLS-1$
 		return string;
 	}
 
 	@Override
 	public String executeTooltip() {
-		return "Generate referee log with manual modifications";
+		return Messages.uiGet("RefereeLogFunction.RefereeLogTooltip"); //$NON-NLS-1$
 	}
 
 	@Override
 	public JComponent getParametersConfig() {
-		displayOnlyCB = new JCheckBox("Display only, don't write file");
+		displayOnlyCB = new JCheckBox(Messages.uiGet("RefereeLogFunction.DisplayOnlyLabel")); //$NON-NLS-1$
 		displayOnlyCB.setAlignmentX(Component.LEFT_ALIGNMENT);
 		logFileF = new JTextField(15);
 		logFileF.setMaximumSize(logFileF.getPreferredSize());
-		logFileF.setText(stage().getBaseDir() + "/referee_log.txt");
+		logFileF.setText(stage().getBaseDir() + Messages.uiGet("RefereeLogFunction.LogFilename")); //$NON-NLS-1$
 		final JButton selectLogFileB = new JButton(GecoIcon.createIcon(GecoIcon.OpenSmall));
 
 		final Box fileBox = Box.createHorizontalBox();
 		fileBox.setAlignmentX(Component.LEFT_ALIGNMENT);
-		fileBox.add(new JLabel("File Path:"));
+		fileBox.add(new JLabel(Messages.uiGet("RefereeLogFunction.FilePathLabel"))); //$NON-NLS-1$
 		fileBox.add(logFileF);
 		fileBox.add(selectLogFileB);
 
@@ -167,15 +168,15 @@ public class RefereeLogFunction extends GecoFunction {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser fileChooser = new JFileChooser(stage().getBaseDir());
-				fileChooser.setDialogTitle("Select Path for the Referee Log File");
-				int answer = fileChooser.showDialog(fileBox, "Select");
+				fileChooser.setDialogTitle(Messages.uiGet("RefereeLogFunction.SelectFileTitle")); //$NON-NLS-1$
+				int answer = fileChooser.showDialog(fileBox, Messages.uiGet("RefereeLogFunction.SelectLabel")); //$NON-NLS-1$
 				if( answer==JFileChooser.APPROVE_OPTION ) {
 					logFileF.setText(fileChooser.getSelectedFile().getAbsolutePath());
 				}
 			}
 		});
 		
-		JLabel help = new JLabel("Detect manual changes which may impact the results, like status change or time change.");
+		JLabel help = new JLabel(Messages.uiGet("RefereeLogFunction.HelpLabel")); //$NON-NLS-1$
 		help.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 		Box config = Box.createVerticalBox();
