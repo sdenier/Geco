@@ -18,6 +18,7 @@ import net.geco.model.Archive;
 import net.geco.model.ArchiveRunner;
 import net.geco.model.Category;
 import net.geco.model.Course;
+import net.geco.model.Messages;
 import net.geco.model.RunnerRaceData;
 import net.geco.ui.basics.FilterComboBox;
 import net.geco.ui.basics.FilterComboBox.LazyLoader;
@@ -34,7 +35,7 @@ public class ArchiveBoard extends AbstractMergeBoard {
 	private DataField courseF;
 
 	public ArchiveBoard(MergeWizard wizard, JComponent panel, int firstLine) {
-		super("Archive", wizard, panel, firstLine);
+		super(Messages.uiGet("ArchiveBoard.ArchiveTitle"), wizard, panel, firstLine); //$NON-NLS-1$
 	}
 
 	public void updatePanel() {
@@ -66,8 +67,8 @@ public class ArchiveBoard extends AbstractMergeBoard {
 					courseF.setText(getDefaultCourseForArchiveCategory(category).getName());
 					insertArchiveB.setEnabled(true);					
 				} else {
-					categoryF.setText("");
-					courseF.setText("");
+					categoryF.setText(""); //$NON-NLS-1$
+					courseF.setText(""); //$NON-NLS-1$
 					insertArchiveB.setEnabled(false);
 				}
 			}
@@ -92,7 +93,7 @@ public class ArchiveBoard extends AbstractMergeBoard {
 	
 	protected void initButtons(JComponent panel) {
 		insertArchiveB = new JButton(GecoIcon.createIcon(GecoIcon.ArchiveAdd));
-		insertArchiveB.setToolTipText("Insert runner from archive with ecard data");
+		insertArchiveB.setToolTipText(Messages.uiGet("ArchiveBoard.InsertRunnerTooltip")); //$NON-NLS-1$
 		insertArchiveB.setEnabled(false);
 		insertArchiveB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -118,7 +119,7 @@ public class ArchiveBoard extends AbstractMergeBoard {
 		panel.add(searchArchiveCB, c);
 		c.gridwidth = 1;
 		lookupArchiveB = new JButton(GecoIcon.createIcon(GecoIcon.ArchiveSearch));
-		lookupArchiveB.setToolTipText("Lookup ecard in archive");
+		lookupArchiveB.setToolTipText(Messages.uiGet("ArchiveBoard.ArchiveLookupTooltip")); //$NON-NLS-1$
 		lookupArchiveB.setEnabled(false);
 		lookupArchiveB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -135,10 +136,10 @@ public class ArchiveBoard extends AbstractMergeBoard {
 
 	private void initDataLine2(JComponent panel) {
 		GridBagConstraints c = gridLine();
-		panel.add(new JLabel("Category"), c);
+		panel.add(new JLabel(Messages.uiGet("ArchiveBoard.CategoryLabel")), c); //$NON-NLS-1$
 		categoryF = new DataField();
 		panel.add(categoryF, c);
-		panel.add(new JLabel("Course"), c);
+		panel.add(new JLabel(Messages.uiGet("ArchiveBoard.CourseLabel")), c); //$NON-NLS-1$
 		courseF = new DataField();
 		panel.add(courseF, c);
 	}

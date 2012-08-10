@@ -17,6 +17,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import net.geco.basics.TimeManager;
+import net.geco.model.Messages;
 import net.geco.model.RunnerRaceData;
 import net.geco.ui.basics.GecoIcon;
 import net.geco.ui.basics.SwingUtils;
@@ -33,7 +34,7 @@ public class ECardBoard extends AbstractMergeBoard {
 	private boolean recheckCourseOnChange = true;
 
 	public ECardBoard(MergeWizard wizard, JComponent panel, int firstLine) {
-		super("ECard Data", wizard, panel, firstLine);
+		super(Messages.uiGet("ECardBoard.EcardDataTitle"), wizard, panel, firstLine); //$NON-NLS-1$
 	}
 	
 	public void updatePanel() {
@@ -69,7 +70,7 @@ public class ECardBoard extends AbstractMergeBoard {
 	
 	protected void initButtons(JComponent panel) {
 		JButton createAnonB = new JButton(GecoIcon.createIcon(GecoIcon.CreateAnon));
-		createAnonB.setToolTipText("Create anonymous runner with ecard data");
+		createAnonB.setToolTipText(Messages.uiGet("ECardBoard.CreateAnonTooltip")); //$NON-NLS-1$
 		createAnonB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				RunnerRaceData returnedData = control().registerAnonymousRunner(ecardData());
@@ -77,7 +78,7 @@ public class ECardBoard extends AbstractMergeBoard {
 			}
 		});
 		JButton cancelB = new JButton(GecoIcon.createIcon(GecoIcon.Cancel));
-		cancelB.setToolTipText("Close wizard and cancel the merge");
+		cancelB.setToolTipText(Messages.uiGet("ECardBoard.CloseWizardTooltip")); //$NON-NLS-1$
 		cancelB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				wizard().closeAndReturn(null);
@@ -97,7 +98,7 @@ public class ECardBoard extends AbstractMergeBoard {
 
 	private void initDataLine1(JComponent panel) {
 		GridBagConstraints c = gridLine();
-		panel.add(new JLabel("ECard"), c);
+		panel.add(new JLabel(Messages.uiGet("ECardBoard.EcardLabel")), c); //$NON-NLS-1$
 		ecardF = new DataField();
 		panel.add(ecardF, c);
 		c.gridwidth = 2;
@@ -108,7 +109,7 @@ public class ECardBoard extends AbstractMergeBoard {
 		c.gridwidth = 1;
 		resetInsets(c);
 		JButton detectCourseB = new JButton(GecoIcon.createIcon(GecoIcon.DetectCourse));
-		detectCourseB.setToolTipText("Detect course with best match");
+		detectCourseB.setToolTipText(Messages.uiGet("ECardBoard.DetectCourseTooltip")); //$NON-NLS-1$
 		detectCourseB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				control().detectCourse(ecardData());
@@ -122,11 +123,11 @@ public class ECardBoard extends AbstractMergeBoard {
 
 	private void initDataLine2(JComponent panel) {
 		GridBagConstraints c = gridLine();
-		panel.add(new JLabel("Start"), c);
+		panel.add(new JLabel(Messages.uiGet("ECardBoard.StartLabel")), c); //$NON-NLS-1$
 		startTimeF = new DataField();
 		panel.add(startTimeF, c);
 		setInsets(c, INSET, INSET);
-		panel.add(new JLabel("Finish"), c);
+		panel.add(new JLabel(Messages.uiGet("ECardBoard.FinishLabel")), c); //$NON-NLS-1$
 		resetInsets(c);
 		finishTimeF = new DataField();
 		panel.add(finishTimeF, c);
@@ -134,11 +135,11 @@ public class ECardBoard extends AbstractMergeBoard {
 
 	private void initDataLine3(JComponent panel) {
 		GridBagConstraints c = gridLine();
-		panel.add(new JLabel("Status"), c);
+		panel.add(new JLabel(Messages.uiGet("ECardBoard.StatusLabel")), c); //$NON-NLS-1$
 		statusF = new StatusField();
 		panel.add(statusF, c);
 		setInsets(c, INSET, INSET);
-		panel.add(new JLabel("Time"), c);
+		panel.add(new JLabel(Messages.uiGet("ECardBoard.TimeLabel")), c); //$NON-NLS-1$
 		resetInsets(c);
 		raceTimeF = new DataField();
 		panel.add(raceTimeF, c);

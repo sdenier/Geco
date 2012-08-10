@@ -49,7 +49,7 @@ public class MergeWizard extends JDialog {
 
 	
 	public MergeWizard(IGeco geco, JFrame frame) {
-		super(frame, "Merge Wizard", true);
+		super(frame, Messages.uiGet("MergeWizard.MergeWizardTitle"), true); //$NON-NLS-1$
 		this.geco = geco;
 		this.mergeControl = geco.mergeControl();
 		
@@ -59,7 +59,7 @@ public class MergeWizard extends JDialog {
 			}
 		});
 		setResizable(false);
-		mergeInfo = new JLabel("");
+		mergeInfo = new JLabel(""); //$NON-NLS-1$
 		add(SwingUtils.embed(mergeInfo), BorderLayout.NORTH);
 		add(createMergePanel(), BorderLayout.CENTER);
 		add(createPunchPanel(), BorderLayout.EAST);
@@ -81,7 +81,7 @@ public class MergeWizard extends JDialog {
 	}
 	
 	private void setInfo(String text) {
-		mergeInfo.setText(Html.htmlTag("b", text));
+		mergeInfo.setText(Html.htmlTag("b", text)); //$NON-NLS-1$
 	}
 	
 	public void closeAndReturn(String ecard) {
@@ -121,7 +121,7 @@ public class MergeWizard extends JDialog {
 	}
 
 	public String showMergeRunner(RunnerRaceData data) {
-		setInfo("Selected runner " + data.getRunner().idString());
+		setInfo(Messages.uiGet("MergeWizard.SelectedRunnerMessage") + data.getRunner().idString()); //$NON-NLS-1$
 		sourceRunner = data.getRunner();
 		initMockRunner(data, sourceRunner.getEcard(), data.getCourse());
 		openMergeWizard();
@@ -129,14 +129,14 @@ public class MergeWizard extends JDialog {
 	}
 
 	public String showMergeUnknownECard(RunnerRaceData data, String ecard, Course course) {
-		setInfo("Unknown ecard " + ecard);
+		setInfo(Messages.uiGet("MergeWizard.UnknownEcardMessage") + ecard); //$NON-NLS-1$
 		initMockRunner(data, ecard, course);
 		openMergeWizard();
 		return mergedECard;
 	}
 
 	public String showMergeDuplicateECard(RunnerRaceData data, Runner target, Course course) {
-		setInfo("Duplicate ecard " + target.idString());
+		setInfo(Messages.uiGet("MergeWizard.DuplicateEcardMessage") + target.idString()); //$NON-NLS-1$
 		initMockRunner(data, target.getEcard(), course);
 		selectTargetRunner(target);
 		openMergeWizard();
@@ -192,7 +192,7 @@ public class MergeWizard extends JDialog {
 		JOptionPane.showMessageDialog(
 				this,
 				ex.toString(),
-				"Exception in wizard",
+				Messages.uiGet("MergeWizard.WizardExceptionMessage"), //$NON-NLS-1$
 				JOptionPane.ERROR_MESSAGE);
 	}
 	

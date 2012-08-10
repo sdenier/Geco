@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
+import net.geco.model.Messages;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.ui.basics.FilterComboBox;
@@ -37,7 +38,7 @@ public class RegistryBoard extends AbstractMergeBoard {
 	private StatusField statusF;
 
 	public RegistryBoard(MergeWizard wizard, JComponent panel, int firstLine) {
-		super("Registry", wizard, panel, firstLine);
+		super(Messages.uiGet("RegistryBoard.RegistryTitle"), wizard, panel, firstLine); //$NON-NLS-1$
 	}
 	
 	private Object[] sortedRunners() {
@@ -64,9 +65,9 @@ public class RegistryBoard extends AbstractMergeBoard {
 					overwriteWarningL.setVisible(runnerData.hasData());
 					mergeRunnerB.setEnabled(true);					
 				} else {
-					categoryF.setText("");
-					courseF.setText("");
-					raceTimeF.setText("");
+					categoryF.setText(""); //$NON-NLS-1$
+					courseF.setText(""); //$NON-NLS-1$
+					raceTimeF.setText(""); //$NON-NLS-1$
 					statusF.reset();
 					overwriteWarningL.setVisible(false);
 					mergeRunnerB.setEnabled(false);
@@ -100,7 +101,7 @@ public class RegistryBoard extends AbstractMergeBoard {
 	
 	protected void initButtons(JComponent panel) {
 		mergeRunnerB = new JButton(GecoIcon.createIcon(GecoIcon.MergeRunner));
-		mergeRunnerB.setToolTipText("Merge ecard data into selected runner");
+		mergeRunnerB.setToolTipText(Messages.uiGet("RegistryBoard.MergeEcardTooltip")); //$NON-NLS-1$
 		mergeRunnerB.setEnabled(false);
 		mergeRunnerB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -111,7 +112,7 @@ public class RegistryBoard extends AbstractMergeBoard {
 			}
 		});
 		overwriteWarningL = new JLabel(GecoIcon.createIcon(GecoIcon.Overwrite));
-		overwriteWarningL.setToolTipText("Warning! Runner already has ecard data. Merging will overwrite existing data");
+		overwriteWarningL.setToolTipText(Messages.uiGet("RegistryBoard.OverwriteWarning")); //$NON-NLS-1$
 		overwriteWarningL.setVisible(false);
 		mergeRunnerB.setAlignmentX(MergeWizard.CENTER_ALIGNMENT);
 		overwriteWarningL.setAlignmentX(MergeWizard.CENTER_ALIGNMENT);
@@ -138,20 +139,20 @@ public class RegistryBoard extends AbstractMergeBoard {
 
 	private void initDataLine2(JComponent panel) {
 		GridBagConstraints c = gridLine();
-		panel.add(new JLabel("Category"), c);
+		panel.add(new JLabel(Messages.uiGet("RegistryBoard.CategoryLabel")), c); //$NON-NLS-1$
 		categoryF = new DataField();
 		panel.add(categoryF, c);
-		panel.add(new JLabel("Course"), c);
+		panel.add(new JLabel(Messages.uiGet("RegistryBoard.CourseLabel")), c); //$NON-NLS-1$
 		courseF = new DataField();
 		panel.add(courseF, c);
 	}
 
 	private void initDataLine3(JComponent panel) {
 		GridBagConstraints c = gridLine();
-		panel.add(new JLabel("Status"), c);
+		panel.add(new JLabel(Messages.uiGet("RegistryBoard.StatusLabel")), c); //$NON-NLS-1$
 		statusF = new StatusField();
 		panel.add(statusF, c);
-		panel.add(new JLabel("Time"), c);
+		panel.add(new JLabel(Messages.uiGet("RegistryBoard.TimeLabel")), c); //$NON-NLS-1$
 		raceTimeF = new DataField();
 		panel.add(raceTimeF, c);
 	}

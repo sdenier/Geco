@@ -15,7 +15,7 @@ public class StatusField extends DataField {
 	}
 
 	public void reset() {
-		setText("");
+		setText(""); //$NON-NLS-1$
 		setBackground(Color.white);
 	}
 }
