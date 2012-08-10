@@ -18,6 +18,7 @@ import javax.swing.SpinnerNumberModel;
 import net.geco.control.GecoControl;
 import net.geco.control.RunnerControl;
 import net.geco.control.StageControl;
+import net.geco.model.Messages;
 import net.geco.ui.basics.SwingUtils;
 
 
@@ -41,18 +42,18 @@ public class DeleteFunction extends GecoFunction {
 
 	@Override
 	public String toString() {
-		return "Delete Data";
+		return Messages.uiGet("DeleteFunction.DeleteTitle"); //$NON-NLS-1$
 	}
 
 	@Override
 	public String executeTooltip() {
-		return "Delete all selected data to start over";
+		return Messages.uiGet("DeleteFunction.DeleteTooltip"); //$NON-NLS-1$
 	}
 	
 	@Override
 	public void execute() {
 		geco().saveCurrentStage();
-		geco().info("Backup saved", false);
+		geco().info(Messages.uiGet("DeleteFunction.BackupSavedMessage"), false); //$NON-NLS-1$
 		if( deleteRunnerB.isSelected() ){
 			getService(RunnerControl.class).deleteAllRunners();
 		}
@@ -73,16 +74,16 @@ public class DeleteFunction extends GecoFunction {
 
 	@Override
 	public JComponent getParametersConfig() {
-		deleteRunnerB = new JCheckBox("Runners");
-		deleteCategoryB = new JCheckBox("Categories");
-		deleteCategoryB.setToolTipText("Can only delete categories without runners");
-		deleteClubB = new JCheckBox("Clubs");
-		deleteClubB.setToolTipText("Can only delete clubs without runners");
-		deleteCourseB = new JCheckBox("Courses");
-		deleteCourseB.setToolTipText("Can only delete courses without runners or linked categories");
+		deleteRunnerB = new JCheckBox(Messages.uiGet("DeleteFunction.RunnersLabel")); //$NON-NLS-1$
+		deleteCategoryB = new JCheckBox(Messages.uiGet("DeleteFunction.CategoriesLabel")); //$NON-NLS-1$
+		deleteCategoryB.setToolTipText(Messages.uiGet("DeleteFunction.CategoriesTooltip")); //$NON-NLS-1$
+		deleteClubB = new JCheckBox(Messages.uiGet("DeleteFunction.ClubsLabel")); //$NON-NLS-1$
+		deleteClubB.setToolTipText(Messages.uiGet("DeleteFunction.ClubsTooltip")); //$NON-NLS-1$
+		deleteCourseB = new JCheckBox(Messages.uiGet("DeleteFunction.CoursesLabel")); //$NON-NLS-1$
+		deleteCourseB.setToolTipText(Messages.uiGet("DeleteFunction.CoursesTooltip")); //$NON-NLS-1$
 		Box deleteBox = Box.createHorizontalBox();
 		deleteBox.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 0));
-		deleteBox.add(new JLabel("Delete all "));
+		deleteBox.add(new JLabel(Messages.uiGet("DeleteFunction.DeleteAllLabel"))); //$NON-NLS-1$
 		deleteBox.add(deleteRunnerB);
 		deleteBox.add(deleteCategoryB);
 		deleteBox.add(deleteClubB);
@@ -95,13 +96,13 @@ public class DeleteFunction extends GecoFunction {
 		olderBackupS.setMaximumSize(olderBackupS.getPreferredSize());
 		Box cleanupBox = Box.createHorizontalBox();
 		cleanupBox.add(deleteBackupB);
-		cleanupBox.add(new JLabel("Also delete backups older than "));
+		cleanupBox.add(new JLabel(Messages.uiGet("DeleteFunction.DeleteBackupsLabel1"))); //$NON-NLS-1$
 		cleanupBox.add(olderBackupS);
-		cleanupBox.add(new JLabel(" days"));
+		cleanupBox.add(new JLabel(Messages.uiGet("DeleteFunction.DeleteBackupsLabel2"))); //$NON-NLS-1$
 		cleanupBox.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 		Box configBox = Box.createVerticalBox();
-		configBox.add(new JLabel("Geco will perform a backup before deleting any data"));
+		configBox.add(new JLabel(Messages.uiGet("DeleteFunction.BackupLabel"))); //$NON-NLS-1$
 		configBox.add(deleteBox);
 		configBox.add(cleanupBox);
 		return configBox;
