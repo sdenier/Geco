@@ -19,22 +19,22 @@ The two following buttons manage [Live](../howtos/live.html) features.
 <img style="float:none; width:94px" src="../images/animation_toolbar.png" />
 
 In addition, the toolbar lets you control the behavior of Geco when reading e-cards.
-<img style="float:none; width:199px" src="../images/sireader_toolbar.png" />
+<img style="float:none; width:144px" src="../images/sireader_toolbar.png" />
 
-The left button controls the [Auto](../howtos/auto.html) mode of Geco (by default it is enabled). The middle one controls auto-printing of split times when a runner downloads his e-card. The right one controls the e-card reader station.
+The left button controls auto-printing of split times when a runner downloads his e-card. The right one controls the e-card reader station.
 
-When disabled, Auto mode and Split printing each display a grey icon:  
-<img style="float:none; width:90px" src="../images/sifeatures_off.png" />
+When enabled, Split printing icon displays a yellow flash. When starting the reader station, Geco asks you if you want to enable split printing (if disabled).  
+<img style="float:none; width:44px" src="../images/splitprint_on.png" />
 
-When enabled, Auto mode and Split printing display icons with yellow flashes:  
-<img style="float:none; width:92px" src="../images/sifeatures_on.png" />
+The underneath button indicates that the reader is off.  
+<img style="float:none; width:100px" src="../images/sireader_off.png" />
 
-The underneath button indicates that the reader is off. Click it to start the reader and accepts card reading. Geco checks the status of Split printing before and ask you if you want to enable split printing if disabled.  
-<img style="float:none; width:110px" src="../images/reader_off.png" />
+Click to open a drop-down menu with the different [modes](../howtos/modes.html) for ecard reading.  
+<img style="float:none; width:102px" src="../images/sireader_menu.png" />
 
-While Geco is launching the reader, the toolbar will display a *Starting...* button. Errors are displayed in the status bar. You can click on the button to interrupt the launch.
-<img style="float:none; width:105px" src="../images/reader_starting.png" />
+Select your mode. While Geco is launching the reader, the toolbar will display a *Starting...* label. Errors are displayed in the status bar.  
+<img style="float:none; width:100px" src="../images/sireader_starting.png" />
 
-The underneath button indicates that the reader is on and accepts card reading. Click it to stop the reader.  
-<img style="float:none; width:114px" src="../images/reader_on.png" />
+The underneath button indicates that the reader is on and accepts card reading in *Racing* mode. Click again to open the drop-down menu and switch between modes.  
+<img style="float:none; width:100px" src="../images/sireader_on.png" />
 
