@@ -177,33 +177,6 @@ public class ResultExporter extends AResultExporter {
 		html.closeTr();
 	}
 
-
-	@Override
-	protected void writeCsvResult(String id, RunnerRaceData runnerData,
-						String rankOrStatus, String timeOrStatus, boolean showPenalties, CsvWriter writer)
-			throws IOException {
-		Runner runner = runnerData.getRunner();
-		if( showPenalties ){
-			writer.writeRecord(
-				id,
-				rankOrStatus,
-				runner.getFirstname(),
-				runner.getLastname(),
-				runner.getClub().getName(),
-				timeOrStatus,
-				TimeManager.time(runnerData.realRaceTime()),
-				Integer.toString(runnerData.getResult().getNbMPs()));
-		} else {
-			writer.writeRecord(
-				id,
-				rankOrStatus,
-				runner.getFirstname(),
-				runner.getLastname(),
-				runner.getClub().getName(),
-				timeOrStatus);				
-		}
-	}
-
 	@Override
 	public void generateOECsvResult(ResultConfig config, CsvWriter writer) throws IOException {
 		getService(SplitExporter.class).generateOECsvResult(config, false, writer);

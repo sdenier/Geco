@@ -192,13 +192,6 @@ public class CNCalculator extends AResultExporter implements StageListener {
 	}
 
 	@Override
-	protected void writeCsvResult(String poolId, RunnerRaceData runnerData,
-			String rankOrStatus, String timeOrStatus, boolean showPenalties,
-			CsvWriter writer) throws IOException {
-		// do nothing
-	}
-
-	@Override
 	public void generateXMLResult(ResultConfig config, String filename)
 			throws Exception {
 		new SplitXmlExporter(geco()).generateXMLResult(buildResults(config), filename, false);		

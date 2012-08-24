@@ -7,10 +7,13 @@ package net.geco.control;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Vector;
 
 import net.geco.basics.GecoResources;
 import net.geco.basics.Html;
+import net.geco.basics.TimeManager;
 import net.geco.control.ResultBuilder.ResultConfig;
 import net.geco.model.Pool;
 import net.geco.model.RankedRunner;
@@ -104,6 +107,9 @@ public abstract class AResultExporter extends Control {
 
 	public void generateCsvResult(ResultConfig config, CsvWriter writer) throws IOException {
 		Vector<Result> results = buildResults(config);
+		writer.write("start id;ecard;archive id;last name;first name;short cat;long cat;short club;long club;" + //$NON-NLS-1$
+				"result id;rank;status;official time;nc;start time;finish time;race time;mps;" + //$NON-NLS-1$
+				"course;distance;climb;nb punches;control 1;punch 1;...;\n"); //$NON-NLS-1$
 		for (Result result : results) {
 			if( config.showEmptySets || !result.isEmpty()) {
 				appendCsvResult(result, config, writer);
@@ -112,54 +118,60 @@ public abstract class AResultExporter extends Control {
 	}
 
 	private void appendCsvResult(Result result, ResultConfig config, CsvWriter writer) throws IOException {
-		String id = result.getIdentifier();
-		// Format: result id, rank/status, first name, last name, club, [, time/status [, real time, nb mps]]
+		String resultId = result.getIdentifier();
 		for (RankedRunner rRunner : result.getRanking()) {
 			RunnerRaceData runnerData = rRunner.getRunnerData();
-			writeCsvResult(
-					id,
-					runnerData,
-					Integer.toString(rRunner.getRank()),
-					runnerData.getResult().formatRacetime(),
-					config.showPenalties,
-					writer);
+			writeCsvResult(runnerData, resultId, Integer.toString(rRunner.getRank()), writer);
 		}
 		for (RunnerRaceData runnerData : result.getNRRunners()) {
 			Runner runner = runnerData.getRunner();
-			if( !runner.isNC() ) {
-				writeCsvResult(
-						id,
-						runnerData,
-						runnerData.getResult().formatStatus(),
-						runnerData.getResult().formatStatus(),
-						config.showPenalties,
-						writer);
-			} else if( config.showNC ) {
-				writeCsvResult(
-						id,
-						runnerData,
-						"NC", //$NON-NLS-1$
-						runnerData.getResult().shortFormat(), // time or status
-						config.showPenalties,
-						writer);
+			if( !runner.isNC() || config.showNC ) {
+				writeCsvResult(runnerData, resultId, "", writer); //$NON-NLS-1$
 			}
 		}
 		if( config.showOthers ) {
 			for (RunnerRaceData runnerData : result.getOtherRunners()) {
-				writeCsvResult(
-						id,
-						runnerData,
-						runnerData.getResult().formatStatus(),
-						runnerData.getResult().formatStatus(),
-						config.showPenalties,
-						writer);
+				writeCsvResult(runnerData, resultId, "", writer); //$NON-NLS-1$
 			}			
 		}
 	}
 	
-	protected abstract void writeCsvResult(String poolId, RunnerRaceData runnerData,
-			String rankOrStatus, String timeOrStatus, boolean showPenalties, CsvWriter writer)
-		throws IOException;
+	
+	private void writeCsvResult(RunnerRaceData runnerData, String resultId, String rank, CsvWriter writer)
+			throws IOException {
+		writer.writeRecord(computeCsvRecord(runnerData, resultId, rank));
+	}
+
+	protected Collection<String> computeCsvRecord(RunnerRaceData runnerData, String resultId, String rank) {
+//		start id;ecard;archive id;last name;first name;short cat;long cat;short club;long club;
+//		result id;rank;status;official time;nc;start time;finish time;race time;mps;
+//		course;distance;climb;nb punches;control 1;punch 1
+		Runner runner = runnerData.getRunner();
+		return Arrays.asList(new String[] {
+				runner.getStartId().toString(),
+				runner.getEcard(),
+				(runner.getArchiveId()==null) ? "" : runner.getArchiveId().toString(), //$NON-NLS-1$
+				runner.getLastname(),
+				runner.getFirstname(),
+				runner.getCategory().getShortname(),
+				runner.getCategory().getLongname(),
+				runner.getClub().getShortname(),
+				runner.getClub().getName(),
+				resultId,
+				rank,
+				runnerData.getResult().formatStatus(),
+				runnerData.getResult().formatRacetime(),
+				(runner.isNC()) ? "NC" : "", //$NON-NLS-1$ //$NON-NLS-2$
+				TimeManager.fullTime(runnerData.getOfficialStarttime()),
+				TimeManager.fullTime(runnerData.getFinishtime()),
+				TimeManager.time(runnerData.realRaceTime()),
+				Integer.toString(runnerData.getResult().getNbMPs()),
+				runner.getCourse().getName(),
+				Integer.toString(runner.getCourse().getLength()),
+				Integer.toString(runner.getCourse().getClimb()),
+				Integer.toString(runner.getCourse().nbControls()),
+		});
+	}
 
 	public abstract void generateOECsvResult(ResultConfig config, CsvWriter writer) throws IOException;
 

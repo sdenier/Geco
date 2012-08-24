@@ -6,7 +6,6 @@ package net.geco.control;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -270,34 +269,22 @@ public class SplitExporter extends AResultExporter implements StageListener {
 	}
 	
 	@Override
-	protected void writeCsvResult(String id, RunnerRaceData runnerData, String rankOrStatus,
-			String timeOrStatus, boolean showPenalties, CsvWriter writer) throws IOException {
-		Runner runner = runnerData.getRunner();
-		Vector<String> csvData = new Vector<String>(
-				Arrays.asList(new String[] {
-					id,
-					rankOrStatus,
-					runner.getFirstname(),
-					runner.getLastname(),
-					runner.getClub().getName(),
-					timeOrStatus,
-					( showPenalties) ? TimeManager.time(runnerData.realRaceTime()) : "", //$NON-NLS-1$
-					( showPenalties) ? Integer.toString(runnerData.getResult().getNbMPs()) : "", //$NON-NLS-1$
-					TimeManager.fullTime(runnerData.getOfficialStarttime()),
-					TimeManager.fullTime(runnerData.getFinishtime()),
-					Integer.toString(runner.getCourse().nbControls())
-				}));
-		
+	protected Collection<String> computeCsvRecord(RunnerRaceData runnerData, String resultId, String rank) {
+		// edit collection
+		ArrayList<String> csvRecord = new ArrayList<String>(super.computeCsvRecord(runnerData, resultId, rank));
+		csvRecord.ensureCapacity(csvRecord.size() + 2 * runnerData.getResult().getTrace().length);
 		for (SplitTime split: resultBuilder.buildNormalSplits(runnerData, null)) {
-			if( split.trace!=null ) { // finish split handled above
-				csvData.add(split.trace.getBasicCode());
-				csvData.add(TimeManager.fullTime(split.time));
+			if( split.trace!=null ) { // dont handle finish split
+				csvRecord.add(split.trace.getBasicCode());
+				csvRecord.add(encodeMPPunch(split));
 			}
 		}
-		
-		writer.writeRecord(csvData);
+		return csvRecord;
 	}
 
+	private String encodeMPPunch(SplitTime split) {
+		return split.trace.isMP() ? "##" : TimeManager.fullTime(split.time); //$NON-NLS-1$
+	}
 	
 	@Override
 	public void generateOECsvResult(ResultConfig config, CsvWriter writer) throws IOException {
