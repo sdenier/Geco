@@ -89,13 +89,13 @@ public class OrRaceConfigTest {
 	@Test
 	public void testImportMullaghmeenCourses() {
 		Collection<Course> courses = registryM.getCourses();
-		assertEquals(8, courses.size());
+		assertEquals(9, courses.size());
 		
 		Collection<String> names = new HashSet<String>();
 		for (Course course : courses) {
 			names.add(course.getName());
 		}
-		Collection<String> expectedNames = new HashSet<String>(Arrays.asList("Blue", "Brown", "Green", "Light Green", "Orange", "Red", "White", "Yellow"));
+		Collection<String> expectedNames = new HashSet<String>(Arrays.asList("Blue", "Brown", "Green", "Light Green", "Orange", "Red", "White", "Yellow", "[Auto]"));
 		assertEquals(expectedNames, names);
 		
 	}
