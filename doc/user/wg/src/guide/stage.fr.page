@@ -20,20 +20,25 @@ Cet onglet permet de configurer tous les éléments de la course. Les éléments
 - Format splits : multi-colonnes (voir option `SplitNbColumns` dans le fichier `geco.prop`) ou ticket (une seule colonne, pour imprimante thermique à ticket)
 - Vous pouvez éditer l'en-tête et le pied de page de la feuille d'impression
 
+Cette section permet aussi de configurer le comportement de Geco à la lecture des puces (en [mode](../workflows/ecard_modes.fr.html) compétition ou entraînement). Vous pouvez choisir de :
+
+- résoudre manuellement les problèmes de puce avec [l'assistant de fusion](merge.fr.html) *ou* laisser Geco prendre en charge automatiquement toutes les puces, en créant de nouvelles inscriptions au besoin (inscriptions inconnues, doublons)
+- laisser Geco chercher les puces inconnues dans l'archive pour créer de nouvelles inscriptions (seulement en automatique)
+
 ## Pénalités (pour les formats Orient'Show, Ordre libre...)
 - Limites PM : nombre de postes manquant autorisés avant de marquer le coureur comme PM
-- Pas de limite PM : le coureur n'est jamais marqué PM, quelque soit le nombre de postes manqués
+- Pas de limite PM : le coureur n'est jamais marqué PM, quelque soit le nombre de postes manquant
 - Pénalité : pénalité de temps en secondes par poste manquant (aussi affichée en minutes)
 
 <a href="../images/stage_panel_penalties.fr.png"><img src="../images/stage_panel_penalties.fr.png" /></a>
 
 ## Circuit
-- Geco peut importer des circuits décrits au format *[IOF XML](http://www.soenniksen.dk/iof-datastandard/index.shtml)*. Cliquez sur le bouton *XML* pour sélectionner le fichier de circuits
+- Geco peut importer des circuits décrits au format *[IOF XML](http://www.soenniksen.dk/iof-datastandard/index.shtml)*. Cliquez sur le bouton *XML* pour sélectionner le fichier de circuits. Vous pouvez choisir entre le format **XML V2** (courant) ou le nouveau format **XML V3**.
 - Vous pouvez *Éditer* les circuits à la main, si besoin
 - Vous pouvez *Revérifier* tous les coureurs d'un circuit après changement
+
+Le circuit **\[Auto\]** existe par défaut dans Geco : il ne peut pas être renommé ou supprimé. C'est le circuit utilisé par Geco pour toute nouvelle inscription (sauf à utiliser les circuits par catégorie). Ce circuit spécial indique à Geco qu'il faut détecter le *véritable* circuit lors de la lecture de la puce : après lecture, le circuit du coureur sera automatiquement mis à jour avec le circuit détecté.
 
 ## Catégorie
 - Colonne Circuit : circuit par défaut pour les coureurs de la catégorie (utilisé en particulier pour l'import CSV ou depuis l'archive)
 - Vous pouvez importer un modèle CSV avec les catégories courantes et leur circuit associé. Voir le répoertoire `data/modeles` pour des exemples de fichiers avec les formats pour courses régionales etc.
-
-Les données clubs, catégories, circuits peuvent aussi être éditées via un tableur. Voir les [formats fichiers](../howtos/fileformat.fr.html).

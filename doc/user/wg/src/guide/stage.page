@@ -19,9 +19,14 @@ The configuration panel allows one to set up many configuration items for the st
 ## SI Reader
 - Station port: *SPORTident master station must be connected before launching the app so that Geco can detect the port*
 - Split format: multi-columns (see `SplitNbColumns` in `geco.prop`) or ticket (single column, best for thermal printer)
-- You can customize header and footer of the split sheet
+- You can customize header and footer of the split sheet with some texts
 
-## Penalties (only for Orient'Show, Free Order, ...)
+This panel also allows you to customize a bit more the behavior of Geco when reading ecards (either in racing or training [modes](../workflows/ecard_modes.html)). You can choose to:
+
+- manually resolve ecard issues with the [Merge wizard](merge.html) *or* let Geco handles all ecards automatically, creating an entry for each reading (unknown, duplicate entries)
+- let Geco lookup unregistered ecards and insert entries from archive (only for the automatic behavior)
+
+## Penalties (for Orient'Show, Free Order, ...)
 - MP limit: number of missing punches authorized before marking the runner as MP
 - Don't check MP limit: runner can have any number of missing punches without ever being MP (disable MP limit)
 - Time penalty: time penalty per missing punch, in seconds (also displayed in minutes for large time penalty)
@@ -29,12 +34,12 @@ The configuration panel allows one to set up many configuration items for the st
 <a href="../images/stage_panel_penalties.png"><img src="../images/stage_panel_penalties.png" /></a>
 
 ## Course
-- Geco can import courses described with the *[IOF XML](http://www.soenniksen.dk/iof-datastandard/index.shtml)* format. Click the *XML* button to select the course file
+- Geco can import courses described with the *[IOF XML](http://www.soenniksen.dk/iof-datastandard/index.shtml)* format. Click the *XML* button to select the course file. You can choose between the **XML V2** (current) format or the new **XML V3** format.
 - You can *Edit* the course sequence by hand, if necessary
 - You can *Recheck* all runners from a course after a change
   
+The **\[Auto\]** course always exists in Geco: it can't be renamed or deleted. This is the default course used by Geco for any new entry (unless a category course is used). This special course tells Geco to detect the *real* course on ecard reading: after reading, the runner's course will be automatically updated with the detected course.
+
 ## Category
 - Course column: set the default course for runners in the category (used when importing registrations from file or from archive)
 - You can import a CSV *Template* file describing common categories and their default courses. See `data/modeles` for some sample files following french rules. Each line describes a category as `short name, long name, course name`
-
-Data for clubs, categories, courses can also be edited with a spreadsheet application. See [File Formats](../howtos/fileformat.html).
