@@ -9,7 +9,7 @@ in_menu: true
 L'onglet coureurs est la place centrale pour inscrire les concurrents et gérer les événements durant la course.
 
 <a href="../images/runners_panel_notes.fr.png"><img src="../images/runners_panel_notes.fr.png" /></a>
-(Cliques pour zoomer)
+(Cliquez pour zoomer)
 
 La partie principale est la table des coureurs, qui permet de voir/éditer/filtrer/trier les concurrents tout en montrant les données essentielles.
 La vue dans le panneau de droite peut montrer des données détaillées sur le coureur sélectionné (données puce, trace), ou bien des statistiques sur la course.
@@ -22,13 +22,13 @@ La vue dans le panneau de droite peut montrer des données détaillées sur le c
 - *Trier les concurrents :* cliquez sur l'entête d'une colonne pour trier les concurrents par rang ascendant/descendant
 - *Filtrer les concurrents :* entrez quelques caractères pour montrer les entrées correspondant à la recherche
 - *Édition rapide :* un seul clic dans la table permet d'éditer les données - utile quand il s'agit d'effectuer rapidement plusieurs modifications manuelles
-- *Circuit par défaut :* si coché, changer manuellement la catégorie d'un coureur change aussi son circuit pour le circuit par défaut de la catégorie (configuré dans l'[Étape](stage.fr.html))
+- *Circuit par défaut :* si coché, changer manuellement la catégorie d'un coureur change aussi son circuit pour le circuit par défaut de la catégorie (configuré dans l'[étape](stage.fr.html))
 - *Mode Live :* dans ce mode, Geco sélectionne automatiquement le dernier concurrent dont la puce est lue ; les coureurs sont classés par ordre de lecture des puces, en commençant par les plus récents (les tris par colonne sont désactivés dans ce mode)
 
 ### Pré-inscription des concurrents
 
 - Vous pouvez importer un fichier CSV avec le format des inscriptions OE. C'est la méthode la plus rapide pour importer de nombreuses inscriptions.
-- Vous pouvez importer des coureurs depuis l'[Archive](archive.fr.html).
+- Vous pouvez importer des coureurs depuis l'[archive](archive.fr.html).
 - L'import CSV ou par l'archive crée automatiquement les clubs et catégories nécessaires pour l'import.
 - L'import CSV ou par l'archive utilise le circuit par défaut de la catégorie (si configuré).
 - Vous pouvez insérer une nouvelle entrée en cliquant le bouton `+` (raccourci `mod+I`) et éditer l'entrée manuellement.
@@ -42,15 +42,16 @@ La vue dans le panneau de droite peut montrer des données détaillées sur le c
 - Changer de circuit déclenche un calcul du statut pour vérifier la validité de la trace
 - Si nécessaire, le temps officiel de course (pour les résultats) peut être changé manuellement
 - Si nécessaire, le statut peut être changé manuellement
-  - Non parti  (statut par défaut) : coureur inscrit mais sans données de course
+  - Non parti  (statut par défaut) : coureur inscrit mais sans donnée de course
   - En course : coureur confirmé comme parti mais pas encore arrivé
   - OK
   - PM
   - Absent
   - Abandon
   - Disq : disqualifié
-  - Inconnu : puce lue inconnue (mode auto)
-  - Doublon : puce déjà lue (mode auto)
+  - Hors délai
+  - Inconnu : puce lue inconnue
+  - Doublon : puce déjà lue
 
 
 ## Shortlog
@@ -78,7 +79,7 @@ La vue *Données* du coureur montre des informations complémentaires sur le cou
   - *Vérifier* (mod+R) recalcule le statut du coureur et le temps officiel
   - *Réinitialiser temps officiel* recalcule le temps officiel
   - *Imprimer splits* (mod+P) envoie les temps intermédiaires du coureur à l'imprimante
-  - Cliquez sur le bouton *Fusion...* pour une gestion avancée, comme la fusion de deux inscriptions ensemble. Ce bouton ouvre la *[Fenêtre de fusion](merge.fr.html)* sur le coureur sélectionné.
+  - Cliquez sur le bouton *Fusion...* pour une gestion avancée, comme la fusion de deux inscriptions ensemble. Ce bouton ouvre l'[assistant de fusion](merge.fr.html) sur le coureur sélectionné.
 
 
 ## Vue Trace du coureur (mod+T)

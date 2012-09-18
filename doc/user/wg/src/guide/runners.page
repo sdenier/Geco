@@ -21,13 +21,13 @@ The right pane can display details about the currently selected runner (e-card d
 - *Sort Runners:* click on a header cell of the table to sort runners according to ascending/descending rank
 - *Filter Runners:* start typing to display only entries matching your search (the search is performed full-text and matches substring in data)
 - *Fast edit Mode (tickbox):* start edition with just one click - useful when lots of manual edition have to be done quickly
-- *Default course Mode (tickbox):* when active, manually changing a runner's category also sets his course to the default course for the category (if set in the [Stage](stage.html) panel)
+- *Default course Mode (tickbox):* when active, manually changing a runner's category also sets his course to the default course for the category (if set in the [stage](stage.html) panel)
 - *Live Mode (tickbox):* in this mode, Geco automatically focuses on the last data received from the card reader; runners are dynamically sorted by order of card reading, with most recent on top (other sort options disabled)
 
 ### Pre-registration of competitors
 
 - You can import a CSV file in OE entry format. It is the fastest way to import many entries.
-- You can import competitors from an [Archive](archive.html).
+- You can import competitors from an [archive](archive.html).
 - Both CSV import and archive import automatically create club and category necessary for the import.
 - Both CSV import and archive import sets runner's course to the default course for category (if configured).
 - You can insert a new entry by clicking the `+` button (or pressing `mod+I`) and edit the entry by hand.
@@ -48,8 +48,9 @@ The right pane can display details about the currently selected runner (e-card d
   - DNS: Did Not Start
   - DNF: Did Not Finish
   - DSQ: Disqualified
-  - Unknown: unknown e-card downloaded (auto mode)
-  - Duplicate: duplicate e-card downloaded (auto mode)
+  - OOT: Out Of Time
+  - Unknown: unknown ecard read
+  - Duplicate: duplicate ecard read
 
 
 ## Shortlog
@@ -72,12 +73,12 @@ The *Runner Data* pane shows complementary information about the currently selec
   - *Start/Finish* times are displayed with a **red background** if missing
 - Result (information fields, non-editable)
   - Official is the official time computed as race time + penalties
-  - The time taken by Geco to compute results is the one given in the table (which can be edited by hand if necessary) - Official time is displayed with a **yellow background** if it does match with the table
+  - The time taken by Geco to compute results is the one given in the table (which can be edited by hand if necessary) - Official time is displayed with a **yellow background** if it does not match with the table
 - Buttons
   - *Recheck* (mod+R) computes the status based on punches and course and reset the official time
   - *Reset Official Time* computes the official time in table based on race time and penalties
   - *Print Runner Splits* (mod+P) sends splits to the printer
-  - Click the *Merge...* button for advanced management of data, like merging two runners together. It opens the *[Merge dialog](merge.html)* on the currently selected runner.
+  - Click the *Merge...* button for advanced management of data, like merging two runners together. It opens the [merge wizard](merge.html) on the currently selected runner.
 
 
 ## Runner Trace (mod+T)
