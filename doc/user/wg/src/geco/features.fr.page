@@ -8,21 +8,25 @@ in_menu: true
 
 Geco prend actuellement en charge le système de chronométrage SPORTident.
 
-Les trois formats suivant sont actuellement supportés.
+Les trois formats suivant sont actuellement supportés :
+
 - Classique (course en ligne) : postes à prendre dans l'ordre du circuit
 - Ordre libre : le coureur choisit l'ordre dans lequel il prend les postes
 - Orient'Show : pénalités en temps et limite de PM, qualifications par élimination...
 
 Un quatrième format plus expérimental est disponible pour le Raid Orient'Alpin :
+
 - chaque circuit du raid peut commencer par un ordre libre
 - puis bascule sur une course classique à un poste donné
 - une fonction de neutralisation est utilisée pour neutraliser une section de repos/tir
 
 Les formats Ordre libre et Orient'Show (et ROA) supportent les options suivantes pour la lecture des puces :
+
 - pénalités de temps pour chaque poste manquant
 - limite sur le nombre de PM autorisé, de 0 jusqu'à pas de limite
 
-Dans la version 1.1, Geco inclut un mode [automatique](../howtos/auto.fr.html) qui permet d'organiser une CO sans pré-inscription.
+Dans la version 1.1, Geco inclut un mode [automatique](../howtos/auto.fr.html) qui permet d'organiser une CO sans pré-inscription :
+
 - insertion automatique des inscriptions à la lecture des puces
 - détection du circuit d'après la trace des poinçons dans la puce
 - recherche des inscriptions dans une archive pour renseigner le nom, club, catégorie...
@@ -46,6 +50,7 @@ L'interface graphique de Geco est organisée autour d'une série d'onglets, chac
 Le [Guide Interface] donne les explications détaillées pour chaque onglet.
 
 Geco dispose de caractéristiques dédiées au format Orient'Show :
+
 - pénalités de temps et limite du nombre de PMs
 - comptage précis des PMs et trace détaillée
 - gestion des qualifications par poules et par élimination directe

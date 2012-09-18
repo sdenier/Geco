@@ -30,11 +30,13 @@ Geco lets you create a new stage by giving it a name, choosing a folder, and sel
 - Click the *Create* button: Geco will create the files and launch the main window.
 
 The three following formats are available.
+
 - Classic (inline course): controls must be taken in order
 - Free Order: runner chooses in which order to take the controls
 - Orient'Show: time penalties and MP limit, knockout qualifications,...
 
 A fourth experimental format is available. The format for Raid Orient'Alpin (ROA):
+
 - starts with a Free Order (to scatter runners)
 - then switches to a classic course at a given control
 - also provides a leg neutralization function to neutralize rest/shooting sections.

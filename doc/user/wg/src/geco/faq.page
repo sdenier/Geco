@@ -9,13 +9,15 @@ in_menu: true
 
 ## How to customize result sheets?
 Tweaking the result sheets is possible by editing their CSS style in the stage directory. For now it is mostly useful when ticket size is not adapted to your printer.
+
 - edit `result.css` for ranking results, CN, split times in multi-columns format
 - edit `ticket.css` for split times in ticket format
 
 
 ## Future features
 The following features are not currently supported but should be part of future releases.
-- reading SPORTident (start|clear|control) boxes to automatically detect and set DNS competitors
+
+- reading SPORTident stations to automatically detect and set DNS competitors
 - spool printing of split times when split printer was stopped for a while
 - insertion of missing punches for competitors, removal of a control from courses
 

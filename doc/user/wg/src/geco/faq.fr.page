@@ -8,12 +8,14 @@ in_menu: true
 
 ## Comment personnaliser les fiches de résultat ?
 Il est possible de personnaliser les fiches de résultat en éditant les styles CSS dans le répertoire de la course. Cela est surtout utile si le format de ticket n'est pas adapté à l'imprimante.
+
 - éditez `result.css` pour les classements, le CN, les temps intermédiaires au format multi-colonnes
 - éditez `ticket.css` pour les temps intermédiaires au format ticket
 
 
 ## Fonctionnalités futures
 Les fonctionnalités suivantes ne sont pas encore supportées mais devraient être intégrées dans les prochaines versions.
+
 - lecture de la mémoire des boîtiers SPORTident pour détecter automatiquement les coureurs absents
 - impression en masse des temps intermédiaires quand l'imprimante a été stoppée pour un moment
 - insertion d'un poinçon manquant pour les coureurs, suppression d'un poste pour les circuits

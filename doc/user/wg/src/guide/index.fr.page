@@ -32,11 +32,13 @@ Geco vous permet de créer une nouvelle course en rentrant le nom, le dossier de
 - Cliquez sur le bouton "Créer" : Geco va créer les fichiers de base et lancer la fenêtre principale.
 
 Les trois formats suivant sont supportés.
+
 - Classique (course en ligne) : postes à prendre dans l'ordre du circuit
 - Ordre libre : le coureur choisit l'ordre dans lequel il prend les postes
 - Orient'Show : pénalités en temps et limite de PM, qualifications par élimination...
 
 Un quatrième format expérimental est disponible pour le Raid Orient'Alpin :
+
 - chaque circuit du raid peut commencer par un ordre libre
 - puis bascule sur une course classique à un poste donné
 - une fonction de neutralisation est utilisée pour neutraliser une section de repos/tir

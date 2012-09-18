@@ -7,6 +7,7 @@ in_menu: true
 # Requirements
 
 What do you need to run Geco?
+
 - A recent JRE (Java Runtime Environment, version 6+)
 - Geco bundle: it includes the application (jar file), template files for a race, user documentation, native libraries for serial communication (RXTX)
 - SportIdent drivers 

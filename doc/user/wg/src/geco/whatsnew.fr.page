@@ -10,6 +10,7 @@ in_menu: true
 Geco 1.2 est une version intermédiaire qui contient quelques changements significatifs. C'est un pas vers les prochaines versions de Geco, avec des modifications profondes de l'interface et du modèle de données.
 
 Les changements visibles :
+
 - Geco supporte maintenant de façon explicite [différents formats](features.fr.html) de courses d'orientation (options de configuration, onglets spécifiques...). Les formats actuellement supportés sont la course classique (en ligne), l'Orient'Show et la course en ordre libre. Il existe aussi un format expérimental pour le Raid Orient'Alpin.
 - [L'onglet de configuration](../guide/stage.fr.html) a été complèment remanié.
 - Nouvel [assistant de lancement](../guide/index.fr.html) qui permet d'ouvrir une compétition existante ou d'en créer une nouvelle au format choisi.
@@ -27,6 +28,7 @@ Modification du format des fichiers de données : Geco 1.2 fera automatiquement 
 [Geco 1.1](http://bitbucket.org/sdenier/geco/downloads/geco1.1-383-20110405-demo.zip) est une évolution de l'application dédiée à l'Orient'Show vers une application complète pour des CO classiques, avec plusieurs nouvelles fonctions et de multiples améliorations de l'interface.
 
 Les grands changements :
+
 - inscriptions faciles par import CSV ou avec une archive de concurrents
 - mode automatique pour réaliser des inscriptions à la lecture des puces, avec détection du circuit
 - temps intermédiaires pour impression et export (format OE pour RouteGadget...)
@@ -34,12 +36,14 @@ Les grands changements :
 - traduction en français et anglais
 
 Changements interface et utilisabilité :
+
 - multiples améliorations de l'interface
 - liste des ports série disponibles pour offrir le choix à l'utilisateur. Détection du port où le boîtier maître est connecté.
 - navigation par hyperlien pour sélectionner rapidement une puce depuis le shortlog (onglet coureurs)
 - plus de raccourcis claviers et plus universels
 
-Autre changements :
+Autres changements :
+
 - nouveaux statuts et statistiques pour gérer les cas spéciaux (concurrents en course, puces inconnues et doublons pour le mode automatique)
 - nouveaux champs de données pour chaque concurrent : horaire de départ pré-attribué, champ d'archive, puce louée
 - attribution d'un circuit par défaut à une catégorie
@@ -49,6 +53,7 @@ Autre changements :
 - meilleure gestion des fichiers avec différents charsets
 
 Architecture/Code :
+
 - les `Controls` peuvent s'enregistrer comme services et accéder simplement l'un à l'autre
 - ré-ingénierie de la classe `ResultBuilder` et affiliées : séparation entre le calcul des résultats et l'export des résultats et splits
 - \[Mac\] mise à jour pour la dernière révision Mac Java
