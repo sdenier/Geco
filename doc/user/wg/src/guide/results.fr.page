@@ -5,7 +5,7 @@ in_menu: true
 ---
 # Onglet Résultats
 
-L'onglet résultats permet de générer plusieurs types de résultats pendant et après la course.
+L'onglet résultats permet de générer des résultats pendant et après la course.
 
 <a href="../images/results_ranking.fr.png"><img src="../images/results_ranking.fr.png" /></a>
 
@@ -13,19 +13,23 @@ L'onglet résultats permet de générer plusieurs types de résultats pendant et
 
 1\. Sélectionnez *Circuits* ou *Catégories* pour le calcul des résultats. La sélection peut être affinée circuit par circuit (ou catégorie par catégorie) dans la liste en dessous.
 
-L'option *Catégorie/Circuit* calcule un classement par catégorie pour chaque circuit. Cette option est utilisée quand les catégories sont dispersées sur plusieurs circuits lors de qualifications.
+L'option *Catégorie/Circuit* calcule un classement par catégorie pour chaque circuit. Cette option est à utiliser quand les catégories sont dispersées sur plusieurs circuits lors de poules de qualification.
 
 2\. Sélectionnez *Classement*, *Splits*, ou *CN* comme méthode de calcul des résultats.
+
 - Classement : classement classique, pour les résultats provisoires et officiels.
 - Splits : temps intermédiaires pour les coureurs des groupes sélectionnés.
 - CN : simulation des points [CN](http://cn.ffco.asso.fr) pour les coureurs présents.
 
-Par défaut, les résultats affichent les concurrents classés OK, ainsi que les concurrents PMs, en Abandon, Disqualifiés. Les circuits (catégories) sans résultat ne sont pas affichés.
+Par défaut, les résultats affichent les concurrents classés OK, ainsi que les concurrents PM, abandon, disqualifiés. Les circuits (catégories) sans résultat ne sont pas affichés.
 Les options d'affichage sont :
+
 - *NC* : inclut les coureurs non classés. Ils apparaissent avec les concurrents PMs etc.
 - *Autres* : inclut les coureurs absents ou sans donnée.
 - *Pénalités* : montre le chrono et le nombre de PMs pour chaque coureur (seulement pour le *classement*).
 - *Groupes vides* : montre tous les circuits (catégories), même si aucun classement n'est disponible.
+
+Dans les classements, Geco calcule aussi la **différence** de temps par rapport au premier et le **pas moyen** du coureur si la distance du circuit est connue.
 
 Les résultats peuvent s'afficher dans la fenêtre (bouton *Actualiser*), être imprimés, ou exportés dans un fichier. Le format HTML est le format d'export par défaut.
 
@@ -33,19 +37,22 @@ Les résultats peuvent s'afficher dans la fenêtre (bouton *Actualiser*), être 
 
 ### Formats d'export
 
-Geco propose trois formats d'export :
+Geco propose quatre formats d'export :
+
 - **HTML** pour la publication web
-- **CSV** pour tableurs
+- **CSV**, format très complet pour tableurs
 - **OE CSV**, format reconnu par certains outils d'analyse
 - **XML**, format standard de l'IOF pour échanger des résultats
 
-Par example, utilisez *Splits* et *XML* pour un fichier compatible avec RouteGadget et d'autres outils d'analyse. *OE CSV* est une alternative mais pas forcément fiable.
+Le format de résultats *CSV* propre à Geco peut être facilement importer dans un tableur pour traîter les résultats. Il contient de nombreuses informations, y compris les poinçons, les PMs, la place atteinte par le coureur, etc.
 
-Pour le Classement National, utilisez *Classement* ou *CN* avec le format *OE CSV*. Le fichier produit contient l'essentiel et sera plus petit qu'un fichier splits.
+Utilisez *Splits* et *OE CSV* ou *XML* pour un fichier compatible avec RouteGadget et d'autres outils d'analyse.
+
+Pour le Classement National, utilisez *Splits* avec le format *OE CSV*.
 
 ### Simulation CN
 
-La simulation CN calcule les points (hypothétiques) marqués sur la course pour les licenciés FFCO. Vous pouvez vous en servir pour vérifier la validité des données avant transmission au site CN. Utilisez le format *OE CSV* dans la boîte de dialogue d'export.
+La simulation CN calcule les points (hypothétiques) marqués sur la course pour les licenciés FFCO. Vous pouvez vous en servir pour vérifier la validité des données avant transmission au site CN.
 
 Geco utilise le numéro d'archive pour repérer les coureurs CN. Ce numéro doit donc correspondre à l'identifiant FFCO (numéro de licence). Utilisez l'import par archive ou par CSV pour évitez les erreurs.
 
