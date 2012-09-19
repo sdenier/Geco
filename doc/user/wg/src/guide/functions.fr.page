@@ -6,22 +6,57 @@ in_menu: true
 
 # Fonctions (Onglet Log)
 
-Les Fonctions servent à appliquer des opérations sur des lots de données (batch). Elles permettent de changer/vérifier toutes les données de la base en une seule passe.
+Les fonctions servent à appliquer des opérations sur des lots de données (batch). Elles permettent de changer/vérifier les données de la base en une seule passe.
 
-<a href="../images/function_start.fr.png"><img src="../images/function_start.fr.png" /></a>
+<a href="../images/stage_functions.fr.png"><img src="../images/stage_functions.fr.png" /></a>
 
-Sélectionnez l'onglet *Fonctions* à côté des Stats dans le [Log](log.fr.html) et choisissez une fonction dans la liste. Chaque fonction affiche ses paramètres et ses actions dans la vue haute. Cliquez *Exécuter* pour appliquer l'opération par défaut de la fonction.
+Il y a trois groupes (onglets) de fonctions à côté de l'onglet Stats dans le [Log](log.fr.html). Sélectionnez un groupe puis choisissez une fonction dans la liste déroulante. Chaque fonction affiche ses paramètres et ses actions dans la vue haute. Cliquez *Exécuter* pour lancer l'opération par défaut de la fonction.
 
-Fonctions disponibles :
+- Les fonctions *Étape* servent communément durant une course
+- Les fonctions *Arbitrage* servent l'arbitre
+- Les fonctions *Batch* regroupent les opérations moins communes
 
-**Horaires de départ**
+
+## Fonctions Étape
+
+### Horaires de départ
 - Changer tous les horaires de départ pour un groupe de coureurs (par course, catégorie, ou un groupe arbitraire) ; cela peut servir à simuler un départ en masse
 - Par défaut seul l'horaire des coureurs sans données de course est changé (coureurs non partis) ; cochez *Régler tous les horaires* pour changer l'horaire de tous les coureurs, y compris ceux qui ont déjà des données
 
-**Vérifier les coureurs**  
+### Log des stations
+- Lecture des logs de puce pour déterminer automatiquement les entrées *en course* et les *absents* parmi les *non partis*
+- Les logs de puce peuvent être lus et exportés de la mémoire des stations avec Si-config
+- Vous pouvez demander l'insertion des puces non inscrites depuis l'archive
+- Cocher *Simuler* pour voir ce que Geco ferait avec les données
+
+Il y a deux conditions importantes pour utiliser cette fonction
+
+- La mémoire des station doit être effacée avant la course, sinon les logs contiennent des données inconsistentes
+- Tous les logs doivent être lus (par exemple toutes les stations Effacer) avant de cocher l'option *Marquer les absents*, afin de ne pas manquer des puces en course
+
+
+## Fonctions Arbitrage
+
+### Log arbitre
+- Affiche/exporte un log pour l'arbitre contenant toutes les modifications manuelles avec un impact sur les résultats (comme un changement de statut ou du temps de course)
+
+
+## Fonctions Batch
+
+### Import log puces
+- Import d'un log de puces avec poinçons pour une gestion électronique "post-mortem" : Geco lira les puces dans le log comme si elles étaient lues directement, en mode entraînement ou compétition (inclus la détection du circuit, la recherche dans l'archive)
+- Intéressant pour les entraînements légers, car toutes les opérations de GEC peuvent être effectuées après coup à la maison, juste pour obtenir les résultats
+- Les puces doivent être lues avec Si-config pendant la course pour créer le log
+
+### Vérifier les coureurs
 Revérifier les coureurs dans le groupe sélectionné (par course, catégorie, ou un groupe arbitraire) ; même principe que l'action *Vérifier OK|MP*
 
-**Générateur aléatoire** 
+### Suppression
+- Remise à zéro de certaines ou de toutes les données pour redémarrer l'étape
+- Geco effectue une sauvegarde avec backup avant cette opération
+- Option pour aussi supprimer les vieux backups
+
+### Générateur aléatoire
 - Générer des entrées aléatoires (avec les données puce) pour tester Geco
 - Action supplémentaire pour générer une entrée inconnue (test modes manuel et auto)
 - Action supplémentaire pour générer des données puces pour une entrée existante (génération de doublons)
