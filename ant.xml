@@ -91,7 +91,6 @@
     		<fileset file="${geco.dir}/README.md"/>
     		<fileset dir="${geco.dir}" includes="help/"/>
     		<fileset dir="${geco.dir}" includes="licenses/"/>
-    		<fileset dir="${geco.dir}" includes="data/template/"/>
     		<fileset dir="${geco.dir}" includes="data/modeles/"/>
     	</zip>
 	</target>
@@ -106,7 +105,6 @@
         	<fileset file="${geco.dir}/README.md"/>
     		<fileset dir="${geco.dir}" includes="help/"/>
     		<fileset dir="${geco.dir}" includes="licenses/"/>
-    		<fileset dir="${geco.dir}" includes="data/template/"/>
     		<fileset dir="${geco.dir}" includes="data/modeles/"/>
     		<fileset dir="${geco.dir}" includes="demo/"/>
     	</zip>
