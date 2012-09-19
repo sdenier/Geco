@@ -17,9 +17,6 @@ Toutes les données relatives à une compétition sont enregistrées au même en
 - `ResultData.csv` contient les informations sur les résultats (statut et temps)
 - `HeatSets.csv` contient les informations sur les groupes de séries
 
-
-Voir la page [Format des fichiers](fileformat.fr.html) pour des informations détaillées sur les formats internes de chacun des fichiers.
-
 Quand vous sauvez ou quittez Geco, les données sont enregistrées dans les fichiers ci-dessus. Geco fait aussi des sauvegardes des données dans le sous-dossier `backups` du dossier de course.
 Elles sont nommées `backupXXXXX.zip` en fonction de l'heure de création. En cas de problème, vous pouvez restaurer les données en dézippant le dernier fichier. Ces sauvegardes ne sont jamais supprimées par Geco.
 
