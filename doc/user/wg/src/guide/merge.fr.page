@@ -4,69 +4,71 @@ sort_info: 6
 in_menu: true
 ---
 
-# Fenêtre de fusion
+# Assistant de fusion
 
-La *Fenêtre de fusion* permet de gérer les données puce en cas de problème : mauvais numéro de puce, entrées dupliquées dans la table, problème à la lecture de puce...
+L'*assistant de fusion* permet de gérer les données d'une puce en cas de problème : puce inconnue, inscriptions dédoublées, problème de circuit...
 
-<img src="../images/merge_dialog.fr.png" />
+<img src="../images/merge_wizard.fr.png" />
 
-Cette boîte de dialogue apparaît quand :
-- (mode manuel) une puce est lue mais aucune entrée n'existe avec ce numéro
-- (mode manuel) une puce est lue mais l'entrée concernée a déjà des résultats
-- vous l'ouvrez depuis la vue *Données* sur le coureur sélectionné
+L'assistant apparaît quand :
 
-Trois commandes sont disponibles dans cette boîte de dialogue :
-- *Créer* créer une nouvelle entrée (anonyme) avec les données de la puce.
-- *Fermer* clôt la fenêtre sans autre action.
-- *Fusionner* associe les données puce au coureur sélectionné dans la liste déroulante.
+- une puce non inscrite est lue (process manuel)
+- une puce est lue mais l'entrée concernée a déjà des résultats (process manuel)
+- il est ouvert sur le coureur sélectionné dans la table des inscriptions
 
-Si vous sélectionnez dans cette liste un coureur ayant déjà des données puce, le bouton *Fusionner* affiche *Remplacer* car ses données seront **écrasées** avec les nouvelles données puce. C'est le seul cas à prendre avec précaution car l'action détruira des données.
+Quatre actions sont possibles avec l'assistant (de haut en bas).
+
+- *Créer* une nouvelle entrée (anonyme) avec les données de la puce.
+- *Fermer* l'assistant sans rien faire des données.
+- *Fusionner* les données puce dans une autre entrée.
+- *Insérer* une entrée depuis l'archive et fusionner les données avec.
+
+En plus de ces actions, l'assistant affiche des informations sur les données de la puce et fournit des outils.
+
+- <img style="float: right; width:28px; margin:0; padding:0;"  src="../images/merge_detect.png" /> Vous pouvez voir le circuit actuel, le changer, ou utiliser la détéction automatique pour trouver le circuit correspondant le mieux à la trace. Le statut et la trace sont mis à jour pour montrer le résultat.
+
+- Vous pouvez rechercher une entrée dans la base, par exemple si vous savez que le coureur est inscrit avec une autre puce. <img style="float: right; width:22px; margin:0; padding:0;"  src="../images/merge_warning.png" /> Notez qu'une *icône danger* apparaît si vous sélectionnez une entrée possédant déjà des données. Ceci indique que fusionner les données puce dans cette entrée écrasera les données précédentes (pas de retour en arrière possible !)
+
+- <img style="float: right; width:28px; margin:0; padding:0;" src="../images/merge_lookup.png" /> Vous pouvez rechercher un coureur dans l'archive et l'insérer directement avec les données de la puce. Vous pouvez demander à Geco de chercher dans l'archive avec le numéro de puce.
+
+*L'assistant ne remplit les listes du registre et de l'archive que si nécessaire. Pour charger la liste complète, cliquez deux fois.*
 
 
 ## Scénarios
 
-Voici quelques usages typiques de la fenêtre de fusion.
+Voici quelques cas d'usage pour l'assistant de fusion.
 
 
-### Puce inconnue (mode manuel)
+### Puce inconnue (process manuel)
 
-Quand une puce non inscrite est lue, la fenêtre s'affiche automatiquement en mode manuel.
+Quand une puce non inscrite est lue, l'assistant s'ouvre automatiquement.
 
-- Si le coureur a bien été inscrit mais sans numéro de puce ou avec un mauvais numéro, sélectionnez-le dans la liste déroulante et cliquez *Fusionner*.
-
-- Si le coureur n'a pas été inscrit ou bien en cas de doute, sélectionnez un circuit et cliquez *Créer* pour insérer un coureur anonyme. Vous pouvez ensuite éditer les informations dans la table.
-
-- *Fermer* jette les données puce.
+- Si le coureur a bien été inscrit mais sans numéro de puce ou avec un autre numéro, recherchez et sélectionnez-le dans la liste du registre et *fusionnez*.
+- Si le coureur n'a pas été inscrit, insérez un coureur depuis l'archive ou créez une entrée anonyme. Vous pouvez ensuite éditer les informations du coureur dans la table.
+- *Fermer* abandonne les données de la puce.
 
 
-### Données existantes pour le coureur (mode manuel)
+### Données existantes pour le coureur (process manuel)
 
-*Ceci correspond à une entrée Doublon en mode auto.*
+*Ceci correspond à une entrée Doublon avec un process auto.*
 
-Quand une puce est lue et que le coureur associé a déjà des données de course, la fenêtre s'affiche automatiquement en mode manuel. Le coureur associé est sélectionné par défaut dans la liste déroulante et la fenêtre affiche le bouton *Remplacer*.
+Quand une puce est lue et que le coureur associé a déjà des données de course, l'assistant s'ouvre automatiquement. Le coureur associé est sélectionné par défaut dans la liste du registre.
 
-- Si vous relisez la puce pour le même coureur, cliquez *Remplacer* pour écraser les anciennes données puce avec les nouvelles.
-
-- S'il s'agit d'un autre coureur (deux coureurs utilisant la même puce), cliquez *Créer* pour insérer une nouvelle entrée (et éditez la) ou bien *Fusionner* avec le coureur correspondant.
-
-- *Fermer* jette les données puce.
+- Si vous relisez la puce pour écraser les données déjà lues, *fusionnez* les données.
+- S'il s'agit d'un autre coureur (deux coureurs utilisant la même puce), *créez* une nouvelle entrée, *insérez* une entrée depuis l'archive ou bien *fusionnez* les données avec un coureur déjà enregistré.
+- *Fermer* abandonne les données de la puce.
 
 
-### Fusionner des inscriptions
+### Fusion de deux entrées
 
-Vous avez auparavant lu une puce inconnue et choisi de créer une entrée anonyme. Puis vous avez trouvé l'inscription correspondante à la puce. Plutôt que de recopier à la main les données, vous pouvez fusionner les données puce dans cette inscription.
+Vous avez auparavant choisi de créer une entrée anonyme pour une puce inconnue. Puis vous avez trouvé l'entrée existante et correspondante à la puce. Plutôt que de recopier au clavier les données, vous pouvez fusionner les données puce dans l'entrée existante.
 
-1. Sélectionnez l'entrée anonyme avec les données puce, puis ouvrez la fenêtre de fusion depuis la vue Données du coureur.
+1. Sélectionnez l'entrée anonyme avec les données puce puis ouvrez l'assistant de fusion depuis la vue *Données* du coureur.
+1. Recherchez et sélectionnez la bonne entrée dans la liste du registre.
+1. *Fusionnez* les données pour finir.
+1. Confirmez ou annulez la suppression de l'entrée anonyme (qui fait maintenant un doublon partiel).
 
-1. Sélectionnez la bonne inscription dans la liste déroulante.
+Les autres actions sont aussi possibles :
 
-1. Cliquez *Fusionner* ou *Remplacer*. Ceci associe les données puce à l'inscription sélectionnée.
-
-1. Confirmez ou annulez la suppression de l'entrée anonyme (qui fait maintenant doublon).
-
-
-Les deux autres commandes sont aussi disponibles :
-
-- *Créer* va dupliquer les données puce dans une nouvelle entrée anonyme.
-
-- *Fermer* clôt la boîte de dialogue.
+- *Créer/Insérer* pour dupliquer les données puce dans une nouvelle entrée.
+- *Fermer* pour clore l'assistant.

@@ -4,69 +4,70 @@ sort_info: 6
 in_menu: true
 ---
 
-# Merge Dialog
+# Merge Wizard
 
-The *Merge Dialog* allows to manage card data after a problem arises: wrong e-card number, duplication of runner data, problem when reading the card...
+The *Merge Wizard* allows one to manage card data after a problem arises: unknown ecard, duplicated entry, wrong registered course...
 
-<img src="../images/merge_dialog.png" />
+<img src="../images/merge_wizard.png" />
 
-You get the merge dialog when:
-- (manual mode) a SI card has been read but no runner with this SI number is registered
-- (manual mode) a SI card has been read but the linked runner has some results already
-- opening it on the selected runner in the runners table
+You get the merge wizard when:
 
-Three commands are available from the merge dialog:
-- *Create* simply creates an anonymous runner (X) with the card data.
-- *Close* exits the dialog without further action.
-- *Merge* links card data with the runner selected in the combo box.
+- an unregistered ecard is read (manual handler)
+- an ecard is read but the runner has some results already (manual handler)
+- opening it on the selected runner from the runners table
 
-If you select a runner who already has card data, the *Merge* button changes to *Overwrite* as card data from the selected runner will be **overwritten** with the new card data. This is the only case to handle with care, as it implies some information will be lost.
+There are four main actions available from the merge wizard, from top to bottom.
 
+- *Create* an anonymous entry with card data.
+- *Close* the wizard and do nothing with the data.
+- *Merge* card data into another registered entry.
+- *Insert* entry from archive and merge card data into it.
+
+Apart from these actions, the merge wizard displays some information about the card data and provides some tools.
+
+- <img style="float: right; width:28px; margin:0; padding:0;"  src="../images/merge_detect.png" /> You can see the current course, change it, or launch course detection to select the best match. Status and trace will be updated to show the result.
+
+- You can lookup a registered entry incrementally, if you know the runner is registered with another ecard. <img style="float: right; width:22px; margin:0; padding:0;"  src="../images/merge_warning.png" /> Notice how a *warning icon* appears if ever you select an entry which already has data. This means merging ecard data into this entry will **overwrite** previous data (there is no way to come back!).
+
+- <img style="float: right; width:28px; margin:0; padding:0;" src="../images/merge_lookup.png" /> You can lookup incrementally in the archive to insert an unregistered runner directly with ecard data. You can ask Geco to lookup automatically for the ecard number.
+
+*The merge wizard only populates registry and archive boxes on focus. You may have to click twice to pop up the full list.*
 
 ## Scenarios
 
-Following are typical usage of the *Merge* dialog.
+Following are typical use cases for the merge wizard.
 
 
-### Unknown E-card (manual mode)
+### Unknown Ecard (manual handler)
 
-When an e-card which has not been registered in the system is read, the merge dialog pops up automatically.
+When an unregistered ecard is read, the merge wizard pops up automatically.
 
-- If the runner has been registered but without an e-card number or with an incorrect e-card number, select him in the combo box then click *Merge*. You are done!
-
-- If the runner has not been registered or if you are unsure, select the course then click *Create* to create an anonymous runner. You can then edit runner information in the table.
-
+- If the runner has been registered but without an ecard number or with an incorrect ecard number, lookup/select him in the *registry* box and *merge*. You are done!
+- If the runner is unregistered, lookup/*insert* an entry from the archive or simply *create* an anonymous runner. You can edit runner information in the table.
 - *Close* simply discards card data
 
 
-### Existing Data for Runner (manual mode)
+### Existing Data for Runner (manual handler)
 
-*This matches the Duplicate status in auto mode.*
+*This matches the Duplicate status with auto handler.*
 
-When an e-card is read and the linked runner already has card data, the merge dialog pops up automatically. The linked runner is selected by default and the dialog displays an *Overwrite* button.
+When an ecard is read and the linked runner already has card data, the merge wizard pops up automatically. The linked runner is selected by default in the *registry* box.
 
-- If you read again the card for the same runner, just click *Overwrite* to replace previous card data with the new one.
-
-- If the runner is different (two runners using the same e-card), click *Create* to create a new runner (and start editing) or select and *Merge* with the registered runner.
-
+- If you have read again the card to overwrite previously read data, just *merge* the data.
+- If the runner is different (two runners using the same ecard), *create* an anonymous entry, *insert* from archive, or *merge* with another registered runner.
 - *Close* simply discards card data.
 
 
 ### Merge Registered Entries
 
-You previously read an unknown e-card and you choose to create an anonymous runner. Then you found the registered runner which should be linked with card data. You now want to merge the card data with the registered runner.
+You previously choose to create an anonymous entry for an unknown ecard. Then you found the registered runner which should be linked with card data. You now want to merge the card data with the registered runner (instead of copying runner data by hand).
 
-1. Select the anonymous runner with the new card data, then open the merge dialog from the Runner pane.
+1. Select the anonymous runner with the new card data, then open the merge wizard from the *Runner* pane.
+1. Lookup and select the registered runner in the registry box.
+1. *Merge* data to finish the action.
+1. Confirm or cancel the deletion of the anonymous entry (now a partial duplicate of the other entry).
 
-1. Select the registered runner in the combo box of the dialog.
+Other actions also take effect:
 
-1. Click *Merge* or *Overwrite*. The dialog will link the card data with the registered runner.
-
-1. Confirm or cancel the deletion of the anonymous runner (which now duplicates the other entry).
-
-
-The two other commands are also available:
-
-- *Create* in this mode will duplicate the card data in a new anonymous runner.
- 
-- *Close* just exits the dialog.
+- *Create/Insert* will duplicate card data into a new entry
+- *Close* just exits the wizard.
