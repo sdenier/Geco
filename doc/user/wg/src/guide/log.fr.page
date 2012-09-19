@@ -5,29 +5,40 @@ in_menu: true
 ---
 # Onglet Log
 
-L'onglet log affiche le journal des évènements importants enregistrés depuis le début de la session. Il affiche également les statistiques de la course et les [Fonctions](functions.fr.html).
-Pour voir tous les évènements depuis la création de la course, ouvrez le fichier `geco.log`.
+L'onglet log affiche le journal des événements importants depuis le début de la session. Il affiche également les statistiques de course et permet l'accès aux [fonctions](functions.fr.html).
+Pour voir tous les événements depuis la création de la course, ouvrez le fichier `geco.log`.
 
 <a href="../images/log_stats.fr.png"><img src="../images/log_stats.fr.png" /></a>
 
-La vue des statistiques montre le statut des coureurs pour chaque circuit ainsi que le total.
-Il existe une *Vue simple* avec les états essentiels et une vue complète avec plus d'informations.
+Les statistiques montre le nombre de coureurs par statut pour chaque circuit ainsi que pour le total. Il y a trois vues pour les statistiques :
 
-Quand la *Vue simple* est activée, les statuts suivants sont affichés :
-- Présent : concurrents qui ont fini ou sont encore en course
-- Non résolu : entrées demandant votre attention, en particulier en [Fin de course](../howtos/endstage.fr.html) ; les statuts Non parti, En course, Inconnu et Doublon sont tous considérés comme non résolus (la course n'est pas finie tant qu'il existe des entrées avec ces status)
+- *Résumé* pour voir les informations essentielles tout au long de la course
+- *Non résolus* pour voir uniquement les statuts à régler en fin de course
+- *Résultats* pour voir les statistiques détaillées après la course
+
+Le *résumé* affiche les statuts suivant :
+
+- Présent : concurrents qui ont fini ou sont encore en course (tous les inscrits moins les absents)
+- Non résolu : entrées demandant votre attention, en particulier en [Fin de course](../howtos/endstage.fr.html) ; les statuts Non parti, En course, Inconnu et Doublon sont tous considérés comme non résolus
 - Non parti : coureurs inscrits mais sans données de course (puce non lue). En fin de course, vous devez distinguer entre coureurs encore en course et coureurs pré-inscrits mais absents
-- Arrivé : coureurs avec données de course (puce lue), Arrivés = OK + PM + Abandon + Disq. Présents = Inconnu + Arrivé
+- Arrivé : coureurs avec des données de course résolues (puce lue), y compris les abandons, disqualifications, etc.
 - OK
-- PM : a grand nombre de PMs au début de la course peut indiquer un problème dans la configuration des circuits (sur le terrain ou à la GEC)
+- PM : un grand nombre de PMs au début de la course peut indiquer un problème dans la configuration des circuits (sur le terrain ou à la GEC)
 
-Quand la *Vue simple* est désactivée, la liste donne en plus:
-- Inscrit : tous les coureurs de la base, incluant Présent + Absent
-- En course : coureurs marqués comme toujours en course (et manquant)
-- coureurs Absents, Abandon, Disqualifiés
-- Inconnu : puce lue en mode [auto] sans données d'inscription
-- Doublon : puce déjà lue en mode [auto]
+La vue *non résolus* affiche :
+
+- Non résolu : correspond au total des quatres statuts suivant ; la course n'est pas finie tant que cet état n'est pas à zéro
+- Non parti : coureurs inscrits mais sans information de course
+- En course : coureurs explicitement marqués comme en course et n'ayant pas encore vidés leur puce
+- Inconnu : puce lue sans entrée correspondante
+- Doublon : puce relue
+
+La vue *résultats* affiche :
+
+- Inscrit : tous les coureurs de la base, inclus les présents et les absents
+- Absent
+- Arrivée : cela correspond après la course au nombre de coureurs présents
+- les statuts OK, PM, abandon, disqualifié, hors délai
 
 Les statistiques sont mises à jour toutes les 10 secondes. Cliquez le bouton *Rafraîchir* pour mettre à jour manuellement.
-
-[auto]: ../howtos/auto.fr.html
+ 

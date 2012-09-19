@@ -10,24 +10,34 @@ To see all events captured since the stage was created, scan the `geco.log` file
 
 <a href="../images/log_stats.png"><img src="../images/log_stats.png" /></a>
 
-The statistics pane displays status of runners for each course as well as the total.
-There is a short listing with most important numbers, and a long listing of statistics, triggered by the *Short view* tickbox.
+The statistics pane displays the number of runners per status for each course as well as for the total. There are three views for statistics :
 
-When the *Short view* mode is on, the following status are displayed:
-- Present: runners who ran or are running
-- Unresolved: entries which require your attention, especially when dealing with [End of Stage](../howtos/endstage.html); Not Started, Running, Unknown, and Duplicate statuses are all considered unresolved (in other words, the race is not finished as long as there are entries with these statuses)
-- Not Started: runners registered but without race data for now. They might be running (you can mark them as Running) or they might be absent (mark them as DNS)
-- Finished: runners having some race data, Finished = OK + MP + DNF + DSQ. Hence, Present = Unknown + Finished
-- OK: runners who finished
+- *Summary* to see the essential information during the stage
+- *Unresolved* to only see status to resolve before the end of stage
+- *Results* to see the detailed statistics after the stage
+
+The *summary* displays the following status :
+
+- Present: runners who ran or are running (all registered minus DNS)
+- Unresolved: entries which require your attention, especially when dealing with [End of Stage](../howtos/endstage.html); Not Started, Running, Unknown, and Duplicate statuses are all considered unresolved
+- Not Started: runners registered but without race data for now. Toward the end of stage, mark them either as Running or Did Not Start
+- Finished: runners with race data and resolved, including DNF, DSQ, etc.
+- OK
 - MP: a high number of MPs early in the stage might indicate a problem with course settings (in Geco or on terrain)
 
-When the *Short view* is off, the long listing displays more numbers:
-- Registered: all runners in the database, including Present + DNS
-- Running: runners marked as still running (and missing)
-- DNS, DNF, DSQ runners
-- Unknown: e-card data downloaded in [auto] mode without a known competitor (to be resolved)
-- Duplicate: e-card data downloaded more than once in [auto] mode (to be resolved)
+The *unresolved* view shows:
+
+- Unresolved: totalling the next four statuses; the stage is not finished as long as this state is not zero
+- Not Started: registered runners without race data
+- Running: runners explicitly marked as running but who did not read their ecard yet
+- Unknown: ecard read without a corresponding entry
+- Duplicate: ecard read multiple times
+
+The *results* view shows:
+
+- Registered: all runners in the registry, including presents and DNS
+- DNS runners
+- Finished: after the stage, this equals the number of present runners
+- OK, MP, DNF, DSQ, and OOT runners
 
 The statistics updates automatically every 10 seconds. You can press the *Refresh* button to manually update the statistics.
-
-[auto]: ../howtos/auto.html
