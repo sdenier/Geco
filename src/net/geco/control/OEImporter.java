@@ -62,5 +62,13 @@ public abstract class OEImporter extends Control {
 			return field;
 		}
 	}
+	
+	protected String safeTrimQuotes(String field) {
+		if( field.isEmpty() ) {
+			return field;
+		} else {
+			return trimQuotes(field);
+		}
+	}
 
 }

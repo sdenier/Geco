@@ -35,16 +35,18 @@ public class StartlistImporter extends OEImporter {
 		// ;1061511;10869;DENIER;Simon;80;H;;;00:46:00;;;;5906;5906NO;VALMO;France;11;H21A;H21A
 		
 		try {
-			String ecard = record[1];
-			String lastName = trimQuotes(record[3]);
-			String firstName = trimQuotes(record[4]);
+			String ecard = safeTrimQuotes(record[1]);
+			String lastName = safeTrimQuotes(record[3]);
+			String firstName = safeTrimQuotes(record[4]);
 			if( ecard.equals("") ){ //$NON-NLS-1$
 				geco().log(Messages.getString("StartlistImporter.NoEcardWarning") + firstName + " " + lastName); //$NON-NLS-1$ //$NON-NLS-2$
-			}
-			
+			}			
 			Runner runner = runnerControl().buildBasicRunner(ecard); // ensure unique id and ecard
+			runner.setLastname(lastName);
+			runner.setFirstname(firstName);
+			
 			if( ! record[0].equals("") ){ //$NON-NLS-1$
-				Integer startId = Integer.valueOf(record[0]);
+				Integer startId = Integer.valueOf(trimQuotes(record[0]));
 				if( registry().findRunnerById(startId)!=null ){
 					geco().log(Messages.getString("StartlistImporter.ExistingStartIdMessage1") + startId); //$NON-NLS-1$
 					geco().log(Messages.getString("StartlistImporter.ExistingStartIdMessage2") + runner.getStartId()); //$NON-NLS-1$
@@ -52,19 +54,17 @@ public class StartlistImporter extends OEImporter {
 					runner.setStartId(startId);
 				}
 			}
-			String archiveNum = trimQuotes(record[2]);
+			String archiveNum = record[2];
 			if( ! archiveNum.equals("") ){ //$NON-NLS-1$
-				runner.setArchiveId(Integer.valueOf(archiveNum));			
+				runner.setArchiveId(Integer.valueOf(trimQuotes(archiveNum)));			
 			}
-			runner.setLastname(lastName);
-			runner.setFirstname(firstName);
 			runner.setNC(record[8].equals("X")); //$NON-NLS-1$
 			
 			Date relativeTime = TimeManager.safeParse(record[9]); // ! Time since zero hour
 			runner.setRegisteredStarttime( TimeManager.absoluteTime(relativeTime, stage().getZeroHour()) );
 
-			Club club = stageControl().ensureClubInRegistry(trimQuotes(record[15]), trimQuotes(record[14]));
-			Category cat = stageControl().ensureCategoryInRegistry(trimQuotes(record[18]), trimQuotes(record[19]));
+			Club club = stageControl().ensureClubInRegistry(safeTrimQuotes(record[15]), safeTrimQuotes(record[14]));
+			Category cat = stageControl().ensureCategoryInRegistry(safeTrimQuotes(record[18]), safeTrimQuotes(record[19]));
 			runner.setClub(club);
 			runner.setCategory(cat);
 			runner.setCourse(registry().getDefaultCourseOrAutoFor(cat));
