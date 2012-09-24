@@ -143,6 +143,7 @@ public class StageBuilder extends BasicControl {
 		while( (len = inputStream.read(buffer)) != -1 ) {
 			zipStream.write(buffer, 0, len);
 		}
+		inputStream.close();
 		zipStream.closeEntry();
 	}
 

@@ -14,6 +14,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
+import com.sun.tools.hat.internal.parser.Reader;
+
+import sun.tools.tree.FinallyStatement;
+
 import net.geco.app.AppBuilder;
 import net.geco.app.GecoStageLaunch;
 import net.geco.basics.Announcer;
@@ -171,6 +175,7 @@ public class Geco implements IGecoApp, MergeRequestHandler {
 					history.addLast(new GecoStageLaunch().loadFromFileSystem(line));
 				}
 			} while( line != null );
+			reader.close();
 		} catch (IOException e) {
 			System.out.println(e);
 		}

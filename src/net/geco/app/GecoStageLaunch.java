@@ -143,8 +143,10 @@ public class GecoStageLaunch implements IStageLaunch {
 		try {
 			URL url = getClass().getResource("/resources/templates/" + filename); //$NON-NLS-1$
 			ReadableByteChannel inChannel = Channels.newChannel(url.openStream());
-			FileChannel outChannel = new FileOutputStream(new File(baseDir + File.separator + filename)).getChannel();
+			FileOutputStream outStream = new FileOutputStream(new File(baseDir + File.separator + filename));
+			FileChannel outChannel = outStream.getChannel();
 			outChannel.transferFrom(inChannel, 0, url.openConnection().getContentLength());
+			outStream.close();
 		} catch (FileNotFoundException e2) {
 			e2.printStackTrace();
 		} catch (IOException e3) {
