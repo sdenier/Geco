@@ -50,7 +50,6 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 
 		add(new JLabel(Messages.uiGet("StageConfigPanel.StageNameLabel")), c); //$NON-NLS-1$
 		final JTextField stagenameF = new JTextField(geco.stage().getName());
-		stagenameF.setColumns(12);
 		stagenameF.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -74,7 +73,6 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 		final SimpleDateFormat formatter = new SimpleDateFormat("H:mm"); //$NON-NLS-1$
 		formatter.setTimeZone(TimeZone.getTimeZone("GMT")); //$NON-NLS-1$
 		final JTextField zerohourF = new JTextField(formatter.format(geco.stage().getZeroHour()));
-		zerohourF.setColumns(7);
 		zerohourF.setToolTipText(Messages.uiGet("StageConfigPanel.ZeroHourTooltip")); //$NON-NLS-1$
 		add(zerohourF, c);
 		zerohourF.addActionListener(new ActionListener() {
@@ -142,10 +140,18 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 		add(selectCNFileB, c);
 
 		c.gridy = 4;
-		c.insets = new Insets(15, 0, 5, 5);
+		c.insets = new Insets(20, 0, 5, 5);
 		add(new JLabel(Messages.uiGet("StageConfigPanel.ConfigurationLabel")), c); //$NON-NLS-1$
 		JLabel appNameL = new JLabel(Html.htmlTag("strong", geco.getAppName())); //$NON-NLS-1$
 		add(appNameL, c);
+		
+		c.gridy = 5;
+		c.insets = new Insets(0, 0, 5, 5);
+		add(new JLabel(Messages.uiGet("StageConfigPanel.DataPathLabel")), c); //$NON-NLS-1$
+		JTextField dataPathL = new JTextField(geco.stage().getBaseDir());
+		dataPathL.setColumns(20);
+		dataPathL.setEditable(false);
+		add(dataPathL, c);		
 	}
 	
 	private boolean verifyStagename(String text) {
