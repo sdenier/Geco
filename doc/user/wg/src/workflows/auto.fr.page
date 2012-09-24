@@ -1,14 +1,14 @@
 ---
-title: Mode Auto
+title: Process Auto
 sort_info: 2
 in_menu: true
 ---
 
-# Mode Auto
+# Process Auto
 
-Le mode automatique de Geco permet de lire des puces sans pré-inscription. Il autorise des **inscriptions à la volée** avec une archive à jour. Si une puce non inscrite est lue, Geco *recherche le numéro dans l'archive* et inscrit l'entrée correspondante dans la base. Geco *détecte le circuit* couru par le concurrent en se basant sur les poinçons de la puce.
+Le process automatique de Geco permet de lire des puces sans pré-inscription. Il autorise des **inscriptions à la volée** avec une archive à jour. Si une puce non inscrite est lue, Geco *recherche le numéro dans l'archive* et inscrit l'entrée correspondante dans la base. Geco *détecte le circuit* couru par le concurrent en se basant sur les poinçons de la puce.
 
-Le schéma ci-dessous montre en <font color="blue">bleu</font> les deux issues qui ne demandent pas d'intervention de votre part durant la lecture des puces en mode auto :
+Le schéma ci-dessous montre en <font color="blue">bleu</font> les deux issues qui ne demandent pas d'intervention de votre part durant la lecture des puces avec le process auto :
 - à gauche l'issue classique avec les entrées **pré-inscrites** ;
 - à droite l'insertion automatique depuis l'**archive**.
 

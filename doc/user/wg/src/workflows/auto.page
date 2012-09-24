@@ -1,14 +1,14 @@
 ---
-title: Auto Mode
+title: Auto Handler
 sort_info: 2
 in_menu: true
 ---
 
-# Auto mode
+# Auto handler
 
-The automatic mode in Geco can handle e-card download without pre-registration. It provides **on-the-fly registration** with an up to date archive. When reading an e-card which is not registered, Geco *looks up the e-card in the archive* and inserts the matching entry in the base. Geco also *detects the course* ran by the competitor from the e-card punches.
+The automatic handler in Geco can handle e-card download without pre-registration. It provides **on-the-fly registration** with an up to date archive. When reading an e-card which is not registered, Geco *looks up the e-card in the archive* and inserts the matching entry in the base. Geco also *detects the course* ran by the competitor from the e-card punches.
 
-The schema shows in <font color="blue">blue</font> the two outcomes which require no operation on your part when reading e-cards in auto mode:
+The schema shows in <font color="blue">blue</font> the two outcomes which require no operation on your part when reading e-cards with auto handler:
 - on the left the classic way with **pre-registered** entries;
 - on the right the automatic insertion of competitors from **archive**.
 

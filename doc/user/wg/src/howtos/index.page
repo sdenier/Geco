@@ -1,40 +1,31 @@
 ---
-title: Workflows
+title: Keybindings
 sort_info: 1
 in_menu: true
 routed_title: How-tos
 ---
 
-# Workflows in auto mode and manual mode
+# Keybindings
 
-With the introduction of the [automatic mode](auto.html) in Geco 1.1, there are multiple ways you can handle an event and in particular registrations.
+Using the keyboard can speed up your work with Geco. In the hints below, the `Mod` key refers to the menu modifier key specific to your platform (typically `alt` for Windows/Linux, `cmd` for Mac).
 
-Below are two examples of handling events with different styles so that you can compare both workflows. Of course, you can also mix both during the same race: pre-register competitors and run in auto mode to manage special cases.
+When you switch between tabs, Geco puts the focus on the most important widget in the tab. For example, in runners panel you can directly browse the table. In results panel, the Refresh button is selected so that pressing space will activate the button.
 
+## Keybindings for tabs
 
-## Lazy workflow (with auto mode)
+- `Mod+number` (1 to 9): focus on the corresponding tab, from left (1) to right. For example, `Mod+1` focus on the Stage panel for configuration, `Mod+4` focus on the Results panel...
+- `Mod+0`: focus on the Reader button in toolbar (space pushes the button on/off)
 
-The lazy workflow lets you and Geco handle registrations **on the fly**, that is when competitors download their e-cards after their race. This means almost no work at all before the race, but can involve a bit more to handle onsite registrations.
+## Keybindings for tables (Runners panel and Archive view)
+- `Mod+F`: focus on the filter field (start typing to filter entries)
+- `Mod+Shift+F`: cancel filter
+- `Mod+I`: insert new runner (runners panel)/insert selected runner (archive view)
 
-- Geco handles pre-registered e-cards as usual.
-- If the e-card has not been registered beforehand, Geco automatically creates an entry with the e-card. It also *detects the course* ran by the competitor from the e-card punches. This eliminates the risk of a mistake in course selection in the entry.
-- Geco *looks up in the archive* to fill in registration data for the new e-card entry (name, category, club, ...).
-- Otherwise, you will have to edit the entry manually.
-
-Hint: if possible, try to pre-register runners which do not have a personal e-card in the archive (either because they have to rent one or have changed recently).
-
-This workflow is best for trainings and small events.
-
-
-## Classic workflow (with manual mode)
-
-The classic workflow involves pre-registrations so that work is minimized when competitors download their e-cards.
-
-- Register all known participants beforehand.
-- Don't forget to use the archive to quickly insert known competitors.
-- Double-check the course.
-- You can manage registrations with a spreadsheet application and import a CSV file: fastest way to register lots of competitors.
-
-During the race, you still have to: 
-- handle onsite registrations;
-- resolve problems with unknown and duplicate e-cards. The [Merge Dialog](../guide/merge.html) pops up.
+## Keybindings in runners panel
+- `Mod+D`: switch to Data view in right panel
+- `Mod+T`: switch to Trace view in right panel
+- `Mod+S`: switch to Stats view in right panel
+- `Mod+R`: recheck selected runner (shortcut for recheck button in Data view)
+- `Mod+P`: print split times for selected runner (shortcut for print splits button in Data view)
+- use tab, arrows, space, and escape to navigate in the table, and start/stop edition of table cells
+- `Mod+L`: toggle Live mode on/off
