@@ -6,9 +6,10 @@ in_menu: true
 
 # Process Auto
 
-Le process automatique de Geco permet de lire des puces sans pré-inscription. Il autorise des **inscriptions à la volée** avec une archive à jour. Si une puce non inscrite est lue, Geco *recherche le numéro dans l'archive* et inscrit l'entrée correspondante dans la base. Geco *détecte le circuit* couru par le concurrent en se basant sur les poinçons de la puce.
+Le process automatique de Geco permet de lire des puces sans pré-inscription. Il autorise des **inscriptions à la volée** avec une archive à jour (si l'option est cochée dans la [configuration](../guide/stage.fr.html)). Si une puce non inscrite est lue, Geco *recherche le numéro dans l'archive* et inscrit l'entrée correspondante dans la base. Geco *détecte le circuit* couru par le concurrent en se basant sur les poinçons de la puce.
 
 Le schéma ci-dessous montre en <font color="blue">bleu</font> les deux issues qui ne demandent pas d'intervention de votre part durant la lecture des puces avec le process auto :
+
 - à gauche l'issue classique avec les entrées **pré-inscrites** ;
 - à droite l'insertion automatique depuis l'**archive**.
 
@@ -17,7 +18,8 @@ Le schéma ci-dessous montre en <font color="blue">bleu</font> les deux issues q
 Geco reconnaît aussi deux issues différentes qui demandent votre attention : puce inconnue (même dans l'archive) et puce déjà lue. Dans les deux cas, Geco crée une nouvelle entrée avec les données de la puce et détecte le circuit, mais met le statut à Inconnu ou Doublon.
 
 Ces issues sont montrées en <font color="orange">orange</font> dans le schéma :
+
 - le statut **Doublon** au milieu gauche. Cela arrive si simplement vous demandez au coureur de lire sa puce à nouveau, ou bien si un nouveau concurrent court avec la même puce ;
 - le statut **Inconnu** au milieu droit. Le coureur a pu s'inscrire sur place avec une puce louée. Ou bien il y a une erreur ou un changement récent du numéro par rapport aux inscriptions ou à l'archive.
 
-Vous pouvez résoudre ces statuts en suivant le processus en **<font color="green">vert</font>** sur le schéma. Vous pouvez éditer, supprimer, fusionner la nouvelle entrée. Si vous choisissez de garder l'entrée, n'oubliez de *vérifier ou changer* le statut pour un statut normal (OK, MP...). Vous pouvez aussi imprimer les splits pour le coureur.
+Vous pouvez résoudre ces statuts en suivant le processus en **<font color="green">vert</font>** sur le schéma. Vous pouvez éditer, supprimer, [fusionner](../guide/merge.fr.html) la nouvelle entrée. Si vous choisissez de garder l'entrée, n'oubliez de *vérifier* (`Mod+R`) ou *changer* le statut pour un statut normal (OK, MP...). Vous pouvez aussi imprimer les splits (`Mod+P`) pour le coureur.
