@@ -13,5 +13,5 @@ Options :
 - `--leisure` : active le mode loisir pour LiveMap, affichant des données simplifiées sans temps de course pour des coureurs loisirs (non chronométrés)
 
 Autres programmes accessibles depuis la ligne de commande :
-- `java -jar gecoXXX.jar valmo.geco.GecoPools <DossierDeDonnees>` : lance la [fusion des poules](quals.fr.html) en batch
+- `java -jar gecoXXX.jar valmo.geco.GecoPools <DossierDeDonnees>` : lance la [fusion des poules](../workflows/quals.fr.html) en batch
 - `java -jar gecoXXX.jar valmo.geco.live.GecoLive` : ouvre le serveur GecoLive pour l'[animation](live.fr.html)

@@ -25,7 +25,7 @@ Les formats Ordre libre et Orient'Show (et ROA) supportent les options suivantes
 - pénalités de temps pour chaque poste manquant
 - limite sur le nombre de PM autorisé, de 0 jusqu'à pas de limite
 
-Dans la version 1.1, Geco inclut un mode [automatique](../howtos/auto.fr.html) qui permet d'organiser une CO sans pré-inscription :
+Dans la version 1.1, Geco inclut un process [automatique](../workflows/auto.fr.html) qui permet d'organiser une CO sans pré-inscription :
 
 - insertion automatique des inscriptions à la lecture des puces
 - détection du circuit d'après la trace des poinçons dans la puce
@@ -57,7 +57,6 @@ Geco dispose de caractéristiques dédiées au format Orient'Show :
 
 
 [Guide Interface]: ../guide/index.fr.html
-[workflow]: ../guide/workflow.fr.html
 [Étape]: ../guide/stage.fr.html
 [Coureurs]: ../guide/runners.fr.html
 [Log]: ../guide/log.fr.html

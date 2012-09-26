@@ -24,14 +24,8 @@ The right pane can display details about the currently selected runner (e-card d
 - *Default course Mode (tickbox):* when active, manually changing a runner's category also sets his course to the default course for the category (if set in the [stage](stage.html) panel)
 - *Live Mode (tickbox):* in this mode, Geco automatically focuses on the last data received from the card reader; runners are dynamically sorted by order of card reading, with most recent on top (other sort options disabled)
 
-### Pre-registration of competitors
+The different processes for [registration of competitors](../workflows/register.html) are explained in the workflows section.
 
-- You can import a CSV file in OE entry format. It is the fastest way to import many entries.
-- You can import competitors from an [archive](archive.html).
-- Both CSV import and archive import automatically create club and category necessary for the import.
-- Both CSV import and archive import sets runner's course to the default course for category (if configured).
-- You can insert a new entry by clicking the `+` button (or pressing `mod+I`) and edit the entry by hand.
-- You can use the [register mode](ecard_modes.html) for onsite registration the day of the stage
 
 ### Manual edition of competitors
 

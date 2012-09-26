@@ -1,6 +1,6 @@
 ---
 title: Fin de course
-sort_info: 3
+sort_info: 5
 in_menu: true
 ---
 
@@ -10,5 +10,8 @@ Les vues [Stats](../guide/log.fr.html) dans les onglets Coureurs et Log donnent 
 
 En fin de course, vous devez surveiller les coureurs manquants. En particulier, il faut distinguer entre coureurs en course et ceux qui sont absents.
 La méthode classique consiste à vérifier la liste des entrées 'Non parties' contre la liste de contrôle de l'atelier départ. Vous pouvez changer manuellement le statut à **Absent** ou **En course**.
+
+
+## Import des logs de station pour détecter les absents
 
 Dans sa version actuelle, Geco ne supporte pas la lecture de la mémoire des boîtiers SPORTident pour gérer automatiquement les absents.

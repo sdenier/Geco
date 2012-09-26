@@ -19,7 +19,7 @@ Les statistiques montre le nombre de coureurs par statut pour chaque circuit ain
 Le *résumé* affiche les statuts suivant :
 
 - Présent : concurrents qui ont fini ou sont encore en course (tous les inscrits moins les absents)
-- Non résolu : entrées demandant votre attention, en particulier en [Fin de course](../howtos/endstage.fr.html) ; les statuts Non parti, En course, Inconnu et Doublon sont tous considérés comme non résolus
+- Non résolu : entrées demandant votre attention, en particulier en [Fin de course](../workflows/endstage.fr.html) ; les statuts Non parti, En course, Inconnu et Doublon sont tous considérés comme non résolus
 - Non parti : coureurs inscrits mais sans données de course (puce non lue). En fin de course, vous devez distinguer entre coureurs encore en course et coureurs pré-inscrits mais absents
 - Arrivé : coureurs avec des données de course résolues (puce lue), y compris les abandons, disqualifications, etc.
 - OK

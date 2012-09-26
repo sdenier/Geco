@@ -1,0 +1,43 @@
+---
+title: Organisations
+sort_info: 1
+in_menu: true
+routed_title: Workflows
+---
+
+# Modèles d'organisation avec Geco
+
+Ci-dessous deux exemples de GEC aux styles opposées sont présentés pour vous permettre de comparer les approches. Vous pouvez toujours mixer les deux approches : pré-inscrire les concurrents et faire la lecture des puces en mode auto.
+
+
+## Modèle automatique
+
+La méthode paresseuse vise à gérer les inscriptions **à la volée**, c'est-à-dire quand les coureurs lisent leur puce après la course. Ceci implique une préparation minimale avant la course, mais un léger surcroît pour gérer les inscriptions sur place (non licenciés).
+
+- Geco gère les puces pré-inscrites normalement.
+- Si une puce n'est pas pré-inscrite, Geco crée automatiquement une entrée avec la puce. Le circuit couru est aussi *détecté automatiquement* à partir des données de la puce. Ceci élimine le risque d'une erreur de circuit dans l'inscription.
+- Geco *cherche dans l'archive* les informations pour compléter l'inscription (nom, catégorie, club...).
+- Sinon, il vous faut éditer manuellement l'entrée.
+
+Conseil : si possible, pré-inscrivez les coureurs qui n'ont pas de puce personnelle dans l'archive (soit parce qu'ils sont non licenciés, vont devoir en louer une ou ont changé récemment).
+
+Cette méthode marche bien pour les entraînements et petits événements.
+
+
+## Modèle semi-automatique
+
+- process auto mais pas de recherche dans l'archive pour vérifier les inscriptions "surprise"
+
+
+## Modèle classique
+
+La méthode classique implique des pré-inscriptions afin de minimiser le travail quand les coureurs lisent leur puce.
+
+- Faites les inscriptions avant la course.
+- Utilisez l'archive pour rapidement insérer des concurrents licenciés.
+- Vérifiez que le circuit est correct.
+- Vous pouvez gérer les inscriptions avec un tableur et importer un fichier CSV : la façon la plus rapide d'inscrire de nombreux coureurs.
+
+Durant la course, vous devez toujours :
+- gérer les inscriptions sur place
+- résoudre les problèmes avec les puces inconnues et doublons. La [Fenêtre de fusion](../guide/merge.fr.html) s'ouvre automatiquement en mode manuel.

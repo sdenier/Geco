@@ -1,0 +1,23 @@
+---
+title: Inscriptions
+sort_info: 3
+in_menu: true
+---
+
+# Inscriptions
+
+## Pré-inscription des concurrents
+
+- Vous pouvez importer un fichier CSV avec le format des inscriptions OE. C'est la méthode la plus rapide pour importer de nombreuses inscriptions.
+- Vous pouvez importer des coureurs depuis l'[archive](../guide/archive.fr.html).
+- L'import CSV ou par l'archive crée automatiquement les clubs et catégories nécessaires pour l'import.
+- L'import CSV ou par l'archive utilise le circuit par défaut de la catégorie (si configuré).
+
+
+## Inscription sur site
+
+- Vous pouvez insérer une nouvelle entrée en cliquant le bouton `+` (raccourci `mod+I`) et éditer l'entrée manuellement.
+- Vous pouvez utiliser le mode [inscription](../guide/ecard_modes.fr.html) pour les inscriptions sur site le jour de la course
+
+
+## Inscription à la volée

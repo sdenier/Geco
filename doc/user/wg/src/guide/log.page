@@ -19,7 +19,7 @@ The statistics pane displays the number of runners per status for each course as
 The *summary* displays the following status :
 
 - Present: runners who ran or are running (all registered minus DNS)
-- Unresolved: entries which require your attention, especially when dealing with [End of Stage](../howtos/endstage.html); Not Started, Running, Unknown, and Duplicate statuses are all considered unresolved
+- Unresolved: entries which require your attention, especially when dealing with [End of Stage](../workflows/endstage.html); Not Started, Running, Unknown, and Duplicate statuses are all considered unresolved
 - Not Started: runners registered but without race data for now. Toward the end of stage, mark them either as Running or Did Not Start
 - Finished: runners with race data and resolved, including DNF, DSQ, etc.
 - OK

@@ -18,11 +18,11 @@ Here is a quick guide to discover the essential features of Geco: seven steps to
 
 > Runners download their e-card in the reader to check their status and get their split times.
 
-4bis. Resolve problems directly in the [Runners] panel and using the [Merge] dialog (read [Workflows](../howtos/index.html) to get a better a picture of manual vs auto modes).
+4bis. Resolve problems directly in the [Runners] panel and using the [Merge] dialog (read [Workflows](../workflows/index.html) to get a better a picture of manual vs auto handler).
 
 5\. Print intermediate [Results].
 
-6\. Don't forget to check [unresolved statuses](../howtos/endstage.html) to see if everyone is finished.
+6\. Don't forget to check [unresolved statuses](../workflows/endstage.html) to see if everyone is finished.
 
 7\. Generate final [Results] for publishing and analysis.
 
