@@ -1,6 +1,6 @@
 ---
 title: Configuration
-sort_info: 3
+sort_info: 4
 in_menu: true
 ---
 
@@ -21,9 +21,9 @@ The configuration panel allows one to set up many configuration items for the st
 - Split format: multi-columns (see `SplitNbColumns` in `geco.prop`) or ticket (single column, best for thermal printer)
 - You can customize header and footer of the split sheet with some texts
 
-This panel also allows you to customize a bit more the behavior of Geco when reading ecards (either in racing or training [modes](../workflows/ecard_modes.html)). You can choose to:
+This panel also allows you to customize a bit more the behavior of Geco when reading ecards (either in racing or training [modes](ecard_modes.html)). You can choose to:
 
-- manually resolve ecard issues with the [Merge wizard](merge.html) *or* let Geco handles all ecards automatically, creating an entry for each reading (unknown, duplicate entries)
+- manually resolve ecard issues with the [Merge wizard](merge.html) *or* let Geco handles all ecards [automatically](../workflows/auto.html), creating an entry for each reading (unknown, duplicate entries)
 - let Geco lookup unregistered ecards and insert entries from archive (only for the automatic behavior)
 
 ## Penalties (for Orient'Show, Free Order, ...)

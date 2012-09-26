@@ -31,7 +31,7 @@ Un éclair indique que l'impression automatique des splits est activée. Au dém
 Le bouton ci-dessous indique que la lecture est désactivée.  
 <img style="float:none; width:100px" src="../images/sireader_off.png" />
 
-Cliquez pour ouvrir le menu déroulant avec les différents [modes](../workflows/ecard_modes.fr.html) de lecture des puces.  
+Cliquez pour ouvrir le menu déroulant avec les différents [modes](ecard_modes.fr.html) de lecture des puces.  
 <img style="float:none; width:102px" src="../images/sireader_menu.fr.png" />
 
 Sélectionnez votre mode. Tant que Geco est en train d'initialiser le boîtier maître, le bouton indique *Démarrage...*. Les erreurs éventuelles sont affichées dans la barre de statut.  

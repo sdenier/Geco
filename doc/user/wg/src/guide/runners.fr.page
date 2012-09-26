@@ -1,6 +1,6 @@
 ---
 title: Coureurs
-sort_info: 4
+sort_info: 5
 in_menu: true
 ---
 
@@ -32,6 +32,7 @@ La vue dans le panneau de droite peut montrer des données détaillées sur le c
 - L'import CSV ou par l'archive crée automatiquement les clubs et catégories nécessaires pour l'import.
 - L'import CSV ou par l'archive utilise le circuit par défaut de la catégorie (si configuré).
 - Vous pouvez insérer une nouvelle entrée en cliquant le bouton `+` (raccourci `mod+I`) et éditer l'entrée manuellement.
+- Vous pouvez utiliser le mode [inscription](ecard_modes.fr.html) pour les inscriptions sur site le jour de la course
 
 ### Édition manuelle des concurrents
 

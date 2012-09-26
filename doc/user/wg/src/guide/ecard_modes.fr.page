@@ -1,0 +1,43 @@
+---
+title: Modes de lecture
+sort_info: 3
+in_menu: true
+---
+
+# Modes de lecture des puces
+
+Cette page décrit les trois modes de lecture accessibles depuis la [barre d'outils](toolbar.fr.html) : compétition, entraînement et inscription. Ces modes peuvent tous utiliser la **détection automatique des circuits** et l'inscription automatique depuis l'archive supportées par Geco. Les [workflows](../workflows/index.fr.html) expliquent de façon plus détaillée différentes organisations avec ces modes.
+
+## Mode compétition
+
+C'est le mode "classique" pour la lecture des puces en compétition.
+
+Geco peut être [configuré](stage.fr.html) en manuel ou en auto pour la lecture des puces. En manuel, Geco ouvre l'[assistant de fusion](merge.fr.html) pour les puces non inscrites et les puces lues en doublon. En [auto](../workflows/auto.fr.html), Geco crée des inscriptions *inconnues* ou *doublons* à la place. Geco peut aussi être configuré pour créer à la lecture des puces des inscriptions automatiques à partir de l'archive.
+
+
+## Mode entraînement
+
+C'est un mode spécial pour faciliter les entraînements en minimisant les interventions GEC.
+
+Geco peut aussi être configuré en manuel ou en auto, mais seul le **process auto** offre des fonctions pour l'entraînement (le process manuel est identique en compétition ou en entraînement). Contrairement au mode compétition, Geco n'affecte jamais les statuts *inconnus* et *doublons* aux entrées. Il indique le statut final quelque soit la puce lue, y compris pour les inscriptions anonymes.
+
+De plus, une lecture doublon crée une nouvelle entrée (avec le circuit détecté) en gardant l'identité de la première inscription. Un coureur peut ainsi effectuer plusieurs exercices (circuits) avec la même puce et apparaître plusieurs fois dans les résultats.
+
+Le mode entraînement permet donc :
+
+- de lire des puces sans se soucier de pré-inscription ou d'une archive à jour ;
+- de proposer plusieurs circuits en parallèle, *tout en gardant la simplicité d'un seul poste de GEC pour centraliser les résultats.*
+
+
+## Mode inscription
+
+C'est le mode pour les inscriptions *sur site* le jour de la course.
+
+Geco ne lit pas les données de la puce mais uniquement son numéro :
+
+- si la puce est déjà inscrite, Geco met le focus sur l'entrée correspondante, ce qui permet de vérifier les informations ;
+- sinon Geco crée une nouvelle entrée, en utilisant l'archive si configurée.
+
+Geco affecte le circuit *\[Auto\]* à toute nouvelle entrée pour déclencher la détection à la lecture d'après-course. Cependant, il est possible de sélectionner le circuit choisi par le coureur, ce qui permet un suivi plus précis des coureurs sur les différents circuits.
+
+De plus, une inscription créée via ce mode est déjà marquée *en course* pour suivre les coureurs en forêt (voir la [fin de course](../workflows/endstage.fr.html)).

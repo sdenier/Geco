@@ -29,7 +29,7 @@ When enabled, Split printing icon displays a yellow flash. When starting the rea
 The underneath button indicates that the reader is off.  
 <img style="float:none; width:100px" src="../images/sireader_off.png" />
 
-Click to open a drop-down menu with the different [modes](../workflows/ecard_modes.html) for ecard reading.  
+Click to open a drop-down menu with the different [modes](ecard_modes.html) for ecard reading.  
 <img style="float:none; width:102px" src="../images/sireader_menu.png" />
 
 Select your mode. While Geco is launching the reader, the toolbar will display a *Starting...* label. Errors are displayed in the status bar.  

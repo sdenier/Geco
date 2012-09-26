@@ -1,0 +1,44 @@
+---
+title: Ecard Modes
+sort_info: 3
+in_menu: true
+---
+
+# Ecard Reading Modes
+
+This page describes the three reading modes available from the [toolbar](toolbar.html) : racing, training, and register. These modes can all use the **automatic course detection** and the automatic registration from archive provided by Geco. The [workflows](../workflows/index.html) page explains in detail different set-ups with these modes.
+
+
+## Racing Mode
+
+This is the classic mode for reading ecards during a race.
+
+Geco can be [set up](stage.html) as manual or auto for ecard reading. With manual handler, Geco opens the [merge wizard](merge.html) for unregistered ecards and ecards read twice or more. With [auto](../workflows/auto.html) handler, Geco instead creates *unknown* or *duplicate* entries. Geco can also be set up to create new entries from archive when reading unregistered ecards.
+
+
+## Training Mode
+
+This is a special mode designed to minimize actions and enable an easy workflow during training events.
+
+Geco can still be set up as manual or auto. However only the **auto handler** provides training functionalities (manual handler is the same for racing and training modes). Contrary to the racing mode, Geco never sets *unknown* or *duplicate* statuses for entries. It directly sets the final status, including for anonymous entries.
+
+Furthermore, a duplicate reading creates a new entry (with the detected course) with the identity given for the first registration. A runner can then run multiple exercises (courses) with the same ecard and appear multiple times in results.
+
+The training mode allows the organizer to:
+
+- read ecards without the need for pre-registration or even an up-to-date archive;
+- offer multiple courses in parallel, *while keeping the simplicity of a single computer to centralize results.*
+
+
+## Register Mode
+
+This is the mode for *onsite* registration on the day of the race.
+
+Geco only reads the ecard number, no ecard data:
+
+- if the ecard is already registered, Geco focuses on the linked entry, allowing one to check data with the runner;
+- otherwise Geco creates a new entry, using the archive if available.
+
+Geco sets *\[Auto\]* as default course for any new entry, enabling course detection for the next reading. One can always select the course chosen by the runner. This enables monitoring competitors still running on "real" courses.
+
+Furthermore, an entry created with this mode is already marked as *running*, to follow more closely runners still in forest (see [end of stage](../workflows/endstage.html)).

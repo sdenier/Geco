@@ -1,6 +1,6 @@
 ---
 title: Configuration
-sort_info: 3
+sort_info: 4
 in_menu: true
 ---
 # Onglet Configuration
@@ -20,9 +20,9 @@ Cet onglet permet de configurer tous les éléments de la course. Les éléments
 - Format splits : multi-colonnes (voir option `SplitNbColumns` dans le fichier `geco.prop`) ou ticket (une seule colonne, pour imprimante thermique à ticket)
 - Vous pouvez éditer l'en-tête et le pied de page de la feuille d'impression
 
-Cette section permet aussi de configurer le comportement de Geco à la lecture des puces (en [mode](../workflows/ecard_modes.fr.html) compétition ou entraînement). Vous pouvez choisir de :
+Cette section permet aussi de configurer le comportement de Geco à la lecture des puces (en [mode](ecard_modes.fr.html) compétition ou entraînement). Vous pouvez choisir de :
 
-- résoudre manuellement les problèmes de puce avec [l'assistant de fusion](merge.fr.html) *ou* laisser Geco prendre en charge automatiquement toutes les puces, en créant de nouvelles inscriptions au besoin (inscriptions inconnues, doublons)
+- résoudre manuellement les problèmes de puce avec [l'assistant de fusion](merge.fr.html) *ou* laisser Geco prendre en charge [automatiquement](../workflows/auto.fr.html)) toutes les puces, en créant de nouvelles inscriptions au besoin (inscriptions inconnues, doublons)
 - laisser Geco chercher les puces inconnues dans l'archive pour créer de nouvelles inscriptions (seulement en automatique)
 
 ## Pénalités (pour les formats Orient'Show, Ordre libre...)
