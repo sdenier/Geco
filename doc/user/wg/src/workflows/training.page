@@ -6,6 +6,41 @@ in_menu: true
 
 # Training
 
-## Setup and development of an event in training mode
+Geco provides a training mode which lightens actions to be taken. With this mode Geco reads all ecards and computes the normal status immediately, whether a pre-registration exists or not. Furthermore, Geco handles multiple reads of the same ecard by creating a new entry each entry, allowing a runner to perform several courses. Geco can also import an ecard log extracted from a master station.
 
-## Post-mortem Procedure: importing an ecard log to rebuild results
+<img style="float:none; width:100px; margin: 0;" src="../images/training_button.png" />
+
+
+## Running an event in training mode
+
+The only necessary setup is to *import courses* in a new stage. Pre-registration is optional. One can also *setup an archive* to facilitate automatic registration (for example, using a club archive).
+
+The next step is launching read in training mode and just leave the computer in self-service. Take Simon, a beginner who runs with a rented ecard (not registered in archive). He goes onto course B and comes back. Reading his ecard *creates an anonymous entry* with the right course and status:
+
+> `1   1061000   X   None  Course B   NL  41:32   OK`
+
+One can edit the entry with more accurate data:
+
+> `1   1061000   Simon D   H21  Course B   3810RA  41:32   OK`
+
+Simon goes back onto the A course. Coming back, reading the ecard creates yet another entry, with this course and the right status. In the case of a duplicate reading, Geco reacts as if it is the same person and *copies* the previous data.
+
+> `2   1061000a  Simon D   H21  Circuit A   3810RA  57:01   OK`
+
+Thus the training mode allows runners to perform several courses without worrying about unknown or duplicate entries. Results by course will display the result of each runner.
+
+
+## Post-mortem procedure: importing an ecard log
+
+Geco also provides the capability to import the ecard log as extracted from the master station (with Si-Config). Then the logistics for training becomes minimal as everything can be done after the event at home. Furthermore, one benefits from the sophisticated algorithms of Geco for course detection and rebuilding results a posteriori. In two steps:
+
+1. export the log from the master station using Si-Config
+1. import it in Geco from the Log panel, using *Import Ecard Log* among [Batch](../guide/functions.html) functions. One just needs to select the log file then click on *Execute*. The function imports each line as if it was an ecard read from the station.
+
+<a href="../images/ecard_import.png"><img src="../images/ecard_import.png" /></a>
+
+The log format extracted by Si-Config is as follows:
+
+> No.;read at;SI-Card;St no;cat.;First name;name;club;country;sex;year-op;Email;mobile;city;street;zip;CLR_CN;CLR_DOW;clear time;CHK_CN;CHK_DOW;check time;ST_CN;ST_DOW;start time;FI_CN;FI_DOW;Finish time;No. of punches;1.CN;1.DOW;1.Time;2.CN;2.DOW;2.Time; ...
+
+> 1;11/04/2012 00:32:15;2005345;0;;2005345;CR;;;;;;;;;;3; We;19:11:16;3;We;19:11:16;;;;;;; 16;34;We;19:11:54;38;We;19:11:55; ...
