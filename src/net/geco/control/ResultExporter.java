@@ -169,7 +169,9 @@ public class ResultExporter extends AResultExporter {
 		html.td(runnerData.getRunner().getCategory().getName());
 		html.td(timeOrStatus, "class=\"time\""); //$NON-NLS-1$
 		html.td(diffTime, "class=\"diff\""); //$NON-NLS-1$
-		html.td(pace, "class=\"pace\""); //$NON-NLS-1$
+		if( ! pace.isEmpty() ){
+			html.td(pace, "class=\"pace\""); //$NON-NLS-1$
+		}
 		if( showPenalties ){
 			html.td(Integer.toString(runnerData.getResult().getNbMPs()), "class=\"right\""); //$NON-NLS-1$
 			html.td(TimeManager.time(runnerData.realRaceTime()), "class=\"right\""); //$NON-NLS-1$
