@@ -14,4 +14,19 @@ La méthode classique consiste à vérifier la liste des entrées 'Non parties' 
 
 ## Import des logs de station pour détecter les absents
 
-Dans sa version actuelle, Geco ne supporte pas la lecture de la mémoire des boîtiers SPORTident pour gérer automatiquement les absents.
+Geco ne peut pas lire directement la mémoire des stations SPORTident. Cependant, il est possible d'importer dans Geco les logs de la mémoire des stations extraits par le logiciel SI-Config. Geco traitera ces logs pour trouver les puces présentes, distinguer les absents, détecter les puces non enregistrées, etc.
+
+1. Lisez la mémoire des stations avec SI-Config et exportez le log en csv (voir un <a href="../samples/log_station.csv">exemple</a> du format).
+1. Parmi les fonctions d'[étape](../guide/functions.fr.html), sélectionnez *Log des stations*.
+1. Sélectionnez le(s) fichier(s) log des stations.
+1. Cliquez sur *Exécuter* pour traiter les logs : Geco marquera toutes les puces *Non parties* détectées dans le log comme *En course*, pour indiquer que ces puces sont attendues à l'arrivée.
+1. Une fois les logs traités, l'option *Marquer les absents* permet de marquer les non partis restant comme absents.
+
+<a href="../images/station_log.fr.png"><img src="../images/station_log.fr.png" /></a>
+
+Pour que cette fonction soit correctement appliquée, il faut respecter les points suivant :
+
+- les stations lues doivent avoir été effacées avant la course, sinon il y aura des puces "parasites" qui risquent de fausser l'état des inscriptions ;
+- il faut récupérer les logs de toutes les puces passées au départ (par exemple en lisant tous les boîtiers départ ou contrôler) avant de marquer les absents (ceci pour ne pas marquer par erreur une puce absente).
+
+Cette fonction propose aussi une option pour créer automatiquement des inscriptions si Geco détecte des puces non inscrites dans les stations (ceci peut arriver si des coureurs n'ont pas eu le temps de passer à l'accueil pour se préinscrire).

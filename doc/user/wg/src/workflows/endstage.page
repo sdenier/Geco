@@ -11,6 +11,21 @@ The [Stats](../guide/log.html) views in Runners and Log panel give a detailed ac
 Towards the end of the stage, you should start looking for missing runners. In particular, you need to distinguish between those still running and those who did not start (DNS).
 In the classic method, you check the list of Not Started entries against the control list checked by the start team. You manually set the status to either **DNS** or **Running**.
 
-## Importing station logs to detect 'did not start' competitors
+## Importing station logs to detect DNS competitors
 
-Currently, Geco does not support reading the backup memory of SI stations to handle DNS automatically.
+Geco does not support reading the backup memory of SPORTident stations. However, Geco can import logs from backup memories as exported by SI-Config. Geco will handle theses logs to find running ecards, distinguish absent runners, detect unregistered ecards, etc.
+
+1. Read the backup memory from stations using SI-Config and export the log in csv format (see this <a href="../samples/log_station.csv">sample</a>).
+1. Choose *Check Station Log* among [stage functions](../guide/functions.html).
+1. Select log file(s) from stations.
+1. Click *Execute* to process logs: Geco will mark all *Not Started* ecards found in the log as *Running*, so that you know these still have to finish.
+1. Once all logs are processed, the *Mark DNS* option will set up all remaining *Not Started* entries as *Did Not Start*.
+
+<a href="../images/station_log.png"><img src="../images/station_log.png" /></a>
+
+To allow this function to run safely, take care of the following points:
+
+- station memories (for logs) must have been erased before the stage, otherwise you risk detecting ecards which are really not there;
+- all logs containing all ecards going through the start (for example, all logs from start or check stations) must be processed before marking DNS entries (to avoid marking an ecard as falsely absent).
+
+This function can also optionally handle automatic registration of unregistered ecards found in station logs (this could happen if runners go directly to start, without pre-registration).
