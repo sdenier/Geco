@@ -14,22 +14,18 @@ Les trois formats suivant sont actuellement supportés :
 - Ordre libre : le coureur choisit l'ordre dans lequel il prend les postes
 - Orient'Show : pénalités en temps et limite de PM, qualifications par élimination...
 
-Un quatrième format plus expérimental est disponible pour le Raid Orient'Alpin :
-
-- chaque circuit du raid peut commencer par un ordre libre
-- puis bascule sur une course classique à un poste donné
-- une fonction de neutralisation est utilisée pour neutraliser une section de repos/tir
-
-Les formats Ordre libre et Orient'Show (et ROA) supportent les options suivantes pour la lecture des puces :
+Les formats Ordre libre et Orient'Show supportent les options suivantes pour la lecture des puces :
 
 - pénalités de temps pour chaque poste manquant
 - limite sur le nombre de PM autorisé, de 0 jusqu'à pas de limite
 
-Dans la version 1.1, Geco inclut un process [automatique](../workflows/auto.fr.html) qui permet d'organiser une CO sans pré-inscription :
+Geco offre des possibilités puissantes pour la lecture des puces :
 
-- insertion automatique des inscriptions à la lecture des puces
-- détection du circuit d'après la trace des poinçons dans la puce
-- recherche des inscriptions dans une archive pour renseigner le nom, club, catégorie...
+- trois [modes](../guide/ecard_modes.fr.html) de lecture : compétition, entraînement, inscription
+- un process [automatique](../workflows/auto.fr.html) avec :
+  - insertion automatique des inscriptions à la lecture des puces
+  - détection du circuit d'après la trace des poinçons dans la puce
+  - recherche de la puce dans une archive pour renseigner le nom, club, catégorie...
 
 L'interface graphique de Geco est organisée autour d'une série d'onglets, chacun dédié à un aspect de la course.
 
@@ -45,7 +41,7 @@ L'interface graphique de Geco est organisée autour d'une série d'onglets, chac
   - export des résultats aux formats HTML, CSV ou XML, avec diverses options
   - export automatique pour une mise à jour en direct
   - simulateur des points Classement National
-- [Séries] pour calculer des séries de qualification par élimination directe à partir des résultats
+- [Séries] pour calculer des séries de qualification par élimination directe à partir des résultats (format Orient'Show uniquement)
 
 Le [Guide Interface] donne les explications détaillées pour chaque onglet.
 

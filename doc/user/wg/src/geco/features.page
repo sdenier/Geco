@@ -14,22 +14,18 @@ The three following formats are currently available:
 - Free Order: runner chooses in which order to take the controls
 - Orient'Show: time penalties and MP limit, knockout qualifications,...
 
-A fourth experimental format is available. The format for Raid Orient'Alpin (ROA):
-
-- starts with a Free Order (to scatter runners)
-- then switches to a classic course at a given control
-- also provides a leg neutralization function to neutralize rest/shooting sections.
-
-Free Order and Orient'Show (and ROA) support the following options when checking e-cards:
+Free Order and Orient'Show support the following options when checking e-cards:
 
 - time penalties on missing punches
 - MP limit, from 0 MP allowed to any number of MP
 
-In 1.1, Geco introduces an [automatic](../workflows/auto.html) handler, which can be used to handle an event without pre-registration:
+Geco offers powerful capabilities for ecard reading:
 
-- automatically insert new entries when downloading e-cards
-- detect the course from the punch trace in e-card
-- look up for new entries in archive to retrieve name, club, category...
+- three reading [modes](../guide/ecard_modes.html): racing, training, registration
+- an [automatic handler](../workflows/auto.html) which provides:
+  - automatically insert new entries when reading ecards
+  - detect the course from the punch trace in ecard
+  - look up ecard number in archive to retrieve name, club, category...
 
 Geco UI is organized as a series of panels in tabs, each dedicated to one aspect of the race.
 
@@ -45,7 +41,7 @@ Geco UI is organized as a series of panels in tabs, each dedicated to one aspect
   - export results in HTML, CSV, and XML formats, with multiple options
   - automatically export results for live update
   - French National Ranking calculator
-- [Heats] to generate heats from results for the next stage in knockout qualifications
+- [Heats] to generate heats from results for the next stage in knockout qualifications (Orient'Show format only)
 
 Read the [UI Guide] for documentation about each panel.
 
