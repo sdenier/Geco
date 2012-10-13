@@ -2,8 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 
 <%
-currentversion = '1.2'
-currentlink = 'http://bitbucket.org/sdenier/geco/downloads/geco1.2-571-20111130-demo.zip'
+currentversion = '1.3'
+currentlink = 'http://bitbucket.org/sdenier/geco/downloads/geco-1.3b2-772-20121014.zip'
 translations = YAML::load(File.read(File.join(context.website.directory, 'src/default.languages')))
 trans = translations[context.node.lang]
 %>

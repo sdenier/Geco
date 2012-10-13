@@ -21,7 +21,7 @@ Geco 1.3 builds upon its course detection algorithm to provide more abilities fo
 ### Main changes
 - 3 modes when reading ecards:
     - racing (classic mode)
-    - training (handle multiple reads for the same ecard, create one entry per read without asking question)
+    - training (handle multiple reads for the same ecard with different courses, create one entry per read without asking question)
     - register (handle onsite registration)
 - Brand new merge wizard, replacing the old merge dialog from 1.0
     - displays more information
@@ -42,7 +42,7 @@ Geco 1.3 builds upon its course detection algorithm to provide more abilities fo
 - updated ticket format, customizable header/footer
 - XML export of result by course (before only category was available)
 - customizable reading modes (manual/auto/archive lookup)
-- updated regular CSV export format to provide more data
+- updated CSV result format to provide more data
 
 ### Fixed bugs
 - Fix OE CSV export for CN, RouteGadget
