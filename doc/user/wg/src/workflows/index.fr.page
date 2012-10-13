@@ -7,37 +7,38 @@ routed_title: Workflows
 
 # Modèles d'organisation avec Geco
 
-Ci-dessous deux exemples de GEC aux styles opposées sont présentés pour vous permettre de comparer les approches. Vous pouvez toujours mixer les deux approches : pré-inscrire les concurrents et faire la lecture des puces en mode auto.
+Les fonctionnalités fournies par Geco permettent des organisations dans différents styles, depuis les entraînements légers jusqu'à des modèles plus cadrés pour les compétitions de moyenne envergure. Cette page présente ces styles et options à travers quelques modèles, en offrant des liens vers les sous-rubriques détaillées.
+
+## Entraînement
+
+Lors d'un entraînement, vous n'avez habituellement pas de pré-inscription car les coureurs vont et viennent suivant leur envie. Ils peuvent même effectuer plusieurs exercices avec des circuits différents. Dans ce cas, la GEC fonctionne comme un poste libre service où chacun lit sa puce après chaque exercice.
+
+La configuration de Geco pour un entraînement est minimale : il suffit de créer les circuits, éventuellement de préparer un fichier d'archive pour enrichir les inscriptions automatiques.
+
+La page [entraînement](training.fr.html) détaille les particularités de ce mode ainsi que la possibilité d'importer un log depuis la station de lecture.
 
 
-## Modèle automatique
+## Petite compétition
 
-La méthode paresseuse vise à gérer les inscriptions **à la volée**, c'est-à-dire quand les coureurs lisent leur puce après la course. Ceci implique une préparation minimale avant la course, mais un léger surcroît pour gérer les inscriptions sur place (non licenciés).
+Pour une petite compétition, vous aurez à la fois des demandes de pré-inscriptions avant la course mais aussi beaucoup d'inscrits sur site le jour même. 
 
-- Geco gère les puces pré-inscrites normalement.
-- Si une puce n'est pas pré-inscrite, Geco crée automatiquement une entrée avec la puce. Le circuit couru est aussi *détecté automatiquement* à partir des données de la puce. Ceci élimine le risque d'une erreur de circuit dans l'inscription.
-- Geco *cherche dans l'archive* les informations pour compléter l'inscription (nom, catégorie, club...).
-- Sinon, il vous faut éditer manuellement l'entrée.
+Vous pouvez exploiter les différents possibilités d'[inscription](register.fr.html) de Geco à votre avantage.
 
-Conseil : si possible, pré-inscrivez les coureurs qui n'ont pas de puce personnelle dans l'archive (soit parce qu'ils sont non licenciés, vont devoir en louer une ou ont changé récemment).
+- Avant le jour de la course, maintenez un fichier tableur avec les pré-inscriptions reçues puis importez-le la veille de la course dans Geco (après avoir créé les circuits et les catégories associées).
+- Le jour de la course, vous pourrez faire des inscriptions sur place, en mode inscription ou non, ou même laisser Geco faire des inscriptions à la volée avec le [process auto](auto.fr.html).
+- Les concurrents sont généralement en autogestion pour leur horaire de départ, avec un tableau manuel pour la répartition et un boîtier départ pour enregistrer l'heure précise.
 
-Cette méthode marche bien pour les entraînements et petits événements.
+Il est recommandé de [configurer](../guide/stage.fr.html) Geco pour utiliser l'archive en mode auto. Bien exploité, ce modèle permet de minimiser le travail en amont et les risques d'erreur, puisque toutes les informations seront déterminées à partir de la puce, depuis le circuit jusqu'aux informations extraites de l'archive (nom, catégorie, club).
 
-
-## Modèle semi-automatique
-
-- process auto mais pas de recherche dans l'archive pour vérifier les inscriptions "surprise"
+Bien sûr, vous aurez à sortir régulièrement des résultats, mais n'oubliez pas aussi la [fin de course](endstage.fr.html) avec la gestion des absents et des coureurs non arrivés.
 
 
-## Modèle classique
+## Compétition moyenne
 
-La méthode classique implique des pré-inscriptions afin de minimiser le travail quand les coureurs lisent leur puce.
+Pour préparer la logistique d'une compétition de moyenne envergure, la grande majorité des coureurs doivent se pré-inscrire. Cela implique un plus grand contrôle des concurrents, avec parfois l'attribution d'horaires de départ pour étaler ceux-ci.
 
-- Faites les inscriptions avant la course.
-- Utilisez l'archive pour rapidement insérer des concurrents licenciés.
-- Vérifiez que le circuit est correct.
-- Vous pouvez gérer les inscriptions avec un tableur et importer un fichier CSV : la façon la plus rapide d'inscrire de nombreux coureurs.
+Attention ! Geco peut exploiter des horaires de départ pré-attribués mais ne disposent pas de fonction pour attribuer automatiquement des horaires. Il faudra donc faire cette attribution sous un autre logiciel. La méthode d'inscription recommandée est alors l'import par [fichier OE CSV](register.fr.html). Les autres méthodes sont aussi possibles, en particulier pour les inscriptions sur site.
 
-Durant la course, vous devez toujours :
-- gérer les inscriptions sur place
-- résoudre les problèmes avec les puces inconnues et doublons. La [Fenêtre de fusion](../guide/merge.fr.html) s'ouvre automatiquement en mode manuel.
+Le jour de la course, vous pouvez choisir le process manuel ou le process auto pour résoudre les problèmes : c'est une question de goût, l'un affichant de suite l'[assistant de fusion](../guide/merge.fr.html) tandis que l'autre crée les entrées puis vous laisse la main. Cependant, il peut être recommandé de [désactiver](../guide/stage.fr.html) la recherche dans l'archive pour le process auto, ceci afin de garder un plus grand contrôle sur les inscriptions "impromptues".
+
+La [fin de course](endstage.fr.html) est un aspect tout aussi important dans ce cas de figure. Pour être efficace, apprenez comment utiliser les boîtiers pour gérer absents et coureurs en course.

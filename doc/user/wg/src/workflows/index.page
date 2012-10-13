@@ -1,40 +1,46 @@
 ---
-title: Workflows
+title: Organisations
 sort_info: 1
 in_menu: true
 routed_title: Workflows
 ---
 
-# Workflows in auto mode and manual mode
+# Organisation Models with Geco
 
-With the introduction of the [automatic mode](auto.html) in Geco 1.1, there are multiple ways you can handle an event and in particular registrations.
-
-Below are two examples of handling events with different styles so that you can compare both workflows. Of course, you can also mix both during the same race: pre-register competitors and run in auto mode to manage special cases.
+Geco capabilities allows one to perform different styles of organisations, from lightweight training up to formalized events of medium size. This page presents those styles and options through a few models, providing links to detailed subsections.
 
 
-## Lazy workflow (with auto mode)
+## Training
 
-The lazy workflow lets you and Geco handle registrations **on the fly**, that is when competitors download their e-cards after their race. This means almost no work at all before the race, but can involve a bit more to handle onsite registrations.
+For a training, you usually don't have any pre-registration since runners come and go. They can run multiple exercises with different courses. Then Geco works best as a self service station where each participant reads his ecard after his run.
 
-- Geco handles pre-registered e-cards as usual.
-- If the e-card has not been registered beforehand, Geco automatically creates an entry with the e-card. It also *detects the course* ran by the competitor from the e-card punches. This eliminates the risk of a mistake in course selection in the entry.
-- Geco *looks up in the archive* to fill in registration data for the new e-card entry (name, category, club, ...).
-- Otherwise, you will have to edit the entry manually.
+Geco configuration for a training is minimal: just create (or import) courses, optionally set up an archive to get enriched data.
 
-Hint: if possible, try to pre-register runners which do not have a personal e-card in the archive (either because they have to rent one or have changed recently).
-
-This workflow is best for trainings and small events.
+The [training page](training.html) details the features of this mode as well as the capability to import the log from a reading station.
 
 
-## Classic workflow (with manual mode)
+## Small Race
 
-The classic workflow involves pre-registrations so that work is minimized when competitors download their e-cards.
+For a small race, some people will choose to pre-register before the day, but a lot of runners can also just show up on the day of the race.
 
-- Register all known participants beforehand.
-- Don't forget to use the archive to quickly insert known competitors.
-- Double-check the course.
-- You can manage registrations with a spreadsheet application and import a CSV file: fastest way to register lots of competitors.
+You can use the different capabilities of Geco for [registration](register.html).
 
-During the race, you still have to: 
-- handle onsite registrations;
-- resolve problems with unknown and duplicate e-cards. The [Merge Dialog](../guide/merge.html) pops up.
+- Before the day of the race, maintain a spreadsheet file with pre-registrations, then import it in Geco just before (don't forget to first create courses and linked categories).
+- On the day of the race, you can perform onsite registration (using the given mode or not), or even let Geco do on the fly registration with the [auto handler](auto.html).
+- For a small event, you can let competitors manage start hours themselves, giving them a paper sheet to choose an hour and a start station to register the precise time.
+
+It is advised to [set up](../guide/stage.html) Geco to use the archive in auto mode. This model allows one to minimise work beforehand as well as error risks, since all the information is computed with the ecard, from the course to the archive data (name, category, club).
+
+Of course, you should supply results regularly, but don't forget to deal with the [end of stage](endstage.html), DNS and still running competitors.
+
+
+
+## Medium Race
+
+When it comes to a medium-size event, most competitors would pre-register to ease the logistics. This can imply a greater control of runner registration, including the allocation of start times.
+
+Even if Geco can handle pre-registered start times, it does not provide any function to automatically allocate times. This should be made with another software beforehand. Consequently, it is recommended to perform registration with an [OE CSV](register.html) file. Other methods are still available, in particular for onsite registration.
+
+On the day of the race, you can choose between the manual process and the auto process to resolve problems: it's mainly a matter of taste. The former opens the [merge wizard](../guide/merge.html), while the latter first create entries before giving you control. However, it can be advised to [turn off](../guide/stage.html) archive lookup for the auto handler: this provides a greater control of unexpected entries.
+
+The [end of stage](endstage.html) is also important here. Learn how to manage DNS and running competitors efficiently by using the backup memory from stations.
