@@ -6,18 +6,33 @@ in_menu: true
 
 # Inscriptions
 
+Cette page résume les différentes possibilités pour inscrire des concurrents dans une course. Aucune option n'est exclusive : il est toujours possible de mixer ces méthodes suivant les besoins en cours.
+
 ## Pré-inscription des concurrents
 
-- Vous pouvez importer un fichier CSV avec le format des inscriptions OE. C'est la méthode la plus rapide pour importer de nombreuses inscriptions.
-- Vous pouvez importer des coureurs depuis l'[archive](../guide/archive.fr.html).
-- L'import CSV ou par l'archive crée automatiquement les clubs et catégories nécessaires pour l'import.
-- L'import CSV ou par l'archive utilise le circuit par défaut de la catégorie (si configuré).
+Il existe deux méthodes pour pré-inscrire facilement des concurrents avant la compétition.
+
+- Vous pouvez importer un fichier CSV avec le <a href="../samples/startlist_sample.csv">format</a> des inscriptions OE. C'est la méthode la plus rapide pour importer de nombreuses inscriptions. Le fichier peut être généré et édité avec n'importe quel tableur.
+- Vous pouvez importer des coureurs depuis une [archive](../guide/archive.fr.html), créée par une fédération ou les clubs.
+
+Attention ! Il n'est pas possible d'indiquer les circuits des coureurs dans les formats de fichier donnés ci-dessus. À la place, il faut utiliser la catégorie pour inscrire le coureur sur son circuit. *Avant l'import*, il faut donc créer les circuits et les catégories dans la [configuration](../guide/stage.fr.html), puis **associer les circuits aux catégories**. À défaut les coureurs seront sur le circuit *\[Auto\]*.
+
+L'import CSV ou par l'archive crée automatiquement les clubs et catégories nécessaires pour l'import.
+
+Dans le format <a href="../samples/startlist_sample.csv">OE CSV</a>, seuls les champs Nom, Prénom, le club et la catégorie (court/long) sont obligatoires. Le numéro de départ, la puce, l'identifiant archive, le champ NC et l'heure de départ sont tous optionnels. Les autres champs sont ignorés par Geco. Les contraintes sont les mêmes pour le <a href="../samples/archive_sample.csv">format de l'archive</a>, avec quelques champs en moins.
+
+Le champ *Heure de départ* permet de donner un horaire pré-attribué, sans utiliser de boîtier départ. L'heure donnée doit être relative à l'heure zéro de la course.
 
 
 ## Inscription sur site
 
-- Vous pouvez insérer une nouvelle entrée en cliquant le bouton `+` (raccourci `mod+I`) et éditer l'entrée manuellement.
-- Vous pouvez utiliser le mode [inscription](../guide/ecard_modes.fr.html) pour les inscriptions sur site le jour de la course
+Pour les inscriptions le jour de la course, plusieurs options sont possibles :
+
+- vous pouvez insérer une nouvelle entrée en cliquant le bouton `+` (raccourci `mod+I`) et éditer l'entrée manuellement ;
+- vous pouvez utiliser l'archive, comme ci-dessus ;
+- vous pouvez utiliser le mode [inscription](../guide/ecard_modes.fr.html), qui permet d'enregistrer directement le numéro de puce et fait automatiquement une recherche dans l'archive.
 
 
 ## Inscription à la volée
+
+Avec le [process auto](auto.fr.html) de Geco, il est possible de minimiser les pré-inscriptions, voire de s'en passer pour les organisation légères. Geco créera les entrées au fur et à mesure lors de la lecture des puces. L'inscription à la volée peut se faire indifféremment en [mode](../guide/ecard_modes.fr.html) compétition ou entraînement.

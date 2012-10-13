@@ -6,17 +6,35 @@ in_menu: true
 
 # Registration
 
+This page summarises the different ways to register competitors for a stage. All methods can be mixed for a stage, depending on the present needs.
+
+
 ## Pre-registration of competitors
 
-- You can import a CSV file in OE entry format. It is the fastest way to import many entries.
-- You can import competitors from an [archive](../guide/archive.html).
-- Both CSV import and archive import automatically create club and category necessary for the import.
-- Both CSV import and archive import sets runner's course to the default course for category (if configured).
+There are two ways to easily register lots of competitors before a race.
+
+- You can import a CSV file in OE entry <a href="../samples/startlist_sample.csv">format</a>. It is the fastest way to import many entries. The file can be generated as well as edited with a spreadsheet app.
+- You can import competitors from an [archive](../guide/archive.html), provided by a federation or some clubs.
+
+Beware that there is no way to directly set course for each runner with the given file formats. Instead, you should rely on runner category and link each category with a course. *Before an import*, first create courses and categories in the stage [configuration](../guide/stage.html), then **link courses with categories**. By default, runners will be registered on the *\[Auto\]* course.
+
+
+Both CSV import and archive import automatically create club and category necessary for the import.
+
+With the <a href="../samples/startlist_sample.csv">OE CSV</a> format, the only mandatory fields are the last and first names, the club and the category (short/long names). Start number, ecard, archive id, NC field, and start time are all optional. Other fields are ignored by Geco. The same constraints applies to the <a href="../samples/archive_sample.csv">archive format</a>, which uses less fields.
+
+The *Start time* field allows you to give a registered start time, without the need for a start station. The given hour should be relative to the zero hour of the stage.
 
 
 ## Onsite registration
 
-- You can insert a new entry by clicking the `+` button (or pressing `mod+I`) and edit the entry by hand.
-- You can use the [register mode](../guide/ecard_modes.html) for onsite registration the day of the stage
+For registration on race day, many options are available:
+
+- you can insert a new entry by clicking the `+` button (or pressing `mod+I`) and edit the entry by hand;
+- you can use the archive, as above;
+- you can use the [register mode](../guide/ecard_modes.html), which directly registers the ecard number and automatically performs an archive search.
+
 
 ## On the fly registration
+
+With the [auto handler](auto.html), it is possible to minimize pre-registrations, or even bypass them for lightweight organizations. Geco will create entries only when ecards are actually read. On the fly registration can be done either in racing or training [mode](../guide/ecard_modes.html).
