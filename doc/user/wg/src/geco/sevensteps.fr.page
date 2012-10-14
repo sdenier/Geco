@@ -6,7 +6,8 @@ in_menu: true
 
 # Sept points pour organiser une CO avec Geco
 
-Voici un guide rapide pour découvrir les fonctions essentielles de Geco : sept points pour organiser la GEC d'une course d'orientation.
+Voici un guide rapide pour découvrir les fonctions essentielles de Geco : sept points pour organiser la GEC d'une course d'orientation. Pour un survol de différents styles d'organisation, lisez la section [Workflows](../workflows/index.fr.html).
+
 
 1\. Utilisez le [Lanceur] et l'onglet [Étape] pour configurer une nouvelle étape.
 
@@ -20,7 +21,7 @@ Voici un guide rapide pour découvrir les fonctions essentielles de Geco : sept 
 
 > Les concurrents lisent leur puce dans le boîtier maître pour obtenir leur statut et récupérer leurs temps intermédiaires.
 
-4bis. Corrigez les problèmes directement dans l'onglet [Coureurs] et en utilisant la [Fenêtre de fusion]. Lisez les [workflows](../workflows/index.fr.html) pour vous faire une idée des process manuel et auto.
+4bis. Corrigez les problèmes directement dans l'onglet [Coureurs] et en utilisant la [Fenêtre de fusion]. Découvrez le [Process Auto](../workflows/auto.fr.html) pour vous faire une idée des process manuel et auto.
 
 > *Découvrez le mode auto dans ce [screencast](http://www.youtube.com/watch?v=Q9KDWSMckg4).*
 

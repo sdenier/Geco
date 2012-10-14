@@ -6,7 +6,8 @@ in_menu: true
 
 # Modes de lecture des puces
 
-Cette page décrit les trois modes de lecture accessibles depuis la [barre d'outils](toolbar.fr.html) : compétition, entraînement et inscription. Ces modes peuvent tous utiliser la **détection automatique des circuits** et l'inscription automatique depuis l'archive supportées par Geco. Les [workflows](../workflows/index.fr.html) expliquent de façon plus détaillée différentes organisations avec ces modes.
+Cette page décrit les trois modes de lecture accessibles depuis la [barre d'outils](toolbar.fr.html) : compétition, entraînement et inscription. Ces modes peuvent tous utiliser la **détection automatique des circuits** et l'inscription automatique depuis l'archive supportées par Geco.
+
 
 ## Mode compétition
 
@@ -17,7 +18,7 @@ Geco peut être [configuré](stage.fr.html) en manuel ou en auto pour la lecture
 
 ## Mode entraînement
 
-C'est un mode spécial pour faciliter les entraînements en minimisant les interventions GEC.
+C'est un mode spécial pour faciliter les [entraînements](../workflows/training.fr.html) en minimisant les interventions GEC.
 
 Geco peut aussi être configuré en manuel ou en auto, mais seul le **process auto** offre des fonctions pour l'entraînement (le process manuel est identique en compétition ou en entraînement). Contrairement au mode compétition, Geco n'affecte jamais les statuts *inconnus* et *doublons* aux entrées. Il indique le statut final quelque soit la puce lue, y compris pour les inscriptions anonymes.
 

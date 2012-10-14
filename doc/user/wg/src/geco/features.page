@@ -27,6 +27,8 @@ Geco offers powerful capabilities for ecard reading:
   - detect the course from the punch trace in ecard
   - look up ecard number in archive to retrieve name, club, category...
 
+These features enables different [organisation styles](../workflows/index.html) with Geco, from lighweight training to medium-size race.
+
 Geco UI is organized as a series of panels in tabs, each dedicated to one aspect of the race.
 
 - [Stage] to configure stage, clubs, courses, categories

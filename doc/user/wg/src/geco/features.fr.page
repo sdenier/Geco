@@ -27,6 +27,8 @@ Geco offre des possibilités puissantes pour la lecture des puces :
   - détection du circuit d'après la trace des poinçons dans la puce
   - recherche de la puce dans une archive pour renseigner le nom, club, catégorie...
 
+Ces fonctionnalités rendent possible différents [styles d'organisation](../workflows/index.fr.html) pour Geco, depuis un entraînement léger jusqu'à une compétition de taille moyenne.
+
 L'interface graphique de Geco est organisée autour d'une série d'onglets, chacun dédié à un aspect de la course.
 
 - [Étape] pour configurer l'étape, les clubs, circuits, catégories

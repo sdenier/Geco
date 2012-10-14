@@ -13,31 +13,35 @@ Geco 1.3 exploite l'algorithme de détection des circuits pour faciliter de nouv
 
 ### Nouveautés
 
-- 3 modes pour la lecture des puces
+- [3 modes](../guide/ecard_modes.fr.html) pour la lecture des puces
   - compétition (mode classique)
   - entraînement (permet de relire plusieurs fois la même puce avec différents circuits - à chaque lecture une nouvelle entrée est créée/copiée)
   - inscription (enregistrement le jour de la course)
-- Refonte de l'assistant de fusion
+- Refonte de l'[assistant de fusion](../guide/merge.fr.html)
   - affichage de plus d'informations
   - détection du circuit à la demande
   - recherche incrémentale dans la base des inscrits ou dans l'archive
 - circuit Auto disponible par défaut
 - import de circuits au format XML IOF V3 (OCAD 11...) - beta
-- Nouvelles fonctions batch
+- Nouvelles [fonctions](../guide/functions.fr.html) batch
   - import des logs des stations (stations contrôle/départ lues avec SIConfig) : détection des absents et des coureurs encore en course
   - import d'un fichier de puces créé par SIConfig pour recréer toute la course et les résultats à partir de la mémoire de la station maître
   - export d'un log arbitrage, indiquant les modifications manuelles détectées sur la course
   - remise à zéro (partielle) de la base d'une course
 
+La nouvelle section [Workflows](../workflows/index.fr.html) décrit comment exploiter ces fonctionnalités ensemble.
+
+
 ### Améliorations mineures
 
 - ajout du statut "Hors-délai"
-- statistiques mieux organisées dans l'onglet log
 - format des résultats et calcul du pas dans les résultats
 - format des tickets coureurs, config en-tête et pied de page
-- export des résultats par circuit au format XML (et plus seulement par catégorie)
-- mode manuel/mode auto/insertion auto archive : ce sont maintenant des options à choisir dans la configuration de la course
 - mise à jour du format CSV des résultats pour fournir plus d'informations
+- export des résultats par circuit au format XML (et plus seulement par catégorie)
+- statistiques mieux organisées dans l'onglet log
+- mode manuel/mode auto/insertion auto archive : ce sont maintenant des options à choisir dans la configuration de la course
+
 
 ### Bugs corrigés
 

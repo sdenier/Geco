@@ -22,6 +22,10 @@
 	<target name="cleanWebgen">
 		<delete dir="${wg.dir}/out" />
 		<delete file="${wg.dir}/webgen.cache" />
+		<mkdir dir="${wg.dir}/out/samples" />
+    	<copy todir="${wg.dir}/out/samples">
+    		<fileset dir="${wg.dir}/src/samples" />
+		</copy>
     </target>
 	
     <target name="webgen">

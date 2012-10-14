@@ -6,7 +6,7 @@ in_menu: true
 
 # Ecard Reading Modes
 
-This page describes the three reading modes available from the [toolbar](toolbar.html) : racing, training, and register. These modes can all use the **automatic course detection** and the automatic registration from archive provided by Geco. The [workflows](../workflows/index.html) page explains in detail different set-ups with these modes.
+This page describes the three reading modes available from the [toolbar](toolbar.html) : racing, training, and register. These modes can all use the **automatic course detection** and the automatic registration from archive provided by Geco.
 
 
 ## Racing Mode
@@ -18,7 +18,7 @@ Geco can be [set up](stage.html) as manual or auto for ecard reading. With manua
 
 ## Training Mode
 
-This is a special mode designed to minimize actions and enable an easy workflow during training events.
+This is a special mode designed to minimize actions and enable an easy workflow during [training events](../workflows/training.html).
 
 Geco can still be set up as manual or auto. However only the **auto handler** provides training functionalities (manual handler is the same for racing and training modes). Contrary to the racing mode, Geco never sets *unknown* or *duplicate* statuses for entries. It directly sets the final status, including for anonymous entries.
 

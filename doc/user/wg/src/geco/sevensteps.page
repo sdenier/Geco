@@ -6,7 +6,7 @@ in_menu: true
 
 # Seven Steps to manage an O' event with Geco
 
-Here is a quick guide to discover the essential features of Geco: seven steps to handle the computerized organization of an orienteering event. Read on for starters.
+Here is a quick guide to discover the essential features of Geco: seven steps to handle the computerized organization of an orienteering event. Read on for starters. For an overview of different organisation styles, read the [workflows](../workflows/index.html) section.
 
 1\. Use the [Launcher] and the [Stage] panel to set up a new stage.
 
@@ -18,7 +18,7 @@ Here is a quick guide to discover the essential features of Geco: seven steps to
 
 > Runners download their e-card in the reader to check their status and get their split times.
 
-4bis. Resolve problems directly in the [Runners] panel and using the [Merge] dialog (read [Workflows](../workflows/index.html) to get a better a picture of manual vs auto handler).
+4bis. Resolve problems directly in the [Runners] panel and using the [Merge] dialog (read [Auto handler](../workflows/auto.html) to get a better a picture of manual vs auto handler).
 
 5\. Print intermediate [Results].
 
