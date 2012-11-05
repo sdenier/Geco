@@ -91,7 +91,7 @@
 	
     <target name="build_distrib" depends="build_release_jar,userHelp">
     	<echo message="${geco.jarname}" />
-    	<zip destfile="${geco.dir}/geco_${version.num}.zip">
+    	<zip destfile="${geco.dir}/geco-${version.num}.zip">
     		<fileset file="${geco.dir}/${geco.jarname}"/>
     		<fileset file="${geco.dir}/README.md"/>
     		<fileset dir="${geco.dir}" includes="help/"/>
@@ -105,7 +105,7 @@
 			<fileset dir="demo" includes="**/backups/*.zip"/>
 			<fileset dir="demo" includes="**/*.log"/>
 		</delete>
-    	<zip destfile="${geco.dir}/geco_${version.num}_demo.zip">
+    	<zip destfile="${geco.dir}/geco-${version.num}_demo.zip">
     		<fileset file="${geco.dir}/${geco.jarname}"/>
         	<fileset file="${geco.dir}/README.md"/>
     		<fileset dir="${geco.dir}" includes="help/"/>
