@@ -1,7 +1,8 @@
 Geco 1.3
 ========
 Copyright (c) 2008-2012 Simon Denier, Philipp Walker  
-Contact: http://geco.webou.net
+Contact: http://geco.webou.net  
+[![Build Status](https://travis-ci.org/sdenier/Geco.png)](https://travis-ci.org/sdenier/Geco)
 
 Geco is a lightweight application for managing orienteering races.  
 It is written in Java and designed to be cross-platform.  
