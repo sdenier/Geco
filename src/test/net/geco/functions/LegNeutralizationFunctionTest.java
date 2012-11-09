@@ -29,6 +29,7 @@ import net.geco.control.ResultBuilder;
 import net.geco.functions.LegNeutralizationFunction;
 import net.geco.model.Category;
 import net.geco.model.Course;
+import net.geco.model.Messages;
 import net.geco.model.Punch;
 import net.geco.model.Registry;
 import net.geco.model.Result;
@@ -56,6 +57,7 @@ public class LegNeutralizationFunctionTest {
 
 	@Before
 	public void setUp() {
+		Messages.put("ui", "net.geco.ui.messages"); //$NON-NLS-1$ //$NON-NLS-2$
 		factory = new POFactory();
 		courseA = createCourse("A", 42, 43, 45, 31, 45, 32);
 	}
