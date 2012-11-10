@@ -25,8 +25,6 @@
   </target>
 
   <target name="test" depends="compile">
-    <property environment="env"/>
-    <echo>LANG: ${env.LANG}</echo>
     <junit failureproperty="junit.failure">
       <classpath>
         <pathelement path="${build}"/>
