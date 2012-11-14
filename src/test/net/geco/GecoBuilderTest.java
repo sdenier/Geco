@@ -113,7 +113,7 @@ public class GecoBuilderTest {
 		Assert.assertEquals(mockTab, window.getComponent(0));
 	}
 
-	@Test
+	@Ignore @Test
 	public void stagePanelSetupWithTabs(){
 		ConfigPanel mockConfig = mock(ConfigPanel.class);
 		JPanel mockPanel = mock(JPanel.class);
