@@ -73,6 +73,7 @@ Double-click the jar file.
 
 Geco 1.3 can load 1.2 data but not 1.1 data.
 
+
 User documentation
 ------------------
 
@@ -93,6 +94,14 @@ Directory structure
 - `licences/LICENSE` - license info (source code)
 - `licences/gpl-2.0.txt` - license info (application)
 - `licences/icu-license.txt` - more license info
+
+
+Contribution
+------------
+If you want to contribute to Geco (whatever your skills are), you can! Just read [that page](http://geco.webou.net/geco/contribute.html) to see what you can do.
+
+If you specifically want to develop, go read the [dev guidelines](https://github.com/sdenier/Geco/blob/master/README_DEV.md).
+
 
 Thanks
 ------

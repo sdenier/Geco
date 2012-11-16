@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project basedir="." default="buildnumber" name="GecO">
+<project basedir="." default="buildnumber" name="Geco">
 	<property file="src/version.prop"/>
 	<property file="dev.prop"/>
 	<property file="webstart/webstart.prop"/>
