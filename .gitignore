@@ -1,0 +1,7 @@
+/help
+/dev.prop
+/geco*.jar
+/geco*.zip
+/doc/user/wg/out
+/doc/user/wg/webgen.cache
+*.log

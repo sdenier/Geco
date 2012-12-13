@@ -22,7 +22,9 @@ public interface IGecoApp extends IGeco {
 	public String version();
 	
 	public String buildNumber();
-	
+
+	public String buildStamp();
+
 	public String getAppName();
 
 	public Stage stage();

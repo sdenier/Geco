@@ -1,4 +1,5 @@
-#Mon, 05 Nov 2012 23:53:57 +0100
+#Thu, 13 Dec 2012 23:57:47 +0100
 
-version.num=1.3
-build.num=774-20121105
+version.num=2.alpha
+build.num=v2.alpha
+build.stamp=20121213

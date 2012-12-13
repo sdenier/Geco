@@ -64,6 +64,8 @@ public class Geco implements IGecoApp, MergeRequestHandler {
 	
 	public static String BUILDNUMBER;
 
+	public static String BUILDSTAMP;
+
 	private static boolean leisureMode = false;
 
 	private static String startDir = null;
@@ -74,10 +76,12 @@ public class Geco implements IGecoApp, MergeRequestHandler {
 		Properties prop = new Properties();
 		VERSION = "x.x"; //$NON-NLS-1$
 		BUILDNUMBER	= "x"; //$NON-NLS-1$
+		BUILDSTAMP = "x"; //$NON-NLS-1$
 		try {
 			prop.load(getClass().getResourceAsStream("/version.prop")); //$NON-NLS-1$
 			VERSION = prop.getProperty("version.num"); //$NON-NLS-1$
 			BUILDNUMBER	= prop.getProperty("build.num"); //$NON-NLS-1$
+			BUILDSTAMP	= prop.getProperty("build.stamp"); //$NON-NLS-1$
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -237,6 +241,10 @@ public class Geco implements IGecoApp, MergeRequestHandler {
 	
 	public String buildNumber() {
 		return BUILDNUMBER;
+	}
+
+	public String buildStamp() {
+		return BUILDSTAMP;
 	}
 
 	public boolean leisureModeOn() {

@@ -45,31 +45,31 @@
     		<fileset dir="${wg.dir}/out" />
 		</copy>
     </target>
-	
+
 	<target name="buildnumber">
-		<exec executable="${hg.cmdpath}" outputproperty="hg.buildnumber">
-			<arg line="parents --template {rev}" />
+		<exec executable="git" outputproperty="build.number">
+			<arg line="describe --long" />
 		</exec>
 		<tstamp />
-		<property name="build.number" value="${hg.buildnumber}-${DSTAMP}"/>
-		<property name="impl.number" value="${version.num}-${build.number}"/>
-		<echo message="${version.num}" />
-		<echo message="${build.number}" />
+		<echo message="VERSION ${version.num}" />
+		<echo message="BUILD ${build.number}" />
+		<echo message="STAMP ${DSTAMP}" />
 	</target>
 
-	<target name="file_buildnumber" depends="buildnumber">
+	<target name="fileout_buildnumber" depends="buildnumber">
 		<propertyfile file="src/version.prop">
 			<entry key="build.num" value="${build.number}"/>
+			<entry key="build.stamp" value="${DSTAMP}"/>
 		</propertyfile>	
 	</target>
 	
-	<target name="build_release_jar" depends="file_buildnumber">
+	<target name="build_release_jar" depends="fileout_buildnumber">
 		<property name="geco.jarname" value="geco-${version.num}.jar" />
 	  	<antcall target="build_jar" />
 	</target>
 
-	<target name="build_dev_jar" depends="file_buildnumber">
-		<property name="geco.jarname" value="geco-${impl.number}.jar" />
+	<target name="build_dev_jar" depends="fileout_buildnumber">
+		<property name="geco.jarname" value="geco-${build.number}.jar" />
 	  	<antcall target="build_jar" />
 	</target>
 	
@@ -80,7 +80,7 @@
                 <attribute name="Class-Path" value="."/>
             	<attribute name="Built-By" value="${dev.username}"/>
             	<attribute name="Built-Date" value="${TODAY}"/> 
-               	<attribute name="Implementation-Version" value="${impl.number}"/>
+               	<attribute name="Implementation-Version" value="${build.number}"/>
             </manifest>
             <fileset dir="${geco.dir}/bin" excludes="test/,version.prop"/>
             <fileset file="${geco.dir}/src/version.prop"/>
@@ -122,7 +122,7 @@
                 <attribute name="Class-Path" value="."/>
             	<attribute name="Built-By" value="${dev.username}"/>
             	<attribute name="Built-Date" value="${TODAY}"/> 
-               	<attribute name="Implementation-Version" value="${impl.number}"/>
+               	<attribute name="Implementation-Version" value="${build.number}"/>
             </manifest>
             <fileset dir="${geco.dir}/bin" excludes="test/"/>
         </jar>
@@ -135,7 +135,7 @@
                 <attribute name="Class-Path" value="."/>
             	<attribute name="Built-By" value="${dev.username}"/>
             	<attribute name="Built-Date" value="${TODAY}"/> 
-               	<attribute name="Implementation-Version" value="${impl.number}"/>
+               	<attribute name="Implementation-Version" value="${build.number}"/>
             </manifest>
             <fileset dir="${geco.dir}/bin" excludes="test/"/>
             <fileset dir="${webstart.data}"/>

@@ -52,7 +52,7 @@ Geco is not perfect from this point of view. I started Geco before I regularly p
 
 TDD also helps to separate things between services (controls) and UI: test-develop your services, then plug the UI on top. The UI layer should be mostly setup/layout, so that testing is trivial and can be handmade (in other words: no business behavior in UI). If you feel uneasy because you can't write a test for some complex behaviour, you're doing it wrong!
 
-> Writing UI tests is hard, especially in an application which was not TDD from the start (like Geco). If you want to do this, take a look at Fest for Swing testing. A good option may be to use a BDD library (like JBehave) with UI testing, as UI tests tend to be cluttered with technicalities which make them hard to understand.
+> Writing UI tests is hard, especially in a program which was not TDD from the start (like Geco). If you want to do this, take a look at Fest for Swing testing. A good option may be to use a BDD library (like JBehave) with UI testing, as UI tests tend to be cluttered with technicalities which make them hard to understand.
 
 
 User Documentation
@@ -86,7 +86,7 @@ Geco targets the [GitHub flow](http://scottchacon.com/2011/08/31/github-flow.htm
 - `master` branch is always releasable: one can checkout `master` and build at anytime an intermediate release - this implies any push to `master` contains a complete feature (or bug fixes otherwise)
 - stable releases (i.e., the archive bundle with runnable jar, doc...) are built and tagged from time to time from `master`
 - development happens in parallel branches, which are merged into master when finished (for long-term development, there might be special 'release' branches)
-- any push to the repository triggers a build on [Travis CI](https://travis-ci.org/sdenier/Geco), which compiles the code and launches the test.
+- any push to the repository triggers a build on [Travis CI](https://travis-ci.org/sdenier/Geco), which compiles the code and runs tests.
 
 The goal is to have a fast release cycle, based on small increments: each new feature pushed to master can produce a development release. When a set of new features in master has been well tested and is deemed robust, master is also tagged as a stable release and a new bundle is built.
 
@@ -101,4 +101,4 @@ The file `ant.xml` contains targets for the Ant build system, especially to crea
 - `build_release_jar` builds the jar for a stable release. The only difference is in the given name, which is simpler, like `geco-1.3.jar`
 - `build_distrib` builds the archive bundle for a stable release, including the jar, the user documentation and other files.
 
-> The `build.xml` file contains targets for continuous integration with Travis.
+> Note: the `build.xml` file contains targets for continuous integration with Travis.
