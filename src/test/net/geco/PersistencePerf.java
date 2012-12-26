@@ -26,23 +26,24 @@ public class PersistencePerf {
 		this.testDir = testDir;
 	}
 
+	public PersistencePerf(String testDir, Stage stage) {
+		this(testDir);
+		this.stage = stage;
+	}
+	
 	public static void main(String[] args) {
-		String testDir = args[0];
-		new PersistencePerf(testDir).run();
-	}
-
-	public void run() {
 		System.out.println("*** Performance Tests for Persistence Libraries ***");
-		initialLoad();
-		assessCsvSave();
-		assessCsvLoad();		
+		String testDir = args[0];
+		Stage stage = new PersistencePerf(testDir).initialLoad();
+		new PersistencePerf(testDir, stage).run();
 	}
-
-	private void initialLoad() {
+	
+	private Stage initialLoad() {
 		long start = System.currentTimeMillis();
-		stage = vanillaLoad(testDir);
+		Stage stage = vanillaLoad(testDir);
 		long end = System.currentTimeMillis();
 		System.out.println("\nInitial Load: " + (end - start) + " ms");
+		return stage;
 	}
 
 	private Stage vanillaLoad(String testDir) {
@@ -50,47 +51,67 @@ public class PersistencePerf {
 		StageBuilder stageBuilder = new StageBuilder(factory);
 		return stageBuilder.loadStage(testDir, new PenaltyChecker(factory));
 	}
-
-	private void assessCsvSave() {
-		System.out.println("\n*** CSV Save/Backup x10 (vanilla) ***");
-		long[] times = new long[10];
-		long timesSum = 0;
-		for (int i = 0; i < times.length; i++) {
-			times[i] = vanillaSave(testDir);
-			timesSum += times[i];
-			System.out.print(times[i] + " ms, ");
-		}
-		System.out.println("\nMean time: " + (timesSum / 10.0) + " ms");
-		
-	}
 	
-	private long vanillaSave(String testDir) {
-		long start = System.currentTimeMillis();
-		POFactory factory = new POFactory();
-		StageBuilder stageBuilder = new StageBuilder(factory);
-		stageBuilder.save(stage, new Properties(), "backup.zip");
-		long end = System.currentTimeMillis();
-		return end - start;
-	}
-	
-	private void assessCsvLoad() {
-		System.out.println("\n*** CSV Load x10 (vanilla) ***");
-		long[] times = new long[10];
-		long timesSum = 0;
-		for (int i = 0; i < times.length; i++) {
-			times[i] = csvLoad(testDir);
-			timesSum += times[i];
-			System.out.print(times[i] + " ms, ");
-		}
-		System.out.println("\nMean time: " + (timesSum / 10.0) + " ms");
-		
+	public void run() {
+		new CsvSavePerf().run();
+		new CsvLoadPerf().run();
 	}
 
-	private long csvLoad(String testDir) {
-		long start = System.currentTimeMillis();
-		vanillaLoad(testDir);
-		long end = System.currentTimeMillis();
-		return end - start;
+	public abstract class Perf {
+		
+		public void run() {
+			System.out.println(String.format("\n*** %s ***", title()));
+			assessTenRun();
+		}
+
+		private void assessTenRun() {
+			long[] times = new long[10];
+			long timesSum = 0;
+			for (int i = 0; i < times.length; i++) {
+				times[i] = timeRun();
+				timesSum += times[i];
+				System.out.print(times[i] + " ms, ");
+			}
+			System.out.println("\nMean time: " + (timesSum / 10.0) + " ms");
+		}
+		
+		private long timeRun() {
+			long start = System.currentTimeMillis();
+			doRun();
+			long end = System.currentTimeMillis();
+			return end - start;
+		}
+
+		protected abstract String title();
+		
+		protected abstract void doRun();
+		
+	}
+
+	public class CsvSavePerf extends Perf {
+		
+		protected String title() {
+			return "CSV Save (vanilla)";
+		}
+
+		protected void doRun() {
+			POFactory factory = new POFactory();
+			StageBuilder stageBuilder = new StageBuilder(factory);
+			stageBuilder.save(stage, new Properties(), "backup.zip");
+		}
+		
+	}
+
+	public class CsvLoadPerf extends Perf {
+		
+		protected String title() {
+			return "CSV Load (vanilla)";
+		}
+
+		protected void doRun() {
+			vanillaLoad(testDir);
+		}
+		
 	}
 
 }
