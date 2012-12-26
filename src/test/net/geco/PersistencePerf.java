@@ -60,10 +60,15 @@ public class PersistencePerf {
 	public abstract class Perf {
 		
 		public void run() {
-			System.out.println(String.format("\n*** %s ***", title()));
+			System.out.println(String.format("\n*** %s x10 ***", title()));
 			assessTenRun();
 		}
 
+		public void runOnce() {
+			System.out.println(String.format("\n*** %s x1 ***", title()));
+			System.out.println(timeRun() + " ms");
+		}
+		
 		private void assessTenRun() {
 			long[] times = new long[10];
 			long timesSum = 0;
