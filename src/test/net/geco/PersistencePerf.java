@@ -10,6 +10,7 @@ import net.geco.control.PenaltyChecker;
 import net.geco.control.StageBuilder;
 import net.geco.model.Stage;
 import net.geco.model.impl.POFactory;
+import net.geco.model.iojson.PersistentStore;
 
 /**
  * @author Simon Denier
@@ -55,6 +56,7 @@ public class PersistencePerf {
 	public void run() {
 		new CsvSavePerf().run();
 		new CsvLoadPerf().run();
+		new JsonSavePerf().run();
 	}
 
 	public abstract class Perf {
@@ -119,4 +121,16 @@ public class PersistencePerf {
 		
 	}
 
+	public class JsonSavePerf extends Perf {
+		
+		protected String title() {
+			return "Json Save";
+		}
+
+		protected void doRun() {
+			new PersistentStore().storeData(stage);
+		}
+		
+	}
+	
 }
