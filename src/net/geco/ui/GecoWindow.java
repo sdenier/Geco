@@ -186,7 +186,7 @@ public class GecoWindow extends JFrame
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);
 		
-		initNavigationToolbar(toolBar);
+		initOpenSaveToolbar(toolBar);
 		toolBar.addSeparator();
 		
 		JButton recheckB = new JButton(Messages.uiGet("GecoWindow.RecheckButton"), createIcon(RecheckAll)); //$NON-NLS-1$
@@ -209,7 +209,7 @@ public class GecoWindow extends JFrame
 		return toolBar;
 	}
 
-	private void initNavigationToolbar(JToolBar toolBar) {
+	private void initOpenSaveToolbar(JToolBar toolBar) {
 		JButton openB = new JButton(Messages.uiGet("GecoWindow.NewOpenButton"), createIcon(Open)); //$NON-NLS-1$
 		openB.addActionListener(new ActionListener() {
 			@Override
