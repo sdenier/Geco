@@ -4,10 +4,15 @@
  */
 package net.geco.model.iojson;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import net.geco.basics.GecoResources;
 import net.geco.model.Category;
@@ -53,7 +58,8 @@ public class PersistentStore {
 
 	public void storeData(Stage stage) {
 		try {
-			BufferedWriter writer = GecoResources.getSafeWriterFor(stage.getBaseDir() + GecoResources.sep + "store.json");
+			String datafile = "store.json";
+			BufferedWriter writer = GecoResources.getSafeWriterFor(stage.getBaseDir() + GecoResources.sep + datafile);
 
 			JSONWriter json = new JSONWriter(writer);
 			json.object()
@@ -189,6 +195,9 @@ public class PersistentStore {
 			json.endObject();
 			writer.newLine();
 			writer.close();
+			
+			backupData(stage.getBaseDir(), datafile, "store.zip");
+			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -200,5 +209,34 @@ public class PersistentStore {
 			e.printStackTrace();
 		}
 	}
+	
+	public void backupData(String basedir, String datafile, String backupname) {
+		try {
+			ZipOutputStream zipStream = 
+								new ZipOutputStream(new FileOutputStream(basedir + GecoResources.sep + backupname));
+			writeZipEntry(zipStream, datafile, basedir);	
+			zipStream.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
+	private void writeZipEntry(ZipOutputStream zipStream, String filename, String basedir)
+			throws IOException, FileNotFoundException {
+		ZipEntry zipEntry = new ZipEntry(filename);
+		zipStream.putNextEntry(zipEntry);
+		byte[] buffer = new byte[4096];
+		BufferedInputStream inputStream =
+						new BufferedInputStream(new FileInputStream(basedir + GecoResources.sep + filename));
+		int len;
+		while( (len = inputStream.read(buffer)) != -1 ) {
+			zipStream.write(buffer, 0, len);
+		}
+		inputStream.close();
+		zipStream.closeEntry();
+	}
+
+	
 }
