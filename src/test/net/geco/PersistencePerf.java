@@ -61,9 +61,11 @@ public class PersistencePerf {
 
 	public abstract class Perf {
 		
+		private static final int X = 10;
+
 		public void run() {
-			System.out.println(String.format("\n*** %s x10 ***", title()));
-			assessTenRun();
+			System.out.println(String.format("\n*** %s x%s ***", title(), X));
+			assessXRun();
 		}
 
 		public void runOnce() {
@@ -71,15 +73,18 @@ public class PersistencePerf {
 			System.out.println(timeRun() + " ms");
 		}
 		
-		private void assessTenRun() {
-			long[] times = new long[10];
+		private void assessXRun() {
+			long dummyRun = timeRun();
+			System.out.println("First run: " + dummyRun + " ms");
+			
+			long[] times = new long[X];
 			long timesSum = 0;
 			for (int i = 0; i < times.length; i++) {
 				times[i] = timeRun();
 				timesSum += times[i];
 				System.out.print(times[i] + " ms, ");
 			}
-			System.out.println("\nMean time: " + (timesSum / 10.0) + " ms");
+			System.out.println("\nMean time (without first): " + (timesSum / (float) X) + " ms");
 		}
 		
 		private long timeRun() {
