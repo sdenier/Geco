@@ -18,7 +18,7 @@ import net.geco.model.iojson.PersistentStore;
  *
  */
 public class PersistencePerf {
-	
+
 	private String testDir;
 	
 	private Stage stage;
@@ -54,9 +54,10 @@ public class PersistencePerf {
 	}
 	
 	public void run() {
+		new JsonSavePerf().run();
+		new JsonLoadPerf().run();
 		new CsvSavePerf().run();
 		new CsvLoadPerf().run();
-		new JsonSavePerf().run();
 	}
 
 	public abstract class Perf {
@@ -136,6 +137,19 @@ public class PersistencePerf {
 			new PersistentStore().storeData(stage);
 		}
 		
+	}
+	
+	public class JsonLoadPerf extends Perf {
+
+		protected String title() {
+			return "Json Load";
+		}
+
+		protected void doRun() {
+			POFactory factory = new POFactory();
+			new PersistentStore().loadData(testDir, factory, new PenaltyChecker(factory));
+		}
+
 	}
 	
 }

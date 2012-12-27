@@ -5,28 +5,37 @@
 package net.geco.model.iojson;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import net.geco.basics.GecoResources;
+import net.geco.control.Checker;
 import net.geco.model.Category;
 import net.geco.model.Club;
 import net.geco.model.Course;
+import net.geco.model.Factory;
 import net.geco.model.HeatSet;
 import net.geco.model.Punch;
+import net.geco.model.Registry;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.RunnerResult;
 import net.geco.model.Stage;
+import net.geco.model.Status;
 import net.geco.model.Trace;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.json.JSONWriter;
 
 /**
@@ -192,6 +201,8 @@ public class PersistentStore {
 				writer.newLine();
 			}
 			json.endArray();
+			writer.newLine();
+			json.key("maxid").value(id);
 			json.endObject();
 			writer.newLine();
 			writer.close();
@@ -236,6 +247,133 @@ public class PersistentStore {
 		}
 		inputStream.close();
 		zipStream.closeEntry();
+	}
+
+	public Stage loadData(String testDir, Factory factory, Checker checker) {
+		Stage newStage = factory.createStage();
+		try {
+			BufferedReader reader = GecoResources.getSafeReaderFor(testDir + GecoResources.sep + "store.json");
+			JSONObject store = new JSONObject(new JSONTokener(reader));
+			
+//			loadStageProperties(newStage, baseDir);
+			importDataIntoRegistry(store, newStage, factory);
+//			checker.postInitialize(newStage); // post initialization
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return newStage;
+	}
+
+	private void importDataIntoRegistry(JSONObject store, Stage newStage, Factory factory) {
+		Registry registry = new Registry();
+		newStage.setRegistry(registry);
+		try {
+			Object[] refMap = new Object[store.getInt("maxid") + 1];
+			
+			JSONArray courses = store.getJSONArray("courses");
+			for (int i = 0; i < courses.length(); i++) {
+				JSONObject c = courses.getJSONObject(i);
+				Course course = factory.createCourse();
+				course.setName( c.getString("name") );
+				course.setLength( c.getInt("length") );
+				course.setClimb( c.getInt("climb") );
+				JSONArray codes = c.getJSONArray("codes");
+				int[] codez = new int[codes.length()];
+				for (int j = 0; j < codes.length(); j++) {
+					codez[j] = codes.getInt(j);
+				}
+				course.setCodes(codez);
+				refMap[c.getInt("id")] = course;
+				registry.addCourse(course);
+			}
+			registry.ensureAutoCourse(factory);
+			
+			JSONArray categories = store.getJSONArray("categories");
+			for (int i = 0; i < categories.length(); i++) {
+				JSONObject c = categories.getJSONObject(i);
+				Category category = factory.createCategory();
+				category.setName(c.getString("name"));
+				category.setLongname(c.getString("long"));
+				category.setCourse((Course) refMap[c.optInt("course")]); // ref[0] = null
+				refMap[c.getInt("id")] = category;
+				registry.addCategory(category);
+			}
+			
+			JSONArray clubs = store.getJSONArray("clubs");
+			for (int i = 0; i < clubs.length(); i++) {
+				JSONObject c = clubs.getJSONObject(i);
+				Club club = factory.createClub();
+				club.setName(c.getString("name"));
+				club.setShortname(c.getString("short"));
+				refMap[c.getInt("id")] = club;
+				registry.addClub(club);
+			}
+			
+			store.getJSONArray("heatsets");
+			
+			JSONArray runnersData = store.getJSONArray("runnersData");
+			for (int i = 0; i < runnersData.length(); i++) {
+				JSONArray runnerData = runnersData.getJSONArray(i);
+				
+				JSONObject r = runnerData.getJSONObject(0);
+				Runner runner = factory.createRunner();
+				runner.setStartId(r.getInt("id"));
+				runner.setFirstname(r.getString("first"));
+				runner.setLastname(r.getString("last"));
+				runner.setEcard(r.getString("ecard"));
+				runner.setClub((Club) refMap[r.getInt("club")]);
+				runner.setCategory((Category) refMap[r.getInt("cat")]);
+				runner.setCourse((Course) refMap[r.getInt("course")]);
+				runner.setRegisteredStarttime(new Date(r.getLong("start")));
+				runner.setArchiveId((Integer) r.opt("ark"));
+				registry.addRunner(runner);
+				
+				JSONObject d = runnerData.getJSONObject(1);
+				RunnerRaceData ecardData = factory.createRunnerRaceData();
+				ecardData.setRunner(runner);
+				ecardData.setStarttime(new Date(d.getLong("start")));
+				ecardData.setFinishtime(new Date(d.getLong("finish")));
+				ecardData.setErasetime(new Date(d.getLong("erase")));
+				ecardData.setControltime(new Date(d.getLong("check")));
+				ecardData.setReadtime(new Date(d.getLong("read")));
+				JSONArray p = d.getJSONArray("punches");
+				Punch[] punches = new Punch[p.length() / 2];
+				ecardData.setPunches(punches);
+				for (int j = 0; j < punches.length; j++) {
+					punches[j] = factory.createPunch();
+					punches[j].setCode(p.getInt(2*j));
+					punches[j].setTime(new Date(p.getLong(2*j + 1)));
+				}
+				registry.addRunnerData(ecardData);
+				
+				JSONObject res = runnerData.getJSONObject(2);
+				RunnerResult result = factory.createRunnerResult();
+				result.setRacetime(res.getLong("time"));
+				result.setStatus(Status.valueOf(res.getString("status")));
+				result.setNbMPs(res.getInt("mps"));
+				result.setTimePenalty(res.getLong("penalty"));
+				JSONArray t = res.getJSONArray("trace");
+				Trace[] trace = new Trace[t.length() / 2];
+				result.setTrace(trace);
+				for (int j = 0; j < trace.length; j++) {
+					trace[j] = factory.createTrace(t.getString(2*j), new Date(t.getLong(2*j + 1)));
+				}
+				JSONArray neut = res.getJSONArray("neutralized");
+				for (int j = 0; j < neut.length(); j++) {
+					trace[neut.getInt(j)].setNeutralized(true);
+				}
+				ecardData.setResult(result);
+			}
+			
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	
