@@ -140,31 +140,31 @@ public class PersistentStore {
 				Runner runner = runnerData.getRunner();
 				json.object()
 					.key("id").value(runner.getStartId())
-					.key("f").value(runner.getFirstname())
-					.key("l").value(runner.getLastname())
-					.key("e").value(runner.getEcard())
-					.key("u").value(refFor(runner.getClub()))
-					.key("t").value(refFor(runner.getCategory()))
-					.key("c").value(refFor(runner.getCourse()))
-					.key("s").value(runner.getRegisteredStarttime().getTime());
+					.key("first").value(runner.getFirstname())
+					.key("last").value(runner.getLastname())
+					.key("ecard").value(runner.getEcard())
+					.key("club").value(refFor(runner.getClub()))
+					.key("cat").value(refFor(runner.getCategory()))
+					.key("course").value(refFor(runner.getCourse()))
+					.key("start").value(runner.getRegisteredStarttime().getTime());
 				if( runner.getArchiveId() != null ){
-					json.key("a").value(runner.getArchiveId());
+					json.key("ark").value(runner.getArchiveId());
 				}
 				if( runner.rentedEcard() ){
-					json.key("r").value(true);
+					json.key("rent").value(true);
 				}
 				if( runner.isNC() ){
-					json.key("n").value(true);
+					json.key("nc").value(true);
 				}
 				json.endObject();
 				writer.newLine();
 				json.object()
-					.key("s").value(runnerData.getStarttime().getTime())
-					.key("f").value(runnerData.getFinishtime().getTime())
-					.key("e").value(runnerData.getErasetime().getTime())
-					.key("c").value(runnerData.getControltime().getTime())
-					.key("r").value(runnerData.getReadtime().getTime())
-					.key("p").array();
+					.key("start").value(runnerData.getStarttime().getTime())
+					.key("finish").value(runnerData.getFinishtime().getTime())
+					.key("erase").value(runnerData.getErasetime().getTime())
+					.key("check").value(runnerData.getControltime().getTime())
+					.key("read").value(runnerData.getReadtime().getTime())
+					.key("punches").array();
 				for (Punch punch : runnerData.getPunches()) {
 					json.value(punch.getCode()).value(punch.getTime().getTime());
 				}
@@ -172,16 +172,16 @@ public class PersistentStore {
 				writer.newLine();
 				RunnerResult result = runnerData.getResult();
 				json.object()
-					.key("r").value(result.getRacetime())
-					.key("s").value(result.getStatus())
-					.key("m").value(result.getNbMPs())
-					.key("p").value(result.getTimePenalty())
-					.key("t").array();
+					.key("time").value(result.getRacetime())
+					.key("status").value(result.getStatus())
+					.key("mps").value(result.getNbMPs())
+					.key("penalty").value(result.getTimePenalty())
+					.key("trace").array();
 				for (Trace trace : result.getTrace()) {
 					json.value(trace.getCode()).value(trace.getTime().getTime());
 				}
 				json.endArray()
-					.key("n").array();
+					.key("neutralized").array();
 				for (int i = 0; i < result.getTrace().length; i++) {
 					if( result.getTrace()[i].isNeutralized() ){
 						json.value(i);
