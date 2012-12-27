@@ -14,8 +14,12 @@ import net.geco.model.Category;
 import net.geco.model.Club;
 import net.geco.model.Course;
 import net.geco.model.HeatSet;
+import net.geco.model.Punch;
+import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
+import net.geco.model.RunnerResult;
 import net.geco.model.Stage;
+import net.geco.model.Trace;
 
 import org.json.JSONException;
 import org.json.JSONWriter;
@@ -127,11 +131,57 @@ public class PersistentStore {
 			writer.newLine();
 			for (RunnerRaceData runnerData : stage.registry().getRunnersData()) {
 				json.array();
-				json.object();
-				json.key("id").value(runnerData.getRunner().getStartId());
+				Runner runner = runnerData.getRunner();
+				json.object()
+					.key("id").value(runner.getStartId())
+					.key("f").value(runner.getFirstname())
+					.key("l").value(runner.getLastname())
+					.key("e").value(runner.getEcard())
+					.key("u").value(refFor(runner.getClub()))
+					.key("t").value(refFor(runner.getCategory()))
+					.key("c").value(refFor(runner.getCourse()))
+					.key("s").value(runner.getRegisteredStarttime().getTime());
+				if( runner.getArchiveId() != null ){
+					json.key("a").value(runner.getArchiveId());
+				}
+				if( runner.rentedEcard() ){
+					json.key("r").value(true);
+				}
+				if( runner.isNC() ){
+					json.key("n").value(true);
+				}
 				json.endObject();
-				json.object().endObject();
-				json.object().endObject();
+				writer.newLine();
+				json.object()
+					.key("s").value(runnerData.getStarttime().getTime())
+					.key("f").value(runnerData.getFinishtime().getTime())
+					.key("e").value(runnerData.getErasetime().getTime())
+					.key("c").value(runnerData.getControltime().getTime())
+					.key("r").value(runnerData.getReadtime().getTime())
+					.key("p").array();
+				for (Punch punch : runnerData.getPunches()) {
+					json.value(punch.getCode()).value(punch.getTime().getTime());
+				}
+				json.endArray().endObject();
+				writer.newLine();
+				RunnerResult result = runnerData.getResult();
+				json.object()
+					.key("r").value(result.getRacetime())
+					.key("s").value(result.getStatus())
+					.key("m").value(result.getNbMPs())
+					.key("p").value(result.getTimePenalty())
+					.key("t").array();
+				for (Trace trace : result.getTrace()) {
+					json.value(trace.getCode()).value(trace.getTime().getTime());
+				}
+				json.endArray()
+					.key("n").array();
+				for (int i = 0; i < result.getTrace().length; i++) {
+					if( result.getTrace()[i].isNeutralized() ){
+						json.value(i);
+					}
+				}
+				json.endArray().endObject();
 				json.endArray();
 				writer.newLine();
 			}
