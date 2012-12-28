@@ -46,28 +46,32 @@ import org.json.JSONWriter;
 public class PersistentStore {
 	
 	private static final String MAXID = "maxid";
-	private static final String NEUTRALIZED = "neutralized";
-	private static final String TRACE = "trace";
-	private static final String PENALTY = "penalty";
-	private static final String MPS = "mps";
-	private static final String STATUS = "status";
-	private static final String TIME = "time";
-	private static final String PUNCHES = "punches";
-	private static final String READ = "read";
-	private static final String CHECK = "check";
-	private static final String ERASE = "erase";
-	private static final String FINISH = "finish";
-	private static final String NC = "nc";
-	private static final String RENT = "rent";
-	private static final String ARK = "ark";
-	private static final String START = "start";
-	private static final String CAT = "cat";
-	private static final String CLUB = "club";
-	private static final String ECARD = "ecard";
-	private static final String LAST = "last";
-	private static final String FIRST = "first";
-	private static final String COURSE = "course";
-	private static final String START_ID = "id";
+	
+	private static final String NEUTRALIZED = "n";
+	private static final String TRACE = "r";
+	private static final String PENALTY = "p";
+	private static final String MPS = "m";
+	private static final String STATUS = "s";
+	private static final String TIME = "t";
+	
+	private static final String PUNCHES = "p";
+	private static final String READ = "r";
+	private static final String CHECK = "c";
+	private static final String ERASE = "e";
+	private static final String FINISH = "f";
+	
+	private static final String NC = "n";
+	private static final String RENT = "r";
+	private static final String ARK = "a";
+	private static final String START = "s";
+	private static final String CAT = "t";
+	private static final String CLUB = "u";
+	private static final String ECARD = "e";
+	private static final String LAST = "l";
+	private static final String FIRST = "f";
+	private static final String COURSE = "c";
+	private static final String START_ID = "i";
+	
 	private static final String ID = "id";
 	private static final String COURSES = "courses";
 	private static final String PROPERTIES = "properties";
