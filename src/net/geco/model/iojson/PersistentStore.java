@@ -45,6 +45,38 @@ import org.json.JSONWriter;
  */
 public class PersistentStore {
 	
+	private static final String MAXID = "maxid";
+	private static final String NEUTRALIZED = "neutralized";
+	private static final String TRACE = "trace";
+	private static final String PENALTY = "penalty";
+	private static final String MPS = "mps";
+	private static final String STATUS = "status";
+	private static final String TIME = "time";
+	private static final String PUNCHES = "punches";
+	private static final String READ = "read";
+	private static final String CHECK = "check";
+	private static final String ERASE = "erase";
+	private static final String FINISH = "finish";
+	private static final String NC = "nc";
+	private static final String RENT = "rent";
+	private static final String ARK = "ark";
+	private static final String START = "start";
+	private static final String CAT = "cat";
+	private static final String CLUB = "club";
+	private static final String ECARD = "ecard";
+	private static final String LAST = "last";
+	private static final String FIRST = "first";
+	private static final String COURSE = "course";
+	private static final String START_ID = "id";
+	private static final String ID = "id";
+	private static final String COURSES = "courses";
+	private static final String PROPERTIES = "properties";
+	private static final String VERSION = "version";
+	private static final String STAGE = "stage";
+	private static final String ZEROHOUR = "zerohour";
+	private static final String BASEDIR = "basedir";
+	private static final String NAME = "name";
+
 	private int id;
 	private HashMap<Object, Integer> idMap;
 
@@ -72,23 +104,23 @@ public class PersistentStore {
 
 			JSONWriter json = new JSONWriter(writer);
 			json.object()
-				.key("version").value("2.0");
+				.key(VERSION).value("2.0");
 			writer.newLine();
-			json.key("stage").object();
+			json.key(STAGE).object();
 			writer.newLine();
-			json.key("name").value(stage.getName())
-				.key("basedir").value(stage.getBaseDir())
-				.key("zerohour").value(stage.getZeroHour())
+			json.key(NAME).value(stage.getName())
+				.key(BASEDIR).value(stage.getBaseDir())
+				.key(ZEROHOUR).value(stage.getZeroHour())
 				.endObject();
 			writer.newLine();
-			json.key("properties").object().endObject();
+			json.key(PROPERTIES).object().endObject();
 			writer.newLine();
-			json.key("courses").array();
+			json.key(COURSES).array();
 			writer.newLine();
 			for (Course c : stage.registry().getCourses()) {
 				json.object()
-					.key("name").value(c.getName())
-					.key("id").value(idFor(c))
+					.key(NAME).value(c.getName())
+					.key(ID).value(idFor(c))
 					.key("length").value(c.getLength())
 					.key("climb").value(c.getClimb())
 					.key("codes").array();
@@ -105,11 +137,11 @@ public class PersistentStore {
 			writer.newLine();
 			for (Category c : stage.registry().getCategories()) {
 				json.object()
-					.key("name").value(c.getShortname())
-					.key("id").value(idFor(c))
+					.key(NAME).value(c.getShortname())
+					.key(ID).value(idFor(c))
 					.key("long").value(c.getLongname());
 				if( c.getCourse() != null ){
-					json.key("course").value(refFor(c.getCourse()));
+					json.key(COURSE).value(refFor(c.getCourse()));
 				}
 				json.endObject();
 				writer.newLine();				
@@ -120,8 +152,8 @@ public class PersistentStore {
 			writer.newLine();
 			for (Club c : stage.registry().getClubs()) {
 				json.object()
-					.key("name").value(c.getName())
-					.key("id").value(idFor(c))
+					.key(NAME).value(c.getName())
+					.key(ID).value(idFor(c))
 					.key("short").value(c.getShortname())
 					.endObject();
 				writer.newLine();		
@@ -132,7 +164,7 @@ public class PersistentStore {
 			writer.newLine();
 			for (HeatSet h : stage.registry().getHeatSets()) {
 				json.object()
-					.key("name").value(h.getName())
+					.key(NAME).value(h.getName())
 					.key("rank").value(h.getQualifyingRank())
 					.key("type").value(h.getSetType())
 					.key("heats").array().endArray()
@@ -148,32 +180,32 @@ public class PersistentStore {
 				json.array();
 				Runner runner = runnerData.getRunner();
 				json.object()
-					.key("id").value(runner.getStartId())
-					.key("first").value(runner.getFirstname())
-					.key("last").value(runner.getLastname())
-					.key("ecard").value(runner.getEcard())
-					.key("club").value(refFor(runner.getClub()))
-					.key("cat").value(refFor(runner.getCategory()))
-					.key("course").value(refFor(runner.getCourse()))
-					.key("start").value(runner.getRegisteredStarttime().getTime());
+					.key(START_ID).value(runner.getStartId())
+					.key(FIRST).value(runner.getFirstname())
+					.key(LAST).value(runner.getLastname())
+					.key(ECARD).value(runner.getEcard())
+					.key(CLUB).value(refFor(runner.getClub()))
+					.key(CAT).value(refFor(runner.getCategory()))
+					.key(COURSE).value(refFor(runner.getCourse()))
+					.key(START).value(runner.getRegisteredStarttime().getTime());
 				if( runner.getArchiveId() != null ){
-					json.key("ark").value(runner.getArchiveId());
+					json.key(ARK).value(runner.getArchiveId());
 				}
 				if( runner.rentedEcard() ){
-					json.key("rent").value(true);
+					json.key(RENT).value(true);
 				}
 				if( runner.isNC() ){
-					json.key("nc").value(true);
+					json.key(NC).value(true);
 				}
 				json.endObject();
 				writer.newLine();
 				json.object()
-					.key("start").value(runnerData.getStarttime().getTime())
-					.key("finish").value(runnerData.getFinishtime().getTime())
-					.key("erase").value(runnerData.getErasetime().getTime())
-					.key("check").value(runnerData.getControltime().getTime())
-					.key("read").value(runnerData.getReadtime().getTime())
-					.key("punches").array();
+					.key(START).value(runnerData.getStarttime().getTime())
+					.key(FINISH).value(runnerData.getFinishtime().getTime())
+					.key(ERASE).value(runnerData.getErasetime().getTime())
+					.key(CHECK).value(runnerData.getControltime().getTime())
+					.key(READ).value(runnerData.getReadtime().getTime())
+					.key(PUNCHES).array();
 				for (Punch punch : runnerData.getPunches()) {
 					json.value(punch.getCode()).value(punch.getTime().getTime());
 				}
@@ -181,10 +213,10 @@ public class PersistentStore {
 				writer.newLine();
 				RunnerResult result = runnerData.getResult();
 				json.object()
-					.key("time").value(result.getRacetime())
-					.key("status").value(result.getStatus())
-					.key("mps").value(result.getNbMPs())
-					.key("penalty").value(result.getTimePenalty());
+					.key(TIME).value(result.getRacetime())
+					.key(STATUS).value(result.getStatus())
+					.key(MPS).value(result.getNbMPs())
+					.key(PENALTY).value(result.getTimePenalty());
 				
 				JSONArray jTrace = new JSONArray();
 				JSONArray jNeutralized = new JSONArray();
@@ -195,14 +227,14 @@ public class PersistentStore {
 						jNeutralized.put(i);
 					}
 				}
-				json.key("trace").value(jTrace);
-				json.key("neutralized").value(jNeutralized);
+				json.key(TRACE).value(jTrace);
+				json.key(NEUTRALIZED).value(jNeutralized);
 				json.endObject().endArray();
 				writer.newLine();
 			}
 			json.endArray();
 			writer.newLine();
-			json.key("maxid").value(id);
+			json.key(MAXID).value(id);
 			json.endObject();
 			writer.newLine();
 			writer.close();
@@ -273,13 +305,13 @@ public class PersistentStore {
 		Registry registry = new Registry();
 		newStage.setRegistry(registry);
 		try {
-			Object[] refMap = new Object[store.getInt("maxid") + 1];
+			Object[] refMap = new Object[store.getInt(MAXID) + 1];
 			
-			JSONArray courses = store.getJSONArray("courses");
+			JSONArray courses = store.getJSONArray(COURSES);
 			for (int i = 0; i < courses.length(); i++) {
 				JSONObject c = courses.getJSONObject(i);
 				Course course = factory.createCourse();
-				course.setName( c.getString("name") );
+				course.setName( c.getString(NAME) );
 				course.setLength( c.getInt("length") );
 				course.setClimb( c.getInt("climb") );
 				JSONArray codes = c.getJSONArray("codes");
@@ -288,7 +320,7 @@ public class PersistentStore {
 					codez[j] = codes.getInt(j);
 				}
 				course.setCodes(codez);
-				refMap[c.getInt("id")] = course;
+				refMap[c.getInt(ID)] = course;
 				registry.addCourse(course);
 			}
 			registry.ensureAutoCourse(factory);
@@ -297,10 +329,10 @@ public class PersistentStore {
 			for (int i = 0; i < categories.length(); i++) {
 				JSONObject c = categories.getJSONObject(i);
 				Category category = factory.createCategory();
-				category.setName(c.getString("name"));
+				category.setName(c.getString(NAME));
 				category.setLongname(c.getString("long"));
-				category.setCourse((Course) refMap[c.optInt("course")]); // ref[0] = null
-				refMap[c.getInt("id")] = category;
+				category.setCourse((Course) refMap[c.optInt(COURSE)]); // ref[0] = null
+				refMap[c.getInt(ID)] = category;
 				registry.addCategory(category);
 			}
 			
@@ -308,9 +340,9 @@ public class PersistentStore {
 			for (int i = 0; i < clubs.length(); i++) {
 				JSONObject c = clubs.getJSONObject(i);
 				Club club = factory.createClub();
-				club.setName(c.getString("name"));
+				club.setName(c.getString(NAME));
 				club.setShortname(c.getString("short"));
-				refMap[c.getInt("id")] = club;
+				refMap[c.getInt(ID)] = club;
 				registry.addClub(club);
 			}
 			
@@ -322,26 +354,26 @@ public class PersistentStore {
 				
 				JSONObject r = runnerData.getJSONObject(0);
 				Runner runner = factory.createRunner();
-				runner.setStartId(r.getInt("id"));
-				runner.setFirstname(r.getString("first"));
-				runner.setLastname(r.getString("last"));
-				runner.setEcard(r.getString("ecard"));
-				runner.setClub((Club) refMap[r.getInt("club")]);
-				runner.setCategory((Category) refMap[r.getInt("cat")]);
-				runner.setCourse((Course) refMap[r.getInt("course")]);
-				runner.setRegisteredStarttime(new Date(r.getLong("start")));
-				runner.setArchiveId((Integer) r.opt("ark"));
+				runner.setStartId(r.getInt(START_ID));
+				runner.setFirstname(r.getString(FIRST));
+				runner.setLastname(r.getString(LAST));
+				runner.setEcard(r.getString(ECARD));
+				runner.setClub((Club) refMap[r.getInt(CLUB)]);
+				runner.setCategory((Category) refMap[r.getInt(CAT)]);
+				runner.setCourse((Course) refMap[r.getInt(COURSE)]);
+				runner.setRegisteredStarttime(new Date(r.getLong(START)));
+				runner.setArchiveId((Integer) r.opt(ARK));
 				registry.addRunner(runner);
 				
 				JSONObject d = runnerData.getJSONObject(1);
 				RunnerRaceData ecardData = factory.createRunnerRaceData();
 				ecardData.setRunner(runner);
-				ecardData.setStarttime(new Date(d.getLong("start")));
-				ecardData.setFinishtime(new Date(d.getLong("finish")));
-				ecardData.setErasetime(new Date(d.getLong("erase")));
-				ecardData.setControltime(new Date(d.getLong("check")));
-				ecardData.setReadtime(new Date(d.getLong("read")));
-				JSONArray p = d.getJSONArray("punches");
+				ecardData.setStarttime(new Date(d.getLong(START)));
+				ecardData.setFinishtime(new Date(d.getLong(FINISH)));
+				ecardData.setErasetime(new Date(d.getLong(ERASE)));
+				ecardData.setControltime(new Date(d.getLong(CHECK)));
+				ecardData.setReadtime(new Date(d.getLong(READ)));
+				JSONArray p = d.getJSONArray(PUNCHES);
 				Punch[] punches = new Punch[p.length() / 2];
 				ecardData.setPunches(punches);
 				for (int j = 0; j < punches.length; j++) {
@@ -353,17 +385,17 @@ public class PersistentStore {
 				
 				JSONObject res = runnerData.getJSONObject(2);
 				RunnerResult result = factory.createRunnerResult();
-				result.setRacetime(res.getLong("time"));
-				result.setStatus(Status.valueOf(res.getString("status")));
-				result.setNbMPs(res.getInt("mps"));
-				result.setTimePenalty(res.getLong("penalty"));
-				JSONArray t = res.getJSONArray("trace");
+				result.setRacetime(res.getLong(TIME));
+				result.setStatus(Status.valueOf(res.getString(STATUS)));
+				result.setNbMPs(res.getInt(MPS));
+				result.setTimePenalty(res.getLong(PENALTY));
+				JSONArray t = res.getJSONArray(TRACE);
 				Trace[] trace = new Trace[t.length() / 2];
 				result.setTrace(trace);
 				for (int j = 0; j < trace.length; j++) {
 					trace[j] = factory.createTrace(t.getString(2*j), new Date(t.getLong(2*j + 1)));
 				}
-				JSONArray neut = res.getJSONArray("neutralized");
+				JSONArray neut = res.getJSONArray(NEUTRALIZED);
 				for (int j = 0; j < neut.length(); j++) {
 					trace[neut.getInt(j)].setNeutralized(true);
 				}
