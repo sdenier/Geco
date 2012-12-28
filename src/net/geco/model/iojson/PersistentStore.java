@@ -184,20 +184,20 @@ public class PersistentStore {
 					.key("time").value(result.getRacetime())
 					.key("status").value(result.getStatus())
 					.key("mps").value(result.getNbMPs())
-					.key("penalty").value(result.getTimePenalty())
-					.key("trace").array();
-				for (Trace trace : result.getTrace()) {
-					json.value(trace.getCode()).value(trace.getTime().getTime());
-				}
-				json.endArray()
-					.key("neutralized").array();
+					.key("penalty").value(result.getTimePenalty());
+				
+				JSONArray jTrace = new JSONArray();
+				JSONArray jNeutralized = new JSONArray();
 				for (int i = 0; i < result.getTrace().length; i++) {
-					if( result.getTrace()[i].isNeutralized() ){
-						json.value(i);
+					Trace trace = result.getTrace()[i];
+					jTrace.put(trace.getCode()).put(trace.getTime().getTime());
+					if( trace.isNeutralized() ){
+						jNeutralized.put(i);
 					}
 				}
-				json.endArray().endObject();
-				json.endArray();
+				json.key("trace").value(jTrace);
+				json.key("neutralized").value(jNeutralized);
+				json.endObject().endArray();
 				writer.newLine();
 			}
 			json.endArray();
