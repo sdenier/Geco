@@ -367,6 +367,7 @@ public class PersistentStore {
 				runner.setCourse((Course) refMap[r.getInt(COURSE)]);
 				runner.setRegisteredStarttime(new Date(r.getLong(START)));
 				runner.setArchiveId((Integer) r.opt(ARK));
+				// TODO: nc, rented
 				registry.addRunner(runner);
 				
 				JSONObject d = runnerData.getJSONObject(1);

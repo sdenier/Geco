@@ -10,6 +10,7 @@ import net.geco.control.PenaltyChecker;
 import net.geco.control.StageBuilder;
 import net.geco.model.Stage;
 import net.geco.model.impl.POFactory;
+import net.geco.model.iojson.JacksonStore;
 import net.geco.model.iojson.PersistentStore;
 
 /**
@@ -54,10 +55,12 @@ public class PersistencePerf {
 	}
 	
 	public void run() {
-		new JsonSavePerf().run();
-		new JsonLoadPerf().run();
 		new CsvSavePerf().run();
 		new CsvLoadPerf().run();
+		new JsonSavePerf().run();
+		new JsonLoadPerf().run();
+		new JacksonSavePerf().run();
+		new JacksonLoadPerf().run();
 	}
 
 	public abstract class Perf {
@@ -148,6 +151,31 @@ public class PersistencePerf {
 		protected void doRun() {
 			POFactory factory = new POFactory();
 			new PersistentStore().loadData(testDir, factory, new PenaltyChecker(factory));
+		}
+
+	}
+	
+	public class JacksonSavePerf extends Perf {
+		
+		protected String title() {
+			return "Jackson Save";
+		}
+
+		protected void doRun() {
+			new JacksonStore().storeData(stage);
+		}
+		
+	}
+	
+	public class JacksonLoadPerf extends Perf {
+
+		protected String title() {
+			return "Jackson Load";
+		}
+
+		protected void doRun() {
+			POFactory factory = new POFactory();
+			new JacksonStore().loadData(testDir, factory, new PenaltyChecker(factory));
 		}
 
 	}
