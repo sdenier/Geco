@@ -223,17 +223,11 @@ public class PersistentStore {
 		}
 	}
 	
-	public void backupData(String basedir, String datafile, String backupname) {
-		try {
-			ZipOutputStream zipStream = 
-								new ZipOutputStream(new FileOutputStream(basedir + GecoResources.sep + backupname));
-			writeZipEntry(zipStream, datafile, basedir);	
-			zipStream.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void backupData(String basedir, String datafile, String backupname) throws IOException {
+		ZipOutputStream zipStream = 
+				new ZipOutputStream(new FileOutputStream(basedir + GecoResources.sep + backupname));
+		writeZipEntry(zipStream, datafile, basedir);	
+		zipStream.close();
 	}
 
 	private void writeZipEntry(ZipOutputStream zipStream, String filename, String basedir)
@@ -271,112 +265,110 @@ public class PersistentStore {
 		return newStage;
 	}
 
-	private void importDataIntoRegistry(JSONObject store, Stage newStage, Factory factory) {
+	private void importDataIntoRegistry(JSONObject store, Stage newStage, Factory factory) throws JSONException {
 		Registry registry = new Registry();
 		newStage.setRegistry(registry);
-		try {
-			Object[] refMap = new Object[store.getInt(K.MAXID) + 1];
+
+		Object[] refMap = new Object[store.getInt(K.MAXID) + 1];
 			
-			JSONArray courses = store.getJSONArray(K.COURSES);
-			for (int i = 0; i < courses.length(); i++) {
-				JSONObject c = courses.getJSONObject(i);
-				Course course = factory.createCourse();
-				course.setName( c.getString(K.NAME) );
-				course.setLength( c.getInt(K.LENGTH) );
-				course.setClimb( c.getInt(K.CLIMB) );
-				JSONArray codes = c.getJSONArray(K.CODES);
-				int[] codez = new int[codes.length()];
-				for (int j = 0; j < codes.length(); j++) {
-					codez[j] = codes.getInt(j);
-				}
-				course.setCodes(codez);
-				refMap[c.getInt(K.ID)] = course;
-				registry.addCourse(course);
+		JSONArray courses = store.getJSONArray(K.COURSES);
+		for (int i = 0; i < courses.length(); i++) {
+			JSONObject c = courses.getJSONObject(i);
+			Course course = factory.createCourse();
+			course.setName(c.getString(K.NAME));
+			course.setLength(c.getInt(K.LENGTH));
+			course.setClimb(c.getInt(K.CLIMB));
+			JSONArray codes = c.getJSONArray(K.CODES);
+			int[] codez = new int[codes.length()];
+			for (int j = 0; j < codes.length(); j++) {
+				codez[j] = codes.getInt(j);
 			}
-			registry.ensureAutoCourse(factory);
-			
-			JSONArray categories = store.getJSONArray(K.CATEGORIES);
-			for (int i = 0; i < categories.length(); i++) {
-				JSONObject c = categories.getJSONObject(i);
-				Category category = factory.createCategory();
-				category.setName(c.getString(K.NAME));
-				category.setLongname(c.getString(K.LONG));
-				category.setCourse((Course) refMap[c.optInt(K.COURSE)]); // ref[0] = null
-				refMap[c.getInt(K.ID)] = category;
-				registry.addCategory(category);
-			}
-			
-			JSONArray clubs = store.getJSONArray(K.CLUBS);
-			for (int i = 0; i < clubs.length(); i++) {
-				JSONObject c = clubs.getJSONObject(i);
-				Club club = factory.createClub();
-				club.setName(c.getString(K.NAME));
-				club.setShortname(c.getString(K.SHORT));
-				refMap[c.getInt(K.ID)] = club;
-				registry.addClub(club);
-			}
-			
-			store.getJSONArray(K.HEATSETS);
-			
-			JSONArray runnersData = store.getJSONArray(K.RUNNERS_DATA);
-			for (int i = 0; i < runnersData.length(); i++) {
-				JSONArray runnerData = runnersData.getJSONArray(i);
-				
-				JSONObject r = runnerData.getJSONObject(0);
-				Runner runner = factory.createRunner();
-				runner.setStartId(r.getInt(K.START_ID));
-				runner.setFirstname(r.getString(K.FIRST));
-				runner.setLastname(r.getString(K.LAST));
-				runner.setEcard(r.getString(K.ECARD));
-				runner.setClub((Club) refMap[r.getInt(K.CLUB)]);
-				runner.setCategory((Category) refMap[r.getInt(K.CAT)]);
-				runner.setCourse((Course) refMap[r.getInt(K.COURSE)]);
-				runner.setRegisteredStarttime(new Date(r.getLong(K.START)));
-				runner.setArchiveId((Integer) r.opt(K.ARK));
-				// TODO: nc, rented
-				registry.addRunner(runner);
-				
-				JSONObject d = runnerData.getJSONObject(1);
-				RunnerRaceData ecardData = factory.createRunnerRaceData();
-				ecardData.setRunner(runner);
-				ecardData.setStarttime(new Date(d.getLong(K.START)));
-				ecardData.setFinishtime(new Date(d.getLong(K.FINISH)));
-				ecardData.setErasetime(new Date(d.getLong(K.ERASE)));
-				ecardData.setControltime(new Date(d.getLong(K.CHECK)));
-				ecardData.setReadtime(new Date(d.getLong(K.READ)));
-				JSONArray p = d.getJSONArray(K.PUNCHES);
-				Punch[] punches = new Punch[p.length() / 2];
-				ecardData.setPunches(punches);
-				for (int j = 0; j < punches.length; j++) {
-					punches[j] = factory.createPunch();
-					punches[j].setCode(p.getInt(2*j));
-					punches[j].setTime(new Date(p.getLong(2*j + 1)));
-				}
-				registry.addRunnerData(ecardData);
-				
-				JSONObject res = runnerData.getJSONObject(2);
-				RunnerResult result = factory.createRunnerResult();
-				result.setRacetime(res.getLong(K.TIME));
-				result.setStatus(Status.valueOf(res.getString(K.STATUS)));
-				result.setNbMPs(res.getInt(K.MPS));
-				result.setTimePenalty(res.getLong(K.PENALTY));
-				JSONArray t = res.getJSONArray(K.TRACE);
-				Trace[] trace = new Trace[t.length() / 2];
-				result.setTrace(trace);
-				for (int j = 0; j < trace.length; j++) {
-					trace[j] = factory.createTrace(t.getString(2*j), new Date(t.getLong(2*j + 1)));
-				}
-				JSONArray neut = res.getJSONArray(K.NEUTRALIZED);
-				for (int j = 0; j < neut.length(); j++) {
-					trace[neut.getInt(j)].setNeutralized(true);
-				}
-				ecardData.setResult(result);
-			}
-			
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			course.setCodes(codez);
+			refMap[c.getInt(K.ID)] = course;
+			registry.addCourse(course);
 		}
+		registry.ensureAutoCourse(factory);
+
+		JSONArray categories = store.getJSONArray(K.CATEGORIES);
+		for (int i = 0; i < categories.length(); i++) {
+			JSONObject c = categories.getJSONObject(i);
+			Category category = factory.createCategory();
+			category.setName(c.getString(K.NAME));
+			category.setLongname(c.getString(K.LONG));
+			category.setCourse((Course) refMap[c.optInt(K.COURSE)]); // ref[0] =
+																		// null
+			refMap[c.getInt(K.ID)] = category;
+			registry.addCategory(category);
+		}
+
+		JSONArray clubs = store.getJSONArray(K.CLUBS);
+		for (int i = 0; i < clubs.length(); i++) {
+			JSONObject c = clubs.getJSONObject(i);
+			Club club = factory.createClub();
+			club.setName(c.getString(K.NAME));
+			club.setShortname(c.getString(K.SHORT));
+			refMap[c.getInt(K.ID)] = club;
+			registry.addClub(club);
+		}
+
+		store.getJSONArray(K.HEATSETS);
+
+		JSONArray runnersData = store.getJSONArray(K.RUNNERS_DATA);
+		for (int i = 0; i < runnersData.length(); i++) {
+			JSONArray runnerData = runnersData.getJSONArray(i);
+
+			JSONObject r = runnerData.getJSONObject(0);
+			Runner runner = factory.createRunner();
+			runner.setStartId(r.getInt(K.START_ID));
+			runner.setFirstname(r.getString(K.FIRST));
+			runner.setLastname(r.getString(K.LAST));
+			runner.setEcard(r.getString(K.ECARD));
+			runner.setClub((Club) refMap[r.getInt(K.CLUB)]);
+			runner.setCategory((Category) refMap[r.getInt(K.CAT)]);
+			runner.setCourse((Course) refMap[r.getInt(K.COURSE)]);
+			runner.setRegisteredStarttime(new Date(r.getLong(K.START)));
+			runner.setArchiveId((Integer) r.opt(K.ARK));
+			// TODO: nc, rented
+			registry.addRunner(runner);
+
+			JSONObject d = runnerData.getJSONObject(1);
+			RunnerRaceData ecardData = factory.createRunnerRaceData();
+			ecardData.setRunner(runner);
+			ecardData.setStarttime(new Date(d.getLong(K.START)));
+			ecardData.setFinishtime(new Date(d.getLong(K.FINISH)));
+			ecardData.setErasetime(new Date(d.getLong(K.ERASE)));
+			ecardData.setControltime(new Date(d.getLong(K.CHECK)));
+			ecardData.setReadtime(new Date(d.getLong(K.READ)));
+			JSONArray p = d.getJSONArray(K.PUNCHES);
+			Punch[] punches = new Punch[p.length() / 2];
+			ecardData.setPunches(punches);
+			for (int j = 0; j < punches.length; j++) {
+				punches[j] = factory.createPunch();
+				punches[j].setCode(p.getInt(2 * j));
+				punches[j].setTime(new Date(p.getLong(2 * j + 1)));
+			}
+			registry.addRunnerData(ecardData);
+
+			JSONObject res = runnerData.getJSONObject(2);
+			RunnerResult result = factory.createRunnerResult();
+			result.setRacetime(res.getLong(K.TIME));
+			result.setStatus(Status.valueOf(res.getString(K.STATUS)));
+			result.setNbMPs(res.getInt(K.MPS));
+			result.setTimePenalty(res.getLong(K.PENALTY));
+			JSONArray t = res.getJSONArray(K.TRACE);
+			Trace[] trace = new Trace[t.length() / 2];
+			result.setTrace(trace);
+			for (int j = 0; j < trace.length; j++) {
+				trace[j] = factory.createTrace(t.getString(2 * j),
+						new Date(t.getLong(2 * j + 1)));
+			}
+			JSONArray neut = res.getJSONArray(K.NEUTRALIZED);
+			for (int j = 0; j < neut.length(); j++) {
+				trace[neut.getInt(j)].setNeutralized(true);
+			}
+			ecardData.setResult(result);
+		}
+			
 	}
 	
 	public static class K {
