@@ -44,46 +44,12 @@ import org.json.JSONWriter;
  *
  */
 public class PersistentStore {
-	
-	private static final String MAXID = "maxid";
-	
-	private static final String NEUTRALIZED = "n";
-	private static final String TRACE = "r";
-	private static final String PENALTY = "p";
-	private static final String MPS = "m";
-	private static final String STATUS = "s";
-	private static final String TIME = "t";
-	
-	private static final String PUNCHES = "p";
-	private static final String READ = "r";
-	private static final String CHECK = "c";
-	private static final String ERASE = "e";
-	private static final String FINISH = "f";
-	
-	private static final String NC = "n";
-	private static final String RENT = "r";
-	private static final String ARK = "a";
-	private static final String START = "s";
-	private static final String CAT = "t";
-	private static final String CLUB = "u";
-	private static final String ECARD = "e";
-	private static final String LAST = "l";
-	private static final String FIRST = "f";
-	private static final String COURSE = "c";
-	private static final String START_ID = "i";
-	
-	private static final String ID = "id";
-	private static final String COURSES = "courses";
-	private static final String PROPERTIES = "properties";
-	private static final String VERSION = "version";
-	private static final String STAGE = "stage";
-	private static final String ZEROHOUR = "zerohour";
-	private static final String BASEDIR = "basedir";
-	private static final String NAME = "name";
 
+	public static final String JSON_SCHEMA_VERSION = "2.0";
+	
 	private int id;
+	
 	private HashMap<Object, Integer> idMap;
-
 
 	public PersistentStore() {
 		id = 0;
@@ -108,26 +74,26 @@ public class PersistentStore {
 
 			JSONWriter json = new JSONWriter(writer);
 			json.object()
-				.key(VERSION).value("2.0");
+				.key(K.VERSION).value(JSON_SCHEMA_VERSION);
 			writer.newLine();
-			json.key(STAGE).object();
+			json.key(K.STAGE).object();
 			writer.newLine();
-			json.key(NAME).value(stage.getName())
-				.key(BASEDIR).value(stage.getBaseDir())
-				.key(ZEROHOUR).value(stage.getZeroHour())
+			json.key(K.NAME).value(stage.getName())
+				.key(K.BASEDIR).value(stage.getBaseDir())
+				.key(K.ZEROHOUR).value(stage.getZeroHour())
 				.endObject();
 			writer.newLine();
-			json.key(PROPERTIES).object().endObject();
+			json.key(K.PROPERTIES).object().endObject();
 			writer.newLine();
-			json.key(COURSES).array();
+			json.key(K.COURSES).array();
 			writer.newLine();
 			for (Course c : stage.registry().getCourses()) {
 				json.object()
-					.key(NAME).value(c.getName())
-					.key(ID).value(idFor(c))
-					.key("length").value(c.getLength())
-					.key("climb").value(c.getClimb())
-					.key("codes").array();
+					.key(K.NAME).value(c.getName())
+					.key(K.ID).value(idFor(c))
+					.key(K.LENGTH).value(c.getLength())
+					.key(K.CLIMB).value(c.getClimb())
+					.key(K.CODES).array();
 				for (int code : c.getCodes()) {
 					json.value(code);
 				}
@@ -137,79 +103,79 @@ public class PersistentStore {
 			}
 			json.endArray();
 			writer.newLine();
-			json.key("categories").array();
+			json.key(K.CATEGORIES).array();
 			writer.newLine();
 			for (Category c : stage.registry().getCategories()) {
 				json.object()
-					.key(NAME).value(c.getShortname())
-					.key(ID).value(idFor(c))
-					.key("long").value(c.getLongname());
+					.key(K.NAME).value(c.getShortname())
+					.key(K.ID).value(idFor(c))
+					.key(K.LONG).value(c.getLongname());
 				if( c.getCourse() != null ){
-					json.key(COURSE).value(refFor(c.getCourse()));
+					json.key(K.COURSE).value(refFor(c.getCourse()));
 				}
 				json.endObject();
 				writer.newLine();				
 			}
 			json.endArray();
 			writer.newLine();
-			json.key("clubs").array();
+			json.key(K.CLUBS).array();
 			writer.newLine();
 			for (Club c : stage.registry().getClubs()) {
 				json.object()
-					.key(NAME).value(c.getName())
-					.key(ID).value(idFor(c))
-					.key("short").value(c.getShortname())
+					.key(K.NAME).value(c.getName())
+					.key(K.ID).value(idFor(c))
+					.key(K.SHORT).value(c.getShortname())
 					.endObject();
 				writer.newLine();		
 			}
 			json.endArray();
 			writer.newLine();
-			json.key("heatsets").array();
+			json.key(K.HEATSETS).array();
 			writer.newLine();
 			for (HeatSet h : stage.registry().getHeatSets()) {
 				json.object()
-					.key(NAME).value(h.getName())
-					.key("rank").value(h.getQualifyingRank())
-					.key("type").value(h.getSetType())
-					.key("heats").array().endArray()
-					.key("pools").array().endArray()
+					.key(K.NAME).value(h.getName())
+					.key(K.RANK).value(h.getQualifyingRank())
+					.key(K.TYPE).value(h.getSetType())
+					.key(K.HEATS).array().endArray()
+					.key(K.POOLS).array().endArray()
 					.endObject();
 				writer.newLine();		
 			}
 			json.endArray();
 			writer.newLine();
-			json.key("runnersData").array();
+			json.key(K.RUNNERS_DATA).array();
 			writer.newLine();
 			for (RunnerRaceData runnerData : stage.registry().getRunnersData()) {
 				json.array();
 				Runner runner = runnerData.getRunner();
 				json.object()
-					.key(START_ID).value(runner.getStartId())
-					.key(FIRST).value(runner.getFirstname())
-					.key(LAST).value(runner.getLastname())
-					.key(ECARD).value(runner.getEcard())
-					.key(CLUB).value(refFor(runner.getClub()))
-					.key(CAT).value(refFor(runner.getCategory()))
-					.key(COURSE).value(refFor(runner.getCourse()))
-					.key(START).value(runner.getRegisteredStarttime().getTime());
+					.key(K.START_ID).value(runner.getStartId())
+					.key(K.FIRST).value(runner.getFirstname())
+					.key(K.LAST).value(runner.getLastname())
+					.key(K.ECARD).value(runner.getEcard())
+					.key(K.CLUB).value(refFor(runner.getClub()))
+					.key(K.CAT).value(refFor(runner.getCategory()))
+					.key(K.COURSE).value(refFor(runner.getCourse()))
+					.key(K.START).value(runner.getRegisteredStarttime().getTime());
 				if( runner.getArchiveId() != null ){
-					json.key(ARK).value(runner.getArchiveId());
+					json.key(K.ARK).value(runner.getArchiveId());
 				}
 				if( runner.rentedEcard() ){
-					json.key(RENT).value(true);
+					json.key(K.RENT).value(true);
 				}
 				if( runner.isNC() ){
-					json.key(NC).value(true);
+					json.key(K.NC).value(true);
 				}
 				json.endObject();
 				writer.newLine();
 				json.object()
-					.key(START).value(runnerData.getStarttime().getTime())
-					.key(FINISH).value(runnerData.getFinishtime().getTime())
-					.key(ERASE).value(runnerData.getErasetime().getTime())
-					.key(CHECK).value(runnerData.getControltime().getTime())
-					.key(READ).value(runnerData.getReadtime().getTime())
-					.key(PUNCHES).array();
+					.key(K.START).value(runnerData.getStarttime().getTime())
+					.key(K.FINISH).value(runnerData.getFinishtime().getTime())
+					.key(K.ERASE).value(runnerData.getErasetime().getTime())
+					.key(K.CHECK).value(runnerData.getControltime().getTime())
+					.key(K.READ).value(runnerData.getReadtime().getTime())
+					.key(K.PUNCHES).array();
 				for (Punch punch : runnerData.getPunches()) {
 					json.value(punch.getCode()).value(punch.getTime().getTime());
 				}
@@ -217,10 +183,10 @@ public class PersistentStore {
 				writer.newLine();
 				RunnerResult result = runnerData.getResult();
 				json.object()
-					.key(TIME).value(result.getRacetime())
-					.key(STATUS).value(result.getStatus())
-					.key(MPS).value(result.getNbMPs())
-					.key(PENALTY).value(result.getTimePenalty());
+					.key(K.TIME).value(result.getRacetime())
+					.key(K.STATUS).value(result.getStatus())
+					.key(K.MPS).value(result.getNbMPs())
+					.key(K.PENALTY).value(result.getTimePenalty());
 				
 				JSONArray jTrace = new JSONArray();
 				JSONArray jNeutralized = new JSONArray();
@@ -231,14 +197,14 @@ public class PersistentStore {
 						jNeutralized.put(i);
 					}
 				}
-				json.key(TRACE).value(jTrace);
-				json.key(NEUTRALIZED).value(jNeutralized);
+				json.key(K.TRACE).value(jTrace);
+				json.key(K.NEUTRALIZED).value(jNeutralized);
 				json.endObject().endArray();
 				writer.newLine();
 			}
 			json.endArray();
 			writer.newLine();
-			json.key(MAXID).value(id);
+			json.key(K.MAXID).value(id);
 			json.endObject();
 			writer.newLine();
 			writer.close();
@@ -309,76 +275,76 @@ public class PersistentStore {
 		Registry registry = new Registry();
 		newStage.setRegistry(registry);
 		try {
-			Object[] refMap = new Object[store.getInt(MAXID) + 1];
+			Object[] refMap = new Object[store.getInt(K.MAXID) + 1];
 			
-			JSONArray courses = store.getJSONArray(COURSES);
+			JSONArray courses = store.getJSONArray(K.COURSES);
 			for (int i = 0; i < courses.length(); i++) {
 				JSONObject c = courses.getJSONObject(i);
 				Course course = factory.createCourse();
-				course.setName( c.getString(NAME) );
-				course.setLength( c.getInt("length") );
-				course.setClimb( c.getInt("climb") );
-				JSONArray codes = c.getJSONArray("codes");
+				course.setName( c.getString(K.NAME) );
+				course.setLength( c.getInt(K.LENGTH) );
+				course.setClimb( c.getInt(K.CLIMB) );
+				JSONArray codes = c.getJSONArray(K.CODES);
 				int[] codez = new int[codes.length()];
 				for (int j = 0; j < codes.length(); j++) {
 					codez[j] = codes.getInt(j);
 				}
 				course.setCodes(codez);
-				refMap[c.getInt(ID)] = course;
+				refMap[c.getInt(K.ID)] = course;
 				registry.addCourse(course);
 			}
 			registry.ensureAutoCourse(factory);
 			
-			JSONArray categories = store.getJSONArray("categories");
+			JSONArray categories = store.getJSONArray(K.CATEGORIES);
 			for (int i = 0; i < categories.length(); i++) {
 				JSONObject c = categories.getJSONObject(i);
 				Category category = factory.createCategory();
-				category.setName(c.getString(NAME));
-				category.setLongname(c.getString("long"));
-				category.setCourse((Course) refMap[c.optInt(COURSE)]); // ref[0] = null
-				refMap[c.getInt(ID)] = category;
+				category.setName(c.getString(K.NAME));
+				category.setLongname(c.getString(K.LONG));
+				category.setCourse((Course) refMap[c.optInt(K.COURSE)]); // ref[0] = null
+				refMap[c.getInt(K.ID)] = category;
 				registry.addCategory(category);
 			}
 			
-			JSONArray clubs = store.getJSONArray("clubs");
+			JSONArray clubs = store.getJSONArray(K.CLUBS);
 			for (int i = 0; i < clubs.length(); i++) {
 				JSONObject c = clubs.getJSONObject(i);
 				Club club = factory.createClub();
-				club.setName(c.getString(NAME));
-				club.setShortname(c.getString("short"));
-				refMap[c.getInt(ID)] = club;
+				club.setName(c.getString(K.NAME));
+				club.setShortname(c.getString(K.SHORT));
+				refMap[c.getInt(K.ID)] = club;
 				registry.addClub(club);
 			}
 			
-			store.getJSONArray("heatsets");
+			store.getJSONArray(K.HEATSETS);
 			
-			JSONArray runnersData = store.getJSONArray("runnersData");
+			JSONArray runnersData = store.getJSONArray(K.RUNNERS_DATA);
 			for (int i = 0; i < runnersData.length(); i++) {
 				JSONArray runnerData = runnersData.getJSONArray(i);
 				
 				JSONObject r = runnerData.getJSONObject(0);
 				Runner runner = factory.createRunner();
-				runner.setStartId(r.getInt(START_ID));
-				runner.setFirstname(r.getString(FIRST));
-				runner.setLastname(r.getString(LAST));
-				runner.setEcard(r.getString(ECARD));
-				runner.setClub((Club) refMap[r.getInt(CLUB)]);
-				runner.setCategory((Category) refMap[r.getInt(CAT)]);
-				runner.setCourse((Course) refMap[r.getInt(COURSE)]);
-				runner.setRegisteredStarttime(new Date(r.getLong(START)));
-				runner.setArchiveId((Integer) r.opt(ARK));
+				runner.setStartId(r.getInt(K.START_ID));
+				runner.setFirstname(r.getString(K.FIRST));
+				runner.setLastname(r.getString(K.LAST));
+				runner.setEcard(r.getString(K.ECARD));
+				runner.setClub((Club) refMap[r.getInt(K.CLUB)]);
+				runner.setCategory((Category) refMap[r.getInt(K.CAT)]);
+				runner.setCourse((Course) refMap[r.getInt(K.COURSE)]);
+				runner.setRegisteredStarttime(new Date(r.getLong(K.START)));
+				runner.setArchiveId((Integer) r.opt(K.ARK));
 				// TODO: nc, rented
 				registry.addRunner(runner);
 				
 				JSONObject d = runnerData.getJSONObject(1);
 				RunnerRaceData ecardData = factory.createRunnerRaceData();
 				ecardData.setRunner(runner);
-				ecardData.setStarttime(new Date(d.getLong(START)));
-				ecardData.setFinishtime(new Date(d.getLong(FINISH)));
-				ecardData.setErasetime(new Date(d.getLong(ERASE)));
-				ecardData.setControltime(new Date(d.getLong(CHECK)));
-				ecardData.setReadtime(new Date(d.getLong(READ)));
-				JSONArray p = d.getJSONArray(PUNCHES);
+				ecardData.setStarttime(new Date(d.getLong(K.START)));
+				ecardData.setFinishtime(new Date(d.getLong(K.FINISH)));
+				ecardData.setErasetime(new Date(d.getLong(K.ERASE)));
+				ecardData.setControltime(new Date(d.getLong(K.CHECK)));
+				ecardData.setReadtime(new Date(d.getLong(K.READ)));
+				JSONArray p = d.getJSONArray(K.PUNCHES);
 				Punch[] punches = new Punch[p.length() / 2];
 				ecardData.setPunches(punches);
 				for (int j = 0; j < punches.length; j++) {
@@ -390,17 +356,17 @@ public class PersistentStore {
 				
 				JSONObject res = runnerData.getJSONObject(2);
 				RunnerResult result = factory.createRunnerResult();
-				result.setRacetime(res.getLong(TIME));
-				result.setStatus(Status.valueOf(res.getString(STATUS)));
-				result.setNbMPs(res.getInt(MPS));
-				result.setTimePenalty(res.getLong(PENALTY));
-				JSONArray t = res.getJSONArray(TRACE);
+				result.setRacetime(res.getLong(K.TIME));
+				result.setStatus(Status.valueOf(res.getString(K.STATUS)));
+				result.setNbMPs(res.getInt(K.MPS));
+				result.setTimePenalty(res.getLong(K.PENALTY));
+				JSONArray t = res.getJSONArray(K.TRACE);
 				Trace[] trace = new Trace[t.length() / 2];
 				result.setTrace(trace);
 				for (int j = 0; j < trace.length; j++) {
 					trace[j] = factory.createTrace(t.getString(2*j), new Date(t.getLong(2*j + 1)));
 				}
-				JSONArray neut = res.getJSONArray(NEUTRALIZED);
+				JSONArray neut = res.getJSONArray(K.NEUTRALIZED);
 				for (int j = 0; j < neut.length(); j++) {
 					trace[neut.getInt(j)].setNeutralized(true);
 				}
@@ -412,6 +378,117 @@ public class PersistentStore {
 			e.printStackTrace();
 		}
 	}
+	
+	public static class K {
+		private static final boolean DEBUG = true;
+		
+		static {
+			if( DEBUG ) {
+				START_ID = "startid";
+				FIRST = "first";
+				LAST = "last";
+				ECARD = "ecard";
+				CLUB = "club";
+				CAT = "cat";
+				COURSE = "course";
+				ARK = "ark";
+				RENT = "rent";
+				NC = "nc";
 
+				TIME = "time";
+				STATUS = "status";
+				MPS = "mps";
+				PENALTY = "penalty";
+				TRACE = "trace";
+				NEUTRALIZED = "neut";
+			
+				START = "start";
+				FINISH = "finish";
+				ERASE = "erase";
+				READ = "read";
+				CHECK = "check";
+				PUNCHES = "punches";
+			} else {
+				START_ID = "i";
+				FIRST = "f";
+				LAST = "l";
+				ECARD = "e";
+				CLUB = "u";
+				CAT = "t";
+				COURSE = "c";
+				ARK = "a";
+				RENT = "r";
+				NC = "n";
+
+				TIME = "t";
+				STATUS = "s";
+				MPS = "m";
+				PENALTY = "p";
+				TRACE = "r";
+				NEUTRALIZED = "n";
+			
+				START = "s";
+				FINISH = "f";
+				ERASE = "e";
+				READ = "r";
+				CHECK = "c";
+				PUNCHES = "p";
+			}
+		}
+
+		private static final String ID = "id";;
+		private static final String MAXID = "maxid";;
+		private static final String NAME = "name";
+		private static final String VERSION = "version";
+
+		private static final String STAGE = "stage";
+		private static final String BASEDIR = "basedir";
+		private static final String ZEROHOUR = "zerohour";
+
+		private static final String PROPERTIES = "properties";
+
+		private static final String COURSES = "courses";
+		private static final String LENGTH = "length";
+		private static final String CLIMB = "climb";
+		private static final String CODES = "codes";
+
+		private static final String CATEGORIES = "categories";;
+		private static final String LONG = "long";
+		private static final String CLUBS = "clubs";
+		private static final String SHORT = "short";
+
+		private static final String HEATSETS = "heatsets";
+		private static final String RANK = "rank";
+		private static final String TYPE = "type";
+		private static final String HEATS = "heats";
+		private static final String POOLS = "pools";
+
+		private static final String RUNNERS_DATA = "runnersData";
+
+		private static final String START_ID;
+		private static final String FIRST;
+		private static final String LAST;
+		private static final String ECARD;
+		private static final String CLUB;
+		private static final String CAT;
+		private static final String COURSE;
+		private static final String ARK;
+		private static final String NC;
+		private static final String RENT;
+
+		private static final String START;
+		private static final String FINISH;
+		private static final String ERASE;
+		private static final String CHECK;
+		private static final String READ;
+		private static final String PUNCHES;
+
+		private static final String TIME;
+		private static final String STATUS;
+		private static final String MPS;
+		private static final String PENALTY;
+		private static final String TRACE;
+		private static final String NEUTRALIZED;
+	}
 	
 }
