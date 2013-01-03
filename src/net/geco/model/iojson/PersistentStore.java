@@ -50,7 +50,6 @@ public class PersistentStore {
 	
 	/*
 	 * TODO
-	 * - extract refMap
 	 * - build an adapter/bridge to jackson writer
 	 * - build an adapter/bridge to json reader
 	 */
@@ -261,7 +260,7 @@ public class PersistentStore {
 		Registry registry = new Registry();
 		newStage.setRegistry(registry);
 
-		Object[] refMap = new Object[store.getInt(K.MAXID) + 1];
+		RefMap refMap = new RefMap(store.getInt(K.MAXID) + 1);
 			
 		JSONArray courses = store.getJSONArray(K.COURSES);
 		for (int i = 0; i < courses.length(); i++) {
@@ -276,7 +275,7 @@ public class PersistentStore {
 				codez[j] = codes.getInt(j);
 			}
 			course.setCodes(codez);
-			refMap[c.getInt(K.ID)] = course;
+			refMap.put(c.getInt(K.ID), course);
 			registry.addCourse(course);
 		}
 		registry.ensureAutoCourse(factory);
@@ -287,8 +286,8 @@ public class PersistentStore {
 			Category category = factory.createCategory();
 			category.setName(c.getString(K.NAME));
 			category.setLongname(c.getString(K.LONG));
-			category.setCourse((Course) refMap[c.optInt(K.COURSE)]); // ref[0] = null
-			refMap[c.getInt(K.ID)] = category;
+			category.setCourse((Course) refMap.get(c.optInt(K.COURSE))); // ref[0] = null
+			refMap.put(c.getInt(K.ID), category);
 			registry.addCategory(category);
 		}
 
@@ -298,7 +297,7 @@ public class PersistentStore {
 			Club club = factory.createClub();
 			club.setName(c.getString(K.NAME));
 			club.setShortname(c.getString(K.SHORT));
-			refMap[c.getInt(K.ID)] = club;
+			refMap.put(c.getInt(K.ID), club);
 			registry.addClub(club);
 		}
 
@@ -314,9 +313,9 @@ public class PersistentStore {
 			runner.setFirstname(r.getString(K.FIRST));
 			runner.setLastname(r.getString(K.LAST));
 			runner.setEcard(r.getString(K.ECARD));
-			runner.setClub((Club) refMap[r.getInt(K.CLUB)]);
-			runner.setCategory((Category) refMap[r.getInt(K.CAT)]);
-			runner.setCourse((Course) refMap[r.getInt(K.COURSE)]);
+			runner.setClub((Club) refMap.get(r.getInt(K.CLUB)));
+			runner.setCategory((Category) refMap.get(r.getInt(K.CAT)));
+			runner.setCourse((Course) refMap.get(r.getInt(K.COURSE)));
 			runner.setRegisteredStarttime(new Date(r.getLong(K.START)));
 			runner.setArchiveId((Integer) r.opt(K.ARK));
 			// TODO: nc, rented
