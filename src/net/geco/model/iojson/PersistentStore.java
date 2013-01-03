@@ -12,7 +12,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -47,26 +46,25 @@ public class PersistentStore {
 
 	public static final String JSON_SCHEMA_VERSION = "2.0";
 	
-	private int id;
+	private static final boolean DEBUG = true;
 	
-	private HashMap<Object, Integer> idMap;
+	/*
+	 * TODO
+	 * - extract refMap
+	 * - build an adapter/bridge to jackson writer
+	 * - build an adapter/bridge to json reader
+	 */
+	
+	private IdMap idMap;
 
 	public PersistentStore() {
-		id = 0;
-		idMap = new HashMap<Object, Integer>();
+		idMap = new IdMap();
 	}
 	
 	public int idFor(Object o) {
-		if( ! idMap.containsKey(o) ) {
-			idMap.put(o, ++id);
-		}
-		return idMap.get(o);
+		return idMap.idFor(o);
 	}
 	
-	public int refFor(Object o) {
-		return idFor(o);
-	}
-
 	public void storeData(Stage stage) {
 		try {
 			String datafile = "store.json";
@@ -75,18 +73,16 @@ public class PersistentStore {
 			JSONWriter json = new JSONWriter(writer);
 			json.object()
 				.key(K.VERSION).value(JSON_SCHEMA_VERSION);
-			writer.newLine();
+			
 			json.key(K.STAGE).object();
-			writer.newLine();
 			json.key(K.NAME).value(stage.getName())
 				.key(K.BASEDIR).value(stage.getBaseDir())
 				.key(K.ZEROHOUR).value(stage.getZeroHour())
 				.endObject();
-			writer.newLine();
+			
 			json.key(K.PROPERTIES).object().endObject();
-			writer.newLine();
+			
 			json.key(K.COURSES).array();
-			writer.newLine();
 			for (Course c : stage.registry().getCourses()) {
 				json.object()
 					.key(K.NAME).value(c.getName())
@@ -99,39 +95,36 @@ public class PersistentStore {
 				}
 				json.endArray()
 					.endObject();
-				writer.newLine();
+				
 			}
 			json.endArray();
-			writer.newLine();
+			
 			json.key(K.CATEGORIES).array();
-			writer.newLine();
 			for (Category c : stage.registry().getCategories()) {
 				json.object()
 					.key(K.NAME).value(c.getShortname())
 					.key(K.ID).value(idFor(c))
 					.key(K.LONG).value(c.getLongname());
 				if( c.getCourse() != null ){
-					json.key(K.COURSE).value(refFor(c.getCourse()));
+					json.key(K.COURSE).value(idFor(c.getCourse()));
 				}
 				json.endObject();
-				writer.newLine();				
+								
 			}
 			json.endArray();
-			writer.newLine();
+			
 			json.key(K.CLUBS).array();
-			writer.newLine();
 			for (Club c : stage.registry().getClubs()) {
 				json.object()
 					.key(K.NAME).value(c.getName())
 					.key(K.ID).value(idFor(c))
 					.key(K.SHORT).value(c.getShortname())
 					.endObject();
-				writer.newLine();		
+						
 			}
 			json.endArray();
-			writer.newLine();
+			
 			json.key(K.HEATSETS).array();
-			writer.newLine();
 			for (HeatSet h : stage.registry().getHeatSets()) {
 				json.object()
 					.key(K.NAME).value(h.getName())
@@ -140,12 +133,11 @@ public class PersistentStore {
 					.key(K.HEATS).array().endArray()
 					.key(K.POOLS).array().endArray()
 					.endObject();
-				writer.newLine();		
+						
 			}
 			json.endArray();
-			writer.newLine();
+			
 			json.key(K.RUNNERS_DATA).array();
-			writer.newLine();
 			for (RunnerRaceData runnerData : stage.registry().getRunnersData()) {
 				json.array();
 				Runner runner = runnerData.getRunner();
@@ -154,9 +146,9 @@ public class PersistentStore {
 					.key(K.FIRST).value(runner.getFirstname())
 					.key(K.LAST).value(runner.getLastname())
 					.key(K.ECARD).value(runner.getEcard())
-					.key(K.CLUB).value(refFor(runner.getClub()))
-					.key(K.CAT).value(refFor(runner.getCategory()))
-					.key(K.COURSE).value(refFor(runner.getCourse()))
+					.key(K.CLUB).value(idFor(runner.getClub()))
+					.key(K.CAT).value(idFor(runner.getCategory()))
+					.key(K.COURSE).value(idFor(runner.getCourse()))
 					.key(K.START).value(runner.getRegisteredStarttime().getTime());
 				if( runner.getArchiveId() != null ){
 					json.key(K.ARK).value(runner.getArchiveId());
@@ -168,7 +160,7 @@ public class PersistentStore {
 					json.key(K.NC).value(true);
 				}
 				json.endObject();
-				writer.newLine();
+				
 				json.object()
 					.key(K.START).value(runnerData.getStarttime().getTime())
 					.key(K.FINISH).value(runnerData.getFinishtime().getTime())
@@ -180,7 +172,7 @@ public class PersistentStore {
 					json.value(punch.getCode()).value(punch.getTime().getTime());
 				}
 				json.endArray().endObject();
-				writer.newLine();
+				
 				RunnerResult result = runnerData.getResult();
 				json.object()
 					.key(K.TIME).value(result.getRacetime())
@@ -200,13 +192,11 @@ public class PersistentStore {
 				json.key(K.TRACE).value(jTrace);
 				json.key(K.NEUTRALIZED).value(jNeutralized);
 				json.endObject().endArray();
-				writer.newLine();
+				
 			}
 			json.endArray();
-			writer.newLine();
-			json.key(K.MAXID).value(id);
+			json.key(K.MAXID).value(idMap.maxId());
 			json.endObject();
-			writer.newLine();
 			writer.close();
 			
 			backupData(stage.getBaseDir(), datafile, "store.zip");
@@ -245,14 +235,16 @@ public class PersistentStore {
 		zipStream.closeEntry();
 	}
 
-	public Stage loadData(String testDir, Factory factory, Checker checker) {
+	public Stage loadData(String baseDir, Factory factory, Checker checker) {
 		Stage newStage = factory.createStage();
 		try {
-			BufferedReader reader = GecoResources.getSafeReaderFor(testDir + GecoResources.sep + "store.json");
+			BufferedReader reader = GecoResources.getSafeReaderFor(baseDir + GecoResources.sep + "store.json");
 			JSONObject store = new JSONObject(new JSONTokener(reader));
 			
-//			loadStageProperties(newStage, baseDir);
+			// TODO
+//			loadStageProperties(store, newStage, baseDir);
 			importDataIntoRegistry(store, newStage, factory);
+			// REMOVE???
 //			checker.postInitialize(newStage); // post initialization
 			
 		} catch (FileNotFoundException e) {
@@ -295,8 +287,7 @@ public class PersistentStore {
 			Category category = factory.createCategory();
 			category.setName(c.getString(K.NAME));
 			category.setLongname(c.getString(K.LONG));
-			category.setCourse((Course) refMap[c.optInt(K.COURSE)]); // ref[0] =
-																		// null
+			category.setCourse((Course) refMap[c.optInt(K.COURSE)]); // ref[0] = null
 			refMap[c.getInt(K.ID)] = category;
 			registry.addCategory(category);
 		}
@@ -311,7 +302,7 @@ public class PersistentStore {
 			registry.addClub(club);
 		}
 
-		store.getJSONArray(K.HEATSETS);
+		store.getJSONArray(K.HEATSETS); // TODO
 
 		JSONArray runnersData = store.getJSONArray(K.RUNNERS_DATA);
 		for (int i = 0; i < runnersData.length(); i++) {
@@ -372,7 +363,6 @@ public class PersistentStore {
 	}
 	
 	public static class K {
-		private static final boolean DEBUG = true;
 		
 		static {
 			if( DEBUG ) {

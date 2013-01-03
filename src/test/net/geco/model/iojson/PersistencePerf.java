@@ -2,7 +2,7 @@
  * Copyright (c) 2012 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package test.net.geco;
+package test.net.geco.model.iojson;
 
 import java.util.Properties;
 
@@ -55,12 +55,12 @@ public class PersistencePerf {
 	}
 	
 	public void run() {
-		new CsvSavePerf().run();
-		new CsvLoadPerf().run();
+//		new CsvSavePerf().run();
+//		new CsvLoadPerf().run();
 		new JsonSavePerf().run();
+//		new JacksonSavePerf().run();
 		new JsonLoadPerf().run();
-		new JacksonSavePerf().run();
-		new JacksonLoadPerf().run();
+//		new JacksonLoadPerf().run();
 	}
 
 	public abstract class Perf {
