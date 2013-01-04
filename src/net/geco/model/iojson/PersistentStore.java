@@ -35,14 +35,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-import org.json.JSONWriter;
 
 /**
  * @author Simon Denier
  * @since Dec 26, 2012
  *
  */
-public class PersistentStore {
+public final class PersistentStore {
 
 	public static final String JSON_SCHEMA_VERSION = "2.0";
 	
@@ -54,148 +53,144 @@ public class PersistentStore {
 	 * - build an adapter/bridge to json reader
 	 */
 	
-	private IdMap idMap;
-
-	public PersistentStore() {
-		idMap = new IdMap();
-	}
-	
-	public int idFor(Object o) {
-		return idMap.idFor(o);
-	}
-	
 	public void storeData(Stage stage) {
 		try {
 			String datafile = "store.json";
 			BufferedWriter writer = GecoResources.getSafeWriterFor(stage.getBaseDir() + GecoResources.sep + datafile);
 
-			JSONWriter json = new JSONWriter(writer);
-			json.object()
-				.key(K.VERSION).value(JSON_SCHEMA_VERSION);
+			JSONExporter json = new JacksonExporter(writer, DEBUG);
+			json.startObject()
+				.field(K.VERSION, JSON_SCHEMA_VERSION);
 			
-			json.key(K.STAGE).object();
-			json.key(K.NAME).value(stage.getName())
-				.key(K.BASEDIR).value(stage.getBaseDir())
-				.key(K.ZEROHOUR).value(stage.getZeroHour())
+			json.startObjectField(K.STAGE)
+				.field(K.NAME, stage.getName())
+				.field(K.BASEDIR, stage.getBaseDir())
+				.field(K.ZEROHOUR, stage.getZeroHour())
 				.endObject();
 			
-			json.key(K.PROPERTIES).object().endObject();
+			// TODO
+			json.startObjectField(K.PROPERTIES).endObject();
 			
-			json.key(K.COURSES).array();
-			for (Course c : stage.registry().getCourses()) {
-				json.object()
-					.key(K.NAME).value(c.getName())
-					.key(K.ID).value(idFor(c))
-					.key(K.LENGTH).value(c.getLength())
-					.key(K.CLIMB).value(c.getClimb())
-					.key(K.CODES).array();
-				for (int code : c.getCodes()) {
-					json.value(code);
-				}
+			json.startArrayField(K.COURSES);
+			for (Course course : stage.registry().getCourses()) {
+				json.startObject()
+					.id(K.ID, course)
+					.field(K.NAME, course.getName())
+					.field(K.LENGTH, course.getLength())
+					.field(K.CLIMB, course.getClimb())
+					.key(K.CODES).startArray();
+				for (int code : course.getCodes()) { json.value(code); }
 				json.endArray()
 					.endObject();
-				
 			}
 			json.endArray();
 			
-			json.key(K.CATEGORIES).array();
-			for (Category c : stage.registry().getCategories()) {
-				json.object()
-					.key(K.NAME).value(c.getShortname())
-					.key(K.ID).value(idFor(c))
-					.key(K.LONG).value(c.getLongname());
-				if( c.getCourse() != null ){
-					json.key(K.COURSE).value(idFor(c.getCourse()));
-				}
-				json.endObject();
-								
-			}
-			json.endArray();
-			
-			json.key(K.CLUBS).array();
-			for (Club c : stage.registry().getClubs()) {
-				json.object()
-					.key(K.NAME).value(c.getName())
-					.key(K.ID).value(idFor(c))
-					.key(K.SHORT).value(c.getShortname())
+			json.startArrayField(K.CATEGORIES);
+			for (Category cat : stage.registry().getCategories()) {
+				json.startObject()
+					.id(K.ID, cat)
+					.field(K.NAME, cat.getShortname())
+					.field(K.LONG, cat.getLongname())
+					.optRef(K.COURSE, cat.getCourse())
 					.endObject();
-						
+//				if( c.getCourse() != null ){
+//					json.(K.COURSE).value(idFor(c.getCourse()));
+//				}
 			}
 			json.endArray();
 			
-			json.key(K.HEATSETS).array();
+			json.startArrayField(K.CLUBS);
+			for (Club club : stage.registry().getClubs()) {
+				json.startObject()
+					.id(K.ID, club)
+					.field(K.NAME, club.getName())
+					.field(K.SHORT, club.getShortname())
+					.endObject();
+			}
+			json.endArray();
+			
+			json.startArrayField(K.HEATSETS);
 			for (HeatSet h : stage.registry().getHeatSets()) {
-				json.object()
-					.key(K.NAME).value(h.getName())
-					.key(K.RANK).value(h.getQualifyingRank())
-					.key(K.TYPE).value(h.getSetType())
-					.key(K.HEATS).array().endArray()
-					.key(K.POOLS).array().endArray()
+				json.startObject()
+					.field(K.NAME, h.getName())
+					.field(K.RANK, h.getQualifyingRank())
+					.field(K.TYPE, h.getSetType().name())
+					.key(K.HEATS).startArray().endArray() // TODO
+					.key(K.POOLS).startArray().endArray() // TODO
 					.endObject();
-						
 			}
 			json.endArray();
 			
-			json.key(K.RUNNERS_DATA).array();
+			json.startArrayField(K.RUNNERS_DATA);
 			for (RunnerRaceData runnerData : stage.registry().getRunnersData()) {
-				json.array();
+				json.startArray();
 				Runner runner = runnerData.getRunner();
-				json.object()
-					.key(K.START_ID).value(runner.getStartId())
-					.key(K.FIRST).value(runner.getFirstname())
-					.key(K.LAST).value(runner.getLastname())
-					.key(K.ECARD).value(runner.getEcard())
-					.key(K.CLUB).value(idFor(runner.getClub()))
-					.key(K.CAT).value(idFor(runner.getCategory()))
-					.key(K.COURSE).value(idFor(runner.getCourse()))
-					.key(K.START).value(runner.getRegisteredStarttime().getTime());
-				if( runner.getArchiveId() != null ){
-					json.key(K.ARK).value(runner.getArchiveId());
-				}
-				if( runner.rentedEcard() ){
-					json.key(K.RENT).value(true);
-				}
-				if( runner.isNC() ){
-					json.key(K.NC).value(true);
-				}
-				json.endObject();
+				json.startObject()
+					.field(K.START_ID, runner.getStartId())
+					.field(K.FIRST, runner.getFirstname())
+					.field(K.LAST, runner.getLastname())
+					.field(K.ECARD, runner.getEcard())
+					.ref(K.CLUB, runner.getClub())
+					.ref(K.CAT, runner.getCategory())
+					.ref(K.COURSE, runner.getCourse())
+					.field(K.START, runner.getRegisteredStarttime())
+					.optField(K.ARK, runner.getArchiveId())
+					.optField(K.RENT, runner.rentedEcard())
+					.optField(K.NC, runner.isNC())
+					.endObject();
+//				if( runner.getArchiveId() != null ){
+//					json.key(K.ARK).value(runner.getArchiveId());
+//				}
+//				if( runner.rentedEcard() ){
+//					json.key(K.RENT).value(true);
+//				}
+//				if( runner.isNC() ){
+//					json.key(K.NC).value(true);
+//				}
 				
-				json.object()
-					.key(K.START).value(runnerData.getStarttime().getTime())
-					.key(K.FINISH).value(runnerData.getFinishtime().getTime())
-					.key(K.ERASE).value(runnerData.getErasetime().getTime())
-					.key(K.CHECK).value(runnerData.getControltime().getTime())
-					.key(K.READ).value(runnerData.getReadtime().getTime())
-					.key(K.PUNCHES).array();
+				json.startObject()
+					.field(K.START, runnerData.getStarttime())
+					.field(K.FINISH, runnerData.getFinishtime())
+					.field(K.ERASE, runnerData.getErasetime())
+					.field(K.CHECK, runnerData.getControltime())
+					.field(K.READ, runnerData.getReadtime())
+					.key(K.PUNCHES).startArray();
 				for (Punch punch : runnerData.getPunches()) {
-					json.value(punch.getCode()).value(punch.getTime().getTime());
+					json.value(punch.getCode()).value(punch.getTime());
 				}
 				json.endArray().endObject();
 				
 				RunnerResult result = runnerData.getResult();
-				json.object()
-					.key(K.TIME).value(result.getRacetime())
-					.key(K.STATUS).value(result.getStatus())
-					.key(K.MPS).value(result.getNbMPs())
-					.key(K.PENALTY).value(result.getTimePenalty());
+				json.startObject()
+					.field(K.TIME, result.getRacetime())
+					.field(K.STATUS, result.getStatus().name())
+					.field(K.MPS, result.getNbMPs())
+					.field(K.PENALTY, result.getTimePenalty());
 				
-				JSONArray jTrace = new JSONArray();
-				JSONArray jNeutralized = new JSONArray();
-				for (int i = 0; i < result.getTrace().length; i++) {
-					Trace trace = result.getTrace()[i];
-					jTrace.put(trace.getCode()).put(trace.getTime().getTime());
-					if( trace.isNeutralized() ){
-						jNeutralized.put(i);
+				Trace[] trace = result.getTrace();
+				int nbNeut = 0;
+				int[] neutralized = new int[trace.length];
+				json.startArrayField(K.TRACE);
+				for (int i = 0; i < trace.length; i++) {
+					Trace t = result.getTrace()[i];
+					json.value(t.getCode()).value(t.getTime());
+					if( t.isNeutralized() ){
+						neutralized[nbNeut++] = i;
 					}
 				}
-				json.key(K.TRACE).value(jTrace);
-				json.key(K.NEUTRALIZED).value(jNeutralized);
-				json.endObject().endArray();
+				json.endArray()
+					.startArrayField(K.NEUTRALIZED);
+				for (int i = 0; i < nbNeut; i++) {
+					json.value(neutralized[i]);
+				}
+				json.endArray()
+					.endObject()
+					.endArray();
 				
 			}
-			json.endArray();
-			json.key(K.MAXID).value(idMap.maxId());
-			json.endObject();
+			json.endArray()
+				.idMax(K.MAXID) // TODO.value(idMap.maxId());
+				.endObject();
 			writer.close();
 			
 			backupData(stage.getBaseDir(), datafile, "store.zip");
@@ -204,9 +199,6 @@ public class PersistentStore {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
