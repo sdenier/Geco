@@ -49,7 +49,6 @@ public final class PersistentStore {
 	
 	/*
 	 * TODO
-	 * - build an adapter/bridge to jackson writer
 	 * - build an adapter/bridge to json reader
 	 */
 	
@@ -58,7 +57,7 @@ public final class PersistentStore {
 			String datafile = "store.json";
 			BufferedWriter writer = GecoResources.getSafeWriterFor(stage.getBaseDir() + GecoResources.sep + datafile);
 
-			JSONExporter json = new JacksonExporter(writer, DEBUG);
+			JSONSerializer json = new JacksonSerializer(writer, DEBUG);
 			json.startObject()
 				.field(K.VERSION, JSON_SCHEMA_VERSION);
 			

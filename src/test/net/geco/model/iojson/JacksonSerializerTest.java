@@ -11,7 +11,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import java.io.IOException;
 import java.util.Date;
 
-import net.geco.model.iojson.JacksonExporter;
+import net.geco.model.iojson.JacksonSerializer;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,9 +27,9 @@ import com.fasterxml.jackson.core.JsonGenerator;
  * @since Jan 5, 2013
  *
  */
-public class JacksonExporterTest {
+public class JacksonSerializerTest {
 
-	private JacksonExporter subject;
+	private JacksonSerializer subject;
 
 	@Mock
 	private JsonGenerator gen;
@@ -37,7 +37,7 @@ public class JacksonExporterTest {
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-		this.subject = new JacksonExporter(gen);
+		this.subject = new JacksonSerializer(gen);
 	}
 	
 	@Test

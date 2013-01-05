@@ -17,17 +17,17 @@ import com.fasterxml.jackson.core.JsonGenerator.Feature;
  * @since Jan 4, 2013
  *
  */
-public class JacksonExporter implements JSONExporter {
+public class JacksonSerializer implements JSONSerializer {
 
 	private IdMap idMap;
 
 	private JsonGenerator gen;
 
-	protected JacksonExporter() {
+	protected JacksonSerializer() {
 		idMap = new IdMap();
 	}
 	
-	public JacksonExporter(Writer writer, boolean debug) throws IOException {
+	public JacksonSerializer(Writer writer, boolean debug) throws IOException {
 		this();
 		JsonFactory jsonFactory = new JsonFactory();
 		gen = jsonFactory.createGenerator(writer);
@@ -41,115 +41,115 @@ public class JacksonExporter implements JSONExporter {
 	/*
 	 * Only for testing purpose
 	 */
-	public JacksonExporter(JsonGenerator gen) {
+	public JacksonSerializer(JsonGenerator gen) {
 		this();
 		this.gen = gen;
 	}
 
 	@Override
-	public JSONExporter key(String key) throws IOException {
+	public JSONSerializer key(String key) throws IOException {
 		gen.writeFieldName(key);
 		return this;
 	}
 
 	@Override
-	public JSONExporter value(String value) throws IOException {
+	public JSONSerializer value(String value) throws IOException {
 		gen.writeString(value);
 		return this;
 	}
 
 	@Override
-	public JSONExporter value(Date value) throws IOException {
+	public JSONSerializer value(Date value) throws IOException {
 		gen.writeNumber(value.getTime());
 		return this;
 	}
 
 	@Override
-	public JSONExporter value(int value) throws IOException {
+	public JSONSerializer value(int value) throws IOException {
 		gen.writeNumber(value);
 		return this;
 	}
 
 	@Override
-	public JSONExporter value(long value) throws IOException {
+	public JSONSerializer value(long value) throws IOException {
 		gen.writeNumber(value);
 		return this;
 	}
 
 	@Override
-	public JSONExporter value(boolean value) throws IOException {
+	public JSONSerializer value(boolean value) throws IOException {
 		gen.writeBoolean(value);
 		return this;
 	}
 
 	@Override
-	public JSONExporter startObject() throws IOException {
+	public JSONSerializer startObject() throws IOException {
 		gen.writeStartObject();
 		return this;
 	}
 
 	@Override
-	public JSONExporter startObjectField(String key) throws IOException {
+	public JSONSerializer startObjectField(String key) throws IOException {
 		gen.writeObjectFieldStart(key);
 		return this;
 	}
 
 	@Override
-	public JSONExporter endObject() throws IOException {
+	public JSONSerializer endObject() throws IOException {
 		gen.writeEndObject();
 		return this;
 	}
 
 	@Override
-	public JSONExporter startArray() throws IOException {
+	public JSONSerializer startArray() throws IOException {
 		gen.writeStartArray();
 		return this;
 	}
 
 	@Override
-	public JSONExporter startArrayField(String key) throws IOException {
+	public JSONSerializer startArrayField(String key) throws IOException {
 		gen.writeArrayFieldStart(key);
 		return this;
 	}
 
 	@Override
-	public JSONExporter endArray() throws IOException {
+	public JSONSerializer endArray() throws IOException {
 		gen.writeEndArray();
 		return this;
 	}
 
 	@Override
-	public JSONExporter field(String key, String value) throws IOException {
+	public JSONSerializer field(String key, String value) throws IOException {
 		gen.writeStringField(key, value);
 		return this;
 	}
 
 	@Override
-	public JSONExporter field(String key, Date date) throws IOException {
+	public JSONSerializer field(String key, Date date) throws IOException {
 		gen.writeNumberField(key, date.getTime());
 		return this;
 	}
 
 	@Override
-	public JSONExporter field(String key, int value) throws IOException {
+	public JSONSerializer field(String key, int value) throws IOException {
 		gen.writeNumberField(key, value);
 		return this;
 	}
 
 	@Override
-	public JSONExporter field(String key, long value) throws IOException {
+	public JSONSerializer field(String key, long value) throws IOException {
 		gen.writeNumberField(key, value);
 		return this;
 	}
 
 	@Override
-	public JSONExporter field(String key, boolean value) throws IOException {
+	public JSONSerializer field(String key, boolean value) throws IOException {
 		gen.writeBooleanField(key, value);
 		return this;
 	}
 
 	@Override
-	public JSONExporter optField(String key, Object nullableValue) throws IOException {
+	public JSONSerializer optField(String key, Object nullableValue) throws IOException {
 		if( nullableValue != null ) {
 			gen.writeStringField(key, nullableValue.toString());
 		}
@@ -157,7 +157,7 @@ public class JacksonExporter implements JSONExporter {
 	}
 
 	@Override
-	public JSONExporter optField(String key, Integer nullableValue) throws IOException {
+	public JSONSerializer optField(String key, Integer nullableValue) throws IOException {
 		if( nullableValue != null ) {
 			gen.writeNumberField(key, nullableValue.intValue());
 		}
@@ -165,7 +165,7 @@ public class JacksonExporter implements JSONExporter {
 	}
 
 	@Override
-	public JSONExporter optField(String key, boolean flag) throws IOException {
+	public JSONSerializer optField(String key, boolean flag) throws IOException {
 		if( flag ) {
 			gen.writeBooleanField(key, flag);
 		}
@@ -173,19 +173,19 @@ public class JacksonExporter implements JSONExporter {
 	}
 
 	@Override
-	public JSONExporter id(String key, Object object) throws IOException {
+	public JSONSerializer id(String key, Object object) throws IOException {
 		gen.writeNumberField(key, idMap.idFor(object));
 		return this;
 	}
 
 	@Override
-	public JSONExporter ref(String key, Object object) throws IOException {
+	public JSONSerializer ref(String key, Object object) throws IOException {
 		gen.writeNumberField(key, idMap.findId(object));
 		return this;
 	}
 
 	@Override
-	public JSONExporter optRef(String key, Object nullableObject) throws IOException {
+	public JSONSerializer optRef(String key, Object nullableObject) throws IOException {
 		if( nullableObject != null ) {
 			gen.writeNumberField(key, idMap.findId(nullableObject));
 		}
@@ -193,7 +193,7 @@ public class JacksonExporter implements JSONExporter {
 	}
 
 	@Override
-	public JSONExporter idMax(String key) throws IOException {
+	public JSONSerializer idMax(String key) throws IOException {
 		gen.writeNumberField(key, idMap.maxId());
 		return this;
 	}
