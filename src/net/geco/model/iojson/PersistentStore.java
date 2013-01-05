@@ -34,7 +34,6 @@ import net.geco.model.Trace;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 /**
  * @author Simon Denier
@@ -42,6 +41,8 @@ import org.json.JSONTokener;
  *
  */
 public final class PersistentStore {
+
+	private static final String STORE_FILE = "store.json";
 
 	public static final String JSON_SCHEMA_VERSION = "2.0";
 	
@@ -52,10 +53,13 @@ public final class PersistentStore {
 	 * - build an adapter/bridge to json reader
 	 */
 	
+	public String getStorePath(String baseDir) {
+		return baseDir + GecoResources.sep + STORE_FILE;
+	}
+
 	public void storeData(Stage stage) {
 		try {
-			String datafile = "store.json";
-			BufferedWriter writer = GecoResources.getSafeWriterFor(stage.getBaseDir() + GecoResources.sep + datafile);
+			BufferedWriter writer = GecoResources.getSafeWriterFor(getStorePath(stage.getBaseDir()));
 
 			JSONSerializer json = new JacksonSerializer(writer, DEBUG);
 			json.startObject()
@@ -109,11 +113,11 @@ public final class PersistentStore {
 			json.endArray();
 			
 			json.startArrayField(K.HEATSETS);
-			for (HeatSet h : stage.registry().getHeatSets()) {
+			for (HeatSet heatset : stage.registry().getHeatSets()) {
 				json.startObject()
-					.field(K.NAME, h.getName())
-					.field(K.RANK, h.getQualifyingRank())
-					.field(K.TYPE, h.getSetType().name())
+					.field(K.NAME, heatset.getName())
+					.field(K.RANK, heatset.getQualifyingRank())
+					.field(K.TYPE, heatset.getSetType().name())
 					.key(K.HEATS).startArray().endArray() // TODO
 					.key(K.POOLS).startArray().endArray() // TODO
 					.endObject();
@@ -166,14 +170,14 @@ public final class PersistentStore {
 					.field(K.MPS, result.getNbMPs())
 					.field(K.PENALTY, result.getTimePenalty());
 				
-				Trace[] trace = result.getTrace();
+				Trace[] traceArray = result.getTrace();
 				int nbNeut = 0;
-				int[] neutralized = new int[trace.length];
+				int[] neutralized = new int[traceArray.length];
 				json.startArrayField(K.TRACE);
-				for (int i = 0; i < trace.length; i++) {
-					Trace t = result.getTrace()[i];
-					json.value(t.getCode()).value(t.getTime());
-					if( t.isNeutralized() ){
+				for (int i = 0; i < traceArray.length; i++) {
+					Trace trace = result.getTrace()[i];
+					json.value(trace.getCode()).value(trace.getTime());
+					if( trace.isNeutralized() ){
 						neutralized[nbNeut++] = i;
 					}
 				}
@@ -193,7 +197,7 @@ public final class PersistentStore {
 				.close();
 			writer.close();
 			
-			backupData(stage.getBaseDir(), datafile, "store.zip");
+			backupData(stage.getBaseDir(), STORE_FILE, "store.zip");
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -203,7 +207,7 @@ public final class PersistentStore {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void backupData(String basedir, String datafile, String backupname) throws IOException {
 		ZipOutputStream zipStream = 
 				new ZipOutputStream(new FileOutputStream(basedir + GecoResources.sep + backupname));
@@ -228,13 +232,16 @@ public final class PersistentStore {
 
 	public Stage loadData(String baseDir, Factory factory, Checker checker) {
 		Stage newStage = factory.createStage();
+		Registry registry = new Registry();
+		newStage.setRegistry(registry);
 		try {
-			BufferedReader reader = GecoResources.getSafeReaderFor(baseDir + GecoResources.sep + "store.json");
-			JSONObject store = new JSONObject(new JSONTokener(reader));
-			
+			BufferedReader reader = GecoResources.getSafeReaderFor(getStorePath(baseDir));
+//			JSONObject store = new JSONObject(new JSONTokener(reader));
+			JSONStore store = new JSONStore(reader);
+
 			// TODO
 //			loadStageProperties(store, newStage, baseDir);
-			importDataIntoRegistry(store, newStage, factory);
+			importDataIntoRegistry(store, registry, factory);
 			// REMOVE???
 //			checker.postInitialize(newStage); // post initialization
 			
@@ -248,16 +255,14 @@ public final class PersistentStore {
 		return newStage;
 	}
 
-	private void importDataIntoRegistry(JSONObject store, Stage newStage, Factory factory) throws JSONException {
-		Registry registry = new Registry();
-		newStage.setRegistry(registry);
+	private void importDataIntoRegistry(JSONStore store, Registry registry, Factory factory) throws JSONException {
 
-		RefMap refMap = new RefMap(store.getInt(K.MAXID) + 1);
+//		RefMap refMap = new RefMap(store.getInt(K.MAXID) + 1);
 			
 		JSONArray courses = store.getJSONArray(K.COURSES);
 		for (int i = 0; i < courses.length(); i++) {
 			JSONObject c = courses.getJSONObject(i);
-			Course course = factory.createCourse();
+			Course course = store.register(factory.createCourse(), c.getInt(K.ID));
 			course.setName(c.getString(K.NAME));
 			course.setLength(c.getInt(K.LENGTH));
 			course.setClimb(c.getInt(K.CLIMB));
@@ -267,7 +272,7 @@ public final class PersistentStore {
 				codez[j] = codes.getInt(j);
 			}
 			course.setCodes(codez);
-			refMap.put(c.getInt(K.ID), course);
+//			refMap.put(jsonCourse.getInt(K.ID), course);
 			registry.addCourse(course);
 		}
 		registry.ensureAutoCourse(factory);
@@ -275,47 +280,49 @@ public final class PersistentStore {
 		JSONArray categories = store.getJSONArray(K.CATEGORIES);
 		for (int i = 0; i < categories.length(); i++) {
 			JSONObject c = categories.getJSONObject(i);
-			Category category = factory.createCategory();
+			Category category = store.register(factory.createCategory(), c.getInt(K.ID));
 			category.setName(c.getString(K.NAME));
 			category.setLongname(c.getString(K.LONG));
-			category.setCourse((Course) refMap.get(c.optInt(K.COURSE))); // ref[0] = null
-			refMap.put(c.getInt(K.ID), category);
+			category.setCourse(store.retrieve(c.optInt(K.COURSE), Course.class));  // TODO ref[0] = null
+//			category.setCourse((Course) refMap.get(c.optInt(K.COURSE)));
 			registry.addCategory(category);
 		}
 
 		JSONArray clubs = store.getJSONArray(K.CLUBS);
 		for (int i = 0; i < clubs.length(); i++) {
 			JSONObject c = clubs.getJSONObject(i);
-			Club club = factory.createClub();
+			Club club = store.register(factory.createClub(), c.getInt(K.ID));
 			club.setName(c.getString(K.NAME));
 			club.setShortname(c.getString(K.SHORT));
-			refMap.put(c.getInt(K.ID), club);
 			registry.addClub(club);
 		}
 
 		store.getJSONArray(K.HEATSETS); // TODO
 
+		final int I_RUNNER = 0;
+		final int I_ECARD = 1;
+		final int I_RESULT = 2;
 		JSONArray runnersData = store.getJSONArray(K.RUNNERS_DATA);
 		for (int i = 0; i < runnersData.length(); i++) {
-			JSONArray runnerData = runnersData.getJSONArray(i);
+			JSONArray runnerTuple = runnersData.getJSONArray(i);
 
-			JSONObject r = runnerData.getJSONObject(0);
+			JSONObject c = runnerTuple.getJSONObject(I_RUNNER);
 			Runner runner = factory.createRunner();
-			runner.setStartId(r.getInt(K.START_ID));
-			runner.setFirstname(r.getString(K.FIRST));
-			runner.setLastname(r.getString(K.LAST));
-			runner.setEcard(r.getString(K.ECARD));
-			runner.setClub((Club) refMap.get(r.getInt(K.CLUB)));
-			runner.setCategory((Category) refMap.get(r.getInt(K.CAT)));
-			runner.setCourse((Course) refMap.get(r.getInt(K.COURSE)));
-			runner.setRegisteredStarttime(new Date(r.getLong(K.START)));
-			runner.setArchiveId((Integer) r.opt(K.ARK));
-			// TODO: nc, rented
+			runner.setStartId(c.getInt(K.START_ID));
+			runner.setFirstname(c.getString(K.FIRST));
+			runner.setLastname(c.getString(K.LAST));
+			runner.setEcard(c.getString(K.ECARD));
+			runner.setClub(store.retrieve(c.getInt(K.CLUB), Club.class));
+			runner.setCategory(store.retrieve(c.getInt(K.CAT), Category.class));
+			runner.setCourse(store.retrieve(c.getInt(K.COURSE), Course.class));
+			runner.setRegisteredStarttime(new Date(c.getLong(K.START)));
+			runner.setArchiveId((Integer) c.opt(K.ARK));
+			runner.setRentedEcard(c.optBoolean(K.RENT));
+			runner.setNC(c.optBoolean(K.NC));
 			registry.addRunner(runner);
 
-			JSONObject d = runnerData.getJSONObject(1);
+			JSONObject d = runnerTuple.getJSONObject(I_ECARD);
 			RunnerRaceData ecardData = factory.createRunnerRaceData();
-			ecardData.setRunner(runner);
 			ecardData.setStarttime(new Date(d.getLong(K.START)));
 			ecardData.setFinishtime(new Date(d.getLong(K.FINISH)));
 			ecardData.setErasetime(new Date(d.getLong(K.ERASE)));
@@ -323,31 +330,32 @@ public final class PersistentStore {
 			ecardData.setReadtime(new Date(d.getLong(K.READ)));
 			JSONArray p = d.getJSONArray(K.PUNCHES);
 			Punch[] punches = new Punch[p.length() / 2];
-			ecardData.setPunches(punches);
 			for (int j = 0; j < punches.length; j++) {
 				punches[j] = factory.createPunch();
 				punches[j].setCode(p.getInt(2 * j));
 				punches[j].setTime(new Date(p.getLong(2 * j + 1)));
 			}
+			ecardData.setPunches(punches);
+			ecardData.setRunner(runner);
 			registry.addRunnerData(ecardData);
 
-			JSONObject res = runnerData.getJSONObject(2);
+			JSONObject r = runnerTuple.getJSONObject(I_RESULT);
 			RunnerResult result = factory.createRunnerResult();
-			result.setRacetime(res.getLong(K.TIME));
-			result.setStatus(Status.valueOf(res.getString(K.STATUS)));
-			result.setNbMPs(res.getInt(K.MPS));
-			result.setTimePenalty(res.getLong(K.PENALTY));
-			JSONArray t = res.getJSONArray(K.TRACE);
+			result.setRacetime(r.getLong(K.TIME));
+			result.setStatus(Status.valueOf(r.getString(K.STATUS)));
+			result.setNbMPs(r.getInt(K.MPS));
+			result.setTimePenalty(r.getLong(K.PENALTY));
+			JSONArray t = r.getJSONArray(K.TRACE);
 			Trace[] trace = new Trace[t.length() / 2];
-			result.setTrace(trace);
 			for (int j = 0; j < trace.length; j++) {
 				trace[j] = factory.createTrace(t.getString(2 * j),
 						new Date(t.getLong(2 * j + 1)));
 			}
-			JSONArray neut = res.getJSONArray(K.NEUTRALIZED);
+			JSONArray neut = r.getJSONArray(K.NEUTRALIZED);
 			for (int j = 0; j < neut.length(); j++) {
 				trace[neut.getInt(j)].setNeutralized(true);
 			}
+			result.setTrace(trace);
 			ecardData.setResult(result);
 		}
 			
