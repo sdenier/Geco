@@ -42,16 +42,11 @@ import org.json.JSONObject;
  */
 public final class PersistentStore {
 
-	private static final String STORE_FILE = "store.json";
+	public static final String STORE_FILE = "store.json";
 
 	public static final String JSON_SCHEMA_VERSION = "2.0";
 	
 	private static final boolean DEBUG = false;
-	
-	/*
-	 * TODO
-	 * - build an adapter/bridge to json reader
-	 */
 	
 	public String getStorePath(String baseDir) {
 		return baseDir + GecoResources.sep + STORE_FILE;
@@ -96,9 +91,6 @@ public final class PersistentStore {
 					.field(K.LONG, cat.getLongname())
 					.optRef(K.COURSE, cat.getCourse())
 					.endObject();
-//				if( c.getCourse() != null ){
-//					json.(K.COURSE).value(idFor(c.getCourse()));
-//				}
 			}
 			json.endArray();
 			
@@ -141,15 +133,6 @@ public final class PersistentStore {
 					.optField(K.RENT, runner.rentedEcard())
 					.optField(K.NC, runner.isNC())
 					.endObject();
-//				if( runner.getArchiveId() != null ){
-//					json.key(K.ARK).value(runner.getArchiveId());
-//				}
-//				if( runner.rentedEcard() ){
-//					json.key(K.RENT).value(true);
-//				}
-//				if( runner.isNC() ){
-//					json.key(K.NC).value(true);
-//				}
 				
 				json.startObject()
 					.field(K.START, runnerData.getStarttime())
@@ -236,7 +219,6 @@ public final class PersistentStore {
 		newStage.setRegistry(registry);
 		try {
 			BufferedReader reader = GecoResources.getSafeReaderFor(getStorePath(baseDir));
-//			JSONObject store = new JSONObject(new JSONTokener(reader));
 			JSONStore store = new JSONStore(reader);
 
 			// TODO
@@ -256,8 +238,6 @@ public final class PersistentStore {
 	}
 
 	private void importDataIntoRegistry(JSONStore store, Registry registry, Factory factory) throws JSONException {
-
-//		RefMap refMap = new RefMap(store.getInt(K.MAXID) + 1);
 			
 		JSONArray courses = store.getJSONArray(K.COURSES);
 		for (int i = 0; i < courses.length(); i++) {
@@ -272,7 +252,6 @@ public final class PersistentStore {
 				codez[j] = codes.getInt(j);
 			}
 			course.setCodes(codez);
-//			refMap.put(jsonCourse.getInt(K.ID), course);
 			registry.addCourse(course);
 		}
 		registry.ensureAutoCourse(factory);
@@ -283,8 +262,7 @@ public final class PersistentStore {
 			Category category = store.register(factory.createCategory(), c.getInt(K.ID));
 			category.setName(c.getString(K.NAME));
 			category.setLongname(c.getString(K.LONG));
-			category.setCourse(store.retrieve(c.optInt(K.COURSE), Course.class));  // TODO ref[0] = null
-//			category.setCourse((Course) refMap.get(c.optInt(K.COURSE)));
+			category.setCourse(store.retrieve(c.optInt(K.COURSE, 0), Course.class));
 			registry.addCategory(category);
 		}
 
@@ -417,59 +395,59 @@ public final class PersistentStore {
 			}
 		}
 
-		private static final String ID = "id";;
-		private static final String MAXID = "maxid";;
-		private static final String NAME = "name";
-		private static final String VERSION = "version";
+		static final String ID = "id";;
+		static final String MAXID = "maxid";;
+		static final String NAME = "name";
+		static final String VERSION = "version";
 
-		private static final String STAGE = "stage";
-		private static final String BASEDIR = "basedir";
-		private static final String ZEROHOUR = "zerohour";
+		static final String STAGE = "stage";
+		static final String BASEDIR = "basedir";
+		static final String ZEROHOUR = "zerohour";
 
-		private static final String PROPERTIES = "properties";
+		static final String PROPERTIES = "properties";
 
-		private static final String COURSES = "courses";
-		private static final String LENGTH = "length";
-		private static final String CLIMB = "climb";
-		private static final String CODES = "codes";
+		static final String COURSES = "courses";
+		static final String LENGTH = "length";
+		static final String CLIMB = "climb";
+		static final String CODES = "codes";
 
-		private static final String CATEGORIES = "categories";;
-		private static final String LONG = "long";
-		private static final String CLUBS = "clubs";
-		private static final String SHORT = "short";
+		static final String CATEGORIES = "categories";;
+		static final String LONG = "long";
+		static final String CLUBS = "clubs";
+		static final String SHORT = "short";
 
-		private static final String HEATSETS = "heatsets";
-		private static final String RANK = "rank";
-		private static final String TYPE = "type";
-		private static final String HEATS = "heats";
-		private static final String POOLS = "pools";
+		static final String HEATSETS = "heatsets";
+		static final String RANK = "rank";
+		static final String TYPE = "type";
+		static final String HEATS = "heats";
+		static final String POOLS = "pools";
 
-		private static final String RUNNERS_DATA = "runnersData";
+		static final String RUNNERS_DATA = "runnersData";
 
-		private static final String START_ID;
-		private static final String FIRST;
-		private static final String LAST;
-		private static final String ECARD;
-		private static final String CLUB;
-		private static final String CAT;
-		private static final String COURSE;
-		private static final String ARK;
-		private static final String NC;
-		private static final String RENT;
+		static final String START_ID;
+		static final String FIRST;
+		static final String LAST;
+		static final String ECARD;
+		static final String CLUB;
+		static final String CAT;
+		static final String COURSE;
+		static final String ARK;
+		static final String NC;
+		static final String RENT;
 
-		private static final String START;
-		private static final String FINISH;
-		private static final String ERASE;
-		private static final String CHECK;
-		private static final String READ;
-		private static final String PUNCHES;
+		static final String START;
+		static final String FINISH;
+		static final String ERASE;
+		static final String CHECK;
+		static final String READ;
+		static final String PUNCHES;
 
-		private static final String TIME;
-		private static final String STATUS;
-		private static final String MPS;
-		private static final String PENALTY;
-		private static final String TRACE;
-		private static final String NEUTRALIZED;
+		static final String TIME;
+		static final String STATUS;
+		static final String MPS;
+		static final String PENALTY;
+		static final String TRACE;
+		static final String NEUTRALIZED;
 	}
 	
 }
