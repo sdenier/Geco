@@ -32,13 +32,13 @@ public class IdMapTest {
 	}
 	
 	@Test
-	public void returnsIdForAnyGivenObject() {
+	public void idFor_returnsIdForAnyGivenObject() {
 		int id = subject().idFor(new Object());
 		assertThat(id, instanceOf(Integer.class));
 	}
 
 	@Test
-	public void returnsDifferentIdsForDifferentObjects() {
+	public void idFor_returnsDifferentIdsForDifferentObjects() {
 		Object object1 = new Object();
 		Object object2 = new Object();
 		int id1 = subject().idFor(object1);
@@ -48,10 +48,22 @@ public class IdMapTest {
 	}
 	
 	@Test
-	public void alwaysReturnsSameIdForSameObject() {
+	public void idFor_alwaysReturnsSameIdForSameObject() {
 		Object object = new Object();
 		int id = subject().idFor(object);
 		assertThat(subject().idFor(object), equalTo(id));
+	}
+
+	@Test
+	public void findId_returnsExistingId() {
+		Object object = new Object();
+		int id  = subject().idFor(object);
+		assertThat(subject().findId(object), equalTo(id));
+	}
+
+	@Test(expected=NullPointerException.class)
+	public void findId_throwNullPointerExceptionForUnknownObject() {
+		subject().findId(new Object());
 	}
 
 	@Test

@@ -127,8 +127,8 @@ public class JacksonStore {
 			json.writeArrayFieldStart(COURSES);
 			for (Course c : stage.registry().getCourses()) {
 				json.writeStartObject();
-				json.writeStringField(NAME, c.getName());
 				json.writeNumberField(ID, idFor(c));
+				json.writeStringField(NAME, c.getName());
 				json.writeNumberField("length", c.getLength());
 				json.writeNumberField("climb", c.getClimb());
 				json.writeArrayFieldStart("codes");
@@ -143,8 +143,8 @@ public class JacksonStore {
 			json.writeArrayFieldStart("categories");
 			for (Category c : stage.registry().getCategories()) {
 				json.writeStartObject();
-				json.writeStringField(NAME, c.getShortname());
 				json.writeNumberField(ID, idFor(c));
+				json.writeStringField(NAME, c.getShortname());
 				json.writeStringField("long", c.getLongname());
 				if (c.getCourse() != null) {
 					json.writeNumberField(COURSE, refFor(c.getCourse()));
@@ -156,8 +156,8 @@ public class JacksonStore {
 			json.writeArrayFieldStart("clubs");
 			for (Club c : stage.registry().getClubs()) {
 				json.writeStartObject();
-				json.writeStringField(NAME, c.getName());
 				json.writeNumberField(ID, idFor(c));
+				json.writeStringField(NAME, c.getName());
 				json.writeStringField("short", c.getShortname());
 				json.writeEndObject();
 			}

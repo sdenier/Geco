@@ -19,9 +19,16 @@ import com.fasterxml.jackson.core.JsonGenerator.Feature;
  */
 public class JacksonExporter implements JSONExporter {
 
+	private IdMap idMap;
+
 	private JsonGenerator gen;
 
+	protected JacksonExporter() {
+		idMap = new IdMap();
+	}
+	
 	public JacksonExporter(Writer writer, boolean debug) throws IOException {
+		this();
 		JsonFactory jsonFactory = new JsonFactory();
 		gen = jsonFactory.createGenerator(writer);
 		if( debug ){
@@ -31,215 +38,169 @@ public class JacksonExporter implements JSONExporter {
 		}
 	}
 
+	/*
+	 * Only for testing purpose
+	 */
 	public JacksonExporter(JsonGenerator gen) {
+		this();
 		this.gen = gen;
 	}
+
+	@Override
+	public JSONExporter key(String key) throws IOException {
+		gen.writeFieldName(key);
+		return this;
+	}
+
+	@Override
+	public JSONExporter value(String value) throws IOException {
+		gen.writeString(value);
+		return this;
+	}
+
+	@Override
+	public JSONExporter value(Date value) throws IOException {
+		gen.writeNumber(value.getTime());
+		return this;
+	}
+
+	@Override
+	public JSONExporter value(int value) throws IOException {
+		gen.writeNumber(value);
+		return this;
+	}
+
+	@Override
+	public JSONExporter value(long value) throws IOException {
+		gen.writeNumber(value);
+		return this;
+	}
+
+	@Override
+	public JSONExporter value(boolean value) throws IOException {
+		gen.writeBoolean(value);
+		return this;
+	}
+
+	@Override
+	public JSONExporter startObject() throws IOException {
+		gen.writeStartObject();
+		return this;
+	}
+
+	@Override
+	public JSONExporter startObjectField(String key) throws IOException {
+		gen.writeObjectFieldStart(key);
+		return this;
+	}
+
+	@Override
+	public JSONExporter endObject() throws IOException {
+		gen.writeEndObject();
+		return this;
+	}
+
+	@Override
+	public JSONExporter startArray() throws IOException {
+		gen.writeStartArray();
+		return this;
+	}
+
+	@Override
+	public JSONExporter startArrayField(String key) throws IOException {
+		gen.writeArrayFieldStart(key);
+		return this;
+	}
+
+	@Override
+	public JSONExporter endArray() throws IOException {
+		gen.writeEndArray();
+		return this;
+	}
+
+	@Override
+	public JSONExporter field(String key, String value) throws IOException {
+		gen.writeStringField(key, value);
+		return this;
+	}
+
+	@Override
+	public JSONExporter field(String key, Date date) throws IOException {
+		gen.writeNumberField(key, date.getTime());
+		return this;
+	}
+
+	@Override
+	public JSONExporter field(String key, int value) throws IOException {
+		gen.writeNumberField(key, value);
+		return this;
+	}
+
+	@Override
+	public JSONExporter field(String key, long value) throws IOException {
+		gen.writeNumberField(key, value);
+		return this;
+	}
+
+	@Override
+	public JSONExporter field(String key, boolean value) throws IOException {
+		gen.writeBooleanField(key, value);
+		return this;
+	}
+
+	@Override
+	public JSONExporter optField(String key, Object nullableValue) throws IOException {
+		if( nullableValue != null ) {
+			gen.writeStringField(key, nullableValue.toString());
+		}
+		return this;
+	}
+
+	@Override
+	public JSONExporter optField(String key, Integer nullableValue) throws IOException {
+		if( nullableValue != null ) {
+			gen.writeNumberField(key, nullableValue.intValue());
+		}
+		return this;
+	}
+
+	@Override
+	public JSONExporter optField(String key, boolean flag) throws IOException {
+		if( flag ) {
+			gen.writeBooleanField(key, flag);
+		}
+		return this;
+	}
+
+	@Override
+	public JSONExporter id(String key, Object object) throws IOException {
+		gen.writeNumberField(key, idMap.idFor(object));
+		return this;
+	}
+
+	@Override
+	public JSONExporter ref(String key, Object object) throws IOException {
+		gen.writeNumberField(key, idMap.findId(object));
+		return this;
+	}
+
+	@Override
+	public JSONExporter optRef(String key, Object nullableObject) throws IOException {
+		if( nullableObject != null ) {
+			gen.writeNumberField(key, idMap.findId(nullableObject));
+		}
+		return this;
+	}
+
+	@Override
+	public JSONExporter idMax(String key) throws IOException {
+		gen.writeNumberField(key, idMap.maxId());
+		return this;
+	}
+
+	@Override
+	public void close() throws IOException {
+		gen.close();
+	}
 	
-	/* (non-Javadoc)
-	 * @see net.geco.model.iojson.JSONExporter#key(java.lang.String)
-	 */
-	@Override
-	public JSONExporter key(String key) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.geco.model.iojson.JSONExporter#value(java.lang.String)
-	 */
-	@Override
-	public JSONExporter value(String value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.geco.model.iojson.JSONExporter#value(java.util.Date)
-	 */
-	@Override
-	public JSONExporter value(Date value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.geco.model.iojson.JSONExporter#value(long)
-	 */
-	@Override
-	public JSONExporter value(long value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.geco.model.iojson.JSONExporter#value(double)
-	 */
-	@Override
-	public JSONExporter value(double value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.geco.model.iojson.JSONExporter#value(boolean)
-	 */
-	@Override
-	public JSONExporter value(boolean value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.geco.model.iojson.JSONExporter#startObject()
-	 */
-	@Override
-	public JSONExporter startObject() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.geco.model.iojson.JSONExporter#startObjectField(java.lang.String)
-	 */
-	@Override
-	public JSONExporter startObjectField(String key) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.geco.model.iojson.JSONExporter#endObject()
-	 */
-	@Override
-	public JSONExporter endObject() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.geco.model.iojson.JSONExporter#startArray()
-	 */
-	@Override
-	public JSONExporter startArray() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.geco.model.iojson.JSONExporter#startArrayField(java.lang.String)
-	 */
-	@Override
-	public JSONExporter startArrayField(String key) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.geco.model.iojson.JSONExporter#endArray()
-	 */
-	@Override
-	public JSONExporter endArray() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.geco.model.iojson.JSONExporter#field(java.lang.String, java.lang.String)
-	 */
-	@Override
-	public JSONExporter field(String key, String value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.geco.model.iojson.JSONExporter#field(java.lang.String, java.util.Date)
-	 */
-	@Override
-	public JSONExporter field(String key, Date date) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.geco.model.iojson.JSONExporter#field(java.lang.String, long)
-	 */
-	@Override
-	public JSONExporter field(String key, long value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.geco.model.iojson.JSONExporter#field(java.lang.String, double)
-	 */
-	@Override
-	public JSONExporter field(String key, double value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.geco.model.iojson.JSONExporter#field(java.lang.String, boolean)
-	 */
-	@Override
-	public JSONExporter field(String key, boolean value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.geco.model.iojson.JSONExporter#optField(java.lang.String, java.lang.Object)
-	 */
-	@Override
-	public JSONExporter optField(String key, Object nullableValue) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.geco.model.iojson.JSONExporter#optField(java.lang.String, boolean)
-	 */
-	@Override
-	public JSONExporter optField(String key, boolean flag) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.geco.model.iojson.JSONExporter#id(java.lang.String, java.lang.Object)
-	 */
-	@Override
-	public JSONExporter id(String key, Object object) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.geco.model.iojson.JSONExporter#ref(java.lang.String, java.lang.Object)
-	 */
-	@Override
-	public JSONExporter ref(String key, Object object) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.geco.model.iojson.JSONExporter#optRef(java.lang.String, java.lang.Object)
-	 */
-	@Override
-	public JSONExporter optRef(String key, Object nullableObject) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.geco.model.iojson.JSONExporter#idMax(java.lang.String)
-	 */
-	@Override
-	public JSONExporter idMax(String key) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

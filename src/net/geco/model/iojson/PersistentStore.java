@@ -45,7 +45,7 @@ public final class PersistentStore {
 
 	public static final String JSON_SCHEMA_VERSION = "2.0";
 	
-	private static final boolean DEBUG = true;
+	private static final boolean DEBUG = false;
 	
 	/*
 	 * TODO
@@ -189,8 +189,9 @@ public final class PersistentStore {
 				
 			}
 			json.endArray()
-				.idMax(K.MAXID) // TODO.value(idMap.maxId());
-				.endObject();
+				.idMax(K.MAXID)
+				.endObject()
+				.close();
 			writer.close();
 			
 			backupData(stage.getBaseDir(), datafile, "store.zip");

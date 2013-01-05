@@ -30,6 +30,10 @@ public class IdMap {
 		return idMap.get(object);
 	}
 
+	public int findId(Object object) {
+		return idMap.get(object);
+	}
+
 	public int maxId() {
 		return newId;
 	}
