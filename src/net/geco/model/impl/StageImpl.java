@@ -23,7 +23,6 @@ public class StageImpl implements Stage {
 	private int nbBackups;
 	private int autosaveDelay; // in minutes
 	
-	private boolean version12;
 	private String appBuilderName;
 
 	
@@ -83,14 +82,14 @@ public class StageImpl implements Stage {
 		this.nbBackups = nbBackups;
 	}
 	
+	public String getAppBuilderName() {
+		return appBuilderName;
+	}
+	
 	public String filepath(String filename) {
 		return baseDir + "/" + filename; //$NON-NLS-1$
 	}
 	
-	public boolean version12(){
-		return version12;
-	}
-
 	/**
 	 * Return the properties for the current stage, create new ones if necessary.
 	 * 
@@ -146,13 +145,6 @@ public class StageImpl implements Stage {
 			}
 		}
 		
-		prop = properties.getProperty(versionProperty());
-		if( prop!=null ) {
-			version12 = true;
-		} else {
-			version12 = false;
-		}
-		
 		appBuilderName = properties.getProperty(appBuilderProperty(), defaultAppBuilderName());
 	}
 	
@@ -166,7 +158,6 @@ public class StageImpl implements Stage {
 		properties.setProperty(zerohourProperty(), Long.toString(getZeroHour()));
 		properties.setProperty(autosaveDelayProperty(), Integer.toString(getAutosaveDelay()));
 		properties.setProperty(nbAutoBackupsProperty(), Integer.toString(getNbAutoBackups()));
-		properties.setProperty(versionProperty(), "V1.2"); //$NON-NLS-1$
 		properties.setProperty(appBuilderProperty(), appBuilderName);
 		setProperties(properties);
 	}
@@ -185,10 +176,6 @@ public class StageImpl implements Stage {
 
 	public static String nbAutoBackupsProperty() {
 		return "NbAutoBackups"; //$NON-NLS-1$
-	}
-	
-	public static String versionProperty() {
-		return "Version"; //$NON-NLS-1$
 	}
 	
 	public static String appBuilderProperty() {
