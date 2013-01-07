@@ -213,6 +213,14 @@ public class JacksonSerializerTest {
 	}
 
 	@Test
+	public void refValue() throws IOException {
+		Object o1 = new Object();
+		subject.id("id", o1);
+		subject.ref(o1);
+		verify(gen, times(2)).writeNumber(1);
+	}
+	
+	@Test
 	public void idMax() throws IOException {
 		subject.id("id", new Object());
 		subject.idMax("max");

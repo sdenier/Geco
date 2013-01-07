@@ -122,6 +122,13 @@ public interface JSONSerializer {
 	public JSONSerializer optRef(String key, Object nullableObject) throws IOException;
 
 	/**
+	 * Same as {@link #ref(String, Object)}, except it only writes/appends the value
+	 * to the current field/array.
+	 */
+	public JSONSerializer ref(Object object) throws IOException;
+
+	
+	/**
 	 * Ask the exporter to write the last given identity number as a field
 	 * (the number of entities referenced). Meta-data.
 	 */

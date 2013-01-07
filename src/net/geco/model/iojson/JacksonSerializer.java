@@ -193,6 +193,12 @@ public class JacksonSerializer implements JSONSerializer {
 	}
 
 	@Override
+	public JSONSerializer ref(Object object) throws IOException {
+		gen.writeNumber(idMap.findId(object));
+		return this;
+	}
+
+	@Override
 	public JSONSerializer idMax(String key) throws IOException {
 		gen.writeNumberField(key, idMap.maxId());
 		return this;
