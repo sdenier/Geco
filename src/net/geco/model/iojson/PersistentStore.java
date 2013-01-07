@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -22,6 +23,7 @@ import net.geco.model.Club;
 import net.geco.model.Course;
 import net.geco.model.Factory;
 import net.geco.model.HeatSet;
+import net.geco.model.Pool;
 import net.geco.model.Punch;
 import net.geco.model.Registry;
 import net.geco.model.Runner;
@@ -55,129 +57,7 @@ public final class PersistentStore {
 	public void storeData(Stage stage) {
 		try {
 			BufferedWriter writer = GecoResources.getSafeWriterFor(getStorePath(stage.getBaseDir()));
-
-			JSONSerializer json = new JacksonSerializer(writer, DEBUG);
-			json.startObject()
-				.field(K.VERSION, JSON_SCHEMA_VERSION);
-			
-			json.startObjectField(K.STAGE)
-				.field(K.NAME, stage.getName())
-				.field(K.BASEDIR, stage.getBaseDir())
-				.field(K.ZEROHOUR, stage.getZeroHour())
-				.endObject();
-			
-			// TODO
-			json.startObjectField(K.PROPERTIES).endObject();
-			
-			json.startArrayField(K.COURSES);
-			for (Course course : stage.registry().getCourses()) {
-				json.startObject()
-					.id(K.ID, course)
-					.field(K.NAME, course.getName())
-					.field(K.LENGTH, course.getLength())
-					.field(K.CLIMB, course.getClimb())
-					.key(K.CODES).startArray();
-				for (int code : course.getCodes()) { json.value(code); }
-				json.endArray()
-					.endObject();
-			}
-			json.endArray();
-			
-			json.startArrayField(K.CATEGORIES);
-			for (Category cat : stage.registry().getCategories()) {
-				json.startObject()
-					.id(K.ID, cat)
-					.field(K.NAME, cat.getShortname())
-					.field(K.LONG, cat.getLongname())
-					.optRef(K.COURSE, cat.getCourse())
-					.endObject();
-			}
-			json.endArray();
-			
-			json.startArrayField(K.CLUBS);
-			for (Club club : stage.registry().getClubs()) {
-				json.startObject()
-					.id(K.ID, club)
-					.field(K.NAME, club.getName())
-					.field(K.SHORT, club.getShortname())
-					.endObject();
-			}
-			json.endArray();
-			
-			json.startArrayField(K.HEATSETS);
-			for (HeatSet heatset : stage.registry().getHeatSets()) {
-				json.startObject()
-					.field(K.NAME, heatset.getName())
-					.field(K.RANK, heatset.getQualifyingRank())
-					.field(K.TYPE, heatset.getSetType().name())
-					.key(K.HEATS).startArray().endArray() // TODO
-					.key(K.POOLS).startArray().endArray() // TODO
-					.endObject();
-			}
-			json.endArray();
-			
-			json.startArrayField(K.RUNNERS_DATA);
-			for (RunnerRaceData runnerData : stage.registry().getRunnersData()) {
-				json.startArray();
-				Runner runner = runnerData.getRunner();
-				json.startObject()
-					.field(K.START_ID, runner.getStartId())
-					.field(K.FIRST, runner.getFirstname())
-					.field(K.LAST, runner.getLastname())
-					.field(K.ECARD, runner.getEcard())
-					.ref(K.CLUB, runner.getClub())
-					.ref(K.CAT, runner.getCategory())
-					.ref(K.COURSE, runner.getCourse())
-					.field(K.START, runner.getRegisteredStarttime())
-					.optField(K.ARK, runner.getArchiveId())
-					.optField(K.RENT, runner.rentedEcard())
-					.optField(K.NC, runner.isNC())
-					.endObject();
-				
-				json.startObject()
-					.field(K.START, runnerData.getStarttime())
-					.field(K.FINISH, runnerData.getFinishtime())
-					.field(K.ERASE, runnerData.getErasetime())
-					.field(K.CHECK, runnerData.getControltime())
-					.field(K.READ, runnerData.getReadtime())
-					.key(K.PUNCHES).startArray();
-				for (Punch punch : runnerData.getPunches()) {
-					json.value(punch.getCode()).value(punch.getTime());
-				}
-				json.endArray().endObject();
-				
-				RunnerResult result = runnerData.getResult();
-				json.startObject()
-					.field(K.TIME, result.getRacetime())
-					.field(K.STATUS, result.getStatus().name())
-					.field(K.MPS, result.getNbMPs())
-					.field(K.PENALTY, result.getTimePenalty());
-				
-				Trace[] traceArray = result.getTrace();
-				int nbNeut = 0;
-				int[] neutralized = new int[traceArray.length];
-				json.startArrayField(K.TRACE);
-				for (int i = 0; i < traceArray.length; i++) {
-					Trace trace = result.getTrace()[i];
-					json.value(trace.getCode()).value(trace.getTime());
-					if( trace.isNeutralized() ){
-						neutralized[nbNeut++] = i;
-					}
-				}
-				json.endArray()
-					.startArrayField(K.NEUTRALIZED);
-				for (int i = 0; i < nbNeut; i++) {
-					json.value(neutralized[i]);
-				}
-				json.endArray()
-					.endObject()
-					.endArray();
-				
-			}
-			json.endArray()
-				.idMax(K.MAXID)
-				.endObject()
-				.close();
+			storeData(stage, new JacksonSerializer(writer, DEBUG));
 			writer.close();
 			
 			backupData(stage.getBaseDir(), STORE_FILE, "store.zip");
@@ -191,6 +71,142 @@ public final class PersistentStore {
 		}
 	}
 
+	public void storeData(Stage stage, JSONSerializer json) throws IOException {
+		json.startObject()
+			.field(K.VERSION, JSON_SCHEMA_VERSION);
+		
+		Registry registry = stage.registry();
+		exportCourses(json, registry.getCourses());
+		exportCategories(json, registry.getCategories());
+		exportClubs(json, registry.getClubs());
+		exportHeatSets(json, registry.getHeatSets());
+		
+		
+		json.startArrayField(K.RUNNERS_DATA);
+		for (RunnerRaceData runnerData : registry.getRunnersData()) {
+			json.startArray();
+			Runner runner = runnerData.getRunner();
+			json.startObject()
+				.field(K.START_ID, runner.getStartId())
+				.field(K.FIRST, runner.getFirstname())
+				.field(K.LAST, runner.getLastname())
+				.field(K.ECARD, runner.getEcard())
+				.ref(K.CLUB, runner.getClub())
+				.ref(K.CAT, runner.getCategory())
+				.ref(K.COURSE, runner.getCourse())
+				.field(K.START, runner.getRegisteredStarttime())
+				.optField(K.ARK, runner.getArchiveId())
+				.optField(K.RENT, runner.rentedEcard())
+				.optField(K.NC, runner.isNC())
+				.endObject();
+			
+			json.startObject()
+				.field(K.START, runnerData.getStarttime())
+				.field(K.FINISH, runnerData.getFinishtime())
+				.field(K.ERASE, runnerData.getErasetime())
+				.field(K.CHECK, runnerData.getControltime())
+				.field(K.READ, runnerData.getReadtime())
+				.startArrayField(K.PUNCHES);
+			for (Punch punch : runnerData.getPunches()) {
+				json.value(punch.getCode()).value(punch.getTime());
+			}
+			json.endArray().endObject();
+			
+			RunnerResult result = runnerData.getResult();
+			json.startObject()
+				.field(K.TIME, result.getRacetime())
+				.field(K.STATUS, result.getStatus().name())
+				.field(K.MPS, result.getNbMPs())
+				.field(K.PENALTY, result.getTimePenalty());
+			
+			Trace[] traceArray = result.getTrace();
+			int nbNeut = 0;
+			int[] neutralized = new int[traceArray.length];
+			json.startArrayField(K.TRACE);
+			for (int i = 0; i < traceArray.length; i++) {
+				Trace trace = result.getTrace()[i];
+				json.value(trace.getCode()).value(trace.getTime());
+				if( trace.isNeutralized() ){
+					neutralized[nbNeut++] = i;
+				}
+			}
+			json.endArray()
+				.startArrayField(K.NEUTRALIZED);
+			for (int i = 0; i < nbNeut; i++) {
+				json.value(neutralized[i]);
+			}
+			json.endArray()
+				.endObject()
+				.endArray();
+			
+		}
+		json.endArray()
+			.idMax(K.MAXID)
+			.endObject()
+			.close();
+	}
+
+	public void exportCourses(JSONSerializer json, Collection<Course> courses) throws IOException {
+		json.startArrayField(K.COURSES);
+		for (Course course : courses) {
+			json.startObject()
+				.id(K.ID, course)
+				.field(K.NAME, course.getName())
+				.field(K.LENGTH, course.getLength())
+				.field(K.CLIMB, course.getClimb())
+				.startArrayField(K.CODES);
+			for (int code : course.getCodes()) { json.value(code); }
+			json.endArray()
+				.endObject();
+		}
+		json.endArray();
+	}
+
+	public void exportCategories(JSONSerializer json, Collection<Category> categories) throws IOException {
+		json.startArrayField(K.CATEGORIES);
+		for (Category cat : categories) {
+			json.startObject()
+				.id(K.ID, cat)
+				.field(K.NAME, cat.getShortname())
+				.field(K.LONG, cat.getLongname())
+				.optRef(K.COURSE, cat.getCourse())
+				.endObject();
+		}
+		json.endArray();		
+	}
+
+	public void exportClubs(JSONSerializer json, Collection<Club> clubs) throws IOException {
+		json.startArrayField(K.CLUBS);
+		for (Club club : clubs) {
+			json.startObject()
+				.id(K.ID, club)
+				.field(K.NAME, club.getName())
+				.field(K.SHORT, club.getShortname())
+				.endObject();
+		}
+		json.endArray();
+	}
+
+	public void exportHeatSets(JSONSerializer json, Collection<HeatSet> heatsets) throws IOException {
+		json.startArrayField(K.HEATSETS);
+		for (HeatSet heatset : heatsets) {
+			json.startObject()
+				.field(K.NAME, heatset.getName())
+				.field(K.RANK, heatset.getQualifyingRank())
+				.field(K.TYPE, heatset.getSetType().name())
+				.startArrayField(K.HEATS);
+			for (String heatname : heatset.getHeatNames()) { json.value(heatname); }
+			json.endArray()
+				.startArrayField(K.POOLS);
+			for (Pool pool : heatset.getSelectedPools()) { json.ref(pool); }
+			json.endArray()
+				.endObject();
+		}
+		json.endArray();		
+	}
+
+
+	
 	public void backupData(String basedir, String datafile, String backupname) throws IOException {
 		ZipOutputStream zipStream = 
 				new ZipOutputStream(new FileOutputStream(basedir + GecoResources.sep + backupname));
@@ -395,59 +411,62 @@ public final class PersistentStore {
 			}
 		}
 
-		static final String ID = "id";;
-		static final String MAXID = "maxid";;
-		static final String NAME = "name";
-		static final String VERSION = "version";
+		public static final String ID = "id";;
+		public static final String MAXID = "maxid";;
+		public static final String NAME = "name";
+		public static final String VERSION = "version";
 
-		static final String STAGE = "stage";
-		static final String BASEDIR = "basedir";
-		static final String ZEROHOUR = "zerohour";
+//		public static final String STAGE = "stage";
+//		public static final String BASEDIR = "basedir";
+//		public static final String ZEROHOUR = "zerohour";
+//		public static final String AUTOSAVE_DELAY = "autosave";
+//		public static final String NB_AUTOBACKUPS = "backups";
+//		public static final String APPBUILDER_NAME = "app";
 
-		static final String PROPERTIES = "properties";
+//		public static final String PROPERTIES = "properties";
 
-		static final String COURSES = "courses";
-		static final String LENGTH = "length";
-		static final String CLIMB = "climb";
-		static final String CODES = "codes";
+		public static final String COURSES = "courses";
+		public static final String LENGTH = "length";
+		public static final String CLIMB = "climb";
+		public static final String CODES = "codes";
 
-		static final String CATEGORIES = "categories";;
-		static final String LONG = "long";
-		static final String CLUBS = "clubs";
-		static final String SHORT = "short";
+		public static final String CATEGORIES = "categories";;
+		public static final String LONG = "long";
+		public static final String CLUBS = "clubs";
+		public static final String SHORT = "short";
 
-		static final String HEATSETS = "heatsets";
-		static final String RANK = "rank";
-		static final String TYPE = "type";
-		static final String HEATS = "heats";
-		static final String POOLS = "pools";
+		public static final String HEATSETS = "heatsets";
+		public static final String RANK = "rank";
+		public static final String TYPE = "type";
+		public static final String HEATS = "heats";
+		public static final String POOLS = "pools";
 
-		static final String RUNNERS_DATA = "runnersData";
+		public static final String RUNNERS_DATA = "runnersData";
 
-		static final String START_ID;
-		static final String FIRST;
-		static final String LAST;
-		static final String ECARD;
-		static final String CLUB;
-		static final String CAT;
-		static final String COURSE;
-		static final String ARK;
-		static final String NC;
-		static final String RENT;
+		public static final String START_ID;
+		public static final String FIRST;
+		public static final String LAST;
+		public static final String ECARD;
+		public static final String CLUB;
+		public static final String CAT;
+		public static final String COURSE;
+		public static final String ARK;
+		public static final String NC;
+		public static final String RENT;
 
-		static final String START;
-		static final String FINISH;
-		static final String ERASE;
-		static final String CHECK;
-		static final String READ;
-		static final String PUNCHES;
+		public static final String START;
+		public static final String FINISH;
+		public static final String ERASE;
+		public static final String CHECK;
+		public static final String READ;
+		public static final String PUNCHES;
 
-		static final String TIME;
-		static final String STATUS;
-		static final String MPS;
-		static final String PENALTY;
-		static final String TRACE;
-		static final String NEUTRALIZED;
+		public static final String TIME;
+		public static final String STATUS;
+		public static final String MPS;
+		public static final String PENALTY;
+		public static final String TRACE;
+		public static final String NEUTRALIZED;
 	}
-	
+
 }
