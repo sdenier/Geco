@@ -80,68 +80,9 @@ public final class PersistentStore {
 		exportCategories(json, registry.getCategories());
 		exportClubs(json, registry.getClubs());
 		exportHeatSets(json, registry.getHeatSets());
+		exportRunnersData(json, registry.getRunnersData());
 		
-		
-		json.startArrayField(K.RUNNERS_DATA);
-		for (RunnerRaceData runnerData : registry.getRunnersData()) {
-			json.startArray();
-			Runner runner = runnerData.getRunner();
-			json.startObject()
-				.field(K.START_ID, runner.getStartId())
-				.field(K.FIRST, runner.getFirstname())
-				.field(K.LAST, runner.getLastname())
-				.field(K.ECARD, runner.getEcard())
-				.ref(K.CLUB, runner.getClub())
-				.ref(K.CAT, runner.getCategory())
-				.ref(K.COURSE, runner.getCourse())
-				.field(K.START, runner.getRegisteredStarttime())
-				.optField(K.ARK, runner.getArchiveId())
-				.optField(K.RENT, runner.rentedEcard())
-				.optField(K.NC, runner.isNC())
-				.endObject();
-			
-			json.startObject()
-				.field(K.START, runnerData.getStarttime())
-				.field(K.FINISH, runnerData.getFinishtime())
-				.field(K.ERASE, runnerData.getErasetime())
-				.field(K.CHECK, runnerData.getControltime())
-				.field(K.READ, runnerData.getReadtime())
-				.startArrayField(K.PUNCHES);
-			for (Punch punch : runnerData.getPunches()) {
-				json.value(punch.getCode()).value(punch.getTime());
-			}
-			json.endArray().endObject();
-			
-			RunnerResult result = runnerData.getResult();
-			json.startObject()
-				.field(K.TIME, result.getRacetime())
-				.field(K.STATUS, result.getStatus().name())
-				.field(K.MPS, result.getNbMPs())
-				.field(K.PENALTY, result.getTimePenalty());
-			
-			Trace[] traceArray = result.getTrace();
-			int nbNeut = 0;
-			int[] neutralized = new int[traceArray.length];
-			json.startArrayField(K.TRACE);
-			for (int i = 0; i < traceArray.length; i++) {
-				Trace trace = result.getTrace()[i];
-				json.value(trace.getCode()).value(trace.getTime());
-				if( trace.isNeutralized() ){
-					neutralized[nbNeut++] = i;
-				}
-			}
-			json.endArray()
-				.startArrayField(K.NEUTRALIZED);
-			for (int i = 0; i < nbNeut; i++) {
-				json.value(neutralized[i]);
-			}
-			json.endArray()
-				.endObject()
-				.endArray();
-			
-		}
-		json.endArray()
-			.idMax(K.MAXID)
+		json.idMax(K.MAXID)
 			.endObject()
 			.close();
 	}
@@ -205,7 +146,66 @@ public final class PersistentStore {
 		json.endArray();		
 	}
 
-
+	public void exportRunnersData(JSONSerializer json, Collection<RunnerRaceData> runnersData) throws IOException {
+		json.startArrayField(K.RUNNERS_DATA);
+		for (RunnerRaceData runnerData : runnersData) {
+			json.startArray();
+			Runner runner = runnerData.getRunner();
+			json.startObject()
+				.field(K.START_ID, runner.getStartId())
+				.field(K.FIRST, runner.getFirstname())
+				.field(K.LAST, runner.getLastname())
+				.field(K.ECARD, runner.getEcard())
+				.ref(K.CLUB, runner.getClub())
+				.ref(K.CAT, runner.getCategory())
+				.ref(K.COURSE, runner.getCourse())
+				.field(K.START, runner.getRegisteredStarttime())
+				.optField(K.ARK, runner.getArchiveId())
+				.optField(K.RENT, runner.rentedEcard())
+				.optField(K.NC, runner.isNC())
+				.endObject();
+			
+			json.startObject()
+				.field(K.START, runnerData.getStarttime())
+				.field(K.FINISH, runnerData.getFinishtime())
+				.field(K.ERASE, runnerData.getErasetime())
+				.field(K.CHECK, runnerData.getControltime())
+				.field(K.READ, runnerData.getReadtime())
+				.startArrayField(K.PUNCHES);
+			for (Punch punch : runnerData.getPunches()) {
+				json.value(punch.getCode()).value(punch.getTime());
+			}
+			json.endArray().endObject();
+			
+			RunnerResult result = runnerData.getResult();
+			json.startObject()
+				.field(K.TIME, result.getRacetime())
+				.field(K.STATUS, result.getStatus().name())
+				.field(K.MPS, result.getNbMPs())
+				.field(K.PENALTY, result.getTimePenalty());
+			
+			Trace[] traceArray = result.getTrace();
+			int nbNeut = 0;
+			int[] neutralized = new int[traceArray.length];
+			json.startArrayField(K.TRACE);
+			for (int i = 0; i < traceArray.length; i++) {
+				Trace trace = result.getTrace()[i];
+				json.value(trace.getCode()).value(trace.getTime());
+				if( trace.isNeutralized() ){
+					neutralized[nbNeut++] = i;
+				}
+			}
+			json.endArray()
+				.startArrayField(K.NEUTRALIZED);
+			for (int i = 0; i < nbNeut; i++) {
+				json.value(neutralized[i]);
+			}
+			json.endArray()
+				.endObject()
+				.endArray();
+		}
+		json.endArray();		
+	}
 	
 	public void backupData(String basedir, String datafile, String backupname) throws IOException {
 		ZipOutputStream zipStream = 
@@ -229,6 +229,7 @@ public final class PersistentStore {
 		zipStream.closeEntry();
 	}
 
+	
 	public Stage loadData(String baseDir, Factory factory, Checker checker) {
 		Stage newStage = factory.createStage();
 		Registry registry = new Registry();
@@ -415,15 +416,6 @@ public final class PersistentStore {
 		public static final String MAXID = "maxid";;
 		public static final String NAME = "name";
 		public static final String VERSION = "version";
-
-//		public static final String STAGE = "stage";
-//		public static final String BASEDIR = "basedir";
-//		public static final String ZEROHOUR = "zerohour";
-//		public static final String AUTOSAVE_DELAY = "autosave";
-//		public static final String NB_AUTOBACKUPS = "backups";
-//		public static final String APPBUILDER_NAME = "app";
-
-//		public static final String PROPERTIES = "properties";
 
 		public static final String COURSES = "courses";
 		public static final String LENGTH = "length";

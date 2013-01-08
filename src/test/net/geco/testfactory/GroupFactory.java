@@ -25,7 +25,7 @@ public class GroupFactory {
 	public static Course createCourse(String name) {
 		Course course = factory.createCourse();
 		course.setName(name);
-		course.setCodes(new int[0]);
+		course.setCodes(new int[]{ 31,32,33 });
 		return course;
 	}
 

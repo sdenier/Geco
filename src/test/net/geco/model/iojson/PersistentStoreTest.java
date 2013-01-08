@@ -6,11 +6,13 @@ package test.net.geco.model.iojson;
 
 import static java.util.Arrays.asList;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static test.net.geco.testfactory.GroupFactory.createCategory;
@@ -21,6 +23,7 @@ import static test.net.geco.testfactory.GroupFactory.createHeatSet;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Date;
 
 import net.geco.model.Category;
 import net.geco.model.Club;
@@ -28,7 +31,9 @@ import net.geco.model.Course;
 import net.geco.model.Factory;
 import net.geco.model.HeatSet;
 import net.geco.model.Registry;
+import net.geco.model.RunnerRaceData;
 import net.geco.model.Stage;
+import net.geco.model.Status;
 import net.geco.model.impl.POFactory;
 import net.geco.model.iojson.JSONSerializer;
 import net.geco.model.iojson.PersistentStore;
@@ -41,6 +46,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import test.net.geco.testfactory.GroupFactory;
+import test.net.geco.testfactory.RunnerFactory;
 
 /**
  * @author Simon Denier
@@ -83,6 +89,12 @@ public class PersistentStoreTest {
 		Collection<Course> courses = asList(GroupFactory.createCourse("Course A"));
 		subject.exportCourses(json, courses);
 		verify(json).field(K.NAME, "Course A");
+		InOrder inOrder = inOrder(json);
+		inOrder.verify(json).startArrayField(K.CODES);
+		inOrder.verify(json).value(31);
+		inOrder.verify(json).value(32);
+		inOrder.verify(json).value(33);
+		inOrder.verify(json).endArray();
 	}
 	
 	@Test
@@ -118,6 +130,20 @@ public class PersistentStoreTest {
 		verify(json).ref(heatset.getSelectedPools()[0]);
 	}
 	
+	@Test
+	public void exportRunnerData() throws IOException {
+		Collection<RunnerRaceData> runnerData = asList(RunnerFactory.createWithStatus("1111", Status.MP));;
+		subject.exportRunnersData(json, runnerData);
+		verify(json, times(3)).startObject();
+		verify(json).field(eq(K.START_ID), anyInt());
+		verify(json).field(K.ECARD, "1111");
+		verify(json).ref(eq(K.COURSE), any(Course.class));
+		verify(json).optField(eq(K.ARK), any(Integer.class));
+		verify(json).field(K.STATUS, Status.MP.name());
+		verify(json).startArrayField(K.PUNCHES);
+		verify(json).startArrayField(K.TRACE);
+		verify(json).startArrayField(K.NEUTRALIZED);
+	}
 	
 	private void mockFluentJson() throws IOException {
 		when(json.startObject()).thenReturn(json);
@@ -126,9 +152,13 @@ public class PersistentStoreTest {
 		when(json.startArrayField(anyString())).thenReturn(json);
 		when(json.endArray()).thenReturn(json);
 		when(json.field(anyString(), anyString())).thenReturn(json);
+		when(json.field(anyString(), any(Date.class))).thenReturn(json);
 		when(json.field(anyString(), anyInt())).thenReturn(json);
 		when(json.field(anyString(), anyLong())).thenReturn(json);
+		when(json.optField(anyString(), any(Integer.class))).thenReturn(json);
+		when(json.optField(anyString(), anyBoolean())).thenReturn(json);
 		when(json.id(anyString(), any())).thenReturn(json);
+		when(json.ref(anyString(), any())).thenReturn(json);
 		when(json.optRef(anyString(), any())).thenReturn(json);
 		when(json.idMax(anyString())).thenReturn(json);
 	}
