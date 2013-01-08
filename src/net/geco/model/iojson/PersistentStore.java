@@ -4,17 +4,12 @@
  */
 package net.geco.model.iojson;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 import net.geco.basics.GecoResources;
 import net.geco.control.Checker;
@@ -59,14 +54,7 @@ public final class PersistentStore {
 			BufferedWriter writer = GecoResources.getSafeWriterFor(getStorePath(stage.getBaseDir()));
 			storeData(stage, new JacksonSerializer(writer, DEBUG));
 			writer.close();
-			
-			backupData(stage.getBaseDir(), STORE_FILE, "store.zip");
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -207,27 +195,6 @@ public final class PersistentStore {
 		json.endArray();		
 	}
 	
-	public void backupData(String basedir, String datafile, String backupname) throws IOException {
-		ZipOutputStream zipStream = 
-				new ZipOutputStream(new FileOutputStream(basedir + GecoResources.sep + backupname));
-		writeZipEntry(zipStream, datafile, basedir);	
-		zipStream.close();
-	}
-
-	private void writeZipEntry(ZipOutputStream zipStream, String filename, String basedir)
-			throws IOException, FileNotFoundException {
-		ZipEntry zipEntry = new ZipEntry(filename);
-		zipStream.putNextEntry(zipEntry);
-		byte[] buffer = new byte[4096];
-		BufferedInputStream inputStream =
-						new BufferedInputStream(new FileInputStream(basedir + GecoResources.sep + filename));
-		int len;
-		while( (len = inputStream.read(buffer)) != -1 ) {
-			zipStream.write(buffer, 0, len);
-		}
-		inputStream.close();
-		zipStream.closeEntry();
-	}
 
 	
 	public Stage loadData(String baseDir, Factory factory, Checker checker) {
@@ -238,11 +205,7 @@ public final class PersistentStore {
 			BufferedReader reader = GecoResources.getSafeReaderFor(getStorePath(baseDir));
 			JSONStore store = new JSONStore(reader);
 
-			// TODO
-//			loadStageProperties(store, newStage, baseDir);
 			importDataIntoRegistry(store, registry, factory);
-			// REMOVE???
-//			checker.postInitialize(newStage); // post initialization
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

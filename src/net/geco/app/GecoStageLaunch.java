@@ -130,7 +130,7 @@ public class GecoStageLaunch implements IStageLaunch {
 		Properties properties = StageBuilder.loadProperties(stageDir);
 		properties.setProperty(StageImpl.nameProperty(), stageName);
 		properties.setProperty(StageImpl.appBuilderProperty(), appBuilderName);
-		StageBuilder.saveProperties(stageDir, properties);
+		StageBuilder.exportProperties(stageDir, properties);
 	}
 	
 	private void createDataFiles(String baseDir) {
