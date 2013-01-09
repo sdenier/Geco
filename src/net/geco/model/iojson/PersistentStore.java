@@ -51,7 +51,8 @@ public final class PersistentStore {
 		Registry registry = new Registry();
 		stage.setRegistry(registry);
 		try {
-			BufferedReader reader = GecoResources.getSafeReaderFor(getStorePath(stage.getBaseDir()));
+			BufferedReader reader =
+					GecoResources.getSafeReaderFor(getStorePath(stage.getBaseDir()));
 			importDataIntoRegistry(new JSONStore(reader, K.MAXID), registry, factory);
 			reader.close();
 		} catch (JSONException e) {
@@ -61,11 +62,12 @@ public final class PersistentStore {
 		}		
 	}
 	
-	public void importDataIntoRegistry(JSONStore store, Registry registry, Factory factory) throws JSONException {
+	public void importDataIntoRegistry(JSONStore store, Registry registry, Factory factory)
+			throws JSONException {
 		importCourses(store, registry, factory);
 		importCategories(store, registry, factory);
 		importClubs(store, registry, factory);
-		importHeatSets(store);
+		importHeatSets(store, registry, factory);
 		importRunnersData(store, registry, factory);
 	}
 
@@ -89,8 +91,8 @@ public final class PersistentStore {
 		registry.ensureAutoCourse(factory);
 	}
 	
-	public void importCategories(JSONStore store, Registry registry,
-			Factory factory) throws JSONException {
+	public void importCategories(JSONStore store, Registry registry, Factory factory)
+			throws JSONException {
 		JSONArray categories = store.getJSONArray(K.CATEGORIES);
 		for (int i = 0; i < categories.length(); i++) {
 			JSONObject c = categories.getJSONObject(i);
@@ -114,12 +116,13 @@ public final class PersistentStore {
 		}
 	}
 
-	public void importHeatSets(JSONStore store) throws JSONException {
+	public void importHeatSets(JSONStore store, Registry registry, Factory factory)
+			throws JSONException {
 		store.getJSONArray(K.HEATSETS); // TODO
 	}
 
-	public void importRunnersData(JSONStore store, Registry registry,
-			Factory factory) throws JSONException {
+	public void importRunnersData(JSONStore store, Registry registry, Factory factory)
+			throws JSONException {
 		final int I_RUNNER = 0;
 		final int I_ECARD = 1;
 		final int I_RESULT = 2;
@@ -184,7 +187,8 @@ public final class PersistentStore {
 	
 	public void saveData(Stage stage) {
 		try {
-			BufferedWriter writer = GecoResources.getSafeWriterFor(getStorePath(stage.getBaseDir()));
+			BufferedWriter writer =
+					GecoResources.getSafeWriterFor(getStorePath(stage.getBaseDir()));
 			exportDataToJson(stage, new JacksonSerializer(writer, DEBUG));
 			writer.close();
 		} catch (IOException e) {
@@ -192,23 +196,23 @@ public final class PersistentStore {
 		}
 	}
 
-	public void exportDataToJson(Stage stage, JSONSerializer json) throws IOException {
+	public void exportDataToJson(Stage stage, JSONSerializer json)
+			throws IOException {
 		json.startObject()
 			.field(K.VERSION, JSON_SCHEMA_VERSION);
-		
 		Registry registry = stage.registry();
 		exportCourses(json, registry.getCourses());
 		exportCategories(json, registry.getCategories());
 		exportClubs(json, registry.getClubs());
 		exportHeatSets(json, registry.getHeatSets());
 		exportRunnersData(json, registry.getRunnersData());
-		
 		json.idMax(K.MAXID)
 			.endObject()
 			.close();
 	}
 
-	public void exportCourses(JSONSerializer json, Collection<Course> courses) throws IOException {
+	public void exportCourses(JSONSerializer json, Collection<Course> courses)
+			throws IOException {
 		json.startArrayField(K.COURSES);
 		for (Course course : courses) {
 			json.startObject()
@@ -224,7 +228,8 @@ public final class PersistentStore {
 		json.endArray();
 	}
 
-	public void exportCategories(JSONSerializer json, Collection<Category> categories) throws IOException {
+	public void exportCategories(JSONSerializer json, Collection<Category> categories)
+			throws IOException {
 		json.startArrayField(K.CATEGORIES);
 		for (Category cat : categories) {
 			json.startObject()
@@ -237,7 +242,8 @@ public final class PersistentStore {
 		json.endArray();		
 	}
 
-	public void exportClubs(JSONSerializer json, Collection<Club> clubs) throws IOException {
+	public void exportClubs(JSONSerializer json, Collection<Club> clubs)
+			throws IOException {
 		json.startArrayField(K.CLUBS);
 		for (Club club : clubs) {
 			json.startObject()
@@ -249,7 +255,8 @@ public final class PersistentStore {
 		json.endArray();
 	}
 
-	public void exportHeatSets(JSONSerializer json, Collection<HeatSet> heatsets) throws IOException {
+	public void exportHeatSets(JSONSerializer json, Collection<HeatSet> heatsets)
+			throws IOException {
 		json.startArrayField(K.HEATSETS);
 		for (HeatSet heatset : heatsets) {
 			json.startObject()
@@ -267,7 +274,8 @@ public final class PersistentStore {
 		json.endArray();		
 	}
 
-	public void exportRunnersData(JSONSerializer json, Collection<RunnerRaceData> runnersData) throws IOException {
+	public void exportRunnersData(JSONSerializer json, Collection<RunnerRaceData> runnersData)
+			throws IOException {
 		json.startArrayField(K.RUNNERS_DATA);
 		for (RunnerRaceData runnerData : runnersData) {
 			json.startArray();

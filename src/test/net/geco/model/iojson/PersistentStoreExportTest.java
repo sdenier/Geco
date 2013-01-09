@@ -53,7 +53,7 @@ import test.net.geco.testfactory.RunnerFactory;
  * @since Jan 7, 2013
  *
  */
-public class PersistentStoreTest {
+public class PersistentStoreExportTest {
 
 	private PersistentStore subject;
 
@@ -71,7 +71,7 @@ public class PersistentStoreTest {
 	}
 
 	@Test
-	public void exportData() throws IOException {
+	public void exportDataToJson() throws IOException {
 		Stage stage = factory.createStage();
 		stage.setRegistry(new Registry());
 		subject.exportDataToJson(stage, json);
