@@ -46,7 +46,142 @@ public final class PersistentStore {
 	public String getStorePath(String baseDir) {
 		return baseDir + GecoResources.sep + STORE_FILE;
 	}
+	
+	public void loadData(Stage stage, Factory factory) {
+		Registry registry = new Registry();
+		stage.setRegistry(registry);
+		try {
+			BufferedReader reader = GecoResources.getSafeReaderFor(getStorePath(stage.getBaseDir()));
+			importDataIntoRegistry(new JSONStore(reader, K.MAXID), registry, factory);
+			reader.close();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}		
+	}
+	
+	public void importDataIntoRegistry(JSONStore store, Registry registry, Factory factory) throws JSONException {
+		importCourses(store, registry, factory);
+		importCategories(store, registry, factory);
+		importClubs(store, registry, factory);
+		importHeatSets(store);
+		importRunnersData(store, registry, factory);
+	}
 
+	public void importCourses(JSONStore store, Registry registry, Factory factory)
+			throws JSONException {
+		JSONArray courses = store.getJSONArray(K.COURSES);
+		for (int i = 0; i < courses.length(); i++) {
+			JSONObject c = courses.getJSONObject(i);
+			Course course = store.register(factory.createCourse(), c.getInt(K.ID));
+			course.setName(c.getString(K.NAME));
+			course.setLength(c.getInt(K.LENGTH));
+			course.setClimb(c.getInt(K.CLIMB));
+			JSONArray codes = c.getJSONArray(K.CODES);
+			int[] codez = new int[codes.length()];
+			for (int j = 0; j < codes.length(); j++) {
+				codez[j] = codes.getInt(j);
+			}
+			course.setCodes(codez);
+			registry.addCourse(course);
+		}
+		registry.ensureAutoCourse(factory);
+	}
+	
+	public void importCategories(JSONStore store, Registry registry,
+			Factory factory) throws JSONException {
+		JSONArray categories = store.getJSONArray(K.CATEGORIES);
+		for (int i = 0; i < categories.length(); i++) {
+			JSONObject c = categories.getJSONObject(i);
+			Category category = store.register(factory.createCategory(), c.getInt(K.ID));
+			category.setName(c.getString(K.NAME));
+			category.setLongname(c.getString(K.LONG));
+			category.setCourse(store.retrieve(c.optInt(K.COURSE, 0), Course.class));
+			registry.addCategory(category);
+		}
+	}
+
+	public void importClubs(JSONStore store, Registry registry, Factory factory)
+			throws JSONException {
+		JSONArray clubs = store.getJSONArray(K.CLUBS);
+		for (int i = 0; i < clubs.length(); i++) {
+			JSONObject c = clubs.getJSONObject(i);
+			Club club = store.register(factory.createClub(), c.getInt(K.ID));
+			club.setName(c.getString(K.NAME));
+			club.setShortname(c.getString(K.SHORT));
+			registry.addClub(club);
+		}
+	}
+
+	public void importHeatSets(JSONStore store) throws JSONException {
+		store.getJSONArray(K.HEATSETS); // TODO
+	}
+
+	public void importRunnersData(JSONStore store, Registry registry,
+			Factory factory) throws JSONException {
+		final int I_RUNNER = 0;
+		final int I_ECARD = 1;
+		final int I_RESULT = 2;
+		JSONArray runnersData = store.getJSONArray(K.RUNNERS_DATA);
+		for (int i = 0; i < runnersData.length(); i++) {
+			JSONArray runnerTuple = runnersData.getJSONArray(i);
+	
+			JSONObject c = runnerTuple.getJSONObject(I_RUNNER);
+			Runner runner = factory.createRunner();
+			runner.setStartId(c.getInt(K.START_ID));
+			runner.setFirstname(c.getString(K.FIRST));
+			runner.setLastname(c.getString(K.LAST));
+			runner.setEcard(c.getString(K.ECARD));
+			runner.setClub(store.retrieve(c.getInt(K.CLUB), Club.class));
+			runner.setCategory(store.retrieve(c.getInt(K.CAT), Category.class));
+			runner.setCourse(store.retrieve(c.getInt(K.COURSE), Course.class));
+			runner.setRegisteredStarttime(new Date(c.getLong(K.START)));
+			runner.setArchiveId((Integer) c.opt(K.ARK));
+			runner.setRentedEcard(c.optBoolean(K.RENT));
+			runner.setNC(c.optBoolean(K.NC));
+			registry.addRunner(runner);
+	
+			JSONObject d = runnerTuple.getJSONObject(I_ECARD);
+			RunnerRaceData ecardData = factory.createRunnerRaceData();
+			ecardData.setStarttime(new Date(d.getLong(K.START)));
+			ecardData.setFinishtime(new Date(d.getLong(K.FINISH)));
+			ecardData.setErasetime(new Date(d.getLong(K.ERASE)));
+			ecardData.setControltime(new Date(d.getLong(K.CHECK)));
+			ecardData.setReadtime(new Date(d.getLong(K.READ)));
+			JSONArray p = d.getJSONArray(K.PUNCHES);
+			Punch[] punches = new Punch[p.length() / 2];
+			for (int j = 0; j < punches.length; j++) {
+				punches[j] = factory.createPunch();
+				punches[j].setCode(p.getInt(2 * j));
+				punches[j].setTime(new Date(p.getLong(2 * j + 1)));
+			}
+			ecardData.setPunches(punches);
+			ecardData.setRunner(runner);
+			registry.addRunnerData(ecardData);
+	
+			JSONObject r = runnerTuple.getJSONObject(I_RESULT);
+			RunnerResult result = factory.createRunnerResult();
+			result.setRacetime(r.getLong(K.TIME));
+			result.setStatus(Status.valueOf(r.getString(K.STATUS)));
+			result.setNbMPs(r.getInt(K.MPS));
+			result.setTimePenalty(r.getLong(K.PENALTY));
+			JSONArray t = r.getJSONArray(K.TRACE);
+			Trace[] trace = new Trace[t.length() / 2];
+			for (int j = 0; j < trace.length; j++) {
+				trace[j] = factory.createTrace(t.getString(2 * j),
+						new Date(t.getLong(2 * j + 1)));
+			}
+			JSONArray neut = r.getJSONArray(K.NEUTRALIZED);
+			for (int j = 0; j < neut.length(); j++) {
+				trace[neut.getInt(j)].setNeutralized(true);
+			}
+			result.setTrace(trace);
+			ecardData.setResult(result);
+		}
+	}
+	
+	
 	public void saveData(Stage stage) {
 		try {
 			BufferedWriter writer = GecoResources.getSafeWriterFor(getStorePath(stage.getBaseDir()));
@@ -192,144 +327,56 @@ public final class PersistentStore {
 		}
 		json.endArray();		
 	}
-	
-
-	
-	public void loadData(Stage stage, Factory factory) {
-		Registry registry = new Registry();
-		stage.setRegistry(registry);
-		try {
-			BufferedReader reader = GecoResources.getSafeReaderFor(getStorePath(stage.getBaseDir()));
-			importDataIntoRegistry(new JSONStore(reader, K.MAXID), registry, factory);
-			reader.close();
-		} catch (JSONException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}		
-	}
-	
-	public void importDataIntoRegistry(JSONStore store, Registry registry, Factory factory) throws JSONException {
-		importCourses(store, registry, factory);
-		importCategories(store, registry, factory);
-		importClubs(store, registry, factory);
-		importHeatSets(store);
-		importRunnersData(store, registry, factory);
-	}
-
-	public void importCourses(JSONStore store, Registry registry, Factory factory)
-			throws JSONException {
-		JSONArray courses = store.getJSONArray(K.COURSES);
-		for (int i = 0; i < courses.length(); i++) {
-			JSONObject c = courses.getJSONObject(i);
-			Course course = store.register(factory.createCourse(), c.getInt(K.ID));
-			course.setName(c.getString(K.NAME));
-			course.setLength(c.getInt(K.LENGTH));
-			course.setClimb(c.getInt(K.CLIMB));
-			JSONArray codes = c.getJSONArray(K.CODES);
-			int[] codez = new int[codes.length()];
-			for (int j = 0; j < codes.length(); j++) {
-				codez[j] = codes.getInt(j);
-			}
-			course.setCodes(codez);
-			registry.addCourse(course);
-		}
-		registry.ensureAutoCourse(factory);
-	}
-	
-	public void importCategories(JSONStore store, Registry registry,
-			Factory factory) throws JSONException {
-		JSONArray categories = store.getJSONArray(K.CATEGORIES);
-		for (int i = 0; i < categories.length(); i++) {
-			JSONObject c = categories.getJSONObject(i);
-			Category category = store.register(factory.createCategory(), c.getInt(K.ID));
-			category.setName(c.getString(K.NAME));
-			category.setLongname(c.getString(K.LONG));
-			category.setCourse(store.retrieve(c.optInt(K.COURSE, 0), Course.class));
-			registry.addCategory(category);
-		}
-	}
-
-	public void importClubs(JSONStore store, Registry registry, Factory factory)
-			throws JSONException {
-		JSONArray clubs = store.getJSONArray(K.CLUBS);
-		for (int i = 0; i < clubs.length(); i++) {
-			JSONObject c = clubs.getJSONObject(i);
-			Club club = store.register(factory.createClub(), c.getInt(K.ID));
-			club.setName(c.getString(K.NAME));
-			club.setShortname(c.getString(K.SHORT));
-			registry.addClub(club);
-		}
-	}
-
-	public void importHeatSets(JSONStore store) throws JSONException {
-		store.getJSONArray(K.HEATSETS); // TODO
-	}
-
-	public void importRunnersData(JSONStore store, Registry registry,
-			Factory factory) throws JSONException {
-		final int I_RUNNER = 0;
-		final int I_ECARD = 1;
-		final int I_RESULT = 2;
-		JSONArray runnersData = store.getJSONArray(K.RUNNERS_DATA);
-		for (int i = 0; i < runnersData.length(); i++) {
-			JSONArray runnerTuple = runnersData.getJSONArray(i);
-	
-			JSONObject c = runnerTuple.getJSONObject(I_RUNNER);
-			Runner runner = factory.createRunner();
-			runner.setStartId(c.getInt(K.START_ID));
-			runner.setFirstname(c.getString(K.FIRST));
-			runner.setLastname(c.getString(K.LAST));
-			runner.setEcard(c.getString(K.ECARD));
-			runner.setClub(store.retrieve(c.getInt(K.CLUB), Club.class));
-			runner.setCategory(store.retrieve(c.getInt(K.CAT), Category.class));
-			runner.setCourse(store.retrieve(c.getInt(K.COURSE), Course.class));
-			runner.setRegisteredStarttime(new Date(c.getLong(K.START)));
-			runner.setArchiveId((Integer) c.opt(K.ARK));
-			runner.setRentedEcard(c.optBoolean(K.RENT));
-			runner.setNC(c.optBoolean(K.NC));
-			registry.addRunner(runner);
-	
-			JSONObject d = runnerTuple.getJSONObject(I_ECARD);
-			RunnerRaceData ecardData = factory.createRunnerRaceData();
-			ecardData.setStarttime(new Date(d.getLong(K.START)));
-			ecardData.setFinishtime(new Date(d.getLong(K.FINISH)));
-			ecardData.setErasetime(new Date(d.getLong(K.ERASE)));
-			ecardData.setControltime(new Date(d.getLong(K.CHECK)));
-			ecardData.setReadtime(new Date(d.getLong(K.READ)));
-			JSONArray p = d.getJSONArray(K.PUNCHES);
-			Punch[] punches = new Punch[p.length() / 2];
-			for (int j = 0; j < punches.length; j++) {
-				punches[j] = factory.createPunch();
-				punches[j].setCode(p.getInt(2 * j));
-				punches[j].setTime(new Date(p.getLong(2 * j + 1)));
-			}
-			ecardData.setPunches(punches);
-			ecardData.setRunner(runner);
-			registry.addRunnerData(ecardData);
-	
-			JSONObject r = runnerTuple.getJSONObject(I_RESULT);
-			RunnerResult result = factory.createRunnerResult();
-			result.setRacetime(r.getLong(K.TIME));
-			result.setStatus(Status.valueOf(r.getString(K.STATUS)));
-			result.setNbMPs(r.getInt(K.MPS));
-			result.setTimePenalty(r.getLong(K.PENALTY));
-			JSONArray t = r.getJSONArray(K.TRACE);
-			Trace[] trace = new Trace[t.length() / 2];
-			for (int j = 0; j < trace.length; j++) {
-				trace[j] = factory.createTrace(t.getString(2 * j),
-						new Date(t.getLong(2 * j + 1)));
-			}
-			JSONArray neut = r.getJSONArray(K.NEUTRALIZED);
-			for (int j = 0; j < neut.length(); j++) {
-				trace[neut.getInt(j)].setNeutralized(true);
-			}
-			result.setTrace(trace);
-			ecardData.setResult(result);
-		}
-	}
 
 	public static class K {
+
+		public static final String ID = "id";;
+		public static final String MAXID = "maxid";;
+		public static final String NAME = "name";
+		public static final String VERSION = "version";
+
+		public static final String COURSES = "courses";
+		public static final String LENGTH = "length";
+		public static final String CLIMB = "climb";
+		public static final String CODES = "codes";
+
+		public static final String CATEGORIES = "categories";;
+		public static final String LONG = "long";
+		public static final String CLUBS = "clubs";
+		public static final String SHORT = "short";
+
+		public static final String HEATSETS = "heatsets";
+		public static final String RANK = "rank";
+		public static final String TYPE = "type";
+		public static final String HEATS = "heats";
+		public static final String POOLS = "pools";
+
+		public static final String RUNNERS_DATA = "runnersData";
+
+		public static final String START_ID;
+		public static final String FIRST;
+		public static final String LAST;
+		public static final String ECARD;
+		public static final String CLUB;
+		public static final String CAT;
+		public static final String COURSE;
+		public static final String ARK;
+		public static final String NC;
+		public static final String RENT;
+
+		public static final String START;
+		public static final String FINISH;
+		public static final String ERASE;
+		public static final String CHECK;
+		public static final String READ;
+		public static final String PUNCHES;
+
+		public static final String TIME;
+		public static final String STATUS;
+		public static final String MPS;
+		public static final String PENALTY;
+		public static final String TRACE;
+		public static final String NEUTRALIZED;
 		
 		static {
 			if( DEBUG ) {
@@ -384,54 +431,6 @@ public final class PersistentStore {
 				PUNCHES = "p";
 			}
 		}
-
-		public static final String ID = "id";;
-		public static final String MAXID = "maxid";;
-		public static final String NAME = "name";
-		public static final String VERSION = "version";
-
-		public static final String COURSES = "courses";
-		public static final String LENGTH = "length";
-		public static final String CLIMB = "climb";
-		public static final String CODES = "codes";
-
-		public static final String CATEGORIES = "categories";;
-		public static final String LONG = "long";
-		public static final String CLUBS = "clubs";
-		public static final String SHORT = "short";
-
-		public static final String HEATSETS = "heatsets";
-		public static final String RANK = "rank";
-		public static final String TYPE = "type";
-		public static final String HEATS = "heats";
-		public static final String POOLS = "pools";
-
-		public static final String RUNNERS_DATA = "runnersData";
-
-		public static final String START_ID;
-		public static final String FIRST;
-		public static final String LAST;
-		public static final String ECARD;
-		public static final String CLUB;
-		public static final String CAT;
-		public static final String COURSE;
-		public static final String ARK;
-		public static final String NC;
-		public static final String RENT;
-
-		public static final String START;
-		public static final String FINISH;
-		public static final String ERASE;
-		public static final String CHECK;
-		public static final String READ;
-		public static final String PUNCHES;
-
-		public static final String TIME;
-		public static final String STATUS;
-		public static final String MPS;
-		public static final String PENALTY;
-		public static final String TRACE;
-		public static final String NEUTRALIZED;
 	}
 
 }
