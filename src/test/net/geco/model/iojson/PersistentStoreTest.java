@@ -71,10 +71,10 @@ public class PersistentStoreTest {
 	}
 
 	@Test
-	public void storeData() throws IOException {
+	public void exportData() throws IOException {
 		Stage stage = factory.createStage();
 		stage.setRegistry(new Registry());
-		subject.storeData(stage, json);
+		subject.exportDataToJson(stage, json);
 		verify(json).field(eq(K.VERSION), anyString());
 		verify(json).startArrayField(K.COURSES);
 		verify(json).startArrayField(K.CATEGORIES);

@@ -103,7 +103,7 @@ public class JacksonStore {
 	}
 
 	public void storeData(Stage stage) {
-		String datafile = "store.json";
+		String datafile = "store_j.json";
 
 		try {
 			BufferedWriter writer = GecoResources.getSafeWriterFor(stage.getBaseDir() + GecoResources.sep + datafile);

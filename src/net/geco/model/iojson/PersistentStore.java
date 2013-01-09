@@ -6,13 +6,11 @@ package net.geco.model.iojson;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
 
 import net.geco.basics.GecoResources;
-import net.geco.control.Checker;
 import net.geco.model.Category;
 import net.geco.model.Club;
 import net.geco.model.Course;
@@ -49,17 +47,17 @@ public final class PersistentStore {
 		return baseDir + GecoResources.sep + STORE_FILE;
 	}
 
-	public void storeData(Stage stage) {
+	public void saveData(Stage stage) {
 		try {
 			BufferedWriter writer = GecoResources.getSafeWriterFor(getStorePath(stage.getBaseDir()));
-			storeData(stage, new JacksonSerializer(writer, DEBUG));
+			exportDataToJson(stage, new JacksonSerializer(writer, DEBUG));
 			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void storeData(Stage stage, JSONSerializer json) throws IOException {
+	public void exportDataToJson(Stage stage, JSONSerializer json) throws IOException {
 		json.startObject()
 			.field(K.VERSION, JSON_SCHEMA_VERSION);
 		
@@ -197,28 +195,30 @@ public final class PersistentStore {
 	
 
 	
-	public Stage loadData(String baseDir, Factory factory, Checker checker) {
-		Stage newStage = factory.createStage();
+	public void loadData(Stage stage, Factory factory) {
 		Registry registry = new Registry();
-		newStage.setRegistry(registry);
+		stage.setRegistry(registry);
 		try {
-			BufferedReader reader = GecoResources.getSafeReaderFor(getStorePath(baseDir));
-			JSONStore store = new JSONStore(reader);
-
-			importDataIntoRegistry(store, registry, factory);
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			BufferedReader reader = GecoResources.getSafeReaderFor(getStorePath(stage.getBaseDir()));
+			importDataIntoRegistry(new JSONStore(reader, K.MAXID), registry, factory);
+			reader.close();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		return newStage;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}		
+	}
+	
+	public void importDataIntoRegistry(JSONStore store, Registry registry, Factory factory) throws JSONException {
+		importCourses(store, registry, factory);
+		importCategories(store, registry, factory);
+		importClubs(store, registry, factory);
+		importHeatSets(store);
+		importRunnersData(store, registry, factory);
 	}
 
-	private void importDataIntoRegistry(JSONStore store, Registry registry, Factory factory) throws JSONException {
-			
+	public void importCourses(JSONStore store, Registry registry, Factory factory)
+			throws JSONException {
 		JSONArray courses = store.getJSONArray(K.COURSES);
 		for (int i = 0; i < courses.length(); i++) {
 			JSONObject c = courses.getJSONObject(i);
@@ -235,7 +235,10 @@ public final class PersistentStore {
 			registry.addCourse(course);
 		}
 		registry.ensureAutoCourse(factory);
-
+	}
+	
+	public void importCategories(JSONStore store, Registry registry,
+			Factory factory) throws JSONException {
 		JSONArray categories = store.getJSONArray(K.CATEGORIES);
 		for (int i = 0; i < categories.length(); i++) {
 			JSONObject c = categories.getJSONObject(i);
@@ -245,7 +248,10 @@ public final class PersistentStore {
 			category.setCourse(store.retrieve(c.optInt(K.COURSE, 0), Course.class));
 			registry.addCategory(category);
 		}
+	}
 
+	public void importClubs(JSONStore store, Registry registry, Factory factory)
+			throws JSONException {
 		JSONArray clubs = store.getJSONArray(K.CLUBS);
 		for (int i = 0; i < clubs.length(); i++) {
 			JSONObject c = clubs.getJSONObject(i);
@@ -254,16 +260,21 @@ public final class PersistentStore {
 			club.setShortname(c.getString(K.SHORT));
 			registry.addClub(club);
 		}
+	}
 
+	public void importHeatSets(JSONStore store) throws JSONException {
 		store.getJSONArray(K.HEATSETS); // TODO
+	}
 
+	public void importRunnersData(JSONStore store, Registry registry,
+			Factory factory) throws JSONException {
 		final int I_RUNNER = 0;
 		final int I_ECARD = 1;
 		final int I_RESULT = 2;
 		JSONArray runnersData = store.getJSONArray(K.RUNNERS_DATA);
 		for (int i = 0; i < runnersData.length(); i++) {
 			JSONArray runnerTuple = runnersData.getJSONArray(i);
-
+	
 			JSONObject c = runnerTuple.getJSONObject(I_RUNNER);
 			Runner runner = factory.createRunner();
 			runner.setStartId(c.getInt(K.START_ID));
@@ -278,7 +289,7 @@ public final class PersistentStore {
 			runner.setRentedEcard(c.optBoolean(K.RENT));
 			runner.setNC(c.optBoolean(K.NC));
 			registry.addRunner(runner);
-
+	
 			JSONObject d = runnerTuple.getJSONObject(I_ECARD);
 			RunnerRaceData ecardData = factory.createRunnerRaceData();
 			ecardData.setStarttime(new Date(d.getLong(K.START)));
@@ -296,7 +307,7 @@ public final class PersistentStore {
 			ecardData.setPunches(punches);
 			ecardData.setRunner(runner);
 			registry.addRunnerData(ecardData);
-
+	
 			JSONObject r = runnerTuple.getJSONObject(I_RESULT);
 			RunnerResult result = factory.createRunnerResult();
 			result.setRacetime(r.getLong(K.TIME));
@@ -316,9 +327,8 @@ public final class PersistentStore {
 			result.setTrace(trace);
 			ecardData.setResult(result);
 		}
-			
 	}
-	
+
 	public static class K {
 		
 		static {

@@ -88,7 +88,7 @@ public class StageBuilder extends BasicControl {
 		registryBuilder.exportAllData(	stage.registry(),
 										stage.getBaseDir(),
 										stage.getZeroHour());
-		store.storeData(stage);
+		store.saveData(stage);
 		backupData(stage.getBaseDir(), backupId);
 	}
 	

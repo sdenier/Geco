@@ -58,9 +58,9 @@ public class PersistencePerf {
 //		new CsvSavePerf().run();
 //		new CsvLoadPerf().run();
 		new JsonSavePerf().run();
-//		new JacksonSavePerf().run();
+		new JacksonSavePerf().run();
 		new JsonLoadPerf().run();
-//		new JacksonLoadPerf().run();
+		new JacksonLoadPerf().run();
 	}
 
 	public abstract class Perf {
@@ -137,7 +137,7 @@ public class PersistencePerf {
 		}
 
 		protected void doRun() {
-			new PersistentStore().storeData(stage);
+			new PersistentStore().saveData(stage);
 		}
 		
 	}
@@ -150,7 +150,9 @@ public class PersistencePerf {
 
 		protected void doRun() {
 			POFactory factory = new POFactory();
-			new PersistentStore().loadData(testDir, factory, new PenaltyChecker(factory));
+			Stage stage = factory.createStage();
+			stage.setBaseDir(testDir);
+			new PersistentStore().loadData(stage, factory);
 		}
 
 	}

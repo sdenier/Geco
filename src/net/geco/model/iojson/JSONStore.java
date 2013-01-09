@@ -6,8 +6,6 @@ package net.geco.model.iojson;
 
 import java.io.Reader;
 
-import net.geco.model.iojson.PersistentStore.K;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,9 +22,9 @@ public class JSONStore {
 
 	private RefMap refMap;
 
-	public JSONStore(Reader reader) throws JSONException {
+	public JSONStore(Reader reader, String maxIdKey) throws JSONException {
 		jsonRoot = new JSONObject(new JSONTokener(reader));
-		initRefMap(jsonRoot.getInt(K.MAXID) + 1);
+		initRefMap(jsonRoot.getInt(maxIdKey) + 1);
 	}
 
 	/*
