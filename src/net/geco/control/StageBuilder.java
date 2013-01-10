@@ -54,9 +54,10 @@ public class StageBuilder extends BasicControl {
 	public Stage loadStage(String baseDir, Checker checker) {
 		Stage newStage = factory().createStage();
 		loadStageProperties(newStage, baseDir);
-		importDataIntoRegistry(newStage);
+//		importDataIntoRegistry(newStage);
+		store.loadData(newStage, factory());
 		checker.postInitialize(newStage); // post initialization
-		new RunnerBuilder(factory()).checkGecoData(newStage, checker);
+//		new RunnerBuilder(factory()).checkGecoData(newStage, checker);
 		return newStage;
 	}
 
