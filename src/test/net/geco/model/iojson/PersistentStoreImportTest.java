@@ -6,10 +6,14 @@ package test.net.geco.model.iojson;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import java.io.StringReader;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 
+import net.geco.basics.GecoResources;
 import net.geco.model.Category;
 import net.geco.model.Club;
 import net.geco.model.Course;
@@ -38,12 +42,12 @@ public class PersistentStoreImportTest {
 	
 	private JSONStore testStore;
 
-	private String jsonString = "{maxid: 1}";
 	
 	@Before
-	public void setUp() throws JSONException {
+	public void setUp() throws JSONException, FileNotFoundException {
 		subject = new PersistentStore();
-		testStore = new JSONStore(new StringReader(jsonString), K.MAXID);
+		BufferedReader reader = GecoResources.getSafeReaderFor("testData/valid/sample_import.json");
+		testStore = new JSONStore(reader, K.MAXID);
 	}
 	
 	@Test
@@ -51,13 +55,13 @@ public class PersistentStoreImportTest {
 		Registry registry = mock(Registry.class);
 		POFactory factory = new POFactory();
 		subject.importDataIntoRegistry(testStore, registry, factory);
-		verify(registry).addCourse(any(Course.class));
+		verify(registry, times(4)).addCourse(any(Course.class));
 		verify(registry).ensureAutoCourse(factory);
-		verify(registry).addCategory(any(Category.class));
-		verify(registry).addClub(any(Club.class));
-		verify(registry).addHeatSet(any(HeatSet.class));
-		verify(registry).addRunner(any(Runner.class));
-		verify(registry).addRunnerData(any(RunnerRaceData.class));
+		verify(registry, times(3)).addCategory(any(Category.class));
+		verify(registry, times(2)).addClub(any(Club.class));
+		verify(registry, never()).addHeatSet(any(HeatSet.class));
+		verify(registry, times(3)).addRunner(any(Runner.class));
+		verify(registry, times(3)).addRunnerData(any(RunnerRaceData.class));
 	}
 	
 }
