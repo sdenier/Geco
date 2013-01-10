@@ -398,13 +398,6 @@ public final class PersistentStore {
 				ARK = "ark";
 				RENT = "rent";
 				NC = "nc";
-
-				TIME = "time";
-				STATUS = "status";
-				MPS = "mps";
-				PENALTY = "penalty";
-				TRACE = "trace";
-				NEUTRALIZED = "neut";
 			
 				START = "start";
 				FINISH = "finish";
@@ -412,6 +405,13 @@ public final class PersistentStore {
 				READ = "read";
 				CHECK = "check";
 				PUNCHES = "punches";
+
+				TIME = "time";
+				STATUS = "status";
+				MPS = "mps";
+				PENALTY = "penalty";
+				TRACE = "trace";
+				NEUTRALIZED = "neut";
 			} else {
 				START_ID = "i";
 				FIRST = "f";
@@ -423,13 +423,6 @@ public final class PersistentStore {
 				ARK = "a";
 				RENT = "r";
 				NC = "n";
-
-				TIME = "t";
-				STATUS = "s";
-				MPS = "m";
-				PENALTY = "p";
-				TRACE = "r";
-				NEUTRALIZED = "n";
 			
 				START = "s";
 				FINISH = "f";
@@ -437,6 +430,13 @@ public final class PersistentStore {
 				READ = "r";
 				CHECK = "c";
 				PUNCHES = "p";
+
+				TIME = "t";
+				STATUS = "s";
+				MPS = "m";
+				PENALTY = "p";
+				TRACE = "r";
+				NEUTRALIZED = "n";
 			}
 		}
 	}
