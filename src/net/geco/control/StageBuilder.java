@@ -20,7 +20,6 @@ import java.util.zip.ZipOutputStream;
 
 import net.geco.basics.GecoResources;
 import net.geco.model.Factory;
-import net.geco.model.Registry;
 import net.geco.model.Stage;
 import net.geco.model.iojson.PersistentStore;
 
@@ -35,8 +34,6 @@ import net.geco.model.iojson.PersistentStore;
  */
 public class StageBuilder extends BasicControl {
 	
-	private RegistryBuilder registryBuilder;
-
 	private PersistentStore store;
 	
 	private final static String[] datafiles = new String[] {
@@ -47,14 +44,12 @@ public class StageBuilder extends BasicControl {
 	
 	public StageBuilder(Factory factory) {
 		super(factory);
-		this.registryBuilder = new RegistryBuilder(factory);
 		this.store = new PersistentStore();
 	}
 	
 	public Stage loadStage(String baseDir, Checker checker) {
 		Stage newStage = factory().createStage();
 		loadStageProperties(newStage, baseDir);
-//		importDataIntoRegistry(newStage);
 		store.loadData(newStage, factory());
 		checker.postInitialize(newStage); // post initialization
 //		new RunnerBuilder(factory()).checkGecoData(newStage, checker);
@@ -76,19 +71,8 @@ public class StageBuilder extends BasicControl {
 		stage.loadProperties(loadProperties(baseDir));
 	}
 
-	private void importDataIntoRegistry(Stage newStage) {
-		Registry registry = new Registry();
-		newStage.setRegistry(registry);
-		this.registryBuilder.importAllData(	registry,
-											newStage.getBaseDir(),
-											newStage.getZeroHour());
-	}
-	
 	public void save(Stage stage, Properties props, String backupId) {
 		saveStageProperties(stage, props);
-		registryBuilder.exportAllData(	stage.registry(),
-										stage.getBaseDir(),
-										stage.getZeroHour());
 		store.saveData(stage);
 		backupData(stage.getBaseDir(), backupId);
 	}
