@@ -19,6 +19,7 @@ import net.geco.model.HeatSet;
 import net.geco.model.Pool;
 import net.geco.model.Punch;
 import net.geco.model.Registry;
+import net.geco.model.ResultType;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.RunnerResult;
@@ -80,12 +81,12 @@ public final class PersistentStore {
 			course.setName(c.getString(K.NAME));
 			course.setLength(c.getInt(K.LENGTH));
 			course.setClimb(c.getInt(K.CLIMB));
-			JSONArray codes = c.getJSONArray(K.CODES);
-			int[] codez = new int[codes.length()];
-			for (int j = 0; j < codes.length(); j++) {
-				codez[j] = codes.getInt(j);
+			JSONArray codez = c.getJSONArray(K.CODES);
+			int[] codes = new int[codez.length()];
+			for (int j = 0; j < codes.length; j++) {
+				codes[j] = codez.getInt(j);
 			}
-			course.setCodes(codez);
+			course.setCodes(codes);
 			registry.addCourse(course);
 		}
 		registry.ensureAutoCourse(factory);
@@ -118,7 +119,27 @@ public final class PersistentStore {
 
 	public void importHeatSets(JSONStore store, Registry registry, Factory factory)
 			throws JSONException {
-		store.getJSONArray(K.HEATSETS); // TODO
+		JSONArray heatsets = store.getJSONArray(K.HEATSETS);
+		for (int i = 0; i < heatsets.length(); i++) {
+			JSONObject h = heatsets.getJSONObject(i);
+			HeatSet heatset = factory.createHeatSet();
+			heatset.setName(h.getString(K.NAME));
+			heatset.setQualifyingRank(h.getInt(K.RANK));
+			heatset.setSetType(ResultType.valueOf(h.getString(K.TYPE)));
+			JSONArray heatz = h.getJSONArray(K.HEATS);
+			String[] heats = new String[heatz.length()];
+			for (int j = 0; j < heats.length; j++) {
+				heats[j] = heatz.getString(j);
+			}
+			heatset.setHeatNames(heats);
+			JSONArray poolz = h.getJSONArray(K.POOLS);
+			Pool[] pools = new Pool[poolz.length()];
+			for (int j = 0; j < pools.length; j++) {
+				pools[j] = store.retrieve(poolz.getInt(j), Pool.class);
+			}
+			heatset.setSelectedPools(pools);
+			registry.addHeatSet(heatset);
+		}
 	}
 
 	public void importRunnersData(JSONStore store, Registry registry, Factory factory)
