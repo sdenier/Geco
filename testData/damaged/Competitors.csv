@@ -1,6 +1,0 @@
-1; 10000; John; Doe; ClubName1; Course A;false;M21;;;1;false;;0;
-2; ; NoData; ; ; ;;;;;;;;;
-3; ; WrongLine; ; ; ;
-4; 10001; John; Doe; MissingClub; MissingCourse;false;MissingCat;;;1;false;;0;
-5; 10002; John; MissingCardData; ClubName1; Course A;false;[None];;;1;false;;0;
-6; 10003; John; MissingResultData; ClubName2; Course A;false;[None];;;1;false;;0;

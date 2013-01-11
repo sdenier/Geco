@@ -17,7 +17,6 @@ import net.geco.model.Stage;
 import net.geco.model.impl.POFactory;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -91,17 +90,5 @@ public class StageBuilderTest {
 		Course autoCourse = stage.registry().autoCourse();
 		assertEquals("[Auto]", autoCourse.getName());
 	}
-	
-	@Test @Ignore
-	public void testLoadStageWithMissingData() {
-		StageBuilder stageBuilder = new StageBuilder(factory);
-		stage = stageBuilder.loadStage("testData/damaged", new PenaltyChecker(factory));
-		Registry registry = stage.registry();
-		assertEquals(3, registry.getCategories().size());
-		assertEquals(4, registry.getClubs().size());
-		assertEquals(2, registry.getCourses().size());
-		assertEquals(9, registry.getRunners().size());		
-	}
-
 	
 }
