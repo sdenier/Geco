@@ -27,14 +27,9 @@ import net.geco.model.impl.StageImpl;
  */
 public class GecoStageLaunch implements IStageLaunch {
 
-	public static final String[] FILES = {
-		"Classes.csv", //$NON-NLS-1$
-		"Clubs.csv", //$NON-NLS-1$
-		"Competitors.csv", //$NON-NLS-1$
-		"Courses.csv", //$NON-NLS-1$
-		"CardData.csv", //$NON-NLS-1$
-		"ResultData.csv", //$NON-NLS-1$
+	public static final String[] TEMPLATE_FILES = {
 		"geco.prop", //$NON-NLS-1$
+		"store.json", //$NON-NLS-1$
 		"result.css", //$NON-NLS-1$
 		"ticket.css", //$NON-NLS-1$
 	};
@@ -134,7 +129,7 @@ public class GecoStageLaunch implements IStageLaunch {
 	}
 	
 	private void createDataFiles(String baseDir) {
-		for (String datafile : FILES) {
+		for (String datafile : TEMPLATE_FILES) {
 			createFile(baseDir, datafile);
 		}
 	}
