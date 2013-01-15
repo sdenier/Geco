@@ -52,7 +52,6 @@ public class StageBuilder extends BasicControl {
 		loadStageProperties(newStage, baseDir);
 		store.loadData(newStage, factory());
 		checker.postInitialize(newStage); // post initialization
-//		new RunnerBuilder(factory()).checkGecoData(newStage, checker);
 		return newStage;
 	}
 
