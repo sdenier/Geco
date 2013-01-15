@@ -2,14 +2,12 @@
  * Copyright (c) 2009 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.model.iocsv;
+package net.geco.basics;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import net.geco.basics.GecoResources;
-import net.geco.basics.Util;
 
 
 

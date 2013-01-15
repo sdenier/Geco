@@ -7,7 +7,7 @@ package net.geco.control;
 import java.io.File;
 import java.io.IOException;
 
-import net.geco.model.iocsv.CsvReader;
+import net.geco.basics.CsvReader;
 
 
 /**

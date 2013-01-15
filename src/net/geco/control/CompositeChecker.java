@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.geco.basics.CsvReader;
 import net.geco.basics.Announcer.CourseListener;
 import net.geco.model.Course;
 import net.geco.model.Factory;
@@ -17,7 +18,6 @@ import net.geco.model.Registry;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Stage;
 import net.geco.model.Status;
-import net.geco.model.iocsv.CsvReader;
 
 /**
  * @author Simon Denier

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import net.geco.basics.CsvWriter;
 import net.geco.basics.GecoResources;
 import net.geco.basics.Html;
 import net.geco.basics.TimeManager;
@@ -18,7 +19,6 @@ import net.geco.model.HeatSet;
 import net.geco.model.RankedRunner;
 import net.geco.model.Result;
 import net.geco.model.Runner;
-import net.geco.model.iocsv.CsvWriter;
 
 
 /**

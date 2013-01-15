@@ -8,12 +8,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import net.geco.basics.CsvReader;
 import net.geco.basics.TimeManager;
 import net.geco.basics.Util;
 import net.geco.control.Control;
 import net.geco.control.GecoControl;
 import net.geco.control.ecardmodes.ECardMode;
-import net.geco.model.iocsv.CsvReader;
 
 import org.martin.sireader.common.PunchObject;
 import org.martin.sireader.common.ResultData;

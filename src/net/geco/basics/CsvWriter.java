@@ -2,7 +2,7 @@
  * Copyright (c) 2009 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.model.iocsv;
+package net.geco.basics;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -10,8 +10,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Collection;
 
-import net.geco.basics.GecoResources;
-import net.geco.basics.Util;
 
 
 
