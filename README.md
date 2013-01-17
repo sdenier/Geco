@@ -1,6 +1,6 @@
 Geco 2.x (Roadmap)
 ==================
-Copyright (c) 2008-2012 Simon Denier  
+Copyright (c) 2008-2013 Simon Denier  
 Homepage: http://geco.webou.net
 
 [![Build Status](https://travis-ci.org/sdenier/Geco.png)](https://travis-ci.org/sdenier/Geco)
@@ -111,21 +111,20 @@ Many thanks to Julien Thézé, Martin Flynn, and Jannik Laval for their technica
 License Information
 -------------------
 
-The Geco application is distributed under the GNU General Public License Version 2. See gpl-2.0.txt for details.
+The Geco application is released under the GNU General Public License Version 2. See gpl-2.0.txt for details.
 
-Original parts of this program are distributed under the MIT license. See LICENSE file for details.
-Open-source code is available at http://bitbucket.org/sdenier/geco
-
-JarClassLoader distributed under the GNU General Public License Version 2.
-See http://www.jdotsoft.com/JarClassLoader.php
+Original parts of this program are distributed under the MIT license. See LICENSE file for details. Open-source code available at http://github.com/sdenier/Geco
 
 SIReader library kindly provided by Martin Flynn, many thanks to him!
 Visit his software Òr at http://orienteering.ie/wiki/doku.php?id=or:index
 
-SIReader uses the RXTX library, released under LGPL v 2.1 + Linking Over Controlled Interface.
-See website for details http://www.rxtx.org/
+SIReader uses the RXTX library, released under LGPL v 2.1 + Linking Over Controlled Interface. http://www.rxtx.org/
 
-Geco uses a subset of the ICU4J library, released under ICU License 1.8.1. See http://site.icu-project.org/
+Other libraries used by Geco:
 
-Icons come from the Crystal Project Icons, released under LGPL, designed by Everaldo Coelho.
-See http://everaldo.com/crystal
+- JarClassLoader (GNU General Public License Version 2): http://www.jdotsoft.com/JarClassLoader.php
+- Json in Java (subset): http://www.json.org/java/
+- Jackson (Apache License 2.0): http://wiki.fasterxml.com/JacksonHome
+- ICU4J (subset, ICU License 1.8.1): http://site.icu-project.org/
+
+Icons come from the Crystal Project Icons (LGPL) by Everaldo Coelho: http://everaldo.com/crystal
