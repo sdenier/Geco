@@ -71,7 +71,7 @@ public class StartlistImporter extends OEImporter {
 			Category cat = stageControl().ensureCategoryInRegistry(safeTrimQuotes(record[18]), safeTrimQuotes(record[19]));
 			runner.setClub(club);
 			runner.setCategory(cat);
-			if( record[11].equals("Geco-course") ) {
+			if( record[11].equals("Geco-course") ) { //$NON-NLS-1$
 				Course course = stageControl().ensureCourseInRegistry(safeTrimQuotes(record[12]));
 				runner.setCourse(course);
 			} else {

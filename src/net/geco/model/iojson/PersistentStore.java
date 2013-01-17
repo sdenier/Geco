@@ -38,9 +38,9 @@ import org.json.JSONObject;
  */
 public final class PersistentStore {
 
-	public static final String STORE_FILE = "store.json";
+	public static final String STORE_FILE = "store.json"; //$NON-NLS-1$
 
-	public static final String JSON_SCHEMA_VERSION = "2.0";
+	public static final String JSON_SCHEMA_VERSION = "2.0"; //$NON-NLS-1$
 	
 	private static final boolean DEBUG = false;
 	
@@ -359,28 +359,28 @@ public final class PersistentStore {
 
 	public static class K {
 
-		public static final String ID = "id";;
-		public static final String MAXID = "maxid";;
-		public static final String NAME = "name";
-		public static final String VERSION = "version";
+		public static final String ID = "id";; //$NON-NLS-1$
+		public static final String MAXID = "maxid";; //$NON-NLS-1$
+		public static final String NAME = "name"; //$NON-NLS-1$
+		public static final String VERSION = "version"; //$NON-NLS-1$
 
-		public static final String COURSES = "courses";
-		public static final String LENGTH = "length";
-		public static final String CLIMB = "climb";
-		public static final String CODES = "codes";
+		public static final String COURSES = "courses"; //$NON-NLS-1$
+		public static final String LENGTH = "length"; //$NON-NLS-1$
+		public static final String CLIMB = "climb"; //$NON-NLS-1$
+		public static final String CODES = "codes"; //$NON-NLS-1$
 
-		public static final String CATEGORIES = "categories";;
-		public static final String LONG = "long";
-		public static final String CLUBS = "clubs";
-		public static final String SHORT = "short";
+		public static final String CATEGORIES = "categories";; //$NON-NLS-1$
+		public static final String LONG = "long"; //$NON-NLS-1$
+		public static final String CLUBS = "clubs"; //$NON-NLS-1$
+		public static final String SHORT = "short"; //$NON-NLS-1$
 
-		public static final String HEATSETS = "heatsets";
-		public static final String RANK = "rank";
-		public static final String TYPE = "type";
-		public static final String HEATS = "heats";
-		public static final String POOLS = "pools";
+		public static final String HEATSETS = "heatsets"; //$NON-NLS-1$
+		public static final String RANK = "rank"; //$NON-NLS-1$
+		public static final String TYPE = "type"; //$NON-NLS-1$
+		public static final String HEATS = "heats"; //$NON-NLS-1$
+		public static final String POOLS = "pools"; //$NON-NLS-1$
 
-		public static final String RUNNERS_DATA = "runnersData";
+		public static final String RUNNERS_DATA = "runnersData"; //$NON-NLS-1$
 
 		public static final String START_ID;
 		public static final String FIRST;
@@ -409,55 +409,55 @@ public final class PersistentStore {
 		
 		static {
 			if( DEBUG ) {
-				START_ID = "startid";
-				FIRST = "first";
-				LAST = "last";
-				ECARD = "ecard";
-				CLUB = "club";
-				CAT = "cat";
-				COURSE = "course";
-				ARK = "ark";
-				RENT = "rent";
-				NC = "nc";
+				START_ID = "startid"; //$NON-NLS-1$
+				FIRST = "first"; //$NON-NLS-1$
+				LAST = "last"; //$NON-NLS-1$
+				ECARD = "ecard"; //$NON-NLS-1$
+				CLUB = "club"; //$NON-NLS-1$
+				CAT = "cat"; //$NON-NLS-1$
+				COURSE = "course"; //$NON-NLS-1$
+				ARK = "ark"; //$NON-NLS-1$
+				RENT = "rent"; //$NON-NLS-1$
+				NC = "nc"; //$NON-NLS-1$
 			
-				START = "start";
-				FINISH = "finish";
-				ERASE = "erase";
-				READ = "read";
-				CHECK = "check";
-				PUNCHES = "punches";
+				START = "start"; //$NON-NLS-1$
+				FINISH = "finish"; //$NON-NLS-1$
+				ERASE = "erase"; //$NON-NLS-1$
+				READ = "read"; //$NON-NLS-1$
+				CHECK = "check"; //$NON-NLS-1$
+				PUNCHES = "punches"; //$NON-NLS-1$
 
-				TIME = "time";
-				STATUS = "status";
-				MPS = "mps";
-				PENALTY = "penalty";
-				TRACE = "trace";
-				NEUTRALIZED = "neut";
+				TIME = "time"; //$NON-NLS-1$
+				STATUS = "status"; //$NON-NLS-1$
+				MPS = "mps"; //$NON-NLS-1$
+				PENALTY = "penalty"; //$NON-NLS-1$
+				TRACE = "trace"; //$NON-NLS-1$
+				NEUTRALIZED = "neut"; //$NON-NLS-1$
 			} else {
-				START_ID = "i";
-				FIRST = "f";
-				LAST = "l";
-				ECARD = "e";
-				CLUB = "u";
-				CAT = "t";
-				COURSE = "c";
-				ARK = "a";
-				RENT = "r";
-				NC = "n";
+				START_ID = "i"; //$NON-NLS-1$
+				FIRST = "f"; //$NON-NLS-1$
+				LAST = "l"; //$NON-NLS-1$
+				ECARD = "e"; //$NON-NLS-1$
+				CLUB = "u"; //$NON-NLS-1$
+				CAT = "t"; //$NON-NLS-1$
+				COURSE = "c"; //$NON-NLS-1$
+				ARK = "a"; //$NON-NLS-1$
+				RENT = "r"; //$NON-NLS-1$
+				NC = "n"; //$NON-NLS-1$
 			
-				START = "s";
-				FINISH = "f";
-				ERASE = "e";
-				READ = "r";
-				CHECK = "c";
-				PUNCHES = "p";
+				START = "s"; //$NON-NLS-1$
+				FINISH = "f"; //$NON-NLS-1$
+				ERASE = "e"; //$NON-NLS-1$
+				READ = "r"; //$NON-NLS-1$
+				CHECK = "c"; //$NON-NLS-1$
+				PUNCHES = "p"; //$NON-NLS-1$
 
-				TIME = "t";
-				STATUS = "s";
-				MPS = "m";
-				PENALTY = "p";
-				TRACE = "r";
-				NEUTRALIZED = "n";
+				TIME = "t"; //$NON-NLS-1$
+				STATUS = "s"; //$NON-NLS-1$
+				MPS = "m"; //$NON-NLS-1$
+				PENALTY = "p"; //$NON-NLS-1$
+				TRACE = "r"; //$NON-NLS-1$
+				NEUTRALIZED = "n"; //$NON-NLS-1$
 			}
 		}
 	}
