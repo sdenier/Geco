@@ -6,9 +6,7 @@ in_menu: true
 
 # Onglet Séries
 
-L'onglet séries permet de définir les séries de qualification (par élimination directe) pour la prochaine étape.
-Geco calcule les coureurs qualifiés à partir des résultats et des spécifications de séries.
-Les séries peuvent être exportées directement comme liste de départ pour l'étape suivante.
+L'onglet séries permet de définir les séries de qualification (par élimination directe) pour la prochaine étape. Geco calcule les coureurs qualifiés à partir des résultats et des spécifications de séries. Les séries peuvent être exportées directement comme liste de départ pour l'étape suivante.
 
 <a href="../images/heats_panel_dialog.fr.png"><img src="../images/heats_panel_dialog.fr.png" /></a>
 
@@ -17,7 +15,7 @@ Pressez le bouton *Créer* pour créer un nouveau **groupe**, ou bien éditez un
 
 - donnez un nom au groupe
 - donnez les noms des séries des coureurs qualifiés (séparés par une virgule). **Les séries correspondent aux circuits de l'étape suivante**
-- donnez le rang de qualification (classement à atteindre pour une qualification)
+- donnez le rang de qualification (classement à atteindre pour être qualifié)
 - indiquez si les coureurs doivent être classés par circuit, catégorie, ou la combinaison catégorie/circuits
 
 Sauvez les paramètres du groupe. Finalement, sélectionnez dans la liste quels circuits (ou catégories) doivent être pris en compte pour constituer les séries.
@@ -26,4 +24,4 @@ Par example, le groupe *H* dans l'image ci-dessus est configuré pour sélection
 
 Cliquez sur *Actualiser* pour générer et voir les séries. Cliquez sur *Exporter* pour exporter les séries générées dans un fichier. 
 
-**Conseil : exportez directement la liste de départ vers le fichier *Competitors.csv* de l'étape suivante.**
+**Geco génère une liste de départ au <a href="../samples/startlist_with_heats.csv">format CSV</a> qui peut être directement [importé](../workflows/register.fr.html) dans l'étape suivante.**

@@ -13,15 +13,24 @@ Cette page résume les différentes possibilités pour inscrire des concurrents 
 Il existe deux méthodes pour pré-inscrire facilement des concurrents avant la compétition.
 
 - Vous pouvez importer un fichier CSV avec le <a href="../samples/startlist_sample.csv">format</a> des inscriptions OE. C'est la méthode la plus rapide pour importer de nombreuses inscriptions. Le fichier peut être généré et édité avec n'importe quel tableur.
-- Vous pouvez importer des coureurs depuis une [archive](../guide/archive.fr.html), créée par une fédération ou les clubs.
+- Vous pouvez importer des coureurs depuis une [archive](../guide/archive.fr.html) pour OE, créée par une fédération ou les clubs.
 
-Attention ! Il n'est pas possible d'indiquer les circuits des coureurs dans les formats de fichier donnés ci-dessus. À la place, il faut utiliser la catégorie pour inscrire le coureur sur son circuit. *Avant l'import*, il faut donc créer les circuits et les catégories dans la [configuration](../guide/stage.fr.html), puis **associer les circuits aux catégories**. À défaut les coureurs seront sur le circuit *\[Auto\]*.
+Attention ! Avec le format OE CSV original, il n'est pas possible d'indiquer directement les circuits des coureurs. À la place, il faut utiliser la catégorie pour inscrire le coureur sur son circuit. *Avant l'import*, il faut donc créer les circuits et les catégories dans la [configuration](../guide/stage.fr.html), puis **associer les circuits aux catégories**. À défaut les coureurs seront sur le circuit *\[Auto\]*. Il existe cependant une version spéciale de ce format permettant l'attribution directe des circuits (voir ci-dessous).
 
 L'import CSV ou par l'archive crée automatiquement les clubs et catégories nécessaires pour l'import.
 
 Dans le format <a href="../samples/startlist_sample.csv">OE CSV</a>, seuls les champs Nom, Prénom, le club et la catégorie (court/long) sont obligatoires. Le numéro de départ, la puce, l'identifiant archive, le champ NC et l'heure de départ sont tous optionnels. Les autres champs sont ignorés par Geco. Les contraintes sont les mêmes pour le <a href="../samples/archive_sample.csv">format de l'archive</a>, avec quelques champs en moins.
 
 Le champ *Heure de départ* permet de donner un horaire pré-attribué, sans utiliser de boîtier départ. L'heure donnée doit être relative à l'heure zéro de la course.
+
+### Pré-inscription des concurrents avec circuits pré-attribués
+
+Geco 2 peut aussi importer une <a href="../samples/startlist_with_heats.csv">version spéciale</a> du format OE CSV contenant déjà les circuits attribués aux coureurs. Ce format permet par exemple d'exporter les [séries de qualification](../guide/heats.fr.html) comme liste de départ pour la prochaine course. Cette astuce utilise deux colonnes non exploitées par Geco dans le format original :
+
+- colonne 'Temps/Time' taggé avec le mot-clé 'Geco-course'
+- colonne 'Évaluation/Eval' : nom du circuit attribué au coureur
+
+Lors de l'import d'une liste de départ, Geco détecte pour chaque entrée le tag 'Geco-course' : s'il est présent, Geco traite la colonne suivante comme le nom du circuit pour le coureur. Sinon, Geco revient au mode classique en inscrivant le coureur sur le circuit de sa catégorie ou le circuit *\[Auto\]* par défaut.
 
 
 ## Inscription sur site
