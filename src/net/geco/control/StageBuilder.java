@@ -122,7 +122,7 @@ public class StageBuilder extends BasicControl {
 
 	public void deleteOldBackups(Stage stage, Date deadline) {
 		final Pattern pattern = Pattern.compile(BACKUP_REGEX);
-		File backupDir = new File(backupDir(stage.getBaseDir(), BACKUP_DIR));
+		File backupDir = new File(backupDir(stage.getBaseDir()));
 		File[] backupFiles = backupDir.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String filename) {
 				return pattern.matcher(filename).matches();
@@ -164,12 +164,12 @@ public class StageBuilder extends BasicControl {
 	public static final String BACKUP_NAME = "backup%s.zip"; //$NON-NLS-1$
 	public static final String BACKUP_REGEX = "backup.+zip"; //$NON-NLS-1$
 
-	public static String backupDir(String baseDir, String backupDir) {
+	public static String backupDir(String baseDir) {
 		return filepath(baseDir, BACKUP_DIR);
 	}
 	
 	public static String backupFile(String baseDir, String id) {
-		return filepath(backupDir(baseDir, BACKUP_DIR), String.format(BACKUP_NAME, id));
+		return filepath(backupDir(baseDir), String.format(BACKUP_NAME, id));
 	}
 
 }
