@@ -13,7 +13,6 @@ import java.util.Properties;
 
 import net.geco.basics.Announcer;
 import net.geco.basics.GService;
-import net.geco.basics.GecoResources;
 import net.geco.basics.Logger;
 import net.geco.model.Factory;
 import net.geco.model.Registry;
@@ -62,8 +61,6 @@ public class GecoControl {
 	private Thread autosaveThread;
 
 	private final SimpleDateFormat backupDateFormat = new SimpleDateFormat("yyMMdd-HHmmss"); //$NON-NLS-1$
-	
-	public static final String BACKUPDIR = "backups"; //$NON-NLS-1$
 	
 	
 	/*
@@ -161,26 +158,20 @@ public class GecoControl {
 		return new RuntimeStage(stage, logger);
 	}
 
-	private String backupFilename(String id) {
-		return BACKUPDIR + GecoResources.sep + "backup" + id + ".zip"; //$NON-NLS-1$ //$NON-NLS-2$
-	}
-
 	public void deleteOldBackups(int daysOlder) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DATE, -1 * daysOlder);
-		stageBuilder.deleteOldBackups(stage(), BACKUPDIR, "backup.+zip", calendar.getTime()); //$NON-NLS-1$
+		stageBuilder.deleteOldBackups(stage(), calendar.getTime()); //$NON-NLS-1$
 	}
 	
-	private void saveStage(String backupName) {
+	private void saveStage(String backupId) {
 		Properties props = new Properties();
 		announcer.announceSave(stage(), props);
-		stageBuilder.save(	stage(), 
-							props, 
-							backupName);
+		stageBuilder.save(stage(), props, backupId);
 	}
 
 	public void saveCurrentStage() {
-		saveStage( backupFilename( backupDateFormat.format(new Date()) ));
+		saveStage( backupDateFormat.format(new Date()) );
 	}
 	
 	public void closeCurrentStage() {
@@ -203,7 +194,7 @@ public class GecoControl {
 						if( id > stage().getNbAutoBackups() ) {
 							id = 1;
 						}
-						saveStage(backupFilename(Integer.toString(id)));
+						saveStage(Integer.toString(id));
 					} catch (InterruptedException e) {
 						return;
 					}					

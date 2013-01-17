@@ -10,6 +10,7 @@ import net.geco.basics.TimeManager;
 import net.geco.basics.Util;
 import net.geco.model.Category;
 import net.geco.model.Club;
+import net.geco.model.Course;
 import net.geco.model.Messages;
 import net.geco.model.Runner;
 
@@ -33,6 +34,9 @@ public class StartlistImporter extends OEImporter {
 		// [13-19] N° club;Nom;Ville;Nat;N° cat.;Court;Long;
 		// Num1;Num2;Num3;Text1;Text2;Text3;Adr. nom;Rue;Ligne2;Code Post.;Ville;Tél.;Fax;E-mail;Id/Club;Louée;Engagement;Payé
 		// ;1061511;10869;DENIER;Simon;80;H;;;00:46:00;;;;5906;5906NO;VALMO;France;11;H21A;H21A
+		// Extended format for Geco:
+		// - Temps =? Geco-course
+		// - => Evaluation = Course
 		
 		try {
 			String ecard = safeTrimQuotes(record[1]);
@@ -67,7 +71,12 @@ public class StartlistImporter extends OEImporter {
 			Category cat = stageControl().ensureCategoryInRegistry(safeTrimQuotes(record[18]), safeTrimQuotes(record[19]));
 			runner.setClub(club);
 			runner.setCategory(cat);
-			runner.setCourse(registry().getDefaultCourseOrAutoFor(cat));
+			if( record[11].equals("Geco-course") ) { //$NON-NLS-1$
+				Course course = stageControl().ensureCourseInRegistry(safeTrimQuotes(record[12]));
+				runner.setCourse(course);
+			} else {
+				runner.setCourse(registry().getDefaultCourseOrAutoFor(cat));
+			}
 			
 			runnerControl().registerNewRunner(runner);	
 		} catch (Exception e) {

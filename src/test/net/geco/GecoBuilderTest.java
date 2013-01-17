@@ -12,7 +12,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import junit.framework.Assert;
 import net.geco.Geco;
@@ -30,10 +29,8 @@ import net.geco.ui.GecoWindow;
 import net.geco.ui.framework.ConfigPanel;
 import net.geco.ui.framework.TabPanel;
 import net.geco.ui.framework.UIAnnouncers;
-import net.geco.ui.tabs.StagePanel;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -101,29 +98,4 @@ public class GecoBuilderTest {
 		verify(mockBuilder, times(1)).buildConfigPanels(eq(mockGeco), eq(window));
 	}
 
-	// Disable mock test with Swing interactions
-	@Test @Ignore
-	public void gecoUITabsInitialization(){
-//		Mockito.doNothing().when(mockStagePanel).checkGD(any(String.class));
-		TabPanel mockTab = mock(TabPanel.class);
-		GecoWindow window = new GecoWindow(mockGeco);
-		StagePanel stagePanel = new StagePanel(mockGeco, window);
-		window.buildGUI(stagePanel, new TabPanel[] { mockTab }, new ConfigPanel[0]);
-		verify(mockTab, times(1)).getTabTitle();
-		Assert.assertEquals(mockTab, window.getComponent(0));
-	}
-
-	@Ignore @Test
-	public void stagePanelSetupWithTabs(){
-		ConfigPanel mockConfig = mock(ConfigPanel.class);
-		JPanel mockPanel = mock(JPanel.class);
-		when(mockConfig.build()).thenReturn(mockPanel);
-		when(mockConfig.getLabel()).thenReturn("mock config");
-		StagePanel stagePanel = new StagePanel(mockGeco, mock(JFrame.class));
-		stagePanel.buildConfigPanels(new ConfigPanel[] { mockConfig });
-		verify(mockConfig, times(1)).getLabel();
-		JPanel c = stagePanel.getConfigFor("mock config");
-		Assert.assertEquals(mockPanel, c.getComponent(0));
-	}
-	
 }

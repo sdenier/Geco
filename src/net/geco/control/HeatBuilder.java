@@ -6,20 +6,19 @@ package net.geco.control;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Vector;
 
+import net.geco.basics.CsvWriter;
 import net.geco.basics.GecoResources;
 import net.geco.basics.Html;
-import net.geco.model.Course;
+import net.geco.basics.TimeManager;
 import net.geco.model.Heat;
 import net.geco.model.HeatSet;
 import net.geco.model.RankedRunner;
 import net.geco.model.Result;
 import net.geco.model.Runner;
-import net.geco.model.iocsv.CsvWriter;
-import net.geco.model.iocsv.RunnerIO;
 
 
 /**
@@ -29,9 +28,7 @@ import net.geco.model.iocsv.RunnerIO;
  */
 public class HeatBuilder extends Control {
 	
-	private int startId;
-
-	private Vector<Heat> heats;
+	private List<Heat> heats;
 
 	private ResultBuilder resultBuilder;
 
@@ -45,15 +42,15 @@ public class HeatBuilder extends Control {
 		return factory().createHeatSet();
 	}
 
-	private Vector<Heat> getHeats(HeatSet[] selectedHeatsets) {
+	private List<Heat> getHeats(HeatSet[] selectedHeatsets) {
 		if( heats==null ) {
 			buildHeats(selectedHeatsets);
 		}
 		return heats;
 	}
 
-	private Vector<Heat> buildHeats(HeatSet[] selectedHeatsets) {
-		heats = new Vector<Heat>();
+	private List<Heat> buildHeats(HeatSet[] selectedHeatsets) {
+		heats = new ArrayList<Heat>();
 		for (HeatSet heatset : selectedHeatsets) {
 			List<Result> heatsetResults
 							= resultBuilder.buildResults(heatset.getSelectedPools(), heatset.getSetType());
@@ -73,14 +70,14 @@ public class HeatBuilder extends Control {
 							String[] heatnames,
 							int qualifyingRank) {
 		int nbHeats = heatnames.length;
-		Vector<Heat> heats = new Vector<Heat>(nbHeats);
+		List<Heat> heats = new ArrayList<Heat>(nbHeats);
 		for (String name : heatnames) {
 			Heat h = factory().createHeat();
 			h.setHeatSetName(heatsetName);
 			h.setName(name);
 			heats.add(h);
 		}
-		Vector<List<RankedRunner>> rankings = new Vector<List<RankedRunner>>();
+		List<List<RankedRunner>> rankings = new ArrayList<List<RankedRunner>>(results.size());
 		for (Result result : results) {
 			rankings.add(result.getRanking());
 		}
@@ -148,7 +145,7 @@ public class HeatBuilder extends Control {
 	}
 
 	public String generateHtmlHeats(HeatSet[] selectedHeatsets, boolean forFileExport) {
-		Vector<Heat> heats = getHeats(selectedHeatsets);
+		List<Heat> heats = getHeats(selectedHeatsets);
 		Html html = new Html();
 
 		html.open("head").nl(); //$NON-NLS-1$
@@ -174,33 +171,51 @@ public class HeatBuilder extends Control {
 	}
 	
 	public void generateCsvHeats(String filename, HeatSet[] selectedHeatsets) throws IOException {
-		Vector<Heat> heats = getHeats(selectedHeatsets);
-		resetStartId();
-		CsvWriter writer = new CsvWriter();
+		List<Heat> heats = getHeats(selectedHeatsets);
+		CsvWriter writer = new CsvWriter(";"); //$NON-NLS-1$
 		writer.initialize(filename);
 		writer.open();
+		writer.write(startlistCsvHeader());
+		writer.write("\n"); //$NON-NLS-1$
 		for (Heat heat : heats) {
 			appendCsvHeat(heat, writer);
 		}
 		writer.close();
 	}
+	
+	private String startlistCsvHeader() {
+		return "Nº Start;Ecard;Id archive;Last name;First name;Birth year;Sex;" + //$NON-NLS-1$
+				"Slot;NC;Start time;Finish time;Time/'Geco-course';Eval/Course;" + //$NON-NLS-1$
+				"Nº club;Short club;Long club;Nat;N° cat;Short cat;Long cat"; //$NON-NLS-1$
+	}
+
 	private void appendCsvHeat(Heat heat, CsvWriter writer) throws IOException {
-		RunnerIO runnerIO = new RunnerIO(null, null, writer, null, stage().getZeroHour());
-		Course heatCourse = factory().createCourse();
-		heatCourse.setName(heat.getName());
 		for (Runner runner : heat.getQualifiedRunners()) {
-			writer.writeRecord(runnerIO.exportTData(cloneRunnerForHeat(runner, heatCourse)));
+			writer.writeRecord(exportRunnerStartEntry(runner, heat.getName()));
 		}
 	}
-	private Runner cloneRunnerForHeat(Runner runner, Course heatCourse) {
-		return runner.copyWith(newStartId(), runner.getEcard(), heatCourse);
-	}
-	
-	private void resetStartId() {
-		startId = 0;
-	}
-	private Integer newStartId() {
-		return ++startId;
+
+	private String[] exportRunnerStartEntry(Runner runner, String heatName) {
+		// [0-4] N° dép.;Puce;Ident. base de données;Nom;Prénom;
+		// [5-12] Né;S;Plage;nc;Départ;Arrivée;Temps/"Geco-course";Evaluation/**HEAT COURSE**;
+		// [13-19] N° club;Nom;Ville;Nat;N° cat.;Court;Long;
+		// ;1061511;10869;DENIER;Simon;;;;;--:--;;Geco-course;Finale A;;5906NO;VALMO;;;H21A;H21 A
+		return new String[] {
+				"", //$NON-NLS-1$
+				runner.getEcard(),
+				(runner.getArchiveId() == null) ? "" : runner.getArchiveId().toString(), //$NON-NLS-1$
+				runner.getLastname(),
+				runner.getFirstname(),
+				"", "", "", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				Boolean.toString(runner.isNC()),
+				TimeManager.NO_TIME_STRING,
+				"", //$NON-NLS-1$
+				"Geco-course", heatName, //$NON-NLS-1$
+				"", runner.getClub().getShortname(), runner.getClub().getName(), //$NON-NLS-1$
+				"", "", //$NON-NLS-1$ //$NON-NLS-2$
+				runner.getCategory().getShortname(), runner.getCategory().getLongname(),
+				" ", //$NON-NLS-1$
+		};
 	}
 	
 }

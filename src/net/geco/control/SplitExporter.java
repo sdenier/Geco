@@ -14,6 +14,7 @@ import java.util.Properties;
 import java.util.Vector;
 
 import net.geco.basics.Announcer.StageListener;
+import net.geco.basics.CsvWriter;
 import net.geco.basics.Html;
 import net.geco.basics.TimeManager;
 import net.geco.control.ResultBuilder.ResultConfig;
@@ -29,7 +30,6 @@ import net.geco.model.RunnerRaceData;
 import net.geco.model.Stage;
 import net.geco.model.Status;
 import net.geco.model.Trace;
-import net.geco.model.iocsv.CsvWriter;
 
 
 /**

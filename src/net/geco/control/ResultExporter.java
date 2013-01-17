@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
 
+import net.geco.basics.CsvWriter;
 import net.geco.basics.Html;
 import net.geco.basics.TimeManager;
 import net.geco.control.ResultBuilder.ResultConfig;
@@ -18,7 +19,6 @@ import net.geco.model.Result;
 import net.geco.model.ResultType;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
-import net.geco.model.iocsv.CsvWriter;
 
 /**
  * @author Simon Denier

@@ -1,12 +1,10 @@
-#Geco Thu Jul 19 18:37:18 CEST 2012
-#Thu Jul 19 18:37:18 CEST 2012
-Version=V1.2
+#Geco Thu Jan 17 00:51:48 CET 2013
+#Thu Jan 17 00:51:48 CET 2013
 SplitFormat=MultiColumns
 SplitHeaderMessage=http\://geco.webou.net
 AppBuilder=net.geco.app.OrientShowAppBuilder
 name=LL Mullagmmeen 12 Oct 2008
 NbAutoBackups=9
-CNFile=/Users/deniersi/Documents/Geco 1.x/data/CN-Ped-Base.csv
 AutosaveDelay=2
 SIZeroTime=32400000
 MPPenalty=0
@@ -14,4 +12,6 @@ MPLimit=0
 SplitNbColumns=12
 SIPortname=
 SplitPrinter=Canon MP560 wifi
+ArchiveLookup=true
+AutoHandler=true
 SplitFooterMessage=Geco

@@ -20,15 +20,8 @@ import java.util.zip.ZipOutputStream;
 
 import net.geco.basics.GecoResources;
 import net.geco.model.Factory;
-import net.geco.model.Registry;
 import net.geco.model.Stage;
-import net.geco.model.iocsv.CardDataIO;
-import net.geco.model.iocsv.CategoryIO;
-import net.geco.model.iocsv.ClubIO;
-import net.geco.model.iocsv.CourseIO;
-import net.geco.model.iocsv.HeatSetIO;
-import net.geco.model.iocsv.ResultDataIO;
-import net.geco.model.iocsv.RunnerIO;
+import net.geco.model.iojson.PersistentStore;
 
 
 /**
@@ -41,31 +34,24 @@ import net.geco.model.iocsv.RunnerIO;
  */
 public class StageBuilder extends BasicControl {
 	
-	private RegistryBuilder registryBuilder;
-
+	private PersistentStore store;
 	
 	private final static String[] datafiles = new String[] {
 		propName(),
-		CategoryIO.sourceFilename(),
-		ClubIO.orFilename(),
-		CourseIO.orFilename(),
-		CardDataIO.sourceFilename(),
-		RunnerIO.sourceFilename(),
-		ResultDataIO.sourceFilename()
+		PersistentStore.STORE_FILE
 	};
 	
 	
 	public StageBuilder(Factory factory) {
 		super(factory);
-		this.registryBuilder = new RegistryBuilder(factory);
+		this.store = new PersistentStore();
 	}
 	
 	public Stage loadStage(String baseDir, Checker checker) {
 		Stage newStage = factory().createStage();
 		loadStageProperties(newStage, baseDir);
-		importDataIntoRegistry(newStage);
+		store.loadData(newStage, factory());
 		checker.postInitialize(newStage); // post initialization
-		new RunnerBuilder(factory()).checkGecoData(newStage, checker);
 		return newStage;
 	}
 
@@ -74,7 +60,7 @@ public class StageBuilder extends BasicControl {
 		try {
 			props.load( GecoResources.getSafeReaderFor(propPath(baseDir)) );
 		} catch (IOException e) {
-			System.out.println(e); // TODO: !!!!!!!!!!!!!!!!!!!!! throw exception and handle in UI
+			System.out.println(e); // TODO: throw exception and handle in UI
 		}
 		return props;
 	}
@@ -84,28 +70,18 @@ public class StageBuilder extends BasicControl {
 		stage.loadProperties(loadProperties(baseDir));
 	}
 
-	private void importDataIntoRegistry(Stage newStage) {
-		Registry registry = new Registry();
-		newStage.setRegistry(registry);
-		this.registryBuilder.importAllData(	registry,
-											newStage.getBaseDir(),
-											newStage.getZeroHour());
-	}
-	
-	public void save(Stage stage, Properties props, String backupname) {
+	public void save(Stage stage, Properties props, String backupId) {
 		saveStageProperties(stage, props);
-		registryBuilder.exportAllData(	stage.registry(),
-										stage.getBaseDir(),
-										stage.getZeroHour());
-		backupData(stage.getBaseDir(), backupname);
+		store.saveData(stage);
+		backupData(stage.getBaseDir(), backupId);
 	}
 	
-	private void saveStageProperties(Stage stage, Properties properties) {
+	public void saveStageProperties(Stage stage, Properties properties) {
 		stage.saveProperties(properties);
-		saveProperties(stage.getBaseDir(), properties);
+		exportProperties(stage.getBaseDir(), properties);
 	}
 
-	public static void saveProperties(String baseDir, Properties properties) {
+	public static void exportProperties(String baseDir, Properties properties) {
 		try {
 			BufferedWriter writer = GecoResources.getSafeWriterFor(propPath(baseDir));
 			properties.store(writer, "Geco " + new Date(System.currentTimeMillis()).toString()); //$NON-NLS-1$
@@ -113,16 +89,13 @@ public class StageBuilder extends BasicControl {
 			e.printStackTrace();
 		}
 	}
-
-	public void backupData(String basedir, String backupname) {
+	
+	public void backupData(String basedir, String backupId) {
 		try {
 			ZipOutputStream zipStream = 
-								new ZipOutputStream(new FileOutputStream(filepath(basedir, backupname)));
+					new ZipOutputStream(new FileOutputStream(backupFile(basedir, backupId)));
 			for (String datafile : datafiles) {
 				writeZipEntry(zipStream, datafile, basedir);	
-			}
-			if( fileExists(basedir, HeatSetIO.sourceFilename()) ) {
-				writeZipEntry(zipStream, HeatSetIO.sourceFilename(), basedir);
 			}
 			zipStream.close();
 		} catch (FileNotFoundException e) {
@@ -147,10 +120,10 @@ public class StageBuilder extends BasicControl {
 		zipStream.closeEntry();
 	}
 
-	public void deleteOldBackups(Stage stage, String backupDir, String backupRegex, Date deadline) {
-		final Pattern pattern = Pattern.compile(backupRegex);
-		File backupPath = new File(filepath(stage.getBaseDir(), backupDir));
-		File[] backupFiles = backupPath.listFiles(new FilenameFilter() {
+	public void deleteOldBackups(Stage stage, Date deadline) {
+		final Pattern pattern = Pattern.compile(BACKUP_REGEX);
+		File backupDir = new File(backupDir(stage.getBaseDir()));
+		File[] backupFiles = backupDir.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String filename) {
 				return pattern.matcher(filename).matches();
 			}
@@ -166,7 +139,7 @@ public class StageBuilder extends BasicControl {
 	public static String propName() {
 		return "geco.prop"; //$NON-NLS-1$
 	}
-
+	
 	public static String propPath(String baseDir) {
 		return filepath(baseDir, propName()); //$NON-NLS-1$
 	}
@@ -187,4 +160,16 @@ public class StageBuilder extends BasicControl {
 		return propFile(baseDir).exists();
 	}
 	
+	public static final String BACKUP_DIR = "backups"; //$NON-NLS-1$
+	public static final String BACKUP_NAME = "backup%s.zip"; //$NON-NLS-1$
+	public static final String BACKUP_REGEX = "backup.+zip"; //$NON-NLS-1$
+
+	public static String backupDir(String baseDir) {
+		return filepath(baseDir, BACKUP_DIR);
+	}
+	
+	public static String backupFile(String baseDir, String id) {
+		return filepath(backupDir(baseDir), String.format(BACKUP_NAME, id));
+	}
+
 }

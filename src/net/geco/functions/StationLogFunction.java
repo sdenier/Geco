@@ -27,11 +27,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import net.geco.basics.CsvReader;
 import net.geco.basics.Html;
 import net.geco.control.GecoControl;
 import net.geco.control.functions.StationLogChecker;
 import net.geco.model.Messages;
-import net.geco.model.iocsv.CsvReader;
 import net.geco.ui.basics.GecoIcon;
 
 
