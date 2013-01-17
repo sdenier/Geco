@@ -8,7 +8,6 @@ import net.geco.model.Factory;
 import net.geco.model.Registry;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
-import net.geco.model.Stage;
 
 /**
  * @author Simon Denier
@@ -33,24 +32,4 @@ public class RunnerBuilder extends BasicControl {
 		return runnerData;
 	}
 	
-	public void checkGecoData(Stage currentStage, Checker checker) {
-		checkNoDataRunners(currentStage.registry());
-		for (RunnerRaceData raceData : currentStage.registry().getRunnersData()) {
-			if( raceData.hasTrace() ) {
-				// compute trace, mps, penalties for race data
-				// TODO: non functional, bad smell
-				checker.computeStatus(raceData);
-				checker.computeOfficialRaceTime(raceData);
-			}
-		}
-	}
-	
-	public void checkNoDataRunners(Registry registry) {
-		for (Runner runner : registry.getRunners()) {
-			if( registry.findRunnerData(runner) == null ) {
-				registerRunnerDataFor(registry, runner, buildRunnerData());
-			}
-		}
-	}
-
 }

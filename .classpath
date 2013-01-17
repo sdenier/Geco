@@ -12,5 +12,7 @@
 	<classpathentry kind="lib" path="lib/icu4j-charsetdetector-4_4_2.jar"/>
 	<classpathentry kind="lib" path="lib/mockito-all-1.8.5.jar"/>
 	<classpathentry kind="lib" path="lib/OrangeExtensions-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-core-2.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/org-json-reader-geco2.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

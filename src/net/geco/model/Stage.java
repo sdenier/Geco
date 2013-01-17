@@ -38,10 +38,10 @@ public interface Stage {
 	public int getNbAutoBackups();
 
 	public void setNbAutoBackups(int nbBackups);
+
+	public String getAppBuilderName();
 	
 	public String filepath(String filename);
-	
-	public boolean version12();
 
 
 	/**

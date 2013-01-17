@@ -14,16 +14,24 @@ This page summarises the different ways to register competitors for a stage. All
 There are two ways to easily register lots of competitors before a race.
 
 - You can import a CSV file in OE entry <a href="../samples/startlist_sample.csv">format</a>. It is the fastest way to import many entries. The file can be generated as well as edited with a spreadsheet app.
-- You can import competitors from an [archive](../guide/archive.html), provided by a federation or some clubs.
+- You can import competitors from an OE [archive](../guide/archive.html), provided by a federation or some clubs.
 
-Beware that there is no way to directly set course for each runner with the given file formats. Instead, you should rely on runner category and link each category with a course. *Before an import*, first create courses and categories in the stage [configuration](../guide/stage.html), then **link courses with categories**. By default, runners will be registered on the *\[Auto\]* course.
-
+Beware that there is no way to directly set course for each runner with the original OE CSV format. Instead, you rely on runner category and link each category with a course. *Before an import*, first create courses and categories in the stage [configuration](../guide/stage.html), then **link courses with categories**. By default, runners will be registered on the *\[Auto\]* course.
 
 Both CSV import and archive import automatically create club and category necessary for the import.
 
 With the <a href="../samples/startlist_sample.csv">OE CSV</a> format, the only mandatory fields are the last and first names, the club and the category (short/long names). Start number, ecard, archive id, NC field, and start time are all optional. Other fields are ignored by Geco. The same constraints applies to the <a href="../samples/archive_sample.csv">archive format</a>, which uses less fields.
 
 The *Start time* field allows you to give a registered start time, without the need for a start station. The given hour should be relative to the zero hour of the stage.
+
+### Pre-registration of competitors with assigned courses
+
+Geco 2 can also import a <a href="../samples/startlist_with_heats.csv">custom version</a> of the OE CSV format, with courses already assigned to runners. Using this format, one can export [heats](../guide/heats.html) as a startlist for the next stage. This trick involves two columns unused by Geco in the original format:
+
+- 'Time' column should contain the keyword 'Geco-course'
+- 'Eval' column then contains the assigned course for the runner
+
+When importing a startlist, Geco will look for the tag 'Geco-course' in each entry : if set, Geco processes the next column as the runner course. Otherwise, Geco falls back to the classic behaviour by registering the category course or the default *\[Auto\]* course.
 
 
 ## Onsite registration
