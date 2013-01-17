@@ -22,7 +22,7 @@ The right pane can display details about the currently selected runner (e-card d
 - *Filter Runners:* start typing to display only entries matching your search (the search is performed full-text and matches substring in data)
 - *Fast edit Mode (tickbox):* start edition with just one click - useful when lots of manual edition have to be done quickly
 - *Default course Mode (tickbox):* when active, manually changing a runner's category also sets his course to the default course for the category (if set in the [stage](stage.html) panel)
-- *Live Mode (tickbox):* in this mode, Geco automatically focuses on the last data received from the card reader; runners are dynamically sorted by order of card reading, with most recent on top (other sort options disabled)
+- *Finish Mode (tickbox):* in this mode, Geco automatically focuses on the last data received from the card reader; runners are dynamically sorted by order of card reading, with most recent on top (other sort options disabled)
 
 The different processes for [registration of competitors](../workflows/register.html) are explained in the workflows section.
 

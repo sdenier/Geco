@@ -23,7 +23,7 @@ La vue dans le panneau de droite peut montrer des données détaillées sur le c
 - *Filtrer les concurrents :* entrez quelques caractères pour montrer les entrées correspondant à la recherche
 - *Édition rapide :* un seul clic dans la table permet d'éditer les données - utile quand il s'agit d'effectuer rapidement plusieurs modifications manuelles
 - *Circuit par défaut :* si coché, changer manuellement la catégorie d'un coureur change aussi son circuit pour le circuit par défaut de la catégorie (configuré dans l'[étape](stage.fr.html))
-- *Mode Live :* dans ce mode, Geco sélectionne automatiquement le dernier concurrent dont la puce est lue ; les coureurs sont classés par ordre de lecture des puces, en commençant par les plus récents (les tris par colonne sont désactivés dans ce mode)
+- *Mode arrivée :* dans ce mode, Geco sélectionne automatiquement le dernier concurrent dont la puce est lue ; les coureurs sont classés par ordre de lecture des puces, en commençant par les plus récents (les tris par colonne sont désactivés dans ce mode)
 
 Les différentes méthodes d'[inscription des concurrents](../workflows/register.fr.html) sont expliquées dans les workflows.
 

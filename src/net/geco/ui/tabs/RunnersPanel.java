@@ -88,7 +88,7 @@ public class RunnersPanel extends TabPanel
 	private TableRowSorter<RunnersTableModel> sorter;	
 	private JTextField filterField;
 	
-	private JCheckBox liveB;
+	private JCheckBox finishModeB;
 	private RunnerPanel runnerPanel;
 	private PunchPanel tracePanel;
 
@@ -255,12 +255,12 @@ public class RunnersPanel extends TabPanel
 		});
 		topPanel.add(defaultCourseB);
 		
-		liveB = new JCheckBox(Messages.uiGet("RunnersPanel.LiveLabel")); //$NON-NLS-1$
-		liveB.setToolTipText(Messages.uiGet("RunnersPanel.LiveTooltip")); //$NON-NLS-1$
-		liveB.addActionListener(new ActionListener() {
+		finishModeB = new JCheckBox(Messages.uiGet("RunnersPanel.FinishModeLabel")); //$NON-NLS-1$
+		finishModeB.setToolTipText(Messages.uiGet("RunnersPanel.FinishModeTooltip")); //$NON-NLS-1$
+		finishModeB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if( liveModeOn() ) {
+				if( finishModeOn() ) {
 					disableRowSorting();
 					sortRunnersByReadOrder();
 				}
@@ -268,7 +268,7 @@ public class RunnersPanel extends TabPanel
 					enableRowSorting();
 			}
 		});
-		topPanel.add(liveB);
+		topPanel.add(finishModeB);
 		
 		topPanel.add(Box.createHorizontalGlue());
 		initFilterPanel(topPanel);
@@ -286,8 +286,8 @@ public class RunnersPanel extends TabPanel
 			public void focusLost(FocusEvent e) {}
 			@Override
 			public void focusGained(FocusEvent e) {
-				if( liveModeOn() ){
-					liveB.doClick(); // disable Live mode to enable filtering
+				if( finishModeOn() ){
+					finishModeB.doClick(); // disable Finish mode to enable filtering
 				}
 			}
 		});
@@ -374,11 +374,11 @@ public class RunnersPanel extends TabPanel
 		});
 		getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
 				KeyStroke.getKeyStroke(KeyEvent.VK_L, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
-				"toggleLiveMode"); //$NON-NLS-1$
-		getActionMap().put("toggleLiveMode", new AbstractAction() { //$NON-NLS-1$
+				"toggleFinishMode"); //$NON-NLS-1$
+		getActionMap().put("toggleFinishMode", new AbstractAction() { //$NON-NLS-1$
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				liveB.doClick();
+				finishModeB.doClick();
 			}
 		});
 	}
@@ -445,8 +445,8 @@ public class RunnersPanel extends TabPanel
 		table.setRowSorter(null);
 	}
 
-	private boolean liveModeOn() {
-		return liveB.isSelected();
+	private boolean finishModeOn() {
+		return finishModeB.isSelected();
 	}
 
 	private void sortRunnersByReadOrder() {
@@ -589,7 +589,7 @@ public class RunnersPanel extends TabPanel
 
 
 	private void focusOnReadCard(String ecard) {
-		if( liveModeOn() ) {
+		if( finishModeOn() ) {
 			RunnerRaceData data = registry().findRunnerData(ecard);
 			tableModel.removeData(data);
 			tableModel.addDataFirst(data);
