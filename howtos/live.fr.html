@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Geco lightweight desktop application for orienteering race" />
+    <meta name="keywords" content="orienteering race management lightweight" />
+    <meta name="author" content="Simon Denier / Original design: Andreas Viklund - http://andreasviklund.com/" />
+    <meta name="generator" content="webgen - http://webgen.rubyforge.org" />
+    <link rel="stylesheet" href="../default.css" type="text/css" media="screen,projection" />
+    <title>Geco - LiveMap et Animation</title>
+      
+  
+<link type="text/html" rel="alternate" hreflang="en" href="live.html" lang="en" title="LiveMap and Animation" /></head>
+
+  <body>
+    <div id="container">
+      <a id="top"></a>
+
+      <div id="sitename">
+        <h1>Documentation Geco</h1>
+        <a id="menu"></a>
+      </div>
+
+      <div id="nav">
+        <ul><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../geco/index.fr.html">Présentation</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../guide/index.fr.html">Guide interface</a></li><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><a href="index.fr.html">Guide pratique</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../workflows/index.fr.html">Workflows</a></li></ul>
+      </div>
+
+      <div id="wrap1">
+        <div id="wrap2">
+
+          <div id="topbox">
+            <strong><a href="../index.html">/</a> &raquo; <a href="index.fr.html">Guide pratique</a> &raquo; <span>LiveMap et Animation</span></strong> &nbsp; (<a href="live.html">en</a> | <span class="webgen-langbar-current-lang">fr</span>)            
+          </div>
+
+          <div id="leftside">
+            <a id="sectionmenu"></a>
+            <h1>Download</h1>
+            <div id="downloads">
+              <ul>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-1.3.zip">Version 1.3</a></li>
+                <li>Voir les <a href="../geco/whatsnew.fr.html">nouveautés</a></li>
+              </ul>
+            </div>
+          
+            <h1>Contenu</h1>
+            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.fr.html">Raccourcis</a></li><li class="webgen-menu-level1"><a href="backup.fr.html">Sauvegarde</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>LiveMap et Animation</span></li><li class="webgen-menu-level1"><a href="livemap_adjust.fr.html">Calibration de la LiveMap</a></li><li class="webgen-menu-level1"><a href="commandline.fr.html">Ligne de commande</a></li></ul></div>
+          
+            <h1>Liens</h1>
+            <div id="links">
+                    <ul>
+                    <li><a href="http://geco.webou.net/geco_formation_11.pdf">Doc formation 1.1</a></li>
+                    <li><a href="http://bitbucket.org/sdenier/geco/downloads">Référentiel</a></li>
+                    <li><a href="http://www.o-news.fr/viewforum.php?f=21">Onews/Geco</a></li>
+                    <li><a href="http://www.wcup2010.fr/">World Cup 2010</a></li>
+                    </ul>
+            </div>
+          </div>
+
+          <a id="main"></a>
+          <div id="contentalt">
+            
+<h1 id="livemap-et-animation">LiveMap et Animation</h1>
+
+<p>La barre d&#8217;outils contient deux boutons pour l&#8217;analyse directe et l&#8217;animation de course.</p>
+
+<p><img style="float:none; width:94px" src="../images/animation_toolbar.png" /></p>
+
+<p>La <em>loupe</em> ouvre la <strong>LiveMap</strong>, un visualisation spéciale pour comprendre facilement les traces.
+L&#8217;<em>antenne</em> ouvre une boîte de dialogue pour démarrer la diffusion des puces lues vers un serveur <strong>GecoLive</strong>.</p>
+
+<p><em>Fonctionnalités expérimentales.</em></p>
+
+<h2 id="livemap-pour-visualisation-et-analyse-en-direct">LiveMap pour visualisation et analyse en direct</h2>
+
+<p>La <strong>LiveMap</strong> complémente la trace en offrant une visualisation intuitive des postes manquants ou en trop. Même dans les cas complexes (papillons), les deux outils ensembles permettent de comprendre facilement les erreurs commises par les coureurs.</p>
+
+<p>Une fois la fenêtre ouverte, la sélection d&#8217;un coureur dans l&#8217;<strong>onglet Coureurs</strong> affichera sa trace sur la LiveMap.
+Les postes validés sont en magenta. Les postes et tronçons manquants sont affichés en pointillés rouges. Les postes poinçonnés hors circuit sont en bleu et cyan pour les tronçons.</p>
+
+<p><a href="../images/livemap_config.fr.png"><img src="../images/livemap_config.fr.png" /></a></p>
+
+<p>Configuration :
+1. chargez un fichier image pour la carte
+1. chargez un fichier XML avec les circuits</p>
+
+<p>Il est recommandé d&#8217;exporter ces fichiers depuis OCAD. Des problèmes peuvent survenir avec d&#8217;autres logiciels.</p>
+
+<p>Voir <a href="livemap_adjust.fr.html">Calibration de la LiveMap</a> pour ajuster la carte et les postes. Vous pouvez ensuite contrôler l&#8217;affichage des postes et circuits avec les boutons en base.</p>
+
+<p>N&#8217;oubliez pas de <em>Sauver</em> les paramètres. Geco va créer un fichier <code>live.prop</code> dans le dossier de course pour charger les paramètres automatiquement la prochaine fois. Vous pouvez transférer ce fichier sur n&#8217;importe quel ordinateur utilisant la LiveMap ou GecoLive pour cette course.</p>
+
+<h2 id="gecolive-pour-lanimation">GecoLive pour l&#8217;animation</h2>
+
+<p><strong>GecoLive</strong> est une application dédiée à l&#8217;animation : elle permet de montrer le parcours d&#8217;un coureur dès qu&#8217;il a lu sa puce dans Geco. Le commentateur peut aussi voir les autres concurrents. GecoLive peut tourner sur un autre ordinateur en recevant les information via un réseau. </p>
+
+<p><a href="../images/gecolive.fr.png"><img src="../images/gecolive.fr.png" /></a></p>
+
+<p>Configuration :
+1. lancez <strong>GecoLive</strong> en ligne de commande : <code>java -jar gecoXXX.jar valmo.geco.live.GecoLive</code>
+1. démarrez le serveur GecoLive en cliquant sur le bouton <em>Activer</em> dans le coin en bas à gauche (vérifiez le numéro de port)</p>
+
+<p>Plusieurs instances de <strong>Geco</strong> peuvent envoyer des données au même serveur <strong>GecoLive</strong> :
+1. ouvrez la fenêtre de diffusion live en cliquant sur l&#8217;<em>antenne</em>
+1. renseignez l&#8217;adresse et le numéro de port de la machine où GecoLive est lancé
+1. cliquez ok, la diffusion commence</p>
+
+<p>Il est possible d&#8217;interrompre à tout moment la diffusion en recliquant sur le bouton <em>antenne</em>.</p>
+
+<p>Autre configuration :
+- <strong>Geco</strong> n&#8217;envoie que les informations de la lecture des puces et non les changements manuels influant sur les résultats ; par conséquent, <strong>GecoLive</strong> n&#8217;est pas fiable pour annoncer des résultats: il affiche juste les traces.
+- pour permettre au commentateur d&#8217;annoncer les <strong>résultats</strong>, lancez un serveur web et utilisez la fonction d&#8217;<a href="../guide/results.fr.html">export auto</a> depuis l&#8217; <strong>onglet Résultats</strong>.</p>
+
+          </div>
+        </div>
+
+        <div id="footer">
+                &copy; 2008-2012 Simon Denier | 
+                Généré avec <a href="http://webgen.rubyforge.org">webgen</a> | 
+                Design par <a href="http://andreasviklund.com">Andreas Viklund</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

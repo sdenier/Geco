@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Geco lightweight desktop application for orienteering race" />
+    <meta name="keywords" content="orienteering race management lightweight" />
+    <meta name="author" content="Simon Denier / Original design: Andreas Viklund - http://andreasviklund.com/" />
+    <meta name="generator" content="webgen - http://webgen.rubyforge.org" />
+    <link rel="stylesheet" href="../default.css" type="text/css" media="screen,projection" />
+    <title>Geco - Configuration</title>
+      
+  
+<link type="text/html" rel="alternate" hreflang="en" href="stage.html" lang="en" title="Configuration" /></head>
+
+  <body>
+    <div id="container">
+      <a id="top"></a>
+
+      <div id="sitename">
+        <h1>Documentation Geco</h1>
+        <a id="menu"></a>
+      </div>
+
+      <div id="nav">
+        <ul><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../geco/index.fr.html">Présentation</a></li><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><a href="index.fr.html">Guide interface</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../howtos/index.fr.html">Guide pratique</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../workflows/index.fr.html">Workflows</a></li></ul>
+      </div>
+
+      <div id="wrap1">
+        <div id="wrap2">
+
+          <div id="topbox">
+            <strong><a href="../index.html">/</a> &raquo; <a href="index.fr.html">Guide interface</a> &raquo; <span>Configuration</span></strong> &nbsp; (<a href="stage.html">en</a> | <span class="webgen-langbar-current-lang">fr</span>)            
+          </div>
+
+          <div id="leftside">
+            <a id="sectionmenu"></a>
+            <h1>Download</h1>
+            <div id="downloads">
+              <ul>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-1.3.zip">Version 1.3</a></li>
+                <li>Voir les <a href="../geco/whatsnew.fr.html">nouveautés</a></li>
+              </ul>
+            </div>
+          
+            <h1>Contenu</h1>
+            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.fr.html">Lanceur</a></li><li class="webgen-menu-level1"><a href="toolbar.fr.html">Barre d'outils</a></li><li class="webgen-menu-level1"><a href="ecard_modes.fr.html">Modes de lecture</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Configuration</span></li><li class="webgen-menu-level1"><a href="archive.fr.html">Archive</a></li><li class="webgen-menu-level1"><a href="runners.fr.html">Coureurs</a></li><li class="webgen-menu-level1"><a href="merge.fr.html">Fusion</a></li><li class="webgen-menu-level1"><a href="log.fr.html">Log/Stats</a></li><li class="webgen-menu-level1"><a href="functions.fr.html">Fonctions</a></li><li class="webgen-menu-level1"><a href="results.fr.html">Résultats</a></li><li class="webgen-menu-level1"><a href="heats.fr.html">Séries</a></li></ul></div>
+          
+            <h1>Liens</h1>
+            <div id="links">
+                    <ul>
+                    <li><a href="http://geco.webou.net/geco_formation_11.pdf">Doc formation 1.1</a></li>
+                    <li><a href="http://bitbucket.org/sdenier/geco/downloads">Référentiel</a></li>
+                    <li><a href="http://www.o-news.fr/viewforum.php?f=21">Onews/Geco</a></li>
+                    <li><a href="http://www.wcup2010.fr/">World Cup 2010</a></li>
+                    </ul>
+            </div>
+          </div>
+
+          <a id="main"></a>
+          <div id="contentalt">
+            <h1 id="onglet-configuration">Onglet Configuration</h1>
+
+<p>Cet onglet permet de configurer tous les éléments de la course. Les éléments sont groupés par thème dans la liste à gauche. Sélectionnez un thème pour voir les options disponibles dans la fenêtre principale.</p>
+
+<p><a href="../images/stage_panel.fr.png"><img src="../images/stage_panel.fr.png" /></a>
+(Cliquez pour zoomer)</p>
+
+<h2 id="gnral">Général</h2>
+<ul>
+  <li>Heure zéro : utilisée pour les puces V5 et les horaires de départ</li>
+  <li>Archive : chemin d&#8217;accès au fichier d&#8217;<a href="archive.fr.html">archive des coureurs</a></li>
+  <li>Base CN : chemin d&#8217;accès au fichier des <a href="results.fr.html">scores Classement Nationale</a>, au format <a href="http://cn.ffcorientation.fr/classement">CSV</a></li>
+</ul>
+
+<h2 id="lecture-si">Lecture SI</h2>
+<ul>
+  <li>Port : <em>le boîtier maître SPORTident doit être connecté avant de lancer l&#8217;application pour que Geco détecte le port</em></li>
+  <li>Format splits : multi-colonnes (voir option <code>SplitNbColumns</code> dans le fichier <code>geco.prop</code>) ou ticket (une seule colonne, pour imprimante thermique à ticket)</li>
+  <li>Vous pouvez éditer l&#8217;en-tête et le pied de page de la feuille d&#8217;impression</li>
+</ul>
+
+<p>Cette section permet aussi de configurer le comportement de Geco à la lecture des puces (en <a href="ecard_modes.fr.html">mode</a> compétition ou entraînement). Vous pouvez choisir de :</p>
+
+<ul>
+  <li>résoudre manuellement les problèmes de puce avec <a href="merge.fr.html">l&#8217;assistant de fusion</a> <em>ou</em> laisser Geco prendre en charge <a href="../workflows/auto.fr.html">automatiquement</a>) toutes les puces, en créant de nouvelles inscriptions au besoin (inscriptions inconnues, doublons)</li>
+  <li>laisser Geco chercher les puces inconnues dans l&#8217;archive pour créer de nouvelles inscriptions (seulement en automatique)</li>
+</ul>
+
+<h2 id="pnalits-pour-les-formats-orientshow-ordre-libre">Pénalités (pour les formats Orient&#8217;Show, Ordre libre&#8230;)</h2>
+<ul>
+  <li>Limites PM : nombre de postes manquant autorisés avant de marquer le coureur comme PM</li>
+  <li>Pas de limite PM : le coureur n&#8217;est jamais marqué PM, quelque soit le nombre de postes manquant</li>
+  <li>Pénalité : pénalité de temps en secondes par poste manquant (aussi affichée en minutes)</li>
+</ul>
+
+<p><a href="../images/stage_panel_penalties.fr.png"><img src="../images/stage_panel_penalties.fr.png" /></a></p>
+
+<h2 id="circuit">Circuit</h2>
+<ul>
+  <li>Geco peut importer des circuits décrits au format <em><a href="http://www.soenniksen.dk/iof-datastandard/index.shtml">IOF XML</a></em>. Cliquez sur le bouton <em>XML</em> pour sélectionner le fichier de circuits. Vous pouvez choisir entre le format <strong>XML V2</strong> (courant) ou le nouveau format <strong>XML V3</strong>.</li>
+  <li>Vous pouvez <em>Éditer</em> les circuits à la main, si besoin</li>
+  <li>Vous pouvez <em>Revérifier</em> tous les coureurs d&#8217;un circuit après changement</li>
+</ul>
+
+<p>Le circuit <strong>[Auto]</strong> existe par défaut dans Geco : il ne peut pas être renommé ou supprimé. C&#8217;est le circuit utilisé par Geco pour toute nouvelle inscription (sauf à utiliser les circuits par catégorie). Ce circuit spécial indique à Geco qu&#8217;il faut détecter le <em>véritable</em> circuit lors de la lecture de la puce : après lecture, le circuit du coureur sera automatiquement mis à jour avec le circuit détecté.</p>
+
+<h2 id="catgorie">Catégorie</h2>
+<ul>
+  <li>Colonne Circuit : circuit par défaut pour les coureurs de la catégorie (utilisé en particulier pour l&#8217;import CSV ou depuis l&#8217;archive)</li>
+  <li>Vous pouvez importer un modèle CSV avec les catégories courantes et leur circuit associé. Voir le répoertoire <code>data/modeles</code> pour des exemples de fichiers avec les formats pour courses régionales etc.</li>
+</ul>
+
+          </div>
+        </div>
+
+        <div id="footer">
+                &copy; 2008-2012 Simon Denier | 
+                Généré avec <a href="http://webgen.rubyforge.org">webgen</a> | 
+                Design par <a href="http://andreasviklund.com">Andreas Viklund</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

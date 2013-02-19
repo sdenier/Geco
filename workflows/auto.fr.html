@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Geco lightweight desktop application for orienteering race" />
+    <meta name="keywords" content="orienteering race management lightweight" />
+    <meta name="author" content="Simon Denier / Original design: Andreas Viklund - http://andreasviklund.com/" />
+    <meta name="generator" content="webgen - http://webgen.rubyforge.org" />
+    <link rel="stylesheet" href="../default.css" type="text/css" media="screen,projection" />
+    <title>Geco - Process Auto</title>
+      
+  
+<link type="text/html" rel="alternate" hreflang="en" href="auto.html" lang="en" title="Auto Handler" /></head>
+
+  <body>
+    <div id="container">
+      <a id="top"></a>
+
+      <div id="sitename">
+        <h1>Documentation Geco</h1>
+        <a id="menu"></a>
+      </div>
+
+      <div id="nav">
+        <ul><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../geco/index.fr.html">Présentation</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../guide/index.fr.html">Guide interface</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../howtos/index.fr.html">Guide pratique</a></li><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><a href="index.fr.html">Workflows</a></li></ul>
+      </div>
+
+      <div id="wrap1">
+        <div id="wrap2">
+
+          <div id="topbox">
+            <strong><a href="../index.html">/</a> &raquo; <a href="index.fr.html">Workflows</a> &raquo; <span>Process Auto</span></strong> &nbsp; (<a href="auto.html">en</a> | <span class="webgen-langbar-current-lang">fr</span>)            
+          </div>
+
+          <div id="leftside">
+            <a id="sectionmenu"></a>
+            <h1>Download</h1>
+            <div id="downloads">
+              <ul>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-1.3.zip">Version 1.3</a></li>
+                <li>Voir les <a href="../geco/whatsnew.fr.html">nouveautés</a></li>
+              </ul>
+            </div>
+          
+            <h1>Contenu</h1>
+            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.fr.html">Organisations</a></li><li class="webgen-menu-level1"><a href="register.fr.html">Inscriptions</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Process Auto</span></li><li class="webgen-menu-level1"><a href="endstage.fr.html">Fin de course</a></li><li class="webgen-menu-level1"><a href="training.fr.html">Entraînement</a></li><li class="webgen-menu-level1"><a href="quals.fr.html">Qualifications</a></li></ul></div>
+          
+            <h1>Liens</h1>
+            <div id="links">
+                    <ul>
+                    <li><a href="http://geco.webou.net/geco_formation_11.pdf">Doc formation 1.1</a></li>
+                    <li><a href="http://bitbucket.org/sdenier/geco/downloads">Référentiel</a></li>
+                    <li><a href="http://www.o-news.fr/viewforum.php?f=21">Onews/Geco</a></li>
+                    <li><a href="http://www.wcup2010.fr/">World Cup 2010</a></li>
+                    </ul>
+            </div>
+          </div>
+
+          <a id="main"></a>
+          <div id="contentalt">
+            
+<h1 id="process-auto">Process Auto</h1>
+
+<p>Le process automatique de Geco permet de lire des puces sans pré-inscription. Il autorise des <strong>inscriptions à la volée</strong> avec une archive à jour (si l&#8217;option est cochée dans la <a href="../guide/stage.fr.html">configuration</a>). Si une puce non inscrite est lue, Geco <em>recherche le numéro dans l&#8217;archive</em> et inscrit l&#8217;entrée correspondante dans la base. Geco <em>détecte le circuit</em> couru par le concurrent en se basant sur les poinçons de la puce.</p>
+
+<p>Le schéma ci-dessous montre en <font color="blue">bleu</font> les deux issues qui ne demandent pas d&#8217;intervention de votre part durant la lecture des puces avec le process auto :</p>
+
+<ul>
+  <li>à gauche l&#8217;issue classique avec les entrées <strong>pré-inscrites</strong> ;</li>
+  <li>à droite l&#8217;insertion automatique depuis l&#8217;<strong>archive</strong>.</li>
+</ul>
+
+<p><img src="../images/autoworkflow.fr.png" /></p>
+
+<p>Geco reconnaît aussi deux issues différentes qui demandent votre attention : puce inconnue (même dans l&#8217;archive) et puce déjà lue. Dans les deux cas, Geco crée une nouvelle entrée avec les données de la puce et détecte le circuit, mais met le statut à Inconnu ou Doublon.</p>
+
+<p>Ces issues sont montrées en <font color="orange">orange</font> dans le schéma :</p>
+
+<ul>
+  <li>le statut <strong>Doublon</strong> au milieu gauche. Cela arrive si simplement vous demandez au coureur de lire sa puce à nouveau, ou bien si un nouveau concurrent court avec la même puce ;</li>
+  <li>le statut <strong>Inconnu</strong> au milieu droit. Le coureur a pu s&#8217;inscrire sur place avec une puce louée. Ou bien il y a une erreur ou un changement récent du numéro par rapport aux inscriptions ou à l&#8217;archive.</li>
+</ul>
+
+<p>Vous pouvez résoudre ces statuts en suivant le processus en <strong><font color="green">vert</font></strong> sur le schéma. Vous pouvez éditer, supprimer, <a href="../guide/merge.fr.html">fusionner</a> la nouvelle entrée. Si vous choisissez de garder l&#8217;entrée, n&#8217;oubliez de <em>vérifier</em> (<code>Mod+R</code>) ou <em>changer</em> le statut pour un statut normal (OK, MP&#8230;). Vous pouvez aussi imprimer les splits (<code>Mod+P</code>) pour le coureur.</p>
+
+          </div>
+        </div>
+
+        <div id="footer">
+                &copy; 2008-2012 Simon Denier | 
+                Généré avec <a href="http://webgen.rubyforge.org">webgen</a> | 
+                Design par <a href="http://andreasviklund.com">Andreas Viklund</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Geco lightweight desktop application for orienteering race" />
+    <meta name="keywords" content="orienteering race management lightweight" />
+    <meta name="author" content="Simon Denier / Original design: Andreas Viklund - http://andreasviklund.com/" />
+    <meta name="generator" content="webgen - http://webgen.rubyforge.org" />
+    <link rel="stylesheet" href="../default.css" type="text/css" media="screen,projection" />
+    <title>Geco - FAQ</title>
+      
+  
+<link type="text/html" rel="alternate" hreflang="fr" href="faq.fr.html" lang="fr" title="FAQ" /></head>
+
+  <body>
+    <div id="container">
+      <a id="top"></a>
+
+      <div id="sitename">
+        <h1>Geco User Help</h1>
+        <a id="menu"></a>
+      </div>
+
+      <div id="nav">
+        <ul><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><a href="index.html">Presentation</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../guide/index.html">UI Guide</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../howtos/index.html">How-tos</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../workflows/index.html">Workflows</a></li></ul>
+      </div>
+
+      <div id="wrap1">
+        <div id="wrap2">
+
+          <div id="topbox">
+            <strong><a href="../index.html">/</a> &raquo; <a href="index.html">Presentation</a> &raquo; <span>FAQ</span></strong> &nbsp; (<span class="webgen-langbar-current-lang">en</span> | <a href="faq.fr.html">fr</a>)            
+          </div>
+
+          <div id="leftside">
+            <a id="sectionmenu"></a>
+            <h1>Download</h1>
+            <div id="downloads">
+              <ul>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-1.3.zip">Version 1.3</a></li>
+                <li>See <a href="../geco/whatsnew.html">what's new</a></li>
+              </ul>
+            </div>
+          
+            <h1>Contents</h1>
+            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.html">About</a></li><li class="webgen-menu-level1"><a href="sevensteps.html">Seven Steps</a></li><li class="webgen-menu-level1"><a href="features.html">Features</a></li><li class="webgen-menu-level1"><a href="requirements.html">Requirements</a></li><li class="webgen-menu-level1"><a href="whatsnew.html">What's new?</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>FAQ</span></li><li class="webgen-menu-level1"><a href="contribute.html">Contribute</a></li><li class="webgen-menu-level1"><a href="license.html">License</a></li></ul></div>
+          
+            <h1>Links</h1>
+            <div id="links">
+                    <ul>
+                    
+                    <li><a href="http://bitbucket.org/sdenier/geco/downloads">Repository</a></li>
+                    <li><a href="http://www.o-news.fr/viewforum.php?f=21">Forum (french)</a></li>
+                    <li><a href="http://www.wcup2010.fr/">World Cup 2010</a></li>
+                    </ul>
+            </div>
+          </div>
+
+          <a id="main"></a>
+          <div id="contentalt">
+            
+<h1 id="faq">FAQ</h1>
+
+<h2 id="how-to-customize-result-sheets">How to customize result sheets?</h2>
+<p>Tweaking the result sheets is possible by editing their CSS style in the stage directory. For now it is mostly useful when ticket size is not adapted to your printer.</p>
+
+<ul>
+  <li>edit <code>result.css</code> for ranking results, CN, split times in multi-columns format</li>
+  <li>edit <code>ticket.css</code> for split times in ticket format</li>
+</ul>
+
+<h2 id="future-features">Future features</h2>
+<p>The following features are not currently supported but should be part of future releases.</p>
+
+<ul>
+  <li>reading SPORTident stations to automatically detect and set DNS competitors</li>
+  <li>spool printing of split times when split printer was stopped for a while</li>
+  <li>insertion of missing punches for competitors, removal of a control from courses</li>
+</ul>
+
+<h2 id="reading-sportident-e-cards-takes-an-usually-long-time">Reading SPORTident e-cards takes an usually long time</h2>
+<p>Users can experience a long time to read SPORTident e-cards on some computers: it takes around 10 seconds to read one e-card instead of the normal 1 or 2 seconds. This makes Geco impractical for any event except testing. The problem seems to appear only when the SPORTident master station is plugged directly into the computer. Although the root cause of this problem is unknown (any tip welcomed!), the problem has always disappeared when plugging a USB hub between the computer and the SPORTident station. A typical set up we use is to plug the master station and the split printer into the hub: this leaves enough free plugs for other devices such as a regular printer or USB keys.</p>
+
+<h2 id="some-split-times-have-a-12h00-shift-with-si-5-cards">Some split times have a 12h00 shift with SI 5 cards</h2>
+<p>Times in SI 5 cards are saved with a 12 hours precision. Geco needs to compute the correct time using the zero hour of the competition.</p>
+
+<ol>
+  <li>Update the zero hour for one nearer to the real time of the competition in the <a href="../guide/stage.html">configuration</a>.</li>
+  <li>For affected runners, <em>reset official time</em> from the <a href="../guide/runners.html">runner data view</a>.</li>
+</ol>
+
+<h2 id="windows-slow-startup-time-when-bluetooth-is-on">[Windows] Slow startup time (when Bluetooth is on)</h2>
+<p>Geco scans serial ports on startup to detect a SPORTident station. This involves scanning Bluetooth port when it is active, which considerably slows down Geco startup (more than 10 seconds). You can either:</p>
+
+<ul>
+  <li>turn off Bluetooth before launching Geco</li>
+  <li>or launch Geco from the command line with for example<br />
+<code>java -Dgnu.io.rxtx.SerialPorts=COM1;COM3 -jar gecoXXXX.jar</code><br />
+which means you expect the SPORTident station to be plugged in either <code>COM1</code> or <code>COM3</code> ports (adapt to your setup). You can create a batch file to avoid typing the launch command each time.</li>
+</ul>
+
+<h2 id="mac-os-x-how-to-install-a-sportident-driver">[Mac OS X] How to install a SPORTident driver?</h2>
+
+<p>The trick is to download the Mac OS driver for the USB chip onboard SPORTident boxes, then changes some bits of the driver so that Mac OS links the SPORTident box with this driver.</p>
+
+<p>1. Download and install the driver from <a href="https://www.silabs.com/products/interface/usbtouart/Pages/usb-to-uart-bridge.aspx">SI labs</a>, section <em>Tools</em>, choose <em>CP210x VCP Mac OSX Drivers</em> (or try the direct link to <a href="https://www.silabs.com/pages/DownloadDoc.aspx?FILEURL=Support%20Documents/Software/Mac_OSX_VCP_Driver.zip&amp;src=SoftwardDownloadsWebPart">Mac_OSX_VCP_Driver.zip</a>). The driver needs a restart.</p>
+
+<p>Two drivers are actually installed, a 32 bits one in <code>/System/Library/Extensions/CP210xVCPDriver.kext</code> and a 64 bits one ine <code>/System/Library/Extensions/CP210xVCPDriver64.kext</code>. You can change either one or the other. The tutorial continues with the 64 bits version.</p>
+
+<p>2. Open file <code>/System/Library/Extensions/CP210xVCPDriver64.kext/Contents/Info.plist</code> with a text editor (you must have admin rights). You can make a backup copy of the file before edition.</p>
+
+<p>Look for the following two lines by searching the 60000 string :</p>
+
+<pre>
+&lt;key&gt;idProduct&lt;/key&gt;
+&lt;integer&gt;60000&lt;/integer&gt;
+</pre>
+
+<p>Replace 60000 with <strong>32778</strong> (id of SPORTident stations).</p>
+
+<pre>
+&lt;key&gt;idProduct&lt;/key&gt;
+&lt;integer&gt;32778&lt;/integer&gt;
+</pre>
+
+<p>3. <em>Only with Lion (Mac OSX 10.7)</em>, the cache should be updated so that the driver is automatically loaded when a station is plugged in. The last two commands take a while to run.</p>
+
+<pre>
+sudo kextload -b com.silabs.driver.CP210xVCPDriver64
+sudo kextcache -system-prelinked-kernel
+sudo kextcache -system-caches
+</pre>
+
+<p>4. Restart your computer to check that the system takes into account your modifications.</p>
+
+<p>Now the station should appear as <strong>/dev/tty.SLAB_USBtoUART</strong> in Geco (also appear in the System profiler as <strong>SPORTident USB to UART Bridge Controller</strong>).</p>
+
+<h2 id="geco-misreads-control-code-with-code-higher-than-255">Geco misreads control code with code higher than 255</h2>
+<p>This is a current limitation of Geco. If you reprogram a station with a code higher than 255, Geco can still read punches from this station, but will read the control code modulo 255 (the remainder of division by 255). For example:</p>
+
+<ul>
+  <li>300 modulo 255 gives 45</li>
+  <li>600 modulo 255 gives 90 (or, if you want, 255 * 2 + 90 = 600)</li>
+</ul>
+
+<p>It is not recommended to bypass this limit when using Geco. If you still want to use control code higher than 255, you will have to edit each course and replace control codes &gt; 255 with their modulo.</p>
+
+          </div>
+        </div>
+
+        <div id="footer">
+                &copy; 2008-2012 Simon Denier | 
+                Generated by <a href="http://webgen.rubyforge.org">webgen</a> | 
+                Design by <a href="http://andreasviklund.com">Andreas Viklund</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

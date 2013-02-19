@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Geco lightweight desktop application for orienteering race" />
+    <meta name="keywords" content="orienteering race management lightweight" />
+    <meta name="author" content="Simon Denier / Original design: Andreas Viklund - http://andreasviklund.com/" />
+    <meta name="generator" content="webgen - http://webgen.rubyforge.org" />
+    <link rel="stylesheet" href="../default.css" type="text/css" media="screen,projection" />
+    <title>Geco - Sauvegarde</title>
+      
+  
+<link type="text/html" rel="alternate" hreflang="en" href="backup.html" lang="en" title="Backup" /></head>
+
+  <body>
+    <div id="container">
+      <a id="top"></a>
+
+      <div id="sitename">
+        <h1>Documentation Geco</h1>
+        <a id="menu"></a>
+      </div>
+
+      <div id="nav">
+        <ul><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../geco/index.fr.html">Présentation</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../guide/index.fr.html">Guide interface</a></li><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><a href="index.fr.html">Guide pratique</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../workflows/index.fr.html">Workflows</a></li></ul>
+      </div>
+
+      <div id="wrap1">
+        <div id="wrap2">
+
+          <div id="topbox">
+            <strong><a href="../index.html">/</a> &raquo; <a href="index.fr.html">Guide pratique</a> &raquo; <span>Sauvegarde</span></strong> &nbsp; (<a href="backup.html">en</a> | <span class="webgen-langbar-current-lang">fr</span>)            
+          </div>
+
+          <div id="leftside">
+            <a id="sectionmenu"></a>
+            <h1>Download</h1>
+            <div id="downloads">
+              <ul>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-1.3.zip">Version 1.3</a></li>
+                <li>Voir les <a href="../geco/whatsnew.fr.html">nouveautés</a></li>
+              </ul>
+            </div>
+          
+            <h1>Contenu</h1>
+            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.fr.html">Raccourcis</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Sauvegarde</span></li><li class="webgen-menu-level1"><a href="live.fr.html">LiveMap et Animation</a></li><li class="webgen-menu-level1"><a href="livemap_adjust.fr.html">Calibration de la LiveMap</a></li><li class="webgen-menu-level1"><a href="commandline.fr.html">Ligne de commande</a></li></ul></div>
+          
+            <h1>Liens</h1>
+            <div id="links">
+                    <ul>
+                    <li><a href="http://geco.webou.net/geco_formation_11.pdf">Doc formation 1.1</a></li>
+                    <li><a href="http://bitbucket.org/sdenier/geco/downloads">Référentiel</a></li>
+                    <li><a href="http://www.o-news.fr/viewforum.php?f=21">Onews/Geco</a></li>
+                    <li><a href="http://www.wcup2010.fr/">World Cup 2010</a></li>
+                    </ul>
+            </div>
+          </div>
+
+          <a id="main"></a>
+          <div id="contentalt">
+            
+<h1 id="organisation-des-donnes-et-sauvegarde">Organisation des données et Sauvegarde</h1>
+
+<p>Toutes les données relatives à une compétition sont enregistrées au même endroit. Cette page explique les fichiers les plus importants dans le dossier de données :</p>
+
+<ul>
+  <li><code>geco.prop</code> contient les information sur la compétition et les méta-données</li>
+  <li><code>Classes.csv</code> contient les informations sur les catégories</li>
+  <li><code>Clubs.csv</code> contient les informations sur les clubs</li>
+  <li><code>Competitors.csv</code> contient les informations sur les coureurs (nom, catégorie, club, circuit&#8230;)</li>
+  <li><code>Courses.csv</code> contient les informations sur les circuits</li>
+  <li><code>CardData.csv</code> contient les informations des puces (poinçons)</li>
+  <li><code>ResultData.csv</code> contient les informations sur les résultats (statut et temps)</li>
+  <li><code>HeatSets.csv</code> contient les informations sur les groupes de séries</li>
+</ul>
+
+<p>Quand vous sauvez ou quittez Geco, les données sont enregistrées dans les fichiers ci-dessus. Geco fait aussi des sauvegardes des données dans le sous-dossier <code>backups</code> du dossier de course.
+Elles sont nommées <code>backupXXXXX.zip</code> en fonction de l&#8217;heure de création. En cas de problème, vous pouvez restaurer les données en dézippant le dernier fichier. Ces sauvegardes ne sont jamais supprimées par Geco.</p>
+
+<p>Le logiciel sauve automatiquement les données toutes les deux minutes (paramètre <code>AutosaveDelay</code> dans le fichier <code>geco.prop</code>). La sauvegarde automatique enregistre les données dans des fichiers réservés nommés <code>backupX.zip</code>. Geco utilise 9 fichiers de sauvegarde, ce qui veut dire que les 18 dernières minutes d&#8217;activité sont toujours sur le disque.</p>
+
+          </div>
+        </div>
+
+        <div id="footer">
+                &copy; 2008-2012 Simon Denier | 
+                Généré avec <a href="http://webgen.rubyforge.org">webgen</a> | 
+                Design par <a href="http://andreasviklund.com">Andreas Viklund</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

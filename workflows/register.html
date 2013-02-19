@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Geco lightweight desktop application for orienteering race" />
+    <meta name="keywords" content="orienteering race management lightweight" />
+    <meta name="author" content="Simon Denier / Original design: Andreas Viklund - http://andreasviklund.com/" />
+    <meta name="generator" content="webgen - http://webgen.rubyforge.org" />
+    <link rel="stylesheet" href="../default.css" type="text/css" media="screen,projection" />
+    <title>Geco - Registration</title>
+      
+  
+<link type="text/html" rel="alternate" hreflang="fr" href="register.fr.html" lang="fr" title="Inscriptions" /></head>
+
+  <body>
+    <div id="container">
+      <a id="top"></a>
+
+      <div id="sitename">
+        <h1>Geco User Help</h1>
+        <a id="menu"></a>
+      </div>
+
+      <div id="nav">
+        <ul><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../geco/index.html">Presentation</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../guide/index.html">UI Guide</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../howtos/index.html">How-tos</a></li><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><a href="index.html">Workflows</a></li></ul>
+      </div>
+
+      <div id="wrap1">
+        <div id="wrap2">
+
+          <div id="topbox">
+            <strong><a href="../index.html">/</a> &raquo; <a href="index.html">Workflows</a> &raquo; <span>Registration</span></strong> &nbsp; (<span class="webgen-langbar-current-lang">en</span> | <a href="register.fr.html">fr</a>)            
+          </div>
+
+          <div id="leftside">
+            <a id="sectionmenu"></a>
+            <h1>Download</h1>
+            <div id="downloads">
+              <ul>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-1.3.zip">Version 1.3</a></li>
+                <li>See <a href="../geco/whatsnew.html">what's new</a></li>
+              </ul>
+            </div>
+          
+            <h1>Contents</h1>
+            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.html">Organisations</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Registration</span></li><li class="webgen-menu-level1"><a href="auto.html">Auto Handler</a></li><li class="webgen-menu-level1"><a href="endstage.html">End of stage</a></li><li class="webgen-menu-level1"><a href="training.html">Training</a></li><li class="webgen-menu-level1"><a href="quals.html">Qualifications</a></li></ul></div>
+          
+            <h1>Links</h1>
+            <div id="links">
+                    <ul>
+                    
+                    <li><a href="http://bitbucket.org/sdenier/geco/downloads">Repository</a></li>
+                    <li><a href="http://www.o-news.fr/viewforum.php?f=21">Forum (french)</a></li>
+                    <li><a href="http://www.wcup2010.fr/">World Cup 2010</a></li>
+                    </ul>
+            </div>
+          </div>
+
+          <a id="main"></a>
+          <div id="contentalt">
+            
+<h1 id="registration">Registration</h1>
+
+<p>This page summarises the different ways to register competitors for a stage. All methods can be mixed for a stage, depending on the present needs.</p>
+
+<h2 id="pre-registration-of-competitors">Pre-registration of competitors</h2>
+
+<p>There are two ways to easily register lots of competitors before a race.</p>
+
+<ul>
+  <li>You can import a CSV file in OE entry <a href="../samples/startlist_sample.csv">format</a>. It is the fastest way to import many entries. The file can be generated as well as edited with a spreadsheet app.</li>
+  <li>You can import competitors from an OE <a href="../guide/archive.html">archive</a>, provided by a federation or some clubs.</li>
+</ul>
+
+<p>Beware that there is no way to directly set course for each runner with the original OE CSV format. Instead, you rely on runner category and link each category with a course. <em>Before an import</em>, first create courses and categories in the stage <a href="../guide/stage.html">configuration</a>, then <strong>link courses with categories</strong>. By default, runners will be registered on the <em>[Auto]</em> course.</p>
+
+<p>Both CSV import and archive import automatically create club and category necessary for the import.</p>
+
+<p>With the <a href="../samples/startlist_sample.csv">OE CSV</a> format, the only mandatory fields are the last and first names, the club and the category (short/long names). Start number, ecard, archive id, NC field, and start time are all optional. Other fields are ignored by Geco. The same constraints applies to the <a href="../samples/archive_sample.csv">archive format</a>, which uses less fields.</p>
+
+<p>The <em>Start time</em> field allows you to give a registered start time, without the need for a start station. The given hour should be relative to the zero hour of the stage.</p>
+
+<h3 id="pre-registration-of-competitors-with-assigned-courses">Pre-registration of competitors with assigned courses</h3>
+
+<p>Geco 2 can also import a <a href="../samples/startlist_with_heats.csv">custom version</a> of the OE CSV format, with courses already assigned to runners. Using this format, one can export <a href="../guide/heats.html">heats</a> as a startlist for the next stage. This trick involves two columns unused by Geco in the original format:</p>
+
+<ul>
+  <li>&#8216;Time&#8217; column should contain the keyword &#8216;Geco-course&#8217;</li>
+  <li>&#8216;Eval&#8217; column then contains the assigned course for the runner</li>
+</ul>
+
+<p>When importing a startlist, Geco will look for the tag &#8216;Geco-course&#8217; in each entry : if set, Geco processes the next column as the runner course. Otherwise, Geco falls back to the classic behaviour by registering the category course or the default <em>[Auto]</em> course.</p>
+
+<h2 id="onsite-registration">Onsite registration</h2>
+
+<p>For registration on race day, many options are available:</p>
+
+<ul>
+  <li>you can insert a new entry by clicking the <code>+</code> button (or pressing <code>mod+I</code>) and edit the entry by hand;</li>
+  <li>you can use the archive, as above;</li>
+  <li>you can use the <a href="../guide/ecard_modes.html">register mode</a>, which directly registers the ecard number and automatically performs an archive search.</li>
+</ul>
+
+<h2 id="on-the-fly-registration">On the fly registration</h2>
+
+<p>With the <a href="auto.html">auto handler</a>, it is possible to minimize pre-registrations, or even bypass them for lightweight organizations. Geco will create entries only when ecards are actually read. On the fly registration can be done either in racing or training <a href="../guide/ecard_modes.html">mode</a>.</p>
+
+          </div>
+        </div>
+
+        <div id="footer">
+                &copy; 2008-2012 Simon Denier | 
+                Generated by <a href="http://webgen.rubyforge.org">webgen</a> | 
+                Design by <a href="http://andreasviklund.com">Andreas Viklund</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

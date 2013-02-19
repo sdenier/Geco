@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Geco lightweight desktop application for orienteering race" />
+    <meta name="keywords" content="orienteering race management lightweight" />
+    <meta name="author" content="Simon Denier / Original design: Andreas Viklund - http://andreasviklund.com/" />
+    <meta name="generator" content="webgen - http://webgen.rubyforge.org" />
+    <link rel="stylesheet" href="../default.css" type="text/css" media="screen,projection" />
+    <title>Geco - Launcher</title>
+      
+  
+<link type="text/html" rel="alternate" hreflang="fr" href="index.fr.html" lang="fr" title="Lanceur" /></head>
+
+  <body>
+    <div id="container">
+      <a id="top"></a>
+
+      <div id="sitename">
+        <h1>Geco User Help</h1>
+        <a id="menu"></a>
+      </div>
+
+      <div id="nav">
+        <ul><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../geco/index.html">Presentation</a></li><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><span>UI Guide</span></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../howtos/index.html">How-tos</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../workflows/index.html">Workflows</a></li></ul>
+      </div>
+
+      <div id="wrap1">
+        <div id="wrap2">
+
+          <div id="topbox">
+            <strong><a href="../index.html">/</a> &raquo; <span>UI Guide</span> &raquo; <span>Launcher</span></strong> &nbsp; (<span class="webgen-langbar-current-lang">en</span> | <a href="index.fr.html">fr</a>)            
+          </div>
+
+          <div id="leftside">
+            <a id="sectionmenu"></a>
+            <h1>Download</h1>
+            <div id="downloads">
+              <ul>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-1.3.zip">Version 1.3</a></li>
+                <li>See <a href="../geco/whatsnew.html">what's new</a></li>
+              </ul>
+            </div>
+          
+            <h1>Contents</h1>
+            <div id="submenu"><ul><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Launcher</span></li><li class="webgen-menu-level1"><a href="toolbar.html">Toolbar</a></li><li class="webgen-menu-level1"><a href="ecard_modes.html">Ecard Modes</a></li><li class="webgen-menu-level1"><a href="stage.html">Configuration</a></li><li class="webgen-menu-level1"><a href="runners.html">Runners</a></li><li class="webgen-menu-level1"><a href="archive.html">Archive</a></li><li class="webgen-menu-level1"><a href="merge.html">Merge</a></li><li class="webgen-menu-level1"><a href="log.html">Log/Stats</a></li><li class="webgen-menu-level1"><a href="functions.html">Functions</a></li><li class="webgen-menu-level1"><a href="results.html">Results</a></li><li class="webgen-menu-level1"><a href="heats.html">Heats</a></li></ul></div>
+          
+            <h1>Links</h1>
+            <div id="links">
+                    <ul>
+                    
+                    <li><a href="http://bitbucket.org/sdenier/geco/downloads">Repository</a></li>
+                    <li><a href="http://www.o-news.fr/viewforum.php?f=21">Forum (french)</a></li>
+                    <li><a href="http://www.wcup2010.fr/">World Cup 2010</a></li>
+                    </ul>
+            </div>
+          </div>
+
+          <a id="main"></a>
+          <div id="contentalt">
+            
+<h1 id="launch-wizard">Launch Wizard</h1>
+
+<p>The launch wizard is the first window to pop up when opening Geco. It allows you to open an existing stage or create a new one from a set of predefined formats.</p>
+
+<p><img src="../images/launcher.png" /></p>
+
+<h2 id="previous-stages">Previous Stages</h2>
+<p>Geco remembers and displays the list of stages previously opened on your computer.</p>
+
+<ul>
+  <li>To open a previous stage, select it in the list and click the <em>Open</em> button.</li>
+  <li>Or, you can simply double-click on its name in the list.</li>
+  <li>If the stage does not appear in the list (because you just import it from another media),  <img style="float:right; width:32px" src="../images/launcher_folder.png" /> click on the folder button next to the <em>Path</em> and select the folder with data; then, click on the <em>Open</em> button.</li>
+</ul>
+
+<p>How to spot a folder with stage data? Simple, it contains a file named <code>geco.prop</code> as well as multiple CSV files.</p>
+
+<h2 id="new-stage">New Stage</h2>
+<p>Geco lets you create a new stage by giving it a name, choosing a folder, and selecting a format.</p>
+
+<ul>
+  <li>Start by filling in the name.</li>
+  <li>When you change your focus, the launcher updates the <em>Path</em> field to show the default path to stage data (including the stage name).</li>
+  <li>If <img style="float:right; width:32px" src="../images/launcher_folder.png" /> you don&#8217;t agree with the default path, you can change it by clicking the folder button next to it and create/select another folder. This folder must be <strong>empty</strong>.</li>
+  <li>Select a format for the stage.</li>
+  <li>Click the <em>Create</em> button: Geco will create the files and launch the main window.</li>
+</ul>
+
+<p>The three following formats are available.</p>
+
+<ul>
+  <li>Classic (inline course): controls must be taken in order</li>
+  <li>Free Order: runner chooses in which order to take the controls</li>
+  <li>Orient&#8217;Show: time penalties and MP limit, knockout qualifications,&#8230;</li>
+</ul>
+
+<p>A fourth experimental format is available. The format for Raid Orient&#8217;Alpin (ROA):</p>
+
+<ul>
+  <li>starts with a Free Order (to scatter runners)</li>
+  <li>then switches to a classic course at a given control</li>
+  <li>also provides a leg neutralization function to neutralize rest/shooting sections.</li>
+</ul>
+
+          </div>
+        </div>
+
+        <div id="footer">
+                &copy; 2008-2012 Simon Denier | 
+                Generated by <a href="http://webgen.rubyforge.org">webgen</a> | 
+                Design by <a href="http://andreasviklund.com">Andreas Viklund</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

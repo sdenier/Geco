@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Geco lightweight desktop application for orienteering race" />
+    <meta name="keywords" content="orienteering race management lightweight" />
+    <meta name="author" content="Simon Denier / Original design: Andreas Viklund - http://andreasviklund.com/" />
+    <meta name="generator" content="webgen - http://webgen.rubyforge.org" />
+    <link rel="stylesheet" href="../default.css" type="text/css" media="screen,projection" />
+    <title>Geco - Résultats</title>
+      
+  
+<link type="text/html" rel="alternate" hreflang="en" href="results.html" lang="en" title="Results" /></head>
+
+  <body>
+    <div id="container">
+      <a id="top"></a>
+
+      <div id="sitename">
+        <h1>Documentation Geco</h1>
+        <a id="menu"></a>
+      </div>
+
+      <div id="nav">
+        <ul><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../geco/index.fr.html">Présentation</a></li><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><a href="index.fr.html">Guide interface</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../howtos/index.fr.html">Guide pratique</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../workflows/index.fr.html">Workflows</a></li></ul>
+      </div>
+
+      <div id="wrap1">
+        <div id="wrap2">
+
+          <div id="topbox">
+            <strong><a href="../index.html">/</a> &raquo; <a href="index.fr.html">Guide interface</a> &raquo; <span>Résultats</span></strong> &nbsp; (<a href="results.html">en</a> | <span class="webgen-langbar-current-lang">fr</span>)            
+          </div>
+
+          <div id="leftside">
+            <a id="sectionmenu"></a>
+            <h1>Download</h1>
+            <div id="downloads">
+              <ul>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-1.3.zip">Version 1.3</a></li>
+                <li>Voir les <a href="../geco/whatsnew.fr.html">nouveautés</a></li>
+              </ul>
+            </div>
+          
+            <h1>Contenu</h1>
+            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.fr.html">Lanceur</a></li><li class="webgen-menu-level1"><a href="toolbar.fr.html">Barre d'outils</a></li><li class="webgen-menu-level1"><a href="ecard_modes.fr.html">Modes de lecture</a></li><li class="webgen-menu-level1"><a href="stage.fr.html">Configuration</a></li><li class="webgen-menu-level1"><a href="archive.fr.html">Archive</a></li><li class="webgen-menu-level1"><a href="runners.fr.html">Coureurs</a></li><li class="webgen-menu-level1"><a href="merge.fr.html">Fusion</a></li><li class="webgen-menu-level1"><a href="log.fr.html">Log/Stats</a></li><li class="webgen-menu-level1"><a href="functions.fr.html">Fonctions</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Résultats</span></li><li class="webgen-menu-level1"><a href="heats.fr.html">Séries</a></li></ul></div>
+          
+            <h1>Liens</h1>
+            <div id="links">
+                    <ul>
+                    <li><a href="http://geco.webou.net/geco_formation_11.pdf">Doc formation 1.1</a></li>
+                    <li><a href="http://bitbucket.org/sdenier/geco/downloads">Référentiel</a></li>
+                    <li><a href="http://www.o-news.fr/viewforum.php?f=21">Onews/Geco</a></li>
+                    <li><a href="http://www.wcup2010.fr/">World Cup 2010</a></li>
+                    </ul>
+            </div>
+          </div>
+
+          <a id="main"></a>
+          <div id="contentalt">
+            <h1 id="onglet-rsultats">Onglet Résultats</h1>
+
+<p>L&#8217;onglet résultats permet de générer des résultats pendant et après la course.</p>
+
+<p><a href="../images/results_ranking.fr.png"><img src="../images/results_ranking.fr.png" /></a></p>
+
+<h2 id="calculer-les-rsultats">Calculer les résultats</h2>
+
+<p>1. Sélectionnez <em>Circuits</em> ou <em>Catégories</em> pour le calcul des résultats. La sélection peut être affinée circuit par circuit (ou catégorie par catégorie) dans la liste en dessous.</p>
+
+<p>L&#8217;option <em>Catégorie/Circuit</em> calcule un classement par catégorie pour chaque circuit. Cette option est à utiliser quand les catégories sont dispersées sur plusieurs circuits lors de poules de qualification.</p>
+
+<p>2. Sélectionnez <em>Classement</em>, <em>Splits</em>, ou <em>CN</em> comme méthode de calcul des résultats.</p>
+
+<ul>
+  <li>Classement : classement classique, pour les résultats provisoires et officiels.</li>
+  <li>Splits : temps intermédiaires pour les coureurs des groupes sélectionnés.</li>
+  <li>CN : simulation des points <a href="http://cn.ffco.asso.fr">CN</a> pour les coureurs présents.</li>
+</ul>
+
+<p>Par défaut, les résultats affichent les concurrents classés OK, ainsi que les concurrents PM, abandon, disqualifiés. Les circuits (catégories) sans résultat ne sont pas affichés.
+Les options d&#8217;affichage sont :</p>
+
+<ul>
+  <li><em>NC</em> : inclut les coureurs non classés. Ils apparaissent avec les concurrents PMs etc.</li>
+  <li><em>Autres</em> : inclut les coureurs absents ou sans donnée.</li>
+  <li><em>Pénalités</em> : montre le chrono et le nombre de PMs pour chaque coureur (seulement pour le <em>classement</em>).</li>
+  <li><em>Groupes vides</em> : montre tous les circuits (catégories), même si aucun classement n&#8217;est disponible.</li>
+</ul>
+
+<p>Dans les classements, Geco calcule aussi la <strong>différence</strong> de temps par rapport au premier et le <strong>pas moyen</strong> du coureur si la distance du circuit est connue.</p>
+
+<p>Les résultats peuvent s&#8217;afficher dans la fenêtre (bouton <em>Actualiser</em>), être imprimés, ou exportés dans un fichier. Le format HTML est le format d&#8217;export par défaut.</p>
+
+<p><a href="../images/results_splits.fr.png"><img src="../images/results_splits.fr.png" /></a></p>
+
+<h3 id="formats-dexport">Formats d&#8217;export</h3>
+
+<p>Geco propose quatre formats d&#8217;export :</p>
+
+<ul>
+  <li><strong>HTML</strong> pour la publication web</li>
+  <li><strong>CSV</strong>, format très complet pour tableurs</li>
+  <li><strong>OE CSV</strong>, format reconnu par certains outils d&#8217;analyse</li>
+  <li><strong>XML</strong>, format standard de l&#8217;IOF pour échanger des résultats</li>
+</ul>
+
+<p>Le format de résultats <em>CSV</em> propre à Geco peut être facilement importer dans un tableur pour traîter les résultats. Il contient de nombreuses informations, y compris les poinçons, les PMs, la place atteinte par le coureur, etc.</p>
+
+<p>Utilisez <em>Splits</em> et <em>OE CSV</em> ou <em>XML</em> pour un fichier compatible avec RouteGadget et d&#8217;autres outils d&#8217;analyse.</p>
+
+<p>Pour le Classement National, utilisez <em>Splits</em> avec le format <em>OE CSV</em>.</p>
+
+<h3 id="simulation-cn">Simulation CN</h3>
+
+<p>La simulation CN calcule les points (hypothétiques) marqués sur la course pour les licenciés FFCO. Vous pouvez vous en servir pour vérifier la validité des données avant transmission au site CN.</p>
+
+<p>Geco utilise le numéro d&#8217;archive pour repérer les coureurs CN. Ce numéro doit donc correspondre à l&#8217;identifiant FFCO (numéro de licence). Utilisez l&#8217;import par archive ou par CSV pour évitez les erreurs.</p>
+
+<p><a href="../images/results_cn.fr.png"><img src="../images/results_cn.fr.png" /></a></p>
+
+<h2 id="mode-auto-rsultats">Mode auto (résultats)</h2>
+
+<p>Le bouton <em>Auto</em>, une fois activé, rafraîchit les résultats dans la fenêtre ou génère un fichier nommé <code>lastresults</code> à intervalles réguliers (en secondes).
+La fonction auto prend en compte les paramètres spécifiés à l&#8217;activation (circuits ou catégories, classement/splits/CN, format d&#8217;export, options).
+Arrêtez et redémarrez le mode auto pour prendre en compte de nouveaux paramètres.</p>
+
+          </div>
+        </div>
+
+        <div id="footer">
+                &copy; 2008-2012 Simon Denier | 
+                Généré avec <a href="http://webgen.rubyforge.org">webgen</a> | 
+                Design par <a href="http://andreasviklund.com">Andreas Viklund</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

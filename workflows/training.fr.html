@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Geco lightweight desktop application for orienteering race" />
+    <meta name="keywords" content="orienteering race management lightweight" />
+    <meta name="author" content="Simon Denier / Original design: Andreas Viklund - http://andreasviklund.com/" />
+    <meta name="generator" content="webgen - http://webgen.rubyforge.org" />
+    <link rel="stylesheet" href="../default.css" type="text/css" media="screen,projection" />
+    <title>Geco - Entraînement</title>
+      
+  
+<link type="text/html" rel="alternate" hreflang="en" href="training.html" lang="en" title="Training" /></head>
+
+  <body>
+    <div id="container">
+      <a id="top"></a>
+
+      <div id="sitename">
+        <h1>Documentation Geco</h1>
+        <a id="menu"></a>
+      </div>
+
+      <div id="nav">
+        <ul><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../geco/index.fr.html">Présentation</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../guide/index.fr.html">Guide interface</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../howtos/index.fr.html">Guide pratique</a></li><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><a href="index.fr.html">Workflows</a></li></ul>
+      </div>
+
+      <div id="wrap1">
+        <div id="wrap2">
+
+          <div id="topbox">
+            <strong><a href="../index.html">/</a> &raquo; <a href="index.fr.html">Workflows</a> &raquo; <span>Entraînement</span></strong> &nbsp; (<a href="training.html">en</a> | <span class="webgen-langbar-current-lang">fr</span>)            
+          </div>
+
+          <div id="leftside">
+            <a id="sectionmenu"></a>
+            <h1>Download</h1>
+            <div id="downloads">
+              <ul>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-1.3.zip">Version 1.3</a></li>
+                <li>Voir les <a href="../geco/whatsnew.fr.html">nouveautés</a></li>
+              </ul>
+            </div>
+          
+            <h1>Contenu</h1>
+            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.fr.html">Organisations</a></li><li class="webgen-menu-level1"><a href="register.fr.html">Inscriptions</a></li><li class="webgen-menu-level1"><a href="auto.fr.html">Process Auto</a></li><li class="webgen-menu-level1"><a href="endstage.fr.html">Fin de course</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Entraînement</span></li><li class="webgen-menu-level1"><a href="quals.fr.html">Qualifications</a></li></ul></div>
+          
+            <h1>Liens</h1>
+            <div id="links">
+                    <ul>
+                    <li><a href="http://geco.webou.net/geco_formation_11.pdf">Doc formation 1.1</a></li>
+                    <li><a href="http://bitbucket.org/sdenier/geco/downloads">Référentiel</a></li>
+                    <li><a href="http://www.o-news.fr/viewforum.php?f=21">Onews/Geco</a></li>
+                    <li><a href="http://www.wcup2010.fr/">World Cup 2010</a></li>
+                    </ul>
+            </div>
+          </div>
+
+          <a id="main"></a>
+          <div id="contentalt">
+            
+<h1 id="entranement">Entraînement</h1>
+
+<p>Geco dispose d&#8217;un mode pour l&#8217;entraînement qui minimise les actions à effectuer. Geco lit alors toutes les puces et affiche leur statut normal, que les puces soient pré-enregistrées ou non. De même, Geco accepte plusieurs lectures de la même puce en créant une nouvelle inscription à chaque fois, ce qui permet à un coureur de réaliser plusieurs circuits. Geco peut aussi importer le log des puces issues d&#8217;unes station de lecture.</p>
+
+<p><img style="float:none; width:100px; margin: 0;" src="../images/training_button.png" /></p>
+
+<h2 id="droulement-dune-course-en-mode-entranement">Déroulement d&#8217;une course en mode entraînement</h2>
+
+<p>La seule préparation nécessaire est <em>l&#8217;import des circuits</em> dans une nouvelle course. Les pré-inscriptions sont optionnelles. On pourra <em>configurer une archive</em> pour faciliter les inscriptions automatiques (par exemple, une archive club si celle-ci est à jour des derniers inscrits).</p>
+
+<p>Il suffit ensuite de lancer la lecture en mode entraînement et de laisser le poste en libre-service. Prenons Simon, un débutant qui court avec une puce prêtée (non inscrite dans l&#8217;archive). Il part faire le circuit B et revient. La lecture <em>crée une inscription</em> anonyme avec le bon circuit et le statut calculé :</p>
+
+<blockquote>
+  <p><code>1   1061000   X   None  Circuit B   NL  41:32   OK</code></p>
+</blockquote>
+
+<p>On peut éditer cette entrée avec des informations correctes :</p>
+
+<blockquote>
+  <p><code>1   1061000   Simon D   H21  Circuit B   3810RA  41:32   OK</code></p>
+</blockquote>
+
+<p>Simon repart pour le circuit A. Au retour, la lecture crée une nouvelle inscription, avec ce circuit et un nouveau statut. Dans le cas d&#8217;une lecture doublon, Geco considère qu&#8217;il s&#8217;agit de la même personne et <em>recopie</em> donc les informations précédentes.</p>
+
+<blockquote>
+  <p><code>2   1061000a  Simon D   H21  Circuit A   3810RA  57:01   OK</code></p>
+</blockquote>
+
+<p>Le mode entraînement permet donc aux coureurs de réaliser plusieurs circuits sans soucis d&#8217;inscriptions inconnue ou doublon. Les résultats par circuit afficheront les résultats de chacun.</p>
+
+<h2 id="gec-post-mortem--import-dun-log-de-puces">GEC post-mortem : import d&#8217;un log de puces</h2>
+
+<p>Une autre possibilité est de réaliser la GEC &#8220;à la maison&#8221;, en important simplement le log des puces lues par la station de lecture (on peut exporter ce log avec Si-Config). Ceci permet de ne transporter que le minimum de matériel pour l&#8217;entraînement. De plus, on profite des algorithmes sophistiqués de Geco pour détecter les circuits et reconstruire les résultats a posteriori. Il faut donc :</p>
+
+<ol>
+  <li>exporter le log de la station de lecture depuis Si-Config</li>
+  <li>Importer dans Geco à partir de l&#8217;onglet Log, fonction <em>Import log puces</em> parmi les fonctions <a href="../guide/functions.fr.html">Batch</a>. Il suffit de sélectionner le fichier log puis de lancer <em>Exécuter</em>. La fonction importe chaque ligne du log comme s&#8217;il s&#8217;agissait d&#8217;une puce lue dans la station.</li>
+</ol>
+
+<p><a href="../images/ecard_import.fr.png"><img src="../images/ecard_import.fr.png" /></a></p>
+
+<p>Le format du log exporté par Si-Config est donné dans cet <a href="../samples/log_ecards.csv">example</a>.</p>
+
+          </div>
+        </div>
+
+        <div id="footer">
+                &copy; 2008-2012 Simon Denier | 
+                Généré avec <a href="http://webgen.rubyforge.org">webgen</a> | 
+                Design par <a href="http://andreasviklund.com">Andreas Viklund</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

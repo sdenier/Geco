@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Geco lightweight desktop application for orienteering race" />
+    <meta name="keywords" content="orienteering race management lightweight" />
+    <meta name="author" content="Simon Denier / Original design: Andreas Viklund - http://andreasviklund.com/" />
+    <meta name="generator" content="webgen - http://webgen.rubyforge.org" />
+    <link rel="stylesheet" href="../default.css" type="text/css" media="screen,projection" />
+    <title>Geco - Runners</title>
+      
+  
+<link type="text/html" rel="alternate" hreflang="fr" href="runners.fr.html" lang="fr" title="Coureurs" /></head>
+
+  <body>
+    <div id="container">
+      <a id="top"></a>
+
+      <div id="sitename">
+        <h1>Geco User Help</h1>
+        <a id="menu"></a>
+      </div>
+
+      <div id="nav">
+        <ul><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../geco/index.html">Presentation</a></li><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><a href="index.html">UI Guide</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../howtos/index.html">How-tos</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../workflows/index.html">Workflows</a></li></ul>
+      </div>
+
+      <div id="wrap1">
+        <div id="wrap2">
+
+          <div id="topbox">
+            <strong><a href="../index.html">/</a> &raquo; <a href="index.html">UI Guide</a> &raquo; <span>Runners</span></strong> &nbsp; (<span class="webgen-langbar-current-lang">en</span> | <a href="runners.fr.html">fr</a>)            
+          </div>
+
+          <div id="leftside">
+            <a id="sectionmenu"></a>
+            <h1>Download</h1>
+            <div id="downloads">
+              <ul>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-1.3.zip">Version 1.3</a></li>
+                <li>See <a href="../geco/whatsnew.html">what's new</a></li>
+              </ul>
+            </div>
+          
+            <h1>Contents</h1>
+            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.html">Launcher</a></li><li class="webgen-menu-level1"><a href="toolbar.html">Toolbar</a></li><li class="webgen-menu-level1"><a href="ecard_modes.html">Ecard Modes</a></li><li class="webgen-menu-level1"><a href="stage.html">Configuration</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Runners</span></li><li class="webgen-menu-level1"><a href="archive.html">Archive</a></li><li class="webgen-menu-level1"><a href="merge.html">Merge</a></li><li class="webgen-menu-level1"><a href="log.html">Log/Stats</a></li><li class="webgen-menu-level1"><a href="functions.html">Functions</a></li><li class="webgen-menu-level1"><a href="results.html">Results</a></li><li class="webgen-menu-level1"><a href="heats.html">Heats</a></li></ul></div>
+          
+            <h1>Links</h1>
+            <div id="links">
+                    <ul>
+                    
+                    <li><a href="http://bitbucket.org/sdenier/geco/downloads">Repository</a></li>
+                    <li><a href="http://www.o-news.fr/viewforum.php?f=21">Forum (french)</a></li>
+                    <li><a href="http://www.wcup2010.fr/">World Cup 2010</a></li>
+                    </ul>
+            </div>
+          </div>
+
+          <a id="main"></a>
+          <div id="contentalt">
+            <h1 id="runners-panel">Runners Panel</h1>
+
+<p>The runners panel is the central place to register runners and manage events during the race.</p>
+
+<p><a href="../images/runners_panel_notes.png"><img src="../images/runners_panel_notes.png" /></a>
+(Click to zoom in)</p>
+
+<p>The main part of the panel is the table, which lets you view/edit/filter/sort runners with all the essential data.
+The right pane can display details about the currently selected runner (e-card data, trace), or statistics about the race.</p>
+
+<h2 id="runners-table">Runners Table</h2>
+
+<ul>
+  <li><em>Add/Remove Runner:</em> add a runner at the end of the startlist; remove the currently selected runner</li>
+  <li><em>Import CSV / Open Archive Viewer:</em> click to perform mass registrations</li>
+  <li><em>Sort Runners:</em> click on a header cell of the table to sort runners according to ascending/descending rank</li>
+  <li><em>Filter Runners:</em> start typing to display only entries matching your search (the search is performed full-text and matches substring in data)</li>
+  <li><em>Fast edit Mode (tickbox):</em> start edition with just one click - useful when lots of manual edition have to be done quickly</li>
+  <li><em>Default course Mode (tickbox):</em> when active, manually changing a runner&#8217;s category also sets his course to the default course for the category (if set in the <a href="stage.html">stage</a> panel)</li>
+  <li><em>Live Mode (tickbox):</em> in this mode, Geco automatically focuses on the last data received from the card reader; runners are dynamically sorted by order of card reading, with most recent on top (other sort options disabled)</li>
+</ul>
+
+<p>The different processes for <a href="../workflows/register.html">registration of competitors</a> are explained in the workflows section.</p>
+
+<h3 id="manual-edition-of-competitors">Manual edition of competitors</h3>
+
+<ul>
+  <li>Double-click in a cell to start edition</li>
+  <li>Geco checks that the values you enter in the table are valid</li>
+  <li>Information/problems are displayed in the status bar (and in the log for the most important ones)</li>
+  <li>Use <em>Default course Mode</em> to change the course automatically with the category</li>
+  <li>Changing the course triggers a status computation to check if the trace is still valid</li>
+  <li>If necessary, the official race time (used for results) can be edited by hand</li>
+  <li>If necessary, status can be changed manually
+    <ul>
+      <li>Not Started (default status): runner registered but no race data available</li>
+      <li>Running: runner known to have started but not yet arrived</li>
+      <li>OK</li>
+      <li>MP: Missing Punch</li>
+      <li>DNS: Did Not Start</li>
+      <li>DNF: Did Not Finish</li>
+      <li>DSQ: Disqualified</li>
+      <li>OOT: Out Of Time</li>
+      <li>Unknown: unknown ecard read</li>
+      <li>Duplicate: duplicate ecard read</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="shortlog">Shortlog</h2>
+<p>The shortlog displays the last six events registered in the log. It is especially useful when reading e-cards as it displays the important data: e-card number, status, official time, but also problems detected (trace of missing punches, missing start time or finish time, unknown e-card&#8230;).</p>
+
+<p>The shortlog displays e-card numbers as <strong>hyperlinks</strong>, so that clicking an hyperlink directly focuses on the table entry to let you check and solve problems.</p>
+
+<p><a href="../images/runners_filter.png"><img src="../images/runners_filter.png" /></a>
+(Table with a filter on the &#8216;litto&#8217; string and focus on the Runner Trace pane)</p>
+
+<h2 id="runner-data-modd">Runner Data (mod+D)</h2>
+<p>The <em>Runner Data</em> pane shows complementary information about the currently selected runner. It is useful for an analysis of runner race when resolving a problem.</p>
+
+<ul>
+  <li>Registration
+    <ul>
+      <li>Registered Start: in case you allocate start times to competitors. Note that a start time in e-card always has priority over the registered start time</li>
+      <li>Rented e-card: if ticked, Geco displays a warning message when reading this e-card</li>
+    </ul>
+  </li>
+  <li>E-card (information fields, non-editable)
+    <ul>
+      <li>The <em>Race</em> field always displays <em>finish - start</em> time, not taking into account time penalties</li>
+      <li><em>Start/Finish</em> times are displayed with a <strong>red background</strong> if missing</li>
+    </ul>
+  </li>
+  <li>Result (information fields, non-editable)
+    <ul>
+      <li>Official is the official time computed as race time + penalties</li>
+      <li>The time taken by Geco to compute results is the one given in the table (which can be edited by hand if necessary) - Official time is displayed with a <strong>yellow background</strong> if it does not match with the table</li>
+    </ul>
+  </li>
+  <li>Buttons
+    <ul>
+      <li><em>Recheck</em> (mod+R) computes the status based on punches and course and reset the official time</li>
+      <li><em>Reset Official Time</em> computes the official time in table based on race time and penalties</li>
+      <li><em>Print Runner Splits</em> (mod+P) sends splits to the printer</li>
+      <li>Click the <em>Merge&#8230;</em> button for advanced management of data, like merging two runners together. It opens the <a href="merge.html">merge wizard</a> on the currently selected runner.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="runner-trace-modt">Runner Trace (mod+T)</h2>
+<p>The <em>Trace</em> pane displays the list of controls for the course compared with the list of punches (control code and punch time) of the runner. It is of great help to understand where a runner mispunched. Geco uses a sophisticated algorithm to detect accurately mispunches, even in the case of butterfly loop:</p>
+
+<ul>
+  <li>a missing control is displayed in red with a <strong>-</strong> sign in front</li>
+  <li>a supplementary control is displayed in blue with a <strong>+</strong> sign in front</li>
+  <li>in some cases, the control is displayed in red as <strong>-X+Y</strong>: this is a mispunch which can be explained as a substitution, the runner took control Y instead of X</li>
+  <li>it is also easy to spot inversion with a sequence like <strong>-X, Y, +X</strong>: the runner took Y before X, while he should have go the other way.</li>
+</ul>
+
+<h2 id="statistics-pane-mods">Statistics Pane (mod+S)</h2>
+<p>See the <a href="log.html">Log</a> page for a description of stage statistics.</p>
+
+          </div>
+        </div>
+
+        <div id="footer">
+                &copy; 2008-2012 Simon Denier | 
+                Generated by <a href="http://webgen.rubyforge.org">webgen</a> | 
+                Design by <a href="http://andreasviklund.com">Andreas Viklund</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

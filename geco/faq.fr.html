@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Geco lightweight desktop application for orienteering race" />
+    <meta name="keywords" content="orienteering race management lightweight" />
+    <meta name="author" content="Simon Denier / Original design: Andreas Viklund - http://andreasviklund.com/" />
+    <meta name="generator" content="webgen - http://webgen.rubyforge.org" />
+    <link rel="stylesheet" href="../default.css" type="text/css" media="screen,projection" />
+    <title>Geco - FAQ</title>
+      
+  
+<link type="text/html" rel="alternate" hreflang="en" href="faq.html" lang="en" title="FAQ" /></head>
+
+  <body>
+    <div id="container">
+      <a id="top"></a>
+
+      <div id="sitename">
+        <h1>Documentation Geco</h1>
+        <a id="menu"></a>
+      </div>
+
+      <div id="nav">
+        <ul><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><a href="index.fr.html">Présentation</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../guide/index.fr.html">Guide interface</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../howtos/index.fr.html">Guide pratique</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../workflows/index.fr.html">Workflows</a></li></ul>
+      </div>
+
+      <div id="wrap1">
+        <div id="wrap2">
+
+          <div id="topbox">
+            <strong><a href="../index.html">/</a> &raquo; <a href="index.fr.html">Présentation</a> &raquo; <span>FAQ</span></strong> &nbsp; (<a href="faq.html">en</a> | <span class="webgen-langbar-current-lang">fr</span>)            
+          </div>
+
+          <div id="leftside">
+            <a id="sectionmenu"></a>
+            <h1>Download</h1>
+            <div id="downloads">
+              <ul>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-1.3.zip">Version 1.3</a></li>
+                <li>Voir les <a href="../geco/whatsnew.fr.html">nouveautés</a></li>
+              </ul>
+            </div>
+          
+            <h1>Contenu</h1>
+            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.fr.html">À propos</a></li><li class="webgen-menu-level1"><a href="sevensteps.fr.html">Sept points</a></li><li class="webgen-menu-level1"><a href="features.fr.html">Caractéristiques</a></li><li class="webgen-menu-level1"><a href="requirements.fr.html">Pré-requis</a></li><li class="webgen-menu-level1"><a href="whatsnew.fr.html">Quoi de neuf ?</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>FAQ</span></li><li class="webgen-menu-level1"><a href="contribute.fr.html">Contribuer</a></li><li class="webgen-menu-level1"><a href="license.fr.html">Licence</a></li></ul></div>
+          
+            <h1>Liens</h1>
+            <div id="links">
+                    <ul>
+                    <li><a href="http://geco.webou.net/geco_formation_11.pdf">Doc formation 1.1</a></li>
+                    <li><a href="http://bitbucket.org/sdenier/geco/downloads">Référentiel</a></li>
+                    <li><a href="http://www.o-news.fr/viewforum.php?f=21">Onews/Geco</a></li>
+                    <li><a href="http://www.wcup2010.fr/">World Cup 2010</a></li>
+                    </ul>
+            </div>
+          </div>
+
+          <a id="main"></a>
+          <div id="contentalt">
+            
+<h1 id="faq">FAQ</h1>
+
+<h2 id="comment-personnaliser-les-fiches-de-rsultat-">Comment personnaliser les fiches de résultat ?</h2>
+<p>Il est possible de personnaliser les fiches de résultat en éditant les styles CSS dans le répertoire de la course. Cela est surtout utile si le format de ticket n&#8217;est pas adapté à l&#8217;imprimante.</p>
+
+<ul>
+  <li>éditez <code>result.css</code> pour les classements, le CN, les temps intermédiaires au format multi-colonnes</li>
+  <li>éditez <code>ticket.css</code> pour les temps intermédiaires au format ticket</li>
+</ul>
+
+<h2 id="fonctionnalits-futures">Fonctionnalités futures</h2>
+<p>Les fonctionnalités suivantes ne sont pas encore supportées mais devraient être intégrées dans les prochaines versions.</p>
+
+<ul>
+  <li>lecture de la mémoire des boîtiers SPORTident pour détecter automatiquement les coureurs absents</li>
+  <li>impression en masse des temps intermédiaires quand l&#8217;imprimante a été stoppée pour un moment</li>
+  <li>insertion d&#8217;un poinçon manquant pour les coureurs, suppression d&#8217;un poste pour les circuits</li>
+</ul>
+
+<h2 id="la-lecture-des-puces-sportident-est-anormalement-lente">La lecture des puces SPORTident est anormalement lente</h2>
+<p>Des utilisateurs ont reporté des temps de lecture des puces très longs sur certains ordinateurs. Dans ces cas la lecture d&#8217;une seule prend environ 10 secondes au lieu des 1 à 2 secondes habituelles, ce qui rend Geco impraticable en compétition. Le problème semble apparaître uniquement quand le boîtier maître SPORTident est branché directement sur l&#8217;ordinateur. Bien que la cause du problème soit encore inconnue, il est possible de le résoudre en branchant un hub USB entre l&#8217;ordinateur et le boîtier maître. Une configuration typique de GEC est l&#8217;utilisation du hub pour le boîtier maître et l&#8217;imprimante à ticket, tandis que les autres ports USB sont libres de recevoir une imprimante normale ou des clés USB.</p>
+
+<h2 id="certains-temps-sont-dcals-de-12h00-avec-les-puces-si-5">Certains temps sont décalés de 12h00 avec les puces SI 5</h2>
+<p>Les temps dans les puces SI 5 sont enregistrés sur 12h00 et repartent ensuite à zéro. Geco doit recalculer le temps correct à partir de l&#8217;heure zéro de la compétition.</p>
+
+<ol>
+  <li>Changer l&#8217;heure zéro pour une heure proche de l&#8217;heure réelle de la compétition dans la <a href="../guide/stage.fr.html">configuration</a>.</li>
+  <li>Pour les coureurs concernés, <em>réinitialiser le temps officiel</em> à partir de la <a href="../guide/runners.fr.html">vue des données coureur</a>.</li>
+</ol>
+
+<h2 id="windows-temps-de-dmarrage-lent-avec-bluetooth-activ">[Windows] Temps de démarrage lent (avec Bluetooth activé)</h2>
+<p>Geco scanne les ports série au démarrage pour détecter une station SPORTident. Si Bluetooth est activé, il sera aussi scanné ce qui ralentit considérablement le lancement de Geco (plus de 10 secondes d&#8217;attente). Vous pouvez soit :</p>
+
+<ul>
+  <li>désactiver Bluetooth avant de lancer Geco</li>
+  <li>ou lancer Geco depuis la ligne de commande avec par exemple<br />
+<code>java -Dgnu.io.rxtx.SerialPorts=COM1;COM3 -jar gecoXXXX.jar</code><br />
+où <code>COM1</code> et <code>COM3</code> sont les ports susceptibles d&#8217;accueillir votre station SPORTident (à adapter suivant votre configuration). Vous pouvez créer un fichier batch pour éviter de taper cette commande à chaque fois.</li>
+</ul>
+
+<h2 id="mac-os-x-comment-installer-un-pilote-pour-sportident-">[Mac OS X] Comment installer un pilote pour SPORTident ?</h2>
+
+<p><em>Guy P. a écrit un <a href="http://geco.webou.net/procedure_installation_driver_sportident.pdf">tutorial détaillé et pas à pas</a> si vous n&#8217;êtes pas habitué aux manipulations systèmes décrites ci-dessous.</em></p>
+
+<p>Il faut télécharger le pilote Mac OS pour le chip USB des boîtiers SPORTident, puis changer quelques informations du pilote pour que Mac OS le reconnaisse pour le boîtier.</p>
+
+<p>1. Télécharger et installer le pilote depuis <a href="https://www.silabs.com/products/interface/usbtouart/Pages/usb-to-uart-bridge.aspx">SI labs</a>, section <em>Tools</em>, sélectionner <em>CP210x VCP Mac OSX Drivers</em> (ou essayer le lien direct <a href="https://www.silabs.com/pages/DownloadDoc.aspx?FILEURL=Support%20Documents/Software/Mac_OSX_VCP_Driver.zip&amp;src=SoftwardDownloadsWebPart">Mac_OSX_VCP_Driver.zip</a>). L&#8217;installation demande un redémarrage.</p>
+
+<p>Deux pilotes sont installés, une version 32 bits <code>/System/Library/Extensions/CP210xVCPDriver.kext</code> et une version 64 bits <code>/System/Library/Extensions/CP210xVCPDriver64.kext</code>. Vous pouvez modifier l&#8217;un ou l&#8217;autre des pilotes. Le tutorial continue avec la version 64 bits.</p>
+
+<p>2. Ouvrir le fichier <code>/System/Library/Extensions/CP210xVCPDriver64.kext/Contents/Info.plist</code> avec un éditeur de texte (il vous faut les droits admin). Vous pouvez faire une copie de sauvegarde avant édition.</p>
+
+<p>Dans le fichier, repérer les deux lignes suivantes en cherchant la chaîne 60000 :</p>
+
+<pre>
+&lt;key&gt;idProduct&lt;/key&gt;
+&lt;integer&gt;60000&lt;/integer&gt;
+</pre>
+
+<p>Remplacer 60000 par <strong>32778</strong> (identifiant des boîtiers SPORTident).</p>
+
+<pre>
+&lt;key&gt;idProduct&lt;/key&gt;
+&lt;integer&gt;32778&lt;/integer&gt;
+</pre>
+
+<p>3. <em>Uniquement sous Lion (Mac OSX 10.7)</em>, il faut mettre à jour le cache pour que le chargement du pilote soit automatique au branchement du boîtier. Les deux dernières commandes prennent un peu de temps.</p>
+
+<pre>
+sudo kextload -b com.silabs.driver.CP210xVCPDriver64
+sudo kextcache -system-prelinked-kernel
+sudo kextcache -system-caches
+</pre>
+
+<p>4. Redémarrer à nouveau pour vérifier que le système prenne en compte les modifications.</p>
+
+<p>Le boîtier apparaît sous l&#8217;identifiant <strong>/dev/tty.SLAB_USBtoUART</strong> dans Geco (et aussi comme <strong>SPORTident USB to UART Bridge Controller</strong> dans le profil système).</p>
+
+<h2 id="geco-lit-un-mauvais-code-quand-le-code-dune-station-est-suprieur--255">Geco lit un mauvais code quand le code d&#8217;une station est supérieur à 255</h2>
+<p>C&#8217;est une limite actuelle de Geco. Si une station est reprogrammée avec un code supérieur à 255, Geco peut toujours lire le poinçon de la puce mais affectera le code de la station modulo 255 (le reste de la division entière par 255). Par exemple :</p>
+
+<ul>
+  <li>300 modulo 255 donne 45</li>
+  <li>600 modulo 255 donne 90 (soit encore, 255 * 2 + 90 = 600)</li>
+</ul>
+
+<p>Pour éviter les risques de confusion, il n&#8217;est pas recommandé de dépasser cette limite avec Geco. Si vous voulez quand même utiliser des codes supérieurs à 255, il faut éditer chaque circuit pour remplacer les codes &gt; 255 par leur modulo.</p>
+
+          </div>
+        </div>
+
+        <div id="footer">
+                &copy; 2008-2012 Simon Denier | 
+                Généré avec <a href="http://webgen.rubyforge.org">webgen</a> | 
+                Design par <a href="http://andreasviklund.com">Andreas Viklund</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

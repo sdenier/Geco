@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Geco lightweight desktop application for orienteering race" />
+    <meta name="keywords" content="orienteering race management lightweight" />
+    <meta name="author" content="Simon Denier / Original design: Andreas Viklund - http://andreasviklund.com/" />
+    <meta name="generator" content="webgen - http://webgen.rubyforge.org" />
+    <link rel="stylesheet" href="../default.css" type="text/css" media="screen,projection" />
+    <title>Geco - Coureurs</title>
+      
+  
+<link type="text/html" rel="alternate" hreflang="en" href="runners.html" lang="en" title="Runners" /></head>
+
+  <body>
+    <div id="container">
+      <a id="top"></a>
+
+      <div id="sitename">
+        <h1>Documentation Geco</h1>
+        <a id="menu"></a>
+      </div>
+
+      <div id="nav">
+        <ul><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../geco/index.fr.html">Présentation</a></li><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><a href="index.fr.html">Guide interface</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../howtos/index.fr.html">Guide pratique</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../workflows/index.fr.html">Workflows</a></li></ul>
+      </div>
+
+      <div id="wrap1">
+        <div id="wrap2">
+
+          <div id="topbox">
+            <strong><a href="../index.html">/</a> &raquo; <a href="index.fr.html">Guide interface</a> &raquo; <span>Coureurs</span></strong> &nbsp; (<a href="runners.html">en</a> | <span class="webgen-langbar-current-lang">fr</span>)            
+          </div>
+
+          <div id="leftside">
+            <a id="sectionmenu"></a>
+            <h1>Download</h1>
+            <div id="downloads">
+              <ul>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-1.3.zip">Version 1.3</a></li>
+                <li>Voir les <a href="../geco/whatsnew.fr.html">nouveautés</a></li>
+              </ul>
+            </div>
+          
+            <h1>Contenu</h1>
+            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.fr.html">Lanceur</a></li><li class="webgen-menu-level1"><a href="toolbar.fr.html">Barre d'outils</a></li><li class="webgen-menu-level1"><a href="ecard_modes.fr.html">Modes de lecture</a></li><li class="webgen-menu-level1"><a href="stage.fr.html">Configuration</a></li><li class="webgen-menu-level1"><a href="archive.fr.html">Archive</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Coureurs</span></li><li class="webgen-menu-level1"><a href="merge.fr.html">Fusion</a></li><li class="webgen-menu-level1"><a href="log.fr.html">Log/Stats</a></li><li class="webgen-menu-level1"><a href="functions.fr.html">Fonctions</a></li><li class="webgen-menu-level1"><a href="results.fr.html">Résultats</a></li><li class="webgen-menu-level1"><a href="heats.fr.html">Séries</a></li></ul></div>
+          
+            <h1>Liens</h1>
+            <div id="links">
+                    <ul>
+                    <li><a href="http://geco.webou.net/geco_formation_11.pdf">Doc formation 1.1</a></li>
+                    <li><a href="http://bitbucket.org/sdenier/geco/downloads">Référentiel</a></li>
+                    <li><a href="http://www.o-news.fr/viewforum.php?f=21">Onews/Geco</a></li>
+                    <li><a href="http://www.wcup2010.fr/">World Cup 2010</a></li>
+                    </ul>
+            </div>
+          </div>
+
+          <a id="main"></a>
+          <div id="contentalt">
+            
+<h1 id="onglet-coureurs">Onglet Coureurs</h1>
+
+<p>L&#8217;onglet coureurs est la place centrale pour inscrire les concurrents et gérer les événements durant la course.</p>
+
+<p><a href="../images/runners_panel_notes.fr.png"><img src="../images/runners_panel_notes.fr.png" /></a>
+(Cliquez pour zoomer)</p>
+
+<p>La partie principale est la table des coureurs, qui permet de voir/éditer/filtrer/trier les concurrents tout en montrant les données essentielles.
+La vue dans le panneau de droite peut montrer des données détaillées sur le coureur sélectionné (données puce, trace), ou bien des statistiques sur la course.</p>
+
+<h2 id="table-des-coureurs">Table des coureurs</h2>
+
+<ul>
+  <li><em>Créer/Supprimer un coureur :</em> ajouter un nouveau concurrent à la fin de la liste de départ ; supprimer le concurrent sélectionné</li>
+  <li><em>Importer CSV / Ouvrir la vue Archive :</em> pour faire des pré-inscriptions en masse</li>
+  <li><em>Trier les concurrents :</em> cliquez sur l&#8217;entête d&#8217;une colonne pour trier les concurrents par rang ascendant/descendant</li>
+  <li><em>Filtrer les concurrents :</em> entrez quelques caractères pour montrer les entrées correspondant à la recherche</li>
+  <li><em>Édition rapide :</em> un seul clic dans la table permet d&#8217;éditer les données - utile quand il s&#8217;agit d&#8217;effectuer rapidement plusieurs modifications manuelles</li>
+  <li><em>Circuit par défaut :</em> si coché, changer manuellement la catégorie d&#8217;un coureur change aussi son circuit pour le circuit par défaut de la catégorie (configuré dans l&#8217;<a href="stage.fr.html">étape</a>)</li>
+  <li><em>Mode Live :</em> dans ce mode, Geco sélectionne automatiquement le dernier concurrent dont la puce est lue ; les coureurs sont classés par ordre de lecture des puces, en commençant par les plus récents (les tris par colonne sont désactivés dans ce mode)</li>
+</ul>
+
+<p>Les différentes méthodes d&#8217;<a href="../workflows/register.fr.html">inscription des concurrents</a> sont expliquées dans les workflows.</p>
+
+<h3 id="dition-manuelle-des-concurrents">Édition manuelle des concurrents</h3>
+
+<ul>
+  <li>Double-cliquez sur une cellule pour l&#8217;éditer</li>
+  <li>Geco vérifie la validité des valeurs entrées dans la table</li>
+  <li>La barre de statut (et le log) montre informations et problèmes</li>
+  <li>Utilisez le mode <em>Circuit par défaut</em> pour changer le circuit avec la catégorie</li>
+  <li>Changer de circuit déclenche un calcul du statut pour vérifier la validité de la trace</li>
+  <li>Si nécessaire, le temps officiel de course (pour les résultats) peut être changé manuellement</li>
+  <li>Si nécessaire, le statut peut être changé manuellement
+    <ul>
+      <li>Non parti  (statut par défaut) : coureur inscrit mais sans donnée de course</li>
+      <li>En course : coureur confirmé comme parti mais pas encore arrivé</li>
+      <li>OK</li>
+      <li>PM</li>
+      <li>Absent</li>
+      <li>Abandon</li>
+      <li>Disq : disqualifié</li>
+      <li>Hors délai</li>
+      <li>Inconnu : puce lue inconnue</li>
+      <li>Doublon : puce déjà lue</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="shortlog">Shortlog</h2>
+<p>Le shortlog montre les six derniers événements enregistrés par le log. Il est spécialement utile durant la lecture des puces car il montre les informations essentielles : numéro de puce, statut, temps officiel, mais aussi problèmes détectés (trace des poinçons manquant, temps de départ ou d&#8217;arrivée manquant, puce inconnue&#8230;).</p>
+
+<p>Dans le shortlog, les numéros de puce sont affichés comme <strong>hyperliens</strong>. Cliquer sur le lien sélectionne automatiquement l&#8217;entrée dans la table pour vérifier les données et résoudre les problèmes.</p>
+
+<p><a href="../images/runners_filter.fr.png"><img src="../images/runners_filter.fr.png" /></a>
+(Table avec un filtre sur &#8216;litto&#8217; et affichant la trace détaillée)</p>
+
+<h2 id="vue-donnes-du-coureur-modd">Vue Données du coureur (mod+D)</h2>
+<p>La vue <em>Données</em> du coureur montre des informations complémentaires sur le coureur sélectionné. Cette vue est utile pour l&#8217;analyse des données de course lors de la résolution d&#8217;un problème.</p>
+
+<ul>
+  <li>Inscription
+    <ul>
+      <li>Horaire départ : si vous faites un départ avec horaires attribués à l&#8217;avance. Notez que vous pouvez mélanger horaire départ et boîtier départ : Geco donne priorité à l&#8217;heure de départ enregistrée dans la puce</li>
+      <li>Puce louée : si cochée, Geco affiche un message lors de la lecture de la puce</li>
+    </ul>
+  </li>
+  <li>Données puce (champs d&#8217;information, non modifiables)
+    <ul>
+      <li>Le champ <em>Chrono</em> montre toujours le temps <em>Arrivée - Départ</em>, sans prendre en compte des pénalités</li>
+      <li>Les temps <em>Départ/Arrivée</em> sont affichées avec un <strong>fond rouge</strong> s&#8217;ils sont manquants</li>
+    </ul>
+  </li>
+  <li>Résultats (champs d&#8217;information, non modifiables)
+    <ul>
+      <li>Le champ du temps officiel affiche toujours le chrono + pénalité</li>
+      <li>Geco utilise le temps officiel de la table pour calculer les résultats (qui peut être changé à la main) - le champ est affiché avec un <strong>fond jaune</strong> pour indiquer un changement dans la table</li>
+    </ul>
+  </li>
+  <li>Boutons
+    <ul>
+      <li><em>Vérifier</em> (mod+R) recalcule le statut du coureur et le temps officiel</li>
+      <li><em>Réinitialiser temps officiel</em> recalcule le temps officiel</li>
+      <li><em>Imprimer splits</em> (mod+P) envoie les temps intermédiaires du coureur à l&#8217;imprimante</li>
+      <li>Cliquez sur le bouton <em>Fusion&#8230;</em> pour une gestion avancée, comme la fusion de deux inscriptions ensemble. Ce bouton ouvre l&#8217;<a href="merge.fr.html">assistant de fusion</a> sur le coureur sélectionné.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="vue-trace-du-coureur-modt">Vue Trace du coureur (mod+T)</h2>
+<p>La vue <em>Trace</em> montre la liste des postes du circuit comparée avec la liste des poinçons (code et temps) du coureur. Cette vue est très utile pour comprendre où un coureur a manqué un poste. Geco utilise un algorithme sophistiqué pour détecter les postes manquants, même dans le cas des papillons :</p>
+
+<ul>
+  <li>un poste manquant est affiché en rouge avec le signe <strong>-</strong> devant</li>
+  <li>un poste supplémentaire est affiché en bleu avec le signe <strong>+</strong> devant</li>
+  <li>dans certains cas, le poste est affiché en rouge avec le format <strong>-X+Y</strong> : c&#8217;est l&#8217;indice d&#8217;une substitution, le coureur a pris le poste Y au lieu de X</li>
+  <li>il est aussi facile de repérer les inversions avec la séquence <strong>-X, Y, +X</strong> : le coureur a pris Y avant de prendre X, alors qu&#8217;il aurait dû prendre l&#8217;ordre inverse.</li>
+</ul>
+
+<h2 id="vue-statistiques-mods">Vue Statistiques (mod+S)</h2>
+<p>Voir la page <a href="log.fr.html">Log</a> pour une description des statistiques de course.</p>
+
+          </div>
+        </div>
+
+        <div id="footer">
+                &copy; 2008-2012 Simon Denier | 
+                Généré avec <a href="http://webgen.rubyforge.org">webgen</a> | 
+                Design par <a href="http://andreasviklund.com">Andreas Viklund</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

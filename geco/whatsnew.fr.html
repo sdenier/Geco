@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Geco lightweight desktop application for orienteering race" />
+    <meta name="keywords" content="orienteering race management lightweight" />
+    <meta name="author" content="Simon Denier / Original design: Andreas Viklund - http://andreasviklund.com/" />
+    <meta name="generator" content="webgen - http://webgen.rubyforge.org" />
+    <link rel="stylesheet" href="../default.css" type="text/css" media="screen,projection" />
+    <title>Geco - Quoi de neuf ?</title>
+      
+  
+<link type="text/html" rel="alternate" hreflang="en" href="whatsnew.html" lang="en" title="What's new?" /></head>
+
+  <body>
+    <div id="container">
+      <a id="top"></a>
+
+      <div id="sitename">
+        <h1>Documentation Geco</h1>
+        <a id="menu"></a>
+      </div>
+
+      <div id="nav">
+        <ul><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><a href="index.fr.html">Présentation</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../guide/index.fr.html">Guide interface</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../howtos/index.fr.html">Guide pratique</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../workflows/index.fr.html">Workflows</a></li></ul>
+      </div>
+
+      <div id="wrap1">
+        <div id="wrap2">
+
+          <div id="topbox">
+            <strong><a href="../index.html">/</a> &raquo; <a href="index.fr.html">Présentation</a> &raquo; <span>Quoi de neuf ?</span></strong> &nbsp; (<a href="whatsnew.html">en</a> | <span class="webgen-langbar-current-lang">fr</span>)            
+          </div>
+
+          <div id="leftside">
+            <a id="sectionmenu"></a>
+            <h1>Download</h1>
+            <div id="downloads">
+              <ul>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-1.3.zip">Version 1.3</a></li>
+                <li>Voir les <a href="../geco/whatsnew.fr.html">nouveautés</a></li>
+              </ul>
+            </div>
+          
+            <h1>Contenu</h1>
+            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.fr.html">À propos</a></li><li class="webgen-menu-level1"><a href="sevensteps.fr.html">Sept points</a></li><li class="webgen-menu-level1"><a href="features.fr.html">Caractéristiques</a></li><li class="webgen-menu-level1"><a href="requirements.fr.html">Pré-requis</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Quoi de neuf ?</span></li><li class="webgen-menu-level1"><a href="faq.fr.html">FAQ</a></li><li class="webgen-menu-level1"><a href="contribute.fr.html">Contribuer</a></li><li class="webgen-menu-level1"><a href="license.fr.html">Licence</a></li></ul></div>
+          
+            <h1>Liens</h1>
+            <div id="links">
+                    <ul>
+                    <li><a href="http://geco.webou.net/geco_formation_11.pdf">Doc formation 1.1</a></li>
+                    <li><a href="http://bitbucket.org/sdenier/geco/downloads">Référentiel</a></li>
+                    <li><a href="http://www.o-news.fr/viewforum.php?f=21">Onews/Geco</a></li>
+                    <li><a href="http://www.wcup2010.fr/">World Cup 2010</a></li>
+                    </ul>
+            </div>
+          </div>
+
+          <a id="main"></a>
+          <div id="contentalt">
+            
+<h1 id="quoi-de-neuf-">Quoi de neuf ?</h1>
+
+<h2 id="version-13---05112012">Version 1.3 - 05/11/2012</h2>
+
+<p><a href="http://bitbucket.org/sdenier/geco/downloads/geco-1.3.zip">Geco 1.3</a> exploite l&#8217;algorithme de détection des circuits pour faciliter de nouveaux modes de gestion des courses. En particulier certaines fonctionnalités sont dédiées aux entraînements (mode spécial, import de log avec des puces lues).</p>
+
+<h3 id="nouveauts">Nouveautés</h3>
+
+<ul>
+  <li><a href="../guide/ecard_modes.fr.html">3 modes</a> pour la lecture des puces
+    <ul>
+      <li>compétition (mode classique)</li>
+      <li>entraînement (permet de relire plusieurs fois la même puce avec différents circuits - à chaque lecture une nouvelle entrée est créée/copiée)</li>
+      <li>inscription (enregistrement le jour de la course)</li>
+    </ul>
+  </li>
+  <li>Refonte de l&#8217;<a href="../guide/merge.fr.html">assistant de fusion</a>
+    <ul>
+      <li>affichage de plus d&#8217;informations</li>
+      <li>détection du circuit à la demande</li>
+      <li>recherche incrémentale dans la base des inscrits ou dans l&#8217;archive</li>
+    </ul>
+  </li>
+  <li>circuit Auto disponible par défaut</li>
+  <li>import de circuits au format XML IOF V3 (OCAD 11&#8230;) - beta</li>
+  <li>Nouvelles <a href="../guide/functions.fr.html">fonctions</a> batch
+    <ul>
+      <li>import des logs des stations (stations contrôle/départ lues avec SIConfig) : détection des absents et des coureurs encore en course</li>
+      <li>import d&#8217;un fichier de puces créé par SIConfig pour recréer toute la course et les résultats à partir de la mémoire de la station maître</li>
+      <li>export d&#8217;un log arbitrage, indiquant les modifications manuelles détectées sur la course</li>
+      <li>remise à zéro (partielle) de la base d&#8217;une course</li>
+    </ul>
+  </li>
+</ul>
+
+<p>La nouvelle section <a href="../workflows/index.fr.html">Workflows</a> décrit comment exploiter ces fonctionnalités ensemble.</p>
+
+<h3 id="amliorations-mineures">Améliorations mineures</h3>
+
+<ul>
+  <li>ajout du statut &#8220;Hors-délai&#8221;</li>
+  <li>format des résultats et calcul du pas dans les résultats</li>
+  <li>format des tickets coureurs, config en-tête et pied de page</li>
+  <li>mise à jour du format CSV des résultats pour fournir plus d&#8217;informations</li>
+  <li>export des résultats par circuit au format XML (et plus seulement par catégorie)</li>
+  <li>statistiques mieux organisées dans l&#8217;onglet log</li>
+  <li>mode manuel/mode auto/insertion auto archive : ce sont maintenant des options à choisir dans la configuration de la course</li>
+</ul>
+
+<h3 id="bugs-corrigs">Bugs corrigés</h3>
+
+<ul>
+  <li>export CSV pour le CN (status corrects, encodage)</li>
+  <li>export CSV pour RouteGadget</li>
+  <li>import des fichiers générés avec Purple Pen (problème utf8)</li>
+  <li>et d&#8217;autres petits trucs améliorés / corrigés</li>
+</ul>
+
+<h2 id="version-12---30112011">Version 1.2 - 30/11/2011</h2>
+
+<p><a href="http://bitbucket.org/sdenier/geco/downloads/geco1.2-571-20111130-demo.zip">Geco 1.2</a> est une version intermédiaire qui contient quelques changements significatifs. C&#8217;est un pas vers les prochaines versions de Geco, avec des modifications profondes de l&#8217;interface et du modèle de données.</p>
+
+<p>Les changements visibles :</p>
+
+<ul>
+  <li>Geco supporte maintenant de façon explicite <a href="features.fr.html">différents formats</a> de courses d&#8217;orientation (options de configuration, onglets spécifiques&#8230;). Les formats actuellement supportés sont la course classique (en ligne), l&#8217;Orient&#8217;Show et la course en ordre libre. Il existe aussi un format expérimental pour le Raid Orient&#8217;Alpin.</li>
+  <li><a href="../guide/stage.fr.html">L&#8217;onglet de configuration</a> a été complèment remanié.</li>
+  <li>Nouvel <a href="../guide/index.fr.html">assistant de lancement</a> qui permet d&#8217;ouvrir une compétition existante ou d&#8217;en créer une nouvelle au format choisi.</li>
+  <li>Le numéro de puce n&#8217;est plus obligatoire et peut être laissé vide.</li>
+  <li>Processus plus intuitif pour la calibration de la <a href="../howtos/live.fr.html">LiveMap</a> </li>
+  <li>Import possible de <a href="../guide/stage.fr.html">modèles</a> associant catégories et circuits.</li>
+  <li>Export des résultats au format IOF XML (pour RouteGadget et autres).</li>
+  <li>Plusieurs petits changements dans l&#8217;interface.</li>
+</ul>
+
+<p>Modification du format des fichiers de données : Geco 1.2 fera automatiquement la conversion des fichiers d&#8217;une compétition Geco 1.1 vers le nouveau format. Attention, Geco 1.1 ne peut pas ouvrir les fichiers de la version 1.2 (pensez à vos sauvegardes si besoin).</p>
+
+<h2 id="version-11---05042011">Version 1.1 - 05/04/2011</h2>
+
+<p><a href="http://bitbucket.org/sdenier/geco/downloads/geco1.1-383-20110405-demo.zip">Geco 1.1</a> est une évolution de l&#8217;application dédiée à l&#8217;Orient&#8217;Show vers une application complète pour des CO classiques, avec plusieurs nouvelles fonctions et de multiples améliorations de l&#8217;interface.</p>
+
+<p>Les grands changements :</p>
+
+<ul>
+  <li>inscriptions faciles par import CSV ou avec une archive de concurrents</li>
+  <li>mode automatique pour réaliser des inscriptions à la lecture des puces, avec détection du circuit</li>
+  <li>temps intermédiaires pour impression et export (format OE pour RouteGadget&#8230;)</li>
+  <li>possibilité d&#8217;utiliser un horaire de départ pré-attribué à la place du boîtier départ</li>
+  <li>traduction en français et anglais</li>
+</ul>
+
+<p>Changements interface et utilisabilité :</p>
+
+<ul>
+  <li>multiples améliorations de l&#8217;interface</li>
+  <li>liste des ports série disponibles pour offrir le choix à l&#8217;utilisateur. Détection du port où le boîtier maître est connecté.</li>
+  <li>navigation par hyperlien pour sélectionner rapidement une puce depuis le shortlog (onglet coureurs)</li>
+  <li>plus de raccourcis claviers et plus universels</li>
+</ul>
+
+<p>Autres changements :</p>
+
+<ul>
+  <li>nouveaux statuts et statistiques pour gérer les cas spéciaux (concurrents en course, puces inconnues et doublons pour le mode automatique)</li>
+  <li>nouveaux champs de données pour chaque concurrent : horaire de départ pré-attribué, champ d&#8217;archive, puce louée</li>
+  <li>attribution d&#8217;un circuit par défaut à une catégorie</li>
+  <li>ajout des Fonctions pour effectuer des opérations batch sur les données</li>
+  <li>format d&#8217;export CSV pour le Classement National + simulation des points CN</li>
+  <li>styles CSS pour les fichiers résultats HTML</li>
+  <li>meilleure gestion des fichiers avec différents charsets</li>
+</ul>
+
+<p>Architecture/Code :</p>
+
+<ul>
+  <li>les <code>Controls</code> peuvent s&#8217;enregistrer comme services et accéder simplement l&#8217;un à l&#8217;autre</li>
+  <li>ré-ingénierie de la classe <code>ResultBuilder</code> et affiliées : séparation entre le calcul des résultats et l&#8217;export des résultats et splits</li>
+  <li>[Mac] mise à jour pour la dernière révision Mac Java</li>
+  <li>quelques changements dans les fichiers de données pour supporter les fonctions 1.1</li>
+</ul>
+
+<h2 id="version-10---19102010">Version 1.0 - 19/10/2010</h2>
+
+<p>Version <a href="https://bitbucket.org/sdenier/geco/downloads/geco1.0-238-20101019-demo.zip">initiale</a> (anglais seulement).</p>
+
+<p>Geco 1.0 est dédié au format Orient&#8217;Show. Il est sorti peu après l&#8217;organisation à la Coupe du Monde d&#8217;Annecy. Vous pouvez jeter un oeil aux <a href="http://www.wcup2010.fr/index.php?option=com_content&amp;view=article&amp;id=34&amp;Itemid=66&amp;lang=en">cartes et résultats</a> et particulièrement aux traces des finalistes en utilisant <a href="http://www.wcup2010.fr/orientshow/gecows_annecy2010.html">Geco WebStart</a>.</p>
+
+          </div>
+        </div>
+
+        <div id="footer">
+                &copy; 2008-2012 Simon Denier | 
+                Généré avec <a href="http://webgen.rubyforge.org">webgen</a> | 
+                Design par <a href="http://andreasviklund.com">Andreas Viklund</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

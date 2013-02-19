@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Geco lightweight desktop application for orienteering race" />
+    <meta name="keywords" content="orienteering race management lightweight" />
+    <meta name="author" content="Simon Denier / Original design: Andreas Viklund - http://andreasviklund.com/" />
+    <meta name="generator" content="webgen - http://webgen.rubyforge.org" />
+    <link rel="stylesheet" href="../default.css" type="text/css" media="screen,projection" />
+    <title>Geco - Modes de lecture</title>
+      
+  
+<link type="text/html" rel="alternate" hreflang="en" href="ecard_modes.html" lang="en" title="Ecard Modes" /></head>
+
+  <body>
+    <div id="container">
+      <a id="top"></a>
+
+      <div id="sitename">
+        <h1>Documentation Geco</h1>
+        <a id="menu"></a>
+      </div>
+
+      <div id="nav">
+        <ul><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../geco/index.fr.html">Présentation</a></li><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><a href="index.fr.html">Guide interface</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../howtos/index.fr.html">Guide pratique</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../workflows/index.fr.html">Workflows</a></li></ul>
+      </div>
+
+      <div id="wrap1">
+        <div id="wrap2">
+
+          <div id="topbox">
+            <strong><a href="../index.html">/</a> &raquo; <a href="index.fr.html">Guide interface</a> &raquo; <span>Modes de lecture</span></strong> &nbsp; (<a href="ecard_modes.html">en</a> | <span class="webgen-langbar-current-lang">fr</span>)            
+          </div>
+
+          <div id="leftside">
+            <a id="sectionmenu"></a>
+            <h1>Download</h1>
+            <div id="downloads">
+              <ul>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-1.3.zip">Version 1.3</a></li>
+                <li>Voir les <a href="../geco/whatsnew.fr.html">nouveautés</a></li>
+              </ul>
+            </div>
+          
+            <h1>Contenu</h1>
+            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.fr.html">Lanceur</a></li><li class="webgen-menu-level1"><a href="toolbar.fr.html">Barre d'outils</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Modes de lecture</span></li><li class="webgen-menu-level1"><a href="stage.fr.html">Configuration</a></li><li class="webgen-menu-level1"><a href="archive.fr.html">Archive</a></li><li class="webgen-menu-level1"><a href="runners.fr.html">Coureurs</a></li><li class="webgen-menu-level1"><a href="merge.fr.html">Fusion</a></li><li class="webgen-menu-level1"><a href="log.fr.html">Log/Stats</a></li><li class="webgen-menu-level1"><a href="functions.fr.html">Fonctions</a></li><li class="webgen-menu-level1"><a href="results.fr.html">Résultats</a></li><li class="webgen-menu-level1"><a href="heats.fr.html">Séries</a></li></ul></div>
+          
+            <h1>Liens</h1>
+            <div id="links">
+                    <ul>
+                    <li><a href="http://geco.webou.net/geco_formation_11.pdf">Doc formation 1.1</a></li>
+                    <li><a href="http://bitbucket.org/sdenier/geco/downloads">Référentiel</a></li>
+                    <li><a href="http://www.o-news.fr/viewforum.php?f=21">Onews/Geco</a></li>
+                    <li><a href="http://www.wcup2010.fr/">World Cup 2010</a></li>
+                    </ul>
+            </div>
+          </div>
+
+          <a id="main"></a>
+          <div id="contentalt">
+            
+<h1 id="modes-de-lecture-des-puces">Modes de lecture des puces</h1>
+
+<p>Cette page décrit les trois modes de lecture accessibles depuis la <a href="toolbar.fr.html">barre d&#8217;outils</a> : compétition, entraînement et inscription. Ces modes peuvent tous utiliser la <strong>détection automatique des circuits</strong> et l&#8217;inscription automatique depuis l&#8217;archive supportées par Geco.</p>
+
+<h2 id="mode-comptition">Mode compétition</h2>
+
+<p>C&#8217;est le mode &#8220;classique&#8221; pour la lecture des puces en compétition.</p>
+
+<p>Geco peut être <a href="stage.fr.html">configuré</a> en manuel ou en auto pour la lecture des puces. En manuel, Geco ouvre l&#8217;<a href="merge.fr.html">assistant de fusion</a> pour les puces non inscrites et les puces lues en doublon. En <a href="../workflows/auto.fr.html">auto</a>, Geco crée des inscriptions <em>inconnues</em> ou <em>doublons</em> à la place. Geco peut aussi être configuré pour créer à la lecture des puces des inscriptions automatiques à partir de l&#8217;archive.</p>
+
+<h2 id="mode-entranement">Mode entraînement</h2>
+
+<p>C&#8217;est un mode spécial pour faciliter les <a href="../workflows/training.fr.html">entraînements</a> en minimisant les interventions GEC.</p>
+
+<p>Geco peut aussi être configuré en manuel ou en auto, mais seul le <strong>process auto</strong> offre des fonctions pour l&#8217;entraînement (le process manuel est identique en compétition ou en entraînement). Contrairement au mode compétition, Geco n&#8217;affecte jamais les statuts <em>inconnus</em> et <em>doublons</em> aux entrées. Il indique le statut final quelque soit la puce lue, y compris pour les inscriptions anonymes.</p>
+
+<p>De plus, une lecture doublon crée une nouvelle entrée (avec le circuit détecté) en gardant l&#8217;identité de la première inscription. Un coureur peut ainsi effectuer plusieurs exercices (circuits) avec la même puce et apparaître plusieurs fois dans les résultats.</p>
+
+<p>Le mode entraînement permet donc :</p>
+
+<ul>
+  <li>de lire des puces sans se soucier de pré-inscription ou d&#8217;une archive à jour ;</li>
+  <li>de proposer plusieurs circuits en parallèle, <em>tout en gardant la simplicité d&#8217;un seul poste de GEC pour centraliser les résultats.</em></li>
+</ul>
+
+<h2 id="mode-inscription">Mode inscription</h2>
+
+<p>C&#8217;est le mode pour les inscriptions <em>sur site</em> le jour de la course.</p>
+
+<p>Geco ne lit pas les données de la puce mais uniquement son numéro :</p>
+
+<ul>
+  <li>si la puce est déjà inscrite, Geco met le focus sur l&#8217;entrée correspondante, ce qui permet de vérifier les informations ;</li>
+  <li>sinon Geco crée une nouvelle entrée, en utilisant l&#8217;archive si configurée.</li>
+</ul>
+
+<p>Geco affecte le circuit <em>[Auto]</em> à toute nouvelle entrée pour déclencher la détection à la lecture d&#8217;après-course. Cependant, il est possible de sélectionner le circuit choisi par le coureur, ce qui permet un suivi plus précis des coureurs sur les différents circuits.</p>
+
+<p>De plus, une inscription créée via ce mode est déjà marquée <em>en course</em> pour suivre les coureurs en forêt (voir la <a href="../workflows/endstage.fr.html">fin de course</a>).</p>
+
+          </div>
+        </div>
+
+        <div id="footer">
+                &copy; 2008-2012 Simon Denier | 
+                Généré avec <a href="http://webgen.rubyforge.org">webgen</a> | 
+                Design par <a href="http://andreasviklund.com">Andreas Viklund</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

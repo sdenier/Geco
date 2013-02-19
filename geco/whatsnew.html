@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Geco lightweight desktop application for orienteering race" />
+    <meta name="keywords" content="orienteering race management lightweight" />
+    <meta name="author" content="Simon Denier / Original design: Andreas Viklund - http://andreasviklund.com/" />
+    <meta name="generator" content="webgen - http://webgen.rubyforge.org" />
+    <link rel="stylesheet" href="../default.css" type="text/css" media="screen,projection" />
+    <title>Geco - What's new?</title>
+      
+  
+<link type="text/html" rel="alternate" hreflang="fr" href="whatsnew.fr.html" lang="fr" title="Quoi de neuf ?" /></head>
+
+  <body>
+    <div id="container">
+      <a id="top"></a>
+
+      <div id="sitename">
+        <h1>Geco User Help</h1>
+        <a id="menu"></a>
+      </div>
+
+      <div id="nav">
+        <ul><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><a href="index.html">Presentation</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../guide/index.html">UI Guide</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../howtos/index.html">How-tos</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../workflows/index.html">Workflows</a></li></ul>
+      </div>
+
+      <div id="wrap1">
+        <div id="wrap2">
+
+          <div id="topbox">
+            <strong><a href="../index.html">/</a> &raquo; <a href="index.html">Presentation</a> &raquo; <span>What's new?</span></strong> &nbsp; (<span class="webgen-langbar-current-lang">en</span> | <a href="whatsnew.fr.html">fr</a>)            
+          </div>
+
+          <div id="leftside">
+            <a id="sectionmenu"></a>
+            <h1>Download</h1>
+            <div id="downloads">
+              <ul>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-1.3.zip">Version 1.3</a></li>
+                <li>See <a href="../geco/whatsnew.html">what's new</a></li>
+              </ul>
+            </div>
+          
+            <h1>Contents</h1>
+            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.html">About</a></li><li class="webgen-menu-level1"><a href="sevensteps.html">Seven Steps</a></li><li class="webgen-menu-level1"><a href="features.html">Features</a></li><li class="webgen-menu-level1"><a href="requirements.html">Requirements</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>What's new?</span></li><li class="webgen-menu-level1"><a href="faq.html">FAQ</a></li><li class="webgen-menu-level1"><a href="contribute.html">Contribute</a></li><li class="webgen-menu-level1"><a href="license.html">License</a></li></ul></div>
+          
+            <h1>Links</h1>
+            <div id="links">
+                    <ul>
+                    
+                    <li><a href="http://bitbucket.org/sdenier/geco/downloads">Repository</a></li>
+                    <li><a href="http://www.o-news.fr/viewforum.php?f=21">Forum (french)</a></li>
+                    <li><a href="http://www.wcup2010.fr/">World Cup 2010</a></li>
+                    </ul>
+            </div>
+          </div>
+
+          <a id="main"></a>
+          <div id="contentalt">
+            
+<h1 id="whats-new">What&#8217;s new?</h1>
+
+<h2 id="version-13---20121105">Version 1.3 - 2012/11/05</h2>
+
+<p><a href="http://bitbucket.org/sdenier/geco/downloads/geco-1.3.zip">Geco 1.3</a> builds upon its course detection algorithm to provide more abilities for course management. Especially some new features provide a better support for training (training mode, import of ecard logs).</p>
+
+<h3 id="main-changes">Main changes</h3>
+
+<ul>
+  <li><a href="../guide/ecard_modes.html">3 modes</a> when reading ecards:
+    <ul>
+      <li>racing (classic mode)</li>
+      <li>training (handle multiple reads for the same ecard with different courses, create one entry per read without asking question)</li>
+      <li>register (handle onsite registration)</li>
+    </ul>
+  </li>
+  <li>Brand new <a href="../guide/merge.html">merge wizard</a>, replacing the old merge dialog from 1.0
+    <ul>
+      <li>displays more information</li>
+      <li>provides course detection</li>
+      <li>incremental search in registry and archive</li>
+    </ul>
+  </li>
+  <li>Auto course available by default</li>
+  <li>Import of XML IOF V3 (beta) course file (OCAD 11&#8230;)</li>
+  <li>New batch <a href="../guide/functions.html">functions</a>
+    <ul>
+      <li>import station logs and check DNS/Running</li>
+      <li>import ecard logs to recreate a race/training from the master station backup memory</li>
+      <li>export a referee log with all manual modifications</li>
+      <li>delete data</li>
+    </ul>
+  </li>
+</ul>
+
+<p>The new <a href="../workflows/index.html">Workflows</a> section describes how those features work together.</p>
+
+<h3 id="enhancements">Enhancements</h3>
+
+<ul>
+  <li>add an <em>Out of Time</em> status</li>
+  <li>updated result format, including pace computation</li>
+  <li>updated ticket format, customizable header/footer</li>
+  <li>updated CSV result format to provide more data</li>
+  <li>XML export of result by course (before only category was available)</li>
+  <li>better arrangement for stats</li>
+  <li>customizable reading modes (manual/auto/archive lookup)</li>
+</ul>
+
+<h3 id="fixed-bugs">Fixed bugs</h3>
+
+<ul>
+  <li>Fix OE CSV export for CN, RouteGadget</li>
+  <li>Fix import of course file generated by Purple Pen</li>
+  <li>and other smaller fixes</li>
+</ul>
+
+<h2 id="version-12---20111130">Version 1.2 - 2011/11/30</h2>
+
+<p><a href="http://bitbucket.org/sdenier/geco/downloads/geco1.2-571-20111130-demo.zip">Geco 1.2</a> is an intermediate release, which nonetheless ships with significant changes.
+It paves the way for the future versions of Geco, providing some core changes in the UI and data model.</p>
+
+<p>Here is the list of visible changes.</p>
+
+<ul>
+  <li>Geco now explicitly handles <a href="features.html">different formats</a> for orienteering races: in particular it adapts the UI to each format (config options, custom tabs&#8230;). Current formats include Classic inline, Orient&#8217;Show, and Free Order. Raid Orient&#8217;Alpin is a custom format but should be considered experimental.</li>
+  <li>Reworked <a href="../guide/stage.html">configuration tab</a> (each configuration item now has its own panel). </li>
+  <li>New <a href="../guide/index.html">launch wizard</a> which enables to either open an existing stage (from an history of recent stages) or creates a new one for a given format.</li>
+  <li>Ecard number is no longer required and can be left empty.</li>
+  <li>First german translation by Philipp Walker.</li>
+  <li><a href="../howtos/live.html">LiveMap</a> calibration updated with an intuitive UI (click on controls and map).</li>
+  <li>Import <a href="../guide/stage.html">template</a> for category+course.</li>
+  <li>IOF XML export for results (for RouteGadget and others).</li>
+  <li>Some other minor changes in the UI.</li>
+</ul>
+
+<p>Change in data file format: Geco 1.2 will automatically convert 1.1 stage files to the new format. Meaning also that Geco 1.1 can&#8217;t load a 1.2 stage (don&#8217;t forget your backups).</p>
+
+<h2 id="version-11---20110405">Version 1.1 - 2011/04/05</h2>
+
+<p><a href="http://bitbucket.org/sdenier/geco/downloads/geco1.1-383-20110405-demo.zip">Geco 1.1</a> is a move from the custom app for Orient&#8217;Show to a full-featured app for regular Orienteering events, with many new features and UI improvements.</p>
+
+<p>The big changes:</p>
+
+<ul>
+  <li>easy registration through CSV import and competitors archive</li>
+  <li>automatic mode to handle registration from archive when reading unknown e-cards, with course detection from the trace</li>
+  <li>split format for printing and export (OE format for RouteGadget&#8230;)</li>
+  <li>ability to use registered start times instead of a start box</li>
+  <li>translation available in french and english (both app and doc)</li>
+</ul>
+
+<p>UI/Usability changes:</p>
+
+<ul>
+  <li>many UI changes</li>
+  <li>list serial ports to let user choose. Detect the serial port where the SI box is connected</li>
+  <li>hyperlink navigation to quickly focus on an e-card from the shortlog (runners panel)</li>
+  <li>more universal and new keybindings</li>
+</ul>
+
+<p>Other changes:</p>
+
+<ul>
+  <li>new status and stats to better manage special cases (competitors still running, unknown and duplicate e-cards for automatic mode)</li>
+  <li>new data fields for each competitor: registered start time, archive id for competitor, flag for rented e-card</li>
+  <li>a default course can be linked to a category (use when performing registration through CSV or archive)</li>
+  <li>introduce Functions to perform batch operations on data</li>
+  <li>CSV export format for French CN (Classement National) + CN simulation in results</li>
+  <li>HTML result files can be styled with CSS</li>
+  <li>better handling of files with different charsets across platforms</li>
+</ul>
+
+<p>Architecture/Code:</p>
+
+<ul>
+  <li><code>Controls</code> can register themselves as services and get simple access to each other</li>
+  <li>refactoring <code>ResultBuilder</code> class and related: split between result builder and result/split exporter</li>
+  <li>[Mac] update to latest Java Mac revision</li>
+  <li>some changes in data files to support 1.1 features</li>
+</ul>
+
+<h2 id="version-10---20101019">Version 1.0 - 2010/10/19</h2>
+
+<p>Initial <a href="https://bitbucket.org/sdenier/geco/downloads/geco1.0-238-20101019-demo.zip">release</a>.</p>
+
+<p>Geco 1.0 is dedicated to the Orient&#8217;Show format. It was released shortly after the World Cup event in Annecy. Take a look at <a href="http://www.wcup2010.fr/index.php?option=com_content&amp;view=article&amp;id=34&amp;Itemid=66&amp;lang=en">Maps and Results</a> and especially at the trace of the finals using <a href="http://www.wcup2010.fr/orientshow/gecows_annecy2010.html">Geco WebStart</a>.</p>
+
+          </div>
+        </div>
+
+        <div id="footer">
+                &copy; 2008-2012 Simon Denier | 
+                Generated by <a href="http://webgen.rubyforge.org">webgen</a> | 
+                Design by <a href="http://andreasviklund.com">Andreas Viklund</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

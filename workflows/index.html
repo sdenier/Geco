@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Geco lightweight desktop application for orienteering race" />
+    <meta name="keywords" content="orienteering race management lightweight" />
+    <meta name="author" content="Simon Denier / Original design: Andreas Viklund - http://andreasviklund.com/" />
+    <meta name="generator" content="webgen - http://webgen.rubyforge.org" />
+    <link rel="stylesheet" href="../default.css" type="text/css" media="screen,projection" />
+    <title>Geco - Organisations</title>
+      
+  
+<link type="text/html" rel="alternate" hreflang="fr" href="index.fr.html" lang="fr" title="Organisations" /></head>
+
+  <body>
+    <div id="container">
+      <a id="top"></a>
+
+      <div id="sitename">
+        <h1>Geco User Help</h1>
+        <a id="menu"></a>
+      </div>
+
+      <div id="nav">
+        <ul><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../geco/index.html">Presentation</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../guide/index.html">UI Guide</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../howtos/index.html">How-tos</a></li><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><span>Workflows</span></li></ul>
+      </div>
+
+      <div id="wrap1">
+        <div id="wrap2">
+
+          <div id="topbox">
+            <strong><a href="../index.html">/</a> &raquo; <span>Workflows</span> &raquo; <span>Organisations</span></strong> &nbsp; (<span class="webgen-langbar-current-lang">en</span> | <a href="index.fr.html">fr</a>)            
+          </div>
+
+          <div id="leftside">
+            <a id="sectionmenu"></a>
+            <h1>Download</h1>
+            <div id="downloads">
+              <ul>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-1.3.zip">Version 1.3</a></li>
+                <li>See <a href="../geco/whatsnew.html">what's new</a></li>
+              </ul>
+            </div>
+          
+            <h1>Contents</h1>
+            <div id="submenu"><ul><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Organisations</span></li><li class="webgen-menu-level1"><a href="register.html">Registration</a></li><li class="webgen-menu-level1"><a href="auto.html">Auto Handler</a></li><li class="webgen-menu-level1"><a href="endstage.html">End of stage</a></li><li class="webgen-menu-level1"><a href="training.html">Training</a></li><li class="webgen-menu-level1"><a href="quals.html">Qualifications</a></li></ul></div>
+          
+            <h1>Links</h1>
+            <div id="links">
+                    <ul>
+                    
+                    <li><a href="http://bitbucket.org/sdenier/geco/downloads">Repository</a></li>
+                    <li><a href="http://www.o-news.fr/viewforum.php?f=21">Forum (french)</a></li>
+                    <li><a href="http://www.wcup2010.fr/">World Cup 2010</a></li>
+                    </ul>
+            </div>
+          </div>
+
+          <a id="main"></a>
+          <div id="contentalt">
+            
+<h1 id="organisation-models-with-geco">Organisation Models with Geco</h1>
+
+<p>Geco capabilities allows one to perform different styles of organisations, from lightweight training up to formalized events of medium size. This page presents those styles and options through a few models, providing links to detailed subsections.</p>
+
+<h2 id="training">Training</h2>
+
+<p>For a training, you usually don&#8217;t have any pre-registration since runners come and go. They can run multiple exercises with different courses. Then Geco works best as a self service station where each participant reads his ecard after his run.</p>
+
+<p>Geco configuration for a training is minimal: just create (or import) courses, optionally set up an archive to get enriched data.</p>
+
+<p>The <a href="training.html">training page</a> details the features of this mode as well as the capability to import the log from a reading station.</p>
+
+<h2 id="small-race">Small Race</h2>
+
+<p>For a small race, some people will choose to pre-register before the day, but a lot of runners can also just show up on the day of the race.</p>
+
+<p>You can use the different capabilities of Geco for <a href="register.html">registration</a>.</p>
+
+<ul>
+  <li>Before the day of the race, maintain a spreadsheet file with pre-registrations, then import it in Geco just before (don&#8217;t forget to first create courses and linked categories).</li>
+  <li>On the day of the race, you can perform onsite registration (using the given mode or not), or even let Geco do on the fly registration with the <a href="auto.html">auto handler</a>.</li>
+  <li>For a small event, you can let competitors manage start hours themselves, giving them a paper sheet to choose an hour and a start station to register the precise time.</li>
+</ul>
+
+<p>It is advised to <a href="../guide/stage.html">set up</a> Geco to use the archive in auto mode. This model allows one to minimise work beforehand as well as error risks, since all the information is computed with the ecard, from the course to the archive data (name, category, club).</p>
+
+<p>Of course, you should supply results regularly, but don&#8217;t forget to deal with the <a href="endstage.html">end of stage</a>, DNS and still running competitors.</p>
+
+<h2 id="medium-race">Medium Race</h2>
+
+<p>When it comes to a medium-size event, most competitors would pre-register to ease the logistics. This can imply a greater control of runner registration, including the allocation of start times.</p>
+
+<p>Even if Geco can handle pre-registered start times, it does not provide any function to automatically allocate times. This should be made with another software beforehand. Consequently, it is recommended to perform registration with an <a href="register.html">OE CSV</a> file. Other methods are still available, in particular for onsite registration.</p>
+
+<p>On the day of the race, you can choose between the manual process and the auto process to resolve problems: it&#8217;s mainly a matter of taste. The former opens the <a href="../guide/merge.html">merge wizard</a>, while the latter first create entries before giving you control. However, it can be advised to <a href="../guide/stage.html">turn off</a> archive lookup for the auto handler: this provides a greater control of unexpected entries.</p>
+
+<p>The <a href="endstage.html">end of stage</a> is also important here. Learn how to manage DNS and running competitors efficiently by using the backup memory from stations.</p>
+
+          </div>
+        </div>
+
+        <div id="footer">
+                &copy; 2008-2012 Simon Denier | 
+                Generated by <a href="http://webgen.rubyforge.org">webgen</a> | 
+                Design by <a href="http://andreasviklund.com">Andreas Viklund</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

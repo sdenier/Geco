@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Geco lightweight desktop application for orienteering race" />
+    <meta name="keywords" content="orienteering race management lightweight" />
+    <meta name="author" content="Simon Denier / Original design: Andreas Viklund - http://andreasviklund.com/" />
+    <meta name="generator" content="webgen - http://webgen.rubyforge.org" />
+    <link rel="stylesheet" href="../default.css" type="text/css" media="screen,projection" />
+    <title>Geco - Log/Stats</title>
+      
+  
+<link type="text/html" rel="alternate" hreflang="en" href="log.html" lang="en" title="Log/Stats" /></head>
+
+  <body>
+    <div id="container">
+      <a id="top"></a>
+
+      <div id="sitename">
+        <h1>Documentation Geco</h1>
+        <a id="menu"></a>
+      </div>
+
+      <div id="nav">
+        <ul><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../geco/index.fr.html">Présentation</a></li><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><a href="index.fr.html">Guide interface</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../howtos/index.fr.html">Guide pratique</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../workflows/index.fr.html">Workflows</a></li></ul>
+      </div>
+
+      <div id="wrap1">
+        <div id="wrap2">
+
+          <div id="topbox">
+            <strong><a href="../index.html">/</a> &raquo; <a href="index.fr.html">Guide interface</a> &raquo; <span>Log/Stats</span></strong> &nbsp; (<a href="log.html">en</a> | <span class="webgen-langbar-current-lang">fr</span>)            
+          </div>
+
+          <div id="leftside">
+            <a id="sectionmenu"></a>
+            <h1>Download</h1>
+            <div id="downloads">
+              <ul>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-1.3.zip">Version 1.3</a></li>
+                <li>Voir les <a href="../geco/whatsnew.fr.html">nouveautés</a></li>
+              </ul>
+            </div>
+          
+            <h1>Contenu</h1>
+            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.fr.html">Lanceur</a></li><li class="webgen-menu-level1"><a href="toolbar.fr.html">Barre d'outils</a></li><li class="webgen-menu-level1"><a href="ecard_modes.fr.html">Modes de lecture</a></li><li class="webgen-menu-level1"><a href="stage.fr.html">Configuration</a></li><li class="webgen-menu-level1"><a href="archive.fr.html">Archive</a></li><li class="webgen-menu-level1"><a href="runners.fr.html">Coureurs</a></li><li class="webgen-menu-level1"><a href="merge.fr.html">Fusion</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Log/Stats</span></li><li class="webgen-menu-level1"><a href="functions.fr.html">Fonctions</a></li><li class="webgen-menu-level1"><a href="results.fr.html">Résultats</a></li><li class="webgen-menu-level1"><a href="heats.fr.html">Séries</a></li></ul></div>
+          
+            <h1>Liens</h1>
+            <div id="links">
+                    <ul>
+                    <li><a href="http://geco.webou.net/geco_formation_11.pdf">Doc formation 1.1</a></li>
+                    <li><a href="http://bitbucket.org/sdenier/geco/downloads">Référentiel</a></li>
+                    <li><a href="http://www.o-news.fr/viewforum.php?f=21">Onews/Geco</a></li>
+                    <li><a href="http://www.wcup2010.fr/">World Cup 2010</a></li>
+                    </ul>
+            </div>
+          </div>
+
+          <a id="main"></a>
+          <div id="contentalt">
+            <h1 id="onglet-log">Onglet Log</h1>
+
+<p>L&#8217;onglet log affiche le journal des événements importants depuis le début de la session. Il affiche également les statistiques de course et permet l&#8217;accès aux <a href="functions.fr.html">fonctions</a>.
+Pour voir tous les événements depuis la création de la course, ouvrez le fichier <code>geco.log</code>.</p>
+
+<p><a href="../images/log_stats.fr.png"><img src="../images/log_stats.fr.png" /></a></p>
+
+<p>Les statistiques montre le nombre de coureurs par statut pour chaque circuit ainsi que pour le total. Il y a trois vues pour les statistiques :</p>
+
+<ul>
+  <li><em>Résumé</em> pour voir les informations essentielles tout au long de la course</li>
+  <li><em>Non résolus</em> pour voir uniquement les statuts à régler en fin de course</li>
+  <li><em>Résultats</em> pour voir les statistiques détaillées après la course</li>
+</ul>
+
+<p>Le <em>résumé</em> affiche les statuts suivant :</p>
+
+<ul>
+  <li>Présent : concurrents qui ont fini ou sont encore en course (tous les inscrits moins les absents)</li>
+  <li>Non résolu : entrées demandant votre attention, en particulier en <a href="../workflows/endstage.fr.html">Fin de course</a> ; les statuts Non parti, En course, Inconnu et Doublon sont tous considérés comme non résolus</li>
+  <li>Non parti : coureurs inscrits mais sans données de course (puce non lue). En fin de course, vous devez distinguer entre coureurs encore en course et coureurs pré-inscrits mais absents</li>
+  <li>Arrivé : coureurs avec des données de course résolues (puce lue), y compris les abandons, disqualifications, etc.</li>
+  <li>OK</li>
+  <li>PM : un grand nombre de PMs au début de la course peut indiquer un problème dans la configuration des circuits (sur le terrain ou à la GEC)</li>
+</ul>
+
+<p>La vue <em>non résolus</em> affiche :</p>
+
+<ul>
+  <li>Non résolu : correspond au total des quatres statuts suivant ; la course n&#8217;est pas finie tant que cet état n&#8217;est pas à zéro</li>
+  <li>Non parti : coureurs inscrits mais sans information de course</li>
+  <li>En course : coureurs explicitement marqués comme en course et n&#8217;ayant pas encore vidés leur puce</li>
+  <li>Inconnu : puce lue sans entrée correspondante</li>
+  <li>Doublon : puce relue</li>
+</ul>
+
+<p>La vue <em>résultats</em> affiche :</p>
+
+<ul>
+  <li>Inscrit : tous les coureurs de la base, inclus les présents et les absents</li>
+  <li>Absent</li>
+  <li>Arrivée : cela correspond après la course au nombre de coureurs présents</li>
+  <li>les statuts OK, PM, abandon, disqualifié, hors délai</li>
+</ul>
+
+<p>Les statistiques sont mises à jour toutes les 10 secondes. Cliquez le bouton <em>Rafraîchir</em> pour mettre à jour manuellement.</p>
+
+
+          </div>
+        </div>
+
+        <div id="footer">
+                &copy; 2008-2012 Simon Denier | 
+                Généré avec <a href="http://webgen.rubyforge.org">webgen</a> | 
+                Design par <a href="http://andreasviklund.com">Andreas Viklund</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
