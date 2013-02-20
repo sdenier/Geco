@@ -37,7 +37,16 @@
 			<env key="analytics_tracking" value="true" />
 		</exec>
     </target>
-	
+
+	<target name="gh-pages" depends="cleanWebgen,webgen">
+    	<delete>
+    		<fileset dir="${wg.dir}/gh-pages" includes="**/*.html **/*.png **/*.gif **/*.css **/*.csv" />
+    	</delete>
+    	<copy todir="${wg.dir}/gh-pages">
+    		<fileset dir="${wg.dir}/out" />
+		</copy>
+    </target>
+
 	<target name="userHelp" depends="cleanWebgen,webgen">
     	<delete dir="help" />
 		<mkdir dir="help" />
