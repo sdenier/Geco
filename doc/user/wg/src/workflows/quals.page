@@ -14,7 +14,7 @@ in_menu: true
   1. it should define a `pools.prop` file listing all pool stages to merge
   1. it should define [heatsets](../guide/heats.html) to qualify runners based on merged results
 1. Once pools are finished, run pool merger on the merging stage directory with `java -jar gecoXXX.jar valmo.geco.GecoPools <MergingStageDirectory>`
-1. the batch run generates files `merged_results.html` and `heat_startlists.csv` for the first stage in the knockout series
+1. the batch run generates files `merged_results.html` and `heats.csv` for the first stage in the knockout series
 
 Notice that only runners having OK results in all pools can be qualified. See *hellemmes\_poolmerge* in the demo samples for an example of merging stage.
 

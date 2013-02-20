@@ -14,14 +14,6 @@ Tweaking the result sheets is possible by editing their CSS style in the stage d
 - edit `ticket.css` for split times in ticket format
 
 
-## Future features
-The following features are not currently supported but should be part of future releases.
-
-- reading SPORTident stations to automatically detect and set DNS competitors
-- spool printing of split times when split printer was stopped for a while
-- insertion of missing punches for competitors, removal of a control from courses
-
-
 ## Reading SPORTident e-cards takes an usually long time
 Users can experience a long time to read SPORTident e-cards on some computers: it takes around 10 seconds to read one e-card instead of the normal 1 or 2 seconds. This makes Geco impractical for any event except testing. The problem seems to appear only when the SPORTident master station is plugged directly into the computer. Although the root cause of this problem is unknown (any tip welcomed!), the problem has always disappeared when plugging a USB hub between the computer and the SPORTident station. A typical set up we use is to plug the master station and the split printer into the hub: this leaves enough free plugs for other devices such as a regular printer or USB keys.
 

@@ -8,16 +8,11 @@ in_menu: true
 
 All data relating to a stage are stored in the same directory. This page explains what are the most important files in this directory:
 
-- `geco.prop` stores stage information and meta-data
-- `Classes.csv` stores category information
-- `Clubs.csv` stores club information
-- `Competitors.csv` stores runner information (name, category, club, course...)
-- `Courses.csv` stores course information
-- `CardData.csv` stores card data information (punches and split times)
-- `ResultData.csv` stores result information (status and race time)
-- `HeatSets.csv` stores heatset information
+- `geco.prop` stores stage meta-data for Geco
+- `geco.json` stores all stage data (runners, courses, ecard data, ...)
 
-When you *save or quit* Geco, data are saved on disk in the above files. Geco automatically performs a backup right after the save in the `backups` subfolder of the folder.
-They are named `backupXXXXX.zip` following their creation timestamp. In case of problems, you can directly restore data by unzipping the last backup. Such backups are never deleted by Geco.
+The `geco.json` should not be edited manually, unless you know what you are doing and want to fix it.
+
+When you *save or quit* Geco, data are saved on disk in the above files. Geco automatically performs a backup right after the save in the `backups` subfolder. They are named `backupXXXXX.zip` following their creation timestamp. In case of problems, you can directly restore data by unzipping the last backup. Such backups are never deleted by Geco.
 
 Geco also saves data on disk every 2 minutes (this parameter `AutosaveDelay` can be changed in the `geco.prop` file). Autosave performs a backup using a circular set of files named `backupX.zip`. Geco uses 9 backups so that the last 18 minutes of activity are always on disk.

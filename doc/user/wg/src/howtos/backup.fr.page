@@ -8,16 +8,11 @@ in_menu: true
 
 Toutes les données relatives à une compétition sont enregistrées au même endroit. Cette page explique les fichiers les plus importants dans le dossier de données :
 
-- `geco.prop` contient les information sur la compétition et les méta-données
-- `Classes.csv` contient les informations sur les catégories
-- `Clubs.csv` contient les informations sur les clubs
-- `Competitors.csv` contient les informations sur les coureurs (nom, catégorie, club, circuit...)
-- `Courses.csv` contient les informations sur les circuits
-- `CardData.csv` contient les informations des puces (poinçons)
-- `ResultData.csv` contient les informations sur les résultats (statut et temps)
-- `HeatSets.csv` contient les informations sur les groupes de séries
+- `geco.prop` contient les méta-données Geco pour la course
+- `geco.json` contient toutes les données de la course (coureurs, circuits, données des puces...)
 
-Quand vous sauvez ou quittez Geco, les données sont enregistrées dans les fichiers ci-dessus. Geco fait aussi des sauvegardes des données dans le sous-dossier `backups` du dossier de course.
-Elles sont nommées `backupXXXXX.zip` en fonction de l'heure de création. En cas de problème, vous pouvez restaurer les données en dézippant le dernier fichier. Ces sauvegardes ne sont jamais supprimées par Geco.
+Le fichier `geco.json` ne doit pas être édité à la main, sauf si vous savez vraiment ce que vous faites et que vous voulez le corriger.
+
+Quand vous sauvez ou quittez Geco, les données sont enregistrées dans les fichiers ci-dessus. Geco fait aussi des sauvegardes des données dans le sous-dossier `backups`. Elles sont nommées `backupXXXXX.zip` en fonction de l'heure de création. En cas de problème, vous pouvez restaurer les données en dézippant le dernier fichier. Ces sauvegardes ne sont jamais supprimées par Geco.
 
 Le logiciel sauve automatiquement les données toutes les deux minutes (paramètre `AutosaveDelay` dans le fichier `geco.prop`). La sauvegarde automatique enregistre les données dans des fichiers réservés nommés `backupX.zip`. Geco utilise 9 fichiers de sauvegarde, ce qui veut dire que les 18 dernières minutes d'activité sont toujours sur le disque.
