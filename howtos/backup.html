@@ -26,7 +26,7 @@
       </div>
 
       <div id="nav">
-        <ul><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../geco/index.html">Presentation</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../guide/index.html">UI Guide</a></li><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><a href="index.html">How-tos</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../workflows/index.html">Workflows</a></li></ul>
+        <ul><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../begin/index.html">Presentation</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../guide/index.html">UI Guide</a></li><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><a href="index.html">How-tos</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../workflows/index.html">Workflows</a></li></ul>
       </div>
 
       <div id="wrap1">
@@ -42,7 +42,7 @@
             <div id="downloads">
               <ul>
                 <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-1.3.zip">Version 1.3</a></li>
-                <li>See <a href="../geco/whatsnew.html">what's new</a></li>
+                <li>See <a href="../begin/whatsnew.html">what's new</a></li>
               </ul>
             </div>
           
@@ -68,18 +68,13 @@
 <p>All data relating to a stage are stored in the same directory. This page explains what are the most important files in this directory:</p>
 
 <ul>
-  <li><code>geco.prop</code> stores stage information and meta-data</li>
-  <li><code>Classes.csv</code> stores category information</li>
-  <li><code>Clubs.csv</code> stores club information</li>
-  <li><code>Competitors.csv</code> stores runner information (name, category, club, course&#8230;)</li>
-  <li><code>Courses.csv</code> stores course information</li>
-  <li><code>CardData.csv</code> stores card data information (punches and split times)</li>
-  <li><code>ResultData.csv</code> stores result information (status and race time)</li>
-  <li><code>HeatSets.csv</code> stores heatset information</li>
+  <li><code>geco.prop</code> stores stage meta-data for Geco</li>
+  <li><code>geco.json</code> stores all stage data (runners, courses, ecard data, &#8230;)</li>
 </ul>
 
-<p>When you <em>save or quit</em> Geco, data are saved on disk in the above files. Geco automatically performs a backup right after the save in the <code>backups</code> subfolder of the folder.
-They are named <code>backupXXXXX.zip</code> following their creation timestamp. In case of problems, you can directly restore data by unzipping the last backup. Such backups are never deleted by Geco.</p>
+<p>The <code>geco.json</code> should not be edited manually, unless you know what you are doing and want to fix it.</p>
+
+<p>When you <em>save or quit</em> Geco, data are saved on disk in the above files. Geco automatically performs a backup right after the save in the <code>backups</code> subfolder. They are named <code>backupXXXXX.zip</code> following their creation timestamp. In case of problems, you can directly restore data by unzipping the last backup. Such backups are never deleted by Geco.</p>
 
 <p>Geco also saves data on disk every 2 minutes (this parameter <code>AutosaveDelay</code> can be changed in the <code>geco.prop</code> file). Autosave performs a backup using a circular set of files named <code>backupX.zip</code>. Geco uses 9 backups so that the last 18 minutes of activity are always on disk.</p>
 
