@@ -10,11 +10,11 @@ Il y a plusieurs façons de contribuer à Geco, quelles que soient votre expéri
 
 Utilisez, testez, évaluez Geco pour faire votre propre expérience et *parlez-en*. C'est la chose la plus simple que vous pouvez faire.
 
-Si vous trouvez des *bugs* ou voulez faire des *propositions* pour améliorer Geco, vous pouvez me contacter par mail ou utiliser directement le [traqueur](http://bitbucket.org/sdenier/geco/issues/new).
+Si vous trouvez des *bugs* ou voulez faire des *propositions* pour améliorer Geco, vous pouvez me contacter par mail ou utiliser directement le [traqueur](http://github.com/sdenier/Geco/issues/new).
 
 Vous pouvez toujours contribuer à la *documentation* : améliorer les descriptions, images, tutoriaux, screencasts. La *traduction* de l'application et de la documentation est tout aussi importante. Pour toutes ces tâches, un éditeur de texte fait l'affaire.
 
-Si vous êtes développeur, vous pouvez créer votre propre *extension* de Geco, comme indiqué par la [license](license.fr.html). N'hésitez pas à demander de l'aide sur l'architecture et les détails techniques de Geco. Finalement, vous pouvez aider au *développement* de Geco en versant votre code dans le référentiel public. Geco est développé avec [Mercurial](http://mercurial.selenic.com) et [eclipse](http://www.eclipse.org).
+Si vous êtes développeur, vous pouvez créer votre propre *extension* de Geco, comme indiqué par la [license](license.fr.html). N'hésitez pas à demander de l'aide sur l'architecture et les détails techniques de Geco. Finalement, vous pouvez aider au *développement* de Geco en versant votre code dans le référentiel public. Geco est développé avec [Git](http://git-scm.com) et [eclipse](http://www.eclipse.org).
 
 
 ## Contributeurs actuels

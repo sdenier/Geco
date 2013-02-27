@@ -9,7 +9,7 @@ in_menu: true
 L'application Geco est distribuée sous la GNU General Public License Version 2. Voir gpl-2.0.txt.
 
 Les parties originales de l'application sont distribuées sous licence MIT. Voir le fichier LICENSE pour plus de détails.
-Le code open source est disponible à cette adresse : [http://bitbucket.org/sdenier/geco](http://bitbucket.org/sdenier/geco)
+Le code open source est disponible à cette adresse : [http://github.com/sdenier/Geco](http://github.com/sdenier/Geco)
 
 JarClassLoader est distribué sous la GNU General Public License Version 2.
 Voir [http://www.jdotsoft.com/JarClassLoader.php](http://www.jdotsoft.com/JarClassLoader.php)
