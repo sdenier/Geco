@@ -1,7 +1,7 @@
 Geco 2.x (Roadmap)
 ==================
 Copyright (c) 2008-2013 Simon Denier  
-Homepage: http://geco.webou.net
+Homepage: http://sdenier.github.com/Geco
 
 [![Build Status](https://travis-ci.org/sdenier/Geco.png)](https://travis-ci.org/sdenier/Geco)
 
@@ -97,7 +97,7 @@ Directory structure
 
 Contribution
 ------------
-If you want to contribute to Geco (whatever your skills are), you can! Just read [that page](http://geco.webou.net/geco/contribute.html) to see what you can do.
+If you want to contribute to Geco (whatever your skills are), you can! Just read [that page](http://sdenier.github.com/Geco/begin/contribute.html) to see what you can do.
 
 If you specifically want to develop, go read the [dev guidelines](https://github.com/sdenier/Geco/blob/master/README_DEV.md).
 

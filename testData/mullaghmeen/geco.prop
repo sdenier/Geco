@@ -1,7 +1,7 @@
 #Geco Thu Jan 17 00:51:48 CET 2013
 #Thu Jan 17 00:51:48 CET 2013
 SplitFormat=MultiColumns
-SplitHeaderMessage=http\://geco.webou.net
+SplitHeaderMessage=http\://sdenier.github.com/Geco/begin/contribute.html
 AppBuilder=net.geco.app.OrientShowAppBuilder
 name=LL Mullagmmeen 12 Oct 2008
 NbAutoBackups=9

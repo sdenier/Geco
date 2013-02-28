@@ -342,7 +342,7 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 			setSplitFormat(SplitFormat.valueOf(format));
 		}
 		setHeaderMessage( props.getProperty(splitHeaderMessageProperty(), stage().getName()) );
-		setFooterMessage( props.getProperty(splitFooterMessageProperty(), "Geco - http://geco.webou.net") ); //$NON-NLS-1$
+		setFooterMessage( props.getProperty(splitFooterMessageProperty(), "Geco - http://sdenier.github.com/Geco") ); //$NON-NLS-1$
 	}
 
 	@Override
