@@ -27,6 +27,7 @@ import net.geco.framework.IGecoApp;
 import net.geco.functions.DeleteFunction;
 import net.geco.functions.ECardLogFunction;
 import net.geco.functions.GeneratorFunction;
+import net.geco.functions.LegNeutralizationFunction;
 import net.geco.functions.RecheckFunction;
 import net.geco.functions.RefereeLogFunction;
 import net.geco.functions.StartTimeFunction;
@@ -97,6 +98,7 @@ public class OrientShowAppBuilder extends AppBuilder {
 		
 		new RefereeLogFunction(gecoControl);
 		new StartTimeFunction(gecoControl);
+		new LegNeutralizationFunction(gecoControl);
 		new StationLogFunction(gecoControl);
 		new ECardLogFunction(gecoControl);
 		new RecheckFunction(gecoControl);

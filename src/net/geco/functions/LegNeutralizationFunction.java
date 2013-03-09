@@ -98,14 +98,6 @@ public class LegNeutralizationFunction extends GecoFunction {
 				selectCoursesWithNeutralizedLeg();
 			}
 		});
-		JButton markNeutralizedLegsB = new JButton(Messages.uiGet("LegNeutralizationFunction.MarkLegsLabel")); //$NON-NLS-1$
-		markNeutralizedLegsB.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				markNeutralizedLegs();
-			}
-		});
-		markNeutralizedLegsB.setToolTipText(Messages.uiGet("LegNeutralizationFunction.MarkLegsTooltip")); //$NON-NLS-1$
 		JButton resetRaceTimeB = new JButton(Messages.uiGet("LegNeutralizationFunction.ResetTimesLabel")); //$NON-NLS-1$
 		resetRaceTimeB.addActionListener(new ActionListener() {
 			@Override
@@ -117,11 +109,9 @@ public class LegNeutralizationFunction extends GecoFunction {
 		
 		Box vBoxButtons = Box.createVerticalBox();
 		vBoxButtons.add(detectCoursesB);
-		vBoxButtons.add(markNeutralizedLegsB);
 		vBoxButtons.add(resetRaceTimeB);
 
 		paramP.setMaximumSize(paramP.getPreferredSize());
-//		paramP.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 		paramP.setAlignmentY(Component.TOP_ALIGNMENT);
 		vBoxButtons.setAlignmentY(Component.TOP_ALIGNMENT);
 		Box hBox = Box.createHorizontalBox();
@@ -202,29 +192,6 @@ public class LegNeutralizationFunction extends GecoFunction {
 			geco().checker().resetRaceTime(raceData);
 			for (Trace t : raceData.getResult().getTrace()) {
 				t.setNeutralized(false);
-			}
-		}
-	}
-
-	public void markNeutralizedLegs() {
-		geco().announcer().dataInfo(Messages.uiGet("LegNeutralizationFunction.MarkLegsMessage") + legStart + " -> " + legEnd); //$NON-NLS-1$ //$NON-NLS-2$
-		Collection<Course> courses = selectCoursesWithNeutralizedLeg();
-		for (Course course : courses) {
-			geco().announcer().dataInfo(Messages.uiGet("LegNeutralizationFunction.CourseMessage") + course.getName()); //$NON-NLS-1$
-			List<Runner> runners = registry().getRunnersFromCourse(course);
-			for (Runner runner : runners) {
-				markNeutralizedLeg(registry().findRunnerData(runner));
-			}
-		}
-		geco().announcer().dataInfo(Messages.uiGet("LegNeutralizationFunction.EndMarkLegsMessage")); //$NON-NLS-1$
-	}
-
-	public void markNeutralizedLeg(RunnerRaceData raceData) {
-		Trace[] leg = raceData.retrieveLeg(legStart, legEnd);
-		if( leg!=null && !leg[1].isNeutralized() ){
-			if( raceData.officialRaceTime() != raceData.getResult().getRacetime() ){
-				geco().announcer().dataInfo(Messages.uiGet("LegNeutralizationFunction.MarkLabel") + raceData.getRunner().idString()); //$NON-NLS-1$
-				leg[1].setNeutralized(true);
 			}
 		}
 	}
