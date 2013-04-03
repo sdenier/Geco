@@ -56,7 +56,7 @@
     </target>
 
 	<target name="buildnumber">
-		<exec executable="git" outputproperty="build.number">
+		<exec executable="/usr/local/git/bin/git" outputproperty="build.number">
 			<arg line="describe --long" />
 		</exec>
 		<tstamp />

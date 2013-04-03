@@ -1,5 +1,7 @@
 # Geco Changelog
 
+- Make Leg Neutralization available in Inline and Orient'Show configs
+
 ## Version 2.0 alpha
 
 - Replace CSV persistence with JSON persistence
