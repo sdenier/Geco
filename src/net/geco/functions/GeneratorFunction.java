@@ -34,9 +34,9 @@ import net.geco.model.Course;
 import net.geco.model.Messages;
 import net.geco.model.Runner;
 import net.geco.ui.basics.SwingUtils;
-import net.gecosi.MockDataFrame;
-import net.gecosi.SiDataFrame;
 import net.gecosi.SiPunch;
+import net.gecosi.dataframe.MockDataFrame;
+import net.gecosi.dataframe.SiDataFrame;
 
 
 /**

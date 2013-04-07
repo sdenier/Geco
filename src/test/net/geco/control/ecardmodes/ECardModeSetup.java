@@ -13,8 +13,8 @@ import net.geco.model.Course;
 import net.geco.model.Punch;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
-import net.gecosi.SiDataFrame;
 import net.gecosi.SiPunch;
+import net.gecosi.dataframe.SiDataFrame;
 
 import org.mockito.Mock;
 

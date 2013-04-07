@@ -7,7 +7,7 @@ package net.geco.control.ecardmodes;
 import net.geco.basics.GService;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
-import net.gecosi.SiDataFrame;
+import net.gecosi.dataframe.SiDataFrame;
 
 /**
  * @author Simon Denier

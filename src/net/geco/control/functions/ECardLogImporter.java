@@ -13,9 +13,9 @@ import net.geco.basics.Util;
 import net.geco.control.Control;
 import net.geco.control.GecoControl;
 import net.geco.control.ecardmodes.ECardMode;
-import net.gecosi.MockDataFrame;
-import net.gecosi.SiDataFrame;
 import net.gecosi.SiPunch;
+import net.gecosi.dataframe.MockDataFrame;
+import net.gecosi.dataframe.SiDataFrame;
 
 /**
  * @author Simon Denier

@@ -17,8 +17,8 @@ import net.geco.basics.TimeManager;
 import net.geco.basics.Util;
 import net.geco.control.ecardmodes.ECardMode;
 import net.geco.control.functions.ECardLogImporter;
-import net.gecosi.SiDataFrame;
 import net.gecosi.SiPunch;
+import net.gecosi.dataframe.SiDataFrame;
 
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;

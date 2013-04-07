@@ -24,9 +24,9 @@ import net.geco.control.ecardmodes.ECardRegisterMode;
 import net.geco.control.ecardmodes.ECardTrainingMode;
 import net.geco.model.Stage;
 import net.gecosi.CommStatus;
-import net.gecosi.SiDataFrame;
 import net.gecosi.SiHandler;
 import net.gecosi.SiListener;
+import net.gecosi.dataframe.SiDataFrame;
 
 
 /**

@@ -21,7 +21,7 @@ import net.geco.control.ecardmodes.AbstractECardMode;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Status;
-import net.gecosi.SiDataFrame;
+import net.gecosi.dataframe.SiDataFrame;
 
 import org.junit.Before;
 import org.junit.Test;
