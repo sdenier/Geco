@@ -29,6 +29,7 @@ import net.geco.functions.GeneratorFunction;
 import net.geco.functions.LegNeutralizationFunction;
 import net.geco.functions.RecheckFunction;
 import net.geco.functions.RefereeLogFunction;
+import net.geco.functions.ResetECardFunction;
 import net.geco.functions.StartTimeFunction;
 import net.geco.functions.StationLogFunction;
 import net.geco.model.Factory;
@@ -98,6 +99,7 @@ public class ClassicAppBuilder extends AppBuilder {
 		new StationLogFunction(gecoControl);
 		new ECardLogFunction(gecoControl);
 		new RecheckFunction(gecoControl);
+		new ResetECardFunction(gecoControl);
 		new DeleteFunction(gecoControl);
 		new GeneratorFunction(gecoControl);
 	}
