@@ -7,10 +7,7 @@ package net.geco.control.ecardmodes;
 import net.geco.basics.GService;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
-
-import org.martin.sireader.common.PunchObject;
-import org.martin.sireader.common.PunchRecordData;
-import org.martin.sireader.server.IResultData;
+import net.gecosi.SiDataFrame;
 
 /**
  * @author Simon Denier
@@ -24,7 +21,7 @@ public interface ECardMode extends GService {
 	 * 
 	 * @param card
 	 */
-	public void processECard(IResultData<PunchObject, PunchRecordData> card);
+	public void processECard(SiDataFrame card);
 
 	public void handleRegistered(RunnerRaceData runnerData);
 

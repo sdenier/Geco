@@ -22,14 +22,10 @@ import net.geco.control.ecardmodes.ECardRacingMode;
 import net.geco.control.ecardmodes.ECardRegisterMode;
 import net.geco.control.ecardmodes.ECardTrainingMode;
 import net.geco.model.Stage;
-
-import org.martin.sireader.common.PunchObject;
-import org.martin.sireader.common.PunchRecordData;
-import org.martin.sireader.common.ResultData;
-import org.martin.sireader.server.IResultData;
-import org.martin.sireader.server.PortMessage;
-import org.martin.sireader.server.SIPortHandler;
-import org.martin.sireader.server.SIReaderListener;
+import net.gecosi.CommStatus;
+import net.gecosi.SiDataFrame;
+import net.gecosi.SiHandler;
+import net.gecosi.SiListener;
 
 
 /**
@@ -37,22 +33,17 @@ import org.martin.sireader.server.SIReaderListener;
  * @since Oct 8, 2009
  *
  */
-public class SIReaderHandler extends Control
-	implements Announcer.StageListener, SIReaderListener<PunchObject,PunchRecordData> {
+public class SIReaderHandler extends Control implements Announcer.StageListener, SiListener {
 	
 	private static final boolean DEBUGMODE = false;
 	
 
-	private SIPortHandler portHandler;
+	private SiHandler siHandler;
 
 	private SerialPort siPort;
 	
 	private Vector<SerialPort> serialPorts;
 	
-	private int nbTry;
-	
-	private boolean starting;
-
 	
 	private ECardMode currentEcardMode;
 	
@@ -168,8 +159,8 @@ public class SIReaderHandler extends Control
 	}
 	
 	public void changeZeroTime() {
-		if( portHandler!=null )
-			portHandler.setCourseZeroTime( stage().getZeroHour() );
+		if( siHandler!=null )
+			siHandler.setZeroHour( stage().getZeroHour() );
 	}
 	
 	public Vector<SerialPort> listPorts() {
@@ -251,67 +242,60 @@ public class SIReaderHandler extends Control
 		this.siPort = port;
 	}
 
-	private void configure() {
-		portHandler = new SIPortHandler(new ResultData());
-		portHandler.addListener(this);
-		portHandler.setPortName(getPort().name());
-		portHandler.setDebugDir(stage().getBaseDir());
-		changeZeroTime();
-	}
-
 	public void start() {
-		configure();
-		nbTry = 0;
-		starting = true;
-		portHandler.start();
-		PortMessage m = new PortMessage(SIPortHandler.START);
-		portHandler.sendMessage(m);
+		siHandler = new SiHandler(this);
+		changeZeroTime();
+		try {
+			siHandler.connect(getPort().name());
+		} catch (Exception e) {
+			geco().debug(e.getLocalizedMessage());
+		}
 	}
 	
 	public void stop() {
-		if( portHandler==null )
+		if( siHandler==null )
 			return;
-		try {
-			portHandler.interrupt();
-			portHandler.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		siHandler.stop();
 	}
 	
 	public boolean isOn() {
-		return portHandler!=null && portHandler.isAlive();
+		return siHandler!=null && siHandler.isAlive();
 	}
 	
 	@Override
-	public void newCardRead(IResultData<PunchObject,PunchRecordData> card) {
+	public void handleEcard(SiDataFrame card) {
 		currentEcardMode.processECard(card);		
 	}
 
+	@Override
+	public void notify(CommStatus status) {
+		// TODO Auto-generated method stub
+		
+//		if( status.equals("     Open      ") ){ //$NON-NLS-1$
+//		geco().announcer().announceStationStatus("Ready"); //$NON-NLS-1$
+//	}
+//	if( status.equals("     Connecting") ){ //$NON-NLS-1$
+//		nbTry++;
+//	}
+//	if( nbTry>=2 ) { // catch any tentative to re-connect after a deconnexion
+//		siHandler.interrupt(); // one last try, after interruption
+//		if( starting ) { // wrong port
+//			geco().announcer().announceStationStatus("NotFound"); //$NON-NLS-1$
+//		} else { // station was disconnected?
+//			geco().announcer().announceStationStatus("Failed"); //$NON-NLS-1$
+//		}
+//	}
+		geco().log(status.name());
+	}
 
 	@Override
-	public void portStatusChanged(String status) {
-		if( status.equals("     Open      ") && starting ){ //$NON-NLS-1$
-			geco().announcer().announceStationStatus("Ready"); //$NON-NLS-1$
-			starting = false;
-		}
-		if( status.equals("     Connecting") ){ //$NON-NLS-1$
-			nbTry++;
-		}
-		if( nbTry>=2 ) { // catch any tentative to re-connect after a deconnexion
-			portHandler.interrupt(); // one last try, after interruption
-			if( starting ) { // wrong port
-				geco().announcer().announceStationStatus("NotFound"); //$NON-NLS-1$
-			} else { // station was disconnected?
-				geco().announcer().announceStationStatus("Failed"); //$NON-NLS-1$
-			}
-		}
+	public void notify(CommStatus errorStatus, String errorMessage) {
+		// TODO Auto-generated method stub
+		geco().log(errorMessage);
 	}
-	
-	
+
 	@Override
 	public void changed(Stage previous, Stage next) {
-//		stop();
 		changePortName();
 		changeZeroTime();
 	}

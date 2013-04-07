@@ -21,10 +21,10 @@ import net.geco.control.ecardmodes.AbstractECardMode;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Status;
+import net.gecosi.SiDataFrame;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.martin.sireader.common.PunchObject;
 
 /**
  * @author Simon Denier
@@ -64,7 +64,7 @@ public class AbstractECardModeTest extends ECardModeSetup {
 
 	private Runner setUpRegistryForRegisteredEcard(String ecardId) {
 		Runner runner = fullRunnerData.getRunner();
-		when(card.getSiIdent()).thenReturn(ecardId);
+		when(card.getSiNumber()).thenReturn(ecardId);
 		when(registry.findRunnerByEcard(ecardId)).thenReturn(runner);
 		when(registry.findRunnerData(runner)).thenReturn(fullRunnerData);
 		return runner;
@@ -98,7 +98,7 @@ public class AbstractECardModeTest extends ECardModeSetup {
 
 	@Test
 	public void processECardUnregisteredCase() {
-		when(card.getSiIdent()).thenReturn("999");
+		when(card.getSiNumber()).thenReturn("999");
 		when(registry.findRunnerByEcard("999")).thenReturn(null);
 		ecardMode.processECard(card);
 		checkCardData(card, ecardMode.unregisteredData);
@@ -125,14 +125,14 @@ public class AbstractECardModeTest extends ECardModeSetup {
 	
 	@Test
 	public void safeTime() {
-		assertEquals(TimeManager.NO_TIME, ecardMode.safeTime(PunchObject.INVALID));
+		assertEquals(TimeManager.NO_TIME, ecardMode.safeTime(SiDataFrame.NO_TIME));
 		assertEquals(new Date(1000), ecardMode.safeTime(1000));
 	}
 
 	@Test
 	public void processStarttime() {
 		RunnerRaceData unlinkedRunnerData = factory.createRunnerRaceData();
-		when(card.getStartTime()).thenReturn(1000l, PunchObject.INVALID);
+		when(card.getStartTime()).thenReturn(1000l, SiDataFrame.NO_TIME);
 		
 		ecardMode.processStarttime(unlinkedRunnerData, card);
 		assertEquals("Set Start time", new Date(1000), unlinkedRunnerData.getStarttime());
@@ -144,7 +144,7 @@ public class AbstractECardModeTest extends ECardModeSetup {
 
 	@Test
 	public void processStarttimeWithRegisteredStarttime() {
-		when(card.getStartTime()).thenReturn(1000l, PunchObject.INVALID);
+		when(card.getStartTime()).thenReturn(1000l, SiDataFrame.NO_TIME);
 
 		Runner runner = fullRunnerData.getRunner();
 		runner.setRegisteredStarttime(new Date(5));
@@ -167,7 +167,7 @@ public class AbstractECardModeTest extends ECardModeSetup {
 	
 	@Test
 	public void processFinishtime() {
-		when(card.getFinishTime()).thenReturn(1000l, PunchObject.INVALID);
+		when(card.getFinishTime()).thenReturn(1000l, SiDataFrame.NO_TIME);
 		
 		ecardMode.processFinishtime(fullRunnerData, card);
 		assertEquals("Set Finish time", new Date(1000), fullRunnerData.getFinishtime());

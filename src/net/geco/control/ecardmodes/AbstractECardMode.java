@@ -4,7 +4,6 @@
  */
 package net.geco.control.ecardmodes;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import net.geco.basics.TimeManager;
@@ -14,11 +13,8 @@ import net.geco.model.Messages;
 import net.geco.model.Punch;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
-
-import org.martin.sireader.common.PunchObject;
-import org.martin.sireader.common.PunchRecordData;
-import org.martin.sireader.server.IPunchObject;
-import org.martin.sireader.server.IResultData;
+import net.gecosi.SiDataFrame;
+import net.gecosi.SiPunch;
 
 /**
  * @author Simon Denier
@@ -43,8 +39,8 @@ public abstract class AbstractECardMode extends Control implements ECardMode {
 	 * @param card
 	 */
 	@Override
-	public void processECard(IResultData<PunchObject,PunchRecordData> card) {
-		String cardId = card.getSiIdent();
+	public void processECard(SiDataFrame card) {
+		String cardId = card.getSiNumber();
 		Runner runner = registry().findRunnerByEcard(cardId);
 		if( runner!=null ) {
 			RunnerRaceData runnerData = registry().findRunnerData(runner);
@@ -63,21 +59,21 @@ public abstract class AbstractECardMode extends Control implements ECardMode {
 		}
 	}
 
-	protected void processRegistered(IResultData<PunchObject,PunchRecordData> card, RunnerRaceData data) {
+	protected void processRegistered(SiDataFrame card, RunnerRaceData data) {
 		handleRegistered(updateRaceDataWith(data, card));
 	}
 	
-	protected void processDuplicate(IResultData<PunchObject, PunchRecordData> card, Runner runner) {
+	protected void processDuplicate(SiDataFrame card, Runner runner) {
 		handleDuplicate(createUnregisteredData(card), runner);
 	}
 
-	protected void processUnregistered(IResultData<PunchObject, PunchRecordData> card) {
-		handleUnregistered(createUnregisteredData(card), card.getSiIdent());
+	protected void processUnregistered(SiDataFrame card) {
+		handleUnregistered(createUnregisteredData(card), card.getSiNumber());
 	}
 
-	public RunnerRaceData updateRaceDataWith(RunnerRaceData runnerData, IResultData<PunchObject,PunchRecordData> card) {
+	public RunnerRaceData updateRaceDataWith(RunnerRaceData runnerData, SiDataFrame card) {
 		runnerData.stampReadtime();
-		runnerData.setErasetime(safeTime(card.getClearTime()));
+//		runnerData.setErasetime(safeTime(card.getClearTime())); // TODO remove data field
 		runnerData.setControltime(safeTime(card.getCheckTime()));		
 		processStarttime(runnerData, card);
 		processFinishtime(runnerData, card);
@@ -85,7 +81,7 @@ public abstract class AbstractECardMode extends Control implements ECardMode {
 		return runnerData;
 	}
 	
-	public RunnerRaceData createUnregisteredData(IResultData<PunchObject,PunchRecordData> card) {
+	public RunnerRaceData createUnregisteredData(SiDataFrame card) {
 		RunnerRaceData newData = factory().createRunnerRaceData();
 		newData.setResult(factory().createRunnerResult());
 		updateRaceDataWith(newData, card);
@@ -93,14 +89,10 @@ public abstract class AbstractECardMode extends Control implements ECardMode {
 	}
 
 	public Date safeTime(long siTime) {
-		if( siTime>PunchObject.INVALID ) {
-			return new Date(siTime);
-		} else {
-			return TimeManager.NO_TIME;
-		}
+		return ( siTime == SiDataFrame.NO_TIME ) ? TimeManager.NO_TIME : new Date(siTime);
 	}
 
-	public void processStarttime(RunnerRaceData runnerData, IResultData<PunchObject, PunchRecordData> card) {
+	public void processStarttime(RunnerRaceData runnerData, SiDataFrame card) {
 		Date startTime = safeTime(card.getStartTime());
 		runnerData.setStarttime(startTime); // raw time
 		if( startTime.equals(TimeManager.NO_TIME) // no start time on card
@@ -109,25 +101,24 @@ public abstract class AbstractECardMode extends Control implements ECardMode {
 			startTime = runnerData.getRunner().getRegisteredStarttime();
 		}
 		if( startTime.equals(TimeManager.NO_TIME) ) {
-			geco().log("MISSING start time for " + card.getSiIdent()); //$NON-NLS-1$
+			geco().log("MISSING start time for " + card.getSiNumber()); //$NON-NLS-1$
 		}
 	}
 
-	public void processFinishtime(RunnerRaceData runnerData, IResultData<PunchObject, PunchRecordData> card) {
+	public void processFinishtime(RunnerRaceData runnerData, SiDataFrame card) {
 		Date finishTime = safeTime(card.getFinishTime());
 		runnerData.setFinishtime(finishTime);
 		if( finishTime.equals(TimeManager.NO_TIME) ) {
-			geco().log("MISSING finish time for " + card.getSiIdent()); //$NON-NLS-1$
+			geco().log("MISSING finish time for " + card.getSiNumber()); //$NON-NLS-1$
 		}
 	}
 
-	private void processPunches(RunnerRaceData runnerData, ArrayList<PunchObject> punchArray) {
-		Punch[] punches = new Punch[punchArray.size()];
+	private void processPunches(RunnerRaceData runnerData, SiPunch[] punchArray) {
+		Punch[] punches = new Punch[punchArray.length];
 		for(int i=0; i< punches.length; i++) {
-			IPunchObject punchObject = punchArray.get(i);
 			punches[i] = factory().createPunch();
-			punches[i].setCode(punchObject.getCode());
-			punches[i].setTime(new Date(punchObject.getTime()));
+			punches[i].setCode(punchArray[i].code());
+			punches[i].setTime(new Date(punchArray[i].timestamp()));
 		}
 		runnerData.setPunches(punches);
 	}

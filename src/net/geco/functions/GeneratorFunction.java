@@ -34,9 +34,9 @@ import net.geco.model.Course;
 import net.geco.model.Messages;
 import net.geco.model.Runner;
 import net.geco.ui.basics.SwingUtils;
-
-import org.martin.sireader.common.PunchObject;
-import org.martin.sireader.common.ResultData;
+import net.gecosi.MockDataFrame;
+import net.gecosi.SiDataFrame;
+import net.gecosi.SiPunch;
 
 
 /**
@@ -167,11 +167,11 @@ public class GeneratorFunction extends GecoFunction {
 		this.mutationX = mutationX;
 	}
 	
-	public ResultData generateRunnerData() throws RunnerCreationException {
+	public SiDataFrame generateRunnerData() throws RunnerCreationException {
 		random = new Random();
 		Runner runner = generateRunner();
-		ResultData card = generateCardData(runner);
-		siHandler.newCardRead(card);
+		SiDataFrame card = generateCardData(runner);
+		siHandler.handleEcard(card);
 		return card;
 	}
 	
@@ -182,38 +182,35 @@ public class GeneratorFunction extends GecoFunction {
 		return runner;
 	}
 	
-	public ResultData generateCardData(Runner runner) {
+	public SiDataFrame generateCardData(Runner runner) {
 		return generateCardData(runner.getEcard(), runner.getCourse());
 	}
 
-	public ResultData generateCardData(String chipNumber, Course course) {
-		ResultData card = new ResultData();
-		card.setSiIdent(chipNumber);
+	public SiDataFrame generateCardData(String chipNumber, Course course) {
+		long checkTime = SiDataFrame.NO_TIME;
 		long startTime = stage().getZeroHour() + randomTime();
-		card.setStartTime(startTime);
-		card.setFinishTime(startTime + randomTime());
-		card.setPunches(generateRandomPunchesFor(course, mutationX));
-		card.evaluateTimes();
+		long finishTime = startTime + randomTime();
+		SiDataFrame card = new MockDataFrame(chipNumber, checkTime, startTime, finishTime, generateRandomPunchesFor(course, mutationX));
 		return card;
 	}
 
 	
-	public ResultData generateUnknownData() {
+	public SiDataFrame generateUnknownData() {
 		random = new Random();
 		withRegistryControls();
-		ResultData cardData = generateCardData(runnerControl.newUniqueEcard(), randomCourse());
-		siHandler.newCardRead(cardData);
+		SiDataFrame cardData = generateCardData(runnerControl.newUniqueEcard(), randomCourse());
+		siHandler.handleEcard(cardData);
 		return cardData;
 	}
 	
-	public ResultData generateOverwriting() {
+	public SiDataFrame generateOverwriting() {
 		random = new Random();
 		withRegistryControls();
 		List<Runner> runnersFromCourse = registry().getRunnersFromCourse(randomCourse());
 		if( ! runnersFromCourse.isEmpty() ){
 			Runner runner = runnersFromCourse.get(random.nextInt(runnersFromCourse.size()));
-			ResultData cardData = generateCardData(runner);
-			siHandler.newCardRead(cardData);
+			SiDataFrame cardData = generateCardData(runner);
+			siHandler.handleEcard(cardData);
 			return cardData;
 		}
 		return null;
@@ -231,7 +228,7 @@ public class GeneratorFunction extends GecoFunction {
 	}
 	private long randomTime(int startRange, int endRange, float timeDis, int noTimeFreq) {
 		if (random.nextInt(noTimeFreq) == 1) {
-			return PunchObject.INVALID;
+			return SiDataFrame.NO_TIME;
 		}
 
 		float meanTime = (endRange - startRange) / 2f + startRange;
@@ -241,21 +238,21 @@ public class GeneratorFunction extends GecoFunction {
 			return TimeManager.userParse(minutes + ":" + random.nextInt(60)).getTime(); //$NON-NLS-1$
 		} catch (ParseException e) {
 			e.printStackTrace();
-			return PunchObject.INVALID;
+			return SiDataFrame.NO_TIME;
 		}
 	}
 
 	
-	private ArrayList<PunchObject> generateRandomPunchesFor(Course course, int mutationX) {
-		ArrayList<PunchObject> punches = normalTrace(course.getCodes());
+	private SiPunch[] generateRandomPunchesFor(Course course, int mutationX) {
+		List<SiPunch> punches = normalTrace(course.getCodes());
 		int mutations = (int) randomByPowerLaw(mutationX, 0, mutationX, random);
 		for (int i = 0; i < mutations; i++) {
 			mutate(punches);
 		}
-		return punches;
+		return punches.toArray(new SiPunch[0]);
 	}
 
-	private void mutate(ArrayList<PunchObject> punches) {
+	private void mutate(List<SiPunch> punches) {
 		int pos = random.nextInt(punches.size());
 		int op = random.nextInt(10);
 		if( op<5 ) {
@@ -273,20 +270,20 @@ public class GeneratorFunction extends GecoFunction {
 		mutateInvertPunch(punches, pos);
 	}
 
-	private void mutateInvertPunch(ArrayList<PunchObject> punches, int pos) {
-		if( pos<punches.size()-1 ) {
-			PunchObject punch = punches.get(pos);
+	private void mutateInvertPunch(List<SiPunch> punches, int pos) {
+		if( pos < punches.size()-1 ) {
+			SiPunch punch = punches.get(pos);
 			punches.set(pos, punches.get(pos + 1));
 			punches.set(pos + 1, punch);
 		}
 	}
-	private void mutateAddPunch(ArrayList<PunchObject> punches, int pos) {
-		punches.add(pos, new PunchObject(randomControl(0), PunchObject.NO_TIME));
+	private void mutateAddPunch(List<SiPunch> punches, int pos) {
+		punches.add(pos, new SiPunch(randomControl(0), SiDataFrame.NO_TIME));
 	}
-	private void mutateSubsPunch(ArrayList<PunchObject> punches, int pos) {
-		punches.set(pos, new PunchObject(randomControl(punches.get(pos).getCode()), PunchObject.NO_TIME));
+	private void mutateSubsPunch(List<SiPunch> punches, int pos) {
+		punches.set(pos, new SiPunch(randomControl(punches.get(pos).code()), SiDataFrame.NO_TIME));
 	}
-	private void mutateMissingPunch(ArrayList<PunchObject> punches, int pos) {
+	private void mutateMissingPunch(List<SiPunch> punches, int pos) {
 		punches.remove(pos);
 	}
 
@@ -316,10 +313,10 @@ public class GeneratorFunction extends GecoFunction {
 		return this;
 	}
 
-	private ArrayList<PunchObject> normalTrace(int[] codes) {
-		ArrayList<PunchObject> punches = new ArrayList<PunchObject>(codes.length);
+	private List<SiPunch> normalTrace(int[] codes) {
+		List<SiPunch> punches = new ArrayList<SiPunch>(codes.length);
 		for (int i = 0; i < codes.length; i++) {
-			punches.add(new PunchObject(codes[i], PunchObject.NO_TIME));
+			punches.add(new SiPunch(codes[i], SiDataFrame.NO_TIME));
 		}
 		return punches;
 	}
@@ -356,7 +353,7 @@ public class GeneratorFunction extends GecoFunction {
 //	public static void displayOne(GecoControl c) {
 //		Generator generator = new Generator(c, new RunnerControl(c), new SIReaderHandler(c, null));
 //		try {
-//			ResultData data = generator.generateRunnerData();
+//			SiDataFrame data = generator.generateRunnerData();
 //			RunnerRaceData rData = c.registry().findRunnerData(data.getSiIdent());
 //			System.out.println(rData.infoString());
 //			System.out.println(rData.getResult().formatTrace());

@@ -11,17 +11,16 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import net.geco.basics.CsvReader;
 import net.geco.basics.TimeManager;
 import net.geco.basics.Util;
 import net.geco.control.ecardmodes.ECardMode;
 import net.geco.control.functions.ECardLogImporter;
+import net.gecosi.SiDataFrame;
+import net.gecosi.SiPunch;
 
 import org.junit.Test;
-import org.martin.sireader.common.PunchObject;
-import org.martin.sireader.common.ResultData;
 import org.mockito.ArgumentCaptor;
 
 /**
@@ -48,26 +47,25 @@ public class ECardLogImporterTest {
 	
 	@Test
 	public void convertRecord_shouldCreateResultData() {
-		ResultData resultData = subject().convertRecord(SAMPLE_RECORD);
+		SiDataFrame resultData = subject().convertRecord(SAMPLE_RECORD);
 		
 		checkResultData(resultData);
 	}
 
-	private void checkResultData(ResultData resultData) {
-		assertEquals("1061511", resultData.getSiIdent());
-		assertEquals(time("11:42:11"), resultData.getClearTime());
+	private void checkResultData(SiDataFrame resultData) {
+		assertEquals("1061511", resultData.getSiNumber());
 		assertEquals(time("11:42:12"), resultData.getCheckTime());
 		assertEquals(time("11:44:42"), resultData.getStartTime());
 		assertEquals(time("12:02:43"), resultData.getFinishTime());
 		
-		ArrayList<PunchObject> punches = resultData.getPunches();
-		assertEquals(15, punches.size());
-		PunchObject firstPunch = punches.get(0);
-		assertEquals(160, firstPunch.getCode());
-		assertEquals(time("11:45:46"), firstPunch.getTime());
-		PunchObject lastPunch = punches.get(punches.size() - 1);
-		assertEquals(172, lastPunch.getCode());
-		assertEquals(time("12:02:27"), lastPunch.getTime());
+		SiPunch[] punches = resultData.getPunches();
+		assertEquals(15, punches.length);
+		SiPunch firstPunch = punches[0];
+		assertEquals(160, firstPunch.code());
+		assertEquals(time("11:45:46"), firstPunch.timestamp());
+		SiPunch lastPunch = punches[punches.length - 1];
+		assertEquals(172, lastPunch.code());
+		assertEquals(time("12:02:27"), lastPunch.timestamp());
 	}
 
 	private long time(String time) {
@@ -81,7 +79,7 @@ public class ECardLogImporterTest {
 			ECardMode readingMode = mock(ECardMode.class);
 			CsvReader csvReader = mock(CsvReader.class);
 			when(csvReader.readRecord()).thenReturn(new String[]{"Header1;Header2"}, SAMPLE_RECORD, null);
-			ArgumentCaptor<ResultData> data = ArgumentCaptor.forClass(ResultData.class);
+			ArgumentCaptor<SiDataFrame> data = ArgumentCaptor.forClass(SiDataFrame.class);
 			
 			subject().processECardData(readingMode, csvReader);
 
