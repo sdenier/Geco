@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.InputVerifier;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -22,6 +23,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 
 import net.geco.basics.Html;
 import net.geco.control.SIReaderHandler.SerialPort;
@@ -44,11 +47,18 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 		c.insets = new Insets(0, 0, 5, 5);
 		c.fill = GridBagConstraints.HORIZONTAL;
 		add(new JLabel(Messages.uiGet("SIReaderConfigPanel.StationPortLabel")), c); //$NON-NLS-1$
-		final JComboBox stationPortCB = new JComboBox(geco.siHandler().listPorts());
+		final JComboBox stationPortCB = new JComboBox();
+		populateCommPorts(geco, stationPortCB);
 		stationPortCB.setPreferredSize(new Dimension(170, stationPortCB.getPreferredSize().height));
 		stationPortCB.setToolTipText(Messages.uiGet("SIReaderConfigPanel.StationPortTooltip")); //$NON-NLS-1$
 		add(stationPortCB, c);
-		stationPortCB.setSelectedItem(geco.siHandler().getPort());
+		stationPortCB.addPopupMenuListener(new PopupMenuListener() {
+			public void popupMenuWillBecomeVisible(PopupMenuEvent arg0) {
+				populateCommPorts(geco, stationPortCB);
+			}
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent arg0) {}
+			public void popupMenuCanceled(PopupMenuEvent arg0) {}
+		});
 		stationPortCB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -188,6 +198,11 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 		
 		modeConfigBox.add(Box.createVerticalStrut(10));
 		modeConfigBox.add(insertConfigBox);
+	}
+
+	private void populateCommPorts(final IGecoApp geco, final JComboBox stationPortCB) {
+		stationPortCB.setModel(new DefaultComboBoxModel(geco.siHandler().refreshPorts().toArray()));
+		stationPortCB.setSelectedItem(geco.siHandler().getPort());
 	}
 
 	@Override

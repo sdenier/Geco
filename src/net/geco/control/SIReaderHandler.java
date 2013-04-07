@@ -6,10 +6,11 @@ package net.geco.control;
 
 import gnu.io.CommPortIdentifier;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
-import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,7 +43,7 @@ public class SIReaderHandler extends Control implements Announcer.StageListener,
 
 	private SerialPort siPort;
 	
-	private Vector<SerialPort> serialPorts;
+	private List<SerialPort> serialPorts;
 	
 	
 	private ECardMode currentEcardMode;
@@ -65,6 +66,16 @@ public class SIReaderHandler extends Control implements Announcer.StageListener,
 		public String toString(){
 			return friendlyName;
 		}
+		public boolean equals(Object obj) {
+			return obj instanceof SerialPort &&
+					port.equals(((SerialPort) obj).port) &&
+					friendlyName.equals(((SerialPort) obj).friendlyName);
+		}
+		@Override
+		public int hashCode() {
+			return port.hashCode() & friendlyName.hashCode();
+		}
+		
 	}
 	
 	
@@ -145,17 +156,17 @@ public class SIReaderHandler extends Control implements Announcer.StageListener,
 	}
 	
 	private void changePortName() {
-		serialPorts = null; // reset listPorts
+		List<SerialPort> currentPorts = refreshPorts();
 		String port = stage().getProperties().getProperty(portNameProperty());
-		if( port!=null ) {
-			for (SerialPort serial : listPorts()) {
+		if( port != null ) {
+			for (SerialPort serial : currentPorts) {
 				if( serial.name().equals(port) ){
 					setPort(serial);
 					return;
 				}
 			}
 		}
-		setPort(detectSIPort());
+		setPort(detectSIPort(currentPorts));
 	}
 	
 	public void changeZeroTime() {
@@ -163,11 +174,16 @@ public class SIReaderHandler extends Control implements Announcer.StageListener,
 			siHandler.setZeroHour( stage().getZeroHour() );
 	}
 	
-	public Vector<SerialPort> listPorts() {
+	public List<SerialPort> refreshPorts() {
+		serialPorts = null;
+		return listPorts();
+	}
+
+	public List<SerialPort> listPorts() {
 		if( serialPorts==null ){
 			@SuppressWarnings("rawtypes")
 			Enumeration portIdentifiers = CommPortIdentifier.getPortIdentifiers();
-			Vector<String> sPorts = new Vector<String>();
+			List<String> sPorts = new ArrayList<String>();
 			if( DEBUGMODE )
 				geco().debug("*** CommPort listing ***"); //$NON-NLS-1$
 			while( portIdentifiers.hasMoreElements() ){
@@ -182,8 +198,8 @@ public class SIReaderHandler extends Control implements Announcer.StageListener,
 		}
 		return serialPorts;
 	}
-	private Vector<SerialPort> createFriendlyPorts(Vector<String> serialPorts) {
-		Vector<SerialPort> ports = new Vector<SerialPort>(serialPorts.size());
+	private List<SerialPort> createFriendlyPorts(List<String> serialPorts) {
+		List<SerialPort> ports = new ArrayList<SerialPort>(serialPorts.size());
 		ports.add(new SerialPort("", "")); // empty port //$NON-NLS-1$ //$NON-NLS-2$
 		if( GecoResources.platformIsWindows() ){
 			// "HKLM\\System\\CurrentControlSet\\Enum\\USB\\Vid_10c4&Pid_800a\\78624 /v FriendlyName";
@@ -219,19 +235,19 @@ public class SIReaderHandler extends Control implements Announcer.StageListener,
 		return ports;
 	}
 
-	private SerialPort detectSIPort() {
+	private SerialPort detectSIPort(List<SerialPort> currentPorts) {
 		String match;
 		if( GecoResources.platformIsWindows() ){
 			match = "SPORTident"; //$NON-NLS-1$
 		} else { // Linux, Mac
 			match = "/dev/tty.SLAB_USBtoUART"; //$NON-NLS-1$
 		}
-		for (SerialPort serial : listPorts()) {
+		for (SerialPort serial : currentPorts) {
 			if( serial.toString().contains(match) ){
 				return serial;
 			}
 		}
-		return serialPorts.firstElement();
+		return currentPorts.get(0);
 	}
 	
 	public SerialPort getPort() {
