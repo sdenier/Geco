@@ -285,29 +285,27 @@ public class SIReaderHandler extends Control implements Announcer.StageListener,
 
 	@Override
 	public void notify(CommStatus status) {
-		// TODO Auto-generated method stub
-		
-//		if( status.equals("     Open      ") ){ //$NON-NLS-1$
-//		geco().announcer().announceStationStatus("Ready"); //$NON-NLS-1$
-//	}
-//	if( status.equals("     Connecting") ){ //$NON-NLS-1$
-//		nbTry++;
-//	}
-//	if( nbTry>=2 ) { // catch any tentative to re-connect after a deconnexion
-//		siHandler.interrupt(); // one last try, after interruption
-//		if( starting ) { // wrong port
-//			geco().announcer().announceStationStatus("NotFound"); //$NON-NLS-1$
-//		} else { // station was disconnected?
-//			geco().announcer().announceStationStatus("Failed"); //$NON-NLS-1$
-//		}
-//	}
-		geco().log(status.name());
+		geco().debug(status.name());
+		switch (status) {
+		case ON:
+			geco().announcer().announceStationStatus("Ready"); //$NON-NLS-1$
+			break;
+		default:
+			break;
+		}
 	}
 
 	@Override
 	public void notify(CommStatus errorStatus, String errorMessage) {
 		// TODO Auto-generated method stub
 		geco().log(errorMessage);
+		geco().announcer().announceStationStatus("Failed"); //$NON-NLS-1$
+//		if( starting ) { // wrong port
+//		geco().announcer().announceStationStatus("NotFound"); //$NON-NLS-1$
+//	} else { // station was disconnected?
+//		geco().announcer().announceStationStatus("Failed"); //$NON-NLS-1$
+//	}
+
 	}
 
 	@Override
