@@ -102,7 +102,7 @@
 	
 	<target name="build_GecoSI_jar">
 		<ant dir="${gecosi.dir}" target="build_jar" />
-		<copy file="${gecosi.dir}/GecoSI.jar" tofile="${geco.dir}/lib/GecoSI.jar" />
+		<copy file="${gecosi.dir}/GecoSI.jar" tofile="${geco.dir}/lib/GecoSI.jar" overwrite="true" />
 	</target>
 	
     <target name="build_distrib" depends="build_release_jar,userHelp">

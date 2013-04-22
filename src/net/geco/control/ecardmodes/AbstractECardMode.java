@@ -13,8 +13,8 @@ import net.geco.model.Messages;
 import net.geco.model.Punch;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
-import net.gecosi.SiPunch;
 import net.gecosi.dataframe.SiDataFrame;
+import net.gecosi.dataframe.SiPunch;
 
 /**
  * @author Simon Denier
