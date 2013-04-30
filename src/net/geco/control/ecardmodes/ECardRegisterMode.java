@@ -7,10 +7,7 @@ package net.geco.control.ecardmodes;
 import net.geco.control.GecoControl;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
-
-import org.martin.sireader.common.PunchObject;
-import org.martin.sireader.common.PunchRecordData;
-import org.martin.sireader.server.IResultData;
+import net.gecosi.dataframe.SiDataFrame;
 
 /**
  * @author Simon Denier
@@ -25,18 +22,18 @@ public class ECardRegisterMode extends AbstractECardMode {
 	}
 
 	@Override
-	protected void processRegistered(IResultData<PunchObject, PunchRecordData> card, RunnerRaceData data) {
+	protected void processRegistered(SiDataFrame card, RunnerRaceData data) {
 		handleRegistered(data);
 	}
 
 	@Override
-	protected void processDuplicate(IResultData<PunchObject, PunchRecordData> card, Runner runner) {
+	protected void processDuplicate(SiDataFrame card, Runner runner) {
 		handleDuplicate(null, runner);
 	}
 
 	@Override
-	protected void processUnregistered(IResultData<PunchObject, PunchRecordData> card) {
-		handleUnregistered(null, card.getSiIdent());
+	protected void processUnregistered(SiDataFrame card) {
+		handleUnregistered(null, card.getSiNumber());
 	}
 
 

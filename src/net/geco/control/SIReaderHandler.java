@@ -6,10 +6,11 @@ package net.geco.control;
 
 import gnu.io.CommPortIdentifier;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
-import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,14 +23,10 @@ import net.geco.control.ecardmodes.ECardRacingMode;
 import net.geco.control.ecardmodes.ECardRegisterMode;
 import net.geco.control.ecardmodes.ECardTrainingMode;
 import net.geco.model.Stage;
-
-import org.martin.sireader.common.PunchObject;
-import org.martin.sireader.common.PunchRecordData;
-import org.martin.sireader.common.ResultData;
-import org.martin.sireader.server.IResultData;
-import org.martin.sireader.server.PortMessage;
-import org.martin.sireader.server.SIPortHandler;
-import org.martin.sireader.server.SIReaderListener;
+import net.gecosi.CommStatus;
+import net.gecosi.SiHandler;
+import net.gecosi.SiListener;
+import net.gecosi.dataframe.SiDataFrame;
 
 
 /**
@@ -37,22 +34,17 @@ import org.martin.sireader.server.SIReaderListener;
  * @since Oct 8, 2009
  *
  */
-public class SIReaderHandler extends Control
-	implements Announcer.StageListener, SIReaderListener<PunchObject,PunchRecordData> {
+public class SIReaderHandler extends Control implements Announcer.StageListener, SiListener {
 	
 	private static final boolean DEBUGMODE = false;
 	
 
-	private SIPortHandler portHandler;
+	private SiHandler siHandler;
 
 	private SerialPort siPort;
 	
-	private Vector<SerialPort> serialPorts;
+	private List<SerialPort> serialPorts;
 	
-	private int nbTry;
-	
-	private boolean starting;
-
 	
 	private ECardMode currentEcardMode;
 	
@@ -74,6 +66,16 @@ public class SIReaderHandler extends Control
 		public String toString(){
 			return friendlyName;
 		}
+		public boolean equals(Object obj) {
+			return obj instanceof SerialPort &&
+					port.equals(((SerialPort) obj).port) &&
+					friendlyName.equals(((SerialPort) obj).friendlyName);
+		}
+		@Override
+		public int hashCode() {
+			return port.hashCode() & friendlyName.hashCode();
+		}
+		
 	}
 	
 	
@@ -154,29 +156,34 @@ public class SIReaderHandler extends Control
 	}
 	
 	private void changePortName() {
-		serialPorts = null; // reset listPorts
+		List<SerialPort> currentPorts = refreshPorts();
 		String port = stage().getProperties().getProperty(portNameProperty());
-		if( port!=null ) {
-			for (SerialPort serial : listPorts()) {
+		if( port != null ) {
+			for (SerialPort serial : currentPorts) {
 				if( serial.name().equals(port) ){
 					setPort(serial);
 					return;
 				}
 			}
 		}
-		setPort(detectSIPort());
+		setPort(detectSIPort(currentPorts));
 	}
 	
 	public void changeZeroTime() {
-		if( portHandler!=null )
-			portHandler.setCourseZeroTime( stage().getZeroHour() );
+		if( siHandler!=null )
+			siHandler.setZeroHour( stage().getZeroHour() );
 	}
 	
-	public Vector<SerialPort> listPorts() {
+	public List<SerialPort> refreshPorts() {
+		serialPorts = null;
+		return listPorts();
+	}
+
+	public List<SerialPort> listPorts() {
 		if( serialPorts==null ){
 			@SuppressWarnings("rawtypes")
 			Enumeration portIdentifiers = CommPortIdentifier.getPortIdentifiers();
-			Vector<String> sPorts = new Vector<String>();
+			List<String> sPorts = new ArrayList<String>();
 			if( DEBUGMODE )
 				geco().debug("*** CommPort listing ***"); //$NON-NLS-1$
 			while( portIdentifiers.hasMoreElements() ){
@@ -191,8 +198,8 @@ public class SIReaderHandler extends Control
 		}
 		return serialPorts;
 	}
-	private Vector<SerialPort> createFriendlyPorts(Vector<String> serialPorts) {
-		Vector<SerialPort> ports = new Vector<SerialPort>(serialPorts.size());
+	private List<SerialPort> createFriendlyPorts(List<String> serialPorts) {
+		List<SerialPort> ports = new ArrayList<SerialPort>(serialPorts.size());
 		ports.add(new SerialPort("", "")); // empty port //$NON-NLS-1$ //$NON-NLS-2$
 		if( GecoResources.platformIsWindows() ){
 			// "HKLM\\System\\CurrentControlSet\\Enum\\USB\\Vid_10c4&Pid_800a\\78624 /v FriendlyName";
@@ -228,19 +235,19 @@ public class SIReaderHandler extends Control
 		return ports;
 	}
 
-	private SerialPort detectSIPort() {
+	private SerialPort detectSIPort(List<SerialPort> currentPorts) {
 		String match;
 		if( GecoResources.platformIsWindows() ){
 			match = "SPORTident"; //$NON-NLS-1$
 		} else { // Linux, Mac
 			match = "/dev/tty.SLAB_USBtoUART"; //$NON-NLS-1$
 		}
-		for (SerialPort serial : listPorts()) {
+		for (SerialPort serial : currentPorts) {
 			if( serial.toString().contains(match) ){
 				return serial;
 			}
 		}
-		return serialPorts.firstElement();
+		return currentPorts.get(0);
 	}
 	
 	public SerialPort getPort() {
@@ -251,67 +258,57 @@ public class SIReaderHandler extends Control
 		this.siPort = port;
 	}
 
-	private void configure() {
-		portHandler = new SIPortHandler(new ResultData());
-		portHandler.addListener(this);
-		portHandler.setPortName(getPort().name());
-		portHandler.setDebugDir(stage().getBaseDir());
-		changeZeroTime();
-	}
-
 	public void start() {
-		configure();
-		nbTry = 0;
-		starting = true;
-		portHandler.start();
-		PortMessage m = new PortMessage(SIPortHandler.START);
-		portHandler.sendMessage(m);
+		siHandler = new SiHandler(this);
+		changeZeroTime();
+		try {
+			siHandler.connect(getPort().name());
+		} catch (Exception e) {
+			geco().debug(e.getLocalizedMessage());
+		}
 	}
 	
 	public void stop() {
-		if( portHandler==null )
+		if( siHandler==null )
 			return;
-		try {
-			portHandler.interrupt();
-			portHandler.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		siHandler.stop();
 	}
 	
 	public boolean isOn() {
-		return portHandler!=null && portHandler.isAlive();
+		return siHandler!=null && siHandler.isAlive();
 	}
 	
 	@Override
-	public void newCardRead(IResultData<PunchObject,PunchRecordData> card) {
+	public void handleEcard(SiDataFrame card) {
 		currentEcardMode.processECard(card);		
 	}
 
-
 	@Override
-	public void portStatusChanged(String status) {
-		if( status.equals("     Open      ") && starting ){ //$NON-NLS-1$
+	public void notify(CommStatus status) {
+		switch (status) {
+		case ON:
 			geco().announcer().announceStationStatus("Ready"); //$NON-NLS-1$
-			starting = false;
-		}
-		if( status.equals("     Connecting") ){ //$NON-NLS-1$
-			nbTry++;
-		}
-		if( nbTry>=2 ) { // catch any tentative to re-connect after a deconnexion
-			portHandler.interrupt(); // one last try, after interruption
-			if( starting ) { // wrong port
-				geco().announcer().announceStationStatus("NotFound"); //$NON-NLS-1$
-			} else { // station was disconnected?
-				geco().announcer().announceStationStatus("Failed"); //$NON-NLS-1$
-			}
+			break;
+		default:
+			break;
 		}
 	}
-	
-	
+
+	@Override
+	public void notify(CommStatus errorStatus, String errorMessage) {
+		// TODO Auto-generated method stub
+		geco().log(errorMessage);
+		geco().announcer().announceStationStatus("Failed"); //$NON-NLS-1$
+//		if( starting ) { // wrong port
+//		geco().announcer().announceStationStatus("NotFound"); //$NON-NLS-1$
+//	} else { // station was disconnected?
+//		geco().announcer().announceStationStatus("Failed"); //$NON-NLS-1$
+//	}
+
+	}
+
 	@Override
 	public void changed(Stage previous, Stage next) {
-//		stop();
 		changePortName();
 		changeZeroTime();
 	}
