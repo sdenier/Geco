@@ -285,7 +285,6 @@ public class SIReaderHandler extends Control implements Announcer.StageListener,
 
 	@Override
 	public void notify(CommStatus status) {
-		geco().debug(status.name());
 		switch (status) {
 		case ON:
 			geco().announcer().announceStationStatus("Ready"); //$NON-NLS-1$
