@@ -7,7 +7,7 @@
 	<property name="srcdoc.dir" value="doc" />
 	<property name="wg.dir" value="${srcdoc.dir}/user/wg" />
 	<property name="geco.dir" value="${basedir}"/>
-	<property name="sireader.dir" value="${basedir}/../SIReader"/>
+	<property name="gecosi.dir" value="${basedir}/../GecoSI"/>
 	
 	<target name="cleanAll" depends="cleanWebgen,cleanBackups" />
 	
@@ -56,7 +56,7 @@
     </target>
 
 	<target name="buildnumber">
-		<exec executable="/usr/local/git/bin/git" outputproperty="build.number">
+		<exec executable="${git.cmd}" outputproperty="build.number">
 			<arg line="describe --long" />
 		</exec>
 		<tstamp />
@@ -95,10 +95,15 @@
             <fileset file="${geco.dir}/src/version.prop"/>
         	<fileset file="${geco.dir}/lib/org-json-reader-geco2.0.jar"/>
         	<fileset file="${geco.dir}/lib/jackson-core-2.1.1.jar"/>
-        	<fileset file="${geco.dir}/lib/SIReader.jar"/>
+        	<fileset file="${geco.dir}/lib/GecoSI.jar"/>
         	<fileset file="${geco.dir}/lib/icu4j-charsetdetector-4_4_2.jar"/>
         </jar>
     </target>
+	
+	<target name="build_GecoSI_jar">
+		<ant dir="${gecosi.dir}" target="build_jar" />
+		<copy file="${gecosi.dir}/GecoSI.jar" tofile="${geco.dir}/lib/GecoSI.jar" overwrite="true" />
+	</target>
 	
     <target name="build_distrib" depends="build_release_jar,userHelp">
     	<echo message="${geco.jarname}" />
@@ -152,15 +157,5 @@
             <fileset dir="${webstart.data}"/>
         </jar>
     </target>
-	
-	<target name="build_SIReaderDev">
-		<ant dir="${sireader.dir}" target="build_devjar" />
-		<copy file="${sireader.dir}/SIReaderDev.jar" tofile="${geco.dir}/lib/SIReaderDev.jar" />
-	</target>
-
-	<target name="build_SIReader">
-		<ant dir="${sireader.dir}" target="build_jar" />
-		<copy file="${sireader.dir}/SIReader.jar" tofile="${geco.dir}/lib/SIReader.jar" />
-	</target>
 
 </project>

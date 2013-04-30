@@ -7,17 +7,15 @@ package test.net.geco.control.ecardmodes;
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import net.geco.model.Course;
 import net.geco.model.Punch;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
+import net.gecosi.dataframe.SiDataFrame;
+import net.gecosi.dataframe.SiPunch;
 
-import org.martin.sireader.common.PunchObject;
-import org.martin.sireader.common.PunchRecordData;
-import org.martin.sireader.server.IResultData;
 import org.mockito.Mock;
 
 import test.net.geco.control.MockControlSetup;
@@ -30,7 +28,7 @@ import test.net.geco.control.MockControlSetup;
 public class ECardModeSetup extends MockControlSetup {
 
 	protected Course testCourse;
-	@Mock protected IResultData<PunchObject, PunchRecordData> card;
+	@Mock protected SiDataFrame card;
 	protected Runner fullRunner;
 	protected RunnerRaceData fullRunnerData;
 	protected RunnerRaceData danglingRunnerData;
@@ -44,12 +42,10 @@ public class ECardModeSetup extends MockControlSetup {
 		danglingRunnerData.setResult(factory.createRunnerResult());
 	}
 
-	protected void setUpCardPunches(IResultData<PunchObject, PunchRecordData> card) {
-		ArrayList<PunchObject> punchArray = new ArrayList<PunchObject>();
-		punchArray.add(new PunchObject(31, 2000));
-		punchArray.get(0).evaluateTime(0);
+	protected void setUpCardPunches(SiDataFrame card) {
+		SiPunch[] punchArray = new SiPunch[1];
+		punchArray[0] = new SiPunch(31, 2000);
 		when(card.getPunches()).thenReturn(punchArray);
-		when(card.getClearTime()).thenReturn(15000l);
 		when(card.getCheckTime()).thenReturn(20000l);
 		when(card.getStartTime()).thenReturn(25000l);
 		when(card.getFinishTime()).thenReturn(30000l);
@@ -77,19 +73,18 @@ public class ECardModeSetup extends MockControlSetup {
 		return runnerData;
 	}
 
-	protected void checkCardData(IResultData<PunchObject, PunchRecordData> card, RunnerRaceData data) {
-		assertEquals(new Date(card.getClearTime()), data.getErasetime());
+	protected void checkCardData(SiDataFrame card, RunnerRaceData data) {
 		assertEquals(new Date(card.getCheckTime()), data.getControltime());
 		assertEquals(new Date(card.getStartTime()), data.getStarttime());
 		assertEquals(new Date(card.getFinishTime()), data.getFinishtime());
 
-		ArrayList<PunchObject> punchObjects = card.getPunches();
+		SiPunch[] punchObjects = card.getPunches();
 		Punch[] punches = data.getPunches();
-		assertEquals(punchObjects.size(), punches.length);
+		assertEquals(punchObjects.length, punches.length);
 		for (int i = 0; i < punches.length; i++) {
-			PunchObject punchObject = punchObjects.get(i);
-			assertEquals(punchObject.getCode(), punches[i].getCode());
-			assertEquals(new Date(punchObject.getTime()), punches[i].getTime());			
+			SiPunch punchObject = punchObjects[i];
+			assertEquals(punchObject.code(), punches[i].getCode());
+			assertEquals(new Date(punchObject.timestamp()), punches[i].getTime());			
 		}
 	}
 

@@ -3,16 +3,16 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/SIReaderDev.jar"/>
-	<classpathentry kind="lib" path="lib/RXTXcomm.jar">
-		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Geco/lib"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="lib/icu4j-charsetdetector-4_4_2.jar"/>
-	<classpathentry kind="lib" path="lib/mockito-all-1.8.5.jar"/>
-	<classpathentry kind="lib" path="lib/OrangeExtensions-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-core-2.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/org-json-reader-geco2.0.jar"/>
+	<classpathentry kind="lib" path="lib/dev/OrangeExtensions-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/dev/mockito-all-1.9.5.jar"/>
+	<classpathentry kind="lib" path="/GecoSI/lib/RXTXcomm.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="GecoSI/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/GecoSI"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
