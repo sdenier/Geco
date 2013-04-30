@@ -83,7 +83,7 @@ trans = translations[context.node.lang]
         </div>
 
         <div id="footer">
-                &copy; 2008-2012 Simon Denier | 
+                &copy; 2008-2013 Simon Denier | 
                 <%= trans['generated'] %> <a href="http://webgen.rubyforge.org">webgen</a> | 
                 <%= trans['design'] %> <a href="http://andreasviklund.com">Andreas Viklund</a>
         </div>
