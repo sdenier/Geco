@@ -7,6 +7,10 @@ package net.geco.control;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.print.PrinterJob;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Properties;
 import java.util.Vector;
 import java.util.concurrent.Callable;
@@ -25,6 +29,7 @@ import javax.swing.JTextPane;
 
 import net.geco.basics.Announcer.CardListener;
 import net.geco.basics.Announcer.StageListener;
+import net.geco.basics.GecoResources;
 import net.geco.basics.Html;
 import net.geco.control.AResultExporter.OutputType;
 import net.geco.control.ResultBuilder.SplitTime;
@@ -44,12 +49,11 @@ import net.geco.model.Status;
 public class SingleSplitPrinter extends Control implements StageListener, CardListener {
 	
 	public static enum SplitFormat { MultiColumns, Ticket }
-
-	private static final boolean DEBUGMODE = false;
 	
 	private PrintService splitPrinter;
 	private boolean autoPrint;
 	private SplitFormat splitFormat = SplitFormat.MultiColumns;
+	private boolean prototypeMode;
 	private MediaSizeName[] splitMedia;
 	private String headerMessage;
 	private String footerMessage;
@@ -94,7 +98,7 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 				}
 			};
 			
-			if( ! DEBUGMODE ) {
+			if( ! prototypeMode ) {
 				ExecutorService pool = Executors.newCachedThreadPool();
 				pool.submit(callable);
 			} else {
@@ -102,6 +106,13 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 				jFrame.add(ticket);
 				jFrame.pack();
 				jFrame.setVisible(true);
+				try {
+					Writer writer = new BufferedWriter(new FileWriter(stage().getBaseDir() + GecoResources.sep + "runner_splits.html"));
+					writer.write(content);
+					writer.close();
+				} catch (IOException e) {
+					geco().logger().debug(e);
+				}
 			}
 			
 			return content;
@@ -185,7 +196,7 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 		float height = ((float) preferredSize.height) / dpi;
 		float width = ((float) preferredSize.width) / dpi;
 
-		if( DEBUGMODE ){
+		if( prototypeMode ){
 			System.out.print("Request: "); //$NON-NLS-1$
 			System.out.print(height * 25.4);
 			System.out.print("x"); //$NON-NLS-1$
@@ -198,7 +209,7 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 		for (MediaSizeName media : getSplitMedia()) {
 			MediaSize mediaSize = MediaSize.getMediaSizeForName(media);
 			if( mediaSize!=null ){
-				if( DEBUGMODE ){
+				if( prototypeMode ){
 					System.out.print(mediaSize.toString(MediaSize.MM, "mm")); //$NON-NLS-1$
 					System.out.println(" - " + media); //$NON-NLS-1$
 				}
@@ -214,18 +225,18 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 		if( bestMedia==null ){
 			bestMedia = MediaSize.findMedia(width, height, MediaSize.INCH);
 			geco().debug(Messages.getString("SingleSplitPrinter.SmallTicketSizeWarning")); //$NON-NLS-1$
-			if( DEBUGMODE ){
+			if( prototypeMode ){
 				System.out.print("Found: "); //$NON-NLS-1$
 			}			
 		} else {
-			if( DEBUGMODE ){
+			if( prototypeMode ){
 				System.out.print("Chosen: "); //$NON-NLS-1$
 			}			
 		}
 		if( bestMedia!=null ){
 			attributes.add(bestMedia);
 			MediaSize fitSize = MediaSize.getMediaSizeForName(bestMedia);
-			if( DEBUGMODE ){
+			if( prototypeMode ){
 				System.out.println(fitSize.toString(MediaSize.MM, "mm")); //$NON-NLS-1$
 			}
 		} else {
@@ -317,6 +328,10 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 		this.footerMessage = footerMessage;
 	}
 
+	public void enableFormatPrototyping(boolean flag) {
+		prototypeMode = flag;
+	}
+	
 
 	@Override
 	public void cardRead(String chip) {

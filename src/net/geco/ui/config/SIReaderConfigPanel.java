@@ -17,6 +17,7 @@ import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.InputVerifier;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -91,7 +92,16 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 				geco.splitPrinter().setSplitFormat((SingleSplitPrinter.SplitFormat) splitFormatCB.getSelectedItem());
 			}
 		});
-		
+
+		final JCheckBox prototypeFormatB = new JCheckBox("Format Prototyping");
+		add(prototypeFormatB, c);
+		prototypeFormatB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				geco.splitPrinter().enableFormatPrototyping(prototypeFormatB.isSelected());
+			}
+		});
+
 		c.gridy = 3;
 		add(new JLabel(Messages.uiGet("SIReaderConfigPanel.HeaderLabel")), c); //$NON-NLS-1$
 		final JTextField headerF = new JTextField(geco.splitPrinter().getHeaderMessage());
