@@ -1,5 +1,7 @@
 # Geco Changelog
 
+## Version 2.0 beta1
+
 - Use new GecoSI library to read all SPORTident cards si5 through si11
 - Refresh serial ports on pop-up (no need to restart Geco to see serial ports)
 - Make Leg Neutralization available in Inline and Orient'Show configs
