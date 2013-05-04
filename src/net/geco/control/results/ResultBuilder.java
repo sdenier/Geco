@@ -122,8 +122,8 @@ public class ResultBuilder extends Control {
 		return result;
 	}
 
-	public Vector<Result> buildResults(Pool[] pools, ResultType type) {
-		Vector<Result> results = new Vector<Result>();
+	public List<Result> buildResults(Pool[] pools, ResultType type) {
+		List<Result> results = new ArrayList<Result>(pools.length);
 		for (Pool pool : pools) {
 			switch (type) {
 			case CourseResult:

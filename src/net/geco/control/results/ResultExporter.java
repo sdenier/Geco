@@ -7,7 +7,7 @@ package net.geco.control.results;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Vector;
+import java.util.List;
 
 import net.geco.basics.CsvWriter;
 import net.geco.basics.Html;
@@ -36,7 +36,7 @@ public class ResultExporter extends AResultExporter {
 
 	@Override
 	public String generateHtmlResults(ResultConfig config, int refreshInterval, OutputType outputType) {
-		Vector<Result> results = buildResults(config);
+		List<Result> results = buildResults(config);
 		this.refreshInterval = refreshInterval;
 		Html html = new Html();
 		includeHeader(html, "result.css", outputType); //$NON-NLS-1$

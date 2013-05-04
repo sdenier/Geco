@@ -7,9 +7,10 @@ package net.geco.control.results;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Vector;
+import java.util.List;
 
 import net.geco.basics.CsvWriter;
 import net.geco.basics.GecoResources;
@@ -108,7 +109,7 @@ public abstract class AResultExporter extends Control {
 	}
 
 	public void generateCsvResult(ResultConfig config, CsvWriter writer) throws IOException {
-		Vector<Result> results = buildResults(config);
+		List<Result> results = buildResults(config);
 		writer.write("start id;ecard;archive id;last name;first name;short cat;long cat;short club;long club;" + //$NON-NLS-1$
 				"result id;rank;status;official time;nc;start time;finish time;race time;mps;" + //$NON-NLS-1$
 				"course;distance;climb;nb punches;control 1;punch 1;...;\n"); //$NON-NLS-1$
@@ -179,8 +180,8 @@ public abstract class AResultExporter extends Control {
 
 	public abstract void generateXMLResult(ResultConfig config, String filename) throws Exception ;
 	
-	protected Vector<Result> buildResults(ResultConfig config) {
-		Vector<Pool> pools = new Vector<Pool>();
+	protected List<Result> buildResults(ResultConfig config) {
+		List<Pool> pools = new ArrayList<Pool>();
 		for (Object selName : config.selectedPools) {
 			switch (config.resultType) {
 			case CourseResult:

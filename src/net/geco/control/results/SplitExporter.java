@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Vector;
 
 import net.geco.basics.Announcer.StageListener;
 import net.geco.basics.CsvWriter;
@@ -83,7 +82,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 	
 	@Override
 	public String generateHtmlResults(ResultConfig config, int refreshInterval, OutputType outputType) {
-		Vector<Result> results = buildResults(config);
+		List<Result> results = buildResults(config);
 		this.refreshInterval = refreshInterval;
 		Html html = new Html();
 		includeHeader(html, "result.css", outputType); //$NON-NLS-1$
@@ -305,7 +304,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 		}
 		writer.write("\n"); //$NON-NLS-1$
 		
-		Vector<Result> results = buildResults(config);
+		List<Result> results = buildResults(config);
 		Names names = new Names(registry().getClubNames(), registry().getCategoryNames(), registry().getCourseNames());
 		for (Result result : results) {
 			if( config.showEmptySets || !result.isEmpty()) {

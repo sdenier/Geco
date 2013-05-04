@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Vector;
 
 import net.geco.basics.Announcer.StageListener;
 import net.geco.basics.CsvWriter;
@@ -89,7 +88,7 @@ public class CNCalculator extends AResultExporter implements StageListener {
 		if( config.resultType!=ResultType.CourseResult )
 			return Messages.getString("CNCalculator.CNCourseWarning"); //$NON-NLS-1$
 
-		Vector<Result> results = buildResults(config);
+		List<Result> results = buildResults(config);
 		importCN();
 		Html html = new Html();
 		includeHeader(html, "result.css", outputType); //$NON-NLS-1$
