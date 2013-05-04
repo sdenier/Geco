@@ -2,7 +2,7 @@
  * Copyright (c) 2008 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.control;
+package net.geco.control.results;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +12,8 @@ import java.util.Map.Entry;
 import java.util.Vector;
 
 import net.geco.basics.TimeManager;
+import net.geco.control.Control;
+import net.geco.control.GecoControl;
 import net.geco.model.Category;
 import net.geco.model.Course;
 import net.geco.model.Messages;

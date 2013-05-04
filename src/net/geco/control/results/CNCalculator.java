@@ -2,7 +2,7 @@
  * Copyright (c) 2010 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.control;
+package net.geco.control.results;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +16,9 @@ import java.util.Vector;
 import net.geco.basics.Announcer.StageListener;
 import net.geco.basics.CsvWriter;
 import net.geco.basics.Html;
-import net.geco.control.ResultBuilder.ResultConfig;
+import net.geco.control.GecoControl;
+import net.geco.control.OEImporter;
+import net.geco.control.results.ResultBuilder.ResultConfig;
 import net.geco.model.Messages;
 import net.geco.model.RankedRunner;
 import net.geco.model.Result;

@@ -2,7 +2,7 @@
  * Copyright (c) 2010 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.control;
+package net.geco.control.results;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -31,8 +31,10 @@ import net.geco.basics.Announcer.CardListener;
 import net.geco.basics.Announcer.StageListener;
 import net.geco.basics.GecoResources;
 import net.geco.basics.Html;
-import net.geco.control.AResultExporter.OutputType;
-import net.geco.control.ResultBuilder.SplitTime;
+import net.geco.control.Control;
+import net.geco.control.GecoControl;
+import net.geco.control.results.AResultExporter.OutputType;
+import net.geco.control.results.ResultBuilder.SplitTime;
 import net.geco.model.Course;
 import net.geco.model.Messages;
 import net.geco.model.Runner;

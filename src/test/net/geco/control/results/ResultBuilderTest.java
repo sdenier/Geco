@@ -2,7 +2,7 @@
  * Copyright (c) 2010 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package test.net.geco.control;
+package test.net.geco.control.results;
 
 
 import static org.junit.Assert.assertEquals;
@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import net.geco.control.GecoControl;
-import net.geco.control.ResultBuilder;
+import net.geco.control.results.ResultBuilder;
 import net.geco.model.RankedRunner;
 import net.geco.model.Result;
 import net.geco.model.RunnerRaceData;

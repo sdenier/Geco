@@ -2,7 +2,7 @@
  * Copyright (c) 2010 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.control;
+package net.geco.control.results;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,8 +17,9 @@ import net.geco.basics.Announcer.StageListener;
 import net.geco.basics.CsvWriter;
 import net.geco.basics.Html;
 import net.geco.basics.TimeManager;
-import net.geco.control.ResultBuilder.ResultConfig;
-import net.geco.control.ResultBuilder.SplitTime;
+import net.geco.control.GecoControl;
+import net.geco.control.results.ResultBuilder.ResultConfig;
+import net.geco.control.results.ResultBuilder.SplitTime;
 import net.geco.model.Category;
 import net.geco.model.Club;
 import net.geco.model.Course;

@@ -37,10 +37,10 @@ import javax.swing.JTextPane;
 import javax.swing.SpinnerNumberModel;
 
 import net.geco.basics.Announcer.StageConfigListener;
-import net.geco.control.AResultExporter;
-import net.geco.control.AResultExporter.OutputType;
-import net.geco.control.ResultBuilder;
-import net.geco.control.ResultBuilder.ResultConfig;
+import net.geco.control.results.AResultExporter;
+import net.geco.control.results.ResultBuilder;
+import net.geco.control.results.AResultExporter.OutputType;
+import net.geco.control.results.ResultBuilder.ResultConfig;
 import net.geco.framework.IGecoApp;
 import net.geco.model.Messages;
 import net.geco.model.ResultType;

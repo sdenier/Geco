@@ -29,7 +29,7 @@ import javax.swing.event.PopupMenuListener;
 
 import net.geco.basics.Html;
 import net.geco.control.SIReaderHandler.SerialPort;
-import net.geco.control.SingleSplitPrinter;
+import net.geco.control.results.SingleSplitPrinter;
 import net.geco.framework.IGecoApp;
 import net.geco.model.Messages;
 import net.geco.ui.basics.SwingUtils;
