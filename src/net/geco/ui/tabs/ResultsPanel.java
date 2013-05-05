@@ -38,8 +38,8 @@ import javax.swing.SpinnerNumberModel;
 
 import net.geco.basics.Announcer.StageConfigListener;
 import net.geco.control.results.AResultExporter;
-import net.geco.control.results.ResultBuilder;
 import net.geco.control.results.AResultExporter.OutputType;
+import net.geco.control.results.ResultBuilder;
 import net.geco.control.results.ResultBuilder.ResultConfig;
 import net.geco.framework.IGecoApp;
 import net.geco.model.Messages;
@@ -218,7 +218,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 								frame(),
 								Messages.uiGet("ResultsPanel.FileSaveWarning1")//$NON-NLS-1$ 
 									+ filename
-									+ "(" + ex +")", //$NON-NLS-1$ //$NON-NLS-2$
+									+ "\n" + ex.getLocalizedMessage(), //$NON-NLS-1$
 								Messages.uiGet("ResultsPanel.FileSaveWarning2"), //$NON-NLS-1$
 								JOptionPane.ERROR_MESSAGE);
 					}

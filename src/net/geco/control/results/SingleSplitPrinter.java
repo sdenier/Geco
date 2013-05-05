@@ -29,7 +29,6 @@ import javax.swing.JTextPane;
 
 import net.geco.basics.Announcer.CardListener;
 import net.geco.basics.Announcer.StageListener;
-import net.geco.basics.GecoResources;
 import net.geco.basics.Html;
 import net.geco.control.Control;
 import net.geco.control.GecoControl;
@@ -109,7 +108,7 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 				jFrame.pack();
 				jFrame.setVisible(true);
 				try {
-					Writer writer = new BufferedWriter(new FileWriter(stage().getBaseDir() + GecoResources.sep + "runner_splits.html"));
+					Writer writer = new BufferedWriter(new FileWriter(stage().filepath("runner_splits.html")));
 					writer.write(content);
 					writer.close();
 				} catch (IOException e) {
