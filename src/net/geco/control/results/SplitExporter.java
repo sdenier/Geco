@@ -127,7 +127,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 					html);
 		}
 		emptyTr(html);
-		for (RunnerRaceData runnerData : result.getNRRunners()) {
+		for (RunnerRaceData runnerData : result.getUnrankedRunners()) {
 			if( ! runnerData.getRunner().isNC() ) {
 				generateHtmlSplitsFor(
 						runnerData,
@@ -148,7 +148,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 		}
 		if( config.showOthers ) {
 			emptyTr(html);
-			for (RunnerRaceData runnerData : result.getOtherRunners()) {
+			for (RunnerRaceData runnerData : result.getUnresolvedRunners()) {
 				generateHtmlSplitsFor(
 						runnerData,
 						"", //$NON-NLS-1$
@@ -319,7 +319,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 			RunnerRaceData runnerData = rRunner.getRunnerData();
 			writeOECsvResult(runnerData, Integer.toString(rRunner.getRank()), names, withSplits, writer);
 		}
-		for (RunnerRaceData runnerData : result.getNRRunners()) {
+		for (RunnerRaceData runnerData : result.getUnrankedRunners()) {
 			Runner runner = runnerData.getRunner();
 			if( !runner.isNC() ) {
 				writeOECsvResult(runnerData, "", names, withSplits, writer); //$NON-NLS-1$
@@ -328,7 +328,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 			}
 		}
 		if( config.showOthers ) {
-			for (RunnerRaceData runnerData : result.getOtherRunners()) {
+			for (RunnerRaceData runnerData : result.getUnresolvedRunners()) {
 				writeOECsvResult(runnerData, "", names, withSplits, writer); //$NON-NLS-1$
 			}			
 		}

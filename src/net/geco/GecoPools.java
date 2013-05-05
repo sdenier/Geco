@@ -97,12 +97,12 @@ public class GecoPools {
 			}
 			html.openTr().closeTr();
 		
-			for (RunnerRaceData runnerData : result.getNRRunners()) {
+			for (RunnerRaceData runnerData : result.getUnrankedRunners()) {
 				writeResult(runnerData, "", html); //$NON-NLS-1$
 			}
 			html.openTr().closeTr();
 		
-			for (RunnerRaceData runnerData : result.getOtherRunners()) {
+			for (RunnerRaceData runnerData : result.getUnresolvedRunners()) {
 				writeResult(runnerData, "", html); //$NON-NLS-1$
 			}
 			html.close("table"); //$NON-NLS-1$

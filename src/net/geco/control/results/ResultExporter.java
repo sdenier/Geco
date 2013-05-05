@@ -76,9 +76,9 @@ public class ResultExporter extends AResultExporter {
 								&& result.anyCourse().hasDistance();
 		// compute basic stats
 		StringBuilder resultLabel = new StringBuilder(result.getIdentifier());
-		int finished = result.getRanking().size() + result.getNRRunners().size();
+		int finished = result.getRanking().size() + result.getUnrankedRunners().size();
 		int present = finished;
-		for (RunnerRaceData other : result.getOtherRunners()) {
+		for (RunnerRaceData other : result.getUnresolvedRunners()) {
 			if( other.getResult().getStatus().isUnresolved() ) {
 				present++;
 			}
@@ -86,7 +86,7 @@ public class ResultExporter extends AResultExporter {
 		resultLabel.append(" (").append(Integer.toString(finished)).append("/") //$NON-NLS-1$ //$NON-NLS-2$
 					.append(Integer.toString(present)).append(")"); //$NON-NLS-1$
 		if( paceComputable ){			
-			resultLabel.append(" - ").append(result.anyRunner().getCourse().formatDistanceClimb()); //$NON-NLS-1$
+			resultLabel.append(" - ").append(result.anyCourse().formatDistanceClimb()); //$NON-NLS-1$
 		}
 		html.nl().tag("h2", resultLabel.toString()).nl(); //$NON-NLS-1$
 		
@@ -120,7 +120,7 @@ public class ResultExporter extends AResultExporter {
 					html);
 		}
 		emptyTr(html);
-		for (RunnerRaceData runnerData : result.getNRRunners()) {
+		for (RunnerRaceData runnerData : result.getUnrankedRunners()) {
 			Runner runner = runnerData.getRunner();
 			if( !runner.isNC() ) {
 				writeHtml(
@@ -144,7 +144,7 @@ public class ResultExporter extends AResultExporter {
 		}
 		if( config.showOthers ) {
 			emptyTr(html);
-			for (RunnerRaceData runnerData : result.getOtherRunners()) {
+			for (RunnerRaceData runnerData : result.getUnresolvedRunners()) {
 				writeHtml(
 						runnerData,
 						"", //$NON-NLS-1$

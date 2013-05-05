@@ -81,7 +81,7 @@ public class SplitXmlExporter extends Control {
 		for (RankedRunner runner : result.getRanking()) {
 			generateRunnerResult(classResult, runner.getRunnerData(), runner.getRank());
 		}
-		for (RunnerRaceData runnerData : result.getNRRunners()) {
+		for (RunnerRaceData runnerData : result.getUnrankedRunners()) {
 			generateRunnerResult(classResult, runnerData, 0);
 		}
 	}

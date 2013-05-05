@@ -97,7 +97,7 @@ public class ResultBuilder extends Control {
 		for (Runner runner : runners) {
 			RunnerRaceData data = registry().findRunnerData(runner);
 			if( runner.isNC() ) {
-				result.addNRRunner(data);
+				result.addUnrankedRunner(data);
 			} else {
 				switch (data.getResult().getStatus()) {
 				case OK: 
@@ -107,14 +107,16 @@ public class ResultBuilder extends Control {
 				case DSQ:
 				case MP:
 				case OOT:
-					result.addNRRunner(data);
+					result.addUnrankedRunner(data);
 					break;
-				case DNS:
 				case NOS:
 				case RUN:
 				case UNK:
 				case DUP:
-					result.addOtherRunner(data);
+					result.addUnresolvedRunner(data);
+					break;
+				case DNS:
+					// just ignore
 				}
 			}
 		}
@@ -228,14 +230,14 @@ public class ResultBuilder extends Control {
 	public SplitTime[] initializeBestSplits(Result result, ResultType resultType) {
 		SplitTime[] bestSplits = null;
 		if( ! result.isEmpty() ){
-			Course course = result.anyRunner().getCourse();
+			Course course = result.anyCourse();
 			boolean sameCourse = true; // default for CourseResult and MixedResult
 			if( resultType==ResultType.CategoryResult ){
 				// check that all runners in category share the same course
 				for (RunnerRaceData runnerData : result.getRankedRunners()) {
 					sameCourse &= runnerData.getCourse()==course;
 				}
-				for (RunnerRaceData runnerData : result.getNRRunners()) {
+				for (RunnerRaceData runnerData : result.getUnrankedRunners()) {
 					sameCourse &= runnerData.getCourse()==course;
 				}
 			}
@@ -256,7 +258,7 @@ public class ResultBuilder extends Control {
 		for (RunnerRaceData runnerData : result.getRankedRunners()) {
 			allSplits.put(runnerData, buildNormalSplits(runnerData, bestSplits));
 		}
-		for (RunnerRaceData runnerData : result.getNRRunners()) {
+		for (RunnerRaceData runnerData : result.getUnrankedRunners()) {
 			allSplits.put(runnerData, buildNormalSplits(runnerData, bestSplits));
 		}
 		return allSplits;

@@ -126,14 +126,14 @@ public abstract class AResultExporter extends Control {
 			RunnerRaceData runnerData = rRunner.getRunnerData();
 			writeCsvResult(runnerData, resultId, Integer.toString(rRunner.getRank()), writer);
 		}
-		for (RunnerRaceData runnerData : result.getNRRunners()) {
+		for (RunnerRaceData runnerData : result.getUnrankedRunners()) {
 			Runner runner = runnerData.getRunner();
 			if( !runner.isNC() || config.showNC ) {
 				writeCsvResult(runnerData, resultId, "", writer); //$NON-NLS-1$
 			}
 		}
 		if( config.showOthers ) {
-			for (RunnerRaceData runnerData : result.getOtherRunners()) {
+			for (RunnerRaceData runnerData : result.getUnresolvedRunners()) {
 				writeCsvResult(runnerData, resultId, "", writer); //$NON-NLS-1$
 			}			
 		}
