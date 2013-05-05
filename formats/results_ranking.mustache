@@ -19,18 +19,21 @@
   </head>
   <body>
     <h1>{{geco_StageTitle}} - Results</h1>
-{{#geco_ResultLists}}
-    <h2>{{geco_ResultName}} ({{geco_NbFinishedRunners}}/{{geco_NbTotalRunners}}) - {{geco_CourseLength}}, {{geco_CourseClimb}}</h2>
+{{#geco_ResultsCollection}}
+    <h2>{{geco_ResultName}} ({{geco_NbFinishedRunners}}/{{geco_NbPresentRunners}}){{#geco_CourseInfo?}} - {{geco_CourseLength}}m, {{geco_CourseClimb}}m{{/geco_CourseInfo?}}</h2>
     <table>
-      <tr class="runner"><th></th><th class="left">Name</th><th class="left">Club</th>{{#geco_CategoryCol?}}<th class="left">Category</th>{{/geco_CategoryCol?}}<th class="right">Time</th><th class="right">Diff</th>{{#geco_PaceCol?}}<th class="right">min/km</th>{{/geco_PaceCol?}}</tr>
+      <tr class="runner"><th></th><th class="left">Name</th><th class="left">Club</th>{{#geco_RunnerCategory?}}<th class="left">Category</th>{{/geco_RunnerCategory?}}<th class="right">Time</th><th class="right">Diff</th>{{#geco_RunnerPace?}}<th class="right">min/km</th>{{/geco_RunnerPace?}}</tr>
 {{#geco_RankedRunners}}
-      <tr class="runner"><td>{{geco_RunnerRank}}</td><td>{{geco_RunnerFirstName}} {{geco_RunnerLastName}}</td><td>{{geco_RunnerClubName}}</td>{{#geco_CategoryCol?}}<td>{{geco_RunnerCategory}}</td>{{/geco_CategoryCol?}}<td class="time">{{geco_RunnerResultTime}}</td><td class="diff">{{geco_RunnerDiffTime}}</td>{{#geco_PaceCol?}}<td class="pace">{{geco_RunnerPace}}</td>{{/geco_PaceCol?}}</tr>
+      <tr class="runner"><td>{{geco_RunnerRank}}</td><td>{{geco_RunnerFirstName}} {{geco_RunnerLastName}}</td><td>{{geco_RunnerClubName}}</td>{{#geco_RunnerCategory?}}<td>{{geco_RunnerCategory}}</td>{{/geco_RunnerCategory?}}<td class="time">{{geco_RunnerResultTime}}</td><td class="diff">{{geco_RunnerDiffTime}}</td>{{#geco_RunnerPace?}}<td class="pace">{{geco_RunnerPace}}</td>{{/geco_RunnerPace?}}</tr>
 {{/geco_RankedRunners}}
       <tr class="empty"><td>&nbsp;</td></tr>
 {{#geco_UnrankedRunners}}
-      <tr class="runner"><td>{{geco_RunnerRank}}</td><td>{{geco_RunnerFirstName}} {{geco_RunnerLastName}}</td><td>{{geco_RunnerClubName}}</td>{{#geco_CategoryCol?}}<td>{{geco_RunnerCategory}}</td>{{/geco_CategoryCol?}}<td class="time">{{geco_RunnerStatus}}</td><td></td>{{#geco_PaceCol?}}<td></td>{{/geco_PaceCol?}}</tr>
+      <tr class="runner"><td>{{geco_RunnerRank}}</td><td>{{geco_RunnerFirstName}} {{geco_RunnerLastName}}</td><td>{{geco_RunnerClubName}}</td>{{#geco_RunnerCategory?}}<td>{{geco_RunnerCategory}}</td>{{/geco_RunnerCategory?}}<td class="time">{{geco_RunnerStatus}}</td><td></td>{{#geco_RunnerPace?}}<td></td>{{/geco_RunnerPace?}}</tr>
 {{/geco_UnrankedRunners}}
     </table>
-{{/geco_ResultLists}}
+{{#geco_PrintMode?}}
+    <p>Last update {{geco_Timestamp}}</p>
+{{/geco_PrintMode?}}
+{{/geco_ResultsCollection}}
   </body>
 </html>
