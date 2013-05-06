@@ -11,11 +11,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.geco.basics.CsvWriter;
 import net.geco.basics.GecoResources;
@@ -23,6 +20,9 @@ import net.geco.basics.Html;
 import net.geco.basics.TimeManager;
 import net.geco.control.GecoControl;
 import net.geco.control.results.ResultBuilder.ResultConfig;
+import net.geco.control.results.context.ContextList;
+import net.geco.control.results.context.GenericContext;
+import net.geco.control.results.context.RunnerContext;
 import net.geco.model.Messages;
 import net.geco.model.RankedRunner;
 import net.geco.model.Result;
@@ -67,11 +67,11 @@ public class ResultExporter extends AResultExporter {
 
 		// TODO remove show empty/others from config
 		// TODO utf8 yes for file, no for internal, for print mode?
-		Map<String, Object> stageContext = new HashMap<String, Object>();
+		GenericContext stageContext = new GenericContext();
 		stageContext.put("geco_StageTitle", stage().getName());
 
 		// General layout
-		stageContext.put("geco_CourseInfo?", isSingleCourseResult);
+		stageContext.put("geco_SingleCourse?", isSingleCourseResult);
 		stageContext.put("geco_RunnerCategory?", isSingleCourseResult);
 		stageContext.put("geco_Penalties?", config.showPenalties);
 
@@ -82,71 +82,38 @@ public class ResultExporter extends AResultExporter {
 		stageContext.put("geco_Timestamp", new SimpleDateFormat("H:mm").format(new Date()));
 		
 		List<Result> results = buildResults(config);
-		List<Map<String,Object>> resultsCollection = new ArrayList<Map<String, Object>>(results.size());
-		stageContext.put("geco_ResultsCollection", resultsCollection);
+		ContextList resultsCollection = stageContext.createContextList("geco_ResultsCollection", results.size());
 		for (Result result : results) {
 			if( ! result.isEmpty() ) {
-				boolean paceComputable = isSingleCourseResult && result.anyCourse().hasDistance();
 				long bestTime = result.bestTime();
 
-				Map<String, Object> resultContext = new HashMap<String, Object>();
+				GenericContext resultContext = new GenericContext();
 				resultsCollection.add(resultContext);
 
 				resultContext.put("geco_ResultName", result.getIdentifier());
 				resultContext.put("geco_NbFinishedRunners", result.nbFinishedRunners());
 				resultContext.put("geco_NbPresentRunners", result.nbPresentRunners());
-				resultContext.put("geco_RunnerPace?", paceComputable);
 				if( isSingleCourseResult ) {
 					resultContext.put("geco_CourseLength", result.anyCourse().getLength());
 					resultContext.put("geco_CourseClimb", result.anyCourse().getClimb());
 				}
 				
-				List<Map<String,Object>> runnersCollection = new ArrayList<Map<String, Object>>(result.getRanking().size());
-				resultContext.put("geco_RankedRunners", runnersCollection);
+				ContextList runnersCollection =
+						resultContext.createContextList("geco_RankedRunners", result.getRanking().size());
 				for (RankedRunner rankedRunner : result.getRanking()) {
-					RunnerRaceData data = rankedRunner.getRunnerData();
-					Runner runner = data.getRunner();
-
-					Map<String, Object> runnerContext = new HashMap<String, Object>();
-					runnersCollection.add(runnerContext);
-
-					runnerContext.put("geco_RunnerRank", rankedRunner.getRank());
-					runnerContext.put("geco_RunnerFirstName", runner.getFirstname());
-					runnerContext.put("geco_RunnerLastName", runner.getLastname());
-					runnerContext.put("geco_RunnerClubName", runner.getClub().getName());
-					runnerContext.put("geco_RunnerCategory", runner.getCategory().getName());
-					runnerContext.put("geco_RunnerStatus", data.getResult().formatStatus());
-					runnerContext.put("geco_RunnerResultTime", data.getResult().formatRacetime());
-					runnerContext.put("geco_RunnerDiffTime", rankedRunner.formatDiffTime(bestTime));
-					
-					if( paceComputable ) {
-						runnerContext.put("geco_RunnerPace", data.formatPace());
-					}
-					if( config.showPenalties ) {
-						// TODO put penalties
-						
-					}
+					runnersCollection.add(RunnerContext.createRankedRunner(rankedRunner, bestTime));
 				}
 
-				runnersCollection = new ArrayList<Map<String, Object>>();
-				resultContext.put("geco_UnrankedRunners", runnersCollection);
+				runnersCollection =
+						resultContext.createContextList("geco_UnrankedRunners", result.getUnrankedRunners().size());
 				for (RunnerRaceData data : result.getUnrankedRunners()) {
 					Runner runner = data.getRunner();
-					if( ! runner.isNC() || config.showNC ) {
-						Map<String, Object> runnerContext = new HashMap<String, Object>();
-						runnersCollection.add(runnerContext);
-						
-						runnerContext.put("geco_RunnerRank", runner.isNC() ? "NC" : "");
-						runnerContext.put("geco_RunnerFirstName", runner.getFirstname());
-						runnerContext.put("geco_RunnerLastName", runner.getLastname());
-						runnerContext.put("geco_RunnerClubName", runner.getClub().getName());
-						runnerContext.put("geco_RunnerCategory", runner.getCategory().getName());
-						runnerContext.put("geco_RunnerStatus", data.getResult().shortFormat()); // TODO mixed field for NC? status/time
-					}
-					// TODO pace?
-					if( config.showPenalties ) {
-						// TODO put penalties
-						
+					if( runner.isNC() ) {
+						if( config.showNC ) {
+							runnersCollection.add(RunnerContext.createNCRunner(data));
+						} // else nothing
+					} else {
+						runnersCollection.add(RunnerContext.createUnrankedRunner(data));
 					}
 				}
 			}
