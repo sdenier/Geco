@@ -4,9 +4,7 @@
  */
 package net.geco.control.results;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringWriter;
@@ -66,7 +64,7 @@ public class ResultExporter extends AResultExporter {
 
 	public void generateHtmlResults(String templateFile, ResultConfig config, int refreshInterval,
 			Writer out, OutputType outputType) throws IOException {
-		Reader template = new BufferedReader(new FileReader("formats/" + templateFile));
+		Reader template = GecoResources.getSafeReaderFor("formats/" + templateFile);
 		// TODO: lazy cache of template
 		Mustache.compiler().defaultValue("N/A").compile(template).execute(buildDataContext(config, refreshInterval, outputType), out);
 		template.close();
