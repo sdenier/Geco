@@ -9,6 +9,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -53,6 +54,21 @@ public class ResultExporter extends AResultExporter {
 		writer.close();
 	}
 
+	@Override
+	public String generateHtmlResults(ResultConfig config, int refreshInterval,
+			OutputType outputType) {
+		StringWriter out = new StringWriter();
+		try {
+			// TODO I18N template headers
+			// TODO internal template?
+			generateHtmlResults("results_ranking.mustache", config, refreshInterval, out, outputType);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return out.toString();
+	}
+
 	public void generateHtmlResults(String templateFile, ResultConfig config, int refreshInterval,
 			Writer out, OutputType outputType) throws IOException {
 		Reader template = new BufferedReader(new FileReader("formats/" + templateFile));
@@ -66,7 +82,6 @@ public class ResultExporter extends AResultExporter {
 		boolean isSingleCourseResult = config.resultType != ResultType.CategoryResult;
 
 		// TODO remove show empty/others from config
-		// TODO utf8 yes for file, no for internal, for print mode?
 		GenericContext stageContext = new GenericContext();
 		stageContext.put("geco_StageTitle", stage().getName());
 
@@ -76,6 +91,7 @@ public class ResultExporter extends AResultExporter {
 		stageContext.put("geco_Penalties?", config.showPenalties);
 
 		// Meta info
+		stageContext.put("geco_FileOutput?", outputType == OutputType.FILE);
 		stageContext.put("geco_AutoRefresh?", refreshInterval > 0);
 		stageContext.put("geco_RefreshInterval", refreshInterval);
 		stageContext.put("geco_PrintMode?", outputType == OutputType.PRINTER);
@@ -121,8 +137,7 @@ public class ResultExporter extends AResultExporter {
 		return stageContext;
 	}
 
-	@Override
-	public String generateHtmlResults(ResultConfig config, int refreshInterval, OutputType outputType) {
+	public String old_generateHtmlResults(ResultConfig config, int refreshInterval, OutputType outputType) {
 		List<Result> results = buildResults(config);
 		this.refreshInterval = refreshInterval;
 		Html html = new Html();
