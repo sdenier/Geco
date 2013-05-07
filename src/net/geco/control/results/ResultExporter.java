@@ -43,7 +43,7 @@ public class ResultExporter extends AResultExporter {
 	protected void exportHtmlFile(String filename, ResultConfig config, int refreshInterval)
 			throws IOException {
 		BufferedWriter writer = GecoResources.getSafeWriterFor(filename);
-		generateHtmlResults("results_ranking.mustache", config, refreshInterval, writer, OutputType.FILE);
+		buildHtmlResults("results_ranking.mustache", config, refreshInterval, writer, OutputType.FILE);
 		writer.close();
 	}
 
@@ -52,21 +52,22 @@ public class ResultExporter extends AResultExporter {
 			OutputType outputType) {
 		StringWriter out = new StringWriter();
 		try {
-			// TODO I18N template headers
-			// TODO internal template?
-			generateHtmlResults("results_ranking.mustache", config, refreshInterval, out, outputType);
+			// TODO display or printer template + I18N template headers
+			buildHtmlResults("results_ranking.mustache", config, refreshInterval, out, outputType);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			geco().logger().debug(e);
 		}
 		return out.toString();
 	}
 
-	public void generateHtmlResults(String templateFile, ResultConfig config, int refreshInterval,
+	protected void buildHtmlResults(String templateFile, ResultConfig config, int refreshInterval,
 			Writer out, OutputType outputType) throws IOException {
 		Reader template = GecoResources.getSafeReaderFor("formats/" + templateFile);
 		// TODO: lazy cache of template
-		Mustache.compiler().defaultValue("N/A").compile(template).execute(buildDataContext(config, refreshInterval, outputType), out);
+		Mustache.compiler()
+			.defaultValue("N/A")
+			.compile(template)
+			.execute(buildDataContext(config, refreshInterval, outputType), out);
 		template.close();
 	}
 
@@ -75,6 +76,8 @@ public class ResultExporter extends AResultExporter {
 		boolean isSingleCourseResult = config.resultType != ResultType.CategoryResult;
 
 		// TODO remove show empty/others from config
+		// TODO load and merge properties for customization by user-defined tags
+		// TODO remove header/footer prop
 		GenericContext stageContext = new GenericContext();
 		stageContext.put("geco_StageTitle", stage().getName());
 

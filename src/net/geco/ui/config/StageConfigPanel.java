@@ -10,6 +10,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
@@ -28,6 +29,7 @@ import net.geco.framework.IGecoApp;
 import net.geco.model.Messages;
 import net.geco.ui.basics.GecoIcon;
 import net.geco.ui.basics.SwingUtils;
+import net.geco.ui.components.FileSelector;
 import net.geco.ui.framework.ConfigPanel;
 
 /**
@@ -98,6 +100,7 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 		});
 		
 		c.gridy = 2;
+		c.insets = new Insets(10, 0, 5, 5);
 		add(new JLabel(Messages.uiGet("StageConfigPanel.RunnerArchiveLabel")), c); //$NON-NLS-1$
 		final JTextField archiveF = new JTextField();
 		archiveF.setEditable(false);
@@ -119,6 +122,7 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 		add(selectArchiveFileB, c);
 
 		c.gridy = 3;
+		c.insets = new Insets(0, 0, 5, 5);
 		add(new JLabel(Messages.uiGet("StageConfigPanel.CNbaseLabel")), c); //$NON-NLS-1$
 		final JTextField cnScoreF = new JTextField();
 		cnScoreF.setEditable(false);
@@ -140,12 +144,46 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 		add(selectCNFileB, c);
 
 		c.gridy = 4;
+		c.insets = new Insets(10, 0, 5, 5);
+		add(new JLabel("Ranking Template:"), c);
+		FileSelector rankingTemplateFS = new FileSelector(geco, frame,
+														"Select Mustache template for splits results",
+														GecoIcon.OpenSmall) {
+			public String filenameValue() {
+				return "";
+				//	return geco.resultExporter().getRankingTemplate().getName();
+			}
+			public void fileChosen(File selectedFile) {
+				//	geco.resultExporter().setRankingTemplate(selectedFile);
+			}
+		};
+		add(rankingTemplateFS.getFilenameField(), c);
+		add(rankingTemplateFS.getSelectFileButton(), c);
+		
+		c.gridy = 5;
+		c.insets = new Insets(0, 0, 5, 5);
+		add(new JLabel("Splits Template:"), c);
+		FileSelector splitsTemplateFS = new FileSelector(geco, frame,
+														"Select Mustache template for ranking results",
+														GecoIcon.OpenSmall) {
+			public String filenameValue() {
+				return "";
+//				return geco.resultExporter().getSplitsTemplate().getName();
+			}
+			public void fileChosen(File selectedFile) {
+//				geco.resultExporter().setSplitsTemplate(selectedFile);
+			}
+		};
+		add(splitsTemplateFS.getFilenameField(), c);
+		add(splitsTemplateFS.getSelectFileButton(), c);
+		
+		c.gridy = 6;
 		c.insets = new Insets(20, 0, 5, 5);
 		add(new JLabel(Messages.uiGet("StageConfigPanel.ConfigurationLabel")), c); //$NON-NLS-1$
 		JLabel appNameL = new JLabel(Html.htmlTag("strong", geco.getAppName())); //$NON-NLS-1$
 		add(appNameL, c);
 		
-		c.gridy = 5;
+		c.gridy = 7;
 		c.insets = new Insets(0, 0, 5, 5);
 		add(new JLabel(Messages.uiGet("StageConfigPanel.DataPathLabel")), c); //$NON-NLS-1$
 		JTextField dataPathL = new JTextField(geco.stage().getBaseDir());

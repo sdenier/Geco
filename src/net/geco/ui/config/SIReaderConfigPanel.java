@@ -93,7 +93,7 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 			}
 		});
 
-		final JCheckBox prototypeFormatB = new JCheckBox("Format Prototyping");
+		final JCheckBox prototypeFormatB = new JCheckBox("Prototyping");
 		add(prototypeFormatB, c);
 		prototypeFormatB.addActionListener(new ActionListener() {
 			@Override
