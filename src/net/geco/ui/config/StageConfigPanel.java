@@ -16,9 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
 import javax.swing.InputVerifier;
-import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -102,46 +100,38 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 		c.gridy = 2;
 		c.insets = new Insets(10, 0, 5, 5);
 		add(new JLabel(Messages.uiGet("StageConfigPanel.RunnerArchiveLabel")), c); //$NON-NLS-1$
-		final JTextField archiveF = new JTextField();
-		archiveF.setEditable(false);
-		archiveF.setText(geco.archiveManager().getArchiveName()); // TODO: refresh
-		add(archiveF, c);
-		JButton selectArchiveFileB = new JButton(GecoIcon.createIcon(GecoIcon.OpenArchive));
-		selectArchiveFileB.addActionListener(new ActionListener() {
+		FileSelector archiveFS = new FileSelector(geco, frame,
+												Messages.uiGet("ArchiveViewer.SelectArchiveLabel"), //$NON-NLS-1$
+												GecoIcon.OpenArchive) {
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser fileChooser = new JFileChooser(geco.getCurrentStagePath());
-				fileChooser.setDialogTitle(Messages.uiGet("ArchiveViewer.SelectArchiveLabel")); //$NON-NLS-1$
-				int answer = fileChooser.showOpenDialog(frame);
-				if( answer==JFileChooser.APPROVE_OPTION ) {
-					geco.archiveManager().setArchiveFile(fileChooser.getSelectedFile());
-					archiveF.setText(geco.archiveManager().getArchiveName());
-				}
+			public String filenameValue() {
+				return geco.archiveManager().getArchiveName();
 			}
-		});
-		add(selectArchiveFileB, c);
+			@Override
+			public void fileChosen(File selectedFile) {
+				geco.archiveManager().setArchiveFile(selectedFile);
+			}
+		};
+		add(archiveFS.getFilenameField(), c);
+		add(archiveFS.getSelectFileButton(), c);
 
 		c.gridy = 3;
 		c.insets = new Insets(0, 0, 5, 5);
 		add(new JLabel(Messages.uiGet("StageConfigPanel.CNbaseLabel")), c); //$NON-NLS-1$
-		final JTextField cnScoreF = new JTextField();
-		cnScoreF.setEditable(false);
-		cnScoreF.setText(geco.cnCalculator().getCnFile().getName());
-		add(cnScoreF, c);
-		JButton selectCNFileB = new JButton(GecoIcon.createIcon(GecoIcon.OpenArchive));
-		selectCNFileB.addActionListener(new ActionListener() {
+		FileSelector cnScoreFS = new FileSelector(geco, frame,
+												Messages.uiGet("StageConfigPanel.SelectCNfileLabel"), //$NON-NLS-1$
+												GecoIcon.OpenArchive) {
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser fileChooser = new JFileChooser(geco.getCurrentStagePath());
-				fileChooser.setDialogTitle(Messages.uiGet("StageConfigPanel.SelectCNfileLabel")); //$NON-NLS-1$
-				int answer = fileChooser.showOpenDialog(frame);
-				if( answer==JFileChooser.APPROVE_OPTION ) {
-					geco.cnCalculator().setCnFile(fileChooser.getSelectedFile());
-					cnScoreF.setText(geco.cnCalculator().getCnFile().getName());
-				}
+			public String filenameValue() {
+				return geco.cnCalculator().getCnFile().getName();
 			}
-		});
-		add(selectCNFileB, c);
+			@Override
+			public void fileChosen(File selectedFile) {
+				geco.cnCalculator().setCnFile(selectedFile);
+			}
+		};
+		add(cnScoreFS.getFilenameField(), c);
+		add(cnScoreFS.getSelectFileButton(), c);
 
 		c.gridy = 4;
 		c.insets = new Insets(10, 0, 5, 5);
