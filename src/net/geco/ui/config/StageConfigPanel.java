@@ -121,14 +121,13 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 		add(cnScoreFS.getSelectFileButton(), c);
 
 		FileSelector rankingTemplateFS = new FileSelector(geco, frame,
-														"Select Mustache template for splits results",
+														"Select Mustache template for ranking results",
 														GecoIcon.OpenSmall) {
 			public String filenameValue() {
-				return "";
-				//	return geco.resultExporter().getRankingTemplate().getName();
+				return geco.resultExporter().getRankingTemplate().getName();
 			}
 			public void fileChosen(File selectedFile) {
-				//	geco.resultExporter().setRankingTemplate(selectedFile);
+				geco.resultExporter().setRankingTemplate(selectedFile);
 			}
 		};
 		setGridBagConstraints(c, 4, 10);
@@ -137,14 +136,14 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 		add(rankingTemplateFS.getSelectFileButton(), c);
 		
 		FileSelector splitsTemplateFS = new FileSelector(geco, frame,
-														"Select Mustache template for ranking results",
+														"Select Mustache template for splits results",
 														GecoIcon.OpenSmall) {
 			public String filenameValue() {
-				return "";
-//				return geco.resultExporter().getSplitsTemplate().getName();
+				return null;
+//				return geco.splitsExporter().getSplitsTemplate().getName();
 			}
 			public void fileChosen(File selectedFile) {
-//				geco.resultExporter().setSplitsTemplate(selectedFile);
+//				geco.splitsExporter().setSplitsTemplate(selectedFile);
 			}
 		};
 		setGridBagConstraints(c, 5, 0);

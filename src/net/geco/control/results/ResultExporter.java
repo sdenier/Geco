@@ -5,6 +5,7 @@
 package net.geco.control.results;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringWriter;
@@ -12,7 +13,9 @@ import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
+import net.geco.basics.Announcer.StageListener;
 import net.geco.basics.CsvWriter;
 import net.geco.basics.GecoResources;
 import net.geco.control.GecoControl;
@@ -25,6 +28,7 @@ import net.geco.model.Result;
 import net.geco.model.ResultType;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
+import net.geco.model.Stage;
 
 import com.samskivert.mustache.Mustache;
 
@@ -33,17 +37,21 @@ import com.samskivert.mustache.Mustache;
  * @since Dec 1, 2010
  *
  */
-public class ResultExporter extends AResultExporter {
+public class ResultExporter extends AResultExporter implements StageListener {
 	
+	private File rankingTemplate;
+
 	public ResultExporter(GecoControl gecoControl) {
 		super(ResultExporter.class, gecoControl);
+		geco().announcer().registerStageListener(this);
+		changed(null, null);
 	}
 
 	@Override
 	protected void exportHtmlFile(String filename, ResultConfig config, int refreshInterval)
 			throws IOException {
 		BufferedWriter writer = GecoResources.getSafeWriterFor(filename);
-		buildHtmlResults("results_ranking.mustache", config, refreshInterval, writer, OutputType.FILE);
+		buildHtmlResults(getRankingTemplate().getAbsolutePath(), config, refreshInterval, writer, OutputType.FILE);
 		writer.close();
 	}
 
@@ -53,7 +61,7 @@ public class ResultExporter extends AResultExporter {
 		StringWriter out = new StringWriter();
 		try {
 			// TODO display or printer template + I18N template headers
-			buildHtmlResults("results_ranking.mustache", config, refreshInterval, out, outputType);
+			buildHtmlResults("formats/results_ranking.mustache", config, refreshInterval, out, outputType);
 		} catch (IOException e) {
 			geco().logger().debug(e);
 		}
@@ -62,7 +70,7 @@ public class ResultExporter extends AResultExporter {
 
 	protected void buildHtmlResults(String templateFile, ResultConfig config, int refreshInterval,
 			Writer out, OutputType outputType) throws IOException {
-		Reader template = GecoResources.getSafeReaderFor("formats/" + templateFile);
+		Reader template = GecoResources.getSafeReaderFor(templateFile);
 		// TODO: lazy cache of template
 		Mustache.compiler()
 			.defaultValue("N/A")
@@ -143,5 +151,36 @@ public class ResultExporter extends AResultExporter {
 			throws Exception {
 		new SplitXmlExporter(geco()).generateXMLResult(buildResults(config), filename, false);		
 	}
+
+	public File getRankingTemplate() {
+		return rankingTemplate;
+	}
+
+	public void setRankingTemplate(File selectedFile) {
+		rankingTemplate = selectedFile;
+	}
 	
+	@Override
+	public void changed(Stage previous, Stage current) {
+		try {
+			setRankingTemplate(new File( stage().getProperties().getProperty(rankingTemplateProperty()) ));
+		} catch (NullPointerException e) {
+			setRankingTemplate(new File("formats/results_ranking.mustache")); //$NON-NLS-1$
+		}
+	}
+
+	@Override
+	public void saving(Stage stage, Properties properties) {
+		if( getRankingTemplate().exists() ){
+			properties.setProperty(rankingTemplateProperty(), getRankingTemplate().getAbsolutePath());
+		}
+	}
+
+	@Override
+	public void closing(Stage stage) {}
+	
+	public static String rankingTemplateProperty() {
+		return "RankingTemplate"; //$NON-NLS-1$
+	}
+
 }
