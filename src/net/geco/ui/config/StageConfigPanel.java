@@ -44,11 +44,7 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 
 	public StageConfigPanel(final IGecoApp geco, final JFrame frame) {
 		setLayout(new GridBagLayout());
-		GridBagConstraints c = SwingUtils.gbConstr(0);
-		c.insets = new Insets(0, 0, 5, 5);
-		c.fill = GridBagConstraints.HORIZONTAL;
 
-		add(new JLabel(Messages.uiGet("StageConfigPanel.StageNameLabel")), c); //$NON-NLS-1$
 		final JTextField stagenameF = new JTextField(geco.stage().getName());
 		stagenameF.addActionListener(new ActionListener() {
 			@Override
@@ -57,24 +53,22 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 			}
 		});
 		stagenameF.setInputVerifier(new InputVerifier() {
-			@Override
-			public boolean verify(JComponent input) {
-				return verifyStagename(stagenameF.getText());
-			}
+			@Override public boolean verify(JComponent input) { return true; }
 			@Override
 			public boolean shouldYieldFocus(JComponent input) {
 				return validateStagename(stagenameF, geco, frame);
 			}
 		});
+		GridBagConstraints c = SwingUtils.gbConstr();
+		c.fill = GridBagConstraints.HORIZONTAL;
+		setGridBagConstraints(c, 0, 0);
+		add(new JLabel(Messages.uiGet("StageConfigPanel.StageNameLabel")), c); //$NON-NLS-1$
 		add(stagenameF, c);
 
-		c.gridy = 1;
-		add(new JLabel(Messages.uiGet("StageConfigPanel.ZeroHourLabel")), c); //$NON-NLS-1$
 		final SimpleDateFormat formatter = new SimpleDateFormat("H:mm"); //$NON-NLS-1$
 		formatter.setTimeZone(TimeZone.getTimeZone("GMT")); //$NON-NLS-1$
 		final JTextField zerohourF = new JTextField(formatter.format(geco.stage().getZeroHour()));
 		zerohourF.setToolTipText(Messages.uiGet("StageConfigPanel.ZeroHourTooltip")); //$NON-NLS-1$
-		add(zerohourF, c);
 		zerohourF.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -82,24 +76,16 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 			}
 		});
 		zerohourF.setInputVerifier(new InputVerifier() {
-			@Override
-			public boolean verify(JComponent input) {
-				try {
-					formatter.parse(zerohourF.getText());
-					return true;
-				} catch (ParseException e) {
-					return false;
-				}
-			}
+			@Override public boolean verify(JComponent input) { return true; }
 			@Override
 			public boolean shouldYieldFocus(JComponent input) {
 				return validateZeroHour(formatter, zerohourF, geco);
 			}
 		});
+		setGridBagConstraints(c, 1, 0);
+		add(new JLabel(Messages.uiGet("StageConfigPanel.ZeroHourLabel")), c); //$NON-NLS-1$
+		add(zerohourF, c);
 		
-		c.gridy = 2;
-		c.insets = new Insets(10, 0, 5, 5);
-		add(new JLabel(Messages.uiGet("StageConfigPanel.RunnerArchiveLabel")), c); //$NON-NLS-1$
 		FileSelector archiveFS = new FileSelector(geco, frame,
 												Messages.uiGet("ArchiveViewer.SelectArchiveLabel"), //$NON-NLS-1$
 												GecoIcon.OpenArchive) {
@@ -112,12 +98,11 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 				geco.archiveManager().setArchiveFile(selectedFile);
 			}
 		};
+		setGridBagConstraints(c, 2, 10);
+		add(new JLabel(Messages.uiGet("StageConfigPanel.RunnerArchiveLabel")), c); //$NON-NLS-1$
 		add(archiveFS.getFilenameField(), c);
 		add(archiveFS.getSelectFileButton(), c);
 
-		c.gridy = 3;
-		c.insets = new Insets(0, 0, 5, 5);
-		add(new JLabel(Messages.uiGet("StageConfigPanel.CNbaseLabel")), c); //$NON-NLS-1$
 		FileSelector cnScoreFS = new FileSelector(geco, frame,
 												Messages.uiGet("StageConfigPanel.SelectCNfileLabel"), //$NON-NLS-1$
 												GecoIcon.OpenArchive) {
@@ -130,12 +115,11 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 				geco.cnCalculator().setCnFile(selectedFile);
 			}
 		};
+		setGridBagConstraints(c, 3, 0);
+		add(new JLabel(Messages.uiGet("StageConfigPanel.CNbaseLabel")), c); //$NON-NLS-1$
 		add(cnScoreFS.getFilenameField(), c);
 		add(cnScoreFS.getSelectFileButton(), c);
 
-		c.gridy = 4;
-		c.insets = new Insets(10, 0, 5, 5);
-		add(new JLabel("Ranking Template:"), c);
 		FileSelector rankingTemplateFS = new FileSelector(geco, frame,
 														"Select Mustache template for splits results",
 														GecoIcon.OpenSmall) {
@@ -147,12 +131,11 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 				//	geco.resultExporter().setRankingTemplate(selectedFile);
 			}
 		};
+		setGridBagConstraints(c, 4, 10);
+		add(new JLabel("Ranking Template:"), c);
 		add(rankingTemplateFS.getFilenameField(), c);
 		add(rankingTemplateFS.getSelectFileButton(), c);
 		
-		c.gridy = 5;
-		c.insets = new Insets(0, 0, 5, 5);
-		add(new JLabel("Splits Template:"), c);
 		FileSelector splitsTemplateFS = new FileSelector(geco, frame,
 														"Select Mustache template for ranking results",
 														GecoIcon.OpenSmall) {
@@ -164,22 +147,27 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 //				geco.resultExporter().setSplitsTemplate(selectedFile);
 			}
 		};
+		setGridBagConstraints(c, 5, 0);
+		add(new JLabel("Splits Template:"), c);
 		add(splitsTemplateFS.getFilenameField(), c);
 		add(splitsTemplateFS.getSelectFileButton(), c);
 		
-		c.gridy = 6;
-		c.insets = new Insets(20, 0, 5, 5);
-		add(new JLabel(Messages.uiGet("StageConfigPanel.ConfigurationLabel")), c); //$NON-NLS-1$
 		JLabel appNameL = new JLabel(Html.htmlTag("strong", geco.getAppName())); //$NON-NLS-1$
+		setGridBagConstraints(c, 6, 20);
+		add(new JLabel(Messages.uiGet("StageConfigPanel.ConfigurationLabel")), c); //$NON-NLS-1$
 		add(appNameL, c);
 		
-		c.gridy = 7;
-		c.insets = new Insets(0, 0, 5, 5);
-		add(new JLabel(Messages.uiGet("StageConfigPanel.DataPathLabel")), c); //$NON-NLS-1$
 		JTextField dataPathL = new JTextField(geco.stage().getBaseDir());
 		dataPathL.setColumns(20);
 		dataPathL.setEditable(false);
+		setGridBagConstraints(c, 7, 0);
+		add(new JLabel(Messages.uiGet("StageConfigPanel.DataPathLabel")), c); //$NON-NLS-1$
 		add(dataPathL, c);		
+	}
+	
+	private void setGridBagConstraints(GridBagConstraints constraints, int gridY, int paddingTop) {
+		constraints.gridy = gridY;
+		constraints.insets = new Insets(paddingTop, 0, 5, 5);
 	}
 	
 	private boolean verifyStagename(String text) {
