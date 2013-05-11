@@ -94,7 +94,6 @@ public class ResultExporter extends AResultExporter implements StageListener {
 		boolean isSingleCourseResult = config.resultType != ResultType.CategoryResult;
 
 		// TODO remove show empty/others from config
-		// TODO load and merge properties for customization by user-defined tags
 		// TODO remove header/footer prop
 		GenericContext stageContext = new GenericContext();
 		stageContext.put("geco_StageTitle", stage().getName());
@@ -110,6 +109,8 @@ public class ResultExporter extends AResultExporter implements StageListener {
 		stageContext.put("geco_RefreshInterval", refreshInterval);
 		stageContext.put("geco_PrintMode?", outputType == OutputType.PRINTER);
 		stageContext.put("geco_Timestamp", new SimpleDateFormat("H:mm").format(new Date()));
+		
+		mergeCustomStageProperties(stageContext);
 		
 		List<Result> results = buildResults(config);
 		ContextList resultsCollection = stageContext.createContextList("geco_ResultsCollection", results.size());
@@ -149,6 +150,19 @@ public class ResultExporter extends AResultExporter implements StageListener {
 			}
 		}
 		return stageContext;
+	}
+
+	protected void mergeCustomStageProperties(GenericContext stageContext) {
+		final String customPropertiesPath = stage().filepath("formats.prop");
+		if( GecoResources.exists(customPropertiesPath) ) {
+			Properties props = new Properties();
+			try {
+				props.load( GecoResources.getSafeReaderFor(customPropertiesPath) );
+				stageContext.mergeProperties(props);
+			} catch (IOException e) {
+				geco().logger().debug(e);
+			}
+		}
 	}
 
 	@Override
