@@ -4,6 +4,7 @@
  */
 package net.geco.control.results;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
@@ -50,33 +51,42 @@ public class ResultExporter extends AResultExporter implements StageListener {
 	@Override
 	protected void exportHtmlFile(String filename, ResultConfig config, int refreshInterval)
 			throws IOException {
+		BufferedReader template = GecoResources.getSafeReaderFor(getRankingTemplate().getAbsolutePath());
 		BufferedWriter writer = GecoResources.getSafeWriterFor(filename);
-		buildHtmlResults(getRankingTemplate().getAbsolutePath(), config, refreshInterval, writer, OutputType.FILE);
+		buildHtmlResults(template, config, refreshInterval, writer, OutputType.FILE);
 		writer.close();
+		template.close();
 	}
 
 	@Override
-	public String generateHtmlResults(ResultConfig config, int refreshInterval,
-			OutputType outputType) {
+	public String generateHtmlResults(ResultConfig config, int refreshInterval, OutputType outputType) {
+		Reader reader;
 		StringWriter out = new StringWriter();
 		try {
-			// TODO display or printer template + I18N template headers
-			buildHtmlResults("formats/results_ranking.mustache", config, refreshInterval, out, outputType);
+			switch (outputType) {
+			case DISPLAY:
+				// TODO I18N template headers
+				reader = GecoResources.getResourceReader("/resources/formats/results_ranking_internal.mustache");
+				break;
+			case PRINTER:
+			default:
+				reader = GecoResources.getSafeReaderFor(getRankingTemplate().getAbsolutePath());
+			}
+			buildHtmlResults(reader, config, refreshInterval, out, outputType);
+			reader.close();
 		} catch (IOException e) {
 			geco().logger().debug(e);
 		}
 		return out.toString();
 	}
 
-	protected void buildHtmlResults(String templateFile, ResultConfig config, int refreshInterval,
-			Writer out, OutputType outputType) throws IOException {
-		Reader template = GecoResources.getSafeReaderFor(templateFile);
+	protected void buildHtmlResults(Reader template, ResultConfig config, int refreshInterval,
+			Writer out, OutputType outputType) {
 		// TODO: lazy cache of template
 		Mustache.compiler()
 			.defaultValue("N/A")
 			.compile(template)
 			.execute(buildDataContext(config, refreshInterval, outputType), out);
-		template.close();
 	}
 
 	

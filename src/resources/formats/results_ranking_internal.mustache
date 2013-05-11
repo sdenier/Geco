@@ -1,0 +1,44 @@
+<html>
+  <head>
+{{#geco_FileOutput?}}
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+{{/geco_FileOutput?}}
+{{#geco_AutoRefresh?}}
+    <meta http-equiv="refresh" content="{{geco_RefreshInterval}}">
+{{/geco_AutoRefresh?}}
+    <style type="text/css">
+      body { font-size: 10 }
+      h1 { font-size: 20; text-align: center }
+      h2 { font-size: 15 }
+      table { border-collapse:collapse; width: 100%; font-size: 10 }
+      .runner td, .runner th { padding: 0px 10px }
+      .left { text-align: left }
+      .center { text-align: center }
+      .right, .time, .pace, .diff, .controls, .times, .splits { text-align: right }
+      .diff, .splits { font-style: italic }
+      .controls { background-color: #F0F0F0 }
+      .times, .splits { background-color: white }
+      .rsplit td, .col0 td, .col1 td { padding: 0 5px 0 0 }
+      .rsplit td, .time, .best { font-weight: bold }
+    </style>
+  </head>
+  <body>
+    <h1>{{geco_StageTitle}} - Results</h1>
+{{#geco_ResultsCollection}}
+    <h2>{{geco_ResultName}} ({{geco_NbFinishedRunners}}/{{geco_NbPresentRunners}}){{#geco_SingleCourse?}} - {{geco_CourseLength}}m, {{geco_CourseClimb}}m{{/geco_SingleCourse?}}</h2>
+    <table>
+      <tr class="runner"><th></th><th class="left">Name</th><th class="left">Club</th>{{#geco_RunnerCategory?}}<th class="left">Category</th>{{/geco_RunnerCategory?}}<th class="right">Time</th><th class="right">Diff</th>{{#geco_SingleCourse?}}<th class="right">min/km</th>{{/geco_SingleCourse?}}{{#geco_Penalties?}}<th class="right">MP</th><th class="right">Race time</th>{{/geco_Penalties?}}</tr>
+{{#geco_RankedRunners}}
+      <tr class="runner"><td>{{geco_RunnerRank}}</td><td>{{geco_RunnerFirstName}} {{geco_RunnerLastName}}</td><td>{{geco_RunnerClubName}}</td>{{#geco_RunnerCategory?}}<td>{{geco_RunnerCategory}}</td>{{/geco_RunnerCategory?}}<td class="time">{{geco_RunnerResultTime}}</td><td class="diff">{{geco_RunnerDiffTime}}</td>{{#geco_SingleCourse?}}<td class="pace">{{geco_RunnerPace}}</td>{{/geco_SingleCourse?}}{{#geco_Penalties?}}<td class="right">{{geco_RunnerNbMPs}}</td><td class="right">{{geco_RunnerRaceTime}}</td>{{/geco_Penalties?}}</tr>
+{{/geco_RankedRunners}}
+      <tr class="empty"><td>&nbsp;</td></tr>
+{{#geco_UnrankedRunners}}
+      <tr class="runner"><td>{{geco_RunnerRank}}</td><td>{{geco_RunnerFirstName}} {{geco_RunnerLastName}}</td><td>{{geco_RunnerClubName}}</td>{{#geco_RunnerCategory?}}<td>{{geco_RunnerCategory}}</td>{{/geco_RunnerCategory?}}<td class="time">{{geco_RunnerStatusOrTime}}</td><td></td>{{#geco_SingleCourse?}}<td></td>{{/geco_SingleCourse?}}{{#geco_Penalties?}}<td class="right">{{geco_RunnerNbMPs}}</td><td class="right">{{geco_RunnerRaceTime}}</td>{{/geco_Penalties?}}</tr>
+{{/geco_UnrankedRunners}}
+    </table>
+{{#geco_PrintMode?}}
+    <p>Last update {{geco_Timestamp}}</p>
+{{/geco_PrintMode?}}
+{{/geco_ResultsCollection}}
+  </body>
+</html>
