@@ -4,7 +4,13 @@
  */
 package net.geco.control.results;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -14,22 +20,29 @@ import java.util.Properties;
 
 import net.geco.basics.Announcer.StageListener;
 import net.geco.basics.CsvWriter;
+import net.geco.basics.GecoResources;
 import net.geco.basics.Html;
 import net.geco.basics.TimeManager;
 import net.geco.control.GecoControl;
 import net.geco.control.results.ResultBuilder.ResultConfig;
 import net.geco.control.results.ResultBuilder.SplitTime;
+import net.geco.control.results.context.ContextList;
+import net.geco.control.results.context.GenericContext;
+import net.geco.control.results.context.RunnerContext;
 import net.geco.model.Category;
 import net.geco.model.Club;
 import net.geco.model.Course;
 import net.geco.model.Messages;
 import net.geco.model.RankedRunner;
 import net.geco.model.Result;
+import net.geco.model.ResultType;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Stage;
 import net.geco.model.Status;
 import net.geco.model.Trace;
+
+import com.samskivert.mustache.Mustache;
 
 
 /**
@@ -57,9 +70,13 @@ public class SplitExporter extends AResultExporter implements StageListener {
 			return Integer.toString(courseNames.indexOf(courseName)); }
 	}
 	
-	private int nbColumns = 12;
-	private int refreshInterval = 0;
+	private File splitsTemplate = new File("formats/results_splits.mustache");
+
 	private boolean withBestSplits;
+
+	private int nbColumns = 12;
+
+	private int refreshInterval = 0;
 
 	
 	public SplitExporter(GecoControl gecoControl) {
@@ -79,7 +96,99 @@ public class SplitExporter extends AResultExporter implements StageListener {
 	public int nbColumns() {
 		return nbColumns;
 	}
-	
+
+	@Override
+	protected void exportHtmlFile(String filename, ResultConfig config, int refreshInterval)
+			throws IOException {
+		BufferedReader template = GecoResources.getSafeReaderFor(getSplitsTemplate().getAbsolutePath());
+		BufferedWriter writer = GecoResources.getSafeWriterFor(filename);
+		buildHtmlResults(template, config, refreshInterval, writer, OutputType.FILE);
+		writer.close();
+		template.close();
+	}
+
+	protected void buildHtmlResults(Reader template, ResultConfig config, int refreshInterval,
+			Writer out, OutputType outputType) {
+		// TODO: lazy cache of template
+		Mustache.compiler()
+			.defaultValue("N/A")
+			.compile(template)
+			.execute(buildDataContext(config, refreshInterval, outputType), out);
+	}
+
+	protected Object buildDataContext(ResultConfig config, int refreshInterval, OutputType outputType) {
+		boolean isSingleCourseResult = config.resultType != ResultType.CategoryResult;
+
+		GenericContext stageContext = new GenericContext();
+		stageContext.put("geco_StageTitle", stage().getName());
+
+		// General layout
+		stageContext.put("geco_SingleCourse?", isSingleCourseResult);
+		stageContext.put("geco_RunnerCategory?", isSingleCourseResult);
+		stageContext.put("geco_Penalties?", config.showPenalties);
+
+		// Meta info
+		stageContext.put("geco_FileOutput?", outputType == OutputType.FILE);
+		stageContext.put("geco_AutoRefresh?", refreshInterval > 0);
+		stageContext.put("geco_RefreshInterval", refreshInterval);
+		stageContext.put("geco_PrintMode?", outputType == OutputType.PRINTER);
+		stageContext.put("geco_Timestamp", new SimpleDateFormat("H:mm").format(new Date()));
+		
+		mergeCustomStageProperties(stageContext);
+		
+		List<Result> results = buildResults(config);
+		ContextList resultsCollection = stageContext.createContextList("geco_ResultsCollection", results.size());
+		for (Result result : results) {
+			if( ! result.isEmpty() ) {
+				long bestTime = result.bestTime();
+
+				GenericContext resultContext = new GenericContext();
+				resultsCollection.add(resultContext);
+
+				resultContext.put("geco_ResultName", result.getIdentifier());
+				resultContext.put("geco_NbFinishedRunners", result.nbFinishedRunners());
+				resultContext.put("geco_NbPresentRunners", result.nbPresentRunners());
+				if( isSingleCourseResult ) {
+					resultContext.put("geco_CourseLength", result.anyCourse().getLength());
+					resultContext.put("geco_CourseClimb", result.anyCourse().getClimb());
+				}
+				
+				ContextList runnersCollection =
+						resultContext.createContextList("geco_RankedRunners", result.getRanking().size());
+				for (RankedRunner rankedRunner : result.getRanking()) {
+					runnersCollection.add(RunnerContext.createRankedRunner(rankedRunner, bestTime));
+				}
+
+				runnersCollection =
+						resultContext.createContextList("geco_UnrankedRunners", result.getUnrankedRunners().size());
+				for (RunnerRaceData data : result.getUnrankedRunners()) {
+					Runner runner = data.getRunner();
+					if( runner.isNC() ) {
+						if( config.showNC ) {
+							runnersCollection.add(RunnerContext.createNCRunner(data));
+						} // else nothing
+					} else {
+						runnersCollection.add(RunnerContext.createUnrankedRunner(data));
+					}
+				}
+			}
+		}
+		return stageContext;
+	}
+
+	protected void mergeCustomStageProperties(GenericContext stageContext) {
+		final String customPropertiesPath = stage().filepath("formats.prop");
+		if( GecoResources.exists(customPropertiesPath) ) {
+			Properties props = new Properties();
+			try {
+				props.load( GecoResources.getSafeReaderFor(customPropertiesPath) );
+				stageContext.mergeProperties(props);
+			} catch (IOException e) {
+				geco().logger().debug(e);
+			}
+		}
+	}
+
 	@Override
 	public String generateHtmlResults(ResultConfig config, int refreshInterval, OutputType outputType) {
 		List<Result> results = buildResults(config);
@@ -445,6 +554,14 @@ public class SplitExporter extends AResultExporter implements StageListener {
 	public void generateXMLResult(ResultConfig config, String filename)
 			throws Exception {
 		new SplitXmlExporter(geco()).generateXMLResult(buildResults(config), filename, true);		
+	}
+
+	public File getSplitsTemplate() {
+		return splitsTemplate;
+	}
+
+	public void setSplitsTemplate(File selectedFile) {
+		splitsTemplate = selectedFile;
 	}
 
 	@Override

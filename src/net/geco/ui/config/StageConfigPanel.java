@@ -139,11 +139,10 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 														"Select Mustache template for splits results",
 														GecoIcon.OpenSmall) {
 			public String filenameValue() {
-				return null;
-//				return geco.splitsExporter().getSplitsTemplate().getName();
+				return geco.splitsExporter().getSplitsTemplate().getName();
 			}
 			public void fileChosen(File selectedFile) {
-//				geco.splitsExporter().setSplitsTemplate(selectedFile);
+				geco.splitsExporter().setSplitsTemplate(selectedFile);
 			}
 		};
 		setGridBagConstraints(c, 5, 0);
