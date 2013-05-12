@@ -202,12 +202,10 @@ public class SplitExporter extends AResultExporter implements StageListener {
 		}
 		for (Result result : results) {
 			if( config.showEmptySets || !result.isEmpty() ) {
-				SplitTime[] bestSplits = null;
-				if( withBestSplits ){
-					bestSplits = resultBuilder.initializeBestSplits(result, config.resultType);
-				}
+				SplitTime[] bestSplits = withBestSplits ?
+						resultBuilder.initializeBestSplits(result, config.resultType) :
+						new SplitTime[0];
 				Map<RunnerRaceData, SplitTime[]> allSplits = resultBuilder.buildAllNormalSplits(result, bestSplits);
-				bestSplits = bestSplits == null ? new SplitTime[0] : bestSplits;
 				appendHtmlResultsWithSplits(result, allSplits, bestSplits, config, html);
 			}
 		}
@@ -262,7 +260,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 						runnerData,
 						"", //$NON-NLS-1$
 						runnerData.getResult().formatStatus(),
-						resultBuilder.buildNormalSplits(runnerData, null),
+						resultBuilder.buildNormalSplits(runnerData),
 						bestSplit,
 						html);
 			}			
@@ -382,7 +380,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 		// edit collection
 		ArrayList<String> csvRecord = new ArrayList<String>(super.computeCsvRecord(runnerData, resultId, rank));
 		csvRecord.ensureCapacity(csvRecord.size() + 2 * runnerData.getResult().getTrace().length);
-		for (SplitTime split: resultBuilder.buildNormalSplits(runnerData, null)) {
+		for (SplitTime split: resultBuilder.buildNormalSplits(runnerData)) {
 			if( split.trace!=null ) { // dont handle finish split
 				csvRecord.add(split.trace.getBasicCode());
 				csvRecord.add(encodeMPPunch(split));
@@ -495,7 +493,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 	private void addSplits(RunnerRaceData runnerData, Collection<String> record) {
 		record.add(oeTime(runnerData.getOfficialStarttime()));
 		record.add(oeTime(runnerData.getFinishtime()));
-		SplitTime[] splits = resultBuilder.buildNormalSplits(runnerData, null);
+		SplitTime[] splits = resultBuilder.buildNormalSplits(runnerData);
 		for (SplitTime split : splits) {
 			if( split.trace!=null ) { // finish split handled above
 				record.add(split.trace.getBasicCode());

@@ -47,8 +47,7 @@ public class SplitBuilderTest {
 	public void setUp() {
 		ResultBuilder resultBuilder = new ResultBuilder(gecoControl);
 		Result resultB = resultBuilder.buildResultForCourse(registry.findCourse("Course B"));
-		SplitTime[] bestSplits = null;
-		allSplits = resultBuilder.buildAllNormalSplits(resultB, bestSplits);
+		allSplits = resultBuilder.buildAllNormalSplits(resultB, new SplitTime[0]);
 	}
 	
 	@Test

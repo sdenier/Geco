@@ -111,7 +111,7 @@ public class SplitXmlExporter extends Control {
 		status.setAttribute("value", runnerData.getIofStatus()); //$NON-NLS-1$
 
 		if( includeSplits ) {
-			SplitTime[] splits = resultBuilder.buildNormalSplits(runnerData, null);
+			SplitTime[] splits = resultBuilder.buildNormalSplits(runnerData);
 			for (int i = 0; i < splits.length; i++) {
 				SplitTime split = splits[i];
 				if( split.trace!=null && split.trace.isOK() ) {

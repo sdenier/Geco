@@ -146,7 +146,7 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 
 		html.open("table"); //$NON-NLS-1$
 		exporter.appendHtmlSplitsInColumns(
-				builder.buildNormalSplits(data, null),
+				builder.buildNormalSplits(data),
 				new SplitTime[0],
 				exporter.nbColumns(),
 				html);

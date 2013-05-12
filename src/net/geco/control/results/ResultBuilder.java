@@ -160,7 +160,7 @@ public class ResultBuilder extends Control {
 		
 	}
 	
-	public SplitTime[] buildNormalSplits(RunnerRaceData data, SplitTime[] bestSplits) {
+	private SplitTime[] buildNormalSplits(RunnerRaceData data, SplitTime[] bestSplits) {
 		ArrayList<SplitTime> splits = new ArrayList<SplitTime>(data.getResult().getTrace().length);
 		ArrayList<SplitTime> added = new ArrayList<SplitTime>(data.getResult().getTrace().length);
 		// in normal mode, added splits appear after normal splits
@@ -168,11 +168,15 @@ public class ResultBuilder extends Control {
 		splits.addAll(added);
 		return splits.toArray(new SplitTime[0]);
 	}	
+
+	public SplitTime[] buildNormalSplits(RunnerRaceData data) {
+		return buildNormalSplits(data, new SplitTime[0]);
+	}
 	
 	public SplitTime[] buildLinearSplits(RunnerRaceData data) {
 		ArrayList<SplitTime> splits = new ArrayList<SplitTime>(data.getResult().getTrace().length);
 		// in linear mode, added splits are kept in place with others
-		buildSplits(data, splits, splits, null, false);
+		buildSplits(data, splits, splits, new SplitTime[0], false);
 		return splits.toArray(new SplitTime[0]);
 	}
 
@@ -187,7 +191,7 @@ public class ResultBuilder extends Control {
 				SplitTime split = createSplit(Integer.toString(control), trace, startTime, previousTime, time);
 				splits.add(split);
 				previousTime = time;
-				if( bestSplits!=null ){
+				if( bestSplits.length > 0 ){
 					SplitTime bestSplit = bestSplits[control - 1];
 					bestSplit.time = Math.min(bestSplit.time, split.time);
 					bestSplit.split = Math.min(bestSplit.split, split.split);
@@ -215,7 +219,7 @@ public class ResultBuilder extends Control {
 		// TODO: do not use null value for final trace
 		SplitTime fSplit = createSplit("F", null, startTime, previousTime, data.getFinishtime().getTime()); //$NON-NLS-1$
 		splits.add(fSplit); //$NON-NLS-1$
-		if( bestSplits!=null ){
+		if( bestSplits.length > 0 ){
 			SplitTime bestSplit = bestSplits[bestSplits.length - 1];
 			bestSplit.time = Math.min(bestSplit.time, fSplit.time);
 			bestSplit.split = Math.min(bestSplit.split, fSplit.split);
@@ -228,7 +232,7 @@ public class ResultBuilder extends Control {
 	}
 
 	public SplitTime[] initializeBestSplits(Result result, ResultType resultType) {
-		SplitTime[] bestSplits = null;
+		SplitTime[] bestSplits = new SplitTime[0];
 		if( ! result.isEmpty() ){
 			Course course = result.anyCourse();
 			boolean sameCourse = true; // default for CourseResult and MixedResult
