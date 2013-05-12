@@ -51,13 +51,12 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 	
 	public static enum SplitFormat { MultiColumns, Ticket }
 	
-	private PrintService splitPrinter;
-	private boolean autoPrint;
 	private SplitFormat splitFormat = SplitFormat.MultiColumns;
-	private boolean prototypeMode;
+	private PrintService splitPrinter;
 	private MediaSizeName[] splitMedia;
-	private String headerMessage;
-	private String footerMessage;
+
+	private boolean autoPrint;
+	private boolean prototypeMode;
 	
 	private final ResultBuilder builder;
 	private final SplitExporter exporter;
@@ -123,8 +122,6 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 
 
 	private void printSingleSplitsInColumns(RunnerRaceData data, Html html) {
-		appendMessage(getHeaderMessage(), html);
-
 		Runner runner = data.getRunner();
 		Course course = data.getCourse();
 		String pace = ""; //$NON-NLS-1$
@@ -155,13 +152,11 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 				html);
 		html.close("table") //$NON-NLS-1$
 			.br();
-		appendMessage(getFooterMessage(), html);
 	}
 
 
 	private void printSingleSplitsInLine(RunnerRaceData data, Html html) {
 	//		char[] chars = Character.toChars(0x2B15); // control flag char :)
-		appendMessage(getHeaderMessage(), html);
 		Runner runner = data.getRunner();
 		Course course = data.getCourse();
 		html.br()
@@ -181,13 +176,6 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 		html.open("table", "width=\"75%\""); //$NON-NLS-1$ //$NON-NLS-2$
 		exporter.appendHtmlSplitsInLine(builder.buildLinearSplits(data), html);
 		html.close("table").br(); //$NON-NLS-1$
-		appendMessage(getFooterMessage(), html);
-	}
-
-	private void appendMessage(String message, Html html) {
-		if( message.length() > 0 ){
-			html.tag("div", "align=\"center\"", message); //$NON-NLS-1$ //$NON-NLS-2$
-		}
 	}
 
 	private void computeMediaForTicket(final JTextPane ticket,
@@ -245,7 +233,6 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 		}
 	}
 
-
 	private MediaSizeName[] getSplitMedia() {
 		if( splitMedia==null ) {
 			Vector<MediaSizeName> mediaSizenames = new Vector<MediaSizeName>();
@@ -279,11 +266,6 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 		return ( getSplitPrinter()==null ) ? "" : getSplitPrinter().getName(); //$NON-NLS-1$
 	}
 	
-	public String getDefaultPrinterName() {
-		PrintService defaultService = PrintServiceLookup.lookupDefaultPrintService();
-		return ( defaultService==null ) ? "" : defaultService.getName(); //$NON-NLS-1$
-	}
-	
 	public boolean setSplitPrinterName(String name) {
 		splitMedia = null; // reset cache
 		for (PrintService printer : PrinterJob.lookupPrintServices()) {
@@ -313,22 +295,6 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 		this.splitFormat = format;
 	}
 
-	public String getHeaderMessage() {
-		return headerMessage;
-	}
-
-	public void setHeaderMessage(String headerMessage) {
-		this.headerMessage = headerMessage;
-	}
-
-	public String getFooterMessage() {
-		return footerMessage;
-	}
-
-	public void setFooterMessage(String footerMessage) {
-		this.footerMessage = footerMessage;
-	}
-
 	public void enableFormatPrototyping(boolean flag) {
 		prototypeMode = flag;
 	}
@@ -353,20 +319,14 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 	public void changed(Stage previous, Stage current) {
 		Properties props = stage().getProperties();
 		setSplitPrinterName(props.getProperty(splitPrinterProperty()));
-		String format = props.getProperty(splitFormatProperty());
-		if( format!=null ) {
-			setSplitFormat(SplitFormat.valueOf(format));
-		}
-		setHeaderMessage( props.getProperty(splitHeaderMessageProperty(), stage().getName()) );
-		setFooterMessage( props.getProperty(splitFooterMessageProperty(), "Geco - http://sdenier.github.com/Geco") ); //$NON-NLS-1$
+		String format = props.getProperty(splitFormatProperty(), SplitFormat.MultiColumns.name());
+		setSplitFormat(SplitFormat.valueOf(format));
 	}
 
 	@Override
 	public void saving(Stage stage, Properties properties) {
 		properties.setProperty(splitPrinterProperty(), getSplitPrinterName());
 		properties.setProperty(splitFormatProperty(), getSplitFormat().name());
-		properties.setProperty(splitHeaderMessageProperty(), getHeaderMessage());
-		properties.setProperty(splitFooterMessageProperty(), getFooterMessage());
 	}
 	@Override
 	public void closing(Stage stage) {	}
@@ -378,12 +338,4 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 		return "SplitFormat"; //$NON-NLS-1$
 	}
 
-	public static String splitFooterMessageProperty() {
-		return "SplitHeaderMessage"; //$NON-NLS-1$
-	}
-
-	public static String splitHeaderMessageProperty() {
-		return "SplitFooterMessage"; //$NON-NLS-1$
-	}
-	
 }

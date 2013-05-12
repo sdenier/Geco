@@ -16,14 +16,11 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.InputVerifier;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JTextField;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
@@ -104,41 +101,9 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 
 		c.gridy = 3;
 		add(new JLabel(Messages.uiGet("SIReaderConfigPanel.HeaderLabel")), c); //$NON-NLS-1$
-		final JTextField headerF = new JTextField(geco.splitPrinter().getHeaderMessage());
-		add(headerF, c);
-		headerF.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				geco.splitPrinter().setHeaderMessage(headerF.getText());
-			}
-		});
-		headerF.setInputVerifier(new InputVerifier() {
-			public boolean verify(JComponent arg0) {
-				return true;
-			}
-			public boolean shouldYieldFocus(JComponent input) {
-				geco.splitPrinter().setHeaderMessage(headerF.getText());
-				return super.shouldYieldFocus(input);
-			}
-		});
 
 		c.gridy = 4;
 		add(new JLabel(Messages.uiGet("SIReaderConfigPanel.FooterLabel")), c); //$NON-NLS-1$
-		final JTextField footerF = new JTextField(geco.splitPrinter().getFooterMessage());
-		add(footerF, c);
-		footerF.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				geco.splitPrinter().setFooterMessage(footerF.getText());
-			}
-		});
-		footerF.setInputVerifier(new InputVerifier() {
-			public boolean verify(JComponent arg0) {
-				return true;
-			}
-			public boolean shouldYieldFocus(JComponent input) {
-				geco.splitPrinter().setFooterMessage(footerF.getText());
-				return super.shouldYieldFocus(input);
-			}
-		});
 		
 		c.gridy = 5;
 		c.gridwidth = 3;

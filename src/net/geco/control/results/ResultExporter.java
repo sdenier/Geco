@@ -94,7 +94,6 @@ public class ResultExporter extends AResultExporter implements StageListener {
 		boolean isSingleCourseResult = config.resultType != ResultType.CategoryResult;
 
 		// TODO remove show empty/others from config
-		// TODO remove header/footer prop
 		GenericContext stageContext = new GenericContext();
 		stageContext.put("geco_StageTitle", stage().getName());
 
