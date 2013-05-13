@@ -11,8 +11,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -23,7 +21,9 @@ import net.geco.control.GecoControl;
 import net.geco.control.results.ResultBuilder.ResultConfig;
 import net.geco.control.results.context.ContextList;
 import net.geco.control.results.context.GenericContext;
+import net.geco.control.results.context.ResultContext;
 import net.geco.control.results.context.RunnerContext;
+import net.geco.control.results.context.StageContext;
 import net.geco.model.RankedRunner;
 import net.geco.model.Result;
 import net.geco.model.ResultType;
@@ -89,66 +89,42 @@ public class ResultExporter extends AResultExporter implements StageListener {
 			.execute(buildDataContext(config, refreshInterval, outputType), out);
 	}
 
-	
 	protected Object buildDataContext(ResultConfig config, int refreshInterval, OutputType outputType) {
-		boolean isSingleCourseResult = config.resultType != ResultType.CategoryResult;
-
 		// TODO remove show empty/others from config
-		GenericContext stageContext = new GenericContext();
-		stageContext.put("geco_StageTitle", stage().getName());
-
-		// General layout
-		stageContext.put("geco_SingleCourse?", isSingleCourseResult);
-		stageContext.put("geco_RunnerCategory?", isSingleCourseResult);
-		stageContext.put("geco_Penalties?", config.showPenalties);
-
-		// Meta info
-		stageContext.put("geco_FileOutput?", outputType == OutputType.FILE);
-		stageContext.put("geco_AutoRefresh?", refreshInterval > 0);
-		stageContext.put("geco_RefreshInterval", refreshInterval);
-		stageContext.put("geco_PrintMode?", outputType == OutputType.PRINTER);
-		stageContext.put("geco_Timestamp", new SimpleDateFormat("H:mm").format(new Date()));
-		
-		mergeCustomStageProperties(stageContext);
-		
+		boolean isSingleCourseResult = config.resultType != ResultType.CategoryResult;
 		List<Result> results = buildResults(config);
-		ContextList resultsCollection = stageContext.createContextList("geco_ResultsCollection", results.size());
+
+		StageContext stageCtx = new StageContext(
+				stage().getName(), isSingleCourseResult, config.showPenalties, refreshInterval, outputType);
+		ContextList resultsCollection = stageCtx.createResultsCollection(results.size());
+		mergeCustomStageProperties(stageCtx);
+
 		for (Result result : results) {
 			if( ! result.isEmpty() ) {
 				long bestTime = result.bestTime();
 
-				GenericContext resultContext = new GenericContext();
-				resultsCollection.add(resultContext);
-
-				resultContext.put("geco_ResultName", result.getIdentifier());
-				resultContext.put("geco_NbFinishedRunners", result.nbFinishedRunners());
-				resultContext.put("geco_NbPresentRunners", result.nbPresentRunners());
-				if( isSingleCourseResult ) {
-					resultContext.put("geco_CourseLength", result.anyCourse().getLength());
-					resultContext.put("geco_CourseClimb", result.anyCourse().getClimb());
-				}
+				ResultContext resultCtx =
+						resultsCollection.addContext(new ResultContext(result, isSingleCourseResult));
+				ContextList rankingCollection = resultCtx.createRankedRunnersCollection();
+				ContextList unrankedCollection = resultCtx.createUnrankedRunnersCollection();
 				
-				ContextList runnersCollection =
-						resultContext.createContextList("geco_RankedRunners", result.getRanking().size());
 				for (RankedRunner rankedRunner : result.getRanking()) {
-					runnersCollection.add(RunnerContext.createRankedRunner(rankedRunner, bestTime));
+					rankingCollection.add(RunnerContext.createRankedRunner(rankedRunner, bestTime));
 				}
 
-				runnersCollection =
-						resultContext.createContextList("geco_UnrankedRunners", result.getUnrankedRunners().size());
 				for (RunnerRaceData data : result.getUnrankedRunners()) {
 					Runner runner = data.getRunner();
 					if( runner.isNC() ) {
 						if( config.showNC ) {
-							runnersCollection.add(RunnerContext.createNCRunner(data));
+							unrankedCollection.add(RunnerContext.createNCRunner(data));
 						} // else nothing
 					} else {
-						runnersCollection.add(RunnerContext.createUnrankedRunner(data));
+						unrankedCollection.add(RunnerContext.createUnrankedRunner(data));
 					}
 				}
 			}
 		}
-		return stageContext;
+		return stageCtx;
 	}
 
 	protected void mergeCustomStageProperties(GenericContext stageContext) {

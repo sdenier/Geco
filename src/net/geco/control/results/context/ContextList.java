@@ -16,5 +16,10 @@ public class ContextList extends ArrayList<GenericContext> {
 	public ContextList(int initialCapacity) {
 		super(initialCapacity);
 	}
+	
+	public <T extends GenericContext> T addContext(T context) {
+		add(context);
+		return context;
+	}
 
 }

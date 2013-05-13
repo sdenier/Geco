@@ -25,7 +25,7 @@
   <body>
     <h1>{{geco_StageTitle}} - Splits</h1>
 {{#geco_ResultsCollection}}
-    <h2>{{geco_ResultName}} ({{geco_NbFinishedRunners}}/{{geco_NbTotalRunners}}){{#geco_SingleCourse?}} - {{geco_CourseLength}}m, {{geco_CourseClimb}}m{{/geco_SingleCourse?}}</h2>
+    <h2>{{geco_ResultName}} ({{geco_NbFinishedRunners}}/{{geco_NbPresentRunners}}){{#geco_SingleCourse?}} - {{geco_CourseLength}}m, {{geco_CourseClimb}}m{{/geco_SingleCourse?}}</h2>
     <table>
 {{#geco_RankedRunners}}
       <tr class="rsplit"><td>{{geco_RunnerRank}}</td><td colspan="4">{{geco_RunnerFirstName}} {{geco_RunnerLastName}}</td><td>{{geco_RunnerResultTime}}</td></tr>
@@ -37,7 +37,7 @@
 {{/geco_RankedRunners}}
       <tr class="empty"><td>&nbsp;</td></tr>
 {{#geco_UnrankedRunners}}
-      <tr class="rsplit"><td>{{geco_RunnerRank}}</td><td colspan="4">{{geco_RunnerFirstName}} {{geco_RunnerLastName}}</td><td>{{geco_RunnerStatus}}</td></tr>
+      <tr class="rsplit"><td>{{geco_RunnerRank}}</td><td colspan="4">{{geco_RunnerFirstName}} {{geco_RunnerLastName}}</td><td>{{geco_RunnerStatusOrTime}}</td></tr>
 {{#geco_SplitRows}}
       <tr class="controls"><td></td>{{#geco_ControlRow}}<td>{{geco_ControlNum}} ({{geco_ControlCode}})</td>{{/geco_ControlRow}}</tr>
       <tr class="times"><td></td>{{#geco_TimeRow}}<td {{#geco_BestTime?}}class="best"{{/geco_BestTime?}}>{{geco_ControlTime}}</td>{{/geco_TimeRow}}</tr>
