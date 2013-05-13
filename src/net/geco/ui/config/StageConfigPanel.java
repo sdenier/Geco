@@ -5,6 +5,7 @@
 package net.geco.ui.config;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -20,7 +21,11 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import net.geco.basics.Html;
 import net.geco.framework.IGecoApp;
@@ -145,10 +150,20 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 				geco.splitsExporter().setSplitsTemplate(selectedFile);
 			}
 		};
+		final JSpinner nbColumnsS = new JSpinner(new SpinnerNumberModel(geco.splitsExporter().nbColumns(), 1, null, 1));
+		nbColumnsS.setPreferredSize(new Dimension(50, SwingUtils.SPINNERHEIGHT));
+		nbColumnsS.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				int newNb = ((Integer) nbColumnsS.getValue()).intValue();
+				geco.splitsExporter().setNbColumns(newNb);
+			}
+		});
 		setGridBagConstraints(c, 5, 0);
 		add(new JLabel("Splits Template:"), c);
 		add(splitsTemplateFS.getFilenameField(), c);
 		add(splitsTemplateFS.getSelectFileButton(), c);
+		add(nbColumnsS, c);
+		add(new JLabel("columns"), c);
 		
 		JLabel appNameL = new JLabel(Html.htmlTag("strong", geco.getAppName())); //$NON-NLS-1$
 		setGridBagConstraints(c, 6, 20);

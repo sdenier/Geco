@@ -84,6 +84,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 		super(SplitExporter.class, gecoControl);
 		geco().announcer().registerStageListener(this);
 		withBestSplits();
+		changed(null, null);
 	}
 	
 	public void withBestSplits() {
@@ -92,10 +93,6 @@ public class SplitExporter extends AResultExporter implements StageListener {
 	
 	public void withoutBestSplits() {
 		withBestSplits = false;
-	}
-	
-	public int nbColumns() {
-		return nbColumns;
 	}
 
 	@Override
@@ -577,7 +574,15 @@ public class SplitExporter extends AResultExporter implements StageListener {
 			throws Exception {
 		new SplitXmlExporter(geco()).generateXMLResult(buildResults(config), filename, true);		
 	}
+	
+	public int nbColumns() {
+		return nbColumns;
+	}
 
+	public void setNbColumns(int nb) {
+		nbColumns = nb;
+	}
+	
 	public File getSplitsTemplate() {
 		return splitsTemplate;
 	}
@@ -589,15 +594,14 @@ public class SplitExporter extends AResultExporter implements StageListener {
 	@Override
 	public void changed(Stage previous, Stage current) {
 		Properties props = stage().getProperties();
-		String nbCol = props.getProperty(splitNbColumnsProperty());
-		if( nbCol!=null ){
-			nbColumns = Integer.parseInt(nbCol);
-		}
+		nbColumns = Integer.parseInt(props.getProperty(splitNbColumnsProperty(), "12"));
 	}
+
 	@Override
 	public void saving(Stage stage, Properties properties) {
 		properties.setProperty(splitNbColumnsProperty(), Integer.toString(nbColumns));
 	}
+
 	@Override
 	public void closing(Stage stage) {	}
 
