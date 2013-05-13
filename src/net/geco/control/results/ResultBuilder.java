@@ -159,11 +159,11 @@ public class ResultBuilder extends Control {
 		public long split;
 		
 		public String getBasicCode() {
-			return trace == null ? "" : trace.getBasicCode();
+			return trace == null ? "F" : trace.getBasicCode();
 		}
 		
 		public boolean isFinish() {
-			return "F".equals(seq);
+			return trace == null;
 		}
 	}
 	
@@ -225,7 +225,7 @@ public class ResultBuilder extends Control {
 			}
 		}
 		// TODO: do not use null value for final trace --> use if finish if necessary
-		SplitTime fSplit = createSplit("F", null, startTime, previousTime, data.getFinishtime().getTime()); //$NON-NLS-1$
+		SplitTime fSplit = createSplit("", null, startTime, previousTime, data.getFinishtime().getTime()); //$NON-NLS-1$
 		splits.add(fSplit); //$NON-NLS-1$
 		if( bestSplits.length > 0 ){
 			SplitTime bestSplit = bestSplits[bestSplits.length - 1];
