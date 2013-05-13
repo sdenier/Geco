@@ -162,34 +162,33 @@ public class ResultBuilder extends Control {
 			return trace == null ? "F" : trace.getBasicCode();
 		}
 		
-		public boolean isFinish() {
-			return trace == null;
+		public boolean isOK() {
+			return trace == null || trace.isOK();
 		}
 	}
 	
-	private SplitTime[] buildNormalSplits(RunnerRaceData data, SplitTime[] bestSplits) {
+	private SplitTime[] buildNormalSplits(RunnerRaceData data, boolean includeFinishSplit, SplitTime[] bestSplits) {
 		ArrayList<SplitTime> splits = new ArrayList<SplitTime>(data.getResult().getTrace().length);
 		ArrayList<SplitTime> added = new ArrayList<SplitTime>(data.getResult().getTrace().length);
 		// in normal mode, added splits appear after normal splits
-		buildSplits(data, splits, added, bestSplits, true);
+		buildSplits(data, splits, added, bestSplits, true, includeFinishSplit);
 		splits.addAll(added);
 		return splits.toArray(new SplitTime[0]);
 	}	
 
-	public SplitTime[] buildNormalSplits(RunnerRaceData data) {
-		return buildNormalSplits(data, new SplitTime[0]);
+	public SplitTime[] buildNormalSplits(RunnerRaceData data, boolean includeFinishSplit) {
+		return buildNormalSplits(data, includeFinishSplit, new SplitTime[0]);
 	}
 	
 	public SplitTime[] buildLinearSplits(RunnerRaceData data) {
 		ArrayList<SplitTime> splits = new ArrayList<SplitTime>(data.getResult().getTrace().length);
 		// in linear mode, added splits are kept in place with others
-		buildSplits(data, splits, splits, new SplitTime[0], false);
+		buildSplits(data, splits, splits, new SplitTime[0], false, true);
 		return splits.toArray(new SplitTime[0]);
 	}
 
-	// TODO: add flag to include or not finish split
 	protected void buildSplits(RunnerRaceData data, List<SplitTime> splits, List<SplitTime> added,
-																SplitTime[] bestSplits, boolean cutSubst) {
+											SplitTime[] bestSplits, boolean cutSubst, boolean includeFinishSplit) {
 		long startTime = data.getOfficialStarttime().getTime();
 		long previousTime = startTime;
 		int control = 1;
@@ -224,15 +223,15 @@ public class ResultBuilder extends Control {
 				added.add(createSplit("", trace, startTime, TimeManager.NO_TIME_l, time)); //$NON-NLS-1$
 			}
 		}
-		// TODO: do not use null value for final trace --> use if finish if necessary
-		SplitTime fSplit = createSplit("", null, startTime, previousTime, data.getFinishtime().getTime()); //$NON-NLS-1$
-		splits.add(fSplit); //$NON-NLS-1$
-		if( bestSplits.length > 0 ){
-			SplitTime bestSplit = bestSplits[bestSplits.length - 1];
-			bestSplit.time = Math.min(bestSplit.time, fSplit.time);
-			bestSplit.split = Math.min(bestSplit.split, fSplit.split);
+		if( includeFinishSplit ) {
+			SplitTime fSplit = createSplit("", null, startTime, previousTime, data.getFinishtime().getTime()); //$NON-NLS-1$
+			splits.add(fSplit); //$NON-NLS-1$
+			if( bestSplits.length > 0 ){
+				SplitTime bestSplit = bestSplits[bestSplits.length - 1];
+				bestSplit.time = Math.min(bestSplit.time, fSplit.time);
+				bestSplit.split = Math.min(bestSplit.split, fSplit.split);
+			}
 		}
-
 	}
 
 	protected SplitTime createSplit(String seq, Trace trace, long startTime, long previousTime, long time) {
@@ -268,10 +267,10 @@ public class ResultBuilder extends Control {
 	public Map<RunnerRaceData, SplitTime[]> buildAllNormalSplits(Result result, SplitTime[] bestSplits) {
 		Map<RunnerRaceData,SplitTime[]> allSplits = new HashMap<RunnerRaceData, SplitTime[]>();
 		for (RunnerRaceData runnerData : result.getRankedRunners()) {
-			allSplits.put(runnerData, buildNormalSplits(runnerData, bestSplits));
+			allSplits.put(runnerData, buildNormalSplits(runnerData, true, bestSplits));
 		}
 		for (RunnerRaceData runnerData : result.getUnrankedRunners()) {
-			allSplits.put(runnerData, buildNormalSplits(runnerData, bestSplits));
+			allSplits.put(runnerData, buildNormalSplits(runnerData, true, bestSplits));
 		}
 		return allSplits;
 	}

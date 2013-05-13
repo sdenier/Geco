@@ -111,10 +111,10 @@ public class SplitXmlExporter extends Control {
 		status.setAttribute("value", runnerData.getIofStatus()); //$NON-NLS-1$
 
 		if( includeSplits ) {
-			SplitTime[] splits = resultBuilder.buildNormalSplits(runnerData);
+			SplitTime[] splits = resultBuilder.buildNormalSplits(runnerData, false);
 			for (int i = 0; i < splits.length; i++) {
 				SplitTime split = splits[i];
-				if( split.trace!=null && split.trace.isOK() ) {
+				if( split.trace.isOK() ) {
 					Element splitTime = createChildElement(result, "SplitTime"); //$NON-NLS-1$
 					splitTime.setAttribute("sequence", Integer.toString(i + 1)); //$NON-NLS-1$
 					createContentChildElement(splitTime, "ControlCode", split.trace.getCode()); //$NON-NLS-1$

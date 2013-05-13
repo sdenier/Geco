@@ -190,17 +190,14 @@ public class SplitExporter extends AResultExporter implements StageListener {
 				
 				GenericContext timeCtx = timeRow.addContext(new GenericContext());
 				boolean isBestTime = withBestSplits && j < bestSplits.length
-									&& splitTime.time == bestSplits[j].time;
+										&& splitTime.time == bestSplits[j].time;
 				timeCtx.put("geco_BestTime?", isBestTime);
 				timeCtx.put("geco_ControlTime", TimeManager.time(splitTime.time));
 				
 				GenericContext splitCtx = splitRow.addContext(new GenericContext());
 				boolean isBestSplit = withBestSplits && j < bestSplits.length
-						&& splitTime.split == bestSplits[j].split;
-				String label = TimeManager.time(splitTime.split);
-				if( splitTime.trace!=null && ! splitTime.trace.isOK() ) {
-					label = ""; //$NON-NLS-1$
-				}
+										&& splitTime.split == bestSplits[j].split;
+				String label = ( splitTime.isOK() ) ? TimeManager.time(splitTime.split) : ""; //$NON-NLS-1$
 				splitCtx.put("geco_BestSplit?", isBestSplit);
 				splitCtx.put("geco_SplitTime", label);
 			}
@@ -291,7 +288,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 						runnerData,
 						"", //$NON-NLS-1$
 						runnerData.getResult().formatStatus(),
-						resultBuilder.buildNormalSplits(runnerData),
+						resultBuilder.buildNormalSplits(runnerData, true),
 						bestSplit,
 						html);
 			}			
@@ -411,11 +408,9 @@ public class SplitExporter extends AResultExporter implements StageListener {
 		// edit collection
 		ArrayList<String> csvRecord = new ArrayList<String>(super.computeCsvRecord(runnerData, resultId, rank));
 		csvRecord.ensureCapacity(csvRecord.size() + 2 * runnerData.getResult().getTrace().length);
-		for (SplitTime split: resultBuilder.buildNormalSplits(runnerData)) {
-			if( split.trace!=null ) { // dont handle finish split
-				csvRecord.add(split.trace.getBasicCode());
-				csvRecord.add(encodeMPPunch(split));
-			}
+		for (SplitTime split: resultBuilder.buildNormalSplits(runnerData, false)) {
+			csvRecord.add(split.trace.getBasicCode());
+			csvRecord.add(encodeMPPunch(split));
 		}
 		return csvRecord;
 	}
@@ -524,12 +519,10 @@ public class SplitExporter extends AResultExporter implements StageListener {
 	private void addSplits(RunnerRaceData runnerData, Collection<String> record) {
 		record.add(oeTime(runnerData.getOfficialStarttime()));
 		record.add(oeTime(runnerData.getFinishtime()));
-		SplitTime[] splits = resultBuilder.buildNormalSplits(runnerData);
+		SplitTime[] splits = resultBuilder.buildNormalSplits(runnerData, false);
 		for (SplitTime split : splits) {
-			if( split.trace!=null ) { // finish split handled above
-				record.add(split.trace.getBasicCode());
-				record.add(oeSplit(split.time));
-			}
+			record.add(split.trace.getBasicCode());
+			record.add(oeSplit(split.time));
 		}
 	}
 
