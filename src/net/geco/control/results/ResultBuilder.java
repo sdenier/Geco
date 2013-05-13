@@ -158,6 +158,13 @@ public class ResultBuilder extends Control {
 		public long time;
 		public long split;
 		
+		public String getBasicCode() {
+			return trace == null ? "" : trace.getBasicCode();
+		}
+		
+		public boolean isFinish() {
+			return "F".equals(seq);
+		}
 	}
 	
 	private SplitTime[] buildNormalSplits(RunnerRaceData data, SplitTime[] bestSplits) {
@@ -180,6 +187,7 @@ public class ResultBuilder extends Control {
 		return splits.toArray(new SplitTime[0]);
 	}
 
+	// TODO: add flag to include or not finish split
 	protected void buildSplits(RunnerRaceData data, List<SplitTime> splits, List<SplitTime> added,
 																SplitTime[] bestSplits, boolean cutSubst) {
 		long startTime = data.getOfficialStarttime().getTime();
@@ -216,7 +224,7 @@ public class ResultBuilder extends Control {
 				added.add(createSplit("", trace, startTime, TimeManager.NO_TIME_l, time)); //$NON-NLS-1$
 			}
 		}
-		// TODO: do not use null value for final trace
+		// TODO: do not use null value for final trace --> use if finish if necessary
 		SplitTime fSplit = createSplit("F", null, startTime, previousTime, data.getFinishtime().getTime()); //$NON-NLS-1$
 		splits.add(fSplit); //$NON-NLS-1$
 		if( bestSplits.length > 0 ){
