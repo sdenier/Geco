@@ -71,7 +71,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 			return Integer.toString(courseNames.indexOf(courseName)); }
 	}
 	
-	private File splitsTemplate = new File("formats/results_splits.mustache");
+	private File splitsTemplate;
 
 	private boolean withBestSplits;
 
@@ -595,11 +595,19 @@ public class SplitExporter extends AResultExporter implements StageListener {
 	public void changed(Stage previous, Stage current) {
 		Properties props = stage().getProperties();
 		nbColumns = Integer.parseInt(props.getProperty(splitNbColumnsProperty(), "12"));
+		try {
+			setSplitsTemplate(new File( stage().getProperties().getProperty(splitsTemplateProperty()) ));
+		} catch (NullPointerException e) {
+			setSplitsTemplate(new File("formats/results_splits.mustache")); //$NON-NLS-1$
+		}
 	}
 
 	@Override
 	public void saving(Stage stage, Properties properties) {
 		properties.setProperty(splitNbColumnsProperty(), Integer.toString(nbColumns));
+		if( getSplitsTemplate().exists() ){
+			properties.setProperty(splitsTemplateProperty(), getSplitsTemplate().getAbsolutePath());
+		}
 	}
 
 	@Override
@@ -607,6 +615,10 @@ public class SplitExporter extends AResultExporter implements StageListener {
 
 	public static String splitNbColumnsProperty() {
 		return "SplitNbColumns"; //$NON-NLS-1$
+	}
+
+	public static String splitsTemplateProperty() {
+		return "SplitsTemplate"; //$NON-NLS-1$
 	}
 
 }
