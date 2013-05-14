@@ -9,6 +9,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,7 +34,6 @@ import net.geco.control.results.context.StageContext;
 import net.geco.model.Category;
 import net.geco.model.Club;
 import net.geco.model.Course;
-import net.geco.model.Messages;
 import net.geco.model.RankedRunner;
 import net.geco.model.Result;
 import net.geco.model.ResultType;
@@ -77,8 +77,6 @@ public class SplitExporter extends AResultExporter implements StageListener {
 
 	private int nbColumns = 12;
 
-	private int refreshInterval = 0;
-
 	
 	public SplitExporter(GecoControl gecoControl) {
 		super(SplitExporter.class, gecoControl);
@@ -105,6 +103,28 @@ public class SplitExporter extends AResultExporter implements StageListener {
 		template.close();
 	}
 
+	@Override
+	public String generateHtmlResults(ResultConfig config, int refreshInterval, OutputType outputType) {
+		Reader reader;
+		StringWriter out = new StringWriter();
+		try {
+			switch (outputType) {
+			case DISPLAY:
+				// TODO I18N template headers
+				reader = GecoResources.getResourceReader("/resources/formats/results_splits_internal.mustache");
+				break;
+			case PRINTER:
+			default:
+				reader = GecoResources.getSafeReaderFor(getSplitsTemplate().getAbsolutePath());
+			}
+			buildHtmlResults(reader, config, refreshInterval, out, outputType);
+			reader.close();
+		} catch (IOException e) {
+			geco().logger().debug(e);
+		}
+		return out.toString();
+	}
+	
 	protected void buildHtmlResults(Reader template, ResultConfig config, int refreshInterval,
 			Writer out, OutputType outputType) {
 		// TODO: lazy cache of template
@@ -214,99 +234,8 @@ public class SplitExporter extends AResultExporter implements StageListener {
 		}
 	}
 
-	@Override
-	public String generateHtmlResults(ResultConfig config, int refreshInterval, OutputType outputType) {
-		List<Result> results = buildResults(config);
-		this.refreshInterval = refreshInterval;
-		Html html = new Html();
-		includeHeader(html, "result.css", outputType); //$NON-NLS-1$
-		if( outputType != OutputType.DISPLAY ) {
-			html.nl().tag("h1", stage().getName() //$NON-NLS-1$
-								+ " - "			  //$NON-NLS-1$
-								+ Messages.getString("SplitExporter.SplitsOutputTitle")); //$NON-NLS-1$
-		}
-		for (Result result : results) {
-			if( config.showEmptySets || !result.isEmpty() ) {
-				SplitTime[] bestSplits = withBestSplits ?
-						resultBuilder.initializeBestSplits(result, config.resultType) :
-						new SplitTime[0];
-				Map<RunnerRaceData, SplitTime[]> allSplits = resultBuilder.buildAllNormalSplits(result, bestSplits);
-				appendHtmlResultsWithSplits(result, allSplits, bestSplits, config, html);
-			}
-		}
-		return html.close();
-	}
+	// TODO Messages.getString("SplitExporter.SplitsOutputTitle")); //$NON-NLS-1$
 	
-	protected void generateHtmlHeader(Html html) {
-		if( refreshInterval>0 ) {
-			html.contents("<meta http-equiv=\"refresh\" content=\"" //$NON-NLS-1$
-					+ refreshInterval + "\" />"); //$NON-NLS-1$
-		}
-	}
-
-	private void appendHtmlResultsWithSplits(Result result, Map<RunnerRaceData, SplitTime[]> allSplits,
-													SplitTime[] bestSplit, ResultConfig config, Html html) {
-		html.nl().tag("h2", result.getIdentifier()).nl(); //$NON-NLS-1$
-		html.open("table").nl(); //$NON-NLS-1$
-		for (RankedRunner runner : result.getRanking()) {
-			RunnerRaceData data = runner.getRunnerData();
-			generateHtmlSplitsFor(
-					data,
-					Integer.toString(runner.getRank()),
-					data.getResult().formatRacetime(),
-					allSplits.get(data),
-					bestSplit,
-					html);
-		}
-		emptyTr(html);
-		for (RunnerRaceData runnerData : result.getUnrankedRunners()) {
-			if( ! runnerData.getRunner().isNC() ) {
-				generateHtmlSplitsFor(
-						runnerData,
-						"", //$NON-NLS-1$
-						runnerData.getResult().formatStatus(),
-						allSplits.get(runnerData),
-						bestSplit,
-						html);
-			} else if( config.showNC ) {
-				generateHtmlSplitsFor(
-						runnerData,
-						Messages.getString("SplitExporter.NCLabel"), //$NON-NLS-1$
-						runnerData.getResult().shortFormat(),
-						allSplits.get(runnerData),
-						bestSplit,
-						html);
-			}
-		}
-		if( config.showOthers ) {
-			emptyTr(html);
-			for (RunnerRaceData runnerData : result.getUnresolvedRunners()) {
-				generateHtmlSplitsFor(
-						runnerData,
-						"", //$NON-NLS-1$
-						runnerData.getResult().formatStatus(),
-						resultBuilder.buildNormalSplits(runnerData, true),
-						bestSplit,
-						html);
-			}			
-		}
-		html.close("table").nl(); //$NON-NLS-1$
-	}
-
-	public void generateHtmlSplitsFor(RunnerRaceData data, String rank, String statusTime,
-													SplitTime[] splits, SplitTime[] bestSplits, Html html) {
-		html.openTr("rsplit"); //$NON-NLS-1$
-		html.td(rank);
-		html.td(data.getRunner().getName(), "colspan=\"4\""); //$NON-NLS-1$
-		html.td(statusTime);
-		html.closeTr();
-		appendHtmlSplitsInColumns(splits, bestSplits, nbColumns(), html);
-	}
-	
-	/**
-	 * @param buildNormalSplits
-	 * @param html
-	 */
 	protected void appendHtmlSplitsInColumns(SplitTime[] splits, SplitTime[] bestSplits, int nbColumns,
 																								Html html) {
 		int nbRows = (splits.length / nbColumns) + 1;
