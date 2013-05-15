@@ -4,9 +4,7 @@
  */
 package net.geco.control.results;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -86,12 +84,6 @@ public class SplitExporter extends AResultExporter implements StageListener {
 	
 	public void withoutBestSplits() {
 		withBestSplits = false;
-	}
-
-	@Override
-	protected BufferedReader getExternalTemplateReader()
-			throws FileNotFoundException {
-		return GecoResources.getSafeReaderFor(getExternalTemplatePath());
 	}
 
 	@Override

@@ -4,16 +4,13 @@
  */
 package net.geco.control.results;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 
 import net.geco.basics.Announcer.StageListener;
 import net.geco.basics.CsvWriter;
-import net.geco.basics.GecoResources;
 import net.geco.control.GecoControl;
 import net.geco.control.results.ResultBuilder.ResultConfig;
 import net.geco.control.results.context.ContextList;
@@ -41,12 +38,6 @@ public class ResultExporter extends AResultExporter implements StageListener {
 		super(ResultExporter.class, gecoControl);
 		geco().announcer().registerStageListener(this);
 		changed(null, null);
-	}
-
-	@Override
-	protected BufferedReader getExternalTemplateReader()
-			throws FileNotFoundException {
-		return GecoResources.getSafeReaderFor(getExternalTemplatePath());
 	}
 
 	@Override

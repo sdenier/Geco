@@ -17,7 +17,6 @@ import java.util.Properties;
 
 import net.geco.basics.Announcer.StageListener;
 import net.geco.basics.CsvWriter;
-import net.geco.basics.GecoResources;
 import net.geco.basics.Html;
 import net.geco.control.GecoControl;
 import net.geco.control.OEImporter;
@@ -94,13 +93,8 @@ public class CNCalculator extends AResultExporter implements StageListener {
 	}
 
 	@Override
-	protected Reader getInternalTemplateReader() {
-		return GecoResources.getResourceReader(getInternalTemplatePath());
-	}
-
-	@Override
 	protected String getExternalTemplatePath() {
-		return ""; //$NON-NLS-1$
+		return getInternalTemplatePath();
 	}
 
 	@Override

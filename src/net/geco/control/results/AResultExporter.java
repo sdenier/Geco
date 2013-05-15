@@ -13,7 +13,9 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import net.geco.basics.CsvWriter;
@@ -31,6 +33,7 @@ import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 
 import com.samskivert.mustache.Mustache;
+import com.samskivert.mustache.Template;
 
 
 /**
@@ -46,9 +49,12 @@ public abstract class AResultExporter extends Control {
 	
 	protected final ResultBuilder resultBuilder;
 
+	protected Map<String, Template> templates;
+	
 	protected AResultExporter(Class<? extends Control> clazz, GecoControl gecoControl) {
 		super(clazz, gecoControl);
 		resultBuilder = getService(ResultBuilder.class);
+		templates = new HashMap<String, Template>(2);
 	}
 
 	protected List<Result> buildResults(ResultConfig config) {
@@ -87,48 +93,74 @@ public abstract class AResultExporter extends Control {
 
 	protected void exportHtmlFile(String filename, ResultConfig config, int refreshInterval)
 			throws IOException {
-		Reader template = getExternalTemplateReader();
+		Template template = getExternalTemplate();
 		Writer writer = GecoResources.getSafeWriterFor(filename);
 		buildHtmlResults(template, config, refreshInterval, writer, OutputType.FILE);
 		writer.close();
-		template.close();
 	}
 
 	public String generateHtmlResults(ResultConfig config, int refreshInterval, OutputType outputType) {
-		Reader reader;
 		StringWriter out = new StringWriter();
 		try {
+			Template template;
 			switch (outputType) {
 			case DISPLAY:
-				// TODO I18N template headers
-				reader = getInternalTemplateReader();
+				template = getInternalTemplate();
 				break;
 			case PRINTER:
 			default:
-				reader = getExternalTemplateReader();
+				template = getExternalTemplate();
 			}
-			buildHtmlResults(reader, config, refreshInterval, out, outputType);
-			reader.close();
+			buildHtmlResults(template, config, refreshInterval, out, outputType);
 		} catch (IOException e) {
 			geco().logger().debug(e);
 		}
 		return out.toString();
 	}
-	
-	protected void buildHtmlResults(Reader template, ResultConfig config, int refreshInterval,
+
+	protected void buildHtmlResults(Template template, ResultConfig config, int refreshInterval,
 			Writer out, OutputType outputType) {
-		// TODO: lazy cache of template
-		Mustache.compiler()
-			.defaultValue("N/A")
-			.compile(template)
-			.execute(buildDataContext(config, refreshInterval, outputType), out);
+		template.execute(buildDataContext(config, refreshInterval, outputType), out);
 	}
 
+	protected Template getInternalTemplate() throws IOException {
+		// TODO I18N template headers
+		Template template = templates.get(getInternalTemplatePath());
+		if( template==null ) {
+			Reader templateReader = getInternalTemplateReader();
+			template = loadTemplate(templateReader, getInternalTemplatePath());
+			templateReader.close();
+		}
+		return template;
+	}
+
+	protected Template getExternalTemplate() throws IOException {
+		Template template = templates.get(getExternalTemplatePath());
+		if( template == null ) {
+			Reader templateReader = getExternalTemplateReader();
+			template = loadTemplate(templateReader, getExternalTemplatePath());
+			templateReader.close();
+		}
+		return template;
+	}
+
+	protected Template loadTemplate(Reader templateReader, String templatePath) {
+		Template template = Mustache.compiler().defaultValue("N/A").compile(templateReader);
+		templates.put(templatePath, template);
+		return template;
+	}
+	
+	public void resetTemplate(String templatePath) {
+		templates.remove(templatePath);
+	}
+	
 	protected Reader getInternalTemplateReader() {
 		return GecoResources.getResourceReader(getInternalTemplatePath());
 	}
 
-	protected abstract Reader getExternalTemplateReader() throws FileNotFoundException;
+	protected Reader getExternalTemplateReader() throws FileNotFoundException {
+		return GecoResources.getSafeReaderFor(getExternalTemplatePath());
+	}
 
 	protected abstract String getInternalTemplatePath();
 
