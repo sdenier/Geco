@@ -5,12 +5,9 @@
 package net.geco.control.results;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.util.List;
 import java.util.Properties;
 
@@ -31,8 +28,6 @@ import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Stage;
 
-import com.samskivert.mustache.Mustache;
-
 /**
  * @author Simon Denier
  * @since Dec 1, 2010
@@ -49,47 +44,23 @@ public class ResultExporter extends AResultExporter implements StageListener {
 	}
 
 	@Override
-	protected void exportHtmlFile(String filename, ResultConfig config, int refreshInterval)
-			throws IOException {
-		BufferedReader template = GecoResources.getSafeReaderFor(getRankingTemplate().getAbsolutePath());
-		BufferedWriter writer = GecoResources.getSafeWriterFor(filename);
-		buildHtmlResults(template, config, refreshInterval, writer, OutputType.FILE);
-		writer.close();
-		template.close();
+	protected BufferedReader getExternalTemplateReader()
+			throws FileNotFoundException {
+		return GecoResources.getSafeReaderFor(getExternalTemplatePath());
 	}
 
 	@Override
-	public String generateHtmlResults(ResultConfig config, int refreshInterval, OutputType outputType) {
-		Reader reader;
-		StringWriter out = new StringWriter();
-		try {
-			switch (outputType) {
-			case DISPLAY:
-				// TODO I18N template headers
-				reader = GecoResources.getResourceReader("/resources/formats/results_ranking_internal.mustache");
-				break;
-			case PRINTER:
-			default:
-				reader = GecoResources.getSafeReaderFor(getRankingTemplate().getAbsolutePath());
-			}
-			buildHtmlResults(reader, config, refreshInterval, out, outputType);
-			reader.close();
-		} catch (IOException e) {
-			geco().logger().debug(e);
-		}
-		return out.toString();
+	protected String getInternalTemplatePath() {
+		return "/resources/formats/results_ranking_internal.mustache"; //$NON-NLS-1$
 	}
 
-	protected void buildHtmlResults(Reader template, ResultConfig config, int refreshInterval,
-			Writer out, OutputType outputType) {
-		// TODO: lazy cache of template
-		Mustache.compiler()
-			.defaultValue("N/A")
-			.compile(template)
-			.execute(buildDataContext(config, refreshInterval, outputType), out);
+	@Override
+	protected String getExternalTemplatePath() {
+		return getRankingTemplate().getAbsolutePath();
 	}
 
-	protected Object buildDataContext(ResultConfig config, int refreshInterval, OutputType outputType) {
+	@Override
+	protected GenericContext buildDataContext(ResultConfig config, int refreshInterval, OutputType outputType) {
 		// TODO remove show empty/others from config
 		boolean isSingleCourseResult = config.resultType != ResultType.CategoryResult;
 		List<Result> results = buildResults(config);
@@ -125,19 +96,6 @@ public class ResultExporter extends AResultExporter implements StageListener {
 			}
 		}
 		return stageCtx;
-	}
-
-	protected void mergeCustomStageProperties(GenericContext stageContext) {
-		final String customPropertiesPath = stage().filepath("formats.prop");
-		if( GecoResources.exists(customPropertiesPath) ) {
-			Properties props = new Properties();
-			try {
-				props.load( GecoResources.getSafeReaderFor(customPropertiesPath) );
-				stageContext.mergeProperties(props);
-			} catch (IOException e) {
-				geco().logger().debug(e);
-			}
-		}
 	}
 
 	@Override

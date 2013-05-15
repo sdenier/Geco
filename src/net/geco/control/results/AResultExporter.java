@@ -4,13 +4,17 @@
  */
 package net.geco.control.results;
 
-import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Properties;
 
 import net.geco.basics.CsvWriter;
 import net.geco.basics.GecoResources;
@@ -19,11 +23,14 @@ import net.geco.basics.TimeManager;
 import net.geco.control.Control;
 import net.geco.control.GecoControl;
 import net.geco.control.results.ResultBuilder.ResultConfig;
+import net.geco.control.results.context.GenericContext;
 import net.geco.model.Pool;
 import net.geco.model.RankedRunner;
 import net.geco.model.Result;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
+
+import com.samskivert.mustache.Mustache;
 
 
 /**
@@ -61,32 +68,87 @@ public abstract class AResultExporter extends Control {
 
 	public void exportFile(String filename, String format, ResultConfig config, int refreshInterval)
 			throws Exception {
-				if( !filename.endsWith(format) ) {
-					filename = filename + "." + format; //$NON-NLS-1$
-				}
-				if( format.equals("html") ) { //$NON-NLS-1$
-					exportHtmlFile(filename, config, refreshInterval);
-				}
-				if( format.equals("csv") ) { //$NON-NLS-1$
-					exportCsvFile(filename, config);
-				}
-				if( format.equals("oe.csv") ) { //$NON-NLS-1$
-					exportOECsvFile(filename, config);
-				}
-				if( format.equals("xml") ) { //$NON-NLS-1$
-					exportXmlFile(filename, config);
-				}
-			}
+		if( !filename.endsWith(format) ) {
+			filename = filename + "." + format; //$NON-NLS-1$
+		}
+		if( format.equals("html") ) { //$NON-NLS-1$
+			exportHtmlFile(filename, config, refreshInterval);
+		}
+		if( format.equals("csv") ) { //$NON-NLS-1$
+			exportCsvFile(filename, config);
+		}
+		if( format.equals("oe.csv") ) { //$NON-NLS-1$
+			exportOECsvFile(filename, config);
+		}
+		if( format.equals("xml") ) { //$NON-NLS-1$
+			exportXmlFile(filename, config);
+		}
+	}
 
 	protected void exportHtmlFile(String filename, ResultConfig config, int refreshInterval)
 			throws IOException {
-		BufferedWriter writer = GecoResources.getSafeWriterFor(filename);
-		writer.write(generateHtmlResults(config, refreshInterval, OutputType.FILE));
+		Reader template = getExternalTemplateReader();
+		Writer writer = GecoResources.getSafeWriterFor(filename);
+		buildHtmlResults(template, config, refreshInterval, writer, OutputType.FILE);
 		writer.close();
+		template.close();
 	}
 
-	public abstract String generateHtmlResults(ResultConfig config, int refreshDelay, OutputType outputType);
+	public String generateHtmlResults(ResultConfig config, int refreshInterval, OutputType outputType) {
+		Reader reader;
+		StringWriter out = new StringWriter();
+		try {
+			switch (outputType) {
+			case DISPLAY:
+				// TODO I18N template headers
+				reader = getInternalTemplateReader();
+				break;
+			case PRINTER:
+			default:
+				reader = getExternalTemplateReader();
+			}
+			buildHtmlResults(reader, config, refreshInterval, out, outputType);
+			reader.close();
+		} catch (IOException e) {
+			geco().logger().debug(e);
+		}
+		return out.toString();
+	}
 	
+	protected void buildHtmlResults(Reader template, ResultConfig config, int refreshInterval,
+			Writer out, OutputType outputType) {
+		// TODO: lazy cache of template
+		Mustache.compiler()
+			.defaultValue("N/A")
+			.compile(template)
+			.execute(buildDataContext(config, refreshInterval, outputType), out);
+	}
+
+	protected Reader getInternalTemplateReader() {
+		return GecoResources.getResourceReader(getInternalTemplatePath());
+	}
+
+	protected abstract Reader getExternalTemplateReader() throws FileNotFoundException;
+
+	protected abstract String getInternalTemplatePath();
+
+	protected abstract String getExternalTemplatePath();
+
+	protected abstract GenericContext buildDataContext(ResultConfig config, int refreshInterval, OutputType outputType);
+
+	protected void mergeCustomStageProperties(GenericContext stageContext) {
+		final String customPropertiesPath = stage().filepath("formats.prop");
+		if( GecoResources.exists(customPropertiesPath) ) {
+			Properties props = new Properties();
+			try {
+				props.load( GecoResources.getSafeReaderFor(customPropertiesPath) );
+				stageContext.mergeProperties(props);
+			} catch (IOException e) {
+				geco().logger().debug(e);
+			}
+		}
+	}
+
 	public void includeHeader(Html html, String cssfile, OutputType outputType) {
 		html.open("head").nl(); //$NON-NLS-1$
 		if( outputType == OutputType.FILE ){

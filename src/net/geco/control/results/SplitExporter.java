@@ -5,12 +5,9 @@
 package net.geco.control.results;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -42,8 +39,6 @@ import net.geco.model.RunnerRaceData;
 import net.geco.model.Stage;
 import net.geco.model.Status;
 import net.geco.model.Trace;
-
-import com.samskivert.mustache.Mustache;
 
 
 /**
@@ -94,47 +89,27 @@ public class SplitExporter extends AResultExporter implements StageListener {
 	}
 
 	@Override
-	protected void exportHtmlFile(String filename, ResultConfig config, int refreshInterval)
-			throws IOException {
-		BufferedReader template = GecoResources.getSafeReaderFor(getSplitsTemplate().getAbsolutePath());
-		BufferedWriter writer = GecoResources.getSafeWriterFor(filename);
-		buildHtmlResults(template, config, refreshInterval, writer, OutputType.FILE);
-		writer.close();
-		template.close();
+	protected BufferedReader getExternalTemplateReader()
+			throws FileNotFoundException {
+		return GecoResources.getSafeReaderFor(getExternalTemplatePath());
 	}
 
 	@Override
-	public String generateHtmlResults(ResultConfig config, int refreshInterval, OutputType outputType) {
-		Reader reader;
-		StringWriter out = new StringWriter();
-		try {
-			switch (outputType) {
-			case DISPLAY:
-				// TODO I18N template headers
-				reader = GecoResources.getResourceReader("/resources/formats/results_splits_internal.mustache");
-				break;
-			case PRINTER:
-			default:
-				reader = GecoResources.getSafeReaderFor(getSplitsTemplate().getAbsolutePath());
-			}
-			buildHtmlResults(reader, config, refreshInterval, out, outputType);
-			reader.close();
-		} catch (IOException e) {
-			geco().logger().debug(e);
-		}
-		return out.toString();
-	}
-	
-	protected void buildHtmlResults(Reader template, ResultConfig config, int refreshInterval,
-			Writer out, OutputType outputType) {
-		// TODO: lazy cache of template
-		Mustache.compiler()
-			.defaultValue("N/A")
-			.compile(template)
-			.execute(buildDataContext(config, nbColumns(), refreshInterval, outputType), out);
+	protected String getInternalTemplatePath() {
+		return "/resources/formats/results_splits_internal.mustache"; //$NON-NLS-1$
 	}
 
-	protected Object buildDataContext(ResultConfig config, int nbColumns, int refreshInterval, OutputType outputType) {
+	@Override
+	protected String getExternalTemplatePath() {
+		return getSplitsTemplate().getAbsolutePath();
+	}
+
+	@Override
+	protected GenericContext buildDataContext(ResultConfig config, int refreshInterval, OutputType outputType) {
+		return buildDataContext(config, nbColumns(), refreshInterval, outputType);
+	}
+	
+	protected GenericContext buildDataContext(ResultConfig config, int nbColumns, int refreshInterval, OutputType outputType) {
 		boolean isSingleCourseResult = config.resultType != ResultType.CategoryResult;
 		List<Result> results = buildResults(config);
 

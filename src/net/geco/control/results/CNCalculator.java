@@ -5,8 +5,11 @@
 package net.geco.control.results;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,10 +17,12 @@ import java.util.Properties;
 
 import net.geco.basics.Announcer.StageListener;
 import net.geco.basics.CsvWriter;
+import net.geco.basics.GecoResources;
 import net.geco.basics.Html;
 import net.geco.control.GecoControl;
 import net.geco.control.OEImporter;
 import net.geco.control.results.ResultBuilder.ResultConfig;
+import net.geco.control.results.context.GenericContext;
 import net.geco.model.Messages;
 import net.geco.model.RankedRunner;
 import net.geco.model.Result;
@@ -84,6 +89,32 @@ public class CNCalculator extends AResultExporter implements StageListener {
 	}
 
 	@Override
+	protected String getInternalTemplatePath() {
+		return "/resources/formats/results_cn_internal.mustache"; //$NON-NLS-1$
+	}
+
+	@Override
+	protected Reader getInternalTemplateReader() {
+		return GecoResources.getResourceReader(getInternalTemplatePath());
+	}
+
+	@Override
+	protected String getExternalTemplatePath() {
+		return ""; //$NON-NLS-1$
+	}
+
+	@Override
+	protected Reader getExternalTemplateReader() throws FileNotFoundException {
+		return getInternalTemplateReader();
+	}
+
+	@Override
+	protected GenericContext buildDataContext(ResultConfig config, int refreshInterval, OutputType outputType) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
 	public String generateHtmlResults(ResultConfig config, int refreshDelay, OutputType outputType) {
 		if( config.resultType!=ResultType.CourseResult )
 			return Messages.getString("CNCalculator.CNCourseWarning"); //$NON-NLS-1$
@@ -147,7 +178,7 @@ public class CNCalculator extends AResultExporter implements StageListener {
 
 	private double computeCourseScore(Result result) {
 		List<RunnerRaceData> selection = selectTwoThirdRankedRunners(result);
-		if( selection==null ) {
+		if( selection.isEmpty() ) {
 			return 0;
 		}
 		double courseScore = 0;
@@ -162,10 +193,6 @@ public class CNCalculator extends AResultExporter implements StageListener {
 		return data.getResult().getRacetime() * cnScores.get(data.getRunner().getArchiveId());
 	}
 
-	/**
-	 * @param result
-	 * @return
-	 */
 	private List<RunnerRaceData> selectTwoThirdRankedRunners(Result result) {
 		ArrayList<RunnerRaceData> cnRunners = new ArrayList<RunnerRaceData>(result.getRankedRunners().size());
 		for (RunnerRaceData data : result.getRankedRunners()) {
@@ -175,7 +202,7 @@ public class CNCalculator extends AResultExporter implements StageListener {
 			}
 		}
 		if( cnRunners.size()<3 ){
-			return null;
+			return Collections.emptyList();
 		}
 		int twoThird = Math.max(3, cnRunners.size() * 2 / 3);
 		return cnRunners.subList(0, twoThird);
