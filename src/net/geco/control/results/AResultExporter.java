@@ -44,6 +44,21 @@ public abstract class AResultExporter extends Control {
 		resultBuilder = getService(ResultBuilder.class);
 	}
 
+	protected List<Result> buildResults(ResultConfig config) {
+		List<Pool> pools = new ArrayList<Pool>();
+		for (Object selName : config.selectedPools) {
+			switch (config.resultType) {
+			case CourseResult:
+				pools.add( registry().findCourse((String) selName) );
+				break;
+			case CategoryResult:
+			case MixedResult:
+				pools.add( registry().findCategory((String) selName) );
+			}
+		}
+		return resultBuilder.buildResults(pools.toArray(new Pool[0]), config.resultType);
+	}
+
 	public void exportFile(String filename, String format, ResultConfig config, int refreshInterval)
 			throws Exception {
 				if( !filename.endsWith(format) ) {
@@ -70,26 +85,6 @@ public abstract class AResultExporter extends Control {
 		writer.close();
 	}
 
-	protected void exportCsvFile(String filename, ResultConfig config)
-			throws IOException {
-		CsvWriter writer = new CsvWriter(";", filename); //$NON-NLS-1$
-		generateCsvResult(config, writer);
-		writer.close();
-	}
-
-	protected void exportOECsvFile(String filename, ResultConfig config)
-			throws IOException {
-		CsvWriter writer = new CsvWriter(";").initialize(filename); //$NON-NLS-1$
-		writer.open(Charset.forName("windows-1252")); //$NON-NLS-1$
-		generateOECsvResult(config, writer);
-		writer.close();
-	}
-	
-	protected void exportXmlFile(String filename, ResultConfig config)
-			throws Exception {
-		generateXMLResult(config, filename);
-	}
-
 	public abstract String generateHtmlResults(ResultConfig config, int refreshDelay, OutputType outputType);
 	
 	public void includeHeader(Html html, String cssfile, OutputType outputType) {
@@ -106,6 +101,13 @@ public abstract class AResultExporter extends Control {
 	
 	protected void emptyTr(Html html) {
 		html.openTr("empty").td("&nbsp;").closeTr(); // jump line //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	protected void exportCsvFile(String filename, ResultConfig config)
+			throws IOException {
+		CsvWriter writer = new CsvWriter(";", filename); //$NON-NLS-1$
+		generateCsvResult(config, writer);
+		writer.close();
 	}
 
 	public void generateCsvResult(ResultConfig config, CsvWriter writer) throws IOException {
@@ -176,23 +178,21 @@ public abstract class AResultExporter extends Control {
 		});
 	}
 
+	protected void exportOECsvFile(String filename, ResultConfig config)
+			throws IOException {
+		CsvWriter writer = new CsvWriter(";").initialize(filename); //$NON-NLS-1$
+		writer.open(Charset.forName("windows-1252")); //$NON-NLS-1$
+		generateOECsvResult(config, writer);
+		writer.close();
+	}
+
 	public abstract void generateOECsvResult(ResultConfig config, CsvWriter writer) throws IOException;
+	
+	protected void exportXmlFile(String filename, ResultConfig config)
+			throws Exception {
+		generateXMLResult(config, filename);
+	}
 
 	public abstract void generateXMLResult(ResultConfig config, String filename) throws Exception ;
-	
-	protected List<Result> buildResults(ResultConfig config) {
-		List<Pool> pools = new ArrayList<Pool>();
-		for (Object selName : config.selectedPools) {
-			switch (config.resultType) {
-			case CourseResult:
-				pools.add( registry().findCourse((String) selName) );
-				break;
-			case CategoryResult:
-			case MixedResult:
-				pools.add( registry().findCategory((String) selName) );
-			}
-		}
-		return resultBuilder.buildResults(pools.toArray(new Pool[0]), config.resultType);
-	}
 	
 }
