@@ -17,18 +17,20 @@ import java.util.Properties;
 
 import net.geco.basics.Announcer.StageListener;
 import net.geco.basics.CsvWriter;
-import net.geco.basics.Html;
 import net.geco.control.GecoControl;
 import net.geco.control.OEImporter;
 import net.geco.control.results.ResultBuilder.ResultConfig;
+import net.geco.control.results.context.ContextList;
 import net.geco.control.results.context.GenericContext;
+import net.geco.control.results.context.ResultContext;
+import net.geco.control.results.context.RunnerContext;
+import net.geco.control.results.context.StageContext;
 import net.geco.model.Messages;
 import net.geco.model.RankedRunner;
 import net.geco.model.Result;
 import net.geco.model.ResultType;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
-import net.geco.model.RunnerResult;
 import net.geco.model.Stage;
 
 
@@ -41,7 +43,7 @@ public class CNCalculator extends AResultExporter implements StageListener {
 
 	private File cnFile = new File(""); //$NON-NLS-1$
 	
-	private Map<Integer, Integer> cnScores;
+	private Map<Integer, Integer> cnArchive;
 	
 	public class CNImporter extends OEImporter {
 		protected CNImporter(GecoControl gecoControl) {
@@ -56,15 +58,11 @@ public class CNCalculator extends AResultExporter implements StageListener {
 		@Override
 		protected void importRunnerRecord(String[] record) {
 //			licence -> CN
-			cnScores.put(Integer.valueOf(trimQuotes(record[4])), Integer.valueOf(trimQuotes(record[1])));
+			cnArchive.put(Integer.valueOf(trimQuotes(record[4])), Integer.valueOf(trimQuotes(record[1])));
 		}
 		
 	}
 
-	/**
-	 * @param clazz
-	 * @param gecoControl
-	 */
 	public CNCalculator(GecoControl gecoControl) {
 		super(CNCalculator.class, gecoControl);
 		geco().announcer().registerStageListener(this);
@@ -76,13 +74,13 @@ public class CNCalculator extends AResultExporter implements StageListener {
 	}
 
 	public void setCnFile(File cnFile) {
-		cnScores = null;
+		cnArchive = null;
 		this.cnFile = cnFile;
 	}
 
 	private void importCN() {
-		if( cnScores==null ){
-			cnScores = new HashMap<Integer, Integer>();
+		if( cnArchive==null ){
+			cnArchive = new HashMap<Integer, Integer>();
 			new CNImporter(geco());
 		}
 	}
@@ -104,71 +102,64 @@ public class CNCalculator extends AResultExporter implements StageListener {
 
 	@Override
 	protected GenericContext buildDataContext(ResultConfig config, int refreshInterval, OutputType outputType) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String generateHtmlResults(ResultConfig config, int refreshDelay, OutputType outputType) {
-		if( config.resultType!=ResultType.CourseResult )
-			return Messages.getString("CNCalculator.CNCourseWarning"); //$NON-NLS-1$
-
+		boolean isSingleCourseResult = config.resultType != ResultType.CategoryResult;
 		List<Result> results = buildResults(config);
 		importCN();
-		Html html = new Html();
-		includeHeader(html, "result.css", outputType); //$NON-NLS-1$
-		if( outputType != OutputType.DISPLAY ) {
-			html.nl().tag("h1", stage().getName() //$NON-NLS-1$
-								+ " - "			  //$NON-NLS-1$
-								+ Messages.getString("CNCalculator.CNOutputTitle")); //$NON-NLS-1$
+
+		StageContext stageCtx = new StageContext(
+				stage().getName(), isSingleCourseResult, config.showPenalties, refreshInterval, outputType);
+		ContextList resultsCollection = stageCtx.createResultsCollection(results.size());
+		mergeCustomStageProperties(stageCtx);
+		if( config.resultType != ResultType.CourseResult ) {
+			stageCtx.put("geco_StageTitle", Messages.getString("CNCalculator.CNCourseWarning")); //$NON-NLS-1$
 		}
+		
 		for (Result result : results) {
-			double courseScore = computeCourseScore(result);
-			html.nl().tag("h2", result.getIdentifier()).nl(); //$NON-NLS-1$
-			html.open("table").nl(); //$NON-NLS-1$
-			html.openTr("runner") //$NON-NLS-1$
-				.th("") //$NON-NLS-1$
-				.th(Messages.getString("ResultBuilder.NameHeader"), "class=\"left\"") //$NON-NLS-1$ //$NON-NLS-2$
-				.th(Messages.getString("ResultBuilder.ClubHeader"), "class=\"left\"") //$NON-NLS-1$ //$NON-NLS-2$
-				.th(Messages.getString("ResultBuilder.CategoryHeader"), "class=\"left\"") //$NON-NLS-1$ //$NON-NLS-2$
-				.th(Messages.getString("ResultBuilder.TimeHeader"), "class=\"right\"") //$NON-NLS-1$ //$NON-NLS-2$
-				.th(Messages.getString("CNCalculator.CNHeader"), "class=\"right\"") //$NON-NLS-1$ //$NON-NLS-2$
-				.th(Messages.getString("CNCalculator.ScoreHeader"), "class=\"right\"") //$NON-NLS-1$ //$NON-NLS-2$
-				.closeTr();
-			for (RankedRunner data : result.getRanking()) {
-				RunnerResult r = data.getRunnerData().getResult();
-				writeHtml(
-						data.getRunnerData(),
-						Integer.toString(data.getRank()),
-						r.formatRacetime(),
-						Integer.toString((int) (courseScore / r.getRacetime())),
-						html);
+			if( ! result.isEmpty() ) {
+				long bestTime = result.bestTime();
+				double courseScore = computeCourseScore(result);
+				
+				ResultContext resultCtx =
+						resultsCollection.addContext(new ResultContext(result, isSingleCourseResult));
+				ContextList rankingCollection = resultCtx.createRankedRunnersCollection();
+				ContextList unrankedCollection = resultCtx.createUnrankedRunnersCollection();
+				
+				for (RankedRunner rankedRunner : result.getRanking()) {
+					RunnerRaceData runnerData = rankedRunner.getRunnerData();
+					Runner runner = runnerData.getRunner();
+					Integer id = runner.getArchiveId();
+					String currentCN = (cnArchive.get(id) != null) ?
+							cnArchive.get(id).toString() : ""; //$NON-NLS-1$
+					String raceScore = (id != null) ?
+							Integer.toString((int) (courseScore / runnerData.getRacetime())) : ""; //$NON-NLS-1$
+
+					RunnerContext runnerCtx =
+							rankingCollection.addContext(RunnerContext.createRankedRunner(rankedRunner, bestTime));
+					runnerCtx.put("geco_CN", currentCN);
+					runnerCtx.put("geco_CNScore", raceScore);
+				}
+
+				for (RunnerRaceData data : result.getUnrankedRunners()) {
+					Runner runner = data.getRunner();
+					Integer id = runner.getArchiveId();
+					String currentCN = (cnArchive.get(id) != null) ?
+							cnArchive.get(id).toString() : ""; //$NON-NLS-1$
+					if( runner.isNC() ) {
+						if( config.showNC ) {
+							RunnerContext runnerCtx =
+									unrankedCollection.addContext(RunnerContext.createNCRunner(data));
+							runnerCtx.put("geco_CN", currentCN);
+						} // else nothing
+					} else {
+						RunnerContext runnerCtx =
+								unrankedCollection.addContext(RunnerContext.createUnrankedRunner(data));
+						runnerCtx.put("geco_CN", currentCN);
+					}
+				}
 			}
-			html.close("table").nl(); //$NON-NLS-1$
 		}
-		return html.close();
+		return stageCtx;
 	}
-
-	private void writeHtml(RunnerRaceData runnerData, String rank, String timeOrStatus, String score, Html html) {
-		Runner runner = runnerData.getRunner();
-		String yScore = ""; //$NON-NLS-1$
-		Integer id = runner.getArchiveId();
-		if( id != null ) {
-			yScore = ( cnScores.get(id) != null) ? cnScores.get(id).toString() : ""; //$NON-NLS-1$
-		} else {
-			score = ""; //$NON-NLS-1$
-		}
-		html.openTr("runner"); //$NON-NLS-1$
-		html.td(rank);
-		html.td(runner.getName());
-		html.td(runner.getClub().getName());
-		html.td(runner.getCategory().getName());
-		html.td(timeOrStatus, "class=\"time\""); //$NON-NLS-1$
-		html.td(yScore, "class=\"right\""); //$NON-NLS-1$
-		html.td(score, "class=\"time\""); //$NON-NLS-1$
-		html.closeTr();
-	}
-
 
 	private double computeCourseScore(Result result) {
 		List<RunnerRaceData> selection = selectTwoThirdRankedRunners(result);
@@ -184,14 +175,14 @@ public class CNCalculator extends AResultExporter implements StageListener {
 	}
 	
 	private long personalValue(RunnerRaceData data) {
-		return data.getResult().getRacetime() * cnScores.get(data.getRunner().getArchiveId());
+		return data.getResult().getRacetime() * cnArchive.get(data.getRunner().getArchiveId());
 	}
 
 	private List<RunnerRaceData> selectTwoThirdRankedRunners(Result result) {
 		ArrayList<RunnerRaceData> cnRunners = new ArrayList<RunnerRaceData>(result.getRankedRunners().size());
 		for (RunnerRaceData data : result.getRankedRunners()) {
 			Integer id = data.getRunner().getArchiveId();
-			if( id!=null && cnScores.get(id)!=null ){
+			if( id!=null && cnArchive.get(id)!=null ){
 				cnRunners.add(data);
 			}
 		}
