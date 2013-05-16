@@ -30,8 +30,6 @@ public class GecoStageLaunch implements IStageLaunch {
 	public static final String[] TEMPLATE_FILES = {
 		"geco.prop", //$NON-NLS-1$
 		"store.json", //$NON-NLS-1$
-		"result.css", //$NON-NLS-1$
-		"ticket.css", //$NON-NLS-1$
 	};
 	
 	private String stageName;

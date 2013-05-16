@@ -20,7 +20,6 @@ import java.util.Properties;
 
 import net.geco.basics.CsvWriter;
 import net.geco.basics.GecoResources;
-import net.geco.basics.Html;
 import net.geco.basics.TimeManager;
 import net.geco.control.Control;
 import net.geco.control.GecoControl;
@@ -144,6 +143,16 @@ public abstract class AResultExporter extends Control {
 		return template;
 	}
 
+	protected Template getTemplate(String templatePath) throws IOException {
+		Template template = templates.get(templatePath);
+		if( template == null ) {
+			Reader templateReader = GecoResources.getSafeReaderFor(templatePath);
+			template = loadTemplate(templateReader, getExternalTemplatePath());
+			templateReader.close();
+		}
+		return template;
+	}
+	
 	protected Template loadTemplate(Reader templateReader, String templatePath) {
 		Template template = Mustache.compiler().defaultValue("N/A").compile(templateReader);
 		templates.put(templatePath, template);
@@ -179,22 +188,6 @@ public abstract class AResultExporter extends Control {
 				geco().logger().debug(e);
 			}
 		}
-	}
-
-	public void includeHeader(Html html, String cssfile, OutputType outputType) {
-		html.open("head").nl(); //$NON-NLS-1$
-		if( outputType == OutputType.FILE ){
-			html.contents("<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">"); //$NON-NLS-1$
-		}
-		generateHtmlHeader(html);
-		html.inlineCss(stage().filepath(cssfile));
-		html.close("head"); //$NON-NLS-1$
-	}
-	
-	protected void generateHtmlHeader(Html html) { }
-	
-	protected void emptyTr(Html html) {
-		html.openTr("empty").td("&nbsp;").closeTr(); // jump line //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	protected void exportCsvFile(String filename, ResultConfig config)
