@@ -484,6 +484,9 @@ public class SplitExporter extends AResultExporter implements StageListener {
 	}
 
 	public void setSplitsTemplate(File selectedFile) {
+		if( getSplitsTemplate() != null ) {
+			resetTemplate(getExternalTemplatePath());
+		}
 		splitsTemplate = selectedFile;
 	}
 

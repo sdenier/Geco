@@ -105,6 +105,9 @@ public class ResultExporter extends AResultExporter implements StageListener {
 	}
 
 	public void setRankingTemplate(File selectedFile) {
+		if( getRankingTemplate() != null ){
+			resetTemplate(getExternalTemplatePath());
+		}
 		rankingTemplate = selectedFile;
 	}
 	
