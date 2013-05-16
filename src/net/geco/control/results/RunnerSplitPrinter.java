@@ -10,6 +10,7 @@ import java.awt.print.PrinterJob;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Properties;
 import java.util.Vector;
@@ -29,17 +30,14 @@ import javax.swing.JTextPane;
 
 import net.geco.basics.Announcer.CardListener;
 import net.geco.basics.Announcer.StageListener;
-import net.geco.basics.Html;
 import net.geco.control.Control;
 import net.geco.control.GecoControl;
-import net.geco.control.results.AResultExporter.OutputType;
 import net.geco.control.results.ResultBuilder.SplitTime;
+import net.geco.control.results.context.RunnerContext;
 import net.geco.model.Course;
 import net.geco.model.Messages;
-import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Stage;
-import net.geco.model.Status;
 
 
 /**
@@ -70,112 +68,81 @@ public class RunnerSplitPrinter extends Control implements StageListener, CardLi
 		changed(null, stage());
 	}
 	
-	public String printSingleSplits(RunnerRaceData data) {
+	public void printSingleSplits(RunnerRaceData data) {
 		if( getSplitPrinter()!=null ) {
-			Html html = new Html();
-			if( splitFormat==SplitFormat.Ticket ) {
-				exporter.includeHeader(html, "ticket.css", OutputType.PRINTER); //$NON-NLS-1$
-				printSingleSplitsInLine(data, html);
-			} else {
-				exporter.includeHeader(html, "result.css", OutputType.PRINTER); //$NON-NLS-1$
-				printSingleSplitsInColumns(data, html);
+			try {
+				StringWriter out = new StringWriter();
+				if( splitFormat==SplitFormat.Ticket ) {
+					generateSingleSplitsInLine(data, out);
+				} else {
+					generateSingleSplitsInColumns(data, out);
+				}
+				final JTextPane ticket = new JTextPane(); 
+				ticket.setContentType("text/html"); //$NON-NLS-1$
+				ticket.setText(out.toString());
+				
+				final PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
+				if( splitFormat==SplitFormat.Ticket ) {
+					computeMediaForTicket(ticket, attributes);
+				}
+				
+				Callable<Boolean> callable = new Callable<Boolean>() {
+					@Override
+					public Boolean call() throws Exception {
+						return ticket.print(null, null, false, getSplitPrinter(), attributes, false);
+					}
+				};
+				
+				if( ! prototypeMode ) {
+					ExecutorService pool = Executors.newCachedThreadPool();
+					pool.submit(callable);
+				} else {
+					JFrame jFrame = new JFrame();
+					jFrame.add(ticket);
+					jFrame.pack();
+					jFrame.setVisible(true);
+					try {
+						Writer writer = new BufferedWriter(new FileWriter(stage().filepath("runner_splits.html")));
+						writer.write(out.toString());
+						writer.close();
+					} catch (IOException e) {
+						geco().logger().debug(e);
+					}
+				}
+			} catch (IOException e) {
+				geco().info(e.toString(), true); 
 			}
+		}
+	}
+
+
+	private void generateSingleSplitsInColumns(RunnerRaceData data, Writer out) throws IOException {
+		RunnerContext runnerCtx = buildRunnerSplitContext(data);
+		exporter.createRunnerSplitsRowsAndColumns(runnerCtx,
+												  builder.buildNormalSplits(data, true),
+												  new SplitTime[0],
+												  exporter.nbColumns()); // TODO custom prop
 		
-			final JTextPane ticket = new JTextPane(); 
-			ticket.setContentType("text/html"); //$NON-NLS-1$
-			String content = html.close();
-			ticket.setText(content);
-			
-			final PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
-			if( splitFormat==SplitFormat.Ticket ) {
-				computeMediaForTicket(ticket, attributes);
-			}
-			
-			Callable<Boolean> callable = new Callable<Boolean>() {
-				@Override
-				public Boolean call() throws Exception {
-					return ticket.print(null, null, false, getSplitPrinter(), attributes, false);
-				}
-			};
-			
-			if( ! prototypeMode ) {
-				ExecutorService pool = Executors.newCachedThreadPool();
-				pool.submit(callable);
-			} else {
-				JFrame jFrame = new JFrame();
-				jFrame.add(ticket);
-				jFrame.pack();
-				jFrame.setVisible(true);
-				try {
-					Writer writer = new BufferedWriter(new FileWriter(stage().filepath("runner_splits.html")));
-					writer.write(content);
-					writer.close();
-				} catch (IOException e) {
-					geco().logger().debug(e);
-				}
-			}
-			
-			return content;
-		}
-		return ""; //$NON-NLS-1$
+		exporter.getTemplate("formats/splits_columns.mustache").execute(runnerCtx, out);
 	}
 
-
-	private void printSingleSplitsInColumns(RunnerRaceData data, Html html) {
-		Runner runner = data.getRunner();
-		Course course = data.getCourse();
-		String pace = ""; //$NON-NLS-1$
-		if( data.getResult().is(Status.OK) && course.hasDistance() ) {
-			pace = data.formatPace() + " min/km"; //$NON-NLS-1$
-		}
-		html.br()
-			.open("table") //$NON-NLS-1$
-			.openTr("runner") //$NON-NLS-1$
-			.th(runner.getName(), "colspan=\"2\"") //$NON-NLS-1$
-			.th(course.getName())
-			.th(runner.getCategory().getName())
-			.closeTr()
-			.openTr("runner") //$NON-NLS-1$
-			.td(data.getResult().shortFormat(), "class=\"time\"") //$NON-NLS-1$
-			.td(pace, "class=\"center\"") //$NON-NLS-1$
-			.td(course.formatDistanceClimb(), "class=\"center\"") //$NON-NLS-1$
-			.td(runner.getClub().getName(), "class=\"center\"") //$NON-NLS-1$
-			.closeTr()
-			.close("table") //$NON-NLS-1$
-			.br();
-
-		html.open("table"); //$NON-NLS-1$
-		exporter.appendHtmlSplitsInColumns(
-				builder.buildNormalSplits(data, true),
-				new SplitTime[0],
-				exporter.nbColumns(),
-				html);
-		html.close("table") //$NON-NLS-1$
-			.br();
+	private void generateSingleSplitsInLine(RunnerRaceData data, Writer out) throws IOException {
+		RunnerContext runnerCtx = buildRunnerSplitContext(data);
+		exporter.createRunnerSplitsInlineTickets(runnerCtx,
+												 builder.buildLinearSplits(data));
+		
+		exporter.getTemplate("formats/splits_ticket.mustache").execute(runnerCtx, out);
 	}
 
-
-	private void printSingleSplitsInLine(RunnerRaceData data, Html html) {
-	//		char[] chars = Character.toChars(0x2B15); // control flag char :)
-		Runner runner = data.getRunner();
+	protected RunnerContext buildRunnerSplitContext(RunnerRaceData data) {
 		Course course = data.getCourse();
-		html.br()
-			.open("div", "align=\"center\"") //$NON-NLS-1$ //$NON-NLS-2$
-			.b(runner.getName())
-			.tag("div", runner.getClub().getName()) //$NON-NLS-1$
-			.tag("div", course.getName() + " - " + runner.getCategory().getName()) //$NON-NLS-1$ //$NON-NLS-2$
-			.tag("div", course.formatDistanceClimb()) //$NON-NLS-1$
-			.br()
-			.b(data.getResult().shortFormat());
-		if( data.getResult().is(Status.OK) && course.hasDistance() ) {
-			html.tag("div", data.formatPace() + " min/km"); //$NON-NLS-1$ //$NON-NLS-2$
-		}		
-		html.close("div") //$NON-NLS-1$
-			.br();
-		// don't center table, it wastes too much space for some formats.
-		html.open("table", "width=\"75%\""); //$NON-NLS-1$ //$NON-NLS-2$
-		exporter.appendHtmlSplitsInLine(builder.buildLinearSplits(data), html);
-		html.close("table").br(); //$NON-NLS-1$
+
+		RunnerContext runnerCtx = RunnerContext.createUnrankedRunner(data);
+		runnerCtx.put("geco_StageTitle", stage().getName());
+		runnerCtx.put("geco_RunnerCourse", course.getName());
+		runnerCtx.put("geco_CourseLength", course.getLength());
+		runnerCtx.put("geco_CourseClimb", course.getClimb());
+		return runnerCtx;
 	}
 
 	private void computeMediaForTicket(final JTextPane ticket,

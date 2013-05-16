@@ -15,8 +15,6 @@ import java.util.Properties;
 
 import net.geco.basics.Announcer.StageListener;
 import net.geco.basics.CsvWriter;
-import net.geco.basics.GecoResources;
-import net.geco.basics.Html;
 import net.geco.basics.TimeManager;
 import net.geco.control.GecoControl;
 import net.geco.control.results.ResultBuilder.ResultConfig;
@@ -150,7 +148,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 		return stageCtx;
 	}
 
-	private void createRunnerSplitsRowsAndColumns(RunnerContext runnerCtx, SplitTime[] runnerSplitTimes,
+	public void createRunnerSplitsRowsAndColumns(RunnerContext runnerCtx, SplitTime[] runnerSplitTimes,
 													SplitTime[] bestSplits,	int nbColumns) {
 		ContextList splitRowsCollection = runnerCtx.createContextList("geco_SplitRows");
 
@@ -188,113 +186,33 @@ public class SplitExporter extends AResultExporter implements StageListener {
 		}
 	}
 
-	protected void mergeCustomStageProperties(GenericContext stageContext) {
-		final String customPropertiesPath = stage().filepath("formats.prop");
-		if( GecoResources.exists(customPropertiesPath) ) {
-			Properties props = new Properties();
-			try {
-				props.load( GecoResources.getSafeReaderFor(customPropertiesPath) );
-				stageContext.mergeProperties(props);
-			} catch (IOException e) {
-				geco().logger().debug(e);
-			}
-		}
-	}
-
-	// TODO Messages.getString("SplitExporter.SplitsOutputTitle")); //$NON-NLS-1$
-	
-	protected void appendHtmlSplitsInColumns(SplitTime[] splits, SplitTime[] bestSplits, int nbColumns,
-																								Html html) {
-		int nbRows = (splits.length / nbColumns) + 1;
-		int rowStart = 0;
-		for (int i = 0; i < nbRows; i++) {
-			// if last line, take the last remaining splits, not a full row
-			int limit = ( i==nbRows-1 ) ? (splits.length % nbColumns) : nbColumns;
-			
-			if( limit==0 )
-				break; // in case we have splits.length a multiple of nbColumns, we can stop now
-			
-			// first line with seq and control number/code
-			html.openTr("controls").td(""); //$NON-NLS-1$ //$NON-NLS-2$
-			for (int j = 0; j < limit; j++) {
-				SplitTime split = splits[j + rowStart];
-				String label = split.seq;
-				if( split.trace != null ){
-					label += " (" + split.trace.getBasicCode() +")"; //$NON-NLS-1$ //$NON-NLS-2$
-				}
-				html.td(label);
-			}
-			html.closeTr();
-			// second line is cumulative split since start
-			html.openTr("times").td(""); //$NON-NLS-1$ //$NON-NLS-2$
-			for (int j = 0; j < limit; j++) {
-				int k = j + rowStart;
-				SplitTime split = splits[k];
-				String label = TimeManager.time(split.time);
-				long best = 0;
-				if( withBestSplits && k < bestSplits.length ){
-					best = bestSplits[k].time; 
-				}
-				showWithBestSplit(label, split.time, best, html);
-			}
-			html.closeTr();
-			// third line is partial split since previous ok punch
-			html.openTr("splits").td(""); //$NON-NLS-1$ //$NON-NLS-2$
-			for (int j = 0; j < limit; j++) {
-				int k = j + rowStart;
-				SplitTime split = splits[k];
-				String label = TimeManager.time(split.split);
-				if( split.trace!=null && ! split.trace.isOK() ) {
-					label = "&nbsp;"; //$NON-NLS-1$
-				}
-				long best = 0;
-				if( withBestSplits &&k < bestSplits.length ){
-					best = bestSplits[k].split;
-				}
-				showWithBestSplit(label, split.split, best, html);
-			}
-			html.closeTr();
-			rowStart += nbColumns;
-		}
-	}
-	
-	private void showWithBestSplit(String label, long split, long best, Html html) {
-		if( withBestSplits && split==best ){
-			html.td(label, "class=\"best\""); //$NON-NLS-1$
-		} else {
-			html.td(label);
-		}
-	}
-	
-	protected void appendHtmlSplitsInLine(SplitTime[] linearSplits, Html html) {
+	public void createRunnerSplitsInlineTickets(RunnerContext runnerCtx, SplitTime[] linearSplits) {
+		ContextList splits = runnerCtx.createContextList("geco_RunnerSplits", linearSplits.length);
 		for (SplitTime splitTime : linearSplits) {
-			html.openTr(); //$NON-NLS-1$
+			GenericContext splitCtx = splits.addContext(new GenericContext());
 			Trace trace = splitTime.trace;
-			String time = TimeManager.time(splitTime.time);
 			if( trace!=null ) {
-				html.td(splitTime.seq, "class=\"code\""); //$NON-NLS-1$
-				html.td(splitTime.trace.getCode());
-				String timeClass = "class=\""; //$NON-NLS-1$
+				splitCtx.put("geco_ControlTrace", splitTime.trace.getCode());
 				if( trace.isOK() ) {
-					timeClass += "time"; //$NON-NLS-1$
+					splitCtx.put("geco_ControlStatus", "time");
 				} else {
 					if( trace.isAdded() || trace.isSubst() ) {
-						timeClass += "add"; //$NON-NLS-1$
+						splitCtx.put("geco_ControlStatus", "add");
 					} else {
-						timeClass += "miss"; //$NON-NLS-1$
+						splitCtx.put("geco_ControlStatus", "miss");
 					}
 				}
-				html.td(time, timeClass + "\""); //$NON-NLS-1$
-				html.td(TimeManager.time(splitTime.split), "class=\"sp\""); //$NON-NLS-1$
 			} else {
-				html.td(splitTime.seq, "class=\"code\""); //$NON-NLS-1$
-				html.td(""); //$NON-NLS-1$
-				html.td(time, "class=\"time\""); //$NON-NLS-1$
-				html.td(TimeManager.time(splitTime.split), "class=\"sp\""); //$NON-NLS-1$
+				splitCtx.put("geco_ControlTrace", "");
+				splitCtx.put("geco_ControlStatus", "time");
 			}
-			html.closeTr();
+			splitCtx.put("geco_ControlNum", splitTime.seq);
+			splitCtx.put("geco_ControlTime", TimeManager.time(splitTime.time));
+			splitCtx.put("geco_SplitTime", TimeManager.time(splitTime.split));
 		}
 	}
+	
+	// TODO Messages.getString("SplitExporter.SplitsOutputTitle")); //$NON-NLS-1$
 	
 	@Override
 	protected Collection<String> computeCsvRecord(RunnerRaceData runnerData, String resultId, String rank) {
