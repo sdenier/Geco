@@ -19,7 +19,7 @@ import net.geco.control.StartlistImporter;
 import net.geco.control.results.CNCalculator;
 import net.geco.control.results.ResultBuilder;
 import net.geco.control.results.ResultExporter;
-import net.geco.control.results.SingleSplitPrinter;
+import net.geco.control.results.RunnerSplitPrinter;
 import net.geco.control.results.SplitExporter;
 import net.geco.model.Registry;
 
@@ -45,7 +45,7 @@ public interface IGeco {
 	public ResultBuilder resultBuilder();
 	public ResultExporter resultExporter();
 	public SplitExporter splitsExporter();
-	public SingleSplitPrinter splitPrinter();
+	public RunnerSplitPrinter splitPrinter();
 	public HeatBuilder heatBuilder();	
 	public RegistryStats registryStats();
 	public SIReaderHandler siHandler();

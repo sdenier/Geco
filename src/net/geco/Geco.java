@@ -35,7 +35,7 @@ import net.geco.control.StartlistImporter;
 import net.geco.control.results.CNCalculator;
 import net.geco.control.results.ResultBuilder;
 import net.geco.control.results.ResultExporter;
-import net.geco.control.results.SingleSplitPrinter;
+import net.geco.control.results.RunnerSplitPrinter;
 import net.geco.control.results.SplitExporter;
 import net.geco.framework.IGecoApp;
 import net.geco.framework.IStageLaunch;
@@ -311,8 +311,8 @@ public class Geco implements IGecoApp, MergeRequestHandler {
 	public SplitExporter splitsExporter() {
 		return getService(SplitExporter.class);
 	}
-	public SingleSplitPrinter splitPrinter() {
-		return getService(SingleSplitPrinter.class);
+	public RunnerSplitPrinter splitPrinter() {
+		return getService(RunnerSplitPrinter.class);
 	}
 	public HeatBuilder heatBuilder() {
 		return getService(HeatBuilder.class);

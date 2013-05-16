@@ -26,7 +26,7 @@ import javax.swing.event.PopupMenuListener;
 
 import net.geco.basics.Html;
 import net.geco.control.SIReaderHandler.SerialPort;
-import net.geco.control.results.SingleSplitPrinter;
+import net.geco.control.results.RunnerSplitPrinter;
 import net.geco.framework.IGecoApp;
 import net.geco.model.Messages;
 import net.geco.ui.basics.SwingUtils;
@@ -79,14 +79,14 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 		
 		c.gridy = 2;
 		add(new JLabel(Messages.uiGet("SIReaderConfigPanel.SplitFormatLabel")), c); //$NON-NLS-1$
-		final JComboBox splitFormatCB = new JComboBox(SingleSplitPrinter.SplitFormat.values());
+		final JComboBox splitFormatCB = new JComboBox(RunnerSplitPrinter.SplitFormat.values());
 		splitFormatCB.setPreferredSize(new Dimension(170, stationPortCB.getPreferredSize().height));
 		splitFormatCB.setSelectedItem(geco.splitPrinter().getSplitFormat());
 		add(splitFormatCB, c);
 		splitFormatCB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				geco.splitPrinter().setSplitFormat((SingleSplitPrinter.SplitFormat) splitFormatCB.getSelectedItem());
+				geco.splitPrinter().setSplitFormat((RunnerSplitPrinter.SplitFormat) splitFormatCB.getSelectedItem());
 			}
 		});
 

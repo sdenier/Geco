@@ -47,7 +47,7 @@ import net.geco.model.Status;
  * @since Nov 25, 2010
  *
  */
-public class SingleSplitPrinter extends Control implements StageListener, CardListener {
+public class RunnerSplitPrinter extends Control implements StageListener, CardListener {
 	
 	public static enum SplitFormat { MultiColumns, Ticket }
 	
@@ -61,8 +61,8 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 	private final ResultBuilder builder;
 	private final SplitExporter exporter;
 	
-	public SingleSplitPrinter(GecoControl gecoControl) {
-		super(SingleSplitPrinter.class, gecoControl);
+	public RunnerSplitPrinter(GecoControl gecoControl) {
+		super(RunnerSplitPrinter.class, gecoControl);
 		builder = getService(ResultBuilder.class);
 		exporter = getService(SplitExporter.class);
 		geco().announcer().registerStageListener(this);

@@ -21,7 +21,7 @@ import net.geco.control.StartlistImporter;
 import net.geco.control.results.CNCalculator;
 import net.geco.control.results.ResultBuilder;
 import net.geco.control.results.ResultExporter;
-import net.geco.control.results.SingleSplitPrinter;
+import net.geco.control.results.RunnerSplitPrinter;
 import net.geco.control.results.SplitExporter;
 import net.geco.framework.IGecoApp;
 import net.geco.functions.DeleteFunction;
@@ -88,7 +88,7 @@ public class OrientShowAppBuilder extends AppBuilder {
 		new ResultBuilder(gecoControl);
 		new ResultExporter(gecoControl);
 		new SplitExporter(gecoControl);
-		new SingleSplitPrinter(gecoControl);
+		new RunnerSplitPrinter(gecoControl);
 		new HeatBuilder(gecoControl);
 		new RegistryStats(gecoControl);
 		new ArchiveManager(gecoControl);
