@@ -8,6 +8,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.print.PrinterJob;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -53,6 +54,10 @@ public class RunnerSplitPrinter extends Control implements StageListener, CardLi
 	private PrintService splitPrinter;
 	private MediaSizeName[] splitMedia;
 
+	private int nbColumns;
+	private File columnTemplate;
+	private File ticketTemplate;
+	
 	private boolean autoPrint;
 	private boolean prototypeMode;
 	
@@ -121,9 +126,9 @@ public class RunnerSplitPrinter extends Control implements StageListener, CardLi
 		exporter.createRunnerSplitsRowsAndColumns(runnerCtx,
 												  builder.buildNormalSplits(data, true),
 												  new SplitTime[0],
-												  exporter.nbColumns()); // TODO custom prop
+												  nbColumns());
 		
-		exporter.getTemplate("formats/splits_columns.mustache").execute(runnerCtx, out);
+		exporter.getTemplate(getColumnTemplatePath()).execute(runnerCtx, out);
 	}
 
 	private void generateSingleSplitsInLine(RunnerRaceData data, Writer out) throws IOException {
@@ -131,7 +136,7 @@ public class RunnerSplitPrinter extends Control implements StageListener, CardLi
 		exporter.createRunnerSplitsInlineTickets(runnerCtx,
 												 builder.buildLinearSplits(data));
 		
-		exporter.getTemplate("formats/splits_ticket.mustache").execute(runnerCtx, out);
+		exporter.getTemplate(getTicketTemplatePath()).execute(runnerCtx, out);
 	}
 
 	protected RunnerContext buildRunnerSplitContext(RunnerRaceData data) {
@@ -265,8 +270,45 @@ public class RunnerSplitPrinter extends Control implements StageListener, CardLi
 	public void enableFormatPrototyping(boolean flag) {
 		prototypeMode = flag;
 	}
-	
 
+	public int nbColumns() {
+		return nbColumns;
+	}
+
+	public void setNbColumns(int nb) {
+		nbColumns = nb;
+	}
+	
+	public File getColumnTemplate() {
+		return columnTemplate;
+	}
+
+	protected String getColumnTemplatePath() {
+		return getColumnTemplate().getAbsolutePath();
+	}
+
+	public void setColumnTemplate(File selectedFile) {
+		if( getColumnTemplate() != null ) {
+			exporter.resetTemplate(getColumnTemplatePath());
+		}
+		columnTemplate = selectedFile;
+	}
+
+	public File getTicketTemplate() {
+		return ticketTemplate;
+	}
+
+	protected String getTicketTemplatePath() {
+		return getTicketTemplate().getAbsolutePath();
+	}
+
+	public void setTicketTemplate(File selectedFile) {
+		if( getTicketTemplate() != null ) {
+			exporter.resetTemplate(getTicketTemplatePath());
+		}
+		ticketTemplate = selectedFile;
+	}
+	
 	@Override
 	public void cardRead(String chip) {
 		if( autoPrint ) {
@@ -288,12 +330,28 @@ public class RunnerSplitPrinter extends Control implements StageListener, CardLi
 		setSplitPrinterName(props.getProperty(splitPrinterProperty()));
 		String format = props.getProperty(splitFormatProperty(), SplitFormat.MultiColumns.name());
 		setSplitFormat(SplitFormat.valueOf(format));
+
+		setNbColumns(Integer.parseInt(props.getProperty(splitNbColumnsProperty(), "12"))); //$NON-NLS-1$
+		setColumnTemplate(
+				new File(stage().getProperties().getProperty(columnTemplateProperty(),
+															 "formats/splits_columns.mustache") )); //$NON-NLS-1$
+		setTicketTemplate(
+				new File(stage().getProperties().getProperty(ticketTemplateProperty(),
+															 "formats/splits_ticket.mustache") )); //$NON-NLS-1$
 	}
 
 	@Override
 	public void saving(Stage stage, Properties properties) {
 		properties.setProperty(splitPrinterProperty(), getSplitPrinterName());
 		properties.setProperty(splitFormatProperty(), getSplitFormat().name());
+
+		properties.setProperty(splitNbColumnsProperty(), Integer.toString(nbColumns()));
+		if( getColumnTemplate().exists() ){
+			properties.setProperty(columnTemplateProperty(), getColumnTemplatePath());
+		}
+		if( getTicketTemplate().exists() ){
+			properties.setProperty(ticketTemplateProperty(), getTicketTemplatePath());
+		}
 	}
 	@Override
 	public void closing(Stage stage) {	}
@@ -304,5 +362,13 @@ public class RunnerSplitPrinter extends Control implements StageListener, CardLi
 	public static String splitFormatProperty() {
 		return "SplitFormat"; //$NON-NLS-1$
 	}
-
+	public static String splitNbColumnsProperty() {
+		return "SplitNbColumns"; //$NON-NLS-1$
+	}
+	public static String columnTemplateProperty() {
+		return "ColumnTemplate"; //$NON-NLS-1$
+	}
+	public static String ticketTemplateProperty() {
+		return "TicketTemplate"; //$NON-NLS-1$
+	}
 }

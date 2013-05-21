@@ -66,7 +66,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 
 	private boolean withBestSplits;
 
-	private int nbColumns = 12;
+	private int nbColumns;
 
 	
 	public SplitExporter(GecoControl gecoControl) {
@@ -411,17 +411,14 @@ public class SplitExporter extends AResultExporter implements StageListener {
 	@Override
 	public void changed(Stage previous, Stage current) {
 		Properties props = stage().getProperties();
-		nbColumns = Integer.parseInt(props.getProperty(splitNbColumnsProperty(), "12"));
-		try {
-			setSplitsTemplate(new File( stage().getProperties().getProperty(splitsTemplateProperty()) ));
-		} catch (NullPointerException e) {
-			setSplitsTemplate(new File("formats/results_splits.mustache")); //$NON-NLS-1$
-		}
+		setNbColumns(Integer.parseInt(props.getProperty(splitsNbColumnsProperty(), "12"))); //$NON-NLS-1$
+		setSplitsTemplate(new File( props.getProperty(splitsTemplateProperty(),
+													  "formats/results_splits.mustache") )); //$NON-NLS-1$
 	}
 
 	@Override
 	public void saving(Stage stage, Properties properties) {
-		properties.setProperty(splitNbColumnsProperty(), Integer.toString(nbColumns));
+		properties.setProperty(splitsNbColumnsProperty(), Integer.toString(nbColumns()));
 		if( getSplitsTemplate().exists() ){
 			properties.setProperty(splitsTemplateProperty(), getSplitsTemplate().getAbsolutePath());
 		}
@@ -430,8 +427,8 @@ public class SplitExporter extends AResultExporter implements StageListener {
 	@Override
 	public void closing(Stage stage) {	}
 
-	public static String splitNbColumnsProperty() {
-		return "SplitNbColumns"; //$NON-NLS-1$
+	public static String splitsNbColumnsProperty() {
+		return "SplitsNbColumns"; //$NON-NLS-1$
 	}
 
 	public static String splitsTemplateProperty() {

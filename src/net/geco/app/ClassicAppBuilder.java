@@ -117,7 +117,7 @@ public class ClassicAppBuilder extends AppBuilder {
 	public ConfigPanel[] buildConfigPanels(IGecoApp geco, JFrame frame) {
 		return new ConfigPanel[] {
 				new StageConfigPanel(geco, frame),
-				new SIReaderConfigPanel(geco),
+				new SIReaderConfigPanel(geco, frame),
 				new CourseConfigPanel(geco, frame),
 				new CategoryConfigPanel(geco, frame),
 				new ClubConfigPanel(geco, frame),

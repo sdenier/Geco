@@ -113,11 +113,9 @@ public class ResultExporter extends AResultExporter implements StageListener {
 	
 	@Override
 	public void changed(Stage previous, Stage current) {
-		try {
-			setRankingTemplate(new File( stage().getProperties().getProperty(rankingTemplateProperty()) ));
-		} catch (NullPointerException e) {
-			setRankingTemplate(new File("formats/results_ranking.mustache")); //$NON-NLS-1$
-		}
+		setRankingTemplate(
+				new File(stage().getProperties().getProperty(rankingTemplateProperty(),
+															 "formats/results_ranking.mustache") )); //$NON-NLS-1$
 	}
 
 	@Override

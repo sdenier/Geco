@@ -116,7 +116,7 @@ public class FreeOrderAppBuilder extends AppBuilder {
 	public ConfigPanel[] buildConfigPanels(IGecoApp geco, JFrame frame) {
 		return new ConfigPanel[] {
 				new StageConfigPanel(geco, frame),
-				new SIReaderConfigPanel(geco),
+				new SIReaderConfigPanel(geco, frame),
 				new PenaltyCheckerConfigPanel(geco),
 				new CourseConfigPanel(geco, frame),
 				new CategoryConfigPanel(geco, frame),
