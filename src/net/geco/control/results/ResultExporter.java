@@ -59,6 +59,7 @@ public class ResultExporter extends AResultExporter implements StageListener {
 		StageContext stageCtx = new StageContext(
 				stage().getName(), isSingleCourseResult, config.showPenalties, refreshInterval, outputType);
 		ContextList resultsCollection = stageCtx.createResultsCollection(results.size());
+		mergeI18nProperties(stageCtx);
 		mergeCustomStageProperties(stageCtx);
 
 		for (Result result : results) {

@@ -107,7 +107,7 @@ public class RunnerSplitPrinter extends Control implements StageListener, CardLi
 					jFrame.pack();
 					jFrame.setVisible(true);
 					try {
-						Writer writer = new BufferedWriter(new FileWriter(stage().filepath("runner_splits.html")));
+						Writer writer = new BufferedWriter(new FileWriter(stage().filepath("runner_splits.html"))); //$NON-NLS-1$
 						writer.write(out.toString());
 						writer.close();
 					} catch (IOException e) {
@@ -143,10 +143,10 @@ public class RunnerSplitPrinter extends Control implements StageListener, CardLi
 		Course course = data.getCourse();
 
 		RunnerContext runnerCtx = RunnerContext.createUnrankedRunner(data);
-		runnerCtx.put("geco_StageTitle", stage().getName());
-		runnerCtx.put("geco_RunnerCourse", course.getName());
-		runnerCtx.put("geco_CourseLength", course.getLength());
-		runnerCtx.put("geco_CourseClimb", course.getClimb());
+		runnerCtx.put("geco_StageTitle", stage().getName()); //$NON-NLS-1$
+		runnerCtx.put("geco_RunnerCourse", course.getName()); //$NON-NLS-1$
+		runnerCtx.put("geco_CourseLength", course.getLength()); //$NON-NLS-1$
+		runnerCtx.put("geco_CourseClimb", course.getClimb()); //$NON-NLS-1$
 		return runnerCtx;
 	}
 

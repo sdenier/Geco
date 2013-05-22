@@ -109,9 +109,10 @@ public class CNCalculator extends AResultExporter implements StageListener {
 		StageContext stageCtx = new StageContext(
 				stage().getName(), isSingleCourseResult, config.showPenalties, refreshInterval, outputType);
 		ContextList resultsCollection = stageCtx.createResultsCollection(results.size());
+		mergeI18nProperties(stageCtx);
 		mergeCustomStageProperties(stageCtx);
 		if( config.resultType != ResultType.CourseResult ) {
-			stageCtx.put("geco_StageTitle", Messages.getString("CNCalculator.CNCourseWarning")); //$NON-NLS-1$
+			stageCtx.put("geco_StageTitle", Messages.getString("CNCalculator.CNCourseWarning")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		
 		for (Result result : results) {
@@ -135,8 +136,8 @@ public class CNCalculator extends AResultExporter implements StageListener {
 
 					RunnerContext runnerCtx =
 							rankingCollection.addContext(RunnerContext.createRankedRunner(rankedRunner, bestTime));
-					runnerCtx.put("geco_CN", currentCN);
-					runnerCtx.put("geco_CNScore", raceScore);
+					runnerCtx.put("geco_CN", currentCN); //$NON-NLS-1$
+					runnerCtx.put("geco_CNScore", raceScore); //$NON-NLS-1$
 				}
 
 				for (RunnerRaceData data : result.getUnrankedRunners()) {
@@ -148,12 +149,12 @@ public class CNCalculator extends AResultExporter implements StageListener {
 						if( config.showNC ) {
 							RunnerContext runnerCtx =
 									unrankedCollection.addContext(RunnerContext.createNCRunner(data));
-							runnerCtx.put("geco_CN", currentCN);
+							runnerCtx.put("geco_CN", currentCN); //$NON-NLS-1$
 						} // else nothing
 					} else {
 						RunnerContext runnerCtx =
 								unrankedCollection.addContext(RunnerContext.createUnrankedRunner(data));
-						runnerCtx.put("geco_CN", currentCN);
+						runnerCtx.put("geco_CN", currentCN); //$NON-NLS-1$
 					}
 				}
 			}

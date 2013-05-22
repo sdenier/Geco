@@ -1,11 +1,5 @@
 <html>
   <head>
-{{#geco_FileOutput?}}
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-{{/geco_FileOutput?}}
-{{#geco_AutoRefresh?}}
-    <meta http-equiv="refresh" content="{{geco_RefreshInterval}}">
-{{/geco_AutoRefresh?}}
     <style type="text/css">
       body { font-size: 10 }
       h1 { font-size: 20; text-align: center }
@@ -23,11 +17,11 @@
     </style>
   </head>
   <body>
-    <h1>{{geco_StageTitle}} - CN Estimation</h1>
+    <h1>{{geco_StageTitle}} - {{i18n_CNTitle}}</h1>
 {{#geco_ResultsCollection}}
     <h2>{{geco_ResultName}} ({{geco_NbFinishedRunners}}/{{geco_NbPresentRunners}}) - {{geco_CourseLength}}m, {{geco_CourseClimb}}m</h2>
     <table>
-      <tr class="runner"><th></th><th class="left">Name</th><th class="left">Club</th><th class="left">Category</th><th class="right">Time</th><th class="right">CN</th><th class="right">Score</th></tr>
+      <tr class="runner"><th></th><th class="left">{{i18n_NameHeader}}</th><th class="left">{{i18n_ClubHeader}}</th><th class="left">{{i18n_CategoryHeader}}</th><th class="right">{{i18n_TimeHeader}}</th><th class="right">{{i18n_CNHeader}}</th><th class="right">{{i18n_ScoreHeader}}</th></tr>
 {{#geco_RankedRunners}}
       <tr class="runner"><td>{{geco_RunnerRank}}</td><td>{{geco_RunnerFirstName}} {{geco_RunnerLastName}}</td><td>{{geco_RunnerClubName}}</td><td>{{geco_RunnerCategory}}</td><td class="time">{{geco_RunnerResultTime}}</td><td class="right">{{geco_CN}}</td><td class="time">{{geco_CNScore}}</td></tr>
 {{/geco_RankedRunners}}
@@ -36,9 +30,6 @@
       <tr class="runner"><td>{{geco_RunnerRank}}</td><td>{{geco_RunnerFirstName}} {{geco_RunnerLastName}}</td><td>{{geco_RunnerClubName}}</td><td>{{geco_RunnerCategory}}</td><td class="time">{{geco_RunnerStatusOrTime}}</td><td class="right">{{geco_CN}}</td><td class="time">0</td></tr>
 {{/geco_UnrankedRunners}}
     </table>
-{{#geco_PrintMode?}}
-    <p>Last update {{geco_Timestamp}}</p>
-{{/geco_PrintMode?}}
 {{/geco_ResultsCollection}}
   </body>
 </html>

@@ -25,6 +25,7 @@ import net.geco.control.Control;
 import net.geco.control.GecoControl;
 import net.geco.control.results.ResultBuilder.ResultConfig;
 import net.geco.control.results.context.GenericContext;
+import net.geco.model.Messages;
 import net.geco.model.Pool;
 import net.geco.model.RankedRunner;
 import net.geco.model.Result;
@@ -123,7 +124,6 @@ public abstract class AResultExporter extends Control {
 	}
 
 	protected Template getInternalTemplate() throws IOException {
-		// TODO I18N template headers
 		Template template = templates.get(getInternalTemplatePath());
 		if( template==null ) {
 			Reader templateReader = getInternalTemplateReader();
@@ -154,7 +154,7 @@ public abstract class AResultExporter extends Control {
 	}
 	
 	protected Template loadTemplate(Reader templateReader, String templatePath) {
-		Template template = Mustache.compiler().defaultValue("N/A").compile(templateReader);
+		Template template = Mustache.compiler().defaultValue("N/A").compile(templateReader); //$NON-NLS-1$
 		templates.put(templatePath, template);
 		return template;
 	}
@@ -177,8 +177,25 @@ public abstract class AResultExporter extends Control {
 
 	protected abstract GenericContext buildDataContext(ResultConfig config, int refreshInterval, OutputType outputType);
 
+	protected void mergeI18nProperties(GenericContext stageCtx) {
+		stageCtx.put("i18n_RankingTitle", Messages.getString("ResultExporter.ResultsOutputTitle")); //$NON-NLS-1$ //$NON-NLS-2$
+		stageCtx.put("i18n_SplitsTitle", Messages.getString("SplitExporter.SplitsOutputTitle")); //$NON-NLS-1$ //$NON-NLS-2$
+		stageCtx.put("i18n_CNTitle", Messages.getString("CNCalculator.CNOutputTitle")); //$NON-NLS-1$ //$NON-NLS-2$
+		stageCtx.put("i18n_NameHeader", Messages.getString("ResultBuilder.NameHeader")); //$NON-NLS-1$ //$NON-NLS-2$
+		stageCtx.put("i18n_ClubHeader", Messages.getString("ResultBuilder.ClubHeader")); //$NON-NLS-1$ //$NON-NLS-2$
+		stageCtx.put("i18n_CategoryHeader", Messages.getString("ResultBuilder.CategoryHeader")); //$NON-NLS-1$ //$NON-NLS-2$
+		stageCtx.put("i18n_TimeHeader", Messages.getString("ResultBuilder.TimeHeader")); //$NON-NLS-1$ //$NON-NLS-2$
+		stageCtx.put("i18n_DiffHeader", Messages.getString("ResultExporter.DiffHeader")); //$NON-NLS-1$ //$NON-NLS-2$
+		stageCtx.put("i18n_PaceHeader", Messages.getString("ResultExporter.minkmLabel")); //$NON-NLS-1$ //$NON-NLS-2$
+		stageCtx.put("i18n_MPHeader", Messages.getString("ResultBuilder.MPHeader")); //$NON-NLS-1$ //$NON-NLS-2$
+		stageCtx.put("i18n_RacetimeHeader", Messages.getString("ResultBuilder.RacetimeHeader")); //$NON-NLS-1$ //$NON-NLS-2$
+		stageCtx.put("i18n_LastUpdateLabel", Messages.getString("ResultExporter.LastUpdateLabel")); //$NON-NLS-1$ //$NON-NLS-2$
+		stageCtx.put("i18n_CNHeader", Messages.getString("CNCalculator.CNHeader")); //$NON-NLS-1$ //$NON-NLS-2$
+		stageCtx.put("i18n_ScoreHeader", Messages.getString("CNCalculator.ScoreHeader")); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
 	protected void mergeCustomStageProperties(GenericContext stageContext) {
-		final String customPropertiesPath = stage().filepath("formats.prop");
+		final String customPropertiesPath = stage().filepath("formats.prop"); //$NON-NLS-1$
 		if( GecoResources.exists(customPropertiesPath) ) {
 			Properties props = new Properties();
 			try {

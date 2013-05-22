@@ -159,7 +159,7 @@ public class ResultBuilder extends Control {
 		public long split;
 		
 		public String getBasicCode() {
-			return trace == null ? "F" : trace.getBasicCode();
+			return trace == null ? "F" : trace.getBasicCode(); //$NON-NLS-1$
 		}
 		
 		public boolean isOK() {

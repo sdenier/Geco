@@ -106,6 +106,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 		StageContext stageCtx = new StageContext(
 				stage().getName(), isSingleCourseResult, config.showPenalties, refreshInterval, outputType);
 		ContextList resultsCollection = stageCtx.createResultsCollection(results.size());
+		mergeI18nProperties(stageCtx);
 		mergeCustomStageProperties(stageCtx);
 
 		for (Result result : results) {
@@ -150,16 +151,16 @@ public class SplitExporter extends AResultExporter implements StageListener {
 
 	public void createRunnerSplitsRowsAndColumns(RunnerContext runnerCtx, SplitTime[] runnerSplitTimes,
 													SplitTime[] bestSplits,	int nbColumns) {
-		ContextList splitRowsCollection = runnerCtx.createContextList("geco_SplitRows");
+		ContextList splitRowsCollection = runnerCtx.createContextList("geco_SplitRows"); //$NON-NLS-1$
 
 		int nbSplitTimes = runnerSplitTimes.length;
 		int nbSplitRows = nbSplitTimes / nbColumns;
 		nbSplitRows = nbSplitTimes % nbColumns == 0 ? nbSplitRows : nbSplitRows + 1;
 		for (int i = 0; i < nbSplitRows; i++) {
 			GenericContext rowCtx =	splitRowsCollection.addContext(new GenericContext());
-			ContextList controlRow = rowCtx.createContextList("geco_ControlRow", nbColumns);
-			ContextList timeRow = rowCtx.createContextList("geco_TimeRow", nbColumns);
-			ContextList splitRow = rowCtx.createContextList("geco_SplitRow", nbColumns);
+			ContextList controlRow = rowCtx.createContextList("geco_ControlRow", nbColumns); //$NON-NLS-1$
+			ContextList timeRow = rowCtx.createContextList("geco_TimeRow", nbColumns); //$NON-NLS-1$
+			ContextList splitRow = rowCtx.createContextList("geco_SplitRow", nbColumns); //$NON-NLS-1$
 
 			int rowStart = i * nbColumns;
 			int rowEnd = Math.min(rowStart + nbColumns, nbSplitTimes);
@@ -167,52 +168,50 @@ public class SplitExporter extends AResultExporter implements StageListener {
 				SplitTime splitTime = runnerSplitTimes[j];
 				
 				GenericContext controlCtx = controlRow.addContext(new GenericContext());
-				controlCtx.put("geco_ControlNum", splitTime.seq);
-				controlCtx.put("geco_ControlCode", splitTime.getBasicCode());
+				controlCtx.put("geco_ControlNum", splitTime.seq); //$NON-NLS-1$
+				controlCtx.put("geco_ControlCode", splitTime.getBasicCode()); //$NON-NLS-1$
 				
 				GenericContext timeCtx = timeRow.addContext(new GenericContext());
 				boolean isBestTime = withBestSplits && j < bestSplits.length
 										&& splitTime.time == bestSplits[j].time;
-				timeCtx.put("geco_BestTime?", isBestTime);
-				timeCtx.put("geco_ControlTime", TimeManager.time(splitTime.time));
+				timeCtx.put("geco_BestTime?", isBestTime); //$NON-NLS-1$
+				timeCtx.put("geco_ControlTime", TimeManager.time(splitTime.time)); //$NON-NLS-1$
 				
 				GenericContext splitCtx = splitRow.addContext(new GenericContext());
 				boolean isBestSplit = withBestSplits && j < bestSplits.length
 										&& splitTime.split == bestSplits[j].split;
 				String label = ( splitTime.isOK() ) ? TimeManager.time(splitTime.split) : ""; //$NON-NLS-1$
-				splitCtx.put("geco_BestSplit?", isBestSplit);
-				splitCtx.put("geco_SplitTime", label);
+				splitCtx.put("geco_BestSplit?", isBestSplit); //$NON-NLS-1$
+				splitCtx.put("geco_SplitTime", label); //$NON-NLS-1$
 			}
 		}
 	}
 
 	public void createRunnerSplitsInlineTickets(RunnerContext runnerCtx, SplitTime[] linearSplits) {
-		ContextList splits = runnerCtx.createContextList("geco_RunnerSplits", linearSplits.length);
+		ContextList splits = runnerCtx.createContextList("geco_RunnerSplits", linearSplits.length); //$NON-NLS-1$
 		for (SplitTime splitTime : linearSplits) {
 			GenericContext splitCtx = splits.addContext(new GenericContext());
 			Trace trace = splitTime.trace;
 			if( trace!=null ) {
-				splitCtx.put("geco_ControlTrace", splitTime.trace.getCode());
+				splitCtx.put("geco_ControlTrace", splitTime.trace.getCode()); //$NON-NLS-1$
 				if( trace.isOK() ) {
-					splitCtx.put("geco_ControlStatus", "time");
+					splitCtx.put("geco_ControlStatus", "time"); //$NON-NLS-1$ //$NON-NLS-2$
 				} else {
 					if( trace.isAdded() || trace.isSubst() ) {
-						splitCtx.put("geco_ControlStatus", "add");
+						splitCtx.put("geco_ControlStatus", "add"); //$NON-NLS-1$ //$NON-NLS-2$
 					} else {
-						splitCtx.put("geco_ControlStatus", "miss");
+						splitCtx.put("geco_ControlStatus", "miss"); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 				}
 			} else {
-				splitCtx.put("geco_ControlTrace", "");
-				splitCtx.put("geco_ControlStatus", "time");
+				splitCtx.put("geco_ControlTrace", ""); //$NON-NLS-1$ //$NON-NLS-2$
+				splitCtx.put("geco_ControlStatus", "time"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
-			splitCtx.put("geco_ControlNum", splitTime.seq);
-			splitCtx.put("geco_ControlTime", TimeManager.time(splitTime.time));
-			splitCtx.put("geco_SplitTime", TimeManager.time(splitTime.split));
+			splitCtx.put("geco_ControlNum", splitTime.seq); //$NON-NLS-1$
+			splitCtx.put("geco_ControlTime", TimeManager.time(splitTime.time)); //$NON-NLS-1$
+			splitCtx.put("geco_SplitTime", TimeManager.time(splitTime.split)); //$NON-NLS-1$
 		}
 	}
-	
-	// TODO Messages.getString("SplitExporter.SplitsOutputTitle")); //$NON-NLS-1$
 	
 	@Override
 	protected Collection<String> computeCsvRecord(RunnerRaceData runnerData, String resultId, String rank) {

@@ -1,11 +1,5 @@
 <html>
   <head>
-{{#geco_FileOutput?}}
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-{{/geco_FileOutput?}}
-{{#geco_AutoRefresh?}}
-    <meta http-equiv="refresh" content="{{geco_RefreshInterval}}">
-{{/geco_AutoRefresh?}}
     <style type="text/css">
       body { font-size: 10 }
       h1 { font-size: 20; text-align: center }
@@ -23,7 +17,6 @@
     </style>
   </head>
   <body>
-    <h1>{{geco_StageTitle}} - Splits YOUHOU</h1>
 {{#geco_ResultsCollection}}
     <h2>{{geco_ResultName}} ({{geco_NbFinishedRunners}}/{{geco_NbPresentRunners}}){{#geco_SingleCourse?}} - {{geco_CourseLength}}m, {{geco_CourseClimb}}m{{/geco_SingleCourse?}}</h2>
     <table>
@@ -45,9 +38,6 @@
 {{/geco_SplitRows}}
 {{/geco_UnrankedRunners}}
     </table>
-{{#geco_PrintMode?}}
-    <p>Last update {{geco_Timestamp}}</p>
-{{/geco_PrintMode?}}
 {{/geco_ResultsCollection}}
   </body>
 </html>
