@@ -35,25 +35,19 @@ public class ResultBuilder extends Control {
 	public static class ResultConfig {
 		protected Object[] selectedPools;
 		protected ResultType resultType;
-		protected boolean showEmptySets;
 		protected boolean showNC;
-		protected boolean showOthers;
 		protected boolean showPenalties;
 	}
 	
 	public static ResultConfig createResultConfig(
 			Object[] selectedPools,
 			ResultType courseConfig,
-			boolean showEmptySets,
 			boolean showNC,
-			boolean showOthers,
 			boolean showPenalties) {
 		ResultConfig config = new ResultConfig();
 		config.selectedPools = selectedPools;
 		config.resultType = courseConfig;
-		config.showEmptySets = showEmptySets;
 		config.showNC = showNC;
-		config.showOthers = showOthers;
 		config.showPenalties = showPenalties;
 		return config;
 	}

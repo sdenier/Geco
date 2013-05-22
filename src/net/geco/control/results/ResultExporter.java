@@ -52,7 +52,6 @@ public class ResultExporter extends AResultExporter implements StageListener {
 
 	@Override
 	protected GenericContext buildDataContext(ResultConfig config, int refreshInterval, OutputType outputType) {
-		// TODO remove show empty/others from config
 		boolean isSingleCourseResult = config.resultType != ResultType.CategoryResult;
 		List<Result> results = buildResults(config);
 

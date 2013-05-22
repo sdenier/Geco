@@ -220,7 +220,7 @@ public abstract class AResultExporter extends Control {
 				"result id;rank;status;official time;nc;start time;finish time;race time;mps;" + //$NON-NLS-1$
 				"course;distance;climb;nb punches;control 1;punch 1;...;\n"); //$NON-NLS-1$
 		for (Result result : results) {
-			if( config.showEmptySets || !result.isEmpty()) {
+			if( ! result.isEmpty() ){
 				appendCsvResult(result, config, writer);
 			}
 		}
@@ -237,11 +237,6 @@ public abstract class AResultExporter extends Control {
 			if( !runner.isNC() || config.showNC ) {
 				writeCsvResult(runnerData, resultId, "", writer); //$NON-NLS-1$
 			}
-		}
-		if( config.showOthers ) {
-			for (RunnerRaceData runnerData : result.getUnresolvedRunners()) {
-				writeCsvResult(runnerData, resultId, "", writer); //$NON-NLS-1$
-			}			
 		}
 	}
 	

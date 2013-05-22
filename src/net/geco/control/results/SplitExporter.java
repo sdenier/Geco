@@ -250,7 +250,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 		List<Result> results = buildResults(config);
 		Names names = new Names(registry().getClubNames(), registry().getCategoryNames(), registry().getCourseNames());
 		for (Result result : results) {
-			if( config.showEmptySets || !result.isEmpty()) {
+			if( ! result.isEmpty() ){
 				appendOECsvResult(result, names, config, withSplits, writer);
 			}
 		}
@@ -269,11 +269,6 @@ public class SplitExporter extends AResultExporter implements StageListener {
 			} else if( config.showNC ) {
 				writeOECsvResult(runnerData, "", names, withSplits, writer); //$NON-NLS-1$
 			}
-		}
-		if( config.showOthers ) {
-			for (RunnerRaceData runnerData : result.getUnresolvedRunners()) {
-				writeOECsvResult(runnerData, "", names, withSplits, writer); //$NON-NLS-1$
-			}			
 		}
 	}
 
