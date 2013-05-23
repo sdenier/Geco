@@ -123,6 +123,7 @@ public class RunnerSplitPrinter extends Control implements StageListener, CardLi
 
 	private void generateSingleSplitsInColumns(RunnerRaceData data, Writer out) throws IOException {
 		RunnerContext runnerCtx = buildRunnerSplitContext(data);
+		exporter.mergeCustomStageProperties(runnerCtx);
 		exporter.createRunnerSplitsRowsAndColumns(runnerCtx,
 												  builder.buildNormalSplits(data, true),
 												  new SplitTime[0],
@@ -133,6 +134,7 @@ public class RunnerSplitPrinter extends Control implements StageListener, CardLi
 
 	private void generateSingleSplitsInLine(RunnerRaceData data, Writer out) throws IOException {
 		RunnerContext runnerCtx = buildRunnerSplitContext(data);
+		exporter.mergeCustomStageProperties(runnerCtx);
 		exporter.createRunnerSplitsInlineTickets(runnerCtx,
 												 builder.buildLinearSplits(data));
 		
@@ -141,7 +143,6 @@ public class RunnerSplitPrinter extends Control implements StageListener, CardLi
 
 	protected RunnerContext buildRunnerSplitContext(RunnerRaceData data) {
 		Course course = data.getCourse();
-
 		RunnerContext runnerCtx = RunnerContext.createUnrankedRunner(data);
 		runnerCtx.put("geco_StageTitle", stage().getName()); //$NON-NLS-1$
 		runnerCtx.put("geco_RunnerCourse", course.getName()); //$NON-NLS-1$

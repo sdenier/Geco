@@ -194,13 +194,13 @@ public abstract class AResultExporter extends Control {
 		stageCtx.put("i18n_ScoreHeader", Messages.getString("CNCalculator.ScoreHeader")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	protected void mergeCustomStageProperties(GenericContext stageContext) {
+	protected void mergeCustomStageProperties(GenericContext context) {
 		final String customPropertiesPath = stage().filepath("formats.prop"); //$NON-NLS-1$
 		if( GecoResources.exists(customPropertiesPath) ) {
 			Properties props = new Properties();
 			try {
 				props.load( GecoResources.getSafeReaderFor(customPropertiesPath) );
-				stageContext.mergeProperties(props);
+				context.mergeProperties(props);
 			} catch (IOException e) {
 				geco().logger().debug(e);
 			}
