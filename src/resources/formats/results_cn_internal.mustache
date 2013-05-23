@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <style type="text/css">
+      body { font-size: 10 }
+      h1 { font-size: 20; text-align: center }
+      h2 { font-size: 15 }
+      table { border-collapse:collapse; width: 100%; font-size: 10 }
+      .runner td, .runner th { padding: 0px 10px }
+      .left { text-align: left }
+      .center { text-align: center }
+      .right, .time, .pace, .diff, .controls, .times, .splits { text-align: right }
+      .diff, .splits { font-style: italic }
+      .controls { background-color: #F0F0F0 }
+      .times, .splits { background-color: white }
+      .rsplit td, .col0 td, .col1 td { padding: 0 5px 0 0 }
+      .rsplit td, .time, .best { font-weight: bold }
+    </style>
+  </head>
+  <body>
+    <h1>{{geco_StageTitle}} - {{i18n_CNTitle}}</h1>
+{{#geco_ResultsCollection}}
+    <h2>{{geco_ResultName}} ({{geco_NbFinishedRunners}}/{{geco_NbPresentRunners}}) - {{geco_CourseLength}}m, {{geco_CourseClimb}}m</h2>
+    <table>
+      <tr class="runner"><th></th><th class="left">{{i18n_NameHeader}}</th><th class="left">{{i18n_ClubHeader}}</th><th class="left">{{i18n_CategoryHeader}}</th><th class="right">{{i18n_TimeHeader}}</th><th class="right">{{i18n_CNHeader}}</th><th class="right">{{i18n_ScoreHeader}}</th></tr>
+{{#geco_RankedRunners}}
+      <tr class="runner"><td>{{geco_RunnerRank}}</td><td>{{geco_RunnerFirstName}} {{geco_RunnerLastName}}</td><td>{{geco_RunnerClubName}}</td><td>{{geco_RunnerCategory}}</td><td class="time">{{geco_RunnerResultTime}}</td><td class="right">{{geco_CN}}</td><td class="time">{{geco_CNScore}}</td></tr>
+{{/geco_RankedRunners}}
+      <tr class="empty"><td>&nbsp;</td></tr>
+{{#geco_UnrankedRunners}}
+      <tr class="runner"><td>{{geco_RunnerRank}}</td><td>{{geco_RunnerFirstName}} {{geco_RunnerLastName}}</td><td>{{geco_RunnerClubName}}</td><td>{{geco_RunnerCategory}}</td><td class="time">{{geco_RunnerStatusOrTime}}</td><td class="right">{{geco_CN}}</td><td class="time">0</td></tr>
+{{/geco_UnrankedRunners}}
+    </table>
+{{/geco_ResultsCollection}}
+  </body>
+</html>

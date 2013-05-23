@@ -5,29 +5,34 @@
 package net.geco.ui.config;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
 import javax.swing.InputVerifier;
-import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import net.geco.basics.Html;
 import net.geco.framework.IGecoApp;
 import net.geco.model.Messages;
 import net.geco.ui.basics.GecoIcon;
 import net.geco.ui.basics.SwingUtils;
+import net.geco.ui.components.FileSelector;
 import net.geco.ui.framework.ConfigPanel;
 
 /**
@@ -44,11 +49,7 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 
 	public StageConfigPanel(final IGecoApp geco, final JFrame frame) {
 		setLayout(new GridBagLayout());
-		GridBagConstraints c = SwingUtils.gbConstr(0);
-		c.insets = new Insets(0, 0, 5, 5);
-		c.fill = GridBagConstraints.HORIZONTAL;
 
-		add(new JLabel(Messages.uiGet("StageConfigPanel.StageNameLabel")), c); //$NON-NLS-1$
 		final JTextField stagenameF = new JTextField(geco.stage().getName());
 		stagenameF.addActionListener(new ActionListener() {
 			@Override
@@ -57,24 +58,22 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 			}
 		});
 		stagenameF.setInputVerifier(new InputVerifier() {
-			@Override
-			public boolean verify(JComponent input) {
-				return verifyStagename(stagenameF.getText());
-			}
+			@Override public boolean verify(JComponent input) { return true; }
 			@Override
 			public boolean shouldYieldFocus(JComponent input) {
 				return validateStagename(stagenameF, geco, frame);
 			}
 		});
+		GridBagConstraints c = SwingUtils.gbConstr();
+		c.fill = GridBagConstraints.HORIZONTAL;
+		setGridBagConstraints(c, 0, 0);
+		add(new JLabel(Messages.uiGet("StageConfigPanel.StageNameLabel")), c); //$NON-NLS-1$
 		add(stagenameF, c);
 
-		c.gridy = 1;
-		add(new JLabel(Messages.uiGet("StageConfigPanel.ZeroHourLabel")), c); //$NON-NLS-1$
 		final SimpleDateFormat formatter = new SimpleDateFormat("H:mm"); //$NON-NLS-1$
 		formatter.setTimeZone(TimeZone.getTimeZone("GMT")); //$NON-NLS-1$
 		final JTextField zerohourF = new JTextField(formatter.format(geco.stage().getZeroHour()));
 		zerohourF.setToolTipText(Messages.uiGet("StageConfigPanel.ZeroHourTooltip")); //$NON-NLS-1$
-		add(zerohourF, c);
 		zerohourF.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -82,76 +81,106 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 			}
 		});
 		zerohourF.setInputVerifier(new InputVerifier() {
-			@Override
-			public boolean verify(JComponent input) {
-				try {
-					formatter.parse(zerohourF.getText());
-					return true;
-				} catch (ParseException e) {
-					return false;
-				}
-			}
+			@Override public boolean verify(JComponent input) { return true; }
 			@Override
 			public boolean shouldYieldFocus(JComponent input) {
 				return validateZeroHour(formatter, zerohourF, geco);
 			}
 		});
+		setGridBagConstraints(c, 1, 0);
+		add(new JLabel(Messages.uiGet("StageConfigPanel.ZeroHourLabel")), c); //$NON-NLS-1$
+		add(zerohourF, c);
 		
-		c.gridy = 2;
+		FileSelector archiveFS = new FileSelector(geco, frame,
+												Messages.uiGet("ArchiveViewer.SelectArchiveLabel"), //$NON-NLS-1$
+												GecoIcon.OpenArchive) {
+			@Override
+			public String filenameValue() {
+				return geco.archiveManager().getArchiveName();
+			}
+			@Override
+			public void fileChosen(File selectedFile) {
+				geco.archiveManager().setArchiveFile(selectedFile);
+			}
+		};
+		setGridBagConstraints(c, 2, 10);
 		add(new JLabel(Messages.uiGet("StageConfigPanel.RunnerArchiveLabel")), c); //$NON-NLS-1$
-		final JTextField archiveF = new JTextField();
-		archiveF.setEditable(false);
-		archiveF.setText(geco.archiveManager().getArchiveName()); // TODO: refresh
-		add(archiveF, c);
-		JButton selectArchiveFileB = new JButton(GecoIcon.createIcon(GecoIcon.OpenArchive));
-		selectArchiveFileB.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser fileChooser = new JFileChooser(geco.getCurrentStagePath());
-				fileChooser.setDialogTitle(Messages.uiGet("ArchiveViewer.SelectArchiveLabel")); //$NON-NLS-1$
-				int answer = fileChooser.showOpenDialog(frame);
-				if( answer==JFileChooser.APPROVE_OPTION ) {
-					geco.archiveManager().setArchiveFile(fileChooser.getSelectedFile());
-					archiveF.setText(geco.archiveManager().getArchiveName());
-				}
-			}
-		});
-		add(selectArchiveFileB, c);
+		add(archiveFS.getFilenameField(), c);
+		add(archiveFS.getSelectFileButton(), c);
 
-		c.gridy = 3;
+		FileSelector cnScoreFS = new FileSelector(geco, frame,
+												Messages.uiGet("StageConfigPanel.SelectCNfileLabel"), //$NON-NLS-1$
+												GecoIcon.OpenArchive) {
+			@Override
+			public String filenameValue() {
+				return geco.cnCalculator().getCnFile().getName();
+			}
+			@Override
+			public void fileChosen(File selectedFile) {
+				geco.cnCalculator().setCnFile(selectedFile);
+			}
+		};
+		setGridBagConstraints(c, 3, 0);
 		add(new JLabel(Messages.uiGet("StageConfigPanel.CNbaseLabel")), c); //$NON-NLS-1$
-		final JTextField cnScoreF = new JTextField();
-		cnScoreF.setEditable(false);
-		cnScoreF.setText(geco.cnCalculator().getCnFile().getName());
-		add(cnScoreF, c);
-		JButton selectCNFileB = new JButton(GecoIcon.createIcon(GecoIcon.OpenArchive));
-		selectCNFileB.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser fileChooser = new JFileChooser(geco.getCurrentStagePath());
-				fileChooser.setDialogTitle(Messages.uiGet("StageConfigPanel.SelectCNfileLabel")); //$NON-NLS-1$
-				int answer = fileChooser.showOpenDialog(frame);
-				if( answer==JFileChooser.APPROVE_OPTION ) {
-					geco.cnCalculator().setCnFile(fileChooser.getSelectedFile());
-					cnScoreF.setText(geco.cnCalculator().getCnFile().getName());
-				}
+		add(cnScoreFS.getFilenameField(), c);
+		add(cnScoreFS.getSelectFileButton(), c);
+
+		FileSelector rankingTemplateFS = new FileSelector(geco, frame,
+														Messages.uiGet("StageConfigPanel.RankingTemplateTitle"), //$NON-NLS-1$
+														GecoIcon.OpenSmall) {
+			public String filenameValue() {
+				return geco.resultExporter().getRankingTemplate().getName();
+			}
+			public void fileChosen(File selectedFile) {
+				geco.resultExporter().setRankingTemplate(selectedFile);
+			}
+		};
+		setGridBagConstraints(c, 4, 10);
+		add(new JLabel(Messages.uiGet("StageConfigPanel.RankingTemplateLabel")), c); //$NON-NLS-1$
+		add(rankingTemplateFS.getFilenameField(), c);
+		add(rankingTemplateFS.getSelectFileButton(), c);
+		
+		FileSelector splitsTemplateFS = new FileSelector(geco, frame,
+														Messages.uiGet("StageConfigPanel.SplitsTemplateTitle"), //$NON-NLS-1$
+														GecoIcon.OpenSmall) {
+			public String filenameValue() {
+				return geco.splitsExporter().getSplitsTemplate().getName();
+			}
+			public void fileChosen(File selectedFile) {
+				geco.splitsExporter().setSplitsTemplate(selectedFile);
+			}
+		};
+		final JSpinner nbColumnsS = new JSpinner(new SpinnerNumberModel(geco.splitsExporter().nbColumns(), 1, null, 1));
+		nbColumnsS.setPreferredSize(new Dimension(50, SwingUtils.SPINNERHEIGHT));
+		nbColumnsS.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				int newNb = ((Integer) nbColumnsS.getValue()).intValue();
+				geco.splitsExporter().setNbColumns(newNb);
 			}
 		});
-		add(selectCNFileB, c);
-
-		c.gridy = 4;
-		c.insets = new Insets(20, 0, 5, 5);
-		add(new JLabel(Messages.uiGet("StageConfigPanel.ConfigurationLabel")), c); //$NON-NLS-1$
+		setGridBagConstraints(c, 5, 0);
+		add(new JLabel(Messages.uiGet("StageConfigPanel.SplitsTemplateLabel")), c); //$NON-NLS-1$
+		add(splitsTemplateFS.getFilenameField(), c);
+		add(splitsTemplateFS.getSelectFileButton(), c);
+		add(nbColumnsS, c);
+		add(new JLabel(Messages.uiGet("StageConfigPanel.ColumnsLabel")), c); //$NON-NLS-1$
+		
 		JLabel appNameL = new JLabel(Html.htmlTag("strong", geco.getAppName())); //$NON-NLS-1$
+		setGridBagConstraints(c, 6, 20);
+		add(new JLabel(Messages.uiGet("StageConfigPanel.ConfigurationLabel")), c); //$NON-NLS-1$
 		add(appNameL, c);
 		
-		c.gridy = 5;
-		c.insets = new Insets(0, 0, 5, 5);
-		add(new JLabel(Messages.uiGet("StageConfigPanel.DataPathLabel")), c); //$NON-NLS-1$
 		JTextField dataPathL = new JTextField(geco.stage().getBaseDir());
 		dataPathL.setColumns(20);
 		dataPathL.setEditable(false);
+		setGridBagConstraints(c, 7, 0);
+		add(new JLabel(Messages.uiGet("StageConfigPanel.DataPathLabel")), c); //$NON-NLS-1$
 		add(dataPathL, c);		
+	}
+	
+	private void setGridBagConstraints(GridBagConstraints constraints, int gridY, int paddingTop) {
+		constraints.gridy = gridY;
+		constraints.insets = new Insets(paddingTop, 0, 5, 5);
 	}
 	
 	private boolean verifyStagename(String text) {

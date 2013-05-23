@@ -21,8 +21,8 @@ import net.geco.app.OrientShowAppBuilder;
 import net.geco.basics.Announcer;
 import net.geco.control.GecoControl;
 import net.geco.control.SIReaderHandler;
-import net.geco.control.SingleSplitPrinter;
 import net.geco.control.StageBuilder;
+import net.geco.control.results.RunnerSplitPrinter;
 import net.geco.framework.IGecoApp;
 import net.geco.model.Stage;
 import net.geco.ui.GecoWindow;
@@ -54,7 +54,7 @@ public class GecoBuilderTest {
 		Announcer ann = mock(Announcer.class);
 		Stage stage = mock(Stage.class);
 		SIReaderHandler si = mock(SIReaderHandler.class);
-		SingleSplitPrinter splitPrinter = mock(SingleSplitPrinter.class);
+		RunnerSplitPrinter splitPrinter = mock(RunnerSplitPrinter.class);
 		when(mockGeco.announcer()).thenReturn(ann);
 		when(mockGeco.stage()).thenReturn(stage);
 		when(mockGeco.siHandler()).thenReturn(si);

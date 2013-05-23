@@ -22,21 +22,21 @@ import net.geco.basics.GecoResources;
 import net.geco.basics.Logger;
 import net.geco.basics.MergeRequestHandler;
 import net.geco.control.ArchiveManager;
-import net.geco.control.CNCalculator;
 import net.geco.control.Checker;
 import net.geco.control.GecoControl;
 import net.geco.control.HeatBuilder;
 import net.geco.control.MergeControl;
 import net.geco.control.RegistryStats;
-import net.geco.control.ResultBuilder;
-import net.geco.control.ResultExporter;
 import net.geco.control.RunnerControl;
 import net.geco.control.SIReaderHandler;
-import net.geco.control.SingleSplitPrinter;
-import net.geco.control.SplitExporter;
 import net.geco.control.StageBuilder;
 import net.geco.control.StageControl;
 import net.geco.control.StartlistImporter;
+import net.geco.control.results.CNCalculator;
+import net.geco.control.results.ResultBuilder;
+import net.geco.control.results.ResultExporter;
+import net.geco.control.results.RunnerSplitPrinter;
+import net.geco.control.results.SplitExporter;
 import net.geco.framework.IGecoApp;
 import net.geco.framework.IStageLaunch;
 import net.geco.functions.GecoFunction;
@@ -311,8 +311,8 @@ public class Geco implements IGecoApp, MergeRequestHandler {
 	public SplitExporter splitsExporter() {
 		return getService(SplitExporter.class);
 	}
-	public SingleSplitPrinter splitPrinter() {
-		return getService(SingleSplitPrinter.class);
+	public RunnerSplitPrinter splitPrinter() {
+		return getService(RunnerSplitPrinter.class);
 	}
 	public HeatBuilder heatBuilder() {
 		return getService(HeatBuilder.class);

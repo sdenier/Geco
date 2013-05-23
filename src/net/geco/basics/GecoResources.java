@@ -81,6 +81,11 @@ public class GecoResources {
 		}
 	}
 	
+	public static BufferedReader getResourceReader(String name) {
+		InputStream stream = GecoResources.class.getResourceAsStream(name);
+		return new BufferedReader(new InputStreamReader(stream, CHARSET));
+	}
+	
 	public static BufferedWriter getSafeWriterFor(String name) throws FileNotFoundException {
 		return getSafeWriterFor(name, CHARSET);
 	}

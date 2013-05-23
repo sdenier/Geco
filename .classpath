@@ -13,6 +13,7 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="GecoSI/lib"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/jmustache-1.8.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/GecoSI"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

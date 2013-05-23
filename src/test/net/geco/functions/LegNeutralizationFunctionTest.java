@@ -25,7 +25,7 @@ import net.geco.basics.TimeManager;
 import net.geco.control.GecoControl;
 import net.geco.control.InlineTracer;
 import net.geco.control.PenaltyChecker;
-import net.geco.control.ResultBuilder;
+import net.geco.control.results.ResultBuilder;
 import net.geco.functions.LegNeutralizationFunction;
 import net.geco.model.Category;
 import net.geco.model.Course;

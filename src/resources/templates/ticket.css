@@ -1,5 +1,0 @@
-body { font-size: 10; background-color: white }
-td, th { padding: 0px 0px 0px 10px; margin: 0px }
-.code, .time, .add, .miss, .sp { text-align: right }
-.time { font-weight: bold }
-.add { font-style: italic }

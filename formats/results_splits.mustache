@@ -1,0 +1,53 @@
+<html>
+  <head>
+{{#geco_FileOutput?}}
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+{{/geco_FileOutput?}}
+{{#geco_AutoRefresh?}}
+    <meta http-equiv="refresh" content="{{geco_RefreshInterval}}">
+{{/geco_AutoRefresh?}}
+    <style type="text/css">
+      body { font-size: 10 }
+      h1 { font-size: 20; text-align: center }
+      h2 { font-size: 15 }
+      table { border-collapse:collapse; width: 100%; font-size: 10 }
+      .runner td, .runner th { padding: 0px 10px }
+      .left { text-align: left }
+      .center { text-align: center }
+      .right, .time, .pace, .diff, .controls, .times, .splits { text-align: right }
+      .diff, .splits { font-style: italic }
+      .controls { background-color: #F0F0F0 }
+      .times, .splits { background-color: white }
+      .rsplit td, .col0 td, .col1 td { padding: 0 5px 0 0 }
+      .rsplit td, .time, .best { font-weight: bold }
+    </style>
+  </head>
+  <body>
+    <h1>{{geco_StageTitle}} - {{i18n_SplitsTitle}}</h1>
+{{#geco_ResultsCollection}}
+    <h2>{{geco_ResultName}} ({{geco_NbFinishedRunners}}/{{geco_NbPresentRunners}}){{#geco_SingleCourse?}} - {{geco_CourseLength}}m, {{geco_CourseClimb}}m{{/geco_SingleCourse?}}</h2>
+    <table>
+{{#geco_RankedRunners}}
+      <tr class="rsplit"><td>{{geco_RunnerRank}}</td><td colspan="4">{{geco_RunnerFirstName}} {{geco_RunnerLastName}}</td><td>{{geco_RunnerResultTime}}</td></tr>
+{{#geco_SplitRows}}
+      <tr class="controls"><td></td>{{#geco_ControlRow}}<td>{{geco_ControlNum}} ({{geco_ControlCode}})</td>{{/geco_ControlRow}}</tr>
+      <tr class="times"><td></td>{{#geco_TimeRow}}<td {{#geco_BestTime?}}class="best"{{/geco_BestTime?}}>{{geco_ControlTime}}</td>{{/geco_TimeRow}}</tr>
+      <tr class="splits"><td></td>{{#geco_SplitRow}}<td {{#geco_BestSplit?}}class="best"{{/geco_BestSplit?}}>{{geco_SplitTime}}</td>{{/geco_SplitRow}}</tr>
+{{/geco_SplitRows}}
+{{/geco_RankedRunners}}
+      <tr class="empty"><td>&nbsp;</td></tr>
+{{#geco_UnrankedRunners}}
+      <tr class="rsplit"><td>{{geco_RunnerRank}}</td><td colspan="4">{{geco_RunnerFirstName}} {{geco_RunnerLastName}}</td><td>{{geco_RunnerStatusOrTime}}</td></tr>
+{{#geco_SplitRows}}
+      <tr class="controls"><td></td>{{#geco_ControlRow}}<td>{{geco_ControlNum}} ({{geco_ControlCode}})</td>{{/geco_ControlRow}}</tr>
+      <tr class="times"><td></td>{{#geco_TimeRow}}<td {{#geco_BestTime?}}class="best"{{/geco_BestTime?}}>{{geco_ControlTime}}</td>{{/geco_TimeRow}}</tr>
+      <tr class="splits"><td></td>{{#geco_SplitRow}}<td {{#geco_BestSplit?}}class="best"{{/geco_BestSplit?}}>{{geco_SplitTime}}</td>{{/geco_SplitRow}}</tr>
+{{/geco_SplitRows}}
+{{/geco_UnrankedRunners}}
+    </table>
+{{#geco_PrintMode?}}
+    <p>{{i18n_LastUpdateLabel}} {{geco_Timestamp}}</p>
+{{/geco_PrintMode?}}
+{{/geco_ResultsCollection}}
+  </body>
+</html>

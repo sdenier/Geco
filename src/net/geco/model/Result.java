@@ -14,36 +14,35 @@ public interface Result {
 
 	public String getIdentifier();
 
-	public void setIdentifier(String identifier);
-
 	public boolean isEmpty();
 
-	public List<RunnerRaceData> getRankedRunners();
+	public Course anyCourse();
 
-	public void addRankedRunner(RunnerRaceData runner);
-
-	public void clearRankedRunners();
+	public long bestTime();
 
 	public List<RankedRunner> getRanking();
 
-	public List<RunnerRaceData> getNRRunners();
+	public List<RunnerRaceData> getRankedRunners();
 
-	public void addNRRunner(RunnerRaceData runner);
+	public List<RunnerRaceData> getUnrankedRunners();
 
-	public void clearNrRunners();
+	public List<RunnerRaceData> getUnresolvedRunners();
 
-	public List<RunnerRaceData> getOtherRunners();
+	public int nbFinishedRunners();
 
-	public void addOtherRunner(RunnerRaceData runner);
+	public int nbPresentRunners();
 
-	public void clearOtherRunners();
+	/*
+	 * Building API
+	 */
+	public void setIdentifier(String identifier);
+
+	public void addRankedRunner(RunnerRaceData runner);
+
+	public void addUnrankedRunner(RunnerRaceData runner);
+
+	public void addUnresolvedRunner(RunnerRaceData runner);
 
 	public void sortRankedRunners();
-	
-	public RunnerRaceData anyRunner();
-
-	public Course anyCourse();
-	
-	public long bestTime();
 
 }

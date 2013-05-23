@@ -7,21 +7,21 @@ package net.geco.app;
 import javax.swing.JFrame;
 
 import net.geco.control.ArchiveManager;
-import net.geco.control.CNCalculator;
 import net.geco.control.CompositeChecker;
 import net.geco.control.GecoControl;
 import net.geco.control.MergeControl;
 import net.geco.control.PenaltyChecker;
 import net.geco.control.RegistryStats;
-import net.geco.control.ResultBuilder;
-import net.geco.control.ResultExporter;
 import net.geco.control.RunnerControl;
 import net.geco.control.SIReaderHandler;
-import net.geco.control.SingleSplitPrinter;
-import net.geco.control.SplitExporter;
 import net.geco.control.StageBuilder;
 import net.geco.control.StageControl;
 import net.geco.control.StartlistImporter;
+import net.geco.control.results.CNCalculator;
+import net.geco.control.results.ResultBuilder;
+import net.geco.control.results.ResultExporter;
+import net.geco.control.results.RunnerSplitPrinter;
+import net.geco.control.results.SplitExporter;
 import net.geco.framework.IGecoApp;
 import net.geco.functions.DeleteFunction;
 import net.geco.functions.ECardLogFunction;
@@ -86,7 +86,7 @@ public class ROAAppBuilder extends AppBuilder {
 		new ResultBuilder(gecoControl);
 		new ResultExporter(gecoControl);
 		new SplitExporter(gecoControl);
-		new SingleSplitPrinter(gecoControl);
+		new RunnerSplitPrinter(gecoControl);
 		new RegistryStats(gecoControl);
 		new ArchiveManager(gecoControl);
 		new SIReaderHandler(gecoControl);
@@ -118,7 +118,7 @@ public class ROAAppBuilder extends AppBuilder {
 	public ConfigPanel[] buildConfigPanels(IGecoApp geco, JFrame frame) {
 		return new ConfigPanel[] {
 				new StageConfigPanel(geco, frame),
-				new SIReaderConfigPanel(geco),
+				new SIReaderConfigPanel(geco, frame),
 				new PenaltyCheckerConfigPanel(geco),
 				new CourseConfigPanel(geco, frame),
 				new CategoryConfigPanel(geco, frame),

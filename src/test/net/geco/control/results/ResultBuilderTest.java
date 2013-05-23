@@ -2,7 +2,7 @@
  * Copyright (c) 2010 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package test.net.geco.control;
+package test.net.geco.control.results;
 
 
 import static org.junit.Assert.assertEquals;
@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import net.geco.control.GecoControl;
-import net.geco.control.ResultBuilder;
+import net.geco.control.results.ResultBuilder;
 import net.geco.model.RankedRunner;
 import net.geco.model.Result;
 import net.geco.model.RunnerRaceData;
@@ -54,22 +54,12 @@ public class ResultBuilderTest {
 	@Test
 	public void testBlueCourseBasics() {
 		Result blueResults = mullaghmeenResultBuilder.buildResultForCourse(mullaghmeenStage.registry().findCourse("Blue"));
+
 		assertEquals("Blue", blueResults.getIdentifier());
 		assertFalse(blueResults.isEmpty());
-		
 		assertFalse(blueResults.getRankedRunners().isEmpty());
-		blueResults.clearRankedRunners();
-		assertTrue(blueResults.getRankedRunners().isEmpty());
-
-		assertFalse(blueResults.getNRRunners().isEmpty());
-		blueResults.clearNrRunners();
-		assertTrue(blueResults.getNRRunners().isEmpty());
-
-//		assertFalse(blueResults.getOtherRunners().isEmpty());
-//		blueResults.clearOtherRunners();
-		assertTrue(blueResults.getOtherRunners().isEmpty());
-		
-		assertTrue(blueResults.isEmpty());		
+		assertFalse(blueResults.getUnrankedRunners().isEmpty());
+		assertTrue(blueResults.getUnresolvedRunners().isEmpty());
 	}
 	
 	@Test
@@ -102,9 +92,9 @@ public class ResultBuilderTest {
 	public void testBlueCourseLists() {
 		Result blueResults = mullaghmeenResultBuilder.buildResultForCourse(mullaghmeenStage.registry().findCourse("Blue"));
 
-		assertEquals(0, blueResults.getOtherRunners().size());
+		assertEquals(0, blueResults.getUnresolvedRunners().size());
 		
-		List<RunnerRaceData> nrRunners = blueResults.getNRRunners();
+		List<RunnerRaceData> nrRunners = blueResults.getUnrankedRunners();
 		assertEquals(3, nrRunners.size());
 		for (RunnerRaceData runnerRaceData : nrRunners) {
 			Assert.assertNotSame(Status.OK, runnerRaceData.getResult().getStatus());
@@ -128,9 +118,9 @@ public class ResultBuilderTest {
 		assertFalse(orangeResults.isEmpty());
 		
 		assertEquals(23, orangeResults.getRanking().size());
-		assertEquals(1, orangeResults.getNRRunners().size());
-		assertEquals(1, orangeResults.getOtherRunners().size());
-		RunnerRaceData runnerRaceData = orangeResults.getOtherRunners().get(0);
+		assertEquals(1, orangeResults.getUnrankedRunners().size());
+		assertEquals(1, orangeResults.getUnresolvedRunners().size());
+		RunnerRaceData runnerRaceData = orangeResults.getUnresolvedRunners().get(0);
 		assertEquals("Jackie McCavana", runnerRaceData.getRunner().getName());
 		
 	}
@@ -144,10 +134,10 @@ public class ResultBuilderTest {
 		
 		assertEquals(38, lcResults.getRanking().size());
 		assertEquals("Gerard Butler", lcResults.getRanking().get(0).getRunnerData().getRunner().getName());
-		assertEquals(13, lcResults.getNRRunners().size());
+		assertEquals(13, lcResults.getUnrankedRunners().size());
 		RunnerRaceData ncRunner = belfieldStage.registry().findRunnerData("10886"); // "Ruth Lynam, N/C"
 		assertTrue(ncRunner.getRunner().isNC());
-		assertTrue(lcResults.getNRRunners().contains(ncRunner));
+		assertTrue(lcResults.getUnrankedRunners().contains(ncRunner));
 	}
 
 	

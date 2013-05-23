@@ -97,6 +97,7 @@
         	<fileset file="${geco.dir}/lib/jackson-core-2.1.1.jar"/>
         	<fileset file="${geco.dir}/lib/GecoSI.jar"/>
         	<fileset file="${geco.dir}/lib/icu4j-charsetdetector-4_4_2.jar"/>
+        	<fileset file="${geco.dir}/lib/jmustache-1.8.jar"/>
         </jar>
     </target>
 	

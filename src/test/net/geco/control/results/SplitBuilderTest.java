@@ -2,7 +2,7 @@
  * Copyright (c) 2011 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package test.net.geco.control;
+package test.net.geco.control.results;
 
 import static org.junit.Assert.assertEquals;
 
@@ -11,8 +11,8 @@ import java.util.Map;
 import net.geco.app.FreeOrderAppBuilder;
 import net.geco.basics.TimeManager;
 import net.geco.control.GecoControl;
-import net.geco.control.ResultBuilder;
-import net.geco.control.ResultBuilder.SplitTime;
+import net.geco.control.results.ResultBuilder;
+import net.geco.control.results.ResultBuilder.SplitTime;
 import net.geco.model.Registry;
 import net.geco.model.Result;
 import net.geco.model.RunnerRaceData;
@@ -47,8 +47,7 @@ public class SplitBuilderTest {
 	public void setUp() {
 		ResultBuilder resultBuilder = new ResultBuilder(gecoControl);
 		Result resultB = resultBuilder.buildResultForCourse(registry.findCourse("Course B"));
-		SplitTime[] bestSplits = null;
-		allSplits = resultBuilder.buildAllNormalSplits(resultB, bestSplits);
+		allSplits = resultBuilder.buildAllNormalSplits(resultB, new SplitTime[0]);
 	}
 	
 	@Test
@@ -63,7 +62,7 @@ public class SplitBuilderTest {
 		assertEquals(7, splitTimes.length);
 		assertSplit(splitTimes[0], "1", "162", "9:14", "9:14");
 		assertSplit(splitTimes[2], "3", "165", "27:55", "13:10");
-		assertSplit(splitTimes[6], "F", null, "40:10", "1:18");
+		assertSplit(splitTimes[6], "", null, "40:10", "1:18");
 	}
 	
 	@Test
@@ -72,7 +71,7 @@ public class SplitBuilderTest {
 		assertEquals(7, splitTimes.length);
 		assertSplit(splitTimes[1], "2", "167", "15:31", "5:30");
 		assertSplit(splitTimes[5], "6", "-166", TimeManager.NO_TIME_STRING, TimeManager.NO_TIME_STRING);
-		assertSplit(splitTimes[6], "F", null, "44:38", "1:07");
+		assertSplit(splitTimes[6], "", null, "44:38", "1:07");
 	}
 	
 	@Test
@@ -80,7 +79,7 @@ public class SplitBuilderTest {
 		SplitTime[] splitTimes = allSplits.get( registry.findRunnerData(Integer.valueOf(64)) );
 		assertEquals(8, splitTimes.length);
 		assertSplit(splitTimes[2], "3", "166", "19:13", "8:24");
-		assertSplit(splitTimes[6], "F", null, "39:39", "0:49");
+		assertSplit(splitTimes[6], "", null, "39:39", "0:49");
 		assertSplit(splitTimes[7], "", "+163", "0:50", TimeManager.NO_TIME_STRING);	
 	}
 	
@@ -91,7 +90,7 @@ public class SplitBuilderTest {
 		assertSplit(splitTimes[3], "4", "162", "27:19", "8:34");
 		assertSplit(splitTimes[4], "5", "-166", TimeManager.NO_TIME_STRING, TimeManager.NO_TIME_STRING);
 		assertSplit(splitTimes[5], "6", "-168", TimeManager.NO_TIME_STRING, TimeManager.NO_TIME_STRING);
-		assertSplit(splitTimes[6], "F", null, "53:11", "25:52");
+		assertSplit(splitTimes[6], "", null, "53:11", "25:52");
 		assertSplit(splitTimes[7], "", "+184", "43:47", TimeManager.NO_TIME_STRING);
 		assertSplit(splitTimes[8], "", "+167", "51:15", TimeManager.NO_TIME_STRING);
 	}

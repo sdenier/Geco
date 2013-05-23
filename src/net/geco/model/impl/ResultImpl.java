@@ -4,10 +4,10 @@
  */
 package net.geco.model.impl;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Vector;
 
 import net.geco.model.Course;
 import net.geco.model.RankedRunner;
@@ -24,21 +24,18 @@ public class ResultImpl implements Result {
 	
 	private String identifier;
 	private List<RunnerRaceData> rankedRunners; // status OK
-	private List<RunnerRaceData> nrRunners; // MP, DNF, DSQ, NC, (unknown?)
-	private List<RunnerRaceData> otherRunners; // DNS
+	private List<RunnerRaceData> unrankedRunners; // MP, DNF, DSQ, OOT, NC
+	private List<RunnerRaceData> unresolvedRunners; // Unresolved status
 	
 	private List<RankedRunner> memoRanking; // ranking cache
 
-	
-	/**
-	 * 
-	 */
+
 	public ResultImpl() {
-		this.rankedRunners = new Vector<RunnerRaceData>();
-		this.nrRunners = new Vector<RunnerRaceData >();
-		this.otherRunners = new Vector<RunnerRaceData>();
+		this.rankedRunners = new ArrayList<RunnerRaceData>();
+		this.unrankedRunners = new ArrayList<RunnerRaceData >();
+		this.unresolvedRunners = new ArrayList<RunnerRaceData>();
 	}
-	
+
 	public String getIdentifier() {
 		return identifier;
 	}
@@ -46,13 +43,43 @@ public class ResultImpl implements Result {
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
 	}
-	
+
 	public boolean isEmpty() {
-		return rankedRunners.isEmpty() && nrRunners.isEmpty();
+		return rankedRunners.isEmpty() && unrankedRunners.isEmpty();
+	}
+
+	private RunnerRaceData anyRunner() {
+		if( !this.rankedRunners.isEmpty() ){
+			return this.rankedRunners.get(0);
+		}
+		if( !this.unrankedRunners.isEmpty() ){
+			return this.unrankedRunners.get(0);
+		}
+		return null;
+	}
+
+	public Course anyCourse() {
+		return anyRunner().getCourse();
+	}
+
+	public long bestTime() {
+		if( this.rankedRunners.isEmpty() ){
+			return 0;
+		} else {
+			return getRanking().get(0).getRunnerData().getRacetime();
+		}
+	}
+
+	public int nbFinishedRunners() {
+		return rankedRunners.size() + unrankedRunners.size();
+	}
+
+	public int nbPresentRunners() {
+		return nbFinishedRunners() + unresolvedRunners.size();
 	}
 
 	public List<RunnerRaceData> getRankedRunners() {
-		return new Vector<RunnerRaceData>(rankedRunners);
+		return new ArrayList<RunnerRaceData>(rankedRunners);
 	}
 	
 	public void addRankedRunner(RunnerRaceData runner) {
@@ -60,13 +87,24 @@ public class ResultImpl implements Result {
 		this.memoRanking = null; // invalidate cache
 	}
 
-	public void clearRankedRunners() {
-		this.rankedRunners.clear();
+	public void sortRankedRunners() {
+		Collections.sort(this.rankedRunners, new Comparator<RunnerRaceData>() {
+			public int compare(RunnerRaceData o1, RunnerRaceData o2) {
+				long diff = o1.getResult().getRacetime() - o2.getResult().getRacetime();
+				if( diff < 0) {
+					return -1;
+				}
+				if( diff==0 ) {
+					return 0;
+				}
+				return 1;
+			}
+		});
 	}
-	
+
 	public List<RankedRunner> getRanking() {
 		if( this.memoRanking==null ) {
-			this.memoRanking = new Vector<RankedRunner>(rankedRunners.size());
+			this.memoRanking = new ArrayList<RankedRunner>(rankedRunners.size());
 			int rank = 1;
 			int counter = 1;
 			RunnerRaceData previous = null;
@@ -84,67 +122,20 @@ public class ResultImpl implements Result {
 	}
 
 	
-	public List<RunnerRaceData> getNRRunners() {
-		return new Vector<RunnerRaceData>(nrRunners);
+	public List<RunnerRaceData> getUnrankedRunners() {
+		return new ArrayList<RunnerRaceData>(unrankedRunners);
 	}
 	
-	public void addNRRunner(RunnerRaceData runner) {
-		this.nrRunners.add(runner);
+	public void addUnrankedRunner(RunnerRaceData runner) {
+		this.unrankedRunners.add(runner);
 	}
 
-	public void clearNrRunners() {
-		this.nrRunners.clear();
+	public List<RunnerRaceData> getUnresolvedRunners() {
+		return new ArrayList<RunnerRaceData>(unresolvedRunners);
 	}
 
-	
-	public List<RunnerRaceData> getOtherRunners() {
-		return new Vector<RunnerRaceData>(otherRunners);
-	}
-
-	public void addOtherRunner(RunnerRaceData runner) {
-		this.otherRunners.add(runner);
-	}
-
-	public void clearOtherRunners() {
-		this.otherRunners.clear();
-	}
-
-	public void sortRankedRunners() {
-		Collections.sort(this.rankedRunners, new Comparator<RunnerRaceData>() {
-			public int compare(RunnerRaceData o1, RunnerRaceData o2) {
-				long diff = o1.getResult().getRacetime() - o2.getResult().getRacetime();
-				if( diff < 0) {
-					return -1;
-				}
-				if( diff==0 ) {
-					return 0;
-				}
-				return 1;
-			}
-		});
-	}
-	
-	public RunnerRaceData anyRunner() {
-		if( !this.rankedRunners.isEmpty() ){
-			return this.rankedRunners.get(0);
-		}
-		if( !this.nrRunners.isEmpty() ){
-			return this.nrRunners.get(0);
-		}
-		return null;
-	}
-
-	public Course anyCourse() {
-		return anyRunner().getCourse();
-	}
-	
-	@Override
-	public long bestTime() {
-		if( this.rankedRunners.isEmpty() ){
-			return 0;
-		} else {
-			return getRanking().get(0).getRunnerData().getRacetime();
-		}
+	public void addUnresolvedRunner(RunnerRaceData runner) {
+		this.unresolvedRunners.add(runner);
 	}
 
 }

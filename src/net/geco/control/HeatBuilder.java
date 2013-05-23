@@ -14,6 +14,7 @@ import net.geco.basics.CsvWriter;
 import net.geco.basics.GecoResources;
 import net.geco.basics.Html;
 import net.geco.basics.TimeManager;
+import net.geco.control.results.ResultBuilder;
 import net.geco.model.Heat;
 import net.geco.model.HeatSet;
 import net.geco.model.RankedRunner;
