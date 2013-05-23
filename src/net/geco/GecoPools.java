@@ -17,8 +17,8 @@ import net.geco.control.GecoControl;
 import net.geco.control.HeatBuilder;
 import net.geco.control.PenaltyChecker;
 import net.geco.control.PoolMerger;
-import net.geco.control.ResultBuilder;
 import net.geco.control.StageBuilder;
+import net.geco.control.results.ResultBuilder;
 import net.geco.model.HeatSet;
 import net.geco.model.Messages;
 import net.geco.model.RankedRunner;
@@ -97,12 +97,12 @@ public class GecoPools {
 			}
 			html.openTr().closeTr();
 		
-			for (RunnerRaceData runnerData : result.getNRRunners()) {
+			for (RunnerRaceData runnerData : result.getUnrankedRunners()) {
 				writeResult(runnerData, "", html); //$NON-NLS-1$
 			}
 			html.openTr().closeTr();
 		
-			for (RunnerRaceData runnerData : result.getOtherRunners()) {
+			for (RunnerRaceData runnerData : result.getUnresolvedRunners()) {
 				writeResult(runnerData, "", html); //$NON-NLS-1$
 			}
 			html.close("table"); //$NON-NLS-1$

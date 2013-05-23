@@ -2,7 +2,7 @@
  * Copyright (c) 2008 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.control;
+package net.geco.control.results;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +12,8 @@ import java.util.Map.Entry;
 import java.util.Vector;
 
 import net.geco.basics.TimeManager;
+import net.geco.control.Control;
+import net.geco.control.GecoControl;
 import net.geco.model.Category;
 import net.geco.model.Course;
 import net.geco.model.Messages;
@@ -33,25 +35,19 @@ public class ResultBuilder extends Control {
 	public static class ResultConfig {
 		protected Object[] selectedPools;
 		protected ResultType resultType;
-		protected boolean showEmptySets;
 		protected boolean showNC;
-		protected boolean showOthers;
 		protected boolean showPenalties;
 	}
 	
 	public static ResultConfig createResultConfig(
 			Object[] selectedPools,
 			ResultType courseConfig,
-			boolean showEmptySets,
 			boolean showNC,
-			boolean showOthers,
 			boolean showPenalties) {
 		ResultConfig config = new ResultConfig();
 		config.selectedPools = selectedPools;
 		config.resultType = courseConfig;
-		config.showEmptySets = showEmptySets;
 		config.showNC = showNC;
-		config.showOthers = showOthers;
 		config.showPenalties = showPenalties;
 		return config;
 	}
@@ -95,7 +91,7 @@ public class ResultBuilder extends Control {
 		for (Runner runner : runners) {
 			RunnerRaceData data = registry().findRunnerData(runner);
 			if( runner.isNC() ) {
-				result.addNRRunner(data);
+				result.addUnrankedRunner(data);
 			} else {
 				switch (data.getResult().getStatus()) {
 				case OK: 
@@ -105,14 +101,16 @@ public class ResultBuilder extends Control {
 				case DSQ:
 				case MP:
 				case OOT:
-					result.addNRRunner(data);
+					result.addUnrankedRunner(data);
 					break;
-				case DNS:
 				case NOS:
 				case RUN:
 				case UNK:
 				case DUP:
-					result.addOtherRunner(data);
+					result.addUnresolvedRunner(data);
+					break;
+				case DNS:
+					// just ignore
 				}
 			}
 		}
@@ -120,8 +118,8 @@ public class ResultBuilder extends Control {
 		return result;
 	}
 
-	public Vector<Result> buildResults(Pool[] pools, ResultType type) {
-		Vector<Result> results = new Vector<Result>();
+	public List<Result> buildResults(Pool[] pools, ResultType type) {
+		List<Result> results = new ArrayList<Result>(pools.length);
 		for (Pool pool : pools) {
 			switch (type) {
 			case CourseResult:
@@ -154,26 +152,37 @@ public class ResultBuilder extends Control {
 		public long time;
 		public long split;
 		
+		public String getBasicCode() {
+			return trace == null ? "F" : trace.getBasicCode(); //$NON-NLS-1$
+		}
+		
+		public boolean isOK() {
+			return trace == null || trace.isOK();
+		}
 	}
 	
-	public SplitTime[] buildNormalSplits(RunnerRaceData data, SplitTime[] bestSplits) {
+	private SplitTime[] buildNormalSplits(RunnerRaceData data, boolean includeFinishSplit, SplitTime[] bestSplits) {
 		ArrayList<SplitTime> splits = new ArrayList<SplitTime>(data.getResult().getTrace().length);
 		ArrayList<SplitTime> added = new ArrayList<SplitTime>(data.getResult().getTrace().length);
 		// in normal mode, added splits appear after normal splits
-		buildSplits(data, splits, added, bestSplits, true);
+		buildSplits(data, splits, added, bestSplits, true, includeFinishSplit);
 		splits.addAll(added);
 		return splits.toArray(new SplitTime[0]);
 	}	
+
+	public SplitTime[] buildNormalSplits(RunnerRaceData data, boolean includeFinishSplit) {
+		return buildNormalSplits(data, includeFinishSplit, new SplitTime[0]);
+	}
 	
 	public SplitTime[] buildLinearSplits(RunnerRaceData data) {
 		ArrayList<SplitTime> splits = new ArrayList<SplitTime>(data.getResult().getTrace().length);
 		// in linear mode, added splits are kept in place with others
-		buildSplits(data, splits, splits, null, false);
+		buildSplits(data, splits, splits, new SplitTime[0], false, true);
 		return splits.toArray(new SplitTime[0]);
 	}
 
 	protected void buildSplits(RunnerRaceData data, List<SplitTime> splits, List<SplitTime> added,
-																SplitTime[] bestSplits, boolean cutSubst) {
+											SplitTime[] bestSplits, boolean cutSubst, boolean includeFinishSplit) {
 		long startTime = data.getOfficialStarttime().getTime();
 		long previousTime = startTime;
 		int control = 1;
@@ -183,7 +192,7 @@ public class ResultBuilder extends Control {
 				SplitTime split = createSplit(Integer.toString(control), trace, startTime, previousTime, time);
 				splits.add(split);
 				previousTime = time;
-				if( bestSplits!=null ){
+				if( bestSplits.length > 0 ){
 					SplitTime bestSplit = bestSplits[control - 1];
 					bestSplit.time = Math.min(bestSplit.time, split.time);
 					bestSplit.split = Math.min(bestSplit.split, split.split);
@@ -208,15 +217,15 @@ public class ResultBuilder extends Control {
 				added.add(createSplit("", trace, startTime, TimeManager.NO_TIME_l, time)); //$NON-NLS-1$
 			}
 		}
-		// TODO: do not use null value for final trace
-		SplitTime fSplit = createSplit("F", null, startTime, previousTime, data.getFinishtime().getTime()); //$NON-NLS-1$
-		splits.add(fSplit); //$NON-NLS-1$
-		if( bestSplits!=null ){
-			SplitTime bestSplit = bestSplits[bestSplits.length - 1];
-			bestSplit.time = Math.min(bestSplit.time, fSplit.time);
-			bestSplit.split = Math.min(bestSplit.split, fSplit.split);
+		if( includeFinishSplit ) {
+			SplitTime fSplit = createSplit("", null, startTime, previousTime, data.getFinishtime().getTime()); //$NON-NLS-1$
+			splits.add(fSplit); //$NON-NLS-1$
+			if( bestSplits.length > 0 ){
+				SplitTime bestSplit = bestSplits[bestSplits.length - 1];
+				bestSplit.time = Math.min(bestSplit.time, fSplit.time);
+				bestSplit.split = Math.min(bestSplit.split, fSplit.split);
+			}
 		}
-
 	}
 
 	protected SplitTime createSplit(String seq, Trace trace, long startTime, long previousTime, long time) {
@@ -224,16 +233,16 @@ public class ResultBuilder extends Control {
 	}
 
 	public SplitTime[] initializeBestSplits(Result result, ResultType resultType) {
-		SplitTime[] bestSplits = null;
+		SplitTime[] bestSplits = new SplitTime[0];
 		if( ! result.isEmpty() ){
-			Course course = result.anyRunner().getCourse();
+			Course course = result.anyCourse();
 			boolean sameCourse = true; // default for CourseResult and MixedResult
 			if( resultType==ResultType.CategoryResult ){
 				// check that all runners in category share the same course
 				for (RunnerRaceData runnerData : result.getRankedRunners()) {
 					sameCourse &= runnerData.getCourse()==course;
 				}
-				for (RunnerRaceData runnerData : result.getNRRunners()) {
+				for (RunnerRaceData runnerData : result.getUnrankedRunners()) {
 					sameCourse &= runnerData.getCourse()==course;
 				}
 			}
@@ -252,10 +261,10 @@ public class ResultBuilder extends Control {
 	public Map<RunnerRaceData, SplitTime[]> buildAllNormalSplits(Result result, SplitTime[] bestSplits) {
 		Map<RunnerRaceData,SplitTime[]> allSplits = new HashMap<RunnerRaceData, SplitTime[]>();
 		for (RunnerRaceData runnerData : result.getRankedRunners()) {
-			allSplits.put(runnerData, buildNormalSplits(runnerData, bestSplits));
+			allSplits.put(runnerData, buildNormalSplits(runnerData, true, bestSplits));
 		}
-		for (RunnerRaceData runnerData : result.getNRRunners()) {
-			allSplits.put(runnerData, buildNormalSplits(runnerData, bestSplits));
+		for (RunnerRaceData runnerData : result.getUnrankedRunners()) {
+			allSplits.put(runnerData, buildNormalSplits(runnerData, true, bestSplits));
 		}
 		return allSplits;
 	}

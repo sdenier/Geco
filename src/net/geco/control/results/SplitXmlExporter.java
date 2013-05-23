@@ -2,7 +2,7 @@
  * Copyright (c) 2011 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.control;
+package net.geco.control.results;
 
 import java.io.File;
 import java.util.List;
@@ -18,7 +18,9 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import net.geco.basics.TimeManager;
-import net.geco.control.ResultBuilder.SplitTime;
+import net.geco.control.Control;
+import net.geco.control.GecoControl;
+import net.geco.control.results.ResultBuilder.SplitTime;
 import net.geco.model.RankedRunner;
 import net.geco.model.Result;
 import net.geco.model.Runner;
@@ -79,7 +81,7 @@ public class SplitXmlExporter extends Control {
 		for (RankedRunner runner : result.getRanking()) {
 			generateRunnerResult(classResult, runner.getRunnerData(), runner.getRank());
 		}
-		for (RunnerRaceData runnerData : result.getNRRunners()) {
+		for (RunnerRaceData runnerData : result.getUnrankedRunners()) {
 			generateRunnerResult(classResult, runnerData, 0);
 		}
 	}
@@ -109,10 +111,10 @@ public class SplitXmlExporter extends Control {
 		status.setAttribute("value", runnerData.getIofStatus()); //$NON-NLS-1$
 
 		if( includeSplits ) {
-			SplitTime[] splits = resultBuilder.buildNormalSplits(runnerData, null);
+			SplitTime[] splits = resultBuilder.buildNormalSplits(runnerData, false);
 			for (int i = 0; i < splits.length; i++) {
 				SplitTime split = splits[i];
-				if( split.trace!=null && split.trace.isOK() ) {
+				if( split.trace.isOK() ) {
 					Element splitTime = createChildElement(result, "SplitTime"); //$NON-NLS-1$
 					splitTime.setAttribute("sequence", Integer.toString(i + 1)); //$NON-NLS-1$
 					createContentChildElement(splitTime, "ControlCode", split.trace.getCode()); //$NON-NLS-1$

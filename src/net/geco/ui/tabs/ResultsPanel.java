@@ -37,10 +37,10 @@ import javax.swing.JTextPane;
 import javax.swing.SpinnerNumberModel;
 
 import net.geco.basics.Announcer.StageConfigListener;
-import net.geco.control.AResultExporter;
-import net.geco.control.AResultExporter.OutputType;
-import net.geco.control.ResultBuilder;
-import net.geco.control.ResultBuilder.ResultConfig;
+import net.geco.control.results.AResultExporter;
+import net.geco.control.results.AResultExporter.OutputType;
+import net.geco.control.results.ResultBuilder;
+import net.geco.control.results.ResultBuilder.ResultConfig;
 import net.geco.framework.IGecoApp;
 import net.geco.model.Messages;
 import net.geco.model.ResultType;
@@ -71,8 +71,6 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	private JButton exportB;
 
 	private JCheckBox showNcC;
-	private JCheckBox showOtC;
-	private JCheckBox showEsC;
 	private JCheckBox showPeC;
 
 	private String exportFormat;
@@ -148,9 +146,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		return ResultBuilder.createResultConfig(
 				poolList.getSelectedValues(), 
 				getResultType(),
-				showEsC.isSelected(),
 				showNcC.isSelected(),
-				showOtC.isSelected(),
 				showPeC.isSelected());
 	}
 
@@ -218,7 +214,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 								frame(),
 								Messages.uiGet("ResultsPanel.FileSaveWarning1")//$NON-NLS-1$ 
 									+ filename
-									+ "(" + ex +")", //$NON-NLS-1$ //$NON-NLS-2$
+									+ "\n" + ex.getLocalizedMessage(), //$NON-NLS-1$
 								Messages.uiGet("ResultsPanel.FileSaveWarning2"), //$NON-NLS-1$
 								JOptionPane.ERROR_MESSAGE);
 					}
@@ -273,17 +269,11 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		
 		showNcC = new JCheckBox(Messages.uiGet("ResultsPanel.ShowNCLabel")); //$NON-NLS-1$
 		showNcC.setToolTipText(Messages.uiGet("ResultsPanel.ShowNCTooltip")); //$NON-NLS-1$
-		showOtC = new JCheckBox(Messages.uiGet("ResultsPanel.ShowOthersLabel")); //$NON-NLS-1$
-		showOtC.setToolTipText(Messages.uiGet("ResultsPanel.ShowOthersTooltip")); //$NON-NLS-1$
 		showPeC = new JCheckBox(Messages.uiGet("ResultsPanel.ShowPenaltiesLabel")); //$NON-NLS-1$
 		showPeC.setToolTipText(Messages.uiGet("ResultsPanel.ShowPenaltiesTooltip")); //$NON-NLS-1$
-		showEsC = new JCheckBox(Messages.uiGet("ResultsPanel.ShowESLabel")); //$NON-NLS-1$
-		showEsC.setToolTipText(Messages.uiGet("ResultsPanel.ShowESTooltip")); //$NON-NLS-1$
 		JPanel optionsPanel = new JPanel(new GridLayout(0, 2));
 		optionsPanel.add(showNcC);
-		optionsPanel.add(showOtC);
 		optionsPanel.add(showPeC);
-		optionsPanel.add(showEsC);
 		
 		refreshB = new JButton(Messages.uiGet("ResultsPanel.RefreshLabel")); //$NON-NLS-1$
 		exportB = new JButton(Messages.uiGet("ResultsPanel.ExportLabel")); //$NON-NLS-1$

@@ -261,7 +261,11 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 	}
 
 	public String formatPace() {
-		return TimeManager.time(Math.round(getMillisecondPace()));
+		if( getCourse().hasDistance() ) {
+			return TimeManager.time(Math.round(getMillisecondPace()));
+		} else {
+			return TimeManager.NO_TIME_STRING;
+		}
 	}
 
 }

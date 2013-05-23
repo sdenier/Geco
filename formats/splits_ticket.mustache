@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <style type="text/css">
+      body { font-size: 10; background-color: white }
+      td, th { padding: 0px 0px 0px 10px; margin: 0px }
+      .code, .time, .add, .miss, .sp { text-align: right }
+      .time { font-weight: bold }
+      .add { font-style: italic }
+    </style>
+  </head>
+  <body>
+    <div align="center">{{geco_StageTitle}}</div>
+    <br />
+    <div align="center">
+      <b>{{geco_RunnerFirstName}} {{geco_RunnerLastName}}</b>
+      <div>{{geco_RunnerClubName}}</div>
+      <div>{{geco_RunnerCourse}} - {{geco_RunnerCategory}}</div>
+      <div>{{geco_CourseLength}}, {{geco_CourseClimb}}</div>
+      <br />
+      <b>{{geco_RunnerStatusOrTime}}</b>
+      <div>{{geco_RunnerPace}} min/km</div>
+    </div>
+    <br />
+    <table width="75%">
+{{#geco_RunnerSplits}}
+      <tr><td class="code">{{geco_ControlNum}}</td><td>{{geco_ControlTrace}}</td><td class="{{geco_ControlStatus}}">{{geco_ControlTime}}</td><td class="sp">{{geco_SplitTime}}</td></tr>
+{{/geco_RunnerSplits}}
+    </table>
+    <br />
+    <div align="center">Geco - http://geco.webou.net</div>
+  </body>
+</html>

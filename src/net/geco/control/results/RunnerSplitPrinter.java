@@ -2,11 +2,17 @@
  * Copyright (c) 2010 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.control;
+package net.geco.control.results;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.print.PrinterJob;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Properties;
 import java.util.Vector;
 import java.util.concurrent.Callable;
@@ -25,15 +31,14 @@ import javax.swing.JTextPane;
 
 import net.geco.basics.Announcer.CardListener;
 import net.geco.basics.Announcer.StageListener;
-import net.geco.basics.Html;
-import net.geco.control.AResultExporter.OutputType;
-import net.geco.control.ResultBuilder.SplitTime;
+import net.geco.control.Control;
+import net.geco.control.GecoControl;
+import net.geco.control.results.ResultBuilder.SplitTime;
+import net.geco.control.results.context.RunnerContext;
 import net.geco.model.Course;
 import net.geco.model.Messages;
-import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Stage;
-import net.geco.model.Status;
 
 
 /**
@@ -41,24 +46,26 @@ import net.geco.model.Status;
  * @since Nov 25, 2010
  *
  */
-public class SingleSplitPrinter extends Control implements StageListener, CardListener {
+public class RunnerSplitPrinter extends Control implements StageListener, CardListener {
 	
 	public static enum SplitFormat { MultiColumns, Ticket }
-
-	private static final boolean DEBUGMODE = false;
 	
-	private PrintService splitPrinter;
-	private boolean autoPrint;
 	private SplitFormat splitFormat = SplitFormat.MultiColumns;
+	private PrintService splitPrinter;
 	private MediaSizeName[] splitMedia;
-	private String headerMessage;
-	private String footerMessage;
+
+	private int nbColumns;
+	private File columnTemplate;
+	private File ticketTemplate;
+	
+	private boolean autoPrint;
+	private boolean prototypeMode;
 	
 	private final ResultBuilder builder;
 	private final SplitExporter exporter;
 	
-	public SingleSplitPrinter(GecoControl gecoControl) {
-		super(SingleSplitPrinter.class, gecoControl);
+	public RunnerSplitPrinter(GecoControl gecoControl) {
+		super(RunnerSplitPrinter.class, gecoControl);
 		builder = getService(ResultBuilder.class);
 		exporter = getService(SplitExporter.class);
 		geco().announcer().registerStageListener(this);
@@ -66,116 +73,81 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 		changed(null, stage());
 	}
 	
-	public String printSingleSplits(RunnerRaceData data) {
+	public void printSingleSplits(RunnerRaceData data) {
 		if( getSplitPrinter()!=null ) {
-			Html html = new Html();
-			if( splitFormat==SplitFormat.Ticket ) {
-				exporter.includeHeader(html, "ticket.css", OutputType.PRINTER); //$NON-NLS-1$
-				printSingleSplitsInLine(data, html);
-			} else {
-				exporter.includeHeader(html, "result.css", OutputType.PRINTER); //$NON-NLS-1$
-				printSingleSplitsInColumns(data, html);
-			}
-		
-			final JTextPane ticket = new JTextPane(); 
-			ticket.setContentType("text/html"); //$NON-NLS-1$
-			String content = html.close();
-			ticket.setText(content);
-			
-			final PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
-			if( splitFormat==SplitFormat.Ticket ) {
-				computeMediaForTicket(ticket, attributes);
-			}
-			
-			Callable<Boolean> callable = new Callable<Boolean>() {
-				@Override
-				public Boolean call() throws Exception {
-					return ticket.print(null, null, false, getSplitPrinter(), attributes, false);
+			try {
+				StringWriter out = new StringWriter();
+				if( splitFormat==SplitFormat.Ticket ) {
+					generateSingleSplitsInLine(data, out);
+				} else {
+					generateSingleSplitsInColumns(data, out);
 				}
-			};
-			
-			if( ! DEBUGMODE ) {
-				ExecutorService pool = Executors.newCachedThreadPool();
-				pool.submit(callable);
-			} else {
-				JFrame jFrame = new JFrame();
-				jFrame.add(ticket);
-				jFrame.pack();
-				jFrame.setVisible(true);
+				final JTextPane ticket = new JTextPane(); 
+				ticket.setContentType("text/html"); //$NON-NLS-1$
+				ticket.setText(out.toString());
+				
+				final PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
+				if( splitFormat==SplitFormat.Ticket ) {
+					computeMediaForTicket(ticket, attributes);
+				}
+				
+				Callable<Boolean> callable = new Callable<Boolean>() {
+					@Override
+					public Boolean call() throws Exception {
+						return ticket.print(null, null, false, getSplitPrinter(), attributes, false);
+					}
+				};
+				
+				if( ! prototypeMode ) {
+					ExecutorService pool = Executors.newCachedThreadPool();
+					pool.submit(callable);
+				} else {
+					JFrame jFrame = new JFrame();
+					jFrame.add(ticket);
+					jFrame.pack();
+					jFrame.setVisible(true);
+					try {
+						Writer writer = new BufferedWriter(new FileWriter(stage().filepath("runner_splits.html"))); //$NON-NLS-1$
+						writer.write(out.toString());
+						writer.close();
+					} catch (IOException e) {
+						geco().logger().debug(e);
+					}
+				}
+			} catch (IOException e) {
+				geco().info(e.toString(), true); 
 			}
-			
-			return content;
 		}
-		return ""; //$NON-NLS-1$
 	}
 
 
-	private void printSingleSplitsInColumns(RunnerRaceData data, Html html) {
-		appendMessage(getHeaderMessage(), html);
+	private void generateSingleSplitsInColumns(RunnerRaceData data, Writer out) throws IOException {
+		RunnerContext runnerCtx = buildRunnerSplitContext(data);
+		exporter.createRunnerSplitsRowsAndColumns(runnerCtx,
+												  builder.buildNormalSplits(data, true),
+												  new SplitTime[0],
+												  nbColumns());
+		
+		exporter.getTemplate(getColumnTemplatePath()).execute(runnerCtx, out);
+	}
 
-		Runner runner = data.getRunner();
+	private void generateSingleSplitsInLine(RunnerRaceData data, Writer out) throws IOException {
+		RunnerContext runnerCtx = buildRunnerSplitContext(data);
+		exporter.createRunnerSplitsInlineTickets(runnerCtx,
+												 builder.buildLinearSplits(data));
+		
+		exporter.getTemplate(getTicketTemplatePath()).execute(runnerCtx, out);
+	}
+
+	protected RunnerContext buildRunnerSplitContext(RunnerRaceData data) {
 		Course course = data.getCourse();
-		String pace = ""; //$NON-NLS-1$
-		if( data.getResult().is(Status.OK) && course.hasDistance() ) {
-			pace = data.formatPace() + " min/km"; //$NON-NLS-1$
-		}
-		html.br()
-			.open("table") //$NON-NLS-1$
-			.openTr("runner") //$NON-NLS-1$
-			.th(runner.getName(), "colspan=\"2\"") //$NON-NLS-1$
-			.th(course.getName())
-			.th(runner.getCategory().getName())
-			.closeTr()
-			.openTr("runner") //$NON-NLS-1$
-			.td(data.getResult().shortFormat(), "class=\"time\"") //$NON-NLS-1$
-			.td(pace, "class=\"center\"") //$NON-NLS-1$
-			.td(course.formatDistanceClimb(), "class=\"center\"") //$NON-NLS-1$
-			.td(runner.getClub().getName(), "class=\"center\"") //$NON-NLS-1$
-			.closeTr()
-			.close("table") //$NON-NLS-1$
-			.br();
 
-		html.open("table"); //$NON-NLS-1$
-		exporter.appendHtmlSplitsInColumns(
-				builder.buildNormalSplits(data, null),
-				new SplitTime[0],
-				exporter.nbColumns(),
-				html);
-		html.close("table") //$NON-NLS-1$
-			.br();
-		appendMessage(getFooterMessage(), html);
-	}
-
-
-	private void printSingleSplitsInLine(RunnerRaceData data, Html html) {
-	//		char[] chars = Character.toChars(0x2B15); // control flag char :)
-		appendMessage(getHeaderMessage(), html);
-		Runner runner = data.getRunner();
-		Course course = data.getCourse();
-		html.br()
-			.open("div", "align=\"center\"") //$NON-NLS-1$ //$NON-NLS-2$
-			.b(runner.getName())
-			.tag("div", runner.getClub().getName()) //$NON-NLS-1$
-			.tag("div", course.getName() + " - " + runner.getCategory().getName()) //$NON-NLS-1$ //$NON-NLS-2$
-			.tag("div", course.formatDistanceClimb()) //$NON-NLS-1$
-			.br()
-			.b(data.getResult().shortFormat());
-		if( data.getResult().is(Status.OK) && course.hasDistance() ) {
-			html.tag("div", data.formatPace() + " min/km"); //$NON-NLS-1$ //$NON-NLS-2$
-		}		
-		html.close("div") //$NON-NLS-1$
-			.br();
-		// don't center table, it wastes too much space for some formats.
-		html.open("table", "width=\"75%\""); //$NON-NLS-1$ //$NON-NLS-2$
-		exporter.appendHtmlSplitsInLine(builder.buildLinearSplits(data), html);
-		html.close("table").br(); //$NON-NLS-1$
-		appendMessage(getFooterMessage(), html);
-	}
-
-	private void appendMessage(String message, Html html) {
-		if( message.length() > 0 ){
-			html.tag("div", "align=\"center\"", message); //$NON-NLS-1$ //$NON-NLS-2$
-		}
+		RunnerContext runnerCtx = RunnerContext.createUnrankedRunner(data);
+		runnerCtx.put("geco_StageTitle", stage().getName()); //$NON-NLS-1$
+		runnerCtx.put("geco_RunnerCourse", course.getName()); //$NON-NLS-1$
+		runnerCtx.put("geco_CourseLength", course.getLength()); //$NON-NLS-1$
+		runnerCtx.put("geco_CourseClimb", course.getClimb()); //$NON-NLS-1$
+		return runnerCtx;
 	}
 
 	private void computeMediaForTicket(final JTextPane ticket,
@@ -185,7 +157,7 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 		float height = ((float) preferredSize.height) / dpi;
 		float width = ((float) preferredSize.width) / dpi;
 
-		if( DEBUGMODE ){
+		if( prototypeMode ){
 			System.out.print("Request: "); //$NON-NLS-1$
 			System.out.print(height * 25.4);
 			System.out.print("x"); //$NON-NLS-1$
@@ -198,7 +170,7 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 		for (MediaSizeName media : getSplitMedia()) {
 			MediaSize mediaSize = MediaSize.getMediaSizeForName(media);
 			if( mediaSize!=null ){
-				if( DEBUGMODE ){
+				if( prototypeMode ){
 					System.out.print(mediaSize.toString(MediaSize.MM, "mm")); //$NON-NLS-1$
 					System.out.println(" - " + media); //$NON-NLS-1$
 				}
@@ -214,25 +186,24 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 		if( bestMedia==null ){
 			bestMedia = MediaSize.findMedia(width, height, MediaSize.INCH);
 			geco().debug(Messages.getString("SingleSplitPrinter.SmallTicketSizeWarning")); //$NON-NLS-1$
-			if( DEBUGMODE ){
+			if( prototypeMode ){
 				System.out.print("Found: "); //$NON-NLS-1$
 			}			
 		} else {
-			if( DEBUGMODE ){
+			if( prototypeMode ){
 				System.out.print("Chosen: "); //$NON-NLS-1$
 			}			
 		}
 		if( bestMedia!=null ){
 			attributes.add(bestMedia);
 			MediaSize fitSize = MediaSize.getMediaSizeForName(bestMedia);
-			if( DEBUGMODE ){
+			if( prototypeMode ){
 				System.out.println(fitSize.toString(MediaSize.MM, "mm")); //$NON-NLS-1$
 			}
 		} else {
 			geco().log(Messages.getString("SingleSplitPrinter.NoMatchingTicketSizeWarning")); //$NON-NLS-1$
 		}
 	}
-
 
 	private MediaSizeName[] getSplitMedia() {
 		if( splitMedia==null ) {
@@ -267,11 +238,6 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 		return ( getSplitPrinter()==null ) ? "" : getSplitPrinter().getName(); //$NON-NLS-1$
 	}
 	
-	public String getDefaultPrinterName() {
-		PrintService defaultService = PrintServiceLookup.lookupDefaultPrintService();
-		return ( defaultService==null ) ? "" : defaultService.getName(); //$NON-NLS-1$
-	}
-	
 	public boolean setSplitPrinterName(String name) {
 		splitMedia = null; // reset cache
 		for (PrintService printer : PrinterJob.lookupPrintServices()) {
@@ -301,23 +267,48 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 		this.splitFormat = format;
 	}
 
-	public String getHeaderMessage() {
-		return headerMessage;
+	public void enableFormatPrototyping(boolean flag) {
+		prototypeMode = flag;
 	}
 
-	public void setHeaderMessage(String headerMessage) {
-		this.headerMessage = headerMessage;
+	public int nbColumns() {
+		return nbColumns;
 	}
 
-	public String getFooterMessage() {
-		return footerMessage;
+	public void setNbColumns(int nb) {
+		nbColumns = nb;
+	}
+	
+	public File getColumnTemplate() {
+		return columnTemplate;
 	}
 
-	public void setFooterMessage(String footerMessage) {
-		this.footerMessage = footerMessage;
+	protected String getColumnTemplatePath() {
+		return getColumnTemplate().getAbsolutePath();
 	}
 
+	public void setColumnTemplate(File selectedFile) {
+		if( getColumnTemplate() != null ) {
+			exporter.resetTemplate(getColumnTemplatePath());
+		}
+		columnTemplate = selectedFile;
+	}
 
+	public File getTicketTemplate() {
+		return ticketTemplate;
+	}
+
+	protected String getTicketTemplatePath() {
+		return getTicketTemplate().getAbsolutePath();
+	}
+
+	public void setTicketTemplate(File selectedFile) {
+		if( getTicketTemplate() != null ) {
+			exporter.resetTemplate(getTicketTemplatePath());
+		}
+		ticketTemplate = selectedFile;
+	}
+	
 	@Override
 	public void cardRead(String chip) {
 		if( autoPrint ) {
@@ -337,20 +328,30 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 	public void changed(Stage previous, Stage current) {
 		Properties props = stage().getProperties();
 		setSplitPrinterName(props.getProperty(splitPrinterProperty()));
-		String format = props.getProperty(splitFormatProperty());
-		if( format!=null ) {
-			setSplitFormat(SplitFormat.valueOf(format));
-		}
-		setHeaderMessage( props.getProperty(splitHeaderMessageProperty(), stage().getName()) );
-		setFooterMessage( props.getProperty(splitFooterMessageProperty(), "Geco - http://sdenier.github.com/Geco") ); //$NON-NLS-1$
+		String format = props.getProperty(splitFormatProperty(), SplitFormat.MultiColumns.name());
+		setSplitFormat(SplitFormat.valueOf(format));
+
+		setNbColumns(Integer.parseInt(props.getProperty(splitNbColumnsProperty(), "12"))); //$NON-NLS-1$
+		setColumnTemplate(
+				new File(stage().getProperties().getProperty(columnTemplateProperty(),
+															 "formats/splits_columns.mustache") )); //$NON-NLS-1$
+		setTicketTemplate(
+				new File(stage().getProperties().getProperty(ticketTemplateProperty(),
+															 "formats/splits_ticket.mustache") )); //$NON-NLS-1$
 	}
 
 	@Override
 	public void saving(Stage stage, Properties properties) {
 		properties.setProperty(splitPrinterProperty(), getSplitPrinterName());
 		properties.setProperty(splitFormatProperty(), getSplitFormat().name());
-		properties.setProperty(splitHeaderMessageProperty(), getHeaderMessage());
-		properties.setProperty(splitFooterMessageProperty(), getFooterMessage());
+
+		properties.setProperty(splitNbColumnsProperty(), Integer.toString(nbColumns()));
+		if( getColumnTemplate().exists() ){
+			properties.setProperty(columnTemplateProperty(), getColumnTemplatePath());
+		}
+		if( getTicketTemplate().exists() ){
+			properties.setProperty(ticketTemplateProperty(), getTicketTemplatePath());
+		}
 	}
 	@Override
 	public void closing(Stage stage) {	}
@@ -361,13 +362,13 @@ public class SingleSplitPrinter extends Control implements StageListener, CardLi
 	public static String splitFormatProperty() {
 		return "SplitFormat"; //$NON-NLS-1$
 	}
-
-	public static String splitFooterMessageProperty() {
-		return "SplitHeaderMessage"; //$NON-NLS-1$
+	public static String splitNbColumnsProperty() {
+		return "SplitNbColumns"; //$NON-NLS-1$
 	}
-
-	public static String splitHeaderMessageProperty() {
-		return "SplitFooterMessage"; //$NON-NLS-1$
+	public static String columnTemplateProperty() {
+		return "ColumnTemplate"; //$NON-NLS-1$
 	}
-	
+	public static String ticketTemplateProperty() {
+		return "TicketTemplate"; //$NON-NLS-1$
+	}
 }
