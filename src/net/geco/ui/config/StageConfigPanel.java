@@ -126,7 +126,7 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 		add(cnScoreFS.getSelectFileButton(), c);
 
 		FileSelector rankingTemplateFS = new FileSelector(geco, frame,
-														"Select Mustache template for ranking results",
+														Messages.uiGet("StageConfigPanel.RankingTemplateTitle"), //$NON-NLS-1$
 														GecoIcon.OpenSmall) {
 			public String filenameValue() {
 				return geco.resultExporter().getRankingTemplate().getName();
@@ -136,12 +136,12 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 			}
 		};
 		setGridBagConstraints(c, 4, 10);
-		add(new JLabel("Ranking Template:"), c);
+		add(new JLabel(Messages.uiGet("StageConfigPanel.RankingTemplateLabel")), c); //$NON-NLS-1$
 		add(rankingTemplateFS.getFilenameField(), c);
 		add(rankingTemplateFS.getSelectFileButton(), c);
 		
 		FileSelector splitsTemplateFS = new FileSelector(geco, frame,
-														"Select Mustache template for splits results",
+														Messages.uiGet("StageConfigPanel.SplitsTemplateTitle"), //$NON-NLS-1$
 														GecoIcon.OpenSmall) {
 			public String filenameValue() {
 				return geco.splitsExporter().getSplitsTemplate().getName();
@@ -159,11 +159,11 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 			}
 		});
 		setGridBagConstraints(c, 5, 0);
-		add(new JLabel("Splits Template:"), c);
+		add(new JLabel(Messages.uiGet("StageConfigPanel.SplitsTemplateLabel")), c); //$NON-NLS-1$
 		add(splitsTemplateFS.getFilenameField(), c);
 		add(splitsTemplateFS.getSelectFileButton(), c);
 		add(nbColumnsS, c);
-		add(new JLabel("columns"), c);
+		add(new JLabel(Messages.uiGet("StageConfigPanel.ColumnsLabel")), c); //$NON-NLS-1$
 		
 		JLabel appNameL = new JLabel(Html.htmlTag("strong", geco.getAppName())); //$NON-NLS-1$
 		setGridBagConstraints(c, 6, 20);

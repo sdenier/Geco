@@ -95,7 +95,8 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 				geco.splitPrinter().setSplitFormat((RunnerSplitPrinter.SplitFormat) splitFormatCB.getSelectedItem());
 			}
 		});
-		final JCheckBox prototypeFormatB = new JCheckBox("Prototyping");
+		final JCheckBox prototypeFormatB = new JCheckBox(Messages.uiGet("SIReaderConfigPanel.PrototypingLabel")); //$NON-NLS-1$
+		prototypeFormatB.setToolTipText(Messages.uiGet("SIReaderConfigPanel.PrototypingTooltip")); //$NON-NLS-1$
 		prototypeFormatB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -110,7 +111,7 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 		c.gridwidth = 1;
 
 		FileSelector columnsTemplateFS = new FileSelector(geco, frame,
-														  "Select Mustache template for multi-columns split",
+														  Messages.uiGet("SIReaderConfigPanel.ColumnTemplateTitle"), //$NON-NLS-1$
 														  GecoIcon.OpenSmall) {
 			public String filenameValue() {
 				return geco.splitPrinter().getColumnTemplate().getName();
@@ -128,14 +129,14 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 			}
 		});
 		c.gridy = 3;
-		add(new JLabel("Columns Template:"), c);
+		add(new JLabel(Messages.uiGet("SIReaderConfigPanel.ColumnTemplateLabel")), c); //$NON-NLS-1$
 		add(columnsTemplateFS.getFilenameField(), c);
 		add(columnsTemplateFS.getSelectFileButton(), c);
 		add(nbColumnsS, c);
-		add(new JLabel("columns"), c);
+		add(new JLabel(Messages.uiGet("StageConfigPanel.ColumnsLabel")), c); //$NON-NLS-1$
 
 		FileSelector ticketTemplateFS = new FileSelector(geco, frame,
-														 "Select Mustache template for ticket split",
+														 Messages.uiGet("SIReaderConfigPanel.TicketTemplateTitle"), //$NON-NLS-1$
 														 GecoIcon.OpenSmall) {
 			public String filenameValue() {
 				return geco.splitPrinter().getTicketTemplate().getName();
@@ -145,7 +146,7 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 			}
 		};
 		c.gridy = 4;
-		add(new JLabel("Ticket Template:"), c);
+		add(new JLabel(Messages.uiGet("SIReaderConfigPanel.TicketTemplateLabel")), c); //$NON-NLS-1$
 		add(ticketTemplateFS.getFilenameField(), c);
 		add(ticketTemplateFS.getSelectFileButton(), c);
 		
