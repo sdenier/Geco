@@ -9,13 +9,10 @@ in_menu: true
 What do you need to run Geco?
 
 - A recent JRE (Java Runtime Environment, version 6+)
-- Geco bundle: it includes the application (jar file), template files for a race, user documentation, native libraries for serial communication (RXTX)
-- SportIdent drivers 
+- Geco bundle: it includes the application (jar file), some template files, user documentation, native libraries for serial communication (RXTX)
+- SportIdent drivers
   - Windows: check sportident website
   - Linux: recent kernels recognize the chip used by SI station, so it's plug'n'play
-  - Mac OS X: it's possible to install and tweak a USB driver to get Mac OS X to recognize the station. See the [FAQ](faq.html).
+  - Mac OS X: see the [FAQ](faq.html) for custom install.
 
 To launch Geco, **execute the geco.jar file**. It should opens automatically if your JRE is correctly configured.
-
-## RXTX library
-In some cases, you may need to install and compile RXTX drivers (serial drivers for the Java platform). Contact me if you need some help.

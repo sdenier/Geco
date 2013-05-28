@@ -1,5 +1,5 @@
 ---
-title: Contribute
+title: Contributing
 sort_info: 7
 in_menu: true
 ---
@@ -16,8 +16,13 @@ You can always help with software *documentation*: improving descriptions, figur
 
 if you are a developer, you can create your own *extension* of Geco, as indicated by the [License](license.html). Do not hesitate to ask for help on the architecture and technical details of Geco. Finally, you can help with Geco *development* by committing your code to the public repository. Geco is developed using [Git](http://git-scm.com) and [eclipse](http://www.eclipse.org).
 
-## Current contributors
+
+## Contributors
 
 Simon Denier, main developper, doc.  
 Julien Thézé, doc and french translation.  
-Philipp Walker, patches, german translation.  
+Philipp Walker, patches, german translation.
+
+
+## Special Thanks
+Julien, Guy, and Jannik helped a lot with initial testing and feedbacks. Many thanks to Martin Flynn (see [Ór](http://orienteering.ie/wiki/doku.php?id=or:index), it's cool too!) for graciously providing his SIReader library, which powered the Geco 1.x series.

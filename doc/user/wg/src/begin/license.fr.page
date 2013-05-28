@@ -6,21 +6,20 @@ in_menu: true
 
 #Licence
 
-L'application Geco est distribuée sous la GNU General Public License Version 2. Voir gpl-2.0.txt.
+L'application Geco est distribuée sous license GNU General Public Version 2. Voir gpl-2.0.txt.
 
-Les parties originales de l'application sont distribuées sous licence MIT. Voir le fichier LICENSE pour plus de détails.
-Le code open source est disponible à cette adresse : [http://github.com/sdenier/Geco](http://github.com/sdenier/Geco)
+Les parties originales de l'application sont distribuées sous licence MIT. Voir le fichier LICENSE pour plus de détails. Le code open source est disponible à cette adresse : [http://github.com/sdenier/Geco](http://github.com/sdenier/Geco)
 
-JarClassLoader est distribué sous la GNU General Public License Version 2.
-Voir [http://www.jdotsoft.com/JarClassLoader.php](http://www.jdotsoft.com/JarClassLoader.php)
+La bibliothèque GecoSI est distribuée sous licence MIT. Voir [http://github.com/sdenier/GecoSI](http://github.com/sdenier/GecoSI) pour les détails. GecoSI utilise la bibliothèque [RXTX](http://www.rxtx.org/), distribuée sous licence LGPL v 2.1 + Linking Over Controlled Interface.
 
-La bibliothèque SIReader a gentiment été fournie par Martin Flynn, un grand merci à lui !
-Vous pouvez jeter un oeil à son logiciel Ór ici : [http://orienteering.ie/wiki/doku.php?id=or:index](http://orienteering.ie/wiki/doku.php?id=or:index)
+Autres bibliothèques utilisées par Geco :
 
-SIReader utilise la bibliothèque RXTX, sous licence LGPL v 2.1 + Linking Over Controlled Interface.
-Voir le site web pour plus de détails [http://www.rxtx.org/](http://www.rxtx.org/)
+- [JarClassLoader](http://www.jdotsoft.com/JarClassLoader.php) (GNU General Public License Version 2)
+- [Json in Java](http://www.json.org/java/) (sous-ensemble)
+- [Jackson](http://wiki.fasterxml.com/JacksonHome) (Apache License 2.0)
+- [ICU4J](http://site.icu-project.org/) (sous-ensemble, ICU License 1.8.1)
+- [JMustache](http://github.com/samskivert/jmustache)
 
-Geco utilise un sous-ensemble de la bibliothèque ICU4J, sous licence ICU 1.8.1. Voir [http://site.icu-project.org](http://site.icu-project.org)
+Icons come from the [Crystal Project Icons](http://everaldo.com/crystal) (LGPL) by Everaldo Coelho.
 
-Les icônes proviennent du Crystal Project Icons, sous licence LGPL, créé par Everaldo Coelho.
-Voir [http://everaldo.com/crystal](http://everaldo.com/crystal)
+Les icônes proviennent du [Crystal Project Icons](http://everaldo.com/crystal) par Everaldo Coelho, sous licence LGPL.

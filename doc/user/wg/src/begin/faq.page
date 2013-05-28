@@ -7,13 +7,6 @@ in_menu: true
 # FAQ
 
 
-## How to customize result sheets?
-Tweaking the result sheets is possible by editing their CSS style in the stage directory. For now it is mostly useful when ticket size is not adapted to your printer.
-
-- edit `result.css` for ranking results, CN, split times in multi-columns format
-- edit `ticket.css` for split times in ticket format
-
-
 ## Reading SPORTident e-cards takes an usually long time
 Users can experience a long time to read SPORTident e-cards on some computers: it takes around 10 seconds to read one e-card instead of the normal 1 or 2 seconds. This makes Geco impractical for any event except testing. The problem seems to appear only when the SPORTident master station is plugged directly into the computer. Although the root cause of this problem is unknown (any tip welcomed!), the problem has always disappeared when plugging a USB hub between the computer and the SPORTident station. A typical set up we use is to plug the master station and the split printer into the hub: this leaves enough free plugs for other devices such as a regular printer or USB keys.
 

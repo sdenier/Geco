@@ -6,21 +6,18 @@ in_menu: true
 
 #License
 
-The Geco application is distributed under the GNU General Public License Version 2. See gpl-2.0.txt for details.
+The Geco application is released under the GNU General Public License Version 2. See gpl-2.0.txt for details.
 
-Original parts of this program are distributed under the MIT license. See LICENSE file for details.
-Open source code is available at [http://github.com/sdenier/Geco](http://github.com/sdenier/Geco)
+Original parts of this program are distributed under the MIT license. See LICENSE file for details. Open-source code available at [http://github.com/sdenier/Geco](http://github.com/sdenier/Geco)
 
-JarClassLoader distributed under the GNU General Public License Version 2.
-See [http://www.jdotsoft.com/JarClassLoader.php](http://www.jdotsoft.com/JarClassLoader.php)
+GecoSI library released under the MIT license. See [http://github.com/sdenier/GecoSI](http://github.com/sdenier/GecoSI) for full details. GecoSI uses the [RXTX](http://www.rxtx.org/) library, released under LGPL v 2.1 + Linking Over Controlled Interface.
 
-SIReader library kindly provided by Martin Flynn, many thanks to him!
-Visit his software Òr on [http://orienteering.ie/wiki/doku.php?id=or:index](http://orienteering.ie/wiki/doku.php?id=or:index)
+Other libraries used by Geco:
 
-SIReader uses the RXTX library, released under LGPL v 2.1 + Linking Over Controlled Interface.
-See website for details [http://www.rxtx.org/](http://www.rxtx.org/)
+- [JarClassLoader](http://www.jdotsoft.com/JarClassLoader.php) (GNU General Public License Version 2)
+- [Json in Java](http://www.json.org/java/) (subset)
+- [Jackson](http://wiki.fasterxml.com/JacksonHome) (Apache License 2.0)
+- [ICU4J](http://site.icu-project.org/) (subset, ICU License 1.8.1)
+- [JMustache](http://github.com/samskivert/jmustache)
 
-Geco uses a subset of the ICU4J library, released under ICU License 1.8.1. See [http://site.icu-project.org](http://site.icu-project.org)
-
-Icons come from the Crystal Project Icons, released under LGPL, designed by Everaldo Coelho.
-See [http://everaldo.com/crystal](http://everaldo.com/crystal)
+Icons come from the [Crystal Project Icons](http://everaldo.com/crystal) (LGPL) by Everaldo Coelho.

@@ -1,5 +1,5 @@
 ---
-title: Contribuer
+title: Contributions
 sort_info: 7
 in_menu: true
 ---
@@ -17,8 +17,12 @@ Vous pouvez toujours contribuer à la *documentation* : améliorer les descripti
 Si vous êtes développeur, vous pouvez créer votre propre *extension* de Geco, comme indiqué par la [license](license.fr.html). N'hésitez pas à demander de l'aide sur l'architecture et les détails techniques de Geco. Finalement, vous pouvez aider au *développement* de Geco en versant votre code dans le référentiel public. Geco est développé avec [Git](http://git-scm.com) et [eclipse](http://www.eclipse.org).
 
 
-## Contributeurs actuels
+## Contributeurs
 
 Simon Denier, développeur principal, documentation.  
 Julien Thézé, traduction de l'application et de la documentation.  
 Philipp Walker, patches et traduction allemande.
+
+
+## Remerciements
+Julien, Guy et Jannik ont beaucoup aidé le lancement de Geco avec leurs tests et leur feedback. Grands remerciements aussi à Martin Flynn (allez voir [Ór](http://orienteering.ie/wiki/doku.php?id=or:index)) pour avoir gracieusement fourni sa bibliothèque SIReader, qui a supporté la série Geco 1.x.
