@@ -16,19 +16,16 @@ The results panel can generate results from current data at any time during a ra
 
 The *Category/Courses* is a third option which computes one ranking per category in each course. It is useful when categories are split across different courses in pools.
 
-2\. Select either *Ranking*, *Splits*, or *CN* to set up the kind of results to compute.
+2\. Select either *Ranking*, *Splits*, or *CN* to set the kind of results to compute.
 
 - Ranking: classic ranking, can be used to compute intermediate or official results.
 - Splits: split times for all runners in selected pools.
 - CN: simulator of french [CN](http://cn.ffco.asso.fr) (national ranking).
 
-By default, results display runners with OK status, as well as runners with status MP, DNF, DSQ. Courses/categories for which no data are available are not displayed.
-Options for displaying results include:
+Results display runners with OK status, as well as runners with status MP, DNF, DSQ... Courses/categories without results are not displayed. Options for displaying results include:
 
 - *NC*: include runners ticked as NC in the results. They will appear after the ranked runners, with MPs and related.
-- *Others*: include DNS runners or without race data.
 - *Penalties*: show real race time and number of MPs for each runner (only ranking).
-- *Empty sets*: show all courses (categories) in results, even if there is no data yet.
 
 Geco also computes the **difference** to best time as well as **mean pace** when course length is available.
 
@@ -38,7 +35,7 @@ Results can be displayed in the right panel (*Refresh* button), printed, or expo
 
 ### Export format
 
-Geco proposes four formats for file export:
+Geco offers four file formats for export:
 
 - **HTML** for web publication
 - **CSV**, a complete format for spreadsheets
@@ -60,6 +57,4 @@ Check the correctness of archive ids to ensure ok results! Best way to do it is 
 
 ## Auto mode (results)
 
-The *Auto* button, when on (pressed), repeatedly refreshes results or generates a result file called `lastresults` in the data folder with the interval specified (in seconds) in the textfield at the right.
-The auto feature takes into account parameters specified when the button is pressed (selected courses or categories, ranking/splits/CN, export format, options).
-Stop then start again auto mode to take into account new parameters.
+The *Auto* button, when on (pressed), repeatedly refreshes results or generates a result file called `lastresults` in the data folder with the interval specified (in seconds) in the textfield at the right. The auto feature takes into account parameters specified when the button is pressed (selected courses or categories, ranking/splits/CN, export format, options). Stop then start again auto mode to take into account new parameters.

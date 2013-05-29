@@ -21,13 +21,10 @@ L'option *Catégorie/Circuit* calcule un classement par catégorie pour chaque c
 - Splits : temps intermédiaires pour les coureurs des groupes sélectionnés.
 - CN : simulation des points [CN](http://cn.ffco.asso.fr) pour les coureurs présents.
 
-Par défaut, les résultats affichent les concurrents classés OK, ainsi que les concurrents PM, abandon, disqualifiés. Les circuits (catégories) sans résultat ne sont pas affichés.
-Les options d'affichage sont :
+Les résultats affichent les concurrents classés OK, ainsi que les concurrents PM, abandon, disqualifiés... Les circuits (catégories) sans résultat ne sont pas affichés. Les options d'affichage sont :
 
-- *NC* : inclut les coureurs non classés. Ils apparaissent avec les concurrents PMs etc.
-- *Autres* : inclut les coureurs absents ou sans donnée.
+- *NC* : inclut les coureurs non classés. Ils apparaissent avec les concurrents PMs.
 - *Pénalités* : montre le chrono et le nombre de PMs pour chaque coureur (seulement pour le *classement*).
-- *Groupes vides* : montre tous les circuits (catégories), même si aucun classement n'est disponible.
 
 Dans les classements, Geco calcule aussi la **différence** de temps par rapport au premier et le **pas moyen** du coureur si la distance du circuit est connue.
 
@@ -60,6 +57,4 @@ Geco utilise le numéro d'archive pour repérer les coureurs CN. Ce numéro doit
 
 ## Mode auto (résultats)
 
-Le bouton *Auto*, une fois activé, rafraîchit les résultats dans la fenêtre ou génère un fichier nommé `lastresults` à intervalles réguliers (en secondes).
-La fonction auto prend en compte les paramètres spécifiés à l'activation (circuits ou catégories, classement/splits/CN, format d'export, options).
-Arrêtez et redémarrez le mode auto pour prendre en compte de nouveaux paramètres.
+Le bouton *Auto*, une fois activé, rafraîchit les résultats dans la fenêtre ou génère un fichier nommé `derniers_resultats` à intervalles réguliers (en secondes). La fonction auto prend en compte les paramètres spécifiés à l'activation (circuits ou catégories, classement/splits/CN, format d'export, options). Arrêtez et redémarrez le mode auto pour prendre en compte de nouveaux paramètres.

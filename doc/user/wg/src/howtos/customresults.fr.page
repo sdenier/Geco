@@ -1,0 +1,120 @@
+---
+title: Résultats personnalisés
+sort_info: 6
+in_menu: true
+---
+
+# Personnalisation des résultats
+
+Les fichiers modèles des résultats, temps intermédiaires, ticket coureur, etc. peuvent être édités avec n'importe quel éditeur de texte pour personnalisation. Par défaut, ces modèles produisent des fichiers html, mais n'importe quel format texte (csv, json, xml...) peut être généré par Geco et le moteur de rendu [mustache](http://mustache.github.io).
+
+Geco utilise jusqu'à quatre types de modèles différents :
+
+- classement général
+- classement avec temps intermédiaires
+- temps coureur au format plusieurs colonnes
+- temps coureur au format ticket
+
+Il est donc possible de changer les textes, d'insérer des logos, d'ajouter ou de supprimer certains champs de données. Les champs de donnée remplis automatiquement par Geco sont marqués par les doubles accolades `{{` et `}}`.
+
+
+## Réutilisation des formats et personnalisation par étape
+
+Vous pouvez modifier, créer, réutiliser ces formats dans plusieurs courses, les partager avec d'autres personnes... Très souvent un unique format est réutilisé sur plusieurs courses. On peut alors souhaiter personnaliser ce format pour chaque course (logos des sponsors, annonce spécifique) sans le recopier et l'adapter dans chaque dossier de course. C'est possible en créant ses propres champs de données dans un fichier `formats.prop` des dossiers de course. Geco lit ce fichier et injecte les données contenues dans le modèle.
+
+### Exemple :
+
+`resultats.mustache` (fichier commun, réutilisable)
+
+> Rendez-vous le {{ProchaineEtape}}
+
+`formats.prop` (dans le dossier de course)
+
+> ProchaineEtape=23 mai au Château
+
+Le fichier `resultats.mustache` peut alors être réutilisé dans plusieurs courses sans modification, juste en copiant et modifiant le fichier `formats.prop`.
+
+Notez que tous les champs définis par Geco ont le préfixe `geco_` ou `i18n_`, afin d'éviter toute collision avec vos propres champs. N'utilisez pas ces préfixes !
+
+
+## Description des champs de donnée disponibles
+
+Les modèles de résultat contiennent des champs de donnée *mustache* indiqués par des doubles accolades `{{` et `}}`. Ces champs sont traités et remplacés par Geco lors de la génération des résultats avec les données indiquées : nom de l´étape, nom d'un coureur, temps, code, résultat...
+
+Il y a trois types de champs, suivant les exemples ci-dessous :
+
+- `{{geco_RunnerName}}` est un champ de donnée basique : le nom du coureur sera affiché à la place dans le fichier généré.
+- `{{#geco_RunnersCollection}}...{{/geco_RunnersCollection}}` est une **section** itérative, qui représente une collection de coureurs : elle va afficher son contenu autant de fois qu'il y a de coureurs.
+- `{{#geco_BestTime?}}...{{/geco_BestTime?}}` est une section optionnelle : elle n'apparaît que si la valeur est vraie, ce qui permet de sélectionner certaines données à afficher (par convention, un `?` est ajouté en suffixe).
+
+Les sections peuvent être imbriquées sur plusieurs niveaux. Par exemple, on trouve d'abord les résultats par circuit, puis pour chaque circuit les coureurs, puis pour chaque coureur les temps intermédiaires.
+
+### Modèle classement général
+
+Informations générales (premier niveau) :
+
+- geco_StageTitle : nom de l'étape
+- geco_Timestamp : heure de génération des résultats
+- \#geco_SingleCourse? : indique si les classements se font par circuit ou non
+- \#geco_RunnerCategory? : indique si l'affichage de la catégorie du coureur est pertinent
+- \#geco_Penalties? : indique le choix de l'utilisateur d'afficher ou non les pénalités
+- \#geco_AutoRefresh?
+- \#geco_FileOutput?
+- \#geco_PrintMode?
+
+Au premier niveau, le contexte des résultats contient aussi `#geco_ResultsCollection`, c'est-à-dire la liste des résultats classée par groupe (circuits ou catégories). Les données incluses dans le contexte d'un groupe sont décrites ci-dessous.
+
+Pour chaque circuit/catégorie de résultat :
+
+- geco\_ResultName : nom du groupe (circuit, catégorie, ...)
+- geco\_NbFinishedRunners
+- geco\_NbPresentRunners
+- geco\_CourseLength : cette information n'est pertinente que si `#geco_SingleCourse?` est vraie
+- geco\_CourseClimb : cette information n'est pertinente que si `#geco_SingleCourse?` est vraie
+- \#geco\_RankedRunners : liste des coureurs classés
+- \#geco\_UnrankedRunners : liste des coureurs non classés
+
+Pour chaque coureur (classé ou non classé) :
+
+- geco_RunnerRank : rang dans le classement (vide si non classé)
+- geco_RunnerFirstName
+- geco_RunnerLastName
+- geco_RunnerClubName
+- geco_RunnerCategory
+- geco_RunnerResultTime : temps officiel du coureur
+- geco_RunnerStatus : statut
+- geco_RunnerStatusOrTime : raccourci permettant d'afficher le temps du coureur s'il est OK, son statut non classé sinon
+- geco_RunnerDiffTime : différence de temps au premier
+- geco_RunnerPace : allure moyenne
+- geco_RunnerNbMPs : nombre de PMs
+- geco_RunnerRaceTime : temps réel de course (sans les pénalités)
+
+### Classement avec temps intermédiaires
+
+Les même champs ci-dessus sont disponibles, avec en plus pour chaque coureur :
+
+- \#geco\_SplitRows : liste des lignes de splits à afficher, calculées par rapport au nombre de colonnes et au nombre de splits
+  - \#geco\_ControlRow : liste des postes sur une ligne
+    - geco\_ControlNum : séquence du poste
+    - geco\_ControlCode : code du poste
+  - \#geco\_TimeRow : liste des temps cumulés sur une ligne
+    - \#geco\_BestTime? : indique que le temps est le meilleur du groupe
+    - geco\_ControlTime : temps cumulé au poste
+  - \#geco\_SplitRow : liste des splits sur une ligne
+    - \#geco\_BestSplit? : indique que le split est le meilleur du groupe
+    - geco\_SplitTime : temps partiel au poste
+
+### Temps coureur au format plusieurs colonnes
+
+Sont disponibles les informations du concurrent (sauf son rang et la différence au premier), les temps intermédiaires comme ci-dessus (par colonnes), et quelques informations sur la course.
+
+### Temps coureur au format ticket
+
+Sont disponibles les informations du concurrent et quelques informations sur la course. Les temps intermédiaires sont décrits dans une seule liste avec les champs ci-dessous.
+
+- \#geco_RunnerSplits
+  - geco_ControlNum : séquence du poste
+  - geco_ControlTrace : trace interprétée par Geco (31, -32, +33, +34-35)
+  - geco_ControlStatus : mot-clé décrivant la trace (`time`, `miss`, `add`)
+  - geco_ControlTime
+  - geco_SplitTime
