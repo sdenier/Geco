@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Geco lightweight desktop application for orienteering race" />
+    <meta name="keywords" content="orienteering race management lightweight" />
+    <meta name="author" content="Simon Denier / Original design: Andreas Viklund - http://andreasviklund.com/" />
+    <meta name="generator" content="webgen - http://webgen.rubyforge.org" />
+    <link rel="stylesheet" href="../default.css" type="text/css" media="screen,projection" />
+    <title>Geco - Résultats personnalisés</title>
+      
+  
+<link type="text/html" rel="alternate" hreflang="en" href="customresults.html" lang="en" title="Custom Results" /></head>
+
+  <body>
+    <div id="container">
+      <a id="top"></a>
+
+      <div id="sitename">
+        <h1>Documentation Geco</h1>
+        <a id="menu"></a>
+      </div>
+
+      <div id="nav">
+        <ul><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../begin/index.fr.html">Présentation</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../guide/index.fr.html">Guide interface</a></li><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><a href="index.fr.html">Guide pratique</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../workflows/index.fr.html">Workflows</a></li></ul>
+      </div>
+
+      <div id="wrap1">
+        <div id="wrap2">
+
+          <div id="topbox">
+            <strong><a href="../index.html">/</a> &raquo; <a href="index.fr.html">Guide pratique</a> &raquo; <span>Résultats personnalisés</span></strong> &nbsp; (<a href="customresults.html">en</a> | <span class="webgen-langbar-current-lang">fr</span>)            
+          </div>
+
+          <div id="leftside">
+            <a id="sectionmenu"></a>
+            <h1>Download</h1>
+            <div id="downloads">
+              <ul>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-1.3.zip">Version 1.3</a></li>
+                <li>Voir les <a href="../begin/whatsnew.fr.html">nouveautés</a></li>
+              </ul>
+            </div>
+          
+            <h1>Contenu</h1>
+            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.fr.html">Raccourcis</a></li><li class="webgen-menu-level1"><a href="backup.fr.html">Sauvegarde</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Résultats personnalisés</span></li><li class="webgen-menu-level1"><a href="live.fr.html">LiveMap et Animation</a></li><li class="webgen-menu-level1"><a href="livemap_adjust.fr.html">Calibration de la LiveMap</a></li><li class="webgen-menu-level1"><a href="commandline.fr.html">Ligne de commande</a></li></ul></div>
+          
+            <h1>Liens</h1>
+            <div id="links">
+                    <ul>
+                    <li><a href="http://sdenier.github.com/Geco/geco_formation_11.pdf">Doc formation 1.1</a></li>
+                    <li><a href="http://github.com/sdenier/Geco">Référentiel</a></li>
+                    <li><a href="http://www.o-news.fr/viewforum.php?f=21">Onews/Geco</a></li>
+                    </ul>
+            </div>
+          </div>
+
+          <a id="main"></a>
+          <div id="contentalt">
+            
+<h1 id="personnalisation-des-rsultats">Personnalisation des résultats</h1>
+
+<p>Les fichiers modèles des résultats, temps intermédiaires, ticket coureur, etc. peuvent être édités avec n&#8217;importe quel éditeur de texte pour personnalisation. Par défaut, ces modèles produisent des fichiers html, mais n&#8217;importe quel format texte (csv, json, xml&#8230;) peut être généré par Geco et le moteur de rendu <a href="http://mustache.github.io">mustache</a>.</p>
+
+<p>Geco utilise jusqu&#8217;à quatre types de modèles différents :</p>
+
+<ul>
+  <li>classement général</li>
+  <li>classement avec temps intermédiaires</li>
+  <li>temps coureur au format plusieurs colonnes</li>
+  <li>temps coureur au format ticket</li>
+</ul>
+
+<p>Il est donc possible de changer les textes, d&#8217;insérer des logos, d&#8217;ajouter ou de supprimer certains champs de données. Les champs de donnée remplis automatiquement par Geco sont marqués par les doubles accolades <code>{{</code> et <code>}}</code>.</p>
+
+<h2 id="rutilisation-des-formats-et-personnalisation-par-tape">Réutilisation des formats et personnalisation par étape</h2>
+
+<p>Vous pouvez modifier, créer, réutiliser ces formats dans plusieurs courses, les partager avec d&#8217;autres personnes&#8230; Très souvent un unique format est réutilisé sur plusieurs courses. On peut alors souhaiter personnaliser ce format pour chaque course (logos des sponsors, annonce spécifique) sans le recopier et l&#8217;adapter dans chaque dossier de course. C&#8217;est possible en créant ses propres champs de données dans un fichier <code>formats.prop</code> des dossiers de course. Geco lit ce fichier et injecte les données contenues dans le modèle.</p>
+
+<h3 id="exemple-">Exemple :</h3>
+
+<p><code>resultats.mustache</code> (fichier commun, réutilisable)</p>
+
+<blockquote>
+  <p>Rendez-vous le {{ProchaineEtape}}</p>
+</blockquote>
+
+<p><code>formats.prop</code> (dans le dossier de course)</p>
+
+<blockquote>
+  <p>ProchaineEtape=23 mai au Château</p>
+</blockquote>
+
+<p>Le fichier <code>resultats.mustache</code> peut alors être réutilisé dans plusieurs courses sans modification, juste en copiant et modifiant le fichier <code>formats.prop</code>.</p>
+
+<p>Notez que tous les champs définis par Geco ont le préfixe <code>geco_</code> ou <code>i18n_</code>, afin d&#8217;éviter toute collision avec vos propres champs. N&#8217;utilisez pas ces préfixes !</p>
+
+<h2 id="description-des-champs-de-donne-disponibles">Description des champs de donnée disponibles</h2>
+
+<p>Les modèles de résultat contiennent des champs de donnée <em>mustache</em> indiqués par des doubles accolades <code>{{</code> et <code>}}</code>. Ces champs sont traités et remplacés par Geco lors de la génération des résultats avec les données indiquées : nom de l´étape, nom d&#8217;un coureur, temps, code, résultat&#8230;</p>
+
+<p>Il y a trois types de champs, suivant les exemples ci-dessous :</p>
+
+<ul>
+  <li><code>{{geco_RunnerName}}</code> est un champ de donnée basique : le nom du coureur sera affiché à la place dans le fichier généré.</li>
+  <li><code>{{#geco_RunnersCollection}}...{{/geco_RunnersCollection}}</code> est une <strong>section</strong> itérative, qui représente une collection de coureurs : elle va afficher son contenu autant de fois qu&#8217;il y a de coureurs.</li>
+  <li><code>{{#geco_BestTime?}}...{{/geco_BestTime?}}</code> est une section optionnelle : elle n&#8217;apparaît que si la valeur est vraie, ce qui permet de sélectionner certaines données à afficher (par convention, un <code>?</code> est ajouté en suffixe).</li>
+</ul>
+
+<p>Les sections peuvent être imbriquées sur plusieurs niveaux. Par exemple, on trouve d&#8217;abord les résultats par circuit, puis pour chaque circuit les coureurs, puis pour chaque coureur les temps intermédiaires.</p>
+
+<h3 id="modle-classement-gnral">Modèle classement général</h3>
+
+<p>Informations générales (premier niveau) :</p>
+
+<ul>
+  <li>geco_StageTitle : nom de l&#8217;étape</li>
+  <li>geco_Timestamp : heure de génération des résultats</li>
+  <li>#geco_SingleCourse? : indique si les classements se font par circuit ou non</li>
+  <li>#geco_RunnerCategory? : indique si l&#8217;affichage de la catégorie du coureur est pertinent</li>
+  <li>#geco_Penalties? : indique le choix de l&#8217;utilisateur d&#8217;afficher ou non les pénalités</li>
+  <li>#geco_AutoRefresh?</li>
+  <li>#geco_FileOutput?</li>
+  <li>#geco_PrintMode?</li>
+</ul>
+
+<p>Au premier niveau, le contexte des résultats contient aussi <code>#geco_ResultsCollection</code>, c&#8217;est-à-dire la liste des résultats classée par groupe (circuits ou catégories). Les données incluses dans le contexte d&#8217;un groupe sont décrites ci-dessous.</p>
+
+<p>Pour chaque circuit/catégorie de résultat :</p>
+
+<ul>
+  <li>geco_ResultName : nom du groupe (circuit, catégorie, &#8230;)</li>
+  <li>geco_NbFinishedRunners</li>
+  <li>geco_NbPresentRunners</li>
+  <li>geco_CourseLength : cette information n&#8217;est pertinente que si <code>#geco_SingleCourse?</code> est vraie</li>
+  <li>geco_CourseClimb : cette information n&#8217;est pertinente que si <code>#geco_SingleCourse?</code> est vraie</li>
+  <li>#geco_RankedRunners : liste des coureurs classés</li>
+  <li>#geco_UnrankedRunners : liste des coureurs non classés</li>
+</ul>
+
+<p>Pour chaque coureur (classé ou non classé) :</p>
+
+<ul>
+  <li>geco_RunnerRank : rang dans le classement (vide si non classé)</li>
+  <li>geco_RunnerFirstName</li>
+  <li>geco_RunnerLastName</li>
+  <li>geco_RunnerClubName</li>
+  <li>geco_RunnerCategory</li>
+  <li>geco_RunnerResultTime : temps officiel du coureur</li>
+  <li>geco_RunnerStatus : statut</li>
+  <li>geco_RunnerStatusOrTime : raccourci permettant d&#8217;afficher le temps du coureur s&#8217;il est OK, son statut non classé sinon</li>
+  <li>geco_RunnerDiffTime : différence de temps au premier</li>
+  <li>geco_RunnerPace : allure moyenne</li>
+  <li>geco_RunnerNbMPs : nombre de PMs</li>
+  <li>geco_RunnerRaceTime : temps réel de course (sans les pénalités)</li>
+</ul>
+
+<h3 id="classement-avec-temps-intermdiaires">Classement avec temps intermédiaires</h3>
+
+<p>Les même champs ci-dessus sont disponibles, avec en plus pour chaque coureur :</p>
+
+<ul>
+  <li>#geco_SplitRows : liste des lignes de splits à afficher, calculées par rapport au nombre de colonnes et au nombre de splits
+    <ul>
+      <li>#geco_ControlRow : liste des postes sur une ligne
+        <ul>
+          <li>geco_ControlNum : séquence du poste</li>
+          <li>geco_ControlCode : code du poste</li>
+        </ul>
+      </li>
+      <li>#geco_TimeRow : liste des temps cumulés sur une ligne
+        <ul>
+          <li>#geco_BestTime? : indique que le temps est le meilleur du groupe</li>
+          <li>geco_ControlTime : temps cumulé au poste</li>
+        </ul>
+      </li>
+      <li>#geco_SplitRow : liste des splits sur une ligne
+        <ul>
+          <li>#geco_BestSplit? : indique que le split est le meilleur du groupe</li>
+          <li>geco_SplitTime : temps partiel au poste</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="temps-coureur-au-format-plusieurs-colonnes">Temps coureur au format plusieurs colonnes</h3>
+
+<p>Sont disponibles les informations du concurrent (sauf son rang et la différence au premier), les temps intermédiaires comme ci-dessus (par colonnes), et quelques informations sur la course.</p>
+
+<h3 id="temps-coureur-au-format-ticket">Temps coureur au format ticket</h3>
+
+<p>Sont disponibles les informations du concurrent et quelques informations sur la course. Les temps intermédiaires sont décrits dans une seule liste avec les champs ci-dessous.</p>
+
+<ul>
+  <li>#geco_RunnerSplits
+    <ul>
+      <li>geco_ControlNum : séquence du poste</li>
+      <li>geco_ControlTrace : trace interprétée par Geco (31, -32, +33, +34-35)</li>
+      <li>geco_ControlStatus : mot-clé décrivant la trace (<code>time</code>, <code>miss</code>, <code>add</code>)</li>
+      <li>geco_ControlTime</li>
+      <li>geco_SplitTime</li>
+    </ul>
+  </li>
+</ul>
+
+          </div>
+        </div>
+
+        <div id="footer">
+                &copy; 2008-2013 Simon Denier | 
+                Généré avec <a href="http://webgen.rubyforge.org">webgen</a> | 
+                Design par <a href="http://andreasviklund.com">Andreas Viklund</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
