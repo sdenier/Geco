@@ -38,7 +38,7 @@
 		</exec>
     </target>
 
-	<target name="gh-pages" depends="cleanWebgen,webgen">
+	<target name="gh-pages" depends="cleanWebgen,webgen with analytics">
     	<delete>
     		<fileset dir="${wg.dir}/gh-pages" includes="**/*.html **/*.png **/*.gif **/*.css **/*.csv" />
     	</delete>

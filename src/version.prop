@@ -1,6 +1,3 @@
-#Thu, 02 May 2013 00:00:14 +0200
+#Mon, 03 Jun 2013 23:37:55 +0200
 
-version.num=2.0-beta1
-
-build.num=v2.0-beta1-0-g8eac518
-build.stamp=20130502
+version.num=2.1-beta
