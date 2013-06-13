@@ -1,3 +1,6 @@
-#Mon, 03 Jun 2013 23:37:55 +0200
+#Thu, 3 Jun 2013 10:33:19 +0200
 
 version.num=2.1-beta
+
+build.num=v2.1-beta-0-g44b87fb
+build.stamp=20130603
