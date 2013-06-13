@@ -45,6 +45,7 @@ import net.geco.framework.IGecoApp;
 import net.geco.model.Messages;
 import net.geco.model.ResultType;
 import net.geco.model.Stage;
+import net.geco.ui.basics.GecoIcon;
 import net.geco.ui.basics.SwingUtils;
 import net.geco.ui.framework.TabPanel;
 
@@ -81,9 +82,12 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	private JList poolList;
 	
 	private Thread autoexportThread;
+	private String autoResultFile;
 	private JButton autoexportB;
+	private JButton selectAutoFileB;
 	private JSpinner autodelayS;
 	private JRadioButton refreshRB;
+
 
 	@Override
 	public String getTabTitle() {
@@ -221,6 +225,21 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 				}
 			}
 		});
+		autoResultFile = geco().getCurrentStagePath() 
+				+ File.separator
+				+ Messages.uiGet("ResultsPanel.LastresultsLabel"); //$NON-NLS-1$
+		selectAutoFileB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				final JFileChooser selectAutoFileC = new JFileChooser();
+				selectAutoFileC.setSelectedFile(new File(autoResultFile));
+				selectAutoFileC.setDialogTitle(Messages.uiGet("ResultsPanel.AutoResultsTitle")); //$NON-NLS-1$
+				int answer = selectAutoFileC.showDialog(frame(),
+														Messages.uiGet("ResultsPanel.SelectLabel")); //$NON-NLS-1$
+				if( answer==JFileChooser.APPROVE_OPTION ){
+					autoResultFile = selectAutoFileC.getSelectedFile().getAbsolutePath();
+				}
+			}
+		});
 		autoexportB.addActionListener(new ActionListener() {
 			private Color defaultColor;
 			@Override
@@ -337,11 +356,12 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		autoGroup.add(exportRB);
 		refreshRB.setSelected(true);
 		autoPanel.add(SwingUtils.embed(refreshRB));
-		autoPanel.add(SwingUtils.embed(exportRB));
+		selectAutoFileB = new JButton(GecoIcon.createIcon(GecoIcon.OpenSmall));
+		autoPanel.add(SwingUtils.makeButtonBar(FlowLayout.CENTER, exportRB, selectAutoFileB));
 
 		autoexportB = new JButton(Messages.uiGet("ResultsPanel.AutoLabel")); //$NON-NLS-1$
 		autodelayS = new JSpinner(new SpinnerNumberModel(AutoexportDelay, 1, null, 10));
-		autodelayS.setPreferredSize(new Dimension(75, SwingUtils.SPINNERHEIGHT));
+		autodelayS.setPreferredSize(new Dimension(90, SwingUtils.SPINNERHEIGHT));
 		autodelayS.setToolTipText(Messages.uiGet("ResultsPanel.AutoTooltip")); //$NON-NLS-1$
 		autoPanel.add(SwingUtils.embed(autoexportB));
 		autoPanel.add(SwingUtils.embed(autodelayS));
@@ -442,13 +462,12 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	}
 	private synchronized void autoexport(int refreshDelay) {
 		long delay = 1000 * refreshDelay;
+		String format = exportFormat;
+		ResultConfig config = createResultConfig();
 		while( true ){
-			String resultFile = geco().getCurrentStagePath()
-								+ File.separator
-								+ Messages.uiGet("ResultsPanel.LastresultsLabel"); //$NON-NLS-1$
 			try {
 				try {
-					resultExporter().exportFile(resultFile, exportFormat, createResultConfig(), refreshDelay);
+					resultExporter().exportFile(autoResultFile, format, config, refreshDelay);
 				} catch (Exception ex) {
 					geco().logger().debug(ex);
 				}
