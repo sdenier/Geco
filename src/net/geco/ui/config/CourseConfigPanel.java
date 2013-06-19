@@ -4,21 +4,28 @@
  */
 package net.geco.ui.config;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.AbstractListModel;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import net.geco.basics.Announcer;
 import net.geco.framework.IGecoApp;
@@ -164,6 +171,28 @@ public class CourseConfigPanel extends ConfigTablePanel<Course> implements Confi
 				removeAction,
 				editB,
 				importB,refreshB);
+
+		final JList controlList = new JList();
+		JScrollPane jsp = new JScrollPane(controlList);
+		jsp.setPreferredSize(new Dimension(250, 450));
+		table().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				if( getSelectedData()!=null ) {
+					final int[] courseControls = getSelectedData().getCodes();
+					controlList.setModel(new AbstractListModel() {
+						@Override
+						public int getSize() {
+							return courseControls.length;
+						}
+						@Override
+						public Object getElementAt(int index) {
+							return String.format("%d. %d", index + 1, courseControls[index]);
+						}
+					});
+				}
+			}
+		});
+		add(jsp, BorderLayout.EAST);
 	}
 
 	private ConfigTableModel<Course> createTableModel(final IGecoApp geco) {

@@ -52,7 +52,6 @@ public class PunchPanel extends JPanel implements RunnersTableListener {
 	}
 
 	public void refreshPunches(RunnerRaceData runnerData) {
-//		final int[] codes = runnerData.getCourse().getCodes();
 		final Trace[] trace = runnerData.getResult().getTrace();
 		final String[] sequence = new String[trace.length];
 		int seq = 1;
@@ -70,7 +69,6 @@ public class PunchPanel extends JPanel implements RunnersTableListener {
 				case 0:
 					return sequence[rowIndex];
 				case 1:
-//					return "" ; //(rowIndex < codes.length) ? codes[rowIndex] : "";					
 					return traceLabel(trace, rowIndex);
 				case 2:
 					return traceTime(trace, rowIndex);
@@ -104,7 +102,6 @@ public class PunchPanel extends JPanel implements RunnersTableListener {
 				case 0:
 					return Messages.uiGet("PunchPanel.NumLabel"); //$NON-NLS-1$
 				case 1:
-//					return "Course";
 					return Messages.uiGet("PunchPanel.CodeLabel"); //$NON-NLS-1$
 				case 2:
 					return Messages.uiGet("PunchPanel.TimeLabel"); //$NON-NLS-1$
@@ -115,7 +112,6 @@ public class PunchPanel extends JPanel implements RunnersTableListener {
 		});
 		TableColumnModel columnModel = punchesT.getColumnModel();
 		columnModel.getColumn(0).setPreferredWidth(10);
-//		columnModel.getColumn(1).setPreferredWidth(10);
 		columnModel.getColumn(1).setPreferredWidth(25);
 		columnModel.getColumn(2).setPreferredWidth(25);
 	}
