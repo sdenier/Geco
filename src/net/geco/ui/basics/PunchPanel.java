@@ -112,8 +112,8 @@ public class PunchPanel extends JPanel implements RunnersTableListener {
 		});
 		TableColumnModel columnModel = punchesT.getColumnModel();
 		columnModel.getColumn(0).setPreferredWidth(10);
-		columnModel.getColumn(1).setPreferredWidth(25);
-		columnModel.getColumn(2).setPreferredWidth(25);
+		columnModel.getColumn(1).setPreferredWidth(75);
+		columnModel.getColumn(2).setPreferredWidth(75);
 	}
 	
 }
