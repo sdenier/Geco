@@ -80,10 +80,13 @@
 
 <ol>
   <li>Create one stage per pool (each runner has to run in each pool)</li>
-  <li>Create a merging stage to merge all pool results</li>
-  <li>it should define a <code>pools.prop</code> file listing all pool stages to merge</li>
-  <li>it should define <a href="../guide/heats.html">heatsets</a> to qualify runners based on merged results</li>
-  <li>Once pools are finished, run pool merger on the merging stage directory with <code>java -jar gecoXXX.jar valmo.geco.GecoPools &lt;MergingStageDirectory&gt;</code></li>
+  <li>Create a merging stage to merge all pool results
+    <ul>
+      <li>it should define a <code>pools.prop</code> file listing all pool stages to merge</li>
+      <li>it should define <a href="../guide/heats.html">heatsets</a> to qualify runners based on merged results</li>
+    </ul>
+  </li>
+  <li>Once pools are finished, run pool merger on the merging stage directory with <code>java -jar gecoXXX.jar net.geco.GecoPools &lt;MergingStageDirectory&gt;</code></li>
   <li>the batch run generates files <code>merged_results.html</code> and <code>heats.csv</code> for the first stage in the knockout series</li>
 </ol>
 

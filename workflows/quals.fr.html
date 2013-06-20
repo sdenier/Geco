@@ -80,10 +80,13 @@
 
 <ol>
   <li>Créez une étape par poule (chaque coureur doit courir une fois dans chaque poule)</li>
-  <li>Créer une étape spéciale qui servira à fusionner les résultats des poules</li>
-  <li>cette étape doit définir un fichier <code>pools.prop</code> avec la liste des étapes de poule</li>
-  <li>elle doit aussi définir les <a href="../guide/heats.fr.html">groupes de séries</a> pour qualifier les coureurs à partier des résultats fusionnés</li>
-  <li>Une fois les poules finies, lancez la fusion des poules sur l&#8217;étape de fusion avec <code>java -jar gecoXXX.jar valmo.geco.GecoPools &lt;DossierEtapeFusion&gt;</code></li>
+  <li>Créer une étape spéciale qui servira à fusionner les résultats des poules
+    <ul>
+      <li>cette étape doit définir un fichier <code>pools.prop</code> avec la liste des étapes de poule</li>
+      <li>elle doit aussi définir les <a href="../guide/heats.fr.html">groupes de séries</a> pour qualifier les coureurs à partier des résultats fusionnés</li>
+    </ul>
+  </li>
+  <li>Une fois les poules finies, lancez la fusion des poules sur l&#8217;étape de fusion avec <code>java -jar gecoXXX.jar net.geco.GecoPools &lt;DossierEtapeFusion&gt;</code></li>
   <li>L&#8217;application génère les fichiers <code>merged_results.html</code> (résultat pour chaque poule + général) et <code>heats.csv</code> qui sert de liste de départ pour les qualifications par séries éliminatoires.</li>
 </ol>
 
