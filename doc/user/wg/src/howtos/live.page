@@ -25,6 +25,7 @@ OK punches are shown in magenta. Missed punches and legs are shown in red and da
 <img src="../images/livemap_config.png" />
 
 Configuration:
+
 1. load a map image
 1. load a course file in XML format
 
@@ -42,10 +43,12 @@ Don't forget to *save* parameters once you are satisfied! Geco will create a `li
 <img src="../images/gecolive.png" />
 
 Configuration:
-1. launch **GecoLive** from the command line with `java -jar gecoXXX.jar valmo.geco.live.GecoLive`
+
+1. launch **GecoLive** from the command line with `java -jar gecoXXX.jar net.geco.live.GecoLive`
 1. start the GecoLive server by clicking the *Listen* button in the bottom left corner (check the port number)
 
 Multiple **Geco** instances can push data to **GecoLive**:
+
 1. open the live dialog by pushing the *antenna* button
 1. give the proper hostname and port number where GecoLive is running
 1. press ok, broadcasting is starting
@@ -53,5 +56,6 @@ Multiple **Geco** instances can push data to **GecoLive**:
 You can always interrupt broadcasting by clicking again the button.
 
 Further configuration:
+
 - **Geco** only pushes card reading events and not other changes affecting results; as a consequence, **GecoLive** is not a reliable mean to get results: it just displays traces.
 - to display **results** to the speaker, run a web server and use the [autoexport](../guide/results.html) feature from the **Results Panel**.

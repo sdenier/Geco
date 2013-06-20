@@ -11,9 +11,9 @@ in_menu: true
 
 1. Créez une étape par poule (chaque coureur doit courir une fois dans chaque poule)
 1. Créer une étape spéciale qui servira à fusionner les résultats des poules
-  1. cette étape doit définir un fichier `pools.prop` avec la liste des étapes de poule
-  1. elle doit aussi définir les [groupes de séries](../guide/heats.fr.html) pour qualifier les coureurs à partier des résultats fusionnés
-1. Une fois les poules finies, lancez la fusion des poules sur l'étape de fusion avec `java -jar gecoXXX.jar valmo.geco.GecoPools <DossierEtapeFusion>`
+  - cette étape doit définir un fichier `pools.prop` avec la liste des étapes de poule
+  - elle doit aussi définir les [groupes de séries](../guide/heats.fr.html) pour qualifier les coureurs à partier des résultats fusionnés
+1. Une fois les poules finies, lancez la fusion des poules sur l'étape de fusion avec `java -jar gecoXXX.jar net.geco.GecoPools <DossierEtapeFusion>`
 1. L'application génère les fichiers `merged_results.html` (résultat pour chaque poule + général) et `heats.csv` qui sert de liste de départ pour les qualifications par séries éliminatoires.
 
 Seuls les coureurs classés OK dans toutes les poules peuvent être qualifiés. Voir *hellemmes\_poolmerge* dans les données de démo pour un example d'étape de fusion.

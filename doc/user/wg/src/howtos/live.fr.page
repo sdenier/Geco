@@ -26,6 +26,7 @@ Les postes validés sont en magenta. Les postes et tronçons manquants sont affi
 <a href="../images/livemap_config.fr.png"><img src="../images/livemap_config.fr.png" /></a>
 
 Configuration :
+
 1. chargez un fichier image pour la carte
 1. chargez un fichier XML avec les circuits
 
@@ -43,10 +44,12 @@ N'oubliez pas de *Sauver* les paramètres. Geco va créer un fichier `live.prop`
 <a href="../images/gecolive.fr.png"><img src="../images/gecolive.fr.png" /></a>
 
 Configuration :
-1. lancez **GecoLive** en ligne de commande : `java -jar gecoXXX.jar valmo.geco.live.GecoLive`
+
+1. lancez **GecoLive** en ligne de commande : `java -jar gecoXXX.jar net.geco.live.GecoLive`
 1. démarrez le serveur GecoLive en cliquant sur le bouton *Activer* dans le coin en bas à gauche (vérifiez le numéro de port)
 
 Plusieurs instances de **Geco** peuvent envoyer des données au même serveur **GecoLive** :
+
 1. ouvrez la fenêtre de diffusion live en cliquant sur l'*antenne*
 1. renseignez l'adresse et le numéro de port de la machine où GecoLive est lancé
 1. cliquez ok, la diffusion commence
@@ -54,5 +57,6 @@ Plusieurs instances de **Geco** peuvent envoyer des données au même serveur **
 Il est possible d'interrompre à tout moment la diffusion en recliquant sur le bouton *antenne*.
 
 Autre configuration :
+
 - **Geco** n'envoie que les informations de la lecture des puces et non les changements manuels influant sur les résultats ; par conséquent, **GecoLive** n'est pas fiable pour annoncer des résultats: il affiche juste les traces.
 - pour permettre au commentateur d'annoncer les **résultats**, lancez un serveur web et utilisez la fonction d'[export auto](../guide/results.fr.html) depuis l' **onglet Résultats**.

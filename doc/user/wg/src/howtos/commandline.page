@@ -9,9 +9,11 @@ in_menu: true
 Launch geco from the command line: `java -jar gecoXXXX.jar`
 
 Options:
+
 - `--startdir <aDirectoryWithData>`: opens Geco directly on the selected stage, without showing the launcher
 - `--leisure`: enable the leisure mode for the LiveMap, showing simplified data and no race time for leisure runners who should not be timed
 
 Other programs accessible from the command line:
-- `java -jar gecoXXX.jar valmo.geco.GecoPools <aDirectoryWithData>`: runs the [pool merger](../workflows/quals.html) in batch mode
-- `java -jar gecoXXX.jar valmo.geco.live.GecoLive`: opens the GecoLive server for [animation](live.html)
+
+- `java -jar gecoXXX.jar net.geco.GecoPools <aDirectoryWithData>`: runs the [pool merger](../workflows/quals.html) in batch mode
+- `java -jar gecoXXX.jar net.geco.live.GecoLive`: opens the GecoLive server for [animation](live.html)
