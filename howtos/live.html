@@ -93,9 +93,12 @@ OK punches are shown in magenta. Missed punches and legs are shown in red and da
 
 <p><img src="../images/livemap_config.png" /></p>
 
-<p>Configuration:
-1. load a map image
-1. load a course file in XML format</p>
+<p>Configuration:</p>
+
+<ol>
+  <li>load a map image</li>
+  <li>load a course file in XML format</li>
+</ol>
 
 <p>It is recommended to export both files from OCAD. There are known problems with other programs.</p>
 
@@ -109,20 +112,29 @@ OK punches are shown in magenta. Missed punches and legs are shown in red and da
 
 <p><img src="../images/gecolive.png" /></p>
 
-<p>Configuration:
-1. launch <strong>GecoLive</strong> from the command line with <code>java -jar gecoXXX.jar valmo.geco.live.GecoLive</code>
-1. start the GecoLive server by clicking the <em>Listen</em> button in the bottom left corner (check the port number)</p>
+<p>Configuration:</p>
 
-<p>Multiple <strong>Geco</strong> instances can push data to <strong>GecoLive</strong>:
-1. open the live dialog by pushing the <em>antenna</em> button
-1. give the proper hostname and port number where GecoLive is running
-1. press ok, broadcasting is starting</p>
+<ol>
+  <li>launch <strong>GecoLive</strong> from the command line with <code>java -jar gecoXXX.jar valmo.geco.live.GecoLive</code></li>
+  <li>start the GecoLive server by clicking the <em>Listen</em> button in the bottom left corner (check the port number)</li>
+</ol>
+
+<p>Multiple <strong>Geco</strong> instances can push data to <strong>GecoLive</strong>:</p>
+
+<ol>
+  <li>open the live dialog by pushing the <em>antenna</em> button</li>
+  <li>give the proper hostname and port number where GecoLive is running</li>
+  <li>press ok, broadcasting is starting</li>
+</ol>
 
 <p>You can always interrupt broadcasting by clicking again the button.</p>
 
-<p>Further configuration:
-- <strong>Geco</strong> only pushes card reading events and not other changes affecting results; as a consequence, <strong>GecoLive</strong> is not a reliable mean to get results: it just displays traces.
-- to display <strong>results</strong> to the speaker, run a web server and use the <a href="../guide/results.html">autoexport</a> feature from the <strong>Results Panel</strong>.</p>
+<p>Further configuration:</p>
+
+<ul>
+  <li><strong>Geco</strong> only pushes card reading events and not other changes affecting results; as a consequence, <strong>GecoLive</strong> is not a reliable mean to get results: it just displays traces.</li>
+  <li>to display <strong>results</strong> to the speaker, run a web server and use the <a href="../guide/results.html">autoexport</a> feature from the <strong>Results Panel</strong>.</li>
+</ul>
 
           </div>
         </div>
