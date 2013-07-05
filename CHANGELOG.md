@@ -3,6 +3,7 @@
 ## Version 2.1 beta
 
 - Use Mustache as a versatile export engine for results (ranking, splits...)
+- Let user choose the path for result auto-export
 
 ## Version 2.0 beta1 (2013/05/01)
 
