@@ -4,7 +4,6 @@
  */
 package net.geco.ui.config;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -13,6 +12,7 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -36,6 +36,7 @@ import net.geco.model.xml.CourseSaxImporter;
 import net.geco.model.xml.V3CourseSaxImporter;
 import net.geco.model.xml.XMLCourseImporter;
 import net.geco.ui.basics.CourseControlDialog;
+import net.geco.ui.basics.SwingUtils;
 import net.geco.ui.framework.ConfigPanel;
 
 /**
@@ -43,7 +44,9 @@ import net.geco.ui.framework.ConfigPanel;
  * @since May 25, 2011
  *
  */
-public class CourseConfigPanel extends ConfigTablePanel<Course> implements ConfigPanel {
+public class CourseConfigPanel extends JPanel implements ConfigPanel {
+
+	private ConfigTablePanel<Course> coursePanel;
 
 	@Override
 	public String getLabel() {
@@ -165,21 +168,22 @@ public class CourseConfigPanel extends ConfigTablePanel<Course> implements Confi
 		refreshB.setToolTipText(Messages.uiGet("CourseConfigPanel.CourseRecheckTooltip")); //$NON-NLS-1$
 		refreshB.addActionListener(refreshAction);
 
-		initialize(
+		coursePanel = new ConfigTablePanel<Course>();
+		coursePanel.initialize(
 				Messages.uiGet("CourseConfigPanel.Title"), //$NON-NLS-1$
 				tableModel,
 				addAction,
 				removeAction,
 				editB,
 				importB,refreshB);
-		TableColumnModel columnModel = table().getColumnModel();
+		TableColumnModel columnModel = coursePanel.table().getColumnModel();
 		columnModel.getColumn(0).setPreferredWidth(175);
 		columnModel.getColumn(1).setPreferredWidth(25);
 
 		final JTable controlList = new JTable();
 		JScrollPane jsp = new JScrollPane(controlList);
 		jsp.setPreferredSize(new Dimension(250, 450));
-		table().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+		coursePanel.table().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				if( getSelectedData()!=null ) {
 					final int[] courseControls = getSelectedData().getCodes();
@@ -215,7 +219,11 @@ public class CourseConfigPanel extends ConfigTablePanel<Course> implements Confi
 				}
 			}
 		});
-		add(jsp, BorderLayout.EAST);
+		
+		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		add(coursePanel);
+		add(Box.createHorizontalStrut(10));
+		add(SwingUtils.embed(jsp));
 	}
 
 	private ConfigTableModel<Course> createTableModel(final IGecoApp geco) {
@@ -250,6 +258,10 @@ public class CourseConfigPanel extends ConfigTablePanel<Course> implements Confi
 
 			}
 		};
+	}
+
+	public Course getSelectedData() {
+		return coursePanel.getSelectedData();
 	}
 
 	@Override

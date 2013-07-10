@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
 
+import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -16,6 +17,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import net.geco.basics.Announcer;
 import net.geco.framework.IGecoApp;
@@ -28,10 +30,7 @@ import net.geco.ui.framework.ConfigPanel;
  * @since May 25, 2011
  *
  */
-public class CategoryConfigPanel extends ConfigTablePanel<Category> implements ConfigPanel {
-
-	private ConfigTableModel<Category> tableModel;
-	private JComboBox coursesCB;
+public class CategoryConfigPanel extends JPanel implements ConfigPanel {
 
 	@Override
 	public String getLabel() {
@@ -39,9 +38,9 @@ public class CategoryConfigPanel extends ConfigTablePanel<Category> implements C
 	}
 
 	public CategoryConfigPanel(final IGecoApp geco, final JFrame frame) {
-		coursesCB = new JComboBox();
-		
-		tableModel = createTableModel(geco);
+		final ConfigTablePanel<Category> categoryPanel = new ConfigTablePanel<Category>();
+		final ConfigTableModel<Category> tableModel = createTableModel(geco);
+		final JComboBox coursesCB = new JComboBox();
 		tableModel.setData(geco.registry().getSortedCategories());
 		
 		geco.announcer().registerStageConfigListener( new Announcer.StageConfigListener() {
@@ -63,7 +62,7 @@ public class CategoryConfigPanel extends ConfigTablePanel<Category> implements C
 		ActionListener removeAction = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Category cat = getSelectedData();
+				Category cat = categoryPanel.getSelectedData();
 				if( cat!=null ) {
 					try {
 						geco.stageControl().removeCategory(cat);	
@@ -99,14 +98,17 @@ public class CategoryConfigPanel extends ConfigTablePanel<Category> implements C
 		JButton importB = new JButton(Messages.uiGet("CategoryConfigPanel.TemplateLabel")); //$NON-NLS-1$
 		importB.addActionListener(importAction);
 		
-		initialize(
+		categoryPanel.initialize(
 				Messages.uiGet("CategoryConfigPanel.Title"), //$NON-NLS-1$
 				tableModel,
 				addAction,
 				removeAction,
 				importB);
 		updateCoursesCBforCategories(geco, coursesCB);
-		table().getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(coursesCB));
+		categoryPanel.table().getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(coursesCB));
+		
+		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		add(categoryPanel);
 	}
 
 	public ConfigTableModel<Category> createTableModel(final IGecoApp geco) {

@@ -8,8 +8,10 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import net.geco.basics.Announcer;
 import net.geco.framework.IGeco;
@@ -22,9 +24,7 @@ import net.geco.ui.framework.ConfigPanel;
  * @since May 25, 2011
  *
  */
-public class ClubConfigPanel extends ConfigTablePanel<Club> implements ConfigPanel {
-
-	private ConfigTableModel<Club> tableModel;
+public class ClubConfigPanel extends JPanel implements ConfigPanel {
 
 	@Override
 	public String getLabel() {
@@ -32,7 +32,8 @@ public class ClubConfigPanel extends ConfigTablePanel<Club> implements ConfigPan
 	}
 
 	public ClubConfigPanel(final IGeco geco, final JFrame frame) {
-		tableModel = new ConfigTableModel<Club>(new String[] {
+		final ConfigTablePanel<Club> clubPanel = new ConfigTablePanel<Club>();
+		final ConfigTableModel<Club> tableModel = new ConfigTableModel<Club>(new String[] {
 										Messages.uiGet("ClubConfigPanel.ClubShortNameHeader"), //$NON-NLS-1$
 										Messages.uiGet("ClubConfigPanel.ClubLongNameHeader")}) { //$NON-NLS-1$
 			@Override
@@ -51,7 +52,7 @@ public class ClubConfigPanel extends ConfigTablePanel<Club> implements ConfigPan
 				default: break;
 				}
 			}
-};
+		};
 		tableModel.setData(geco.registry().getSortedClubs());
 		geco.announcer().registerStageConfigListener( new Announcer.StageConfigListener() {
 			public void coursesChanged() {}
@@ -70,7 +71,7 @@ public class ClubConfigPanel extends ConfigTablePanel<Club> implements ConfigPan
 		ActionListener removeAction = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Club club = getSelectedData();
+				Club club = clubPanel.getSelectedData();
 				if( club!=null ) {
 					boolean removed = geco.stageControl().removeClub(club);
 					if( !removed ) {
@@ -83,11 +84,13 @@ public class ClubConfigPanel extends ConfigTablePanel<Club> implements ConfigPan
 			}
 		};
 
-		initialize(
+		clubPanel.initialize(
 				Messages.uiGet("ClubConfigPanel.Title"), //$NON-NLS-1$
 				tableModel,
 				addAction,
 				removeAction);
+		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		add(clubPanel);
 	}
 
 	@Override
