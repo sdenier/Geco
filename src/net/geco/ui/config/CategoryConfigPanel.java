@@ -5,6 +5,7 @@
 package net.geco.ui.config;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
@@ -101,6 +102,7 @@ public class CategoryConfigPanel extends JPanel implements ConfigPanel {
 		categoryPanel.initialize(
 				Messages.uiGet("CategoryConfigPanel.Title"), //$NON-NLS-1$
 				tableModel,
+				new Dimension(350, 450),
 				addAction,
 				removeAction,
 				importB);

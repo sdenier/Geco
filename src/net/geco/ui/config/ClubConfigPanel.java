@@ -5,6 +5,7 @@
 package net.geco.ui.config;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -87,6 +88,7 @@ public class ClubConfigPanel extends JPanel implements ConfigPanel {
 		clubPanel.initialize(
 				Messages.uiGet("ClubConfigPanel.Title"), //$NON-NLS-1$
 				tableModel,
+				new Dimension(350, 450),
 				addAction,
 				removeAction);
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));

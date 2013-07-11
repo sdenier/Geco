@@ -8,6 +8,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
@@ -21,11 +23,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumnModel;
 
 import net.geco.basics.Announcer;
@@ -36,7 +35,6 @@ import net.geco.model.xml.CourseSaxImporter;
 import net.geco.model.xml.V3CourseSaxImporter;
 import net.geco.model.xml.XMLCourseImporter;
 import net.geco.ui.basics.CourseControlDialog;
-import net.geco.ui.basics.SwingUtils;
 import net.geco.ui.framework.ConfigPanel;
 
 /**
@@ -74,7 +72,7 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 		ActionListener removeAction = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Course course = getSelectedData();
+				Course course = getSelectedCourse();
 				if( course!=null ) {
 					try {
 						geco.stageControl().removeCourse(course);
@@ -90,7 +88,7 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 		ActionListener editAction = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Course course = getSelectedData();
+				Course course = getSelectedCourse();
 				if( course!=null ) {
 					boolean change = new CourseControlDialog(frame, course).didChange();
 					if( change ){
@@ -149,7 +147,7 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 		};
 		ActionListener refreshAction = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Course course = getSelectedData();
+				Course course = getSelectedCourse();
 				if( course!=null ) {
 					geco.runnerControl().recheckRunnersFromCourse(course);
 				}
@@ -172,6 +170,7 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 		coursePanel.initialize(
 				Messages.uiGet("CourseConfigPanel.Title"), //$NON-NLS-1$
 				tableModel,
+				new Dimension(350, 450),
 				addAction,
 				removeAction,
 				editB,
@@ -180,50 +179,31 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 		columnModel.getColumn(0).setPreferredWidth(175);
 		columnModel.getColumn(1).setPreferredWidth(25);
 
-		final JTable controlList = new JTable();
-		JScrollPane jsp = new JScrollPane(controlList);
-		jsp.setPreferredSize(new Dimension(250, 450));
+		final ConfigTableModel<Integer> controlModel = createControlModel();
+		List<Integer> empty = Collections.emptyList();
+		controlModel.setData(empty);
 		coursePanel.table().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
-				if( getSelectedData()!=null ) {
-					final int[] courseControls = getSelectedData().getCodes();
-					controlList.setModel(new AbstractTableModel() {
-						@Override
-						public Object getValueAt(int row, int col) {
-							if( col == 0 ) {
-								return row + 1;
-							} else {
-								return courseControls[row];
-							}
-						}
-						@Override
-						public int getRowCount() {
-							return courseControls.length;
-						}
-						@Override
-						public int getColumnCount() {
-							return 2;
-						}
-						@Override
-						public String getColumnName(int column) {
-							if( column == 0 ) {
-								return "Num";
-							} else {
-								return "Code";
-							}
-						}
-					});
-					TableColumnModel columnModel = controlList.getColumnModel();
-					columnModel.getColumn(0).setPreferredWidth(20);
-					columnModel.getColumn(1).setPreferredWidth(180);
+				if( getSelectedCourse()!=null ) {
+					List<Integer> courseControls = new ArrayList<Integer>(getSelectedCourse().getCodes().length);
+					for (int code : getSelectedCourse().getCodes()) {
+						courseControls.add(code);
+					}
+					controlModel.setData(courseControls);
 				}
 			}
 		});
+		final ConfigTablePanel<Integer> controlPanel = new ConfigTablePanel<Integer>();
+		controlPanel.initialize(controlModel, new Dimension(250, 450), new JButton("Section..."));
+		controlPanel.table().setRowSorter(null);
+		columnModel = controlPanel.table().getColumnModel();
+		columnModel.getColumn(0).setPreferredWidth(20);
+		columnModel.getColumn(1).setPreferredWidth(180);
 		
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		add(coursePanel);
 		add(Box.createHorizontalStrut(10));
-		add(SwingUtils.embed(jsp));
+		add(controlPanel);
 	}
 
 	private ConfigTableModel<Course> createTableModel(final IGecoApp geco) {
@@ -260,8 +240,27 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 		};
 	}
 
-	public Course getSelectedData() {
+	public Course getSelectedCourse() {
 		return coursePanel.getSelectedData();
+	}
+
+	private ConfigTableModel<Integer> createControlModel() {
+		return new ConfigTableModel<Integer>(new String[] {"Num", "Code"}) {
+			@Override
+			public void setValueIn(Integer t, Object value, int col) {}
+			@Override
+			public boolean isCellEditable(int row, int col) {
+				return false;
+			}
+			@Override
+			public Object getValueAt(int row, int col) {
+				switch (col) {
+				case 0: return row + 1;
+				case 1: return getData().get(row);
+				}
+				return "Pbm";
+			}
+		};
 	}
 
 	@Override
