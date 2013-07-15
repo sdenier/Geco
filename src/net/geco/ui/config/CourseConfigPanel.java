@@ -179,9 +179,10 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 		columnModel.getColumn(0).setPreferredWidth(175);
 		columnModel.getColumn(1).setPreferredWidth(25);
 
-		final ConfigTableModel<Integer> controlModel = createControlModel();
+		final ConfigTableModel<Integer> controlsModel = createControlModel();
 		List<Integer> empty = Collections.emptyList();
-		controlModel.setData(empty);
+		controlsModel.setData(empty);
+		final ConfigTablePanel<Integer> controlsPanel = new ConfigTablePanel<Integer>();
 		coursePanel.table().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				if( getSelectedCourse()!=null ) {
@@ -189,21 +190,38 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 					for (int code : getSelectedCourse().getCodes()) {
 						courseControls.add(code);
 					}
-					controlModel.setData(courseControls);
+					controlsModel.setData(courseControls);
 				}
 			}
 		});
-		final ConfigTablePanel<Integer> controlPanel = new ConfigTablePanel<Integer>();
-		controlPanel.initialize(controlModel, new Dimension(250, 450), new JButton("Section..."));
-		controlPanel.table().setRowSorter(null);
-		columnModel = controlPanel.table().getColumnModel();
+		
+		final JButton sectionB = new JButton("Section...");
+		sectionB.setEnabled(false);
+		sectionB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new SectionControlDialog(frame, getSelectedCourse(), controlsPanel.table().getSelectedRow());
+			}
+		});
+		
+		controlsPanel.initialize(controlsModel, new Dimension(250, 450), sectionB);
+		controlsPanel.table().setRowSorter(null);
+		controlsPanel.table().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent arg0) {
+				if( controlsPanel.getSelectedData() != null ) {
+					sectionB.setEnabled(true);
+				} else {
+					sectionB.setEnabled(false);
+				}
+			}
+		});
+		columnModel = controlsPanel.table().getColumnModel();
 		columnModel.getColumn(0).setPreferredWidth(20);
 		columnModel.getColumn(1).setPreferredWidth(180);
 		
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		add(coursePanel);
 		add(Box.createHorizontalStrut(10));
-		add(controlPanel);
+		add(controlsPanel);
 	}
 
 	private ConfigTableModel<Course> createTableModel(final IGecoApp geco) {
