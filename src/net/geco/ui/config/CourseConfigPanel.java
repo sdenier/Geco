@@ -28,9 +28,11 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumnModel;
 
 import net.geco.basics.Announcer;
+import net.geco.control.SectionService;
 import net.geco.framework.IGecoApp;
 import net.geco.model.Course;
 import net.geco.model.Messages;
+import net.geco.model.Section;
 import net.geco.model.xml.CourseSaxImporter;
 import net.geco.model.xml.V3CourseSaxImporter;
 import net.geco.model.xml.XMLCourseImporter;
@@ -44,6 +46,8 @@ import net.geco.ui.framework.ConfigPanel;
  */
 public class CourseConfigPanel extends JPanel implements ConfigPanel {
 
+	private SectionService sectionService;
+
 	private ConfigTablePanel<Course> coursePanel;
 
 	@Override
@@ -52,6 +56,7 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 	}
 	
 	public CourseConfigPanel(final IGecoApp geco, final JFrame frame) {
+		sectionService = geco.sectionService();
 		final ConfigTableModel<Course> tableModel = createTableModel(geco);
 		tableModel.setData(geco.registry().getSortedCourses());
 		
@@ -199,7 +204,10 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 		sectionB.setEnabled(false);
 		sectionB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new SectionControlDialog(frame, getSelectedCourse(), controlsPanel.table().getSelectedRow());
+				int controlIndex = controlsPanel.table().getSelectedRow();
+				Section section = sectionService.findOrCreateSection(getSelectedCourse(), controlIndex);
+				new SectionControlDialog(frame, getSelectedCourse(), section);
+				controlsModel.fireTableRowsUpdated(controlIndex, controlIndex);
 			}
 		});
 		
@@ -216,7 +224,8 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 		});
 		columnModel = controlsPanel.table().getColumnModel();
 		columnModel.getColumn(0).setPreferredWidth(20);
-		columnModel.getColumn(1).setPreferredWidth(180);
+		columnModel.getColumn(1).setPreferredWidth(40);
+		columnModel.getColumn(2).setPreferredWidth(140);
 		
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		add(coursePanel);
@@ -263,7 +272,7 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 	}
 
 	private ConfigTableModel<Integer> createControlModel() {
-		return new ConfigTableModel<Integer>(new String[] {"Num", "Code"}) {
+		return new ConfigTableModel<Integer>(new String[] {"Num", "Code", "Section"}) {
 			@Override
 			public void setValueIn(Integer t, Object value, int col) {}
 			@Override
@@ -275,6 +284,7 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 				switch (col) {
 				case 0: return row + 1;
 				case 1: return getData().get(row);
+				case 2: return sectionService.findSection(getSelectedCourse(), row).displayString();
 				}
 				return "Pbm";
 			}

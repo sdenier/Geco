@@ -15,11 +15,14 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import net.geco.model.Course;
 import net.geco.model.Messages;
+import net.geco.model.Section;
+import net.geco.model.Section.SectionType;
 import net.geco.ui.basics.SwingUtils;
 
 /**
@@ -29,29 +32,45 @@ import net.geco.ui.basics.SwingUtils;
  */
 public class SectionControlDialog extends JDialog {
 
-	public static enum SectionType {
-		INLINE, FREEORDER
-	}
-	
-	public SectionControlDialog(JFrame frame, Course selectedCourse, int controlIndex) {
+	public SectionControlDialog(JFrame frame, final Course selectedCourse, final Section targetSection) {
 		super(frame, "Create or Edit a Section...", true); //$NON-NLS-1$
 		setResizable(false);
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		
-		JTextField sectionNameF = new JTextField(10);
-		JComboBox sectionTypeCB = new JComboBox(SectionType.values());
+		final JTextField sectionNameF = new JTextField(10);
+		sectionNameF.setText(targetSection.getName());
+		final JComboBox sectionTypeCB = new JComboBox(Section.SectionType.values());
+		sectionTypeCB.setSelectedItem(targetSection.getType());
 		
 		JButton saveB = new JButton(Messages.uiGet("CourseControlDialog.SaveLabel")); //$NON-NLS-1$
 		saveB.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
+				String sectionName = sectionNameF.getText();
+				if( sectionName.isEmpty() ){
+					JOptionPane.showMessageDialog(
+							SectionControlDialog.this,
+							"Section name can not be empty", 
+							"Warning",
+							JOptionPane.ERROR_MESSAGE);
+				} else {
+					targetSection.setName(sectionName);
+					targetSection.setType((SectionType) sectionTypeCB.getSelectedItem());
+					selectedCourse.putSection(targetSection);
+					setVisible(false);
+				}
+			}
+		});
+		
+		JButton deleteB = new JButton("Delete");
+		deleteB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				selectedCourse.removeSection(targetSection);
 				setVisible(false);
 			}
 		});
 		
 		JButton cancelB = new JButton(Messages.uiGet("CourseControlDialog.CancelLabel")); //$NON-NLS-1$
 		cancelB.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 			}
@@ -70,11 +89,12 @@ public class SectionControlDialog extends JDialog {
 		getContentPane().add(sectionTypeCB, c);
 		c.gridy = 2;
 		getContentPane().add(saveB, c);
+		getContentPane().add(deleteB, c);
 		getContentPane().add(cancelB, c);
 
 		c.gridy = 3;
 		getContentPane().add(new JLabel(selectedCourse.getName()), c);
-		getContentPane().add(new JLabel("" + controlIndex + " / " + selectedCourse.getCodes()[controlIndex]), c);
+		getContentPane().add(new JLabel("" + targetSection.getStartIndex() + " / " + selectedCourse.getCodes()[targetSection.getStartIndex()]), c);
 		
 		pack();
 		setLocationRelativeTo(null);

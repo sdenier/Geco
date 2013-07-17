@@ -3,6 +3,8 @@
  */
 package net.geco.model;
 
+import java.util.Collection;
+
 
 /**
  * @author Simon Denier
@@ -35,4 +37,12 @@ public interface Course extends Pool, Group {
 
 	public boolean hasLeg(int start, int end);
 
+	public Collection<Section> getSections();
+	
+	public Section getSectionAt(int index);
+	
+	public void putSection(Section section);
+
+	public void removeSection(Section targetSection);
+	
 }
