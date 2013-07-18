@@ -22,6 +22,8 @@ public interface Factory {
 
 	public Course createCourse();
 
+	public Section createSection();
+	
 	public Punch createPunch();
 
 	public Runner createRunner();

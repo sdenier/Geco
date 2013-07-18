@@ -5,8 +5,8 @@
 package net.geco.framework;
 
 import net.geco.basics.Announcer;
-import net.geco.basics.MergeRequestHandler;
 import net.geco.basics.Logger;
+import net.geco.basics.MergeRequestHandler;
 import net.geco.control.ArchiveManager;
 import net.geco.control.Checker;
 import net.geco.control.HeatBuilder;
@@ -14,6 +14,7 @@ import net.geco.control.MergeControl;
 import net.geco.control.RegistryStats;
 import net.geco.control.RunnerControl;
 import net.geco.control.SIReaderHandler;
+import net.geco.control.SectionService;
 import net.geco.control.StageControl;
 import net.geco.control.StartlistImporter;
 import net.geco.control.results.CNCalculator;
@@ -53,5 +54,6 @@ public interface IGeco {
 	public StartlistImporter startlistImporter();
 	public CNCalculator cnCalculator();
 	public MergeControl mergeControl();
+	public SectionService sectionService();
 	
 }

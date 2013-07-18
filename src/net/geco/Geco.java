@@ -29,6 +29,7 @@ import net.geco.control.MergeControl;
 import net.geco.control.RegistryStats;
 import net.geco.control.RunnerControl;
 import net.geco.control.SIReaderHandler;
+import net.geco.control.SectionService;
 import net.geco.control.StageBuilder;
 import net.geco.control.StageControl;
 import net.geco.control.StartlistImporter;
@@ -336,6 +337,10 @@ public class Geco implements IGecoApp, MergeRequestHandler {
 		return getService(MergeControl.class);
 	}
 	
+	public SectionService sectionService() {
+		return getService(SectionService.class);
+	}
+
 	public MergeRequestHandler defaultMergeHandler() {
 		return this;
 	}
