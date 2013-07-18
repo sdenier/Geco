@@ -23,6 +23,8 @@ import net.geco.model.ResultType;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.RunnerResult;
+import net.geco.model.Section;
+import net.geco.model.Section.SectionType;
 import net.geco.model.Stage;
 import net.geco.model.Status;
 import net.geco.model.Trace;
@@ -40,7 +42,7 @@ public final class PersistentStore {
 
 	public static final String STORE_FILE = "store.json"; //$NON-NLS-1$
 
-	public static final String JSON_SCHEMA_VERSION = "2.0"; //$NON-NLS-1$
+	public static final String JSON_SCHEMA_VERSION = "2.2"; //$NON-NLS-1$
 	
 	private static final boolean DEBUG = false;
 	
@@ -87,6 +89,17 @@ public final class PersistentStore {
 				codes[j] = codez.getInt(j);
 			}
 			course.setCodes(codes);
+			if( c.has(K.SECTIONS) ) { // MIGR: for raid app
+				JSONArray sectionz = c.getJSONArray(K.SECTIONS);
+				for (int j = 0; j < sectionz.length(); j++) {
+					JSONArray sectionTuple = sectionz.getJSONArray(j);
+					Section section = factory.createSection();
+					section.setStartIndex(sectionTuple.getInt(0));
+					section.setName(sectionTuple.getString(1));
+					section.setType(SectionType.valueOf(sectionTuple.getString(2)));
+					course.putSection(section);
+				}
+			}
 			registry.addCourse(course);
 		}
 		registry.ensureAutoCourse(factory);
@@ -243,6 +256,14 @@ public final class PersistentStore {
 				.field(K.CLIMB, course.getClimb())
 				.startArrayField(K.CODES);
 			for (int code : course.getCodes()) { json.value(code); }
+			json.endArray().startArrayField(K.SECTIONS);
+			for (Section section : course.getSections()) {
+				json.startArray()
+					.value(section.getStartIndex())
+					.value(section.getName())
+					.value(section.getType().name())
+					.endArray();
+			}
 			json.endArray()
 				.endObject();
 		}
@@ -368,6 +389,7 @@ public final class PersistentStore {
 		public static final String LENGTH = "length"; //$NON-NLS-1$
 		public static final String CLIMB = "climb"; //$NON-NLS-1$
 		public static final String CODES = "codes"; //$NON-NLS-1$
+		public static final String SECTIONS = "sections"; //$NON-NLS-1$
 
 		public static final String CATEGORIES = "categories";; //$NON-NLS-1$
 		public static final String LONG = "long"; //$NON-NLS-1$

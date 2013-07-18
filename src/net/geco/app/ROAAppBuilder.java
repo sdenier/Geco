@@ -14,6 +14,7 @@ import net.geco.control.PenaltyChecker;
 import net.geco.control.RegistryStats;
 import net.geco.control.RunnerControl;
 import net.geco.control.SIReaderHandler;
+import net.geco.control.SectionService;
 import net.geco.control.StageBuilder;
 import net.geco.control.StageControl;
 import net.geco.control.StartlistImporter;
@@ -93,6 +94,7 @@ public class ROAAppBuilder extends AppBuilder {
 		new StartlistImporter(gecoControl);
 		new CNCalculator(gecoControl);
 		new MergeControl(gecoControl);
+		new SectionService(gecoControl);
 		
 		new RefereeLogFunction(gecoControl);
 		new StartTimeFunction(gecoControl);
@@ -120,7 +122,7 @@ public class ROAAppBuilder extends AppBuilder {
 				new StageConfigPanel(geco, frame),
 				new SIReaderConfigPanel(geco, frame),
 				new PenaltyCheckerConfigPanel(geco),
-				new CourseConfigPanel(geco, frame),
+				new CourseConfigPanel(geco, frame, true),
 				new CategoryConfigPanel(geco, frame),
 				new ClubConfigPanel(geco, frame),
 		};

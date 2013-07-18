@@ -5,9 +5,13 @@
 package net.geco.model.impl;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
+import java.util.TreeMap;
 
 import net.geco.model.Course;
 import net.geco.model.Messages;
+import net.geco.model.Section;
 
 
 
@@ -17,7 +21,7 @@ import net.geco.model.Messages;
  *
  */
 public class CourseImpl implements Course {
-	
+
 	private String name;
 	
 	private int length;
@@ -25,8 +29,9 @@ public class CourseImpl implements Course {
 	private int climb;
 	
 	private int[] codes;
-
 	
+	private Map<Integer, Section> sections = new TreeMap<Integer, Section>();
+
 	public int getClimb() {
 		return climb;
 	}
@@ -89,4 +94,20 @@ public class CourseImpl implements Course {
 		return length > 0;
 	}
 
+	public Collection<Section> getSections() {
+		return sections.values();
+	}
+
+	public Section getSectionAt(int index) {
+		return sections.get(index);
+	}
+
+	public void putSection(Section section) {
+		sections.put(section.getStartIndex(), section);
+	}
+
+	public void removeSection(Section section) {
+		sections.remove(section.getStartIndex());
+	}
+	
 }
