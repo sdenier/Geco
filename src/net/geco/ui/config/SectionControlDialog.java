@@ -4,8 +4,11 @@
  */
 package net.geco.ui.config;
 
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -19,6 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import net.geco.basics.Html;
 import net.geco.model.Course;
 import net.geco.model.Messages;
 import net.geco.model.Section;
@@ -37,8 +41,9 @@ public class SectionControlDialog extends JDialog {
 		setResizable(false);
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		
-		final JTextField sectionNameF = new JTextField(10);
+		final JTextField sectionNameF = new JTextField(12);
 		sectionNameF.setText(targetSection.getName());
+		sectionNameF.requestFocusInWindow();
 		final JComboBox sectionTypeCB = new JComboBox(Section.SectionType.values());
 		sectionTypeCB.setSelectedItem(targetSection.getType());
 		
@@ -76,25 +81,30 @@ public class SectionControlDialog extends JDialog {
 			}
 		});
 		
-		getContentPane().setLayout(new GridBagLayout());
-		((JPanel) getContentPane()).setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-//		getContentPane().add(new JLabel(Messages.uiGet("CourseControlDialog.HelpLabel1") //$NON-NLS-1$
-//		+ course.getName()
-//		+ Messages.uiGet("CourseControlDialog.HelpLabel2"))); //$NON-NLS-1$
+		JPanel formPanel = new JPanel(new GridBagLayout());
 		GridBagConstraints c = SwingUtils.gbConstr();
-		getContentPane().add(new JLabel("Section Name:"), c);
-		getContentPane().add(sectionNameF, c);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.insets = new Insets(5, 0, 0, 0);
+		formPanel.add(new JLabel("Control:"), c);
+		formPanel.add(new JLabel(Html.htmlTag("i",
+				Integer.toString(selectedCourse.getCodes()[targetSection.getStartIndex()]))), c);
 		c.gridy = 1;
-		getContentPane().add(new JLabel("Section Type:"), c);
-		getContentPane().add(sectionTypeCB, c);
+		formPanel.add(new JLabel("Section Name:"), c);
+		formPanel.add(sectionNameF, c);
 		c.gridy = 2;
-		getContentPane().add(saveB, c);
-		getContentPane().add(deleteB, c);
-		getContentPane().add(cancelB, c);
+		formPanel.add(new JLabel("Section Type:"), c);
+		formPanel.add(sectionTypeCB, c);
 
-		c.gridy = 3;
-		getContentPane().add(new JLabel(selectedCourse.getName()), c);
-		getContentPane().add(new JLabel("" + targetSection.getStartIndex() + " / " + selectedCourse.getCodes()[targetSection.getStartIndex()]), c);
+		JPanel buttons = new JPanel(new FlowLayout(FlowLayout.TRAILING));
+		buttons.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+		buttons.add(saveB, c);
+		buttons.add(deleteB, c);
+		buttons.add(cancelB, c);
+
+		getContentPane().setLayout(new BorderLayout());
+		getContentPane().add(formPanel, BorderLayout.CENTER);
+		getContentPane().add(buttons, BorderLayout.SOUTH);
+		((JPanel) getContentPane()).setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		
 		pack();
 		setLocationRelativeTo(null);

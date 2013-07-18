@@ -54,7 +54,7 @@ public class SectionImpl implements Section {
 	}
 
 	public String displayString() {
-		return String.format("%s - %s", getName(), getType().name());
+		return String.format("%s - %s", getName(), getType().toString());
 	}
 	
 }

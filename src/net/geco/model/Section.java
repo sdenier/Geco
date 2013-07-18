@@ -12,7 +12,16 @@ package net.geco.model;
 public interface Section {
 
 	public static enum SectionType {
-		INLINE, FREEORDER
+		INLINE {
+			public String toString() {
+				return "Inline";
+			}
+		},
+		FREEORDER {
+			public String toString() {
+				return "Free Order";
+			}
+		}
 	}
 
 	Section NULL_SECTION = new Section() {
