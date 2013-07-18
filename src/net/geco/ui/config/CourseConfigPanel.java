@@ -55,7 +55,7 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 		return Messages.uiGet("CourseConfigPanel.Title"); //$NON-NLS-1$
 	}
 	
-	public CourseConfigPanel(final IGecoApp geco, final JFrame frame) {
+	public CourseConfigPanel(final IGecoApp geco, final JFrame frame, boolean enableSections) {
 		sectionService = geco.sectionService();
 		final ConfigTableModel<Course> tableModel = createTableModel(geco);
 		tableModel.setData(geco.registry().getSortedCourses());
@@ -200,28 +200,32 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 			}
 		});
 		
-		final JButton sectionB = new JButton("Section...");
-		sectionB.setEnabled(false);
-		sectionB.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				int controlIndex = controlsPanel.table().getSelectedRow();
-				Section section = sectionService.findOrCreateSection(getSelectedCourse(), controlIndex);
-				new SectionControlDialog(frame, getSelectedCourse(), section);
-				controlsModel.fireTableRowsUpdated(controlIndex, controlIndex);
-			}
-		});
-		
-		controlsPanel.initialize(controlsModel, new Dimension(250, 450), sectionB);
-		controlsPanel.table().setRowSorter(null);
-		controlsPanel.table().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent arg0) {
-				if( controlsPanel.getSelectedData() != null ) {
-					sectionB.setEnabled(true);
-				} else {
-					sectionB.setEnabled(false);
+		if( enableSections ){
+			final JButton sectionB = new JButton("Section...");
+			sectionB.setEnabled(false);
+			sectionB.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					int controlIndex = controlsPanel.table().getSelectedRow();
+					Section section = sectionService.findOrCreateSection(getSelectedCourse(), controlIndex);
+					new SectionControlDialog(frame, getSelectedCourse(), section);
+					controlsModel.fireTableRowsUpdated(controlIndex, controlIndex);
 				}
-			}
-		});
+			});
+			
+			controlsPanel.initialize(controlsModel, new Dimension(250, 450), sectionB);
+			controlsPanel.table().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+				public void valueChanged(ListSelectionEvent arg0) {
+					if( controlsPanel.getSelectedData() != null ) {
+						sectionB.setEnabled(true);
+					} else {
+						sectionB.setEnabled(false);
+					}
+				}
+			});
+		} else {
+			controlsPanel.initialize(controlsModel, new Dimension(250, 450));
+		}
+		controlsPanel.table().setRowSorter(null);
 		columnModel = controlsPanel.table().getColumnModel();
 		columnModel.getColumn(0).setPreferredWidth(20);
 		columnModel.getColumn(1).setPreferredWidth(40);
