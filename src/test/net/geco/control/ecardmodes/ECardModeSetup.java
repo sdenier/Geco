@@ -39,6 +39,7 @@ public class ECardModeSetup extends MockControlSetup {
 		fullRunner = createRunner();
 		fullRunnerData = createFullRunnerData();
 		danglingRunnerData = factory.createRunnerRaceData();
+		danglingRunnerData.setTraceData(factory.createTraceData());
 		danglingRunnerData.setResult(factory.createRunnerResult());
 	}
 
@@ -69,6 +70,7 @@ public class ECardModeSetup extends MockControlSetup {
 	protected RunnerRaceData createFullRunnerData() {
 		RunnerRaceData runnerData = factory.createRunnerRaceData();
 		runnerData.setRunner(fullRunner);
+		runnerData.setTraceData(factory.createTraceData());
 		runnerData.setResult(factory.createRunnerResult());
 		return runnerData;
 	}

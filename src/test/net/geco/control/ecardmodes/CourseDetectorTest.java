@@ -67,6 +67,7 @@ public class CourseDetectorTest {
 		raceData = factory.createRunnerRaceData();
 		raceData.setStarttime(new Date(10000));
 		raceData.setFinishtime(new Date(20000));
+		raceData.setTraceData(factory.createTraceData());
 		raceData.setResult(factory.createRunnerResult());
 	}
 	

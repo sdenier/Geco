@@ -22,6 +22,7 @@ public class RunnerBuilder extends BasicControl {
 
 	public RunnerRaceData buildRunnerData() {
 		RunnerRaceData data = factory().createRunnerRaceData();
+		data.setTraceData(factory().createTraceData());
 		data.setResult(factory().createRunnerResult());
 		return data;
 	}

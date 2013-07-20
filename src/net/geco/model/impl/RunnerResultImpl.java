@@ -30,13 +30,7 @@ public class RunnerResultImpl implements RunnerResult {
 	
 	public RunnerResult clone() {
 		try {
-			RunnerResult clone = (RunnerResult) super.clone();
-			Trace[] trace = new Trace[getTrace().length];
-			for (int i = 0; i < getTrace().length; i++) {
-				trace[i] = getTrace()[i].clone();
-			}
-			clone.setTrace(trace);
-			return clone;
+			return (RunnerResult) super.clone();
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}

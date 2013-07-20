@@ -12,7 +12,7 @@ import net.geco.model.Factory;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Stage;
 import net.geco.model.Status;
-import net.geco.model.Trace;
+import net.geco.model.TraceData;
 
 
 /**
@@ -55,8 +55,11 @@ public class PenaltyChecker extends PunchChecker implements Checker, StageListen
 	@Override
 	public Status computeStatus(RunnerRaceData data) {
 		tracer.computeTrace(data.getCourse().getCodes(), data.getPunches());
-		data.getResult().setNbMPs(tracer.getNbMPs());
-		data.getResult().setTrace(tracer.getTrace());
+		TraceData traceData = factory().createTraceData();
+		traceData.setNbMPs(tracer.getNbMPs());
+		traceData.setTrace(tracer.getTrace());
+		traceData.setRunningTime(data.realRaceTime());
+		data.setTraceData(traceData);
 		return (noMPLimit || tracer.getNbMPs() <= getMPLimit()) ? Status.OK : Status.MP;
 	}
 	

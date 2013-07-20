@@ -28,6 +28,7 @@ import net.geco.model.Section.SectionType;
 import net.geco.model.Stage;
 import net.geco.model.Status;
 import net.geco.model.Trace;
+import net.geco.model.TraceData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -198,11 +199,9 @@ public final class PersistentStore {
 			registry.addRunnerData(ecardData);
 	
 			JSONObject r = runnerTuple.getJSONObject(I_RESULT);
-			RunnerResult result = factory.createRunnerResult();
-			result.setRacetime(r.getLong(K.TIME));
-			result.setStatus(Status.valueOf(r.getString(K.STATUS)));
-			result.setNbMPs(r.getInt(K.MPS));
-			result.setTimePenalty(r.getLong(K.PENALTY));
+			TraceData traceData = factory.createTraceData();
+			traceData.setNbMPs(r.getInt(K.MPS));
+//			traceData.setRunningTime(runningTime); TODO runningTime
 			JSONArray t = r.getJSONArray(K.TRACE);
 			Trace[] trace = new Trace[t.length() / 2];
 			for (int j = 0; j < trace.length; j++) {
@@ -213,7 +212,13 @@ public final class PersistentStore {
 			for (int j = 0; j < neut.length(); j++) {
 				trace[neut.getInt(j)].setNeutralized(true);
 			}
-			result.setTrace(trace);
+			traceData.setTrace(trace);
+			ecardData.setTraceData(traceData);
+			
+			RunnerResult result = factory.createRunnerResult();
+			result.setRacetime(r.getLong(K.TIME));
+			result.setStatus(Status.valueOf(r.getString(K.STATUS)));
+			result.setTimePenalty(r.getLong(K.PENALTY));
 			ecardData.setResult(result);
 		}
 	}
