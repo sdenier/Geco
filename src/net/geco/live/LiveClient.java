@@ -120,7 +120,7 @@ public class LiveClient implements Announcer.CardListener {
 			runner.getCourse().getName(),
 			result.getStatus().name(),
 			Long.toString(result.getRacetime()),
-			Integer.toString(result.getNbMPs()),
+			Integer.toString(data.getTraceData().getNbMPs()),
 			Long.toString(result.getTimePenalty()),
 			result.formatTrace()
 		}, ",", new StringBuilder()); //$NON-NLS-1$

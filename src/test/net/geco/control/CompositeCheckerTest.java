@@ -137,7 +137,7 @@ public class CompositeCheckerTest {
 		checker.check(data);
 		RunnerResult result = data.getResult();
 		assertEquals("62,61,-63,64,65", result.formatTrace());
-		assertEquals(1, result.getNbMPs());
+		assertEquals(1, data.getTraceData().getNbMPs());
 		assertEquals(Status.OK, result.getStatus());
 		assertEquals(1900000, result.getRacetime());
 	}
@@ -151,7 +151,7 @@ public class CompositeCheckerTest {
 		checker.check(data);
 		RunnerResult result = data.getResult();
 		assertEquals("-31,-32,-33,-34,-121,-122,-121,-123,-124,-121", result.formatTrace());
-		assertEquals(10, result.getNbMPs());
+		assertEquals(10, data.getTraceData().getNbMPs());
 		assertEquals(Status.OK, result.getStatus());
 		assertEquals(18630000, result.getRacetime());
 	}
@@ -168,7 +168,7 @@ public class CompositeCheckerTest {
 		checker.check(data);
 		RunnerResult result = data.getResult();
 		assertEquals("33,31,32,34,121,122,121,123,124,121", result.formatTrace());
-		assertEquals(0, result.getNbMPs());
+		assertEquals(0, data.getTraceData().getNbMPs());
 		assertEquals(Status.OK, result.getStatus());
 		assertEquals(630000, result.getRacetime());
 	}
@@ -185,7 +185,7 @@ public class CompositeCheckerTest {
 		checker.check(data);
 		RunnerResult result = data.getResult();
 		assertEquals("33,32,-31,34,121,122,121,123,124,121", result.formatTrace());
-		assertEquals(1, result.getNbMPs());
+		assertEquals(1, data.getTraceData().getNbMPs());
 		assertEquals(Status.OK, result.getStatus());
 		assertEquals(2430000, result.getRacetime());
 	}
@@ -202,7 +202,7 @@ public class CompositeCheckerTest {
 		checker.check(data);
 		RunnerResult result = data.getResult();
 		assertEquals("31,33,32,34,121,122,-121,123,124,121", result.formatTrace());
-		assertEquals(1, result.getNbMPs());
+		assertEquals(1, data.getTraceData().getNbMPs());
 		assertEquals(Status.OK, result.getStatus());
 		assertEquals(2430000, result.getRacetime());
 	}
@@ -219,7 +219,7 @@ public class CompositeCheckerTest {
 		checker.check(data);
 		RunnerResult result = data.getResult();
 		assertEquals("31,33,-32,-34,121,122,-121,123,124,121", result.formatTrace());
-		assertEquals(3, result.getNbMPs());
+		assertEquals(3, data.getTraceData().getNbMPs());
 		assertEquals(Status.OK, result.getStatus());
 		assertEquals(6030000, result.getRacetime());
 	}
@@ -235,7 +235,7 @@ public class CompositeCheckerTest {
 		checker.check(data);
 		RunnerResult result = data.getResult();
 		assertEquals("31,33,32,-34,-121,-122,-121,-123,-124,-121", result.formatTrace());
-		assertEquals(7, result.getNbMPs());
+		assertEquals(7, data.getTraceData().getNbMPs());
 		assertEquals(Status.OK, result.getStatus());
 		assertEquals(13230000, result.getRacetime());
 	}
@@ -252,7 +252,7 @@ public class CompositeCheckerTest {
 		checker.check(data);
 		RunnerResult result = data.getResult();
 		assertEquals("32,31,-33,34,-121,122,121,-123,124,121,+123", result.formatTrace());
-		assertEquals(3, result.getNbMPs());
+		assertEquals(3, data.getTraceData().getNbMPs());
 		assertEquals(Status.OK, result.getStatus());
 		assertEquals(6030000, result.getRacetime());
 	}

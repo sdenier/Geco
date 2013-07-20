@@ -68,14 +68,14 @@ public class CourseDetector extends Control {
 		for (CourseResult cResult : distances) {
 			testData.getRunner().setCourse(cResult.course);
 			geco().checker().check(testData);
-			if( testData.getResult().getNbMPs()==0 ){
+			if( testData.getTraceData().getNbMPs()==0 ){
 				// early stop only if no MP detected
 				// in some race case with orient'show, one trace may be ok with multiple courses (as soon as MPs < MP limit)
 				// so we should continue to look for a better match even if status == OK
 				data.setResult(testData.getResult());
 				return cResult.course;
 			}
-			int nbMPs = testData.getResult().getNbMPs();
+			int nbMPs = testData.getTraceData().getNbMPs();
 			if( nbMPs < minMps ){
 				minMps = nbMPs;
 				bestResult = cResult;

@@ -66,7 +66,7 @@ public class PenaltyChecker extends PunchChecker implements Checker, StageListen
 	@Override
 	public long computeOfficialRaceTime(RunnerRaceData data) {
 		long realRaceTime = super.computeOfficialRaceTime(data);
-		long timePenalty = timePenalty(data.getResult().getNbMPs());
+		long timePenalty = timePenalty(data.getTraceData().getNbMPs());
 		data.getResult().setTimePenalty(timePenalty);
 		if( realRaceTime==TimeManager.NO_TIME_l ) {
 			return realRaceTime;

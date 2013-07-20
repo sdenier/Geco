@@ -154,7 +154,7 @@ public class PersistentStoreImportTest {
 		assertThat(runner224.getRunner().getClub(), equalTo(registry.findClub("CSMR")));
 		assertThat(runner224.getRunner().isNC(), equalTo(true));
 		assertThat(runner224.getResult().getStatus(), equalTo(Status.MP));
-		assertThat(runner224.getResult().getNbMPs(), equalTo(2));
+		assertThat(runner224.getTraceData().getNbMPs(), equalTo(2));
 		assertThat(runner224.getResult().getTimePenalty(), equalTo(60000L));
 		assertThat(runner224.getResult().getTrace()[6].getCode(), equalTo("-167"));
 	}

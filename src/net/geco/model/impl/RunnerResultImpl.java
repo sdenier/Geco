@@ -17,14 +17,12 @@ public class RunnerResultImpl implements RunnerResult {
 	
 	private long racetime;
 	private Status status;
-	private int nbMPs;
 	private long timePenalty;
 	private Trace[] trace;
 
 	public RunnerResultImpl() {
 		this.racetime = TimeManager.NO_TIME_l;
 		this.status = Status.NOS;
-		this.nbMPs = 0;
 		this.trace = new Trace[0];
 	}
 	
@@ -64,13 +62,6 @@ public class RunnerResultImpl implements RunnerResult {
 		return is(Status.OK) ?
 			formatRacetime() :
 			formatStatus();
-	}
-
-	public int getNbMPs() {
-		return nbMPs;
-	}
-	public void setNbMPs(int nbMPs) {
-		this.nbMPs = nbMPs;
 	}
 
 	public void setTimePenalty(long timePenalty) {

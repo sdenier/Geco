@@ -110,7 +110,7 @@ public class ExtendedRunnersTableModel extends AbstractTableModel {
 		case 5: return runner.getCourse().getName();
 		case 6: return runner.getClub().getName();
 		case 7: return TimeManager.time(getRunnerData(rowIndex).realRaceTime());
-		case 8: return getRunnerData(rowIndex).getResult().getNbMPs();
+		case 8: return getRunnerData(rowIndex).getTraceData().getNbMPs();
 		case 9: return getRunnerData(rowIndex).getResult().formatTimePenalty();
 		case 10: return getRunnerData(rowIndex).getResult().formatRacetime();
 		case 11: return getRunnerData(rowIndex).getResult().getStatus();

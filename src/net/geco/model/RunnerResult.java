@@ -27,10 +27,6 @@ public interface RunnerResult extends Cloneable {
 	
 	public String shortFormat();
 
-	public int getNbMPs();
-
-//	public void setNbMPs(int nbMPs);
-
 	public void setTimePenalty(long timePenalty);
 	
 	public long getTimePenalty();

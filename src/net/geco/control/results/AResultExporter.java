@@ -269,7 +269,7 @@ public abstract class AResultExporter extends Control {
 				TimeManager.fullTime(runnerData.getOfficialStarttime()),
 				TimeManager.fullTime(runnerData.getFinishtime()),
 				TimeManager.fullTime(runnerData.realRaceTime()),
-				Integer.toString(runnerData.getResult().getNbMPs()),
+				Integer.toString(runnerData.getTraceData().getNbMPs()),
 				runner.getCourse().getName(),
 				Integer.toString(runner.getCourse().getLength()),
 				Integer.toString(runner.getCourse().getClimb()),

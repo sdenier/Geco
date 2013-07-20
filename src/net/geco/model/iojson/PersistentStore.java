@@ -353,11 +353,12 @@ public final class PersistentStore {
 			}
 			json.endArray().endObject();
 			
+			TraceData traceData = runnerData.getTraceData();
 			RunnerResult result = runnerData.getResult();
 			json.startObject()
 				.field(K.TIME, result.getRacetime())
 				.field(K.STATUS, result.getStatus().name())
-				.field(K.MPS, result.getNbMPs())
+				.field(K.MPS, traceData.getNbMPs())
 				.field(K.PENALTY, result.getTimePenalty());
 			
 			Trace[] traceArray = result.getTrace();

@@ -165,7 +165,7 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 	}
 
 	protected void refreshResultPanel() {
-		mpF.setText(Integer.toString(runnerData.getResult().getNbMPs()));
+		mpF.setText(Integer.toString(runnerData.getTraceData().getNbMPs()));
 		penaltyF.setText(runnerData.getResult().formatTimePenalty());
 		displayOfficialRacetime(fullTimeF, runnerData.officialRaceTime());
 	}
