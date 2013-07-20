@@ -5,10 +5,10 @@
 package net.geco.model.impl;
 
 import java.util.Date;
-import java.util.TimeZone;
 
 import net.geco.basics.TimeManager;
 import net.geco.model.Course;
+import net.geco.model.ECardData;
 import net.geco.model.Messages;
 import net.geco.model.Punch;
 import net.geco.model.Runner;
@@ -25,48 +25,23 @@ import net.geco.model.Trace;
  */
 public class RunnerRaceDataImpl implements RunnerRaceData {
 
-	private Date starttime;
-	
-	private Date finishtime;
-	
-	private Date erasetime;
-	
-	private Date controltime;
+	private ECardData ecardData;
 
-	private Date readtime;
-	
-	private Punch[] punches;
-	
 	private RunnerResult result;
 	
 	private Runner runner;
 		
 
 	public RunnerRaceDataImpl() {
-		this.starttime = TimeManager.NO_TIME;
-		this.finishtime = TimeManager.NO_TIME;
-		this.erasetime = TimeManager.NO_TIME;
-		this.controltime = TimeManager.NO_TIME;
-		this.readtime = TimeManager.NO_TIME;
-		this.punches = new Punch[0];
+		this.ecardData = new ECardDataImpl();
 	}
-	
 	
 	public RunnerRaceData clone() {
 		try {
-			RunnerRaceData clone = (RunnerRaceData) super.clone();
-			clone.setStarttime((Date) getStarttime().clone());
-			clone.setFinishtime((Date) getFinishtime().clone());
-			clone.setErasetime((Date) getErasetime().clone());
-			clone.setControltime((Date) getControltime().clone());
-			clone.setReadtime((Date) getReadtime().clone());
-			Punch[] punches = new Punch[getPunches().length];
-			for (int i = 0; i < getPunches().length; i++) {
-				punches[i] = getPunches()[i].clone();
-			}
-			clone.setPunches(punches);
+			RunnerRaceDataImpl clone = (RunnerRaceDataImpl) super.clone();
+			clone.ecardData = ecardData.clone();
 			clone.setResult(getResult().clone());
-			// dont clone runner, keep the reference
+			// do not clone runner, keep the reference
 			return clone;
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
@@ -75,7 +50,6 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 	}
 	
 	public void copyFrom(RunnerRaceData data) {
-		
 		setStarttime(data.getStarttime());
 		setFinishtime(data.getFinishtime());
 		setErasetime(data.getErasetime());
@@ -94,96 +68,90 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 	}
 
 	public Date getStarttime() {
-		return starttime;
+		return ecardData.getStartTime();
 	}
 
 	public void setStarttime(Date starttime) {
-		this.starttime = starttime;
+		ecardData.setStartTime(starttime);
 	}
 	
 	public Date getOfficialStarttime() {
-		return ( starttime.equals(TimeManager.NO_TIME) ) ?
+		return ( getStarttime().equals(TimeManager.NO_TIME) ) ?
 				getRunner().getRegisteredStarttime() : // return NO_TIME if no registered start time
-				starttime;
+				getStarttime();
 	}
 	
 	public boolean useRegisteredStarttime() {
-		return this.starttime.equals(TimeManager.NO_TIME)
+		return getStarttime().equals(TimeManager.NO_TIME)
 			&& ! getRunner().getRegisteredStarttime().equals(TimeManager.NO_TIME);
 	}
 
 	public Date getFinishtime() {
-		return finishtime;
+		return ecardData.getFinishTime();
 	}
 
 	public void setFinishtime(Date finishtime) {
-		this.finishtime = finishtime;
+		ecardData.setFinishTime(finishtime);
 	}
 
 	public Date getErasetime() {
-		return erasetime;
+		return ecardData.getClearTime();
 	}
 
 	public void setErasetime(Date erasetime) {
-		this.erasetime = erasetime;
+		ecardData.setClearTime(erasetime);
 	}
 
 	public Date getControltime() {
-		return controltime;
+		return ecardData.getCheckTime();
 	}
 
 	public void setControltime(Date controltime) {
-		this.controltime = controltime;
+		ecardData.setCheckTime(controltime);
 	}
 	
-	@Override
 	public Date getReadtime() {
-		return this.readtime;
+		return ecardData.getReadTime();
 	}
 
-	@Override
 	public void setReadtime(Date readtime) {
-		this.readtime = readtime;
+		ecardData.setReadTime(readtime);
 	}
 
-	@Override
 	public Date stampReadtime() {
-		// Use TimeZone to set the time with the right offset
-		long stamp = System.currentTimeMillis();
-		setReadtime(new Date(stamp + TimeZone.getDefault().getOffset(stamp)));
-		return getReadtime();
+		return ecardData.stampReadTime();
 	}
 
 	public Punch[] getPunches() {
-		return punches;
+		return ecardData.getPunches();
 	}
 
 	public void setPunches(Punch[] punches) {
-		this.punches = punches;
+		ecardData.setPunches(punches);
 	}
 	
 	public Course getCourse() {
 		return runner.getCourse();
 	}
 	
+	public Status getStatus() {
+		return result.getStatus();
+	}
+
 	public boolean hasData() {
-		return getResult().getStatus().hasData();
+		return getStatus().hasData();
 	}
 	
 	public boolean hasResult() {
-		return getResult().getStatus().isResolved() && getResult().getStatus().isTraceable();
+		return getStatus().isResolved() && getStatus().isTraceable();
 	}
 	
 	public boolean hasTrace() {
-		return getResult().getStatus().isTraceable();
+		return getStatus().isTraceable();
 	}
 	
 	public boolean statusIsRecheckable() {
-		return getResult().getStatus().isRecheckable();
-	}
-	
-	public Status getStatus() {
-		return getResult().getStatus();
+		return getStatus().isRecheckable();
 	}
 	
 	@Override
@@ -204,7 +172,7 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 	}
 
 	public long getRacetime() {
-		return this.result.getRacetime();
+		return result.getRacetime();
 	}
 
 	public long realRaceTime() {
@@ -231,8 +199,8 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 	public String punchSummary(int sumLength) {
 		StringBuilder buf = new StringBuilder("("); //$NON-NLS-1$
 		int i = 0;
-		while( i<sumLength && i<punches.length ) {
-			buf.append(punches[i].getCode());
+		while( i<sumLength && i<getPunches().length ) {
+			buf.append(getPunches()[i].getCode());
 			buf.append(","); //$NON-NLS-1$
 			i++;
 		}
