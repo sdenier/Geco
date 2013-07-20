@@ -16,6 +16,7 @@ import net.geco.model.RunnerRaceData;
 import net.geco.model.RunnerResult;
 import net.geco.model.Status;
 import net.geco.model.Trace;
+import net.geco.model.TraceData;
 
 
 /**
@@ -27,6 +28,8 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 
 	private ECardData ecardData;
 
+	private TraceData traceData;
+	
 	private RunnerResult result;
 	
 	private Runner runner;
@@ -40,6 +43,7 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 		try {
 			RunnerRaceDataImpl clone = (RunnerRaceDataImpl) super.clone();
 			clone.ecardData = ecardData.clone();
+			clone.setTraceData(traceData.clone());
 			clone.setResult(getResult().clone());
 			// do not clone runner, keep the reference
 			return clone;
@@ -129,6 +133,14 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 		return runner.getCourse();
 	}
 	
+	public TraceData getTraceData() {
+		return traceData;
+	}
+
+	public void setTraceData(TraceData trace) {
+		traceData = trace;
+	}
+
 	public Status getStatus() {
 		return result.getStatus();
 	}

@@ -47,6 +47,10 @@ public interface RunnerRaceData extends Cloneable {
 
 	public Course getCourse();
 	
+	public TraceData getTraceData();
+
+	public void setTraceData(TraceData trace);
+	
 	public boolean hasData();
 	
 	public boolean hasResult();
