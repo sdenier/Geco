@@ -361,12 +361,12 @@ public final class PersistentStore {
 				.field(K.MPS, traceData.getNbMPs())
 				.field(K.PENALTY, result.getTimePenalty());
 			
-			Trace[] traceArray = result.getTrace();
+			Trace[] traceArray = traceData.getTrace();
 			int nbNeut = 0;
 			int[] neutralized = new int[traceArray.length];
 			json.startArrayField(K.TRACE);
 			for (int i = 0; i < traceArray.length; i++) {
-				Trace trace = result.getTrace()[i];
+				Trace trace = traceData.getTrace()[i];
 				json.value(trace.getCode()).value(trace.getTime());
 				if( trace.isNeutralized() ){
 					neutralized[nbNeut++] = i;

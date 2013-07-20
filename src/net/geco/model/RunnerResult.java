@@ -33,20 +33,6 @@ public interface RunnerResult extends Cloneable {
 
 	public String formatTimePenalty();
 
-	public Trace[] getTrace();
-
-	public Trace[] getClearTrace();
-
-//	public void setTrace(Trace[] trace);
-	
-	public String formatTrace();
-	
-	public String formatMpTrace();
-
-	public String formatClearTrace();
-
 	public RunnerResult clone();
-
-	public Trace[] retrieveLeg(String legStart, String legEnd);
 	
 }

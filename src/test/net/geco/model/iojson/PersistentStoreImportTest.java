@@ -130,9 +130,9 @@ public class PersistentStoreImportTest {
 		assertThat(runner136.getPunches().length, equalTo(15));
 		assertThat(runner136.getResult().getStatus(), equalTo(Status.OK));
 		assertThat(runner136.getResult().getRacetime(), equalTo(4186000L));
-		assertThat(runner136.getResult().getTrace()[2].isNeutralized(), equalTo(true));
-		assertThat(runner136.getResult().getTrace()[3].isNeutralized(), equalTo(false));
-		assertThat(runner136.getResult().getTrace()[5].isNeutralized(), equalTo(true));
+		assertThat(runner136.getTraceData().getTrace()[2].isNeutralized(), equalTo(true));
+		assertThat(runner136.getTraceData().getTrace()[3].isNeutralized(), equalTo(false));
+		assertThat(runner136.getTraceData().getTrace()[5].isNeutralized(), equalTo(true));
 	}
 
 	@Test
@@ -156,7 +156,7 @@ public class PersistentStoreImportTest {
 		assertThat(runner224.getResult().getStatus(), equalTo(Status.MP));
 		assertThat(runner224.getTraceData().getNbMPs(), equalTo(2));
 		assertThat(runner224.getResult().getTimePenalty(), equalTo(60000L));
-		assertThat(runner224.getResult().getTrace()[6].getCode(), equalTo("-167"));
+		assertThat(runner224.getTraceData().getTrace()[6].getCode(), equalTo("-167"));
 	}
 		
 }
