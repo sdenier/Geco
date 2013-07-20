@@ -39,7 +39,7 @@ public abstract class AbstractEcardReadingMode extends AbstractECardMode {
 		geco().log("READING " + runnerData.infoString()); //$NON-NLS-1$
 		if( runnerData.getTraceData().getNbMPs() > 0 ) {
 			geco().announcer().dataInfo(
-					runnerData.getResult().formatMpTrace()
+					runnerData.getTraceData().formatMpTrace()
 					+ " (" + runnerData.getTraceData().getNbMPs() + " MP)"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		geco().announcer().announceCardRead(runnerData.getRunner().getEcard());

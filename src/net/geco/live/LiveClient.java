@@ -122,7 +122,7 @@ public class LiveClient implements Announcer.CardListener {
 			Long.toString(result.getRacetime()),
 			Integer.toString(data.getTraceData().getNbMPs()),
 			Long.toString(result.getTimePenalty()),
-			result.formatTrace()
+			data.getTraceData().formatTrace()
 		}, ",", new StringBuilder()); //$NON-NLS-1$
 	}
 

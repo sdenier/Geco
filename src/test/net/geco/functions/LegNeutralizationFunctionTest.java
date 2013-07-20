@@ -99,7 +99,7 @@ public class LegNeutralizationFunctionTest {
 		RunnerRaceData data = GecoFixtures.createRunnerData(courseA, null); 
 		data.setPunches(new Punch[] { punch(42), punch(45), punch(31), punch(45), punch(32) });
 		checker.check(data);
-		assertEquals("42,-43,45,31,45,32", data.getResult().formatClearTrace());
+		assertEquals("42,-43,45,31,45,32", data.getTraceData().formatClearTrace());
 
 		data.setPunches(new Punch[0]);
 		data.setTraceData(factory.createTraceData());
@@ -107,15 +107,15 @@ public class LegNeutralizationFunctionTest {
 		
 		data.setPunches(new Punch[] { punch(42), punch(43), punch(45), punch(45), punch(32) });
 		checker.check(data);
-		assertEquals("42,43,45,-31,45,32", data.getResult().formatClearTrace());
+		assertEquals("42,43,45,-31,45,32", data.getTraceData().formatClearTrace());
 		
 		data.setPunches(new Punch[] { punch(42), punch(45), punch(64), punch(31), punch(45), punch(32) });
 		checker.check(data);
-		assertEquals("42,-43,45,31,45,32", data.getResult().formatClearTrace());
+		assertEquals("42,-43,45,31,45,32", data.getTraceData().formatClearTrace());
 		
 		data.setPunches(new Punch[] { punch(42), punch(45), punch(64), punch(32) });
 		checker.check(data);
-		assertEquals("42,-43,45,-31,-45+64,32", data.getResult().formatClearTrace());
+		assertEquals("42,-43,45,-31,-45+64,32", data.getTraceData().formatClearTrace());
 	}
 	
 	@Test

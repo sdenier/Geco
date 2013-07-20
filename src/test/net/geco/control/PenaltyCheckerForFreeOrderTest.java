@@ -77,7 +77,7 @@ public class PenaltyCheckerForFreeOrderTest {
 		assertEquals(Status.MP, result.getStatus());
 		assertTrue(result.getRacetime() == 630000);
 		assertEquals(5, data.getTraceData().getNbMPs());
-		assertEquals("-121,-122,-34,-33,-45", result.formatTrace());
+		assertEquals("-121,-122,-34,-33,-45", data.getTraceData().formatTrace());
 	}
 	
 	@Test
@@ -93,7 +93,7 @@ public class PenaltyCheckerForFreeOrderTest {
 		assertEquals(Status.OK, result.getStatus());
 		assertTrue(result.getRacetime() == 630000);
 		assertEquals(0, data.getTraceData().getNbMPs());
-		assertEquals("121,122,34,33,45", result.formatTrace());
+		assertEquals("121,122,34,33,45", data.getTraceData().formatTrace());
 	}
 
 	@Test
@@ -109,7 +109,7 @@ public class PenaltyCheckerForFreeOrderTest {
 		assertEquals(Status.OK, result.getStatus());
 		assertTrue(result.getRacetime() == 630000);
 		assertEquals(0, data.getTraceData().getNbMPs());
-		assertEquals("45,122,34,33,121", result.formatTrace());
+		assertEquals("45,122,34,33,121", data.getTraceData().formatTrace());
 	}
 
 	@Test
@@ -125,7 +125,7 @@ public class PenaltyCheckerForFreeOrderTest {
 		assertEquals(Status.OK, result.getStatus());
 		assertTrue(result.getRacetime() == 630000);
 		assertEquals(0, data.getTraceData().getNbMPs());
-		assertEquals("45,122,33,+45,121,34,+33", result.formatTrace());
+		assertEquals("45,122,33,+45,121,34,+33", data.getTraceData().formatTrace());
 	}
 
 	@Test
@@ -141,7 +141,7 @@ public class PenaltyCheckerForFreeOrderTest {
 		assertEquals(Status.MP, result.getStatus());
 		assertTrue(result.getRacetime() == 630000);
 		assertEquals(1, data.getTraceData().getNbMPs());
-		assertEquals("121,34,33,45,-122", result.formatTrace());
+		assertEquals("121,34,33,45,-122", data.getTraceData().formatTrace());
 	}
 
 	@Test
@@ -157,7 +157,7 @@ public class PenaltyCheckerForFreeOrderTest {
 		assertEquals(Status.MP, result.getStatus());
 		assertTrue(result.getRacetime() == 630000);
 		assertEquals(2, data.getTraceData().getNbMPs());
-		assertEquals("34,33,45,-121,-122", result.formatTrace());
+		assertEquals("34,33,45,-121,-122", data.getTraceData().formatTrace());
 	}
 
 	@Test
@@ -173,7 +173,7 @@ public class PenaltyCheckerForFreeOrderTest {
 		assertEquals(Status.MP, result.getStatus());
 		assertTrue(result.getRacetime() == 630000);
 		assertEquals(1, data.getTraceData().getNbMPs());
-		assertEquals("121,122,34,33,+46,-45", result.formatTrace());
+		assertEquals("121,122,34,33,+46,-45", data.getTraceData().formatTrace());
 	}
 
 	@Test
@@ -191,7 +191,7 @@ public class PenaltyCheckerForFreeOrderTest {
 		assertEquals(Status.OK, result.getStatus());
 		assertTrue(result.getRacetime() == 630000 + checker.timePenalty(2));
 		assertEquals(2, data.getTraceData().getNbMPs());
-		assertEquals("121,33,45,-122,-34", result.formatTrace());
+		assertEquals("121,33,45,-122,-34", data.getTraceData().formatTrace());
 	}
 
 	@Test
@@ -209,7 +209,7 @@ public class PenaltyCheckerForFreeOrderTest {
 		assertEquals(Status.MP, result.getStatus());
 		assertTrue(result.getRacetime() == 630000 + checker.timePenalty(3));
 		assertEquals(3, data.getTraceData().getNbMPs());
-		assertEquals("121,34,-122,-33,-45", result.formatTrace());
+		assertEquals("121,34,-122,-33,-45", data.getTraceData().formatTrace());
 	}
 	
 	@Test

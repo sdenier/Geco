@@ -215,7 +215,7 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 	}
 
 	public Trace[] retrieveLeg(int legStart, int legEnd) {
-		return result.retrieveLeg(Integer.toString(legStart), Integer.toString(legEnd));
+		return traceData.retrieveLeg(Integer.toString(legStart), Integer.toString(legEnd));
 	}
 
 	public float getMillisecondPace() {
