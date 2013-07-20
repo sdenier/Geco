@@ -81,11 +81,6 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 				getStarttime();
 	}
 	
-	public boolean useRegisteredStarttime() {
-		return getStarttime().equals(TimeManager.NO_TIME)
-			&& ! getRunner().getRegisteredStarttime().equals(TimeManager.NO_TIME);
-	}
-
 	public Date getFinishtime() {
 		return ecardData.getFinishTime();
 	}
@@ -194,18 +189,6 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 		} else {
 			return realRaceTime + getResult().getTimePenalty();
 		}
-	}
-	
-	public String punchSummary(int sumLength) {
-		StringBuilder buf = new StringBuilder("("); //$NON-NLS-1$
-		int i = 0;
-		while( i<sumLength && i<getPunches().length ) {
-			buf.append(getPunches()[i].getCode());
-			buf.append(","); //$NON-NLS-1$
-			i++;
-		}
-		buf.append("...)"); //$NON-NLS-1$
-		return buf.toString();
 	}
 	
 	public String infoString() {

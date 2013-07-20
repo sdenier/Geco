@@ -23,8 +23,6 @@ public interface RunnerRaceData extends Cloneable {
 	
 	public Date getOfficialStarttime();
 	
-	public boolean useRegisteredStarttime();
-
 	public Date getFinishtime();
 
 	public void setFinishtime(Date finishtime);
@@ -71,8 +69,6 @@ public interface RunnerRaceData extends Cloneable {
 	
 	public long officialRaceTime();
 
-	public String punchSummary(int sumLength);
-	
 	public RunnerRaceData clone();
 
 	public void copyFrom(RunnerRaceData newData);

@@ -25,6 +25,4 @@ public interface Checker {
 
 	public void resetRaceTime(RunnerRaceData runnerData);
 
-	public void normalTrace(RunnerRaceData runnerData);
-
 }

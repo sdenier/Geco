@@ -253,16 +253,4 @@ public class PenaltyCheckerTest {
 		assertTrue(data.getResult().getRacetime() == maxPenalties);
 	}
 
-	@Test
-	public void testNormalTrace() {
-		data.setPunches(new Punch[] { });
-		data.setResult(factory.createRunnerResult());
-		checker.normalTrace(data);
-		assertEquals("", data.getResult().formatTrace());
-		
-		data.setPunches(new Punch[] { punch(31), punch(34), punch(33) });
-		checker.normalTrace(data);
-		assertEquals("31,34,33", data.getResult().formatTrace());
-	}
-	 
 }
