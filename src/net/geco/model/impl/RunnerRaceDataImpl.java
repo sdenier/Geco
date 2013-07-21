@@ -182,7 +182,7 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 		return result.getRacetime();
 	}
 
-	public long realRaceTime() {
+	public long computeRunningTime() {
 		Date finish = getFinishtime();
 		if( finish.equals(TimeManager.NO_TIME) ) {
 			return TimeManager.NO_TIME_l;
@@ -195,11 +195,11 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 	}
 	
 	public long officialRaceTime() {
-		long realRaceTime = realRaceTime();
-		if( realRaceTime==TimeManager.NO_TIME_l ){
+		long runningTime = computeRunningTime();
+		if( runningTime==TimeManager.NO_TIME_l ){
 			return TimeManager.NO_TIME_l;
 		} else {
-			return realRaceTime + getResult().getTimePenalty();
+			return runningTime + getResult().getTimePenalty();
 		}
 	}
 	

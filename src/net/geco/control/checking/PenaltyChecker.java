@@ -8,6 +8,7 @@ import java.util.Properties;
 
 import net.geco.basics.Announcer.StageListener;
 import net.geco.basics.TimeManager;
+import net.geco.control.BasicControl;
 import net.geco.control.GecoControl;
 import net.geco.model.Factory;
 import net.geco.model.RunnerRaceData;
@@ -21,7 +22,7 @@ import net.geco.model.TraceData;
  * @since Dec 7, 2008
  *
  */
-public class PenaltyChecker extends AbstractPunchChecker implements Checker, StageListener {
+public class PenaltyChecker extends BasicControl implements Checker, StageListener {
 	
 	protected long MPPenalty;
 
@@ -49,8 +50,22 @@ public class PenaltyChecker extends AbstractPunchChecker implements Checker, Sta
 		gecoControl.announcer().registerStageListener(this);
 	}
 	
+	@Override
 	public void postInitialize(Stage stage) {
 		setNewProperties(stage);
+	}
+
+	@Override
+	public void check(RunnerRaceData data) {
+		data.setResult(factory().createRunnerResult());
+
+		Status status = computeStatus(data);
+		long racetime = computeRaceTime(data);
+		if( racetime==TimeManager.NO_TIME_l ) {
+			status = Status.MP;
+		}
+		data.getResult().setStatus(status);
+		data.getResult().setRacetime(racetime);
 	}
 	
 	@Override
@@ -59,22 +74,27 @@ public class PenaltyChecker extends AbstractPunchChecker implements Checker, Sta
 		TraceData traceData = factory().createTraceData();
 		traceData.setNbMPs(tracer.getNbMPs());
 		traceData.setTrace(tracer.getTrace());
-		traceData.setRunningTime(data.realRaceTime());
+		traceData.setRunningTime(data.computeRunningTime());
 		data.setTraceData(traceData);
 		return (noMPLimit || tracer.getNbMPs() <= getMPLimit()) ? Status.OK : Status.MP;
 	}
 	
 	@Override
-	public long computeOfficialRaceTime(RunnerRaceData data) {
-		long realRaceTime = super.computeOfficialRaceTime(data);
+	public long computeRaceTime(RunnerRaceData data) {
+		long runningTime = data.computeRunningTime();
 		long timePenalty = timePenalty(data.getTraceData().getNbMPs());
 		data.getResult().setTimePenalty(timePenalty);
-		if( realRaceTime==TimeManager.NO_TIME_l ) {
-			return realRaceTime;
+		if( runningTime==TimeManager.NO_TIME_l ) {
+			return runningTime;
 		}
-		return realRaceTime + timePenalty;
+		return runningTime + timePenalty;
 	}	
-	
+
+	@Override
+	public void resetRaceTime(RunnerRaceData data) {
+		data.getResult().setRacetime(computeRaceTime(data));
+	}
+
 	public long timePenalty(int nbMPs) {
 		return nbMPs * getMPPenalty();
 	}

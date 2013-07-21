@@ -268,7 +268,7 @@ public abstract class AResultExporter extends Control {
 				(runner.isNC()) ? "NC" : "", //$NON-NLS-1$ //$NON-NLS-2$
 				TimeManager.fullTime(runnerData.getOfficialStarttime()),
 				TimeManager.fullTime(runnerData.getFinishtime()),
-				TimeManager.fullTime(runnerData.realRaceTime()),
+				TimeManager.fullTime(runnerData.computeRunningTime()),
 				Integer.toString(runnerData.getTraceData().getNbMPs()),
 				runner.getCourse().getName(),
 				Integer.toString(runner.getCourse().getLength()),

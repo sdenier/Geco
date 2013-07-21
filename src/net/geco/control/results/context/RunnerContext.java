@@ -55,7 +55,7 @@ public class RunnerContext extends GenericContext {
 		put("geco_RunnerResultTime", result.formatRacetime()); //$NON-NLS-1$
 		put("geco_RunnerStatusOrTime", result.shortFormat()); //$NON-NLS-1$
 		put("geco_RunnerNbMPs", data.getTraceData().getNbMPs()); //$NON-NLS-1$
-		put("geco_RunnerRaceTime", TimeManager.time(data.realRaceTime())); //$NON-NLS-1$
+		put("geco_RunnerRaceTime", TimeManager.time(data.computeRunningTime())); //$NON-NLS-1$
 		put("geco_RunnerPace", data.formatPace()); //$NON-NLS-1$
 		return this;
 	}

@@ -161,7 +161,7 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 		displayCardTime(checkTimeF, runnerData.getControltime());
 		displayCardTimeWithMissingHint(startTimeF, runnerData.getStarttime());
 		displayCardTimeWithMissingHint(finishTimeF, runnerData.getFinishtime());
-		displayRacetime(raceTimeF, runnerData.realRaceTime());
+		displayRacetime(raceTimeF, runnerData.computeRunningTime());
 	}
 
 	protected void refreshResultPanel() {

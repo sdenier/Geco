@@ -69,7 +69,7 @@ public interface RunnerRaceData extends Cloneable {
 	
 	public long getRacetime();
 	
-	public long realRaceTime();
+	public long computeRunningTime();
 	
 	public long officialRaceTime();
 
