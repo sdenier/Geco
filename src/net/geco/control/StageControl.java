@@ -5,10 +5,13 @@
 package net.geco.control;
 
 import java.io.BufferedReader;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import net.geco.basics.Announcer;
 import net.geco.basics.GecoResources;
+import net.geco.basics.TimeManager;
 import net.geco.basics.Util;
 import net.geco.model.Category;
 import net.geco.model.Club;
@@ -194,7 +197,34 @@ public class StageControl extends Control {
 			announcer().announceCoursesChanged();
 		}		
 	}
-	
+
+	public boolean validateMassStartTime(Course course, String startTime) {
+		try {
+			Date oldTime = course.getMassStartTime();
+			Date newTime = (startTime.equals("")) ? //$NON-NLS-1$
+				TimeManager.NO_TIME
+				:
+				TimeManager.userParse(startTime);
+			if( ! oldTime.equals(newTime) ) {
+				course.setMassStartTime(newTime);
+				geco().log("Change Mass start time for course "
+						+ course.getName() + Messages.getString("RunnerControl.FromMessage") //$NON-NLS-1$
+						+ TimeManager.fullTime(oldTime) + Messages.getString("RunnerControl.ToMessage") //$NON-NLS-1$
+						+ TimeManager.fullTime(newTime));
+			}
+			return true;
+		} catch (ParseException e1) {
+			geco().info(Messages.getString("RunnerControl.RegisteredStartimeWarning"), true); //$NON-NLS-1$
+			return false;
+		}
+	}
+
+	public void updateMassStarttimes(long zeroTime, long oldTime) {
+		for (Course course : registry().getCourses()) {
+			Date relativeTime = TimeManager.relativeTime(course.getMassStartTime(), oldTime);
+			course.setMassStartTime(TimeManager.absoluteTime(relativeTime, zeroTime));
+		}
+	}
 
 	public Category createCategory(String shortName, String longName) {
 		Category cat = factory().createCategory();
@@ -210,10 +240,6 @@ public class StageControl extends Control {
 								+ (registry().getCategories().size() + 1), ""); //$NON-NLS-1$
 	}
 
-	/**
-	 * @param cat
-	 * @throws Exception 
-	 */
 	public boolean removeCategory(Category cat) throws Exception {
 		if( canRemoveCategory(cat) ) {
 			stage().registry().removeCategory(cat);
@@ -223,11 +249,6 @@ public class StageControl extends Control {
 		return false;		
 	}
 
-	/**
-	 * @param cat
-	 * @return
-	 * @throws Exception 
-	 */
 	private boolean canRemoveCategory(Category cat) throws Exception {
 		for (Runner runner : registry().getRunners()) {
 			if( runner.getCategory() == cat ) {
@@ -258,10 +279,6 @@ public class StageControl extends Control {
 		}
 	}
 	
-	/**
-	 * @param cat
-	 * @param value
-	 */
 	public void updateShortname(Category cat, String newName) {
 		if( !cat.getShortname().equals(newName) && registry().findCategory(newName)==null ) {
 			registry().updateCategoryName(cat, newName);
@@ -269,17 +286,12 @@ public class StageControl extends Control {
 		}		
 	}
 
-	/**
-	 * @param cat
-	 * @param value
-	 */
 	public void updateName(Category cat, String newName) {
 		if( !cat.getLongname().equals(newName) ) {
 			cat.setLongname(newName);
 			announcer().announceCategoriesChanged();
 		}
 	}
-
 
 	public Club ensureClubInRegistry(String clubname, String shortname) {
 		Club rClub = registry().findClub(clubname);

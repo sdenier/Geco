@@ -28,6 +28,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumnModel;
 
 import net.geco.basics.Announcer;
+import net.geco.basics.TimeManager;
 import net.geco.control.SectionService;
 import net.geco.framework.IGecoApp;
 import net.geco.model.Course;
@@ -181,8 +182,9 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 				editB,
 				importB,refreshB);
 		TableColumnModel columnModel = coursePanel.table().getColumnModel();
-		columnModel.getColumn(0).setPreferredWidth(175);
-		columnModel.getColumn(1).setPreferredWidth(25);
+		columnModel.getColumn(0).setPreferredWidth(125);
+		columnModel.getColumn(1).setPreferredWidth(50);
+		columnModel.getColumn(2).setPreferredWidth(25);
 
 		final ConfigTableModel<Integer> controlsModel = createControlModel();
 		List<Integer> empty = Collections.emptyList();
@@ -240,30 +242,34 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 	private ConfigTableModel<Course> createTableModel(final IGecoApp geco) {
 		return new ConfigTableModel<Course>(new String[] {
 											Messages.uiGet("CourseConfigPanel.CourseNameHeader"), //$NON-NLS-1$
+											"Mass Start",
 											Messages.uiGet("CourseConfigPanel.CourseNbControlsHeader")}) { //$NON-NLS-1$
 			@Override
 			public Object getValueIn(Course course, int columnIndex) {
 				switch (columnIndex) {
 				case 0: return course.getName();
-				case 1: return course.nbControls();
+				case 1: return TimeManager.fullTime(course.getMassStartTime());
+				case 2: return course.nbControls();
 				default: return super.getValueIn(course, columnIndex);
 				}
 			}
 			@Override
 			public boolean isCellEditable(int row, int col) {
-				return col == 0;
+				return col < 2;
 			}
 			@Override
 			public void setValueIn(Course course, Object value, int col) {
 				switch (col) {
 				case 0: geco.stageControl().updateName(course, (String) value); break;
+				case 1: geco.stageControl().validateMassStartTime(course, (String) value); break;
 				default: break;
 				}
 			}
 			@Override
 			public Class<?> getColumnClass(int columnIndex) {
 				switch (columnIndex) {
-				case 1: return Integer.class;
+				case 1: return String.class;
+				case 2: return Integer.class;
 				default: return super.getColumnClass(columnIndex);
 				}
 
