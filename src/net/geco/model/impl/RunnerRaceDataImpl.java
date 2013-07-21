@@ -194,15 +194,6 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 		return finish.getTime() - start.getTime();
 	}
 	
-	public long officialRaceTime() {
-		long runningTime = computeRunningTime();
-		if( runningTime==TimeManager.NO_TIME_l ){
-			return TimeManager.NO_TIME_l;
-		} else {
-			return runningTime + getResult().getTimePenalty();
-		}
-	}
-	
 	public String infoString() {
 		StringBuilder buffer = new StringBuilder(getRunner().idString());
 		buffer.append(", " + getCourse().getName() + " " + getResult().formatStatus()); //$NON-NLS-1$ //$NON-NLS-2$
