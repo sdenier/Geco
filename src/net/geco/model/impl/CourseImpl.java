@@ -6,9 +6,11 @@ package net.geco.model.impl;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
+import net.geco.basics.TimeManager;
 import net.geco.model.Course;
 import net.geco.model.Messages;
 import net.geco.model.Section;
@@ -27,6 +29,8 @@ public class CourseImpl implements Course {
 	private int length;
 	
 	private int climb;
+	
+	private Date massStartTime = TimeManager.NO_TIME;
 	
 	private int[] codes;
 	
@@ -50,6 +54,14 @@ public class CourseImpl implements Course {
 	
 	public int nbControls() {
 		return codes.length;
+	}
+
+	public Date getMassStartTime() {
+		return massStartTime;
+	}
+
+	public void setMassStartTime(Date massStartTime) {
+		this.massStartTime = massStartTime;
 	}
 
 	public void setClimb(int climb) {

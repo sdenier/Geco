@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import net.geco.basics.GecoResources;
+import net.geco.basics.TimeManager;
 import net.geco.model.Category;
 import net.geco.model.Club;
 import net.geco.model.Course;
@@ -84,6 +85,7 @@ public final class PersistentStore {
 			course.setName(c.getString(K.NAME));
 			course.setLength(c.getInt(K.LENGTH));
 			course.setClimb(c.getInt(K.CLIMB));
+			course.setMassStartTime(new Date(c.optLong(K.START, TimeManager.NO_TIME_l)));
 			JSONArray codez = c.getJSONArray(K.CODES);
 			int[] codes = new int[codez.length()];
 			for (int j = 0; j < codes.length; j++) {
@@ -259,6 +261,7 @@ public final class PersistentStore {
 				.field(K.NAME, course.getName())
 				.field(K.LENGTH, course.getLength())
 				.field(K.CLIMB, course.getClimb())
+				.field(K.START, course.getMassStartTime())
 				.startArrayField(K.CODES);
 			for (int code : course.getCodes()) { json.value(code); }
 			json.endArray().startArrayField(K.SECTIONS);
