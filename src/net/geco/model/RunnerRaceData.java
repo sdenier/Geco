@@ -17,6 +17,10 @@ public interface RunnerRaceData extends Cloneable {
 
 	public void setRunner(Runner runner);
 
+	public ECardData getEcardData();
+
+	public void setEcardData(ECardData ecardData);
+	
 	public Date getStarttime();
 
 	public void setStarttime(Date starttime);

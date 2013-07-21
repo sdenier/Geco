@@ -41,10 +41,10 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 	
 	public RunnerRaceData clone() {
 		try {
-			RunnerRaceDataImpl clone = (RunnerRaceDataImpl) super.clone();
-			clone.ecardData = ecardData.clone();
+			RunnerRaceData clone = (RunnerRaceData) super.clone();
+			clone.setEcardData(ecardData.clone());
 			clone.setTraceData(traceData.clone());
-			clone.setResult(getResult().clone());
+			clone.setResult(result.clone());
 			// do not clone runner, keep the reference
 			return clone;
 		} catch (CloneNotSupportedException e) {
@@ -54,12 +54,7 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 	}
 	
 	public void copyFrom(RunnerRaceData data) {
-		setStarttime(data.getStarttime());
-		setFinishtime(data.getFinishtime());
-		setErasetime(data.getErasetime());
-		setControltime(data.getControltime());
-		setReadtime(data.getReadtime());
-		setPunches(data.getPunches());
+		setEcardData(data.getEcardData());
 		setResult(data.getResult());
 	}
 
@@ -69,6 +64,14 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 
 	public void setRunner(Runner runner) {
 		this.runner = runner;
+	}
+
+	public ECardData getEcardData() {
+		return ecardData;
+	}
+
+	public void setEcardData(ECardData ecardData) {
+		this.ecardData = ecardData;
 	}
 
 	public Date getStarttime() {
