@@ -2,9 +2,10 @@
  * Copyright (c) 2008 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.control;
+package net.geco.control.checking;
 
 import net.geco.basics.TimeManager;
+import net.geco.control.BasicControl;
 import net.geco.model.Factory;
 import net.geco.model.Punch;
 import net.geco.model.RunnerRaceData;
@@ -15,10 +16,10 @@ import net.geco.model.Status;
  * @since Nov 23, 2008
  *
  */
-public abstract class PunchChecker extends BasicControl {
+public abstract class AbstractPunchChecker extends BasicControl {
 	
 	
-	public PunchChecker(Factory factory) {
+	public AbstractPunchChecker(Factory factory) {
 		super(factory);
 	}
 

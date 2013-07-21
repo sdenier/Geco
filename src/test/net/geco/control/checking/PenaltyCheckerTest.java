@@ -2,14 +2,14 @@
  * Copyright (c) 2008 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package test.net.geco.control;
+package test.net.geco.control.checking;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
-import net.geco.control.PenaltyChecker;
+import net.geco.control.checking.PenaltyChecker;
 import net.geco.model.Course;
 import net.geco.model.Factory;
 import net.geco.model.Punch;

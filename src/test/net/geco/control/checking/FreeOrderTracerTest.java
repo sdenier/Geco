@@ -2,14 +2,14 @@
  * Copyright (c) 2011 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package test.net.geco.control;
+package test.net.geco.control.checking;
 
 import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
 
-import net.geco.control.FreeOrderTracer;
-import net.geco.control.Tracer;
+import net.geco.control.checking.FreeOrderTracer;
+import net.geco.control.checking.Tracer;
 import net.geco.model.Factory;
 import net.geco.model.Punch;
 import net.geco.model.impl.POFactory;

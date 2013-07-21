@@ -10,10 +10,10 @@ import static test.net.geco.GecoFixtures.punch;
 
 import java.util.Date;
 
-import net.geco.control.FreeOrderTracer;
 import net.geco.control.GecoControl;
-import net.geco.control.PenaltyChecker;
 import net.geco.control.RunnerControl;
+import net.geco.control.checking.FreeOrderTracer;
+import net.geco.control.checking.PenaltyChecker;
 import net.geco.control.ecardmodes.CourseDetector;
 import net.geco.model.Course;
 import net.geco.model.Punch;

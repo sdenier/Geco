@@ -2,7 +2,7 @@
  * Copyright (c) 2011 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.control;
+package net.geco.control.checking;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,6 +12,7 @@ import java.util.Map;
 
 import net.geco.basics.CsvReader;
 import net.geco.basics.Announcer.CourseListener;
+import net.geco.control.GecoControl;
 import net.geco.model.Course;
 import net.geco.model.Factory;
 import net.geco.model.Registry;

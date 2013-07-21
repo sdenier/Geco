@@ -2,7 +2,7 @@
  * Copyright (c) 2011 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.control;
+package net.geco.control.checking;
 
 import net.geco.model.Punch;
 import net.geco.model.Trace;

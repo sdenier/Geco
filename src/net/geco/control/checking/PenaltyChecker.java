@@ -2,12 +2,13 @@
  * Copyright (c) 2008 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.control;
+package net.geco.control.checking;
 
 import java.util.Properties;
 
 import net.geco.basics.Announcer.StageListener;
 import net.geco.basics.TimeManager;
+import net.geco.control.GecoControl;
 import net.geco.model.Factory;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Stage;
@@ -20,7 +21,7 @@ import net.geco.model.TraceData;
  * @since Dec 7, 2008
  *
  */
-public class PenaltyChecker extends PunchChecker implements Checker, StageListener {	
+public class PenaltyChecker extends AbstractPunchChecker implements Checker, StageListener {
 	
 	protected long MPPenalty;
 

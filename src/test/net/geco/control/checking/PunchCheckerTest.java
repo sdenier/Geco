@@ -2,14 +2,14 @@
  * Copyright (c) 2008 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package test.net.geco.control;
+package test.net.geco.control.checking;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
-import net.geco.control.PunchChecker;
+import net.geco.control.checking.AbstractPunchChecker;
 import net.geco.model.Course;
 import net.geco.model.Factory;
 import net.geco.model.Punch;
@@ -30,7 +30,7 @@ import org.junit.Test;
 public class PunchCheckerTest {
 	
 	private Factory factory;
-	private PunchChecker checker;
+	private AbstractPunchChecker checker;
 	
 	private Course course;
 	private RunnerRaceData data;
@@ -38,7 +38,7 @@ public class PunchCheckerTest {
 	@Before
 	public void setUp() {
 		factory = new POFactory();
-		checker = new PunchChecker(factory) {};
+		checker = new AbstractPunchChecker(factory) {};
 		course = factory.createCourse();
 		data = factory.createRunnerRaceData();
 		Runner runner = factory.createRunner();

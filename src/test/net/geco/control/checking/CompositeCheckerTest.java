@@ -2,17 +2,17 @@
  * Copyright (c) 2011 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package test.net.geco.control;
+package test.net.geco.control.checking;
 
 import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
 
-import net.geco.control.CompositeChecker;
-import net.geco.control.CompositeTracer;
-import net.geco.control.FreeOrderTracer;
-import net.geco.control.InlineTracer;
-import net.geco.control.MultiCourse;
+import net.geco.control.checking.CompositeChecker;
+import net.geco.control.checking.CompositeTracer;
+import net.geco.control.checking.FreeOrderTracer;
+import net.geco.control.checking.InlineTracer;
+import net.geco.control.checking.MultiCourse;
 import net.geco.model.Course;
 import net.geco.model.Factory;
 import net.geco.model.Punch;

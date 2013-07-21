@@ -2,9 +2,10 @@
  * Copyright (c) 2011 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.control;
+package net.geco.control.checking;
 
 import net.geco.basics.Util;
+import net.geco.control.BasicControl;
 import net.geco.model.Factory;
 import net.geco.model.Trace;
 
