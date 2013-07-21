@@ -10,15 +10,15 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.geco.basics.CsvReader;
 import net.geco.basics.Announcer.CourseListener;
+import net.geco.basics.CsvReader;
 import net.geco.control.GecoControl;
 import net.geco.model.Course;
 import net.geco.model.Factory;
 import net.geco.model.Registry;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Stage;
-import net.geco.model.Status;
+import net.geco.model.TraceData;
 
 /**
  * @author Simon Denier
@@ -47,7 +47,7 @@ public class CompositeChecker extends PenaltyChecker implements CourseListener {
 	}
 	
 	@Override
-	public Status computeStatus(RunnerRaceData data) {
+	public TraceData computeTraceData(RunnerRaceData data) {
 		Course course = data.getCourse();
 		MultiCourse multiCourse = multis.get(course);
 		if( multiCourse==null ){
@@ -55,7 +55,7 @@ public class CompositeChecker extends PenaltyChecker implements CourseListener {
 			multiCourse = registerMultiCourse(createMultiCourse(course, course.getCodes()[0]));
 		}
 		tracer().setMultiCourse(multiCourse);
-		return super.computeStatus(data);
+		return super.computeTraceData(data);
 	}
 	
 	@Override

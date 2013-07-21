@@ -17,12 +17,14 @@ public interface Checker {
 
 	public void postInitialize(Stage newStage);
 
-	public void check(RunnerRaceData runnerData);
+	public void check(RunnerRaceData raceData);
 
 	public Status computeStatus(RunnerRaceData raceData);
 
 	public long computeRaceTime(RunnerRaceData raceData);
 
-	public void resetRaceTime(RunnerRaceData runnerData);
+	public long computeTimePenalty(RunnerRaceData raceData);
+	
+	public void resetRaceTime(RunnerRaceData raceData);
 
 }

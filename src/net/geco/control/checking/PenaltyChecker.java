@@ -8,13 +8,11 @@ import java.util.Properties;
 
 import net.geco.basics.Announcer.StageListener;
 import net.geco.basics.TimeManager;
-import net.geco.control.BasicControl;
 import net.geco.control.GecoControl;
 import net.geco.model.Factory;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Stage;
 import net.geco.model.Status;
-import net.geco.model.TraceData;
 
 
 /**
@@ -22,20 +20,17 @@ import net.geco.model.TraceData;
  * @since Dec 7, 2008
  *
  */
-public class PenaltyChecker extends BasicControl implements Checker, StageListener {
+public class PenaltyChecker extends AbstractChecker implements Checker, StageListener {
 	
 	protected long MPPenalty;
 
 	protected int MPLimit;
 
-	protected Tracer tracer;
-
 	protected boolean noMPLimit;
 	
 	
 	public PenaltyChecker(Factory factory, Tracer tracer) {
-		super(factory);
-		this.tracer = tracer;
+		super(factory, tracer);
 		setMPLimit(defaultMPLimit());
 		setMPPenalty(defaultMPPenalty());
 		noMPLimit = false;
@@ -56,47 +51,30 @@ public class PenaltyChecker extends BasicControl implements Checker, StageListen
 	}
 
 	@Override
-	public void check(RunnerRaceData data) {
-		data.setResult(factory().createRunnerResult());
-
-		Status status = computeStatus(data);
-		long racetime = computeRaceTime(data);
-		if( racetime==TimeManager.NO_TIME_l ) {
-			status = Status.MP;
-		}
-		data.getResult().setStatus(status);
-		data.getResult().setRacetime(racetime);
+	public long computeTimePenalty(RunnerRaceData raceData) {
+		return timePenalty(raceData.getTraceData().getNbMPs());
 	}
-	
-	@Override
-	public Status computeStatus(RunnerRaceData data) {
-		tracer.computeTrace(data.getCourse().getCodes(), data.getPunches());
-		TraceData traceData = factory().createTraceData();
-		traceData.setNbMPs(tracer.getNbMPs());
-		traceData.setTrace(tracer.getTrace());
-		traceData.setRunningTime(data.computeRunningTime());
-		data.setTraceData(traceData);
-		return (noMPLimit || tracer.getNbMPs() <= getMPLimit()) ? Status.OK : Status.MP;
+
+	public long timePenalty(int nbMPs) {
+		return nbMPs * getMPPenalty();
 	}
 	
 	@Override
 	public long computeRaceTime(RunnerRaceData data) {
 		long runningTime = data.computeRunningTime();
-		long timePenalty = timePenalty(data.getTraceData().getNbMPs());
-		data.getResult().setTimePenalty(timePenalty);
 		if( runningTime==TimeManager.NO_TIME_l ) {
 			return runningTime;
 		}
-		return runningTime + timePenalty;
-	}	
-
-	@Override
-	public void resetRaceTime(RunnerRaceData data) {
-		data.getResult().setRacetime(computeRaceTime(data));
+		return runningTime + data.getResult().getTimePenalty();
 	}
 
-	public long timePenalty(int nbMPs) {
-		return nbMPs * getMPPenalty();
+	@Override
+	public Status computeStatus(RunnerRaceData data) {
+		Status status = (noMPLimit || data.getTraceData().getNbMPs() <= getMPLimit()) ? Status.OK : Status.MP;
+		if( data.getResult().getRacetime()==TimeManager.NO_TIME_l ) {
+			status = Status.MP;
+		}
+		return status;
 	}
 
 	public int defaultMPLimit() {
