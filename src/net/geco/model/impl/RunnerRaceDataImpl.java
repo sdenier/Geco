@@ -55,6 +55,7 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 	
 	public void copyFrom(RunnerRaceData data) {
 		setEcardData(data.getEcardData());
+		setTraceData(data.getTraceData());
 		setResult(data.getResult());
 	}
 

@@ -4,8 +4,9 @@
  */
 package net.geco.control.ecardmodes;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Vector;
+import java.util.List;
 
 import net.geco.control.Control;
 import net.geco.control.GecoControl;
@@ -46,8 +47,8 @@ public class CourseDetector extends Control {
 	}
 
 	public Course detectCourse(RunnerRaceData data) {
-		Vector<CourseResult> distances = new Vector<CourseResult>();
 		int nbPunches = data.getPunches().length;
+		List<CourseResult> distances = new ArrayList<CourseResult>(registry().getCourses().size());
 		for (Course course : registry().getCourses()) {
 			if( course != autoCourse ){
 				// don't include Auto course in matching course - will match all MP traces with OK
@@ -56,12 +57,12 @@ public class CourseDetector extends Control {
 		}
 		Collections.sort(distances);
 		
-		int minMps = Integer.MAX_VALUE;
 		RunnerRaceData testData = data.clone();
 		testData.setRunner(runnerControl.buildMockRunner());
 		if( data.getRunner() != null ){
 			testData.getRunner().setRegisteredStarttime(data.getRunner().getRegisteredStarttime());
 		}
+		int minMps = Integer.MAX_VALUE;
 		CourseResult bestResult = new CourseResult(minMps, testData.getCourse());
 		bestResult.result = data.getResult(); // default value
 

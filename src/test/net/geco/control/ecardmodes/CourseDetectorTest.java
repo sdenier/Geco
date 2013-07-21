@@ -89,6 +89,7 @@ public class CourseDetectorTest {
 		when(geco.checker()).thenReturn(new PenaltyChecker(factory));
 		assertEquals("should find closest match with MP trace", courseA, detector.detectCourse(raceData));
 		assertEquals(Status.MP, raceData.getStatus());
+		assertEquals("31,-34,31,33,31,-32+34,31", raceData.getTraceData().formatTrace());
 	}
 	
 	@Test
@@ -162,7 +163,7 @@ public class CourseDetectorTest {
 				 punch(35), punch(36), punch(31), punch(31), punch(33), punch(31), punch(32), punch(31), punch(37)
 		});
 		when(geco.checker()).thenReturn(new PenaltyChecker(factory, new FreeOrderTracer(factory)));
-		assertEquals("should find closets match with MP trace", courseC, detector.detectCourse(raceData));
+		assertEquals("should find closest match with MP trace", courseC, detector.detectCourse(raceData));
 		assertEquals(Status.MP, raceData.getStatus());
 	}
 	
