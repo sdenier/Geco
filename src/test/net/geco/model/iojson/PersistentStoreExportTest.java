@@ -15,10 +15,11 @@ import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static test.net.geco.testfactory.CourseFactory.createCourse;
+import static test.net.geco.testfactory.CourseFactory.createCourseWithMassStartTime;
 import static test.net.geco.testfactory.GroupFactory.createCategory;
 import static test.net.geco.testfactory.GroupFactory.createCategoryWithCourse;
 import static test.net.geco.testfactory.GroupFactory.createClub;
-import static test.net.geco.testfactory.GroupFactory.createCourse;
 import static test.net.geco.testfactory.GroupFactory.createHeatSet;
 
 import java.io.IOException;
@@ -45,7 +46,6 @@ import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import test.net.geco.testfactory.GroupFactory;
 import test.net.geco.testfactory.RunnerFactory;
 
 /**
@@ -86,7 +86,7 @@ public class PersistentStoreExportTest {
 
 	@Test
 	public void exportCourses() throws IOException {
-		Collection<Course> courses = asList(GroupFactory.createCourseWithMassStartTime("Course A", new Date(32400000)));
+		Collection<Course> courses = asList(createCourseWithMassStartTime("Course A", new Date(32400000)));
 		subject.exportCourses(json, courses);
 		verify(json).field(K.NAME, "Course A");
 		verify(json).field(K.START, new Date(32400000));

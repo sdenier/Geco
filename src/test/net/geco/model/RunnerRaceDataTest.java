@@ -20,7 +20,7 @@ import net.geco.model.impl.POFactory;
 
 import org.junit.Test;
 
-import test.net.geco.testfactory.GroupFactory;
+import test.net.geco.testfactory.CourseFactory;
 import test.net.geco.testfactory.RunnerFactory;
 
 /**
@@ -37,7 +37,7 @@ public class RunnerRaceDataTest {
 				runnerData.getOfficialStarttime(),
 				equalTo(TimeManager.NO_TIME));
 
-		Course course = GroupFactory.createCourseWithMassStartTime("A", new Date(1000000));
+		Course course = CourseFactory.createCourseWithMassStartTime("A", new Date(1000000));
 		runnerData.getRunner().setCourse(course);
 		assertThat("Course time for a mass start should be used when it is the only option",
 				runnerData.getOfficialStarttime(),
