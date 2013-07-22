@@ -13,6 +13,7 @@ import net.geco.control.checking.InlineTracer;
 import net.geco.control.checking.Tracer;
 import net.geco.model.Factory;
 import net.geco.model.Punch;
+import net.geco.model.TraceData;
 import net.geco.model.impl.POFactory;
 
 import org.junit.Before;
@@ -65,11 +66,11 @@ public class InlineTracerTest {
 
 	@Test
 	public void testAmelieRace() {
-		tracer.computeTrace(okamelie, punches(amelie));
-		assertEquals(0, tracer.getNbMPs());
+		TraceData trace = tracer.computeTrace(okamelie, punches(amelie));
+		assertEquals(0, trace.getNbMPs());
 		assertEquals(
 			"131,147,144,135,131,158,161,164,131,154,153,131,136,142,131,159,181,104,195,189,188,185,189,183,179,189,199,121,109,189,107,124,102,189,180,175,174,173,172,169,129,200",
-			tracer.getTraceAsString());
+			trace.formatTrace());
 	}
 
 	
@@ -82,11 +83,11 @@ public class InlineTracerTest {
 	
 	@Test
 	public void testMisaRace() {
-		tracer.computeTrace(okmisa, punches(misa));
-		assertEquals(0, tracer.getNbMPs());
+		TraceData trace = tracer.computeTrace(okmisa, punches(misa));
+		assertEquals(0, trace.getNbMPs());
 		assertEquals(
 			"131,158,161,164,131,+153,154,153,131,136,142,131,147,144,135,131,159,181,104,195,189,183,179,189,199,121,109,189,107,124,102,189,188,185,189,180,175,174,173,172,169,129,200",
-			tracer.getTraceAsString());
+			trace.formatTrace());
 	}
 
 	
@@ -99,11 +100,11 @@ public class InlineTracerTest {
 	
 	@Test
 	public void testLolaRace() {
-		tracer.computeTrace(oklola, punches(lola));
-		assertEquals(1, tracer.getNbMPs());
+		TraceData trace = tracer.computeTrace(oklola, punches(lola));
+		assertEquals(1, trace.getNbMPs());
 		assertEquals(
 			"131,+154,154,-153+152,131,+142,136,142,131,147,144,135,131,158,161,164,131,159,181,104,195,189,199,121,109,189,107,124,102,189,188,185,189,183,179,189,180,175,174,173,172,169,129,200",
-			tracer.getTraceAsString());
+			trace.formatTrace());
 	}
 	
 	
@@ -116,11 +117,11 @@ public class InlineTracerTest {
 
 	@Test
 	public void testPaulineRace() {
-		tracer.computeTrace(okpauline, punches(pauline));
-		assertEquals(1, tracer.getNbMPs());
+		TraceData trace = tracer.computeTrace(okpauline, punches(pauline));
+		assertEquals(1, trace.getNbMPs());
 		assertEquals(
 			"131,136,142,-131,147,144,135,131,158,160,161,164,131,154,153,131,159,181,104,195,189,107,124,102,189,188,185,189,183,179,189,199,121,109,189,180,175,174,173,172,169,129,200",
-			tracer.getTraceAsString());
+			trace.formatTrace());
 	}
 
 }

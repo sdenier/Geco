@@ -5,8 +5,6 @@
 package net.geco.control.checking;
 
 import net.geco.control.BasicControl;
-import net.geco.control.checking.Checker;
-import net.geco.control.checking.Tracer;
 import net.geco.model.Factory;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.RunnerResult;
@@ -37,10 +35,7 @@ public abstract class AbstractChecker extends BasicControl implements Checker {
 	}
 
 	public TraceData computeTraceData(RunnerRaceData runnerData) {
-		tracer.computeTrace(runnerData.getCourse().getCodes(), runnerData.getPunches());
-		TraceData traceData = factory().createTraceData();
-		traceData.setNbMPs(tracer.getNbMPs());
-		traceData.setTrace(tracer.getTrace());
+		TraceData traceData = tracer.computeTrace(runnerData.getCourse().getCodes(), runnerData.getPunches());
 		traceData.setRunningTime(runnerData.computeRunningTime());
 		return traceData;
 	}

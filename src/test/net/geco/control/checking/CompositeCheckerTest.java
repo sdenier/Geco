@@ -118,6 +118,7 @@ public class CompositeCheckerTest {
 	public void checkerShouldSetUpTracerWithMultiCourse() {
 		MultiCourse multiCourse = new MultiCourse(course1);
 		CompositeTracer tracer = Mockito.mock(CompositeTracer.class);
+		Mockito.when(tracer.computeTrace(course1.getCodes(), new Punch[0])).thenReturn(factory.createTraceData());
 		CompositeChecker checker = new CompositeChecker(factory, tracer);
 		checker.registerMultiCourse(multiCourse);
 		runner.setCourse(course1);
