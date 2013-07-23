@@ -67,42 +67,20 @@ public class TraceDataImpl implements TraceData {
 		this.trace = trace;
 	}
 
-	public String formatTrace() {
-		if( trace.length>0 )
-			return Util.join(trace, ",", new StringBuilder()); //$NON-NLS-1$
-		else
-			return ""; //$NON-NLS-1$
+	public Trace[] getMpTrace() {
+		ArrayList<Trace> mpTrace = new ArrayList<Trace>();
+		for (Trace t : trace) {
+			if( t.isMP() ){	mpTrace.add(t); }
+		}
+		return mpTrace.toArray(new Trace[0]);
 	}
 
-	public String formatMpTrace() {
-		if( nbMPs==0 ){
-			return ""; //$NON-NLS-1$
-		}
-		StringBuilder mpTrace = new StringBuilder();
-		for (Trace t : trace) {
-			if( t.isMP() ){
-				mpTrace.append(t.getCode()).append(","); //$NON-NLS-1$
-			}
-		}
-		return mpTrace.substring(0, mpTrace.length() - 1); // remove last ","
-	}
-	
 	public Trace[] getClearTrace() {
 		ArrayList<Trace> clearTrace = new ArrayList<Trace>(trace.length);
 		for (Trace t : trace) {
-			if( ! t.isAdded() ){
-				clearTrace.add(t);
-			}
+			if( ! t.isAdded() ) { clearTrace.add(t); }
 		}
 		return clearTrace.toArray(new Trace[0]);
-	}
-
-	public String formatClearTrace() {
-		Trace[] clearTrace = getClearTrace();
-		if( clearTrace.length>0 )
-			return Util.join(clearTrace, ",", new StringBuilder()); //$NON-NLS-1$
-		else
-			return ""; //$NON-NLS-1$
 	}
 
 	public Trace[] retrieveLeg(String legStart, String legEnd) {
@@ -115,4 +93,23 @@ public class TraceDataImpl implements TraceData {
 		return null;
 	}
 	
+	protected String formatTrace(Trace[] trace) {
+		if( trace.length > 0 )
+			return Util.join(trace, ",", new StringBuilder()); //$NON-NLS-1$
+		else
+			return ""; //$NON-NLS-1$
+	}
+
+	public String formatTrace() {
+		return formatTrace(trace);
+	}
+
+	public String formatMpTrace() {
+		return formatTrace(getMpTrace());
+	}
+
+	public String formatClearTrace() {
+		return formatTrace(getClearTrace());
+	}
+
 }
