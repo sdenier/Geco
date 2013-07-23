@@ -93,6 +93,14 @@ public class TraceDataImpl implements TraceData {
 		return null;
 	}
 	
+	public Trace[] getPunchTrace() {
+		ArrayList<Trace> punchTrace = new ArrayList<Trace>(trace.length);
+		for (Trace t : trace) {
+			if( ! t.isMP() || t.isSubst() ) { punchTrace.add(t); }
+		}
+		return punchTrace.toArray(new Trace[0]);
+	}
+
 	protected String formatTrace(Trace[] trace) {
 		if( trace.length > 0 )
 			return Util.join(trace, ",", new StringBuilder()); //$NON-NLS-1$
@@ -110,6 +118,10 @@ public class TraceDataImpl implements TraceData {
 
 	public String formatClearTrace() {
 		return formatTrace(getClearTrace());
+	}
+
+	public String formatPunchTrace() {
+		return formatTrace(getPunchTrace());
 	}
 
 }
