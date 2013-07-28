@@ -92,7 +92,12 @@ public class SectionsTracer extends BasicControl implements Tracer {
 	 * Corner cases: missing sections, two adjacent missing sections, missing sections at start/end
 	 */
 	public List<SectionPunches> refineSectionMarkers(List<SectionPunches> sections) {
-		
+		for (int i = 1; i < sections.size(); i++) {
+			sections.get(i - 1).lastOkPunchIndex = sections.get(i).firstOkPunchIndex - 1;
+		}
+		sections.get(0).firstOkPunchIndex = 0;
+		SectionPunches lastSection = sections.get(sections.size() - 1);
+		lastSection.lastOkPunchIndex = lastSection.punchTrace.length - 1;
 		return sections;
 	}
 	
