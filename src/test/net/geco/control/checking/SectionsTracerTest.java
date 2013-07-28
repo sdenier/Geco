@@ -35,42 +35,151 @@ public class SectionsTracerTest {
 	}
 	
 	@Test
-	public void refineSectionMarkers_nominalCase() {
-		List<SectionPunches> okSections = Arrays.asList(
-				new SectionPunches(TraceFactory.createTraceData("31", "32", "33", "+34", "+35", "+36", "+37", "+38", "+39")),
-				new SectionPunches(TraceFactory.createTraceData("+31", "+32", "+33", "34", "35", "36", "+37", "+38", "+39")),
-				new SectionPunches(TraceFactory.createTraceData("+31", "+32", "+33", "+34", "+35", "+36", "37", "38", "39")));
-		List<SectionPunches> refinedSections = subject.refineSectionMarkers(okSections);
-		assertThat(refinedSections, is(okSections));
+	public void refineSectionMarkers_nominalJoinedSections() {
+		List<SectionPunches> sections = Arrays.asList(
+				TraceFactory.createSectionPunches("31", "32", "33", "+34", "+35", "+36", "+37", "+38", "+39"),
+				TraceFactory.createSectionPunches("+31", "+32", "+33", "34", "35", "36", "+37", "+38", "+39"),
+				TraceFactory.createSectionPunches("+31", "+32", "+33", "+34", "+35", "+36", "37", "38", "39"));
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
 		assertSectionBeginEnd(refinedSections.get(0), 0, 2);
 		assertSectionBeginEnd(refinedSections.get(1), 3, 5);
 		assertSectionBeginEnd(refinedSections.get(2), 6, 8);
 	}
 
 	@Test
-	public void refineSectionMarkers_extendedCase() {
-		List<SectionPunches> okSections = Arrays.asList(
-				new SectionPunches(TraceFactory.createTraceData("31", "32", "33", "+34", "+35", "+36", "+40", "+37", "+38", "+39")),
-				new SectionPunches(TraceFactory.createTraceData("+31", "+32", "+33", "34", "35", "36", "+40", "+37", "+38", "+39")),
-				new SectionPunches(TraceFactory.createTraceData("+31", "+32", "+33", "+34", "+35", "+36", "+40", "37", "38", "39")));
-		List<SectionPunches> refinedSections = subject.refineSectionMarkers(okSections);
-		assertThat(refinedSections, is(okSections));
+	public void refineSectionMarkers_disjoinedSections() {
+		List<SectionPunches> sections = Arrays.asList(
+				TraceFactory.createSectionPunches("31", "32", "33", "+34", "+35", "+36", "+40", "+37", "+38", "+39"),
+				TraceFactory.createSectionPunches("+31", "+32", "+33", "34", "35", "36", "+40", "+37", "+38", "+39"),
+				TraceFactory.createSectionPunches("+31", "+32", "+33", "+34", "+35", "+36", "+40", "37", "38", "39"));
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
 		assertSectionBeginEnd(refinedSections.get(0), 0, 2);
 		assertSectionBeginEnd(refinedSections.get(1), 3, 6);
 		assertSectionBeginEnd(refinedSections.get(2), 7, 9);
 	}
 	
 	@Test
-	public void refineSectionMarkers_beginEndCase() {
-		List<SectionPunches> okSections = Arrays.asList(
-				new SectionPunches(TraceFactory.createTraceData("+30", "31", "32", "33", "+34", "+35", "+36", "+37", "+38", "+39", "+41")),
-				new SectionPunches(TraceFactory.createTraceData("+30", "+31", "+32", "+33", "34", "35", "36", "+37", "+38", "+39", "+41")),
-				new SectionPunches(TraceFactory.createTraceData("+30", "+31", "+32", "+33", "+34", "+35", "+36", "37", "38", "39", "+41")));
-		List<SectionPunches> refinedSections = subject.refineSectionMarkers(okSections);
-		assertThat(refinedSections, is(okSections));
+	public void refineSectionMarkers_expandStartEndSections() {
+		List<SectionPunches> sections = Arrays.asList(
+				TraceFactory.createSectionPunches("+30", "31", "32", "33", "+34", "+35", "+36", "+37", "+38", "+39", "+41"),
+				TraceFactory.createSectionPunches("+30", "+31", "+32", "+33", "34", "35", "36", "+37", "+38", "+39", "+41"),
+				TraceFactory.createSectionPunches("+30", "+31", "+32", "+33", "+34", "+35", "+36", "37", "38", "39", "+41"));
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
 		assertSectionBeginEnd(refinedSections.get(0), 0, 3);
 		assertSectionBeginEnd(refinedSections.get(1), 4, 6);
 		assertSectionBeginEnd(refinedSections.get(2), 7, 10);
+	}
+
+	@Test
+	public void refineSectionMarkers_overlappingSections() {
+		List<SectionPunches> sections = Arrays.asList(
+				TraceFactory.createSectionPunches("31", "+34", "32", "33", "+35", "+36"),
+				TraceFactory.createSectionPunches("+31", "34", "+32", "+33", "35", "36"));
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
+		assertSectionBeginEnd(refinedSections.get(0), 0, 3);
+		assertSectionBeginEnd(refinedSections.get(1), 4, 5);
+	}
+
+	@Test
+	public void refineSectionMarkers_overlappingSections2() {
+		List<SectionPunches> sections = Arrays.asList(
+				TraceFactory.createSectionPunches("31", "32", "+34", "+35", "33", "+36"),
+				TraceFactory.createSectionPunches("+31", "+32", "34", "35", "+33", "36"));
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
+		assertSectionBeginEnd(refinedSections.get(0), 0, 1);
+		assertSectionBeginEnd(refinedSections.get(1), 2, 5);
+	}
+	
+	@Test
+	public void refineSectionMarkers_equallyOverlappingSections() {
+		List<SectionPunches> sections = Arrays.asList(
+				TraceFactory.createSectionPunches("31", "32", "+34", "33", "+35", "+36"),
+				TraceFactory.createSectionPunches("+31", "+32", "34", "+33", "35", "36"));
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
+		assertSectionBeginEnd(refinedSections.get(0), 0, 3);
+		assertSectionBeginEnd(refinedSections.get(1), 4, 5);
+	}
+
+	@Test
+	public void refineSectionMarkers_OverlappingWithOutliersSections() {
+		List<SectionPunches> sections = Arrays.asList(
+			TraceFactory.createSectionPunches("31", "+40", "32", "33", "34", "+36", "+37", "+38", "+39", "35", "+41"),
+			TraceFactory.createSectionPunches("+31", "40", "+32", "+33", "+34", "36", "37", "38", "39", "+35", "41"));
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
+		assertSectionBeginEnd(refinedSections.get(0), 0, 4);
+		assertSectionBeginEnd(refinedSections.get(1), 5, 10);
+	}
+
+	@Test
+	public void refineSectionMarkers_OverlappingWithMultipleOutliersSections() {
+		List<SectionPunches> sections = Arrays.asList(
+			TraceFactory.createSectionPunches("31", "+40", "32", "+41", "33", "34", "35", "+42", "36", "37",
+												"+43", "+44", "+45", "+46", "38", "+47", "+48", "39"),
+			TraceFactory.createSectionPunches("+31", "40", "+32", "41", "+33", "+34", "+35", "42", "+36", "+37",
+												"43", "44", "45", "46", "+38", "47", "48", "+39"));
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
+		assertSectionBeginEnd(refinedSections.get(0), 0, 9);
+		assertSectionBeginEnd(refinedSections.get(1), 10, 17);
+	}
+
+	@Test
+	public void refineSectionMarkers_Butterfly() {
+		List<SectionPunches> sections = Arrays.asList(
+			TraceFactory.createSectionPunches("30", "31", "32", "+30", "+33", "+34", "+30", "+35", "+36", "30"),
+			TraceFactory.createSectionPunches("+30", "+31", "+32", "30", "33", "34", "+30", "+35", "+36", "30"),
+			TraceFactory.createSectionPunches("+30", "+31", "+32", "+30", "+33", "+34", "30", "35", "36", "30"));
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
+		assertSectionBeginEnd(refinedSections.get(0), 0, 2);
+		assertSectionBeginEnd(refinedSections.get(1), 3, 5);
+		assertSectionBeginEnd(refinedSections.get(2), 6, 9);
+	}
+
+	@Test
+	public void refineSectionMarkers_ButterflyWithMissingCentral() {
+		List<SectionPunches> sections = Arrays.asList(
+				TraceFactory.createSectionPunches("30", "31", "32", "+33", "+34", "+30", "+35", "+36", "30"),
+				TraceFactory.createSectionPunches("+30", "+31", "+32", "33", "34", "+30", "+35", "+36", "30"),
+				TraceFactory.createSectionPunches("+30", "+31", "+32", "+33", "+34", "30", "35", "36", "30"));
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
+		assertSectionBeginEnd(refinedSections.get(0), 0, 2);
+		assertSectionBeginEnd(refinedSections.get(1), 3, 4);
+		assertSectionBeginEnd(refinedSections.get(2), 5, 8);
+	}
+
+	@Test
+	public void refineSectionMarkers_ButterflyWithOverlapping() {
+		List<SectionPunches> sections = Arrays.asList(
+				TraceFactory.createSectionPunches("30", "31", "32", "+30", "+33", "+30", "+34", "+35", "+36", "30"),
+				TraceFactory.createSectionPunches("+30", "+31", "+32", "30", "33", "+30", "34", "+35", "+36", "30"),
+				TraceFactory.createSectionPunches("+30", "+31", "+32", "+30", "+33", "30", "+34", "35", "36", "30"));
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
+		assertSectionBeginEnd(refinedSections.get(0), 0, 2);
+		assertSectionBeginEnd(refinedSections.get(1), 3, 6);
+		assertSectionBeginEnd(refinedSections.get(2), 7, 9);
+	}
+	
+	@Test
+	public void refineSectionMarkers_missingSectionAfterRefinement() {
+		List<SectionPunches> sections = Arrays.asList(
+				TraceFactory.createSectionPunches("31", "+34", "32", "33", "+37", "+38", "+35", "+39"),
+				TraceFactory.createSectionPunches("+31", "34", "+32", "+33", "+37", "+38", "35", "+39"),
+				TraceFactory.createSectionPunches("+31", "+34", "+32", "+33", "37", "38", "+35", "39"));
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
+		assertSectionBeginEnd(refinedSections.get(0), 0, 3);
+		assertSectionBeginEnd(refinedSections.get(1), 4, 3);
+		assertSectionBeginEnd(refinedSections.get(2), 4, 7);
 	}
 	
 	public void assertSectionBeginEnd(SectionPunches section, int expectedFirst, int expectedLast) {

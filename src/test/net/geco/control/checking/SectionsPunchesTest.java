@@ -5,10 +5,9 @@
 package test.net.geco.control.checking;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import net.geco.control.checking.SectionsTracer;
 import net.geco.control.checking.SectionsTracer.SectionPunches;
-import net.geco.model.TraceData;
 
 import org.junit.Test;
 
@@ -24,42 +23,65 @@ public class SectionsPunchesTest {
 	
 	@Test
 	public void nominalIndices() {
-		TraceData traceData = TraceFactory.createTraceData("31", "32", "33");
-		SectionPunches punches = new SectionsTracer.SectionPunches(traceData);
+		SectionPunches punches = TraceFactory.createSectionPunches("31", "32", "33");
 		assertThat(punches.firstOkPunchIndex(), equalTo(0));
 		assertThat(punches.lastOkPunchIndex(), equalTo(2));
 	}
 
 	@Test
 	public void addedAndSubstPunchesShiftIndices() {
-		TraceData traceData = TraceFactory.createTraceData("+30", "31", "32", "-30+31", "33", "+35");
-		SectionPunches punches = new SectionsTracer.SectionPunches(traceData);
+		SectionPunches punches = TraceFactory.createSectionPunches("+30", "31", "32", "-30+31", "33", "+35");
 		assertThat(punches.firstOkPunchIndex(), equalTo(1));
 		assertThat(punches.lastOkPunchIndex(), equalTo(4));
 	}
 
 	@Test
 	public void mpPunchesDontShiftIndices() {
-		TraceData traceData = TraceFactory.createTraceData("-30", "31", "+31", "32", "-34", "33", "-35");
-		SectionPunches punches = new SectionsTracer.SectionPunches(traceData);
+		SectionPunches punches = TraceFactory.createSectionPunches("-30", "31", "+31", "32", "-34", "33", "-35");
 		assertThat(punches.firstOkPunchIndex(), equalTo(0));
 		assertThat(punches.lastOkPunchIndex(), equalTo(3));
 	}
 
 	@Test
 	public void oneOkPunch() {
-		TraceData traceData = TraceFactory.createTraceData("-30", "+31", "+32", "31", "+31", "-32+33");
-		SectionPunches punches = new SectionsTracer.SectionPunches(traceData);
+		SectionPunches punches = TraceFactory.createSectionPunches("-30", "+31", "+32", "31", "+31", "-32+33");
 		assertThat(punches.firstOkPunchIndex(), equalTo(2));
 		assertThat(punches.lastOkPunchIndex(), equalTo(2));
 	}
 
 	@Test
 	public void noOkPunch() {
-		TraceData traceData = TraceFactory.createTraceData("-30", "+31", "+32", "+31", "-32+33");
-		SectionPunches punches = new SectionsTracer.SectionPunches(traceData);
+		SectionPunches punches = TraceFactory.createSectionPunches("-30", "+31", "+32", "+31", "-32+33");
 		assertThat(punches.firstOkPunchIndex(), equalTo(-1));
 		assertThat(punches.lastOkPunchIndex(), equalTo(-1));
 	}
 
+	@Test
+	public void prevailsOver_nonOverlapping() {
+		SectionPunches subject = TraceFactory.createSectionPunches("31", "32", "33", "+34", "+35", "+36");
+		SectionPunches next = TraceFactory.createSectionPunches("+31", "+32", "+33", "34", "35", "36");
+		assertThat("Non overlapping sections dont prevail over each other", subject.prevailsOver(next), is(false));
+	}
+
+	@Test
+	public void prevailsOver_subjectPrevailing() {
+		SectionPunches subject = TraceFactory.createSectionPunches("+34", "31", "32", "33", "+35", "+36");
+		SectionPunches next = TraceFactory.createSectionPunches("34", "+31", "+32", "+33", "35", "36");
+		assertThat("Subject prevails over next when counting more punches", subject.prevailsOver(next), is(true));
+	}
+
+	@Test
+	public void prevailsOver_targetPrevailing() {
+		SectionPunches subject = TraceFactory.createSectionPunches("31", "32", "+34", "+35", "33", "+36");
+		SectionPunches next = TraceFactory.createSectionPunches("+31", "+32", "34", "35", "+33", "36");
+		assertThat("Next section prevails over subject when counting more punches", subject.prevailsOver(next), is(false));
+	}
+	
+	@Test
+	public void prevailsOver_equalOverlapping() {
+		SectionPunches subject = TraceFactory.createSectionPunches("31", "32", "+34", "33", "+35", "+36");
+		SectionPunches next = TraceFactory.createSectionPunches("+31", "+32", "34", "+33", "35", "36");
+		assertThat("Subject prevails over next in case of equality", subject.prevailsOver(next), is(true));
+	}
+	
 }

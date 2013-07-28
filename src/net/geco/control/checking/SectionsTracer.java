@@ -61,12 +61,26 @@ public class SectionsTracer extends BasicControl implements Tracer {
 			return lastOkPunchIndex;
 		}
 		
-		public boolean conflictsWith(SectionPunches next) {
-			return false;
+		public boolean prevailsOver(SectionPunches nextSection) {
+			if( overlaps(nextSection) ) {
+				int selfCount = countPunches(nextSection.firstOkPunchIndex, lastOkPunchIndex);
+				int nextCount = nextSection.countPunches(nextSection.firstOkPunchIndex, lastOkPunchIndex);
+				return selfCount >= nextCount;
+			} else {
+				return false;
+			}
 		}
-		
-		public void resolveConflict(SectionPunches next) {
-			
+
+		private boolean overlaps(SectionPunches nextSection) {
+			return lastOkPunchIndex >= nextSection.firstOkPunchIndex;
+		}
+
+		private int countPunches(int start, int end) {
+			int count = 0;
+			for (int i = start; i <= end && i < punchTrace.length; i++) {
+				if( punchTrace[i].isOK() ){ count++; }
+			}
+			return count;
 		}
 	}
 	
@@ -92,8 +106,16 @@ public class SectionsTracer extends BasicControl implements Tracer {
 	 * Corner cases: missing sections, two adjacent missing sections, missing sections at start/end
 	 */
 	public List<SectionPunches> refineSectionMarkers(List<SectionPunches> sections) {
+		SectionPunches previousSection;
+		SectionPunches nextSection;
 		for (int i = 1; i < sections.size(); i++) {
-			sections.get(i - 1).lastOkPunchIndex = sections.get(i).firstOkPunchIndex - 1;
+			previousSection = sections.get(i - 1);
+			nextSection = sections.get(i);
+			if( previousSection.prevailsOver(nextSection) ) {
+				nextSection.firstOkPunchIndex = previousSection.lastOkPunchIndex + 1;
+			} else {
+				previousSection.lastOkPunchIndex = nextSection.firstOkPunchIndex - 1;
+			}
 		}
 		sections.get(0).firstOkPunchIndex = 0;
 		SectionPunches lastSection = sections.get(sections.size() - 1);

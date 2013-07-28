@@ -5,6 +5,7 @@
 package test.net.geco.testfactory;
 
 import net.geco.basics.TimeManager;
+import net.geco.control.checking.SectionsTracer.SectionPunches;
 import net.geco.model.Factory;
 import net.geco.model.Trace;
 import net.geco.model.TraceData;
@@ -35,6 +36,10 @@ public class TraceFactory {
 		TraceData traceData = factory.createTraceData();
 		traceData.setTrace(createTrace(codes));
 		return traceData; 
+	}
+	
+	public static SectionPunches createSectionPunches(String... codes) {
+		return new SectionPunches(createTraceData(codes));
 	}
 	
 }
