@@ -36,20 +36,12 @@ public class SectionsTracer extends BasicControl implements Tracer {
 		
 		private void findFirstLastIndices() {
 			firstOkPunchIndex = -1;
-			lastOkPunchIndex = -1;
-			for (int i = 0; i < punchTrace.length; i++) {
-				if( punchTrace[i].isOK() ) {
-					firstOkPunchIndex = i;
-					break;
-				}
-			}
-			if( firstOkPunchIndex != -1 ) {
-				for (int i = punchTrace.length - 1; i >= 0; i--) {
-					if( punchTrace[i].isOK() ) {
-						lastOkPunchIndex = i;
-						break;
-					}
-				}				
+			lastOkPunchIndex = punchTrace.length;
+			foldStartIndex();
+			if( firstOkPunchIndex < 0 ) {
+				lastOkPunchIndex = -1;
+			} else {
+				foldEndIndex();
 			}
 		}
 
@@ -59,6 +51,32 @@ public class SectionsTracer extends BasicControl implements Tracer {
 		
 		public int lastOkPunchIndex() {
 			return lastOkPunchIndex;
+		}
+		
+		public void foldStartIndex() {
+			int i = firstOkPunchIndex + 1;
+			for (; i < punchTrace.length; i++) {
+				if( punchTrace[i].isOK() ) {
+					firstOkPunchIndex = i;
+					break;
+				}
+			}
+			if( i == punchTrace.length ) {
+				firstOkPunchIndex = -1;
+			}
+		}
+		
+		public void foldEndIndex() {
+			int i = lastOkPunchIndex - 1;
+			for (; i >= 0; i--) {
+				if( punchTrace[i].isOK() ) {
+					lastOkPunchIndex = i;
+					break;
+				}
+			}
+			if( i < 0) {
+				lastOkPunchIndex = -1;
+			}
 		}
 		
 		public boolean prevailsOver(SectionPunches nextSection) {
@@ -71,7 +89,7 @@ public class SectionsTracer extends BasicControl implements Tracer {
 			}
 		}
 
-		private boolean overlaps(SectionPunches nextSection) {
+		public boolean overlaps(SectionPunches nextSection) {
 			return lastOkPunchIndex >= nextSection.firstOkPunchIndex;
 		}
 
@@ -81,6 +99,10 @@ public class SectionsTracer extends BasicControl implements Tracer {
 				if( punchTrace[i].isOK() ){ count++; }
 			}
 			return count;
+		}
+
+		public String toString() {
+			return String.format("[%s:%s]", firstOkPunchIndex, lastOkPunchIndex);
 		}
 	}
 	
@@ -111,11 +133,16 @@ public class SectionsTracer extends BasicControl implements Tracer {
 		for (int i = 1; i < sections.size(); i++) {
 			previousSection = sections.get(i - 1);
 			nextSection = sections.get(i);
-			if( previousSection.prevailsOver(nextSection) ) {
-				nextSection.firstOkPunchIndex = previousSection.lastOkPunchIndex + 1;
-			} else {
-				previousSection.lastOkPunchIndex = nextSection.firstOkPunchIndex - 1;
+			while( previousSection.overlaps(nextSection) ) {
+				if( previousSection.prevailsOver(nextSection) ) {
+					nextSection.foldStartIndex();
+//					nextSection.firstOkPunchIndex = previousSection.lastOkPunchIndex + 1;
+				} else {
+					previousSection.foldEndIndex();
+//					previousSection.lastOkPunchIndex = nextSection.firstOkPunchIndex - 1;
+				}
 			}
+			previousSection.lastOkPunchIndex = nextSection.firstOkPunchIndex - 1;
 		}
 		sections.get(0).firstOkPunchIndex = 0;
 		SectionPunches lastSection = sections.get(sections.size() - 1);

@@ -57,6 +57,27 @@ public class SectionsPunchesTest {
 	}
 
 	@Test
+	public void overlaps_false() {
+		SectionPunches subject = TraceFactory.createSectionPunches("31", "+34");
+		SectionPunches next = TraceFactory.createSectionPunches("+31", "34");
+		assertThat(subject.overlaps(next), is(false));
+	}
+
+	@Test
+	public void overlaps_true() {
+		SectionPunches subject = TraceFactory.createSectionPunches("31", "+34", "32");
+		SectionPunches next = TraceFactory.createSectionPunches("+31", "34", "+32");
+		assertThat(subject.overlaps(next), is(true));
+	}
+
+	@Test
+	public void overlaps_sharedControl() {
+		SectionPunches subject = TraceFactory.createSectionPunches("31", "33", "+34");
+		SectionPunches next = TraceFactory.createSectionPunches("+31", "33", "34");
+		assertThat(subject.overlaps(next), is(true));
+	}
+	
+	@Test
 	public void prevailsOver_nonOverlapping() {
 		SectionPunches subject = TraceFactory.createSectionPunches("31", "32", "33", "+34", "+35", "+36");
 		SectionPunches next = TraceFactory.createSectionPunches("+31", "+32", "+33", "34", "35", "36");
@@ -82,6 +103,38 @@ public class SectionsPunchesTest {
 		SectionPunches subject = TraceFactory.createSectionPunches("31", "32", "+34", "33", "+35", "+36");
 		SectionPunches next = TraceFactory.createSectionPunches("+31", "+32", "34", "+33", "35", "36");
 		assertThat("Subject prevails over next in case of equality", subject.prevailsOver(next), is(true));
+	}
+	
+	@Test
+	public void foldStartIndex() {
+		SectionPunches subject = TraceFactory.createSectionPunches("31", "32", "+34", "33", "+35", "+36");
+		subject.foldStartIndex();
+		assertThat(subject.firstOkPunchIndex(), equalTo(1));
+		subject.foldStartIndex();
+		assertThat(subject.firstOkPunchIndex(), equalTo(3));
+	}
+
+	@Test
+	public void foldStartIndex_noMoreOkPunch() {
+		SectionPunches subject = TraceFactory.createSectionPunches("31", "+34");
+		subject.foldStartIndex();
+		assertThat(subject.firstOkPunchIndex(), equalTo(-1));
+	}
+
+	@Test
+	public void foldEndIndex() {
+		SectionPunches subject = TraceFactory.createSectionPunches("31", "32", "+34", "33", "+35", "+36");
+		subject.foldEndIndex();
+		assertThat(subject.lastOkPunchIndex(), equalTo(1));
+		subject.foldEndIndex();
+		assertThat(subject.lastOkPunchIndex(), equalTo(0));
+	}
+
+	@Test
+	public void foldEndIndex_noMoreOkPunch() {
+		SectionPunches subject = TraceFactory.createSectionPunches("31", "+34");
+		subject.foldEndIndex();
+		assertThat(subject.lastOkPunchIndex(), equalTo(-1));
 	}
 	
 }
