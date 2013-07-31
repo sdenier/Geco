@@ -38,9 +38,7 @@ public class SectionsTracer extends BasicControl implements Tracer {
 			firstOkPunchIndex = -1;
 			lastOkPunchIndex = punchTrace.length;
 			foldStartIndex();
-			if( firstOkPunchIndex < 0 ) {
-				lastOkPunchIndex = -2;
-			} else {
+			if( ! isMissing() ) {
 				foldEndIndex();
 			}
 		}
@@ -67,6 +65,7 @@ public class SectionsTracer extends BasicControl implements Tracer {
 			}
 			if( i == punchTrace.length ) {
 				firstOkPunchIndex = -1;
+				lastOkPunchIndex = -2;
 			}
 		}
 		
@@ -79,22 +78,19 @@ public class SectionsTracer extends BasicControl implements Tracer {
 				}
 			}
 			if( i < 0) {
+				firstOkPunchIndex = -1;
 				lastOkPunchIndex = -2;
 			}
 		}
 		
 		public boolean prevailsOver(SectionPunches nextSection) {
-			if( overlaps(nextSection) ) {
-				int selfCount = countPunches(nextSection.firstOkPunchIndex, lastOkPunchIndex);
-				int nextCount = nextSection.countPunches(nextSection.firstOkPunchIndex, lastOkPunchIndex);
-				return selfCount >= nextCount;
-			} else {
-				return false;
-			}
+			int selfCount = countPunches(nextSection.firstOkPunchIndex, lastOkPunchIndex);
+			int nextCount = nextSection.countPunches(nextSection.firstOkPunchIndex, lastOkPunchIndex);
+			return selfCount >= nextCount;
 		}
 
 		public boolean overlaps(SectionPunches nextSection) {
-			return lastOkPunchIndex >= nextSection.firstOkPunchIndex;
+			return lastOkPunchIndex >= nextSection.firstOkPunchIndex && ! nextSection.isMissing();
 		}
 
 		private int countPunches(int start, int end) {

@@ -65,13 +65,6 @@ public class SectionsPunchesTest {
 	}
 
 	@Test
-	public void overlaps_false() {
-		SectionPunches subject = TraceFactory.createSectionPunches("31", "+34");
-		SectionPunches next = TraceFactory.createSectionPunches("+31", "34");
-		assertThat(subject.overlaps(next), is(false));
-	}
-
-	@Test
 	public void overlaps_true() {
 		SectionPunches subject = TraceFactory.createSectionPunches("31", "+34", "32");
 		SectionPunches next = TraceFactory.createSectionPunches("+31", "34", "+32");
@@ -79,19 +72,34 @@ public class SectionsPunchesTest {
 	}
 
 	@Test
-	public void overlaps_sharedControl() {
+	public void overlaps_false() {
+		SectionPunches subject = TraceFactory.createSectionPunches("31", "+34");
+		SectionPunches next = TraceFactory.createSectionPunches("+31", "34");
+		assertThat(subject.overlaps(next), is(false));
+	}
+	
+	@Test
+	public void overlaps_trueWithSharedControl() {
 		SectionPunches subject = TraceFactory.createSectionPunches("31", "33", "+34");
 		SectionPunches next = TraceFactory.createSectionPunches("+31", "33", "34");
 		assertThat(subject.overlaps(next), is(true));
 	}
 	
 	@Test
-	public void prevailsOver_nonOverlapping() {
-		SectionPunches subject = TraceFactory.createSectionPunches("31", "32", "33", "+34", "+35", "+36");
-		SectionPunches next = TraceFactory.createSectionPunches("+31", "+32", "+33", "34", "35", "36");
-		assertThat("Non overlapping sections dont prevail over each other", subject.prevailsOver(next), is(false));
-	}
+	public void overlaps_falseWithMissingSection() {
+		SectionPunches subject = TraceFactory.createSectionPunches("31", "+34");
+		SectionPunches next = TraceFactory.createSectionPunches("+31", "+34");
+		assertThat(subject.overlaps(next), is(false));
 
+		subject = TraceFactory.createSectionPunches("+31", "+34");
+		next = TraceFactory.createSectionPunches("+31", "34");
+		assertThat(subject.overlaps(next), is(false));
+
+		subject = TraceFactory.createSectionPunches("+31", "+34");
+		next = TraceFactory.createSectionPunches("+31", "+34");
+		assertThat(subject.overlaps(next), is(false));
+	}
+	
 	@Test
 	public void prevailsOver_subjectPrevailing() {
 		SectionPunches subject = TraceFactory.createSectionPunches("+34", "31", "32", "33", "+35", "+36");
@@ -127,6 +135,7 @@ public class SectionsPunchesTest {
 		SectionPunches subject = TraceFactory.createSectionPunches("31", "+34");
 		subject.foldStartIndex();
 		assertThat(subject.firstOkPunchIndex(), equalTo(-1));
+		assertThat(subject.isMissing(), is(true));
 	}
 
 	@Test
@@ -143,6 +152,7 @@ public class SectionsPunchesTest {
 		SectionPunches subject = TraceFactory.createSectionPunches("31", "+34");
 		subject.foldEndIndex();
 		assertThat(subject.lastOkPunchIndex(), equalTo(-2));
+		assertThat(subject.isMissing(), is(true));
 	}
 	
 }

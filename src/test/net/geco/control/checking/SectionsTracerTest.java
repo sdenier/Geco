@@ -252,6 +252,45 @@ public class SectionsTracerTest {
 	}
 
 	@Test
+	public void refineSectionMarkers_OverlappingAndDisjoinedSections() {
+		List<SectionPunches> sections = Arrays.asList(
+			TraceFactory.createSectionPunches("+100", "31", "+40", "32", "+41", "33", "34", "35", "+42", "36", "37",
+												"+101", "+43", "+44", "+45", "+46", "38", "+47", "+48", "39"),
+			TraceFactory.createSectionPunches("+100", "+31", "40", "+32", "41", "+33", "+34", "+35", "42", "+36", "+37",
+												"+101", "43", "44", "45", "46", "+38", "47", "48", "+39"));
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
+		assertSectionBeginEnd(refinedSections.get(0), 0, 11);
+		assertSectionBeginEnd(refinedSections.get(1), 12, 19);
+	}
+
+	@Test
+	public void refineSectionMarkers_ButterflyWithMissingLoop() {
+		List<SectionPunches> sections = Arrays.asList(
+				TraceFactory.createSectionPunches("30", "31", "32", "+30", "+35", "+36", "30"),
+				TraceFactory.createSectionPunches("+30", "+31", "+32", "30", "+35", "+36", "30"),
+				TraceFactory.createSectionPunches("+30", "+31", "+32", "30", "35", "36", "30"));
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
+		assertSectionBeginEnd(refinedSections.get(0), 0, 2);
+		assertSectionBeginEnd(refinedSections.get(1), 3, 3);
+		assertSectionBeginEnd(refinedSections.get(2), 4, 6);
+	}
+	
+	@Test
+	public void refineSectionMarkers_ButterflyWithMissingLoop2() {
+		List<SectionPunches> sections = Arrays.asList(
+				TraceFactory.createSectionPunches("30", "31", "32", "+30", "+35", "+36", "30"),
+				TraceFactory.createSectionPunches("30", "+31", "+32", "+30", "+35", "+36", "30"),
+				TraceFactory.createSectionPunches("+30", "+31", "+32", "30", "35", "36", "30"));
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
+		assertSectionBeginEnd(refinedSections.get(0), 0, 2);
+		assertSectionBeginEnd(refinedSections.get(1), -1, -2);
+		assertSectionBeginEnd(refinedSections.get(2), 3, 6);
+	}
+	
+	@Test
 	public void refineSectionMarkers_noSection() {
 		List<SectionPunches> sections = Collections.emptyList();
 		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
