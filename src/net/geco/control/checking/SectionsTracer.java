@@ -132,6 +132,12 @@ public class SectionsTracer extends BasicControl implements Tracer {
 	 * Corner cases: missing sections, two adjacent missing sections, missing sections at start/end
 	 */
 	public List<SectionPunches> refineSectionMarkers(List<SectionPunches> sections) {
+		splitSections(sections);
+		rejoinSections(sections);
+		return sections;
+	}
+
+	private void splitSections(List<SectionPunches> sections) {
 		SectionPunches previousSection;
 		SectionPunches nextSection;
 		for (int i = 1; i < sections.size(); i++) {
@@ -140,18 +146,25 @@ public class SectionsTracer extends BasicControl implements Tracer {
 			while( previousSection.overlaps(nextSection) ) {
 				if( previousSection.prevailsOver(nextSection) ) {
 					nextSection.foldStartIndex();
-//					nextSection.firstOkPunchIndex = previousSection.lastOkPunchIndex + 1;
 				} else {
 					previousSection.foldEndIndex();
-//					previousSection.lastOkPunchIndex = nextSection.firstOkPunchIndex - 1;
 				}
 			}
-//			previousSection.lastOkPunchIndex = nextSection.firstOkPunchIndex - 1;
 		}
-		sections.get(0).firstOkPunchIndex = 0;
-		SectionPunches lastSection = sections.get(sections.size() - 1);
-		lastSection.lastOkPunchIndex = lastSection.punchTrace.length - 1;
-		return sections;
+	}
+
+	private void rejoinSections(List<SectionPunches> sections) {
+		SectionPunches previousSection;
+		SectionPunches nextSection = null;
+		for (int i = 1; i < sections.size(); i++) {
+			previousSection = sections.get(i - 1);
+			nextSection = sections.get(i);
+			previousSection.lastOkPunchIndex = nextSection.firstOkPunchIndex - 1;
+		}
+		if( ! sections.isEmpty() ) {
+			sections.get(0).firstOkPunchIndex = 0;
+			nextSection.lastOkPunchIndex = nextSection.punchTrace.length - 1;
+		}
 	}
 	
 	public List<SectionPunches> computeSectionsTrace(List<Section> sections, Punch[] punches) {
