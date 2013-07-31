@@ -53,7 +53,15 @@ public class SectionsPunchesTest {
 	public void noOkPunch() {
 		SectionPunches punches = TraceFactory.createSectionPunches("-30", "+31", "+32", "+31", "-32+33");
 		assertThat(punches.firstOkPunchIndex(), equalTo(-1));
-		assertThat(punches.lastOkPunchIndex(), equalTo(-1));
+		assertThat(punches.lastOkPunchIndex(), equalTo(-2));
+	}
+
+	@Test
+	public void isMissing() {
+		SectionPunches punches = TraceFactory.createSectionPunches("31", "32", "33");
+		assertThat(punches.isMissing(), equalTo(false));
+		punches = TraceFactory.createSectionPunches("-30", "+31", "+32");
+		assertThat(punches.isMissing(), equalTo(true));
 	}
 
 	@Test
@@ -134,7 +142,7 @@ public class SectionsPunchesTest {
 	public void foldEndIndex_noMoreOkPunch() {
 		SectionPunches subject = TraceFactory.createSectionPunches("31", "+34");
 		subject.foldEndIndex();
-		assertThat(subject.lastOkPunchIndex(), equalTo(-1));
+		assertThat(subject.lastOkPunchIndex(), equalTo(-2));
 	}
 	
 }

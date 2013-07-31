@@ -39,7 +39,7 @@ public class SectionsTracer extends BasicControl implements Tracer {
 			lastOkPunchIndex = punchTrace.length;
 			foldStartIndex();
 			if( firstOkPunchIndex < 0 ) {
-				lastOkPunchIndex = -1;
+				lastOkPunchIndex = -2;
 			} else {
 				foldEndIndex();
 			}
@@ -52,7 +52,11 @@ public class SectionsTracer extends BasicControl implements Tracer {
 		public int lastOkPunchIndex() {
 			return lastOkPunchIndex;
 		}
-		
+
+		public boolean isMissing() {
+			return firstOkPunchIndex > lastOkPunchIndex;
+		}
+
 		public void foldStartIndex() {
 			int i = firstOkPunchIndex + 1;
 			for (; i < punchTrace.length; i++) {
@@ -75,7 +79,7 @@ public class SectionsTracer extends BasicControl implements Tracer {
 				}
 			}
 			if( i < 0) {
-				lastOkPunchIndex = -1;
+				lastOkPunchIndex = -2;
 			}
 		}
 		
@@ -142,7 +146,7 @@ public class SectionsTracer extends BasicControl implements Tracer {
 //					previousSection.lastOkPunchIndex = nextSection.firstOkPunchIndex - 1;
 				}
 			}
-			previousSection.lastOkPunchIndex = nextSection.firstOkPunchIndex - 1;
+//			previousSection.lastOkPunchIndex = nextSection.firstOkPunchIndex - 1;
 		}
 		sections.get(0).firstOkPunchIndex = 0;
 		SectionPunches lastSection = sections.get(sections.size() - 1);
