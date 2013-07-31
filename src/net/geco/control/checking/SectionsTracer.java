@@ -124,12 +124,15 @@ public class SectionsTracer extends BasicControl implements Tracer {
 	 * The goal is to compute markers so that sections follow each other in the course sequence,
 	 * without holes (i.e. covering all punches), each section encompassing most of its detected punches.
 	 * Then punches can be split between sections using adjacent markers.
-	 * 
-	 * Nominal case: full ok section traces already adjacent (no added punch in-between)
-	 * Flawed: "holes" of added punches in-between sections, or at start/end of punches
-	 * Conflict cases: overlapping punches (markers) between two "adjacent sections",
-	 * overlapping sections with outliers on both ends (case: butterflys?)
-	 * Corner cases: missing sections, two adjacent missing sections, missing sections at start/end
+	 *
+	 * Nominal: full ok section traces already adjacent (no added punch in-between)
+	 * Disjoined: "holes" of added punches in-between sections, or at start/end of punches
+	 * Overlapping: overlapping punches (markers) between two consecutive sections (include butterflies)
+	 * Missing: missing sections are treated as a special case
+	 *
+	 * Missing sections are a special case: they do not contain any punch (except for the case where there are
+	 * only missing sections, then the first section gets all punches). Note that a section overlapping with other
+	 * sections may become "missing" after refinement, if other sections prevail.
 	 */
 	public List<SectionPunches> refineSectionMarkers(List<SectionPunches> sections) {
 		splitSections(sections);
@@ -137,9 +140,25 @@ public class SectionsTracer extends BasicControl implements Tracer {
 		return sections;
 	}
 
-	private void splitSections(List<SectionPunches> sections) {
+	private List<SectionPunches> selectOkSections(List<SectionPunches> sections) {
+		List<SectionPunches> okSections = new ArrayList<SectionPunches>(sections.size());
+		for (SectionPunches section : sections) {
+			if( ! section.isMissing() ) {
+				okSections.add(section);
+			}
+		}
+		return okSections;
+	}
+
+	/*
+	 * Only operate on consecutive ok sections.
+	 * Detect and resolve conflicts (overlapping sections) by shifting start/end index of sections
+	 * according to the "prevailing" weight (max number of overlapping punches wins).
+	 */
+	private void splitSections(List<SectionPunches> allSections) {
 		SectionPunches previousSection;
 		SectionPunches nextSection;
+		List<SectionPunches> sections = selectOkSections(allSections);
 		for (int i = 1; i < sections.size(); i++) {
 			previousSection = sections.get(i - 1);
 			nextSection = sections.get(i);
@@ -153,9 +172,15 @@ public class SectionsTracer extends BasicControl implements Tracer {
 		}
 	}
 
-	private void rejoinSections(List<SectionPunches> sections) {
+	/*
+	 * Only operate on consecutive ok sections.
+	 * Make ok sections jointed if necessary (due to added punches around sections)
+	 * so that sections punches cover all punches.
+	 */
+	private void rejoinSections(List<SectionPunches> allSections) {
 		SectionPunches previousSection;
-		SectionPunches nextSection = null;
+		SectionPunches nextSection;
+		List<SectionPunches> sections = selectOkSections(allSections);
 		for (int i = 1; i < sections.size(); i++) {
 			previousSection = sections.get(i - 1);
 			nextSection = sections.get(i);
@@ -163,7 +188,12 @@ public class SectionsTracer extends BasicControl implements Tracer {
 		}
 		if( ! sections.isEmpty() ) {
 			sections.get(0).firstOkPunchIndex = 0;
-			nextSection.lastOkPunchIndex = nextSection.punchTrace.length - 1;
+			SectionPunches lastSection = sections.get(sections.size() - 1);
+			lastSection.lastOkPunchIndex = lastSection.punchTrace.length - 1;
+		} else if( ! allSections.isEmpty() ) {
+			SectionPunches surrogateSection = allSections.get(0);
+			surrogateSection.firstOkPunchIndex = 0;
+			surrogateSection.lastOkPunchIndex = surrogateSection.punchTrace.length - 1;
 		}
 	}
 	

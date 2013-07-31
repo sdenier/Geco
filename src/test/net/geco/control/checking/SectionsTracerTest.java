@@ -9,6 +9,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import net.geco.control.checking.SectionsTracer;
@@ -178,8 +179,83 @@ public class SectionsTracerTest {
 		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
 		assertThat(refinedSections, is(sections));
 		assertSectionBeginEnd(refinedSections.get(0), 0, 3);
-		assertSectionBeginEnd(refinedSections.get(1), 4, 3);
+		assertSectionBeginEnd(refinedSections.get(1), 6, 1);
 		assertSectionBeginEnd(refinedSections.get(2), 4, 7);
+		assertThat(refinedSections.get(1).isMissing(), is(true));
+	}
+	
+	@Test
+	public void refineSectionMarkers_missingSection() {
+		List<SectionPunches> sections = Arrays.asList(
+				TraceFactory.createSectionPunches("31", "32", "+33", "+34"),
+				TraceFactory.createSectionPunches("+31", "+32", "+33", "+34"),
+				TraceFactory.createSectionPunches("+31", "+32", "33", "34"));
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
+		assertSectionBeginEnd(refinedSections.get(0), 0, 1);
+		assertSectionBeginEnd(refinedSections.get(1), -1, -2);
+		assertSectionBeginEnd(refinedSections.get(2), 2, 3);
+	}
+
+	@Test
+	public void refineSectionMarkers_missingAndOverlappingSection() {
+		List<SectionPunches> sections = Arrays.asList(
+				TraceFactory.createSectionPunches("31", "+33", "32", "+34"),
+				TraceFactory.createSectionPunches("+31", "+33", "+32", "+34"),
+				TraceFactory.createSectionPunches("+31", "33", "+32", "34"));
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
+		assertSectionBeginEnd(refinedSections.get(0), 0, 2);
+		assertSectionBeginEnd(refinedSections.get(1), -1, -2);
+		assertSectionBeginEnd(refinedSections.get(2), 3, 3);
+	}
+	
+	@Test
+	public void refineSectionMarkers_successiveMissingSections() {
+		List<SectionPunches> sections = Arrays.asList(
+				TraceFactory.createSectionPunches("31", "32", "+33", "+34"),
+				TraceFactory.createSectionPunches("+31", "+32", "+33", "+34"),
+				TraceFactory.createSectionPunches("+31", "+32", "+33", "+34"),
+				TraceFactory.createSectionPunches("+31", "+32", "33", "34"));
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
+		assertSectionBeginEnd(refinedSections.get(0), 0, 1);
+		assertSectionBeginEnd(refinedSections.get(1), -1, -2);
+		assertSectionBeginEnd(refinedSections.get(2), -1, -2);
+		assertSectionBeginEnd(refinedSections.get(3), 2, 3);
+	}
+	
+	@Test
+	public void refineSectionMarkers_startEndMissingSections() {
+		List<SectionPunches> sections = Arrays.asList(
+				TraceFactory.createSectionPunches("+31", "+32", "+33"),
+				TraceFactory.createSectionPunches("31", "32", "33"),
+				TraceFactory.createSectionPunches("+31", "+32", "+33"));
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
+		assertSectionBeginEnd(refinedSections.get(0), -1, -2);
+		assertSectionBeginEnd(refinedSections.get(1), 0, 2);
+		assertSectionBeginEnd(refinedSections.get(2), -1, -2);
+	}
+
+	@Test
+	public void refineSectionMarkers_allMissing() {
+		List<SectionPunches> sections = Arrays.asList(
+				TraceFactory.createSectionPunches("+31", "+32", "+33"),
+				TraceFactory.createSectionPunches("+31", "+32", "+33"),
+				TraceFactory.createSectionPunches("+31", "+32", "+33"));
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
+		assertSectionBeginEnd(refinedSections.get(0), 0, 2);
+		assertSectionBeginEnd(refinedSections.get(1), -1, -2);
+		assertSectionBeginEnd(refinedSections.get(2), -1, -2);
+	}
+
+	@Test
+	public void refineSectionMarkers_noSection() {
+		List<SectionPunches> sections = Collections.emptyList();
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
 	}
 	
 	public void assertSectionBeginEnd(SectionPunches section, int expectedFirst, int expectedLast) {
