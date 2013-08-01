@@ -14,11 +14,16 @@ import java.util.List;
 
 import net.geco.control.checking.SectionsTracer;
 import net.geco.control.checking.SectionsTracer.SectionPunches;
+import net.geco.model.Course;
+import net.geco.model.Punch;
+import net.geco.model.Section.SectionType;
+import net.geco.model.TraceData;
 import net.geco.model.impl.POFactory;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import test.net.geco.testfactory.CourseFactory;
 import test.net.geco.testfactory.TraceFactory;
 
 /**
@@ -34,6 +39,159 @@ public class SectionsTracerTest {
 	public void setup() {
 		subject = new SectionsTracer(new POFactory());
 	}
+
+	/*
+	 * Tests for Trace Compute
+	 */
+
+	private Course createThreeSectionsCourse() {
+		Course course = CourseFactory.createCourse("Classic", new int[]{31, 32, 33, 34, 35, 36, 37, 38, 39});
+		course.putSection(CourseFactory.createSection("A", 0, SectionType.INLINE));
+		course.putSection(CourseFactory.createSection("B", 3, SectionType.FREEORDER));
+		course.putSection(CourseFactory.createSection("C", 6, SectionType.INLINE));
+		course.refreshSectionCodes();
+		return course;
+	}
+
+	private Course createButterflyCourse() {
+		Course course = CourseFactory.createCourse("Butterfly", new int[]{30, 31, 32, 30, 33, 34, 30, 35, 36, 30});
+		course.putSection(CourseFactory.createSection("A", 0, SectionType.FREEORDER));
+		course.putSection(CourseFactory.createSection("B", 3, SectionType.INLINE));
+		course.putSection(CourseFactory.createSection("C", 6, SectionType.INLINE));
+		course.refreshSectionCodes();
+		return course;
+	}
+
+	@Test
+	public void computeTrace_nominalCase() {
+		Course course = createThreeSectionsCourse();
+		Punch[] punches = TraceFactory.createPunches(31, 32, 33, 36, 34, 35, 37, 38, 39);
+		TraceData trace = subject.computeTrace(course.getSections(), punches);
+		assertThat(trace.formatTrace(), equalTo("31,32,33,36,34,35,37,38,39"));
+		assertThat(trace.getNbMPs(), equalTo(0));
+	}
+
+	@Test
+	public void computeTrace_mps() {
+		Course course = createThreeSectionsCourse();
+		Punch[] punches = TraceFactory.createPunches(31, 40, 33, 36, 41, 35, 42, 37, 38, 39, 43);
+		TraceData trace = subject.computeTrace(course.getSections(), punches);
+		assertThat(trace.formatTrace(), equalTo("31,-32+40,33,36,+41,35,+42,-34,37,38,39,+43"));
+		assertThat(trace.getNbMPs(), equalTo(2));
+	}
+
+	@Test
+	public void computeTrace_overlapping() {
+		Course course = createThreeSectionsCourse();
+		Punch[] punches = TraceFactory.createPunches(31, 32, 36, 33, 34, 36, 37, 35, 38, 39);
+		TraceData trace = subject.computeTrace(course.getSections(), punches);
+		assertThat(trace.formatTrace(), equalTo("31,32,+36,33,34,36,+37,35,-37,38,39"));
+		assertThat(trace.getNbMPs(), equalTo(1));
+	}
+
+	@Test
+	public void computeTrace_missingSection() {
+		Course course = createThreeSectionsCourse();
+		Punch[] punches = TraceFactory.createPunches(40, 34, 35, 36, 37, 38, 39);
+		TraceData trace = subject.computeTrace(course.getSections(), punches);
+		assertThat(trace.formatTrace(), equalTo("-31,-32,-33,+40,34,35,36,37,38,39"));
+		assertThat(trace.getNbMPs(), equalTo(3));
+	}
+
+	@Test
+	public void computeTrace_allMissing() {
+		Course course = createThreeSectionsCourse();
+		Punch[] punches = TraceFactory.createPunches(40, 41, 42, 43);
+		TraceData trace = subject.computeTrace(course.getSections(), punches);
+		assertThat(trace.formatTrace(), equalTo("+40,-31+41,-32+42,-33+43,-34,-35,-36,-37,-38,-39"));
+		assertThat(trace.getNbMPs(), equalTo(9));
+	}
+
+	@Test
+	public void computeTrace_butterfly() {
+		Course course = createButterflyCourse();
+		Punch[] punches = TraceFactory.createPunches(30, 31, 32, 30, 33, 34, 30, 35, 36, 30);
+		TraceData trace = subject.computeTrace(course.getSections(), punches);
+		assertThat(trace.formatTrace(), equalTo("30,31,32,30,33,34,30,35,36,30"));
+		assertThat(trace.getNbMPs(), equalTo(0));
+	}
+
+	@Test
+	public void computeTrace_butterflyWithMissingCentral() {
+		Course course = createButterflyCourse();
+		Punch[] punches = TraceFactory.createPunches(30, 32, 31, 33, 34, 30, 35, 36, 30);
+		TraceData trace = subject.computeTrace(course.getSections(), punches);
+		assertThat(trace.formatTrace(), equalTo("30,32,31,-30,33,34,30,35,36,30"));
+		assertThat(trace.getNbMPs(), equalTo(1));
+	}
+
+	@Test
+	public void computeTrace_butterflyWithMissingLoop() {
+		Course course = createButterflyCourse();
+		Punch[] punches = TraceFactory.createPunches(30, 33, 34, 30, 35, 36, 30);
+		TraceData trace = subject.computeTrace(course.getSections(), punches);
+		assertThat(trace.formatTrace(), equalTo("30,-31,-32,-30,33,34,30,35,36,30"));
+		assertThat(trace.getNbMPs(), equalTo(3));
+	}
+
+	@Test
+	public void computeTrace_butterflyWithMissingLoop2() {
+		Course course = createButterflyCourse();
+		Punch[] punches = TraceFactory.createPunches(30, 31, 32, 30, 35, 36, 30);
+		TraceData trace = subject.computeTrace(course.getSections(), punches);
+		assertThat(trace.formatTrace(), equalTo("30,31,32,30,-33,-34,-30,35,36,30"));
+		assertThat(trace.getNbMPs(), equalTo(3));
+	}
+
+	@Test
+	public void computeTrace_missingRefinedSection() {
+		Course course = CourseFactory.createCourse("Classic", new int[]{31, 32, 33, 34, 35, 36, 37, 38, 39});
+		course.putSection(CourseFactory.createSection("A", 0, SectionType.INLINE));
+		course.putSection(CourseFactory.createSection("B", 3, SectionType.INLINE));
+		course.putSection(CourseFactory.createSection("C", 6, SectionType.INLINE));
+		course.refreshSectionCodes();
+
+		Punch[] punches = TraceFactory.createPunches(31, 34, 32, 33, 37, 38, 35, 39);
+		TraceData trace = subject.computeTrace(course.getSections(), punches);
+		assertThat(trace.formatTrace(), equalTo("31,+34,32,33,-34,-35,-36,37,38,+35,39"));
+		assertThat(trace.getNbMPs(), equalTo(3));
+	}
+
+	@Test
+	public void computeTrace_overlappingAndDisjoined() {
+		Course course = CourseFactory.createCourse("Classic", new int[]{31, 32, 33, 34, 35, 36, 37, 38, 39,
+																		40, 41, 42, 43, 44, 45, 46, 47, 48, 49});
+		course.putSection(CourseFactory.createSection("A", 0, SectionType.INLINE));
+		course.putSection(CourseFactory.createSection("B", 9, SectionType.INLINE));
+		course.refreshSectionCodes();
+
+		Punch[] punches = TraceFactory.createPunches(100, 31, 40, 32, 41, 33, 34, 35, 42, 36, 37,
+													 101, 43, 44, 45, 46, 38, 47, 48, 39);
+		TraceData trace = subject.computeTrace(course.getSections(), punches);
+		assertThat(trace.formatTrace(), equalTo("+100,31,+40,32,+41,33,34,35,+42,36,37,-38,-39+101,-40,-41,-42,43,44,45,46,+38,47,48,-49+39"));
+		assertThat(trace.getNbMPs(), equalTo(6));
+	}
+
+	@Test
+	public void computeTrace_overlappingAndDisjoined2() {
+		Course course = CourseFactory.createCourse("Classic", new int[]{31, 32, 33, 34, 35, 36, 37, 38, 39,
+																		40, 41, 42, 43, 44, 45, 46, 47, 48, 49});
+		course.putSection(CourseFactory.createSection("A", 0, SectionType.FREEORDER));
+		course.putSection(CourseFactory.createSection("B", 9, SectionType.FREEORDER));
+		course.refreshSectionCodes();
+
+		Punch[] punches = TraceFactory.createPunches(100, 31, 40, 32, 41, 33, 34, 35, 42, 36, 37,
+													 101, 43, 44, 45, 46, 38, 47, 48, 39);
+		TraceData trace = subject.computeTrace(course.getSections(), punches);
+		assertThat(trace.formatTrace(), equalTo("+100,31,+40,32,+41,33,34,35,+42,36,37,+101,-38,-39,43,44,45,46,+38,47,48,+39,-40,-41,-42,-49"));
+		assertThat(trace.getNbMPs(), equalTo(6));
+	}
+
+
+
+	/*
+	 * Tests for Section Markers
+	 */
 	
 	@Test
 	public void refineSectionMarkers_nominalJoinedSections() {
@@ -267,8 +425,8 @@ public class SectionsTracerTest {
 	@Test
 	public void refineSectionMarkers_ButterflyWithMissingLoop() {
 		List<SectionPunches> sections = Arrays.asList(
-				TraceFactory.createSectionPunches("30", "31", "32", "+30", "+35", "+36", "30"),
-				TraceFactory.createSectionPunches("+30", "+31", "+32", "30", "+35", "+36", "30"),
+				TraceFactory.createSectionPunches("30", "31", "32", "+30", "+35", "+36", "+30"),
+				TraceFactory.createSectionPunches("+30", "+31", "+32", "30", "+35", "+36", "+30"),
 				TraceFactory.createSectionPunches("+30", "+31", "+32", "30", "35", "36", "30"));
 		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
 		assertThat(refinedSections, is(sections));
@@ -280,8 +438,8 @@ public class SectionsTracerTest {
 	@Test
 	public void refineSectionMarkers_ButterflyWithMissingLoop2() {
 		List<SectionPunches> sections = Arrays.asList(
-				TraceFactory.createSectionPunches("30", "31", "32", "+30", "+35", "+36", "30"),
-				TraceFactory.createSectionPunches("30", "+31", "+32", "+30", "+35", "+36", "30"),
+				TraceFactory.createSectionPunches("30", "31", "32", "+30", "+35", "+36", "+30"),
+				TraceFactory.createSectionPunches("30", "+31", "+32", "+30", "+35", "+36", "+30"),
 				TraceFactory.createSectionPunches("+30", "+31", "+32", "30", "35", "36", "30"));
 		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
 		assertThat(refinedSections, is(sections));

@@ -6,6 +6,7 @@ package net.geco.control.checking;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import net.geco.control.BasicControl;
@@ -21,7 +22,7 @@ import net.geco.model.TraceData;
  * @since Jul 23, 2013
  *
  */
-public class SectionsTracer extends BasicControl implements Tracer {
+public class SectionsTracer extends BasicControl {
 
 	public static class SectionPunches {
 		
@@ -132,10 +133,59 @@ public class SectionsTracer extends BasicControl implements Tracer {
 		super(factory);
 	}
 
-	@Override
-	public TraceData computeTrace(int[] codes, Punch[] punches) {
-		// TODO Auto-generated method stub
-		return null;
+	private Tracer getTracer(SectionType type) {
+		Tracer t = null;
+		switch (type) {
+		case INLINE:
+			t = new InlineTracer(factory());
+			break;
+		case FREEORDER:
+			t = new FreeOrderTracer(factory());
+			break;
+		}
+		return t;
+	}
+
+	public TraceData computeTrace(List<Section> sections, Punch[] punches) {
+		List<SectionPunches> sectionsPunches = computeSectionsTrace(sections, punches);
+		refineSectionMarkers(sectionsPunches);
+		List<TraceData> sectionsTrace = computeRefinedSectionsTrace(sectionsPunches, punches);
+		return mergeSectionsTrace(sectionsTrace);
+	}
+
+	public List<SectionPunches> computeSectionsTrace(List<Section> sections, Punch[] punches) {
+		ArrayList<SectionPunches> sectionTraces = new ArrayList<SectionPunches>();
+		for (Section section : sections) {
+			sectionTraces.add(
+				new SectionPunches(section, computeTrace(section.getType(), section.getCodes(), punches)));
+		}
+		return sectionTraces;
+	}
+
+	public List<TraceData> computeRefinedSectionsTrace(List<SectionPunches> sections, Punch[] punches) {
+		ArrayList<TraceData> sectionTraces = new ArrayList<TraceData>();
+		for (SectionPunches section : sections) {
+			sectionTraces.add(
+				computeTrace(section.getType(), section.getCodes(), section.collectPunches(punches)));
+		}
+		return sectionTraces;
+	}
+
+	private TraceData computeTrace(SectionType type, int[] codes, Punch[] punches) {
+		return getTracer(type).computeTrace(codes, punches);
+	}
+
+	public TraceData mergeSectionsTrace(List<TraceData> sectionsTrace) {
+		int nbMPs = 0;
+		List<Trace> trace = new ArrayList<Trace>(sectionsTrace.size() * 10);
+		for (TraceData data : sectionsTrace) {
+			nbMPs += data.getNbMPs();
+			Collections.addAll(trace, data.getTrace());
+		}
+		TraceData mergedTrace = factory().createTraceData();
+		mergedTrace.setNbMPs(nbMPs);
+		mergedTrace.setTrace(trace.toArray(new Trace[0]));
+		return mergedTrace;
 	}
 
 	/*
@@ -213,41 +263,6 @@ public class SectionsTracer extends BasicControl implements Tracer {
 			surrogateSection.firstOkPunchIndex = 0;
 			surrogateSection.lastOkPunchIndex = surrogateSection.punchTrace.length - 1;
 		}
-	}
-	
-	public List<SectionPunches> computeSectionsTrace(List<Section> sections, Punch[] punches) {
-		ArrayList<SectionPunches> sectionTraces = new ArrayList<SectionPunches>();
-		for (Section section : sections) {
-			sectionTraces.add(
-				new SectionPunches(section, computeTrace(section.getType(), section.getCodes(), punches)));
-		}
-		return sectionTraces;
-	}
-
-	public List<TraceData> computeRefinedSectionsTrace(List<SectionPunches> sections, Punch[] punches) {
-		ArrayList<TraceData> sectionTraces = new ArrayList<TraceData>();
-		for (SectionPunches section : sections) {
-			sectionTraces.add(
-				computeTrace(section.getType(), section.getCodes(), section.collectPunches(punches)));
-		}
-		return sectionTraces;
-	}
-	
-	private Tracer getTracer(SectionType type) {
-		Tracer t = null;
-		switch (type) {
-		case INLINE:
-			t = new InlineTracer(factory());
-			break;
-		case FREEORDER:
-			t = new FreeOrderTracer(factory());
-			break;
-		}
-		return t;
-	}
-	
-	private TraceData computeTrace(SectionType type, int[] codes, Punch[] punches) {
-		return getTracer(type).computeTrace(codes, punches);
 	}
 	
 }
