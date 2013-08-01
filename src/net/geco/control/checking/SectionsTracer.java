@@ -5,12 +5,14 @@
 package net.geco.control.checking;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import net.geco.control.BasicControl;
 import net.geco.model.Factory;
 import net.geco.model.Punch;
 import net.geco.model.Section;
+import net.geco.model.Section.SectionType;
 import net.geco.model.Trace;
 import net.geco.model.TraceData;
 
@@ -23,15 +25,34 @@ public class SectionsTracer extends BasicControl implements Tracer {
 
 	public static class SectionPunches {
 		
+		private Section targetSection;
+
 		private Trace[] punchTrace;
 
 		private int firstOkPunchIndex;
 		
 		private int lastOkPunchIndex;
 		
-		public SectionPunches(TraceData data) {
+		public SectionPunches(Section section, TraceData data) {
+			targetSection = section;
 			punchTrace = data.getPunchTrace();
 			findFirstLastIndices();
+		}
+
+		public SectionType getType() {
+			return targetSection.getType();
+		}
+
+		public int[] getCodes() {
+			return targetSection.getCodes();
+		}
+
+		public Punch[] collectPunches(Punch[] punches) {
+			if( isMissing() ) {
+				return new Punch[0];
+			} else {
+				return Arrays.copyOfRange(punches, firstOkPunchIndex, lastOkPunchIndex + 1);
+			}
 		}
 		
 		private void findFirstLastIndices() {
@@ -82,15 +103,15 @@ public class SectionsTracer extends BasicControl implements Tracer {
 				lastOkPunchIndex = -2;
 			}
 		}
+
+		public boolean overlaps(SectionPunches nextSection) {
+			return lastOkPunchIndex >= nextSection.firstOkPunchIndex && ! nextSection.isMissing();
+		}
 		
 		public boolean prevailsOver(SectionPunches nextSection) {
 			int selfCount = countPunches(nextSection.firstOkPunchIndex, lastOkPunchIndex);
 			int nextCount = nextSection.countPunches(nextSection.firstOkPunchIndex, lastOkPunchIndex);
 			return selfCount >= nextCount;
-		}
-
-		public boolean overlaps(SectionPunches nextSection) {
-			return lastOkPunchIndex >= nextSection.firstOkPunchIndex && ! nextSection.isMissing();
 		}
 
 		private int countPunches(int start, int end) {
@@ -104,6 +125,7 @@ public class SectionsTracer extends BasicControl implements Tracer {
 		public String toString() {
 			return String.format("[%s:%s]", firstOkPunchIndex, lastOkPunchIndex);
 		}
+
 	}
 	
 	public SectionsTracer(Factory factory) {
@@ -196,14 +218,24 @@ public class SectionsTracer extends BasicControl implements Tracer {
 	public List<SectionPunches> computeSectionsTrace(List<Section> sections, Punch[] punches) {
 		ArrayList<SectionPunches> sectionTraces = new ArrayList<SectionPunches>();
 		for (Section section : sections) {
-			sectionTraces.add(new SectionPunches(getTracer(section).computeTrace(section.getCodes(), punches)));
+			sectionTraces.add(
+				new SectionPunches(section, computeTrace(section.getType(), section.getCodes(), punches)));
 		}
 		return sectionTraces;
 	}
 
-	private Tracer getTracer(Section section) {
+	public List<TraceData> computeRefinedSectionsTrace(List<SectionPunches> sections, Punch[] punches) {
+		ArrayList<TraceData> sectionTraces = new ArrayList<TraceData>();
+		for (SectionPunches section : sections) {
+			sectionTraces.add(
+				computeTrace(section.getType(), section.getCodes(), section.collectPunches(punches)));
+		}
+		return sectionTraces;
+	}
+	
+	private Tracer getTracer(SectionType type) {
 		Tracer t = null;
-		switch (section.getType()) {
+		switch (type) {
 		case INLINE:
 			t = new InlineTracer(factory());
 			break;
@@ -212,6 +244,10 @@ public class SectionsTracer extends BasicControl implements Tracer {
 			break;
 		}
 		return t;
+	}
+	
+	private TraceData computeTrace(SectionType type, int[] codes, Punch[] punches) {
+		return getTracer(type).computeTrace(codes, punches);
 	}
 	
 }
