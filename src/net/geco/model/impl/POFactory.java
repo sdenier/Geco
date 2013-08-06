@@ -19,6 +19,7 @@ import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.RunnerResult;
 import net.geco.model.Section;
+import net.geco.model.SectionTraceData;
 import net.geco.model.Stage;
 import net.geco.model.Trace;
 import net.geco.model.TraceData;
@@ -66,6 +67,10 @@ public class POFactory implements Factory {
 		return new TraceDataImpl();
 	}
 	
+	public SectionTraceData createSectionTraceData() {
+		return new SectionTraceDataImpl();
+	}
+
 	public RunnerResult createRunnerResult() {
 		return new RunnerResultImpl();
 	}

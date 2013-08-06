@@ -31,6 +31,8 @@ public interface Factory {
 	public RunnerRaceData createRunnerRaceData();
 
 	public TraceData createTraceData();
+
+	public SectionTraceData createSectionTraceData();
 	
 	public RunnerResult createRunnerResult();
 	

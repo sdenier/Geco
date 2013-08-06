@@ -14,6 +14,7 @@ import net.geco.model.Factory;
 import net.geco.model.Punch;
 import net.geco.model.Section;
 import net.geco.model.Section.SectionType;
+import net.geco.model.SectionTraceData;
 import net.geco.model.Trace;
 import net.geco.model.TraceData;
 
@@ -146,11 +147,11 @@ public class SectionsTracer extends BasicControl {
 		return t;
 	}
 
-	public TraceData computeTrace(List<Section> sections, Punch[] punches) {
+	public SectionTraceData computeTrace(List<Section> sections, Punch[] punches) {
 		List<SectionPunches> sectionsPunches = computeSectionsTrace(sections, punches);
 		refineSectionMarkers(sectionsPunches);
 		List<TraceData> sectionsTrace = computeRefinedSectionsTrace(sectionsPunches, punches);
-		return mergeSectionsTrace(sectionsTrace);
+		return mergeSectionsTrace(sections, sectionsTrace);
 	}
 
 	public List<SectionPunches> computeSectionsTrace(List<Section> sections, Punch[] punches) {
@@ -175,14 +176,16 @@ public class SectionsTracer extends BasicControl {
 		return getTracer(type).computeTrace(codes, punches);
 	}
 
-	public TraceData mergeSectionsTrace(List<TraceData> sectionsTrace) {
+	public SectionTraceData mergeSectionsTrace(List<Section> sections, List<TraceData> sectionsTrace) {
+		SectionTraceData mergedTrace = factory().createSectionTraceData();
 		int nbMPs = 0;
 		List<Trace> trace = new ArrayList<Trace>(sectionsTrace.size() * 10);
-		for (TraceData data : sectionsTrace) {
+		for (int i = 0; i < sections.size(); i++) {
+			mergedTrace.putSectionAt(sections.get(i).getName(), trace.size());
+			TraceData data = sectionsTrace.get(i);
 			nbMPs += data.getNbMPs();
 			Collections.addAll(trace, data.getTrace());
 		}
-		TraceData mergedTrace = factory().createTraceData();
 		mergedTrace.setNbMPs(nbMPs);
 		mergedTrace.setTrace(trace.toArray(new Trace[0]));
 		return mergedTrace;
