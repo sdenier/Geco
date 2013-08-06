@@ -18,6 +18,7 @@ import net.geco.app.AppBuilder;
 import net.geco.app.GecoStageLaunch;
 import net.geco.basics.Announcer;
 import net.geco.basics.GService;
+import net.geco.basics.GecoConfig;
 import net.geco.basics.GecoResources;
 import net.geco.basics.Logger;
 import net.geco.basics.MergeRequestHandler;
@@ -99,6 +100,8 @@ public class Geco implements IGecoApp, MergeRequestHandler {
 	private GecoWindow window;
 	
 	private String appName;
+
+	private GecoConfig config;
 
 	/*
 	 * Controls
@@ -197,6 +200,7 @@ public class Geco implements IGecoApp, MergeRequestHandler {
 		GecoFunction.resetAll();
 		AppBuilder builder = stageLaunch.getAppBuilder();
 		appName = builder.getAppName();
+		config = builder.getConfig();
 		GecoControl gecoControl = new GecoControl(builder);
 		history.remove(stageLaunch);
 		history.addFirst(stageLaunch);
@@ -209,6 +213,11 @@ public class Geco implements IGecoApp, MergeRequestHandler {
 	@Override
 	public String getAppName() {
 		return appName;
+	}
+
+	@Override
+	public GecoConfig getConfig() {
+		return config;
 	}
 
 	@Override

@@ -6,6 +6,7 @@ package net.geco.app;
 
 import javax.swing.JFrame;
 
+import net.geco.basics.GecoConfig;
 import net.geco.control.ArchiveManager;
 import net.geco.control.GecoControl;
 import net.geco.control.MergeControl;
@@ -66,6 +67,11 @@ public class ROAAppBuilder extends AppBuilder {
 	}
 
 	@Override
+	public GecoConfig getConfig() {
+		return new GecoConfig(true);
+	}
+
+	@Override
 	protected Factory createFactory() {
 		return new POFactory();
 	}
@@ -122,7 +128,7 @@ public class ROAAppBuilder extends AppBuilder {
 				new StageConfigPanel(geco, frame),
 				new SIReaderConfigPanel(geco, frame),
 				new PenaltyCheckerConfigPanel(geco),
-				new CourseConfigPanel(geco, frame, true),
+				new CourseConfigPanel(geco, frame),
 				new CategoryConfigPanel(geco, frame),
 				new ClubConfigPanel(geco, frame),
 		};
