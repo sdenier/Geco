@@ -61,6 +61,7 @@ public class SectionControlDialog extends JDialog {
 					targetSection.setName(sectionName);
 					targetSection.setType((SectionType) sectionTypeCB.getSelectedItem());
 					selectedCourse.putSection(targetSection);
+					selectedCourse.refreshSectionCodes();
 					setVisible(false);
 				}
 			}

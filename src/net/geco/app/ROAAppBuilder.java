@@ -17,8 +17,7 @@ import net.geco.control.SectionService;
 import net.geco.control.StageBuilder;
 import net.geco.control.StageControl;
 import net.geco.control.StartlistImporter;
-import net.geco.control.checking.CompositeChecker;
-import net.geco.control.checking.PenaltyChecker;
+import net.geco.control.checking.SectionsChecker;
 import net.geco.control.results.CNCalculator;
 import net.geco.control.results.ResultBuilder;
 import net.geco.control.results.ResultExporter;
@@ -77,8 +76,8 @@ public class ROAAppBuilder extends AppBuilder {
 	}
 
 	@Override
-	public PenaltyChecker createChecker(GecoControl gecoControl) {
-		return new CompositeChecker(gecoControl);
+	public SectionsChecker createChecker(GecoControl gecoControl) {
+		return new SectionsChecker(gecoControl);
 	}
 
 	@Override

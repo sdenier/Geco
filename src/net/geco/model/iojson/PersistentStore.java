@@ -102,6 +102,7 @@ public final class PersistentStore {
 					section.setType(SectionType.valueOf(sectionTuple.getString(2)));
 					course.putSection(section);
 				}
+				course.refreshSectionCodes();
 			}
 			registry.addCourse(course);
 		}
