@@ -18,6 +18,7 @@ import net.geco.basics.Html;
 import net.geco.basics.TimeManager;
 import net.geco.model.Messages;
 import net.geco.model.RunnerRaceData;
+import net.geco.model.SectionTraceData;
 import net.geco.model.Trace;
 import net.geco.ui.framework.RunnersTableAnnouncer.RunnersTableListener;
 
@@ -31,8 +32,15 @@ public class PunchPanel extends JPanel implements RunnersTableListener {
 
 	private JTable punchesT;
 	
+	private boolean sectionsEnabled;
+	
 	public PunchPanel() {
-		punchesT = new JTable();
+		this(false);
+	}
+
+	public PunchPanel(boolean sectionsEnabled) {
+		this.punchesT = new JTable();
+		this.sectionsEnabled = sectionsEnabled;
 		initPunchPanel(this);
 	}
 
@@ -63,6 +71,73 @@ public class PunchPanel extends JPanel implements RunnersTableListener {
 				seq++;
 			}
 		}
+		if( sectionsEnabled ) {
+			setSectionsModel((SectionTraceData) runnerData.getTraceData(), trace, sequence);
+		} else {
+			setClassicModel(trace, sequence);
+		}
+	}
+
+	private void setSectionsModel(final SectionTraceData sectionTrace, final Trace[] trace, final String[] sequence) {
+		punchesT.setModel(new AbstractTableModel() {
+			public Object getValueAt(int rowIndex, int columnIndex) {
+				switch (columnIndex) {
+				case 0:
+					return sequence[rowIndex];
+				case 1:
+					return traceLabel(trace, rowIndex);
+				case 2:
+					return traceTime(trace, rowIndex);
+				case 3:
+					return sectionTrace.sectionLabelAt(rowIndex);
+				default:
+					return ""; //$NON-NLS-1$
+				}
+			}
+			public String traceLabel(final Trace[] trace, int rowIndex) {
+				String code = trace[rowIndex].getCode();
+				if( trace[rowIndex].isMP() ) //$NON-NLS-1$
+					return Html.htmlTag("font", "color=red", code); //$NON-NLS-1$ //$NON-NLS-2$
+				if( trace[rowIndex].isAdded() ) //$NON-NLS-1$
+					return Html.htmlTag("font", "color=blue", code); //$NON-NLS-1$ //$NON-NLS-2$
+				return code;
+			}
+			public String traceTime(final Trace[] trace, int rowIndex) {
+				Date time = trace[rowIndex].getTime();
+				if( time.getTime() == 0)
+					return ""; //$NON-NLS-1$
+				return TimeManager.fullTime(time);
+			}
+			public int getRowCount() {
+				return trace.length;
+			}
+			public int getColumnCount() {
+				return 4;
+			}
+			@Override
+			public String getColumnName(int column) {
+				switch (column) {
+				case 0:
+					return Messages.uiGet("PunchPanel.NumLabel"); //$NON-NLS-1$
+				case 1:
+					return Messages.uiGet("PunchPanel.CodeLabel"); //$NON-NLS-1$
+				case 2:
+					return Messages.uiGet("PunchPanel.TimeLabel"); //$NON-NLS-1$
+				case 3:
+					return "Section";
+				default:
+					return ""; //$NON-NLS-1$
+				}
+			}
+		});
+		TableColumnModel columnModel = punchesT.getColumnModel();
+		columnModel.getColumn(0).setPreferredWidth(10);
+		columnModel.getColumn(1).setPreferredWidth(50);
+		columnModel.getColumn(2).setPreferredWidth(75);
+		columnModel.getColumn(3).setPreferredWidth(75);
+	}
+
+	private void setClassicModel(final Trace[] trace, final String[] sequence) {
 		punchesT.setModel(new AbstractTableModel() {
 			public Object getValueAt(int rowIndex, int columnIndex) {
 				switch (columnIndex) {
