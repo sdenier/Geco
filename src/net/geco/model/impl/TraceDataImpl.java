@@ -124,4 +124,8 @@ public class TraceDataImpl implements TraceData {
 		return formatTrace(getPunchTrace());
 	}
 
+	public boolean hasSectionData() {
+		return false;
+	}
+
 }

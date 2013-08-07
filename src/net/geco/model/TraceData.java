@@ -41,4 +41,6 @@ public interface TraceData extends Cloneable {
 	
 	public TraceData clone();
 
+	public boolean hasSectionData();
+
 }

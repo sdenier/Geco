@@ -4,13 +4,18 @@
  */
 package net.geco.model;
 
+import java.util.Map.Entry;
+import java.util.Set;
+
 /**
  * @author Simon Denier
  * @since Aug 6, 2013
  *
  */
 public interface SectionTraceData extends TraceData {
-
+	
+	public Set<Entry<Integer, Section>> getSectionData();
+	
 	public void putSectionAt(Section section, int index);
 	
 	public String sectionLabelAt(int rowIndex);

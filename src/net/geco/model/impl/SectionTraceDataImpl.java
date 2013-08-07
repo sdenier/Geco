@@ -5,6 +5,8 @@
 package net.geco.model.impl;
 
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeMap;
 
 import net.geco.model.Section;
@@ -19,6 +21,10 @@ public class SectionTraceDataImpl extends TraceDataImpl implements SectionTraceD
 
 	private Map<Integer, Section> sectionsMap = new TreeMap<Integer, Section>();
 
+	public Set<Entry<Integer,Section>> getSectionData() {
+		return sectionsMap.entrySet();
+	}
+	
 	@Override
 	public void putSectionAt(Section section, int index) {
 		sectionsMap.put(index, section);
@@ -30,4 +36,9 @@ public class SectionTraceDataImpl extends TraceDataImpl implements SectionTraceD
 		return section != null ? section.getName() : "";
 	}
 
+	@Override
+	public boolean hasSectionData() {
+		return true;
+	}
+	
 }
