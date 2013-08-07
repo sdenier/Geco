@@ -18,7 +18,7 @@ import net.geco.model.Course;
 import net.geco.model.Punch;
 import net.geco.model.Section.SectionType;
 import net.geco.model.SectionTraceData;
-import net.geco.model.impl.POFactory;
+import net.geco.model.impl.SectionFactory;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +37,7 @@ public class SectionsTracerTest {
 
 	@Before
 	public void setup() {
-		subject = new SectionsTracer(new POFactory());
+		subject = new SectionsTracer(new SectionFactory());
 	}
 
 	/*

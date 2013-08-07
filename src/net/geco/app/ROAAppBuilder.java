@@ -35,7 +35,7 @@ import net.geco.functions.StartTimeFunction;
 import net.geco.functions.StationLogFunction;
 import net.geco.model.Factory;
 import net.geco.model.Messages;
-import net.geco.model.impl.POFactory;
+import net.geco.model.impl.SectionFactory;
 import net.geco.ui.config.CategoryConfigPanel;
 import net.geco.ui.config.ClubConfigPanel;
 import net.geco.ui.config.CourseConfigPanel;
@@ -72,7 +72,7 @@ public class ROAAppBuilder extends AppBuilder {
 
 	@Override
 	protected Factory createFactory() {
-		return new POFactory();
+		return new SectionFactory();
 	}
 
 	@Override

@@ -177,7 +177,7 @@ public class SectionsTracer extends BasicControl {
 	}
 
 	public SectionTraceData mergeSectionsTrace(List<Section> sections, List<TraceData> sectionsTrace) {
-		SectionTraceData mergedTrace = factory().createSectionTraceData();
+		SectionTraceData mergedTrace = (SectionTraceData) factory().createTraceData();
 		int nbMPs = 0;
 		List<Trace> trace = new ArrayList<Trace>(sectionsTrace.size() * 10);
 		for (int i = 0; i < sections.size(); i++) {

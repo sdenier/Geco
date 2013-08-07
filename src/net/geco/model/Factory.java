@@ -32,8 +32,6 @@ public interface Factory {
 
 	public TraceData createTraceData();
 
-	public SectionTraceData createSectionTraceData();
-	
 	public RunnerResult createRunnerResult();
 	
 	public Trace createTrace(Punch punch);
