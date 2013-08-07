@@ -7,6 +7,7 @@ package net.geco.model.impl;
 import java.util.Map;
 import java.util.TreeMap;
 
+import net.geco.model.Section;
 import net.geco.model.SectionTraceData;
 
 /**
@@ -16,17 +17,17 @@ import net.geco.model.SectionTraceData;
  */
 public class SectionTraceDataImpl extends TraceDataImpl implements SectionTraceData {
 
-	private Map<Integer, String> sectionsMap = new TreeMap<Integer, String>();
+	private Map<Integer, Section> sectionsMap = new TreeMap<Integer, Section>();
 
 	@Override
-	public void putSectionAt(String sectionName, int index) {
-		sectionsMap.put(index, sectionName);
+	public void putSectionAt(Section section, int index) {
+		sectionsMap.put(index, section);
 	}
 	
 	@Override
 	public String sectionLabelAt(int index) {
-		String section = sectionsMap.get(index);
-		return section != null ? section : "";
+		Section section = sectionsMap.get(index);
+		return section != null ? section.getName() : "";
 	}
 
 }

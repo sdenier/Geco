@@ -181,7 +181,7 @@ public class SectionsTracer extends BasicControl {
 		int nbMPs = 0;
 		List<Trace> trace = new ArrayList<Trace>(sectionsTrace.size() * 10);
 		for (int i = 0; i < sections.size(); i++) {
-			mergedTrace.putSectionAt(sections.get(i).getName(), trace.size());
+			mergedTrace.putSectionAt(sections.get(i), trace.size());
 			TraceData data = sectionsTrace.get(i);
 			nbMPs += data.getNbMPs();
 			Collections.addAll(trace, data.getTrace());

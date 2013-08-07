@@ -11,7 +11,7 @@ package net.geco.model;
  */
 public interface SectionTraceData extends TraceData {
 
-	public void putSectionAt(String sectionName, int index);
+	public void putSectionAt(Section section, int index);
 	
 	public String sectionLabelAt(int rowIndex);
 
