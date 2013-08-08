@@ -375,6 +375,36 @@ public class SectionsTracerTest {
 		assertSectionBeginEnd(refinedSections.get(2), 4, 7);
 		assertThat(refinedSections.get(1).isMissing(), is(true));
 	}
+
+	@Test
+	public void refineSectionMarkers_missingBeforeSectionsAfterRefinement() {
+		List<SectionPunches> sections = Arrays.asList(
+				TraceFactory.createSectionPunches("+51", "+52", "31", "+41", "+53", "+54"),
+				TraceFactory.createSectionPunches("+51", "+52", "+31", "41", "+53", "+54"),
+				TraceFactory.createSectionPunches("51", "52", "+31", "+41", "53", "54"));
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
+		assertSectionBeginEnd(refinedSections.get(0), -1, -2);
+		assertSectionBeginEnd(refinedSections.get(1), -1, -2);
+		assertSectionBeginEnd(refinedSections.get(2), 0, 5);
+		assertThat(refinedSections.get(0).isMissing(), is(true));
+		assertThat(refinedSections.get(1).isMissing(), is(true));
+	}
+	
+	@Test
+	public void refineSectionMarkers_missingAfterSectionsAfterRefinement() {
+		List<SectionPunches> sections = Arrays.asList(
+				TraceFactory.createSectionPunches("31", "32", "+41", "+42", "33", "34"),
+				TraceFactory.createSectionPunches("+31", "+32", "41", "+42", "+33", "+34"),
+				TraceFactory.createSectionPunches("+31", "+32", "+41", "42", "+33", "+34"));
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
+		assertSectionBeginEnd(refinedSections.get(0), 0, 5);
+		assertSectionBeginEnd(refinedSections.get(1), -1, -2);
+		assertSectionBeginEnd(refinedSections.get(2), -1, -2);
+		assertThat(refinedSections.get(1).isMissing(), is(true));
+		assertThat(refinedSections.get(2).isMissing(), is(true));
+	}
 	
 	@Test
 	public void refineSectionMarkers_missingSection() {
@@ -481,7 +511,20 @@ public class SectionsTracerTest {
 		assertSectionBeginEnd(refinedSections.get(1), -1, -2);
 		assertSectionBeginEnd(refinedSections.get(2), 3, 6);
 	}
-	
+
+	@Test
+	public void refineSectionMarkers_ButterflyWithRefinedMissingLoop() {
+		List<SectionPunches> sections = Arrays.asList(
+				TraceFactory.createSectionPunches("100", "31", "32", "+41", "33", "+100", "+51", "+52"),
+				TraceFactory.createSectionPunches("+100", "+31", "+32", "41", "+33", "+100", "+51", "+52"),
+				TraceFactory.createSectionPunches("100", "+31", "+32", "+41", "+33", "100", "51", "52"));
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
+		assertSectionBeginEnd(refinedSections.get(0), 0, 4);
+		assertSectionBeginEnd(refinedSections.get(1), -1, -2);
+		assertSectionBeginEnd(refinedSections.get(2), 5, 7);
+	}
+
 	@Test
 	public void refineSectionMarkers_noSection() {
 		List<SectionPunches> sections = Collections.emptyList();

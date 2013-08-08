@@ -240,6 +240,14 @@ public class SectionsTracer extends BasicControl {
 					previousSection.foldEndIndex();
 				}
 			}
+			// if one goes missing, remove it to replay split with previous/next ok sections
+			if( previousSection.isMissing() ) {
+				sections.remove(i - 1);
+				i = Math.max(i - 2, 0);
+			} else if( nextSection.isMissing() ) {
+				sections.remove(i);
+				i--;
+			}
 		}
 	}
 
