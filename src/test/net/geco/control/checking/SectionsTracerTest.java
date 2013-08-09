@@ -151,7 +151,7 @@ public class SectionsTracerTest {
 		Course course = createButterflyCourse();
 		Punch[] punches = TraceFactory.createPunches(30, 33, 34, 30, 35, 36, 30);
 		SectionTraceData trace = subject.computeTrace(course.getSections(), punches);
-		assertThat(trace.formatTrace(), equalTo("30,-31,-32,-30,33,34,30,35,36,30"));
+		assertThat(trace.formatTrace(), equalTo("-30,-31,-32,30,33,34,30,35,36,30"));
 		assertThat(trace.getNbMPs(), equalTo(3));
 		assertThat(trace.sectionLabelAt(0), equalTo("A1"));
 		assertThat(trace.sectionLabelAt(3), equalTo("A2"));
@@ -163,7 +163,7 @@ public class SectionsTracerTest {
 		Course course = createButterflyCourse();
 		Punch[] punches = TraceFactory.createPunches(30, 31, 32, 30, 35, 36, 30);
 		SectionTraceData trace = subject.computeTrace(course.getSections(), punches);
-		assertThat(trace.formatTrace(), equalTo("30,31,32,30,-33,-34,-30,35,36,30"));
+		assertThat(trace.formatTrace(), equalTo("30,31,32,-30,-33,-34,30,35,36,30"));
 		assertThat(trace.getNbMPs(), equalTo(3));
 		assertThat(trace.sectionLabelAt(0), equalTo("A1"));
 		assertThat(trace.sectionLabelAt(3), equalTo("A2"));
@@ -361,7 +361,18 @@ public class SectionsTracerTest {
 		assertSectionBeginEnd(refinedSections.get(1), 3, 6);
 		assertSectionBeginEnd(refinedSections.get(2), 7, 9);
 	}
-	
+
+	@Test
+	public void refineSectionMarkers_loopSinglePunchSection() {
+		List<SectionPunches> sections = Arrays.asList(
+				TraceFactory.createSectionPunches("30", "31", "32", "+30"),
+				TraceFactory.createSectionPunches("30", "+31", "+32", "30"));
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
+		assertSectionBeginEnd(refinedSections.get(0), 0, 2);
+		assertSectionBeginEnd(refinedSections.get(1), 3, 3);
+	}
+
 	@Test
 	public void refineSectionMarkers_missingSectionAfterRefinement() {
 		List<SectionPunches> sections = Arrays.asList(
@@ -495,8 +506,8 @@ public class SectionsTracerTest {
 		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
 		assertThat(refinedSections, is(sections));
 		assertSectionBeginEnd(refinedSections.get(0), 0, 2);
-		assertSectionBeginEnd(refinedSections.get(1), 3, 3);
-		assertSectionBeginEnd(refinedSections.get(2), 4, 6);
+		assertSectionBeginEnd(refinedSections.get(1), -1, -2);
+		assertSectionBeginEnd(refinedSections.get(2), 3, 6);
 	}
 	
 	@Test

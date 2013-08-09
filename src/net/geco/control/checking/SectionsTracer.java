@@ -111,9 +111,14 @@ public class SectionsTracer extends BasicControl {
 		}
 		
 		public boolean prevailsOver(SectionPunches nextSection) {
-			int selfCount = countPunches(nextSection.firstOkPunchIndex, lastOkPunchIndex);
-			int nextCount = nextSection.countPunches(nextSection.firstOkPunchIndex, lastOkPunchIndex);
-			return selfCount >= nextCount;
+			if( nextSection.firstOkPunchIndex == lastOkPunchIndex ){
+				// central loop control --> prevalence to the next beginning section
+				return false;
+			} else {
+				int selfCount = countPunches(nextSection.firstOkPunchIndex, lastOkPunchIndex);
+				int nextCount = nextSection.countPunches(nextSection.firstOkPunchIndex, lastOkPunchIndex);
+				return selfCount >= nextCount;
+			}
 		}
 
 		private int countPunches(int start, int end) {

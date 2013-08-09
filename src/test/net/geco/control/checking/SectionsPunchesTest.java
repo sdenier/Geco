@@ -166,7 +166,8 @@ public class SectionsPunchesTest {
 	public void prevailsOver_targetPrevailing() {
 		SectionPunches subject = createSectionPunches("31", "32", "+34", "+35", "33", "+36");
 		SectionPunches next = createSectionPunches("+31", "+32", "34", "35", "+33", "36");
-		assertThat("Next section prevails over subject when counting more punches", subject.prevailsOver(next), is(false));
+		assertThat("Next section prevails over subject when counting more punches",
+					subject.prevailsOver(next), is(false));
 	}
 	
 	@Test
@@ -174,6 +175,14 @@ public class SectionsPunchesTest {
 		SectionPunches subject = createSectionPunches("31", "32", "+34", "33", "+35", "+36");
 		SectionPunches next = createSectionPunches("+31", "+32", "34", "+33", "35", "36");
 		assertThat("Subject prevails over next in case of equality", subject.prevailsOver(next), is(true));
+	}
+
+	@Test
+	public void prevailsOver_sameControlOverlapping() {
+		SectionPunches subject = createSectionPunches("31", "32", "40", "+33", "+34");
+		SectionPunches next = createSectionPunches("+31", "+32", "40", "33", "34");
+		assertThat("Next prevails over subject when conflict on the common joint punch",
+					subject.prevailsOver(next), is(false));
 	}
 	
 	@Test
