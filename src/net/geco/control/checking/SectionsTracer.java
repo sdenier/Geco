@@ -107,7 +107,7 @@ public class SectionsTracer extends BasicControl {
 		}
 
 		public boolean overlaps(SectionPunches nextSection) {
-			return lastOkPunchIndex >= nextSection.firstOkPunchIndex && ! nextSection.isMissing();
+			return ! (isMissing() || nextSection.isMissing()) && lastOkPunchIndex >= nextSection.firstOkPunchIndex;
 		}
 		
 		public boolean prevailsOver(SectionPunches nextSection) {
@@ -161,9 +161,10 @@ public class SectionsTracer extends BasicControl {
 
 	public List<SectionPunches> computeSectionsTrace(List<Section> sections, Punch[] punches) {
 		ArrayList<SectionPunches> sectionTraces = new ArrayList<SectionPunches>();
+		GreedyLooseTracer tracer = new GreedyLooseTracer(factory());
 		for (Section section : sections) {
 			sectionTraces.add(
-				new SectionPunches(section, computeTrace(section.getType(), section.getCodes(), punches)));
+				new SectionPunches(section, tracer.computeTrace(section.getCodes(), punches)));
 		}
 		return sectionTraces;
 	}

@@ -57,7 +57,7 @@ public class SectionsTracerTest {
 		Course course = CourseFactory.createCourse("Butterfly", new int[]{30, 31, 32, 30, 33, 34, 30, 35, 36, 30});
 		course.putSection(CourseFactory.createSection("A1", 0, SectionType.FREEORDER));
 		course.putSection(CourseFactory.createSection("A2", 3, SectionType.INLINE));
-		course.putSection(CourseFactory.createSection("A3", 6, SectionType.INLINE));
+		course.putSection(CourseFactory.createSection("A3", 6, SectionType.FREEORDER));
 		course.refreshSectionCodes();
 		return course;
 	}
@@ -168,6 +168,20 @@ public class SectionsTracerTest {
 		assertThat(trace.sectionLabelAt(0), equalTo("A1"));
 		assertThat(trace.sectionLabelAt(3), equalTo("A2"));
 		assertThat(trace.sectionLabelAt(6), equalTo("A3"));
+	}
+
+	@Test
+	public void computeTrace_loopSinglePunchSection() {
+		Course course = CourseFactory.createCourse("Loop", new int[]{30, 31, 32, 30, 33, 34});
+		course.putSection(CourseFactory.createSection("A", 0, SectionType.INLINE));
+		course.putSection(CourseFactory.createSection("B", 3, SectionType.INLINE));
+		course.refreshSectionCodes();
+		Punch[] punches = TraceFactory.createPunches(30, 31, 32, 30);
+		SectionTraceData trace = subject.computeTrace(course.getSections(), punches);
+		assertThat(trace.formatTrace(), equalTo("30,31,32,30,-33,-34"));
+		assertThat(trace.getNbMPs(), equalTo(2));
+		assertThat(trace.sectionLabelAt(0), equalTo("A"));
+		assertThat(trace.sectionLabelAt(3), equalTo("B"));
 	}
 
 	@Test
@@ -335,6 +349,19 @@ public class SectionsTracerTest {
 		assertSectionBeginEnd(refinedSections.get(1), 3, 5);
 		assertSectionBeginEnd(refinedSections.get(2), 6, 9);
 	}
+	
+	@Test
+	public void refineSectionMarkers_Butterfly_greedyTraces() {
+		List<SectionPunches> sections = Arrays.asList(
+			TraceFactory.createSectionPunches("30", "31", "32", "30", "+33", "+34", "30", "+35", "+36", "30"),
+			TraceFactory.createSectionPunches("30", "+31", "+32", "30", "33", "34", "30", "+35", "+36", "30"),
+			TraceFactory.createSectionPunches("30", "+31", "+32", "30", "+33", "+34", "30", "35", "36", "30"));
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
+		assertSectionBeginEnd(refinedSections.get(0), 0, 2);
+		assertSectionBeginEnd(refinedSections.get(1), 3, 5);
+		assertSectionBeginEnd(refinedSections.get(2), 6, 9);
+	}
 
 	@Test
 	public void refineSectionMarkers_ButterflyWithMissingCentral() {
@@ -342,6 +369,19 @@ public class SectionsTracerTest {
 				TraceFactory.createSectionPunches("30", "31", "32", "+33", "+34", "+30", "+35", "+36", "30"),
 				TraceFactory.createSectionPunches("+30", "+31", "+32", "33", "34", "+30", "+35", "+36", "30"),
 				TraceFactory.createSectionPunches("+30", "+31", "+32", "+33", "+34", "30", "35", "36", "30"));
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
+		assertSectionBeginEnd(refinedSections.get(0), 0, 2);
+		assertSectionBeginEnd(refinedSections.get(1), 3, 4);
+		assertSectionBeginEnd(refinedSections.get(2), 5, 8);
+	}
+
+	@Test
+	public void refineSectionMarkers_ButterflyWithMissingCentral_greedyTraces() {
+		List<SectionPunches> sections = Arrays.asList(
+				TraceFactory.createSectionPunches("30", "31", "32", "+33", "+34", "30", "+35", "+36", "30"),
+				TraceFactory.createSectionPunches("30", "+31", "+32", "33", "34", "30", "+35", "+36", "30"),
+				TraceFactory.createSectionPunches("30", "+31", "+32", "+33", "+34", "30", "35", "36", "30"));
 		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
 		assertThat(refinedSections, is(sections));
 		assertSectionBeginEnd(refinedSections.get(0), 0, 2);
@@ -363,9 +403,33 @@ public class SectionsTracerTest {
 	}
 
 	@Test
+	public void refineSectionMarkers_ButterflyWithOverlapping_greedyTraces() {
+		List<SectionPunches> sections = Arrays.asList(
+				TraceFactory.createSectionPunches("30", "31", "32", "30", "+33", "30", "+34", "+35", "+36", "30"),
+				TraceFactory.createSectionPunches("30", "+31", "+32", "30", "33", "30", "34", "+35", "+36", "30"),
+				TraceFactory.createSectionPunches("30", "+31", "+32", "30", "+33", "30", "+34", "35", "36", "30"));
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
+		assertSectionBeginEnd(refinedSections.get(0), 0, 2);
+		assertSectionBeginEnd(refinedSections.get(1), 3, 6);
+		assertSectionBeginEnd(refinedSections.get(2), 7, 9);
+	}
+
+	@Test
 	public void refineSectionMarkers_loopSinglePunchSection() {
 		List<SectionPunches> sections = Arrays.asList(
 				TraceFactory.createSectionPunches("30", "31", "32", "+30"),
+				TraceFactory.createSectionPunches("30", "+31", "+32", "30"));
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
+		assertSectionBeginEnd(refinedSections.get(0), 0, 2);
+		assertSectionBeginEnd(refinedSections.get(1), 3, 3);
+	}
+
+	@Test
+	public void refineSectionMarkers_loopSinglePunchSection_greedyTraces() {
+		List<SectionPunches> sections = Arrays.asList(
+				TraceFactory.createSectionPunches("30", "31", "32", "30"),
 				TraceFactory.createSectionPunches("30", "+31", "+32", "30"));
 		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
 		assertThat(refinedSections, is(sections));
@@ -509,9 +573,9 @@ public class SectionsTracerTest {
 		assertSectionBeginEnd(refinedSections.get(1), -1, -2);
 		assertSectionBeginEnd(refinedSections.get(2), 3, 6);
 	}
-	
+
 	@Test
-	public void refineSectionMarkers_ButterflyWithMissingLoop2() {
+	public void refineSectionMarkers_ButterflyWithMissingLoop_alternative() {
 		List<SectionPunches> sections = Arrays.asList(
 				TraceFactory.createSectionPunches("30", "31", "32", "+30", "+35", "+36", "+30"),
 				TraceFactory.createSectionPunches("30", "+31", "+32", "+30", "+35", "+36", "+30"),
@@ -520,6 +584,19 @@ public class SectionsTracerTest {
 		assertThat(refinedSections, is(sections));
 		assertSectionBeginEnd(refinedSections.get(0), 0, 2);
 		assertSectionBeginEnd(refinedSections.get(1), -1, -2);
+		assertSectionBeginEnd(refinedSections.get(2), 3, 6);
+	}
+
+	@Test
+	public void refineSectionMarkers_ButterflyWithMissingLoop_greedyTraces() {
+		List<SectionPunches> sections = Arrays.asList(
+				TraceFactory.createSectionPunches("30", "31", "32", "30", "+35", "+36", "30"),
+				TraceFactory.createSectionPunches("30", "+31", "+32", "30", "+35", "+36", "30"),
+				TraceFactory.createSectionPunches("30", "+31", "+32", "30", "35", "36", "30"));
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
+		assertSectionBeginEnd(refinedSections.get(0), 0, 2);
+		assertSectionBeginEnd(refinedSections.get(1), 6, 3);
 		assertSectionBeginEnd(refinedSections.get(2), 3, 6);
 	}
 
@@ -535,14 +612,29 @@ public class SectionsTracerTest {
 		assertSectionBeginEnd(refinedSections.get(1), -1, -2);
 		assertSectionBeginEnd(refinedSections.get(2), 5, 7);
 	}
-
+	
+	@Test
+	public void refineSectionMarkers_ButterflyWithRefinedMissingLoop_greedyTraces() {
+		List<SectionPunches> sections = Arrays.asList(
+				TraceFactory.createSectionPunches("100", "31", "32", "+41", "33", "100", "+51", "+52"),
+				TraceFactory.createSectionPunches("+100", "+31", "+32", "41", "+33", "+100", "+51", "+52"),
+				TraceFactory.createSectionPunches("100", "+31", "+32", "+41", "+33", "100", "51", "52"));
+		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
+		assertThat(refinedSections, is(sections));
+		assertSectionBeginEnd(refinedSections.get(0), 0, 4);
+		assertSectionBeginEnd(refinedSections.get(1), -1, -2);
+		assertSectionBeginEnd(refinedSections.get(2), 5, 7);
+	}
+	
 	@Test
 	public void refineSectionMarkers_noSection() {
 		List<SectionPunches> sections = Collections.emptyList();
 		List<SectionPunches> refinedSections = subject.refineSectionMarkers(sections);
 		assertThat(refinedSections, is(sections));
 	}
-	
+
+
+
 	public void assertSectionBeginEnd(SectionPunches section, int expectedFirst, int expectedLast) {
 		assertThat(section.firstOkPunchIndex(), equalTo(expectedFirst));
 		assertThat(section.lastOkPunchIndex(), equalTo(expectedLast));

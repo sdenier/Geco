@@ -153,6 +153,18 @@ public class SectionsPunchesTest {
 		subject = createSectionPunches("+31", "+34");
 		next = createSectionPunches("+31", "+34");
 		assertThat(subject.overlaps(next), is(false));
+
+		subject = createSectionPunches("31", "34");
+		subject.foldStartIndex();
+		subject.foldEndIndex();
+		next = createSectionPunches("31", "34");
+		assertThat(subject.overlaps(next), is(false));
+
+		subject = createSectionPunches("31", "34");
+		next = createSectionPunches("31", "34");
+		next.foldStartIndex();
+		next.foldEndIndex();
+		assertThat(subject.overlaps(next), is(false));
 	}
 	
 	@Test
