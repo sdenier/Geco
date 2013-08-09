@@ -24,116 +24,6 @@ import net.geco.model.TraceData;
  *
  */
 public class SectionsTracer extends BasicControl {
-
-	public static class SectionPunches {
-		
-		private Section targetSection;
-
-		private Trace[] punchTrace;
-
-		private int firstOkPunchIndex;
-		
-		private int lastOkPunchIndex;
-		
-		public SectionPunches(Section section, TraceData data) {
-			targetSection = section;
-			punchTrace = data.getPunchTrace();
-			findFirstLastIndices();
-		}
-
-		public SectionType getType() {
-			return targetSection.getType();
-		}
-
-		public int[] getCodes() {
-			return targetSection.getCodes();
-		}
-
-		public Punch[] collectPunches(Punch[] punches) {
-			if( isMissing() ) {
-				return new Punch[0];
-			} else {
-				return Arrays.copyOfRange(punches, firstOkPunchIndex, lastOkPunchIndex + 1);
-			}
-		}
-		
-		private void findFirstLastIndices() {
-			firstOkPunchIndex = -1;
-			lastOkPunchIndex = punchTrace.length;
-			foldStartIndex();
-			if( ! isMissing() ) {
-				foldEndIndex();
-			}
-		}
-
-		public int firstOkPunchIndex() {
-			return firstOkPunchIndex;
-		}
-		
-		public int lastOkPunchIndex() {
-			return lastOkPunchIndex;
-		}
-
-		public boolean isMissing() {
-			return firstOkPunchIndex > lastOkPunchIndex;
-		}
-
-		public void foldStartIndex() {
-			int i = firstOkPunchIndex + 1;
-			for (; i < punchTrace.length; i++) {
-				if( punchTrace[i].isOK() ) {
-					firstOkPunchIndex = i;
-					break;
-				}
-			}
-			if( i == punchTrace.length ) {
-				firstOkPunchIndex = -1;
-				lastOkPunchIndex = -2;
-			}
-		}
-		
-		public void foldEndIndex() {
-			int i = lastOkPunchIndex - 1;
-			for (; i >= 0; i--) {
-				if( punchTrace[i].isOK() ) {
-					lastOkPunchIndex = i;
-					break;
-				}
-			}
-			if( i < 0) {
-				firstOkPunchIndex = -1;
-				lastOkPunchIndex = -2;
-			}
-		}
-
-		public boolean overlaps(SectionPunches nextSection) {
-			return ! (isMissing() || nextSection.isMissing()) && lastOkPunchIndex >= nextSection.firstOkPunchIndex;
-		}
-		
-		public boolean prevailsOver(SectionPunches nextSection) {
-			if( nextSection.firstOkPunchIndex == lastOkPunchIndex ){
-				// central loop control --> prevalence to the next beginning section
-				return false;
-			} else {
-				int selfCount = countPunches(nextSection.firstOkPunchIndex, lastOkPunchIndex);
-				int nextCount = nextSection.countPunches(nextSection.firstOkPunchIndex, lastOkPunchIndex);
-				return selfCount >= nextCount;
-			}
-		}
-
-		private int countPunches(int start, int end) {
-			int count = 0;
-			for (int i = start; i <= end && i < punchTrace.length; i++) {
-				if( punchTrace[i].isOK() ){ count++; }
-			}
-			return count;
-		}
-
-		public String toString() {
-			return String.format("[%s:%s]", firstOkPunchIndex, lastOkPunchIndex);
-		}
-
-	}
 	
 	public SectionsTracer(Factory factory) {
 		super(factory);
@@ -281,5 +171,116 @@ public class SectionsTracer extends BasicControl {
 			surrogateSection.lastOkPunchIndex = surrogateSection.punchTrace.length - 1;
 		}
 	}
-	
+
+
+	public static class SectionPunches {
+		
+		private Section targetSection;
+
+		private Trace[] punchTrace;
+
+		private int firstOkPunchIndex;
+		
+		private int lastOkPunchIndex;
+		
+		public SectionPunches(Section section, TraceData data) {
+			targetSection = section;
+			punchTrace = data.getPunchTrace();
+			findFirstLastIndices();
+		}
+
+		public SectionType getType() {
+			return targetSection.getType();
+		}
+
+		public int[] getCodes() {
+			return targetSection.getCodes();
+		}
+
+		public Punch[] collectPunches(Punch[] punches) {
+			if( isMissing() ) {
+				return new Punch[0];
+			} else {
+				return Arrays.copyOfRange(punches, firstOkPunchIndex, lastOkPunchIndex + 1);
+			}
+		}
+		
+		private void findFirstLastIndices() {
+			firstOkPunchIndex = -1;
+			lastOkPunchIndex = punchTrace.length;
+			foldStartIndex();
+			if( ! isMissing() ) {
+				foldEndIndex();
+			}
+		}
+
+		public int firstOkPunchIndex() {
+			return firstOkPunchIndex;
+		}
+		
+		public int lastOkPunchIndex() {
+			return lastOkPunchIndex;
+		}
+
+		public boolean isMissing() {
+			return firstOkPunchIndex > lastOkPunchIndex;
+		}
+
+		public void foldStartIndex() {
+			int i = firstOkPunchIndex + 1;
+			for (; i < punchTrace.length; i++) {
+				if( punchTrace[i].isOK() ) {
+					firstOkPunchIndex = i;
+					break;
+				}
+			}
+			if( i == punchTrace.length ) {
+				firstOkPunchIndex = -1;
+				lastOkPunchIndex = -2;
+			}
+		}
+		
+		public void foldEndIndex() {
+			int i = lastOkPunchIndex - 1;
+			for (; i >= 0; i--) {
+				if( punchTrace[i].isOK() ) {
+					lastOkPunchIndex = i;
+					break;
+				}
+			}
+			if( i < 0) {
+				firstOkPunchIndex = -1;
+				lastOkPunchIndex = -2;
+			}
+		}
+
+		public boolean overlaps(SectionPunches nextSection) {
+			return ! (isMissing() || nextSection.isMissing()) && lastOkPunchIndex >= nextSection.firstOkPunchIndex;
+		}
+		
+		public boolean prevailsOver(SectionPunches nextSection) {
+			if( nextSection.firstOkPunchIndex == lastOkPunchIndex ){
+				// central loop control --> prevalence to the next beginning section
+				return false;
+			} else {
+				int selfCount = countPunches(nextSection.firstOkPunchIndex, lastOkPunchIndex);
+				int nextCount = nextSection.countPunches(nextSection.firstOkPunchIndex, lastOkPunchIndex);
+				return selfCount >= nextCount;
+			}
+		}
+
+		private int countPunches(int start, int end) {
+			int count = 0;
+			for (int i = start; i <= end && i < punchTrace.length; i++) {
+				if( punchTrace[i].isOK() ){ count++; }
+			}
+			return count;
+		}
+
+		public String toString() {
+			return String.format("[%s:%s]", firstOkPunchIndex, lastOkPunchIndex);
+		}
+
+	}
+
 }
