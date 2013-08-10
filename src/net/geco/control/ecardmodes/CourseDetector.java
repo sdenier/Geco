@@ -59,6 +59,9 @@ public class CourseDetector extends Control {
 		int minMps = Integer.MAX_VALUE;
 		RunnerRaceData testData = data.clone();
 		testData.setRunner(runnerControl.buildMockRunner());
+		if( data.getRunner() != null ){
+			testData.getRunner().setRegisteredStarttime(data.getRunner().getRegisteredStarttime());
+		}
 		CourseResult bestResult = new CourseResult(minMps, testData.getCourse());
 		bestResult.result = data.getResult(); // default value
 
