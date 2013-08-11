@@ -4,6 +4,7 @@
  */
 package net.geco.control.ecardmodes;
 
+import net.geco.basics.TimeManager;
 import net.geco.control.GecoControl;
 import net.geco.model.Course;
 import net.geco.model.Runner;
@@ -28,6 +29,7 @@ public class CopyRunnerHandler extends AbstractHandlerWithCourseDetector impleme
 		Course course = courseDetector.detectCourse(data);
 		String uniqueEcard = runnerControl.deriveUniqueEcard(runner.getEcard());
 		Runner newRunner = runner.copyWith(registry().nextStartId(), uniqueEcard, course);
+		newRunner.setRegisteredStarttime(TimeManager.NO_TIME);
 		runnerControl.registerRunner(newRunner, data);
 		geco().log("Copy " + data.infoString()); //$NON-NLS-1$
 		return uniqueEcard;
