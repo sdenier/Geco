@@ -83,6 +83,7 @@ public abstract class AbstractECardMode extends Control implements ECardMode {
 	
 	public RunnerRaceData createUnregisteredData(SiDataFrame card) {
 		RunnerRaceData newData = factory().createRunnerRaceData();
+		newData.setTraceData(factory().createTraceData());
 		newData.setResult(factory().createRunnerResult());
 		updateRaceDataWith(newData, card);
 		return newData;

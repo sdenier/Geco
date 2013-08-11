@@ -16,7 +16,6 @@ import javax.swing.JPanel;
 
 import net.geco.model.Course;
 import net.geco.model.RunnerRaceData;
-import net.geco.model.RunnerResult;
 import net.geco.ui.basics.SwingUtils;
 
 
@@ -28,12 +27,8 @@ import net.geco.ui.basics.SwingUtils;
 public class LeisureResultPanel extends ResultPanel {
 
 	private JLabel nameL;
-//	private JLabel clubL;
 	private JLabel courseL;
-//	private JLabel racetimeL;
 	private JLabel resultL;
-//	private JLabel penaltiesL;
-//	private JLabel categoryL;
 
 	public LeisureResultPanel() {
 		super();
@@ -76,26 +71,15 @@ public class LeisureResultPanel extends ResultPanel {
 	
 	public void updateRunnerData(RunnerRaceData raceData) {
 		nameL.setText(raceData.getRunner().getName());
-//		clubL.setText(raceData.getRunner().getClub().getName());
-//		categoryL.setText(raceData.getRunner().getCategory().getName());
 		Course course = raceData.getCourse();
 		courseL.setText(course.getName());
-		
-		RunnerResult result = raceData.getResult();
-//		racetimeL.setText(result.formatRacetime());
-		updateStatusLabel(result.getStatus());
-//		penaltiesL.setText(result.formatTimePenalty());
-		updateMps(result.getNbMPs(), course.nbControls());
-		
+		updateStatusLabel(raceData.getResult().getStatus());
+		updateMps(raceData.getTraceData().getNbMPs(), course.nbControls());
 		punchP.refreshPunches(raceData);
 	}
 
 	private void updateMps(int mps, int courseSize) {
-		String mpText = Integer.toString(courseSize - mps) + " / " + Integer.toString(courseSize); //$NON-NLS-1$
-//		if( mps>0 ) {
-//			mpText = Html.htmlTag("font", "color=red", mpText);
-//		}
-		resultL.setText(mpText);
+		resultL.setText(Integer.toString(courseSize - mps) + " / " + Integer.toString(courseSize)); //$NON-NLS-1$
 	}
 
 	

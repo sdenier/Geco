@@ -16,9 +16,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import net.geco.control.ArchiveManager;
-import net.geco.control.Checker;
-import net.geco.control.PenaltyChecker;
 import net.geco.control.RunnerControl;
+import net.geco.control.checking.Checker;
+import net.geco.control.checking.PenaltyChecker;
 import net.geco.control.ecardmodes.CourseDetector;
 import net.geco.control.ecardmodes.ECardTrainingMode;
 import net.geco.model.Course;

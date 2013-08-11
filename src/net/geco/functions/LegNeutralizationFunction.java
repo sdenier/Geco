@@ -190,7 +190,7 @@ public class LegNeutralizationFunction extends GecoFunction {
 		geco().log(Messages.uiGet("LegNeutralizationFunction.ResetTimesMessage")); //$NON-NLS-1$
 		for (RunnerRaceData raceData : registry().getRunnersData()) {
 			geco().checker().resetRaceTime(raceData);
-			for (Trace t : raceData.getResult().getTrace()) {
+			for (Trace t : raceData.getTraceData().getTrace()) {
 				t.setNeutralized(false);
 			}
 		}

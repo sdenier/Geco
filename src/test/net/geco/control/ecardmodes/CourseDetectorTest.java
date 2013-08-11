@@ -10,10 +10,10 @@ import static test.net.geco.GecoFixtures.punch;
 
 import java.util.Date;
 
-import net.geco.control.FreeOrderTracer;
 import net.geco.control.GecoControl;
-import net.geco.control.PenaltyChecker;
 import net.geco.control.RunnerControl;
+import net.geco.control.checking.FreeOrderTracer;
+import net.geco.control.checking.PenaltyChecker;
 import net.geco.control.ecardmodes.CourseDetector;
 import net.geco.model.Course;
 import net.geco.model.Punch;
@@ -67,6 +67,7 @@ public class CourseDetectorTest {
 		raceData = factory.createRunnerRaceData();
 		raceData.setStarttime(new Date(10000));
 		raceData.setFinishtime(new Date(20000));
+		raceData.setTraceData(factory.createTraceData());
 		raceData.setResult(factory.createRunnerResult());
 	}
 	
@@ -88,6 +89,7 @@ public class CourseDetectorTest {
 		when(geco.checker()).thenReturn(new PenaltyChecker(factory));
 		assertEquals("should find closest match with MP trace", courseA, detector.detectCourse(raceData));
 		assertEquals(Status.MP, raceData.getStatus());
+		assertEquals("31,-34,31,33,31,-32+34,31", raceData.getTraceData().formatTrace());
 	}
 	
 	@Test
@@ -161,7 +163,7 @@ public class CourseDetectorTest {
 				 punch(35), punch(36), punch(31), punch(31), punch(33), punch(31), punch(32), punch(31), punch(37)
 		});
 		when(geco.checker()).thenReturn(new PenaltyChecker(factory, new FreeOrderTracer(factory)));
-		assertEquals("should find closets match with MP trace", courseC, detector.detectCourse(raceData));
+		assertEquals("should find closest match with MP trace", courseC, detector.detectCourse(raceData));
 		assertEquals(Status.MP, raceData.getStatus());
 	}
 	

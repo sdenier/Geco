@@ -162,8 +162,8 @@ public class ResultBuilder extends Control {
 	}
 	
 	private SplitTime[] buildNormalSplits(RunnerRaceData data, boolean includeFinishSplit, SplitTime[] bestSplits) {
-		ArrayList<SplitTime> splits = new ArrayList<SplitTime>(data.getResult().getTrace().length);
-		ArrayList<SplitTime> added = new ArrayList<SplitTime>(data.getResult().getTrace().length);
+		ArrayList<SplitTime> splits = new ArrayList<SplitTime>(data.getTraceData().getTrace().length);
+		ArrayList<SplitTime> added = new ArrayList<SplitTime>(data.getTraceData().getTrace().length);
 		// in normal mode, added splits appear after normal splits
 		buildSplits(data, splits, added, bestSplits, true, includeFinishSplit);
 		splits.addAll(added);
@@ -175,7 +175,7 @@ public class ResultBuilder extends Control {
 	}
 	
 	public SplitTime[] buildLinearSplits(RunnerRaceData data) {
-		ArrayList<SplitTime> splits = new ArrayList<SplitTime>(data.getResult().getTrace().length);
+		ArrayList<SplitTime> splits = new ArrayList<SplitTime>(data.getTraceData().getTrace().length);
 		// in linear mode, added splits are kept in place with others
 		buildSplits(data, splits, splits, new SplitTime[0], false, true);
 		return splits.toArray(new SplitTime[0]);
@@ -186,7 +186,7 @@ public class ResultBuilder extends Control {
 		long startTime = data.getOfficialStarttime().getTime();
 		long previousTime = startTime;
 		int control = 1;
-		for (Trace trace : data.getResult().getTrace()) {
+		for (Trace trace : data.getTraceData().getTrace()) {
 			long time = trace.getTime().getTime();
 			if( trace.isOK() ) {
 				SplitTime split = createSplit(Integer.toString(control), trace, startTime, previousTime, time);
