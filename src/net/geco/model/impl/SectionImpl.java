@@ -21,6 +21,8 @@ public class SectionImpl implements Section {
 	
 	private SectionType type;
 
+	private int[] codes;
+
 	public SectionImpl() {
 		this.type = SectionType.INLINE;
 	}
@@ -51,6 +53,14 @@ public class SectionImpl implements Section {
 
 	public int[] getCodes(int[] allCodes, int endIndex) {
 		return Arrays.copyOfRange(allCodes, startIndex, endIndex);
+	}
+
+	public int[] getCodes() {
+		return codes;
+	}
+
+	public void setCodes(int[] allCodes, int endIndex) {
+		codes = Arrays.copyOfRange(allCodes, startIndex, endIndex);
 	}
 
 	public String displayString() {

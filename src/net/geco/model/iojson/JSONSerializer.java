@@ -108,6 +108,12 @@ public interface JSONSerializer {
 	public JSONSerializer id(String key, Object object) throws IOException;
 
 	/**
+	 * Same as {@link #id(String, Object)}, except it only writes/appends the value
+	 * to the current field/array.
+	 */
+	public JSONSerializer id(Object object) throws IOException;
+	
+	/**
 	 * Write a reference field for the given entity, using the identity it
 	 * should have received before with {@link #id(String, Object)}. No verification
 	 * is made that the entity effectively has an identity. Used when other objects

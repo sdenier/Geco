@@ -6,6 +6,7 @@ package net.geco.app;
 
 import javax.swing.JFrame;
 
+import net.geco.basics.GecoConfig;
 import net.geco.control.ArchiveManager;
 import net.geco.control.GecoControl;
 import net.geco.control.MergeControl;
@@ -16,8 +17,7 @@ import net.geco.control.SectionService;
 import net.geco.control.StageBuilder;
 import net.geco.control.StageControl;
 import net.geco.control.StartlistImporter;
-import net.geco.control.checking.CompositeChecker;
-import net.geco.control.checking.PenaltyChecker;
+import net.geco.control.checking.SectionsChecker;
 import net.geco.control.results.CNCalculator;
 import net.geco.control.results.ResultBuilder;
 import net.geco.control.results.ResultExporter;
@@ -35,7 +35,7 @@ import net.geco.functions.StartTimeFunction;
 import net.geco.functions.StationLogFunction;
 import net.geco.model.Factory;
 import net.geco.model.Messages;
-import net.geco.model.impl.POFactory;
+import net.geco.model.impl.SectionFactory;
 import net.geco.ui.config.CategoryConfigPanel;
 import net.geco.ui.config.ClubConfigPanel;
 import net.geco.ui.config.CourseConfigPanel;
@@ -66,13 +66,18 @@ public class ROAAppBuilder extends AppBuilder {
 	}
 
 	@Override
-	protected Factory createFactory() {
-		return new POFactory();
+	public GecoConfig getConfig() {
+		return new GecoConfig(true);
 	}
 
 	@Override
-	public PenaltyChecker createChecker(GecoControl gecoControl) {
-		return new CompositeChecker(gecoControl);
+	protected Factory createFactory() {
+		return new SectionFactory();
+	}
+
+	@Override
+	public SectionsChecker createChecker(GecoControl gecoControl) {
+		return new SectionsChecker(gecoControl);
 	}
 
 	@Override
@@ -122,7 +127,7 @@ public class ROAAppBuilder extends AppBuilder {
 				new StageConfigPanel(geco, frame),
 				new SIReaderConfigPanel(geco, frame),
 				new PenaltyCheckerConfigPanel(geco),
-				new CourseConfigPanel(geco, frame, true),
+				new CourseConfigPanel(geco, frame),
 				new CategoryConfigPanel(geco, frame),
 				new ClubConfigPanel(geco, frame),
 		};

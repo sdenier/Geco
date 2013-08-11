@@ -9,6 +9,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map.Entry;
 
 import net.geco.basics.GecoResources;
 import net.geco.basics.TimeManager;
@@ -26,6 +27,7 @@ import net.geco.model.RunnerRaceData;
 import net.geco.model.RunnerResult;
 import net.geco.model.Section;
 import net.geco.model.Section.SectionType;
+import net.geco.model.SectionTraceData;
 import net.geco.model.Stage;
 import net.geco.model.Status;
 import net.geco.model.Trace;
@@ -96,12 +98,13 @@ public final class PersistentStore {
 				JSONArray sectionz = c.getJSONArray(K.SECTIONS);
 				for (int j = 0; j < sectionz.length(); j++) {
 					JSONArray sectionTuple = sectionz.getJSONArray(j);
-					Section section = factory.createSection();
-					section.setStartIndex(sectionTuple.getInt(0));
-					section.setName(sectionTuple.getString(1));
-					section.setType(SectionType.valueOf(sectionTuple.getString(2)));
+					Section section = store.register(factory.createSection(), sectionTuple.getInt(0));
+					section.setStartIndex(sectionTuple.getInt(1));
+					section.setName(sectionTuple.getString(2));
+					section.setType(SectionType.valueOf(sectionTuple.getString(3)));
 					course.putSection(section);
 				}
+				course.refreshSectionCodes();
 			}
 			registry.addCourse(course);
 		}
@@ -203,12 +206,21 @@ public final class PersistentStore {
 			JSONObject r = runnerTuple.getJSONObject(I_RESULT);
 			TraceData traceData = factory.createTraceData();
 			traceData.setNbMPs(r.getInt(K.MPS));
-//			traceData.setRunningTime(runningTime); TODO runningTime
+			traceData.setRunningTime(r.optLong(K.RUNNING_TIME, TimeManager.NO_TIME_l)); // MIGR: for raid app
 			JSONArray t = r.getJSONArray(K.TRACE);
 			Trace[] trace = new Trace[t.length() / 2];
 			for (int j = 0; j < trace.length; j++) {
 				trace[j] = factory.createTrace(t.getString(2 * j),
 						new Date(t.getLong(2 * j + 1)));
+			}
+			if( r.has(K.SECTION_DATA) ) {
+				SectionTraceData sectionData = (SectionTraceData) traceData;
+				JSONArray sections = r.getJSONArray(K.SECTION_DATA);
+				for (int j = 0; j < sections.length(); j++) {
+					JSONArray section = sections.getJSONArray(j);
+					sectionData.putSectionAt(store.retrieve(section.getInt(0), Section.class),
+											 section.getInt(1));
+				}
 			}
 			JSONArray neut = r.getJSONArray(K.NEUTRALIZED);
 			for (int j = 0; j < neut.length(); j++) {
@@ -267,6 +279,7 @@ public final class PersistentStore {
 			json.endArray().startArrayField(K.SECTIONS);
 			for (Section section : course.getSections()) {
 				json.startArray()
+					.id(section)
 					.value(section.getStartIndex())
 					.value(section.getName())
 					.value(section.getType().name())
@@ -362,7 +375,8 @@ public final class PersistentStore {
 				.field(K.TIME, result.getRacetime())
 				.field(K.STATUS, result.getStatus().name())
 				.field(K.MPS, traceData.getNbMPs())
-				.field(K.PENALTY, result.getTimePenalty());
+				.field(K.PENALTY, result.getTimePenalty())
+				.field(K.RUNNING_TIME, traceData.getRunningTime());
 			
 			Trace[] traceArray = traceData.getTrace();
 			int nbNeut = 0;
@@ -375,8 +389,18 @@ public final class PersistentStore {
 					neutralized[nbNeut++] = i;
 				}
 			}
-			json.endArray()
-				.startArrayField(K.NEUTRALIZED);
+			json.endArray();
+			if( traceData.hasSectionData() ) {
+				json.startArrayField(K.SECTION_DATA);
+				for (Entry<Integer, Section> section : ((SectionTraceData) traceData).getSectionData() ) {
+					json.startArray()
+						.ref(section.getValue())
+						.value(section.getKey())
+						.endArray();
+				}
+				json.endArray();
+			}
+			json.startArrayField(K.NEUTRALIZED);
 			for (int i = 0; i < nbNeut; i++) {
 				json.value(neutralized[i]);
 			}
@@ -435,7 +459,9 @@ public final class PersistentStore {
 		public static final String STATUS;
 		public static final String MPS;
 		public static final String PENALTY;
+		public static final String RUNNING_TIME;
 		public static final String TRACE;
+		public static final String SECTION_DATA;
 		public static final String NEUTRALIZED;
 		
 		static {
@@ -462,7 +488,9 @@ public final class PersistentStore {
 				STATUS = "status"; //$NON-NLS-1$
 				MPS = "mps"; //$NON-NLS-1$
 				PENALTY = "penalty"; //$NON-NLS-1$
+				RUNNING_TIME = "running"; //$NON-NLS-1$
 				TRACE = "trace"; //$NON-NLS-1$
+				SECTION_DATA = "section_data"; //$NON-NLS-1$
 				NEUTRALIZED = "neut"; //$NON-NLS-1$
 			} else {
 				START_ID = "i"; //$NON-NLS-1$
@@ -487,7 +515,9 @@ public final class PersistentStore {
 				STATUS = "s"; //$NON-NLS-1$
 				MPS = "m"; //$NON-NLS-1$
 				PENALTY = "p"; //$NON-NLS-1$
+				RUNNING_TIME = "u"; //$NON-NLS-1$
 				TRACE = "r"; //$NON-NLS-1$
+				SECTION_DATA = "o"; //$NON-NLS-1$
 				NEUTRALIZED = "n"; //$NON-NLS-1$
 			}
 		}

@@ -65,7 +65,7 @@ public class POFactory implements Factory {
 	public TraceData createTraceData() {
 		return new TraceDataImpl();
 	}
-	
+
 	public RunnerResult createRunnerResult() {
 		return new RunnerResultImpl();
 	}

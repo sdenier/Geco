@@ -6,6 +6,7 @@ package net.geco.app;
 
 import javax.swing.JFrame;
 
+import net.geco.basics.GecoConfig;
 import net.geco.control.ControlBuilder;
 import net.geco.framework.IGecoApp;
 import net.geco.ui.framework.ConfigPanel;
@@ -30,6 +31,8 @@ import net.geco.ui.framework.UIAnnouncers;
 public abstract class AppBuilder extends ControlBuilder {
 
 	public abstract String getAppName();
+
+	public abstract GecoConfig getConfig();
 	
 	public abstract TabPanel[] buildUITabs(IGecoApp geco, JFrame frame, UIAnnouncers announcers);
 

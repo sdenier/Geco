@@ -179,6 +179,12 @@ public class JacksonSerializer implements JSONSerializer {
 	}
 
 	@Override
+	public JSONSerializer id(Object object) throws IOException {
+		gen.writeNumber(idMap.idFor(object));
+		return this;
+	}
+
+	@Override
 	public JSONSerializer ref(String key, Object object) throws IOException {
 		gen.writeNumberField(key, idMap.findId(object));
 		return this;

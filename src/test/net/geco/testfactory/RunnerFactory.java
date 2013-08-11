@@ -23,7 +23,7 @@ public class RunnerFactory {
 		Runner runner = factory.createRunner();
 		runner.setStartId(1);
 		runner.setEcard(ecard);
-		runner.setCourse(GroupFactory.createCourse("Dummy"));
+		runner.setCourse(CourseFactory.createCourse("Dummy"));
 		RunnerRaceData runnerRaceData = factory.createRunnerRaceData();
 		runnerRaceData.setRunner(runner);
 		runnerRaceData.setTraceData(factory.createTraceData());

@@ -25,6 +25,8 @@ public interface TraceData extends Cloneable {
 
 	public Trace[] getClearTrace();
 
+	public Trace[] getPunchTrace();
+
 	public void setTrace(Trace[] trace);
 	
 	public String formatTrace();
@@ -33,8 +35,12 @@ public interface TraceData extends Cloneable {
 
 	public String formatClearTrace();
 
+	public String formatPunchTrace();
+
 	public Trace[] retrieveLeg(String legStart, String legEnd);
 	
 	public TraceData clone();
-	
+
+	public boolean hasSectionData();
+
 }

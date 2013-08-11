@@ -56,7 +56,7 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 		return Messages.uiGet("CourseConfigPanel.Title"); //$NON-NLS-1$
 	}
 	
-	public CourseConfigPanel(final IGecoApp geco, final JFrame frame, boolean enableSections) {
+	public CourseConfigPanel(final IGecoApp geco, final JFrame frame) {
 		sectionService = geco.sectionService();
 		final ConfigTableModel<Course> tableModel = createTableModel(geco);
 		tableModel.setData(geco.registry().getSortedCourses());
@@ -202,7 +202,7 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 			}
 		});
 		
-		if( enableSections ){
+		if( geco.getConfig().sectionsEnabled ){
 			final JButton sectionB = new JButton("Section...");
 			sectionB.setEnabled(false);
 			sectionB.addActionListener(new ActionListener() {
