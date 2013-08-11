@@ -3,8 +3,8 @@
  */
 package net.geco.model;
 
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -42,12 +42,14 @@ public interface Course extends Pool, Group {
 
 	public boolean hasLeg(int start, int end);
 
-	public Collection<Section> getSections();
+	public List<Section> getSections();
 	
 	public Section getSectionAt(int index);
 	
 	public void putSection(Section section);
 
 	public void removeSection(Section targetSection);
+
+	public void refreshSectionCodes();
 	
 }

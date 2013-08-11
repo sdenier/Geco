@@ -123,7 +123,7 @@ public class RunnersPanel extends TabPanel
 	
 	public JTabbedPane initInfoPanel() {
 		this.runnerPanel = new RunnerPanel(geco(), frame(), this);
-		this.tracePanel = new PunchPanel();
+		this.tracePanel = new PunchPanel(geco().getConfig().sectionsEnabled);
 		final JTabbedPane pane = new JTabbedPane();
 		pane.addTab(Messages.uiGet("RunnersPanel.RunnerDataTitle"), this.runnerPanel); //$NON-NLS-1$
 		pane.addTab(Messages.uiGet("RunnersPanel.RunnerTraceTitle"), tracePanel); //$NON-NLS-1$

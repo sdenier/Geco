@@ -31,7 +31,8 @@ public interface Section {
 		public SectionType getType() {return SectionType.INLINE;}
 		public int getStartIndex() {return 0;}
 		public String getName() {return "";}
-		public int[] getCodes(int[] allCodes, int endIndex) {return new int[0];}
+		public int[] getCodes() {return new int[0];}
+		public void setCodes(int[] allCodes, int endIndex) {}
 		public String displayString() {return "";}
 	};
 
@@ -47,7 +48,9 @@ public interface Section {
 	
 	public void setType(SectionType type);
 	
-	public int[] getCodes(int[] allCodes, int endIndex);
+	public int[] getCodes();
+
+	public void setCodes(int[] allCodes, int endIndex);
 
 	public String displayString();
 	

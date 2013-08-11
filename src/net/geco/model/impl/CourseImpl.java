@@ -4,9 +4,10 @@
  */
 package net.geco.model.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -34,7 +35,7 @@ public class CourseImpl implements Course {
 	
 	private int[] codes;
 	
-	private Map<Integer, Section> sections = new TreeMap<Integer, Section>();
+	private Map<Integer, Section> sectionsMap = new TreeMap<Integer, Section>();
 
 	public int getClimb() {
 		return climb;
@@ -106,20 +107,30 @@ public class CourseImpl implements Course {
 		return length > 0;
 	}
 
-	public Collection<Section> getSections() {
-		return sections.values();
+	public List<Section> getSections() {
+		return new ArrayList<Section>(sectionsMap.values());
 	}
 
 	public Section getSectionAt(int index) {
-		return sections.get(index);
+		return sectionsMap.get(index);
 	}
 
 	public void putSection(Section section) {
-		sections.put(section.getStartIndex(), section);
+		sectionsMap.put(section.getStartIndex(), section);
 	}
 
 	public void removeSection(Section section) {
-		sections.remove(section.getStartIndex());
+		sectionsMap.remove(section.getStartIndex());
 	}
-	
+
+	public void refreshSectionCodes() {
+		List<Section> sections = getSections();
+		if( ! sections.isEmpty() ) {
+			for (int i = 0; i < sections.size() - 1; i++) {
+				sections.get(i).setCodes(codes, sections.get(i + 1).getStartIndex());
+			}
+			sections.get(sections.size() - 1).setCodes(codes, codes.length);
+		}
+	}
+
 }
