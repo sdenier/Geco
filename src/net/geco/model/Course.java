@@ -4,6 +4,7 @@
 package net.geco.model;
 
 import java.util.Collection;
+import java.util.Date;
 
 
 /**
@@ -29,6 +30,10 @@ public interface Course extends Pool, Group {
 
 	public String formatDistanceClimb();
 
+	public Date getMassStartTime();
+	
+	public void setMassStartTime(Date time);
+	
 	public int[] getCodes();
 
 	public void setCodes(int[] codes);

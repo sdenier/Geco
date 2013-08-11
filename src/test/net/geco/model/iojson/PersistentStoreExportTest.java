@@ -86,9 +86,10 @@ public class PersistentStoreExportTest {
 
 	@Test
 	public void exportCourses() throws IOException {
-		Collection<Course> courses = asList(GroupFactory.createCourse("Course A"));
+		Collection<Course> courses = asList(GroupFactory.createCourseWithMassStartTime("Course A", new Date(32400000)));
 		subject.exportCourses(json, courses);
 		verify(json).field(K.NAME, "Course A");
+		verify(json).field(K.START, new Date(32400000));
 		InOrder inOrder = inOrder(json);
 		inOrder.verify(json).startArrayField(K.CODES);
 		inOrder.verify(json).value(31);
