@@ -2,17 +2,17 @@
  * Copyright (c) 2008 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.control;
+package net.geco.control.checking;
 
 import java.util.Properties;
 
 import net.geco.basics.Announcer.StageListener;
 import net.geco.basics.TimeManager;
+import net.geco.control.GecoControl;
 import net.geco.model.Factory;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Stage;
 import net.geco.model.Status;
-import net.geco.model.Trace;
 
 
 /**
@@ -20,20 +20,17 @@ import net.geco.model.Trace;
  * @since Dec 7, 2008
  *
  */
-public class PenaltyChecker extends PunchChecker implements Checker, StageListener {	
+public class PenaltyChecker extends AbstractChecker implements Checker, StageListener {
 	
 	protected long MPPenalty;
 
 	protected int MPLimit;
 
-	protected Tracer tracer;
-
 	protected boolean noMPLimit;
 	
 	
 	public PenaltyChecker(Factory factory, Tracer tracer) {
-		super(factory);
-		this.tracer = tracer;
+		super(factory, tracer);
 		setMPLimit(defaultMPLimit());
 		setMPPenalty(defaultMPPenalty());
 		noMPLimit = false;
@@ -48,47 +45,37 @@ public class PenaltyChecker extends PunchChecker implements Checker, StageListen
 		gecoControl.announcer().registerStageListener(this);
 	}
 	
+	@Override
 	public void postInitialize(Stage stage) {
 		setNewProperties(stage);
 	}
-	
+
 	@Override
-	public Status computeStatus(RunnerRaceData data) {
-		tracer.computeTrace(data.getCourse().getCodes(), data.getPunches());
-		data.getResult().setNbMPs(tracer.getNbMPs());
-		data.getResult().setTrace(tracer.getTrace());
-		return (noMPLimit || tracer.getNbMPs() <= getMPLimit()) ? Status.OK : Status.MP;
+	public long computeTimePenalty(RunnerRaceData raceData) {
+		return timePenalty(raceData.getTraceData().getNbMPs());
 	}
-	
-	@Override
-	public long computeOfficialRaceTime(RunnerRaceData data) {
-		long realRaceTime = super.computeOfficialRaceTime(data);
-		long timePenalty = timePenalty(data.getResult().getNbMPs());
-		data.getResult().setTimePenalty(timePenalty);
-		if( realRaceTime==TimeManager.NO_TIME_l ) {
-			return realRaceTime;
-		}
-		return realRaceTime + timePenalty;
-	}	
-	
+
 	public long timePenalty(int nbMPs) {
 		return nbMPs * getMPPenalty();
 	}
-
-	/**
-	 * This is a utility method to build a trace without checking codes, typically because
-	 * the data comes from an unknown chip without a course.
-	 * 
-	 * @param data
-	 */
-	public void normalTrace(RunnerRaceData data) {
-		Trace[] nTrace = new Trace[data.getPunches().length];
-		for (int i = 0; i < nTrace.length; i++) {
-			nTrace[i] = factory().createTrace(data.getPunches()[i]);
+	
+	@Override
+	public long computeRaceTime(RunnerRaceData data) {
+		long runningTime = data.computeRunningTime();
+		if( runningTime==TimeManager.NO_TIME_l ) {
+			return runningTime;
 		}
-		data.getResult().setTrace(nTrace);
+		return runningTime + data.getResult().getTimePenalty();
 	}
 
+	@Override
+	public Status computeStatus(RunnerRaceData data) {
+		Status status = (noMPLimit || data.getTraceData().getNbMPs() <= getMPLimit()) ? Status.OK : Status.MP;
+		if( data.getResult().getRacetime()==TimeManager.NO_TIME_l ) {
+			status = Status.MP;
+		}
+		return status;
+	}
 
 	public int defaultMPLimit() {
 		return 0;

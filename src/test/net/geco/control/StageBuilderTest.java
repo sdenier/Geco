@@ -9,8 +9,8 @@ import static org.junit.Assert.assertEquals;
 import java.util.Properties;
 
 import net.geco.basics.TimeManager;
-import net.geco.control.PenaltyChecker;
 import net.geco.control.StageBuilder;
+import net.geco.control.checking.PenaltyChecker;
 import net.geco.model.Course;
 import net.geco.model.Registry;
 import net.geco.model.Stage;

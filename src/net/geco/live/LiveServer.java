@@ -23,6 +23,7 @@ import net.geco.model.RunnerRaceData;
 import net.geco.model.RunnerResult;
 import net.geco.model.Status;
 import net.geco.model.Trace;
+import net.geco.model.TraceData;
 
 
 /**
@@ -130,14 +131,18 @@ public class LiveServer extends Control {
 			}
 		}
 		
+		TraceData traceData = factory().createTraceData();
+		traceData.setNbMPs(Integer.parseInt(data[9]));
+		traceData.setTrace(createTraceFrom(Arrays.copyOfRange(data, 11, data.length)));
+//		traceData.setRunningTime(runningTime); TODO runningTime
+		
 		RunnerResult result = factory().createRunnerResult();
 		result.setStatus(Status.valueOf(data[7]));
 		result.setRacetime(Long.parseLong(data[8]));
-		result.setNbMPs(Integer.parseInt(data[9]));
 		result.setTimePenalty(Long.parseLong(data[10]));
-		result.setTrace(createTraceFrom(Arrays.copyOfRange(data, 11, data.length)));
 		
 		RunnerRaceData runnerData = registry().findRunnerData(runner);
+		runnerData.setTraceData(traceData);
 		runnerData.setResult(result);
 		serverMulti.announceData(runnerData);
 		return "ok"; //$NON-NLS-1$

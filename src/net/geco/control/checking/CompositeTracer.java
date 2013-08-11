@@ -2,20 +2,22 @@
  * Copyright (c) 2011 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.control;
+package net.geco.control.checking;
 
 import java.util.Arrays;
 
+import net.geco.control.BasicControl;
 import net.geco.model.Factory;
 import net.geco.model.Punch;
 import net.geco.model.Trace;
+import net.geco.model.TraceData;
 
 /**
  * @author Simon Denier
  * @since Sep 4, 2011
  *
  */
-public class CompositeTracer extends AbstractTracer {
+public class CompositeTracer extends BasicControl implements Tracer {
 
 	private MultiCourse multiCourse;
 
@@ -24,7 +26,7 @@ public class CompositeTracer extends AbstractTracer {
 	}
 
 	@Override
-	public void computeTrace(int[] codes, Punch[] punches) {
+	public TraceData computeTrace(int[] codes, Punch[] punches) {
 		Tracer tracer1 = multiCourse.firstSection().tracer;
 		int[] firstCourse = multiCourse.firstSection().codes;
 		Tracer tracer2 = multiCourse.secondSection().tracer;
@@ -32,18 +34,20 @@ public class CompositeTracer extends AbstractTracer {
 		
 		int jointPunchIndex = findJointPunchIndex(secondCourse, punches);
 		Punch[] firstRace = Arrays.copyOfRange(punches, 0, jointPunchIndex);
-		tracer1.computeTrace(firstCourse, firstRace);
+		TraceData trace1 = tracer1.computeTrace(firstCourse, firstRace);
 		Punch[] secondRace = Arrays.copyOfRange(punches, jointPunchIndex, punches.length);
-		tracer2.computeTrace(secondCourse, secondRace);
+		TraceData trace2 = tracer2.computeTrace(secondCourse, secondRace);
 
-		this.nbMPs = tracer1.getNbMPs() + tracer2.getNbMPs();
-		this.trace = mergeTrace(tracer1.getTrace(), tracer2.getTrace());
+		TraceData traceData = factory().createTraceData();
+		traceData.setNbMPs(trace1.getNbMPs() + trace2.getNbMPs());
+		traceData.setTrace(mergeTrace(trace1.getTrace(), trace2.getTrace()));
+		return traceData;
 	}
 
 	protected int findJointPunchIndex(int[] secondCourse, Punch[] punches) {
 		Tracer tracer2 = multiCourse.secondSection().tracer;
-		tracer2.computeTrace(secondCourse, punches);
-		Trace[] trace2 = tracer2.getTrace();
+		TraceData traceData = tracer2.computeTrace(secondCourse, punches);
+		Trace[] trace2 = traceData.getTrace();
 		int i = 0;
 		while( i < trace2.length && !trace2[i].isOK() ){
 			i++;

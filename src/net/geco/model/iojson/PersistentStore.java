@@ -28,6 +28,7 @@ import net.geco.model.Section.SectionType;
 import net.geco.model.Stage;
 import net.geco.model.Status;
 import net.geco.model.Trace;
+import net.geco.model.TraceData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -180,12 +181,12 @@ public final class PersistentStore {
 			registry.addRunner(runner);
 	
 			JSONObject d = runnerTuple.getJSONObject(I_ECARD);
-			RunnerRaceData ecardData = factory.createRunnerRaceData();
-			ecardData.setStarttime(new Date(d.getLong(K.START)));
-			ecardData.setFinishtime(new Date(d.getLong(K.FINISH)));
-			ecardData.setErasetime(new Date(d.getLong(K.ERASE)));
-			ecardData.setControltime(new Date(d.getLong(K.CHECK)));
-			ecardData.setReadtime(new Date(d.getLong(K.READ)));
+			RunnerRaceData raceData = factory.createRunnerRaceData();
+			raceData.setStarttime(new Date(d.getLong(K.START)));
+			raceData.setFinishtime(new Date(d.getLong(K.FINISH)));
+			raceData.setErasetime(new Date(d.getLong(K.ERASE)));
+			raceData.setControltime(new Date(d.getLong(K.CHECK)));
+			raceData.setReadtime(new Date(d.getLong(K.READ)));
 			JSONArray p = d.getJSONArray(K.PUNCHES);
 			Punch[] punches = new Punch[p.length() / 2];
 			for (int j = 0; j < punches.length; j++) {
@@ -193,16 +194,14 @@ public final class PersistentStore {
 				punches[j].setCode(p.getInt(2 * j));
 				punches[j].setTime(new Date(p.getLong(2 * j + 1)));
 			}
-			ecardData.setPunches(punches);
-			ecardData.setRunner(runner);
-			registry.addRunnerData(ecardData);
+			raceData.setPunches(punches);
+			raceData.setRunner(runner);
+			registry.addRunnerData(raceData);
 	
 			JSONObject r = runnerTuple.getJSONObject(I_RESULT);
-			RunnerResult result = factory.createRunnerResult();
-			result.setRacetime(r.getLong(K.TIME));
-			result.setStatus(Status.valueOf(r.getString(K.STATUS)));
-			result.setNbMPs(r.getInt(K.MPS));
-			result.setTimePenalty(r.getLong(K.PENALTY));
+			TraceData traceData = factory.createTraceData();
+			traceData.setNbMPs(r.getInt(K.MPS));
+//			traceData.setRunningTime(runningTime); TODO runningTime
 			JSONArray t = r.getJSONArray(K.TRACE);
 			Trace[] trace = new Trace[t.length() / 2];
 			for (int j = 0; j < trace.length; j++) {
@@ -213,8 +212,14 @@ public final class PersistentStore {
 			for (int j = 0; j < neut.length(); j++) {
 				trace[neut.getInt(j)].setNeutralized(true);
 			}
-			result.setTrace(trace);
-			ecardData.setResult(result);
+			traceData.setTrace(trace);
+			raceData.setTraceData(traceData);
+			
+			RunnerResult result = factory.createRunnerResult();
+			result.setRacetime(r.getLong(K.TIME));
+			result.setStatus(Status.valueOf(r.getString(K.STATUS)));
+			result.setTimePenalty(r.getLong(K.PENALTY));
+			raceData.setResult(result);
 		}
 	}
 	
@@ -348,19 +353,20 @@ public final class PersistentStore {
 			}
 			json.endArray().endObject();
 			
+			TraceData traceData = runnerData.getTraceData();
 			RunnerResult result = runnerData.getResult();
 			json.startObject()
 				.field(K.TIME, result.getRacetime())
 				.field(K.STATUS, result.getStatus().name())
-				.field(K.MPS, result.getNbMPs())
+				.field(K.MPS, traceData.getNbMPs())
 				.field(K.PENALTY, result.getTimePenalty());
 			
-			Trace[] traceArray = result.getTrace();
+			Trace[] traceArray = traceData.getTrace();
 			int nbNeut = 0;
 			int[] neutralized = new int[traceArray.length];
 			json.startArrayField(K.TRACE);
 			for (int i = 0; i < traceArray.length; i++) {
-				Trace trace = result.getTrace()[i];
+				Trace trace = traceData.getTrace()[i];
 				json.value(trace.getCode()).value(trace.getTime());
 				if( trace.isNeutralized() ){
 					neutralized[nbNeut++] = i;

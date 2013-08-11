@@ -26,6 +26,7 @@ public class RunnerFactory {
 		runner.setCourse(GroupFactory.createCourse("Dummy"));
 		RunnerRaceData runnerRaceData = factory.createRunnerRaceData();
 		runnerRaceData.setRunner(runner);
+		runnerRaceData.setTraceData(factory.createTraceData());
 		runnerRaceData.setResult(factory.createRunnerResult());
 		return runnerRaceData;
 	}

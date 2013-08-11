@@ -22,7 +22,7 @@ import javax.swing.event.ChangeListener;
 
 import net.geco.basics.Html;
 import net.geco.basics.TimeManager;
-import net.geco.control.PenaltyChecker;
+import net.geco.control.checking.PenaltyChecker;
 import net.geco.framework.IGeco;
 import net.geco.model.Messages;
 import net.geco.ui.basics.SwingUtils;

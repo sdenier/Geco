@@ -217,7 +217,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 	protected Collection<String> computeCsvRecord(RunnerRaceData runnerData, String resultId, String rank) {
 		// edit collection
 		ArrayList<String> csvRecord = new ArrayList<String>(super.computeCsvRecord(runnerData, resultId, rank));
-		csvRecord.ensureCapacity(csvRecord.size() + 2 * runnerData.getResult().getTrace().length);
+		csvRecord.ensureCapacity(csvRecord.size() + 2 * runnerData.getTraceData().getTrace().length);
 		for (SplitTime split: resultBuilder.buildNormalSplits(runnerData, false)) {
 			csvRecord.add(split.trace.getBasicCode());
 			csvRecord.add(encodeMPPunch(split));

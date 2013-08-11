@@ -52,7 +52,7 @@ public class PunchPanel extends JPanel implements RunnersTableListener {
 	}
 
 	public void refreshPunches(RunnerRaceData runnerData) {
-		final Trace[] trace = runnerData.getResult().getTrace();
+		final Trace[] trace = runnerData.getTraceData().getTrace();
 		final String[] sequence = new String[trace.length];
 		int seq = 1;
 		for (int i = 0; i < trace.length; i++) {
