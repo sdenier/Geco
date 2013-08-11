@@ -4,6 +4,8 @@
  */
 package test.net.geco.testfactory;
 
+import java.util.Date;
+
 import net.geco.model.Category;
 import net.geco.model.Club;
 import net.geco.model.Course;
@@ -29,6 +31,12 @@ public class GroupFactory {
 		return course;
 	}
 
+	public static Course createCourseWithMassStartTime(String name, Date time) {
+		Course course = createCourse(name);
+		course.setMassStartTime(time);
+		return course;
+	}
+	
 	public static Category createCategory(String name) {
 		Category category = factory.createCategory();
 		category.setName(name);

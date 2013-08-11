@@ -81,7 +81,9 @@ public class PersistentStoreImportTest {
 		subject.importCourses(testStore, registry, factory);
 		assertThat(registry.getCourses().size(), equalTo(4));
 		assertThat(registry.findCourse("Circuit C").getLength(), equalTo(3010));
+		assertThat(registry.findCourse("Circuit C").getMassStartTime(), equalTo(new Date(32400000)));
 		assertThat(registry.findCourse("Circuit D").getCodes()[0], equalTo(43));
+		assertThat(registry.findCourse("Circuit D").getMassStartTime(), equalTo(TimeManager.NO_TIME));
 		assertThat(registry.findCourse("[Auto]").getCodes().length, equalTo(0));
 	}
 	
