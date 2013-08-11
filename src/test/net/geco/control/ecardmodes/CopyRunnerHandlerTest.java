@@ -5,10 +5,16 @@
 package test.net.geco.control.ecardmodes;
 
 import static junit.framework.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.util.Date;
+
+import net.geco.basics.TimeManager;
 import net.geco.control.RunnerControl;
 import net.geco.control.ecardmodes.CopyRunnerHandler;
 import net.geco.control.ecardmodes.CourseDetector;
@@ -48,21 +54,31 @@ public class CopyRunnerHandlerTest extends ECardModeSetup {
 	}
 
 	@Test
-	public void handleDuplicateCallsDetector() {
+	public void handleDuplicate_callsDetector() {
 		new CopyRunnerHandler(gecoControl, detector).handleDuplicate(fullRunnerData, runner);
 		verify(detector).detectCourse(fullRunnerData);
 	}
 	
 	@Test
-	public void handleDuplicateCopyRunner() {
+	public void handleDuplicate_copyRunner() {
 		Runner mockRunner = mock(Runner.class);
 		when(mockRunner.getEcard()).thenReturn("999");
+		when(mockRunner.copyWith(anyInt(), any(String.class), any(Course.class))).thenReturn(factory.createRunner());
 		new CopyRunnerHandler(gecoControl, detector).handleDuplicate(fullRunnerData, mockRunner);
 		verify(mockRunner).copyWith(314, "999a", newCourse);
 	}
+
+	@Test
+	public void handleDuplicate_resetRunnerRegisteredStart() {
+		runner.setRegisteredStarttime(new Date(1));
+		ArgumentCaptor<Runner> newRunner = ArgumentCaptor.forClass(Runner.class);
+		new CopyRunnerHandler(gecoControl, detector).handleDuplicate(fullRunnerData, runner);
+		verify(runnerControl).registerRunner(newRunner.capture(), eq(fullRunnerData));
+		assertEquals(TimeManager.NO_TIME, newRunner.getValue().getRegisteredStarttime());
+	}
 	
 	@Test
-	public void handleDuplicateRegisterNewRunner() {
+	public void handleDuplicate_registerNewRunner() {
 		ArgumentCaptor<Runner> newRunner = ArgumentCaptor.forClass(Runner.class);
 		new CopyRunnerHandler(gecoControl, detector).handleDuplicate(fullRunnerData, runner);
 		verify(runnerControl).registerRunner(newRunner.capture(), eq(fullRunnerData));
@@ -70,7 +86,7 @@ public class CopyRunnerHandlerTest extends ECardModeSetup {
 	}
 	
 	@Test
-	public void handleDuplicateReturnsId() {
+	public void handleDuplicate_returnsId() {
 		String returnedEcard = new CopyRunnerHandler(gecoControl, detector).handleDuplicate(fullRunnerData, runner);
 		assertEquals("999a", returnedEcard);
 	}
