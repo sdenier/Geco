@@ -22,7 +22,7 @@ public class TraceDataImpl implements TraceData {
 	
 	private int nbMPs = 0;
 	
-	private Trace[] trace = new Trace[0];
+	protected Trace[] trace = new Trace[0];
 
 	public TraceData clone() {
 		try {

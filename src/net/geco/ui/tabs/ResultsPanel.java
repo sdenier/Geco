@@ -88,6 +88,8 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	private JSpinner autodelayS;
 	private JRadioButton refreshRB;
 
+	private JRadioButton sectionResultRB;
+
 
 	@Override
 	public String getTabTitle() {
@@ -160,6 +162,9 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		} else
 		if( splitResultRB.isSelected() ) {
 			return geco().splitsExporter();
+		}
+		if( sectionResultRB.isSelected() ) {
+			return geco().sectionsExporter();
 		} else {
 			return geco().cnCalculator();
 		}
@@ -279,10 +284,14 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 
 		rankingResultRB = new JRadioButton(Messages.uiGet("ResultsPanel.RankingLabel")); //$NON-NLS-1$
 		splitResultRB = new JRadioButton(Messages.uiGet("ResultsPanel.SplitsLabel")); //$NON-NLS-1$
+		sectionResultRB = new JRadioButton("Sections");
 		cnScoreRB = new JRadioButton(Messages.uiGet("ResultsPanel.CNLabel")); //$NON-NLS-1$
 		ButtonGroup builderGroup = new ButtonGroup();
 		builderGroup.add(rankingResultRB);
 		builderGroup.add(splitResultRB);
+		if( geco().getConfig().sectionsEnabled ) {
+			builderGroup.add(sectionResultRB);
+		}
 		builderGroup.add(cnScoreRB);
 		builderGroup.setSelected(rankingResultRB.getModel(), true);
 		
@@ -320,7 +329,11 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 				BorderFactory.createTitledBorder(Messages.uiGet("ResultsPanel.CommandTitle"))); //$NON-NLS-1$
 		commandPanel.setLayout(new BoxLayout(commandPanel, BoxLayout.Y_AXIS));
 		commandPanel.add(SwingUtils.embed(resultTypeCB));
-		commandPanel.add(SwingUtils.makeButtonBar(FlowLayout.CENTER, rankingResultRB, splitResultRB, cnScoreRB));
+		if( geco().getConfig().sectionsEnabled ) {
+			commandPanel.add(SwingUtils.makeButtonBar(FlowLayout.CENTER, rankingResultRB, splitResultRB, sectionResultRB, cnScoreRB));
+		} else {
+			commandPanel.add(SwingUtils.makeButtonBar(FlowLayout.CENTER, rankingResultRB, splitResultRB, cnScoreRB));
+		}
 		commandPanel.add(Box.createVerticalStrut(10));
 		commandPanel.add(optionsPanel);
 		commandPanel.add(Box.createVerticalStrut(10));

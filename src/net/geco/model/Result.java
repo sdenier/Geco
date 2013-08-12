@@ -16,6 +16,8 @@ public interface Result {
 
 	public boolean isEmpty();
 
+	public boolean sameCourse();
+	
 	public Course anyCourse();
 
 	public long bestTime();

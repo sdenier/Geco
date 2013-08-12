@@ -4,8 +4,9 @@
  */
 package net.geco.model.impl;
 
-import java.util.Map;
+import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.NavigableMap;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -19,7 +20,7 @@ import net.geco.model.SectionTraceData;
  */
 public class SectionTraceDataImpl extends TraceDataImpl implements SectionTraceData {
 
-	private Map<Integer, Section> sectionsMap = new TreeMap<Integer, Section>();
+	private NavigableMap<Integer, Section> sectionsMap = new TreeMap<Integer, Section>();
 
 	public Set<Entry<Integer,Section>> getSectionData() {
 		return sectionsMap.entrySet();
@@ -40,5 +41,21 @@ public class SectionTraceDataImpl extends TraceDataImpl implements SectionTraceD
 	public boolean hasSectionData() {
 		return true;
 	}
-	
+
+	@Override
+	public long[] sectionsFinishTimes(long raceTime) {
+		long[] finishTimes = new long[sectionsMap.size()];
+		Iterator<Integer> sectionIndices = sectionsMap.keySet().iterator();
+		Integer nextSectionIndex = sectionIndices.next();
+		for (int i = 0; i < finishTimes.length; i++) {
+			if( sectionIndices.hasNext() ) {
+				nextSectionIndex = sectionIndices.next();
+				finishTimes[i] = trace[nextSectionIndex].getTime().getTime();
+			} else { // last section
+				finishTimes[i] = raceTime;
+			}
+		}
+		return finishTimes;
+	}
+
 }

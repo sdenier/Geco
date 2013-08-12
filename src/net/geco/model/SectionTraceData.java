@@ -20,4 +20,6 @@ public interface SectionTraceData extends TraceData {
 	
 	public String sectionLabelAt(int rowIndex);
 
+	public long[] sectionsFinishTimes(long raceTime);
+
 }
