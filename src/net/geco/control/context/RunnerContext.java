@@ -2,7 +2,7 @@
  * Copyright (c) 2013 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.control.results.context;
+package net.geco.control.context;
 
 import net.geco.basics.TimeManager;
 import net.geco.model.Messages;
@@ -17,6 +17,12 @@ import net.geco.model.RunnerResult;
  *
  */
 public class RunnerContext extends GenericContext {
+
+	public static GenericContext createRegisteredRunner(RunnerRaceData runnerData) {
+		return new RunnerContext()
+					.buildBasicContext(runnerData.getRunner())
+					.buildRegistrationContext(runnerData);
+	}
 
 	public static RunnerContext createRankedRunner(RankedRunner rankedRunner, long bestTime) {
 		RunnerRaceData data = rankedRunner.getRunnerData();
@@ -46,6 +52,13 @@ public class RunnerContext extends GenericContext {
 		put("geco_RunnerLastName", runner.getLastname()); //$NON-NLS-1$
 		put("geco_RunnerClubName", runner.getClub().getName()); //$NON-NLS-1$
 		put("geco_RunnerCategory", runner.getCategory().getName()); //$NON-NLS-1$
+		return this;
+	}
+
+	protected RunnerContext buildRegistrationContext(RunnerRaceData runnerData) {
+		put("geco_RunnerStartId", runnerData.getRunner().getStartId()); //$NON-NLS-1$
+		put("geco_RunnerEcard", runnerData.getRunner().getEcard()); //$NON-NLS-1$
+		put("geco_RunnerStartTime", TimeManager.time(runnerData.getOfficialStarttime())); //$NON-NLS-1$
 		return this;
 	}
 	
