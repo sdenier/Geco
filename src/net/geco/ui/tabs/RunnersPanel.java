@@ -232,6 +232,24 @@ public class RunnersPanel extends TabPanel
 		});
 		topPanel.add(archiveB);
 
+		JButton exportStartlistB = new JButton(GecoIcon.createIcon(GecoIcon.Startlist));
+		exportStartlistB.setToolTipText("Export Startlists");
+		exportStartlistB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser fileChooser = new JFileChooser(geco().getCurrentStagePath());
+				fileChooser.setDialogTitle("Export Startlists by Course to html");
+				int answer = fileChooser.showOpenDialog(frame());
+				if( answer==JFileChooser.APPROVE_OPTION ) {
+					try {
+						geco().startlistExporter().exportTo(fileChooser.getSelectedFile().getAbsolutePath());
+					} catch (IOException e1) {
+						geco().debug(e1.toString());
+					}
+				}
+			}
+		});
+		topPanel.add(exportStartlistB);
+
 		final JCheckBox fastB = new JCheckBox(Messages.uiGet("RunnersPanel.FastEditLabel")); //$NON-NLS-1$
 		fastB.setToolTipText(Messages.uiGet("RunnersPanel.FastEditTooltip")); //$NON-NLS-1$
 		fastB.addActionListener(new ActionListener() {

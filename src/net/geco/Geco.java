@@ -31,6 +31,7 @@ import net.geco.control.RunnerControl;
 import net.geco.control.SIReaderHandler;
 import net.geco.control.StageBuilder;
 import net.geco.control.StageControl;
+import net.geco.control.StartlistExporter;
 import net.geco.control.StartlistImporter;
 import net.geco.control.results.CNCalculator;
 import net.geco.control.results.ResultBuilder;
@@ -334,6 +335,9 @@ public class Geco implements IGecoApp, MergeRequestHandler {
 	}
 	public MergeControl mergeControl() {
 		return getService(MergeControl.class);
+	}
+	public StartlistExporter startlistExporter() {
+		return getService(StartlistExporter.class);
 	}
 	
 	public MergeRequestHandler defaultMergeHandler() {
