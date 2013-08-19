@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>{{geco_StageTitle}} - Startlists by Course - {{geco_Timestamp}}</title>
+    <style type="text/css">
+      table { border-collapse:collapse; width: 100%; font-size: 14; page-break-after:always }
+      .runner td, .runner th { padding: 0px 10px }
+      .left { text-align: left }
+      .center { text-align: center }
+      .right, .time { text-align: right }
+    </style>
+  </head>
+  <body>
+    <h1>{{geco_StageTitle}} - Startlists by Course - {{geco_Timestamp}}</h1>
+{{#geco_StartlistsCollection}}
+    <h2>{{geco_CourseName}} ({{geco_NbRunners}}) - {{geco_CourseLength}}m, {{geco_CourseClimb}}m</h2>
+    <table>
+      <tr class="runner"><th class="right">Start Id</th><th class="right">E-Card</th><th class="left">{{i18n_NameHeader}}</th><th class="left">{{i18n_ClubHeader}}</th><th class="left">{{i18n_CategoryHeader}}</th><th class="right">Start Time</th></tr>
+{{#geco_Runners}}
+      <tr class="runner"><td class="right">{{geco_RunnerStartId}}</td><td class="right">{{geco_RunnerEcard}}</td><td>{{geco_RunnerFirstName}} {{geco_RunnerLastName}}</td><td>{{geco_RunnerClubName}}</td><td>{{geco_RunnerCategory}}</td><td class="time">{{geco_RunnerStartTime}}</td></tr>
+{{/geco_Runners}}
+    </table>
+{{/geco_StartlistsCollection}}
+  </body>
+</html>

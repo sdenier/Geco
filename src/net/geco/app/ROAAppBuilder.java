@@ -16,6 +16,7 @@ import net.geco.control.SIReaderHandler;
 import net.geco.control.SectionService;
 import net.geco.control.StageBuilder;
 import net.geco.control.StageControl;
+import net.geco.control.StartlistExporter;
 import net.geco.control.StartlistImporter;
 import net.geco.control.checking.SectionsChecker;
 import net.geco.control.results.CNCalculator;
@@ -99,6 +100,7 @@ public class ROAAppBuilder extends AppBuilder {
 		new StartlistImporter(gecoControl);
 		new CNCalculator(gecoControl);
 		new MergeControl(gecoControl);
+		new StartlistExporter(gecoControl);
 		new SectionService(gecoControl);
 		
 		new RefereeLogFunction(gecoControl);

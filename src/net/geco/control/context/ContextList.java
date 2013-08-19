@@ -2,7 +2,7 @@
  * Copyright (c) 2013 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.control.results.context;
+package net.geco.control.context;
 
 import java.util.ArrayList;
 

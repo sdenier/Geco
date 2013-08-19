@@ -15,6 +15,7 @@ import net.geco.control.RunnerControl;
 import net.geco.control.SIReaderHandler;
 import net.geco.control.SectionService;
 import net.geco.control.StageControl;
+import net.geco.control.StartlistExporter;
 import net.geco.control.StartlistImporter;
 import net.geco.control.checking.Checker;
 import net.geco.control.results.CNCalculator;
@@ -54,6 +55,7 @@ public interface IGeco {
 	public StartlistImporter startlistImporter();
 	public CNCalculator cnCalculator();
 	public MergeControl mergeControl();
+	public StartlistExporter startlistExporter();
 	public SectionService sectionService();
 	
 }

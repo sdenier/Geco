@@ -15,6 +15,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Arrays;
@@ -231,6 +232,26 @@ public class RunnersPanel extends TabPanel
 			}
 		});
 		topPanel.add(archiveB);
+
+		JButton exportStartlistB = new JButton(GecoIcon.createIcon(GecoIcon.Startlist));
+		exportStartlistB.setToolTipText("Export Startlists");
+		exportStartlistB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setDialogTitle("Export Startlists by Course to html");
+				fileChooser.setSelectedFile(new File(geco().getCurrentStagePath()
+						+ File.separator + "startlists_course.html").getAbsoluteFile());
+				int answer = fileChooser.showSaveDialog(frame());
+				if( answer==JFileChooser.APPROVE_OPTION ) {
+					try {
+						geco().startlistExporter().exportTo(fileChooser.getSelectedFile().getAbsolutePath());
+					} catch (IOException e1) {
+						geco().debug(e1.toString());
+					}
+				}
+			}
+		});
+		topPanel.add(exportStartlistB);
 
 		final JCheckBox fastB = new JCheckBox(Messages.uiGet("RunnersPanel.FastEditLabel")); //$NON-NLS-1$
 		fastB.setToolTipText(Messages.uiGet("RunnersPanel.FastEditTooltip")); //$NON-NLS-1$

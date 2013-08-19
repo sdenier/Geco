@@ -32,6 +32,7 @@ public enum GecoIcon {
 	
 	ImportFile	("fileimport.png"), //$NON-NLS-1$
 	OpenArchive	("db.png"), //$NON-NLS-1$
+	Startlist	("playlist.png"), //$NON-NLS-1$
 	ResetTime	("history.png"), //$NON-NLS-1$
 	SplitPrint	("filequickprint_small.png"), //$NON-NLS-1$
 
