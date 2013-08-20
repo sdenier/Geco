@@ -31,10 +31,6 @@ public interface RunnerRaceData extends Cloneable {
 
 	public void setFinishtime(Date finishtime);
 
-	public Date getErasetime();
-
-	public void setErasetime(Date erasetime);
-
 	public Date getControltime();
 
 	public void setControltime(Date controltime);

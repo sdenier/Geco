@@ -190,7 +190,6 @@ public final class PersistentStore {
 			RunnerRaceData raceData = factory.createRunnerRaceData();
 			raceData.setStarttime(new Date(d.getLong(K.START)));
 			raceData.setFinishtime(new Date(d.getLong(K.FINISH)));
-			raceData.setErasetime(new Date(d.getLong(K.ERASE)));
 			raceData.setControltime(new Date(d.getLong(K.CHECK)));
 			raceData.setReadtime(new Date(d.getLong(K.READ)));
 			JSONArray p = d.getJSONArray(K.PUNCHES);
@@ -362,7 +361,6 @@ public final class PersistentStore {
 			json.startObject()
 				.field(K.START, runnerData.getStarttime())
 				.field(K.FINISH, runnerData.getFinishtime())
-				.field(K.ERASE, runnerData.getErasetime())
 				.field(K.CHECK, runnerData.getControltime())
 				.field(K.READ, runnerData.getReadtime())
 				.startArrayField(K.PUNCHES);
@@ -452,7 +450,6 @@ public final class PersistentStore {
 
 		public static final String START;
 		public static final String FINISH;
-		public static final String ERASE;
 		public static final String CHECK;
 		public static final String READ;
 		public static final String PUNCHES;
@@ -481,7 +478,6 @@ public final class PersistentStore {
 			
 				START = "start"; //$NON-NLS-1$
 				FINISH = "finish"; //$NON-NLS-1$
-				ERASE = "erase"; //$NON-NLS-1$
 				READ = "read"; //$NON-NLS-1$
 				CHECK = "check"; //$NON-NLS-1$
 				PUNCHES = "punches"; //$NON-NLS-1$
@@ -508,7 +504,6 @@ public final class PersistentStore {
 			
 				START = "s"; //$NON-NLS-1$
 				FINISH = "f"; //$NON-NLS-1$
-				ERASE = "e"; //$NON-NLS-1$
 				READ = "r"; //$NON-NLS-1$
 				CHECK = "c"; //$NON-NLS-1$
 				PUNCHES = "p"; //$NON-NLS-1$

@@ -60,7 +60,6 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 	// E-card
 	private JTextField readTimeF;
 	private JTextField checkTimeF;
-	private JTextField clearTimeF;
 	private JTextField startTimeF;
 	private JTextField finishTimeF;
 	private JTextField raceTimeF;
@@ -94,7 +93,6 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 			panel2.setLayout(new GridBagLayout());
 			GridBagConstraints c = SwingUtils.gbConstr();
 			c.fill = GridBagConstraints.HORIZONTAL;
-//			c.insets = new Insets(5, 0, 0, 0);
 			panel2.add(initRegistrationPanel(), c);
 			c.gridy = 1;
 			panel2.add(initEcardPanel(), c);
@@ -157,7 +155,6 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 
 	protected void refreshEcardPanel() {
 		displayCardTime(readTimeF, runnerData.getReadtime());
-		displayCardTime(clearTimeF, runnerData.getErasetime());
 		displayCardTime(checkTimeF, runnerData.getControltime());
 		displayCardTimeWithMissingHint(startTimeF, runnerData.getStarttime());
 		displayCardTimeWithMissingHint(finishTimeF, runnerData.getFinishtime());
@@ -198,13 +195,6 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 	protected void displayRacetime(JTextField timeF, long time) {
 		timeF.setText(TimeManager.time(time));
 	}
-
-//	protected void displayStarttime(JTextField timeF, Date time) {
-//		displayTime(timeF, time);
-//		if( runnerData.useRegisteredStarttime() && ! time.equals(TimeManager.NO_TIME) ) {
-//			timeF.setBackground(PALE_BLUE);
-//		}
-//	}
 
 	protected void displayOfficialRacetime(JTextField timeF, long computedTime) {
 		if( computedTime != runnerData.getResult().getRacetime() ) {
@@ -294,8 +284,6 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 	}
 
 	public JPanel initEcardPanel() {
-		clearTimeF = new JTextField(FIELDSIZE);
-		clearTimeF.setEditable(false);
 		checkTimeF = new JTextField(FIELDSIZE);
 		checkTimeF.setEditable(false);
 		startTimeF = new JTextField(FIELDSIZE);
@@ -313,8 +301,6 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 		
 		GridBagConstraints c = buildGBConstraint();
 		addRow(ecardPanel, c, 
-				new JLabel(Messages.uiGet("RunnerPanel.EraseLabel")), //$NON-NLS-1$
-				clearTimeF,
 				new JLabel(Messages.uiGet("RunnerPanel.ControlLabel")), //$NON-NLS-1$
 				checkTimeF);
 		c.gridy = 1;

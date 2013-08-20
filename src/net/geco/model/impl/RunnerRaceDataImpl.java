@@ -103,14 +103,6 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 		ecardData.setFinishTime(finishtime);
 	}
 
-	public Date getErasetime() {
-		return ecardData.getClearTime();
-	}
-
-	public void setErasetime(Date erasetime) {
-		ecardData.setClearTime(erasetime);
-	}
-
 	public Date getControltime() {
 		return ecardData.getCheckTime();
 	}
