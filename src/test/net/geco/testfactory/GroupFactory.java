@@ -22,13 +22,6 @@ public class GroupFactory {
 
 	private static Factory factory = new POFactory();
 	
-	public static Course createCourse(String name) {
-		Course course = factory.createCourse();
-		course.setName(name);
-		course.setCodes(new int[]{ 31,32,33 });
-		return course;
-	}
-
 	public static Category createCategory(String name) {
 		Category category = factory.createCategory();
 		category.setName(name);
@@ -54,7 +47,7 @@ public class GroupFactory {
 		heatset.setQualifyingRank(4);
 		heatset.setHeatNames(new String[] {"A"});
 		heatset.setSetType(ResultType.CourseResult);
-		heatset.setSelectedPools(new Pool[]{ createCourse("Qual")} );
+		heatset.setSelectedPools(new Pool[]{ CourseFactory.createCourse("Qual")} );
 		return heatset;
 	}
 	

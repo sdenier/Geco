@@ -22,11 +22,15 @@ public interface Factory {
 
 	public Course createCourse();
 
+	public Section createSection();
+	
 	public Punch createPunch();
 
 	public Runner createRunner();
 
 	public RunnerRaceData createRunnerRaceData();
+
+	public TraceData createTraceData();
 
 	public RunnerResult createRunnerResult();
 	

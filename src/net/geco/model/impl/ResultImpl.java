@@ -48,6 +48,19 @@ public class ResultImpl implements Result {
 		return rankedRunners.isEmpty() && unrankedRunners.isEmpty();
 	}
 
+	public boolean sameCourse() {
+		boolean sameCourse = true;
+		Course course = anyCourse();
+		// check that all runners in result share the same course
+		for (RunnerRaceData runnerData : getRankedRunners()) {
+			sameCourse &= runnerData.getCourse() == course;
+		}
+		for (RunnerRaceData runnerData : getUnrankedRunners()) {
+			sameCourse &= runnerData.getCourse() == course;
+		}
+		return sameCourse;
+	}
+	
 	private RunnerRaceData anyRunner() {
 		if( !this.rankedRunners.isEmpty() ){
 			return this.rankedRunners.get(0);

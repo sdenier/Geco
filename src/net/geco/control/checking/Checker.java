@@ -2,7 +2,7 @@
  * Copyright (c) 2011 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.control;
+package net.geco.control.checking;
 
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Stage;
@@ -17,14 +17,16 @@ public interface Checker {
 
 	public void postInitialize(Stage newStage);
 
-	public void check(RunnerRaceData runnerData);
+	public void check(RunnerRaceData raceData);
 
 	public Status computeStatus(RunnerRaceData raceData);
 
-	public long computeOfficialRaceTime(RunnerRaceData raceData);
+	public long computeRunningTime(RunnerRaceData runnerData);
+	
+	public long computeRaceTime(RunnerRaceData raceData);
 
-	public void resetRaceTime(RunnerRaceData runnerData);
-
-	public void normalTrace(RunnerRaceData runnerData);
+	public long computeTimePenalty(RunnerRaceData raceData);
+	
+	public void resetRaceTime(RunnerRaceData raceData);
 
 }

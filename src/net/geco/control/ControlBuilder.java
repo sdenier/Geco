@@ -4,6 +4,7 @@
  */
 package net.geco.control;
 
+import net.geco.control.checking.Checker;
 import net.geco.model.Factory;
 
 /**

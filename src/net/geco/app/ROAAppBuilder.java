@@ -6,22 +6,24 @@ package net.geco.app;
 
 import javax.swing.JFrame;
 
+import net.geco.basics.GecoConfig;
 import net.geco.control.ArchiveManager;
-import net.geco.control.CompositeChecker;
 import net.geco.control.GecoControl;
 import net.geco.control.MergeControl;
-import net.geco.control.PenaltyChecker;
 import net.geco.control.RegistryStats;
 import net.geco.control.RunnerControl;
 import net.geco.control.SIReaderHandler;
+import net.geco.control.SectionService;
 import net.geco.control.StageBuilder;
 import net.geco.control.StageControl;
 import net.geco.control.StartlistExporter;
 import net.geco.control.StartlistImporter;
+import net.geco.control.checking.SectionsChecker;
 import net.geco.control.results.CNCalculator;
 import net.geco.control.results.ResultBuilder;
 import net.geco.control.results.ResultExporter;
 import net.geco.control.results.RunnerSplitPrinter;
+import net.geco.control.results.SectionsExporter;
 import net.geco.control.results.SplitExporter;
 import net.geco.framework.IGecoApp;
 import net.geco.functions.DeleteFunction;
@@ -35,7 +37,7 @@ import net.geco.functions.StartTimeFunction;
 import net.geco.functions.StationLogFunction;
 import net.geco.model.Factory;
 import net.geco.model.Messages;
-import net.geco.model.impl.POFactory;
+import net.geco.model.impl.SectionFactory;
 import net.geco.ui.config.CategoryConfigPanel;
 import net.geco.ui.config.ClubConfigPanel;
 import net.geco.ui.config.CourseConfigPanel;
@@ -66,13 +68,18 @@ public class ROAAppBuilder extends AppBuilder {
 	}
 
 	@Override
-	protected Factory createFactory() {
-		return new POFactory();
+	public GecoConfig getConfig() {
+		return new GecoConfig(true);
 	}
 
 	@Override
-	public PenaltyChecker createChecker(GecoControl gecoControl) {
-		return new CompositeChecker(gecoControl);
+	protected Factory createFactory() {
+		return new SectionFactory();
+	}
+
+	@Override
+	public SectionsChecker createChecker(GecoControl gecoControl) {
+		return new SectionsChecker(gecoControl);
 	}
 
 	@Override
@@ -95,6 +102,8 @@ public class ROAAppBuilder extends AppBuilder {
 		new CNCalculator(gecoControl);
 		new MergeControl(gecoControl);
 		new StartlistExporter(gecoControl);
+		new SectionService(gecoControl);
+		new SectionsExporter(gecoControl);
 		
 		new RefereeLogFunction(gecoControl);
 		new StartTimeFunction(gecoControl);

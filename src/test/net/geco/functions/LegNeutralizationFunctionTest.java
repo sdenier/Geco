@@ -23,8 +23,8 @@ import net.geco.app.ClassicAppBuilder;
 import net.geco.basics.Announcer;
 import net.geco.basics.TimeManager;
 import net.geco.control.GecoControl;
-import net.geco.control.InlineTracer;
-import net.geco.control.PenaltyChecker;
+import net.geco.control.checking.InlineTracer;
+import net.geco.control.checking.PenaltyChecker;
 import net.geco.control.results.ResultBuilder;
 import net.geco.functions.LegNeutralizationFunction;
 import net.geco.model.Category;
@@ -37,6 +37,7 @@ import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.RunnerResult;
 import net.geco.model.Trace;
+import net.geco.model.TraceData;
 import net.geco.model.impl.POFactory;
 
 import org.junit.Before;
@@ -98,23 +99,23 @@ public class LegNeutralizationFunctionTest {
 		RunnerRaceData data = GecoFixtures.createRunnerData(courseA, null); 
 		data.setPunches(new Punch[] { punch(42), punch(45), punch(31), punch(45), punch(32) });
 		checker.check(data);
-		assertEquals("42,-43,45,31,45,32", data.getResult().formatClearTrace());
+		assertEquals("42,-43,45,31,45,32", data.getTraceData().formatClearTrace());
 
 		data.setPunches(new Punch[0]);
-		data.setResult(factory.createRunnerResult());
-		assertEquals("", data.getResult().formatClearTrace());
+		data.setTraceData(factory.createTraceData());
+		assertEquals("", data.getTraceData().formatClearTrace());
 		
 		data.setPunches(new Punch[] { punch(42), punch(43), punch(45), punch(45), punch(32) });
 		checker.check(data);
-		assertEquals("42,43,45,-31,45,32", data.getResult().formatClearTrace());
+		assertEquals("42,43,45,-31,45,32", data.getTraceData().formatClearTrace());
 		
 		data.setPunches(new Punch[] { punch(42), punch(45), punch(64), punch(31), punch(45), punch(32) });
 		checker.check(data);
-		assertEquals("42,-43,45,31,45,32", data.getResult().formatClearTrace());
+		assertEquals("42,-43,45,31,45,32", data.getTraceData().formatClearTrace());
 		
 		data.setPunches(new Punch[] { punch(42), punch(45), punch(64), punch(32) });
 		checker.check(data);
-		assertEquals("42,-43,45,-31,-45+64,32", data.getResult().formatClearTrace());
+		assertEquals("42,-43,45,-31,-45+64,32", data.getTraceData().formatClearTrace());
 	}
 	
 	@Test
@@ -132,6 +133,7 @@ public class LegNeutralizationFunctionTest {
 		
 		RunnerRaceData dataRejected = GecoFixtures.createRunnerData(courseA, cat);
 		dataRejected.setPunches(new Punch[0]);
+		dataRejected.setTraceData(factory.createTraceData());
 		dataRejected.setResult(factory.createRunnerResult());
 		assertNull("runner without punch should be rejected", dataRejected.retrieveLeg(45, 31) );
 		
@@ -203,6 +205,7 @@ public class LegNeutralizationFunctionTest {
 		RunnerResult result = factory.createRunnerResult();
 		result.setRacetime(100000);
 		RunnerRaceData raceData = mock(RunnerRaceData.class);
+		when(raceData.getResult()).thenReturn(result);
 		when(raceData.retrieveLeg(anyInt(), anyInt())).thenReturn(null);
 
 		LegNeutralizationFunction function = new LegNeutralizationFunction(null);
@@ -273,7 +276,6 @@ public class LegNeutralizationFunctionTest {
 		assertEquals("17:28", registry.findRunnerData("51009").getResult().formatRacetime()); // Caoimhe O'Boyle
 		assertEquals("26:40", registry.findRunnerData("11428").getResult().formatRacetime()); // Claire Garvey
 		assertEquals("26:26", registry.findRunnerData("11444").getResult().formatRacetime()); // Aaron Clogher & Eoin Connell
-		assertEquals("12:00:06", registry.findRunnerData("11477").getResult().formatRacetime()); // Laoise Brennan
 		assertEquals("59:36", registry.findRunnerData("11476").getResult().formatRacetime()); // Laura Murphy
 
 		// changed result
@@ -285,15 +287,17 @@ public class LegNeutralizationFunctionTest {
 
 	@Test
 	public void testResetAllOfficialTimes() {
-		RunnerResult result = factory.createRunnerResult();
-		result.setRacetime(100000);
-		result.setNbMPs(1);
+		TraceData traceData = factory.createTraceData();
+		traceData.setNbMPs(1);
 		Trace trace = factory.createTrace("34", new Date(130000));
 		trace.setNeutralized(true);
-		result.setTrace(new Trace[]{ trace });
+		traceData.setTrace(new Trace[]{ trace });
+		RunnerResult result = factory.createRunnerResult();
+		result.setRacetime(100000);
 		RunnerRaceData raceData = factory.createRunnerRaceData();
 		raceData.setStarttime(new Date(30000));
 		raceData.setFinishtime(new Date(140000));
+		raceData.setTraceData(traceData);
 		raceData.setResult(result);
 		
 		Registry registry = mock(Registry.class);

@@ -22,6 +22,9 @@ import net.geco.model.Result;
 import net.geco.model.ResultType;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
+import net.geco.model.Section;
+import net.geco.model.SectionTraceData;
+import net.geco.model.Status;
 import net.geco.model.Trace;
 
 
@@ -162,8 +165,8 @@ public class ResultBuilder extends Control {
 	}
 	
 	private SplitTime[] buildNormalSplits(RunnerRaceData data, boolean includeFinishSplit, SplitTime[] bestSplits) {
-		ArrayList<SplitTime> splits = new ArrayList<SplitTime>(data.getResult().getTrace().length);
-		ArrayList<SplitTime> added = new ArrayList<SplitTime>(data.getResult().getTrace().length);
+		ArrayList<SplitTime> splits = new ArrayList<SplitTime>(data.getTraceData().getTrace().length);
+		ArrayList<SplitTime> added = new ArrayList<SplitTime>(data.getTraceData().getTrace().length);
 		// in normal mode, added splits appear after normal splits
 		buildSplits(data, splits, added, bestSplits, true, includeFinishSplit);
 		splits.addAll(added);
@@ -175,7 +178,7 @@ public class ResultBuilder extends Control {
 	}
 	
 	public SplitTime[] buildLinearSplits(RunnerRaceData data) {
-		ArrayList<SplitTime> splits = new ArrayList<SplitTime>(data.getResult().getTrace().length);
+		ArrayList<SplitTime> splits = new ArrayList<SplitTime>(data.getTraceData().getTrace().length);
 		// in linear mode, added splits are kept in place with others
 		buildSplits(data, splits, splits, new SplitTime[0], false, true);
 		return splits.toArray(new SplitTime[0]);
@@ -186,7 +189,7 @@ public class ResultBuilder extends Control {
 		long startTime = data.getOfficialStarttime().getTime();
 		long previousTime = startTime;
 		int control = 1;
-		for (Trace trace : data.getResult().getTrace()) {
+		for (Trace trace : data.getTraceData().getTrace()) {
 			long time = trace.getTime().getTime();
 			if( trace.isOK() ) {
 				SplitTime split = createSplit(Integer.toString(control), trace, startTime, previousTime, time);
@@ -237,14 +240,8 @@ public class ResultBuilder extends Control {
 		if( ! result.isEmpty() ){
 			Course course = result.anyCourse();
 			boolean sameCourse = true; // default for CourseResult and MixedResult
-			if( resultType==ResultType.CategoryResult ){
-				// check that all runners in category share the same course
-				for (RunnerRaceData runnerData : result.getRankedRunners()) {
-					sameCourse &= runnerData.getCourse()==course;
-				}
-				for (RunnerRaceData runnerData : result.getUnrankedRunners()) {
-					sameCourse &= runnerData.getCourse()==course;
-				}
+			if( resultType == ResultType.CategoryResult ){
+				sameCourse = result.sameCourse();
 			}
 			if( ! sameCourse ) {
 				geco().log(Messages.getString("ResultBuilder.NoBestSplitForCategoryWarning") + result.getIdentifier()); //$NON-NLS-1$
@@ -267,6 +264,44 @@ public class ResultBuilder extends Control {
 			allSplits.put(runnerData, buildNormalSplits(runnerData, true, bestSplits));
 		}
 		return allSplits;
+	}
+
+	public SplitTime[] initializeBestSectionSplits(List<Section> sections) {
+		SplitTime[] bestSplits = new SplitTime[sections.size()];
+		for (int i = 0; i < bestSplits.length; i++) {
+			bestSplits[i] = new SplitTime("", null, TimeManager.NO_TIME_l, TimeManager.NO_TIME_l); //$NON-NLS-1$
+		}
+		return bestSplits;
+	}
+
+	public Map<RunnerRaceData, SplitTime[]> buildAllSectionSplits(Result result, List<Section> sections, SplitTime[] bestSplits) {
+		Map<RunnerRaceData, SplitTime[]> sectionsSplits = new HashMap<RunnerRaceData, ResultBuilder.SplitTime[]>();
+		for (RunnerRaceData runnerData : result.getRankedRunners()) {
+			sectionsSplits.put(runnerData, buildSectionSplits(runnerData, bestSplits));
+		}
+		for (RunnerRaceData runnerData : result.getUnrankedRunners()) {
+			sectionsSplits.put(runnerData, buildSectionSplits(runnerData, bestSplits));
+		}
+		return sectionsSplits;
+	}
+
+	private SplitTime[] buildSectionSplits(RunnerRaceData runnerData, SplitTime[] bestSplits) {
+		SectionTraceData sectionData = (SectionTraceData) runnerData.getTraceData();
+		long[] sectionsTimes = sectionData.sectionsFinishTimes(runnerData.getFinishtime().getTime());
+		SplitTime[] sectionsSplits = new SplitTime[sectionsTimes.length];
+		long startTime = runnerData.getOfficialStarttime().getTime();
+		long previousTime = startTime;
+		for (int i = 0; i < sectionsTimes.length; i++) {
+			long punchTime = sectionsTimes[i];
+			sectionsSplits[i] = createSplit("", null, startTime, previousTime, punchTime);
+			previousTime = punchTime;
+			if( runnerData.getResult().is(Status.OK) ) {
+				SplitTime bestSplit = bestSplits[i];
+				bestSplit.time = Math.min(bestSplit.time, sectionsSplits[i].time);
+				bestSplit.split = Math.min(bestSplit.split, sectionsSplits[i].split);
+			}
+		}
+		return sectionsSplits;
 	}
 	
 }

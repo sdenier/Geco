@@ -4,10 +4,17 @@
  */
 package net.geco.model.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
+import net.geco.basics.TimeManager;
 import net.geco.model.Course;
 import net.geco.model.Messages;
+import net.geco.model.Section;
 
 
 
@@ -17,16 +24,19 @@ import net.geco.model.Messages;
  *
  */
 public class CourseImpl implements Course {
-	
+
 	private String name;
 	
 	private int length;
 	
 	private int climb;
 	
-	private int[] codes;
-
+	private Date massStartTime = TimeManager.NO_TIME;
 	
+	private int[] codes;
+	
+	private Map<Integer, Section> sectionsMap = new TreeMap<Integer, Section>();
+
 	public int getClimb() {
 		return climb;
 	}
@@ -45,6 +55,14 @@ public class CourseImpl implements Course {
 	
 	public int nbControls() {
 		return codes.length;
+	}
+
+	public Date getMassStartTime() {
+		return massStartTime;
+	}
+
+	public void setMassStartTime(Date massStartTime) {
+		this.massStartTime = massStartTime;
 	}
 
 	public void setClimb(int climb) {
@@ -87,6 +105,32 @@ public class CourseImpl implements Course {
 
 	public boolean hasDistance() {
 		return length > 0;
+	}
+
+	public List<Section> getSections() {
+		return new ArrayList<Section>(sectionsMap.values());
+	}
+
+	public Section getSectionAt(int index) {
+		return sectionsMap.get(index);
+	}
+
+	public void putSection(Section section) {
+		sectionsMap.put(section.getStartIndex(), section);
+	}
+
+	public void removeSection(Section section) {
+		sectionsMap.remove(section.getStartIndex());
+	}
+
+	public void refreshSectionCodes() {
+		List<Section> sections = getSections();
+		if( ! sections.isEmpty() ) {
+			for (int i = 0; i < sections.size() - 1; i++) {
+				sections.get(i).setCodes(codes, sections.get(i + 1).getStartIndex());
+			}
+			sections.get(sections.size() - 1).setCodes(codes, codes.length);
+		}
 	}
 
 }

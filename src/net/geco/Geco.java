@@ -18,25 +18,28 @@ import net.geco.app.AppBuilder;
 import net.geco.app.GecoStageLaunch;
 import net.geco.basics.Announcer;
 import net.geco.basics.GService;
+import net.geco.basics.GecoConfig;
 import net.geco.basics.GecoResources;
 import net.geco.basics.Logger;
 import net.geco.basics.MergeRequestHandler;
 import net.geco.control.ArchiveManager;
-import net.geco.control.Checker;
 import net.geco.control.GecoControl;
 import net.geco.control.HeatBuilder;
 import net.geco.control.MergeControl;
 import net.geco.control.RegistryStats;
 import net.geco.control.RunnerControl;
 import net.geco.control.SIReaderHandler;
+import net.geco.control.SectionService;
 import net.geco.control.StageBuilder;
 import net.geco.control.StageControl;
 import net.geco.control.StartlistExporter;
 import net.geco.control.StartlistImporter;
+import net.geco.control.checking.Checker;
 import net.geco.control.results.CNCalculator;
 import net.geco.control.results.ResultBuilder;
 import net.geco.control.results.ResultExporter;
 import net.geco.control.results.RunnerSplitPrinter;
+import net.geco.control.results.SectionsExporter;
 import net.geco.control.results.SplitExporter;
 import net.geco.framework.IGecoApp;
 import net.geco.framework.IStageLaunch;
@@ -99,6 +102,8 @@ public class Geco implements IGecoApp, MergeRequestHandler {
 	private GecoWindow window;
 	
 	private String appName;
+
+	private GecoConfig config;
 
 	/*
 	 * Controls
@@ -197,6 +202,7 @@ public class Geco implements IGecoApp, MergeRequestHandler {
 		GecoFunction.resetAll();
 		AppBuilder builder = stageLaunch.getAppBuilder();
 		appName = builder.getAppName();
+		config = builder.getConfig();
 		GecoControl gecoControl = new GecoControl(builder);
 		history.remove(stageLaunch);
 		history.addFirst(stageLaunch);
@@ -209,6 +215,11 @@ public class Geco implements IGecoApp, MergeRequestHandler {
 	@Override
 	public String getAppName() {
 		return appName;
+	}
+
+	@Override
+	public GecoConfig getConfig() {
+		return config;
 	}
 
 	@Override
@@ -339,7 +350,13 @@ public class Geco implements IGecoApp, MergeRequestHandler {
 	public StartlistExporter startlistExporter() {
 		return getService(StartlistExporter.class);
 	}
-	
+	public SectionService sectionService() {
+		return getService(SectionService.class);
+	}
+	public SectionsExporter sectionsExporter() {
+		return getService(SectionsExporter.class);
+	}
+
 	public MergeRequestHandler defaultMergeHandler() {
 		return this;
 	}

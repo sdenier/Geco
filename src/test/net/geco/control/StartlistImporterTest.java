@@ -19,7 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import test.net.geco.testfactory.GroupFactory;
+import test.net.geco.testfactory.CourseFactory;
 
 /**
  * @author Simon Denier
@@ -57,7 +57,7 @@ public class StartlistImporterTest extends MockControlSetup {
 	@Test
 	public void importRunnerWithCustomCourseField() {
 		Runner runner = new POFactory().createRunner();
-		Course courseA = GroupFactory.createCourse("Course A");
+		Course courseA = CourseFactory.createCourse("Course A");
 		when(runnerControl.buildBasicRunner("1061511")).thenReturn(runner);
 		when(stageControl.ensureCourseInRegistry("Course A")).thenReturn(courseA);
 		String[] record = Util.splitAndTrim(";1061511;10869;DENIER;Simon;80;H;;;00:46:00;;Geco-course;Course A;5906;5906NO;VALMO;France;11;H21A;H21A", ";");

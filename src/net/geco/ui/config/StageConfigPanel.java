@@ -205,6 +205,7 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 			long zeroTime = formatter.parse(zerohourF.getText()).getTime();
 			geco.stage().setZeroHour(zeroTime);
 			geco.siHandler().changeZeroTime();
+			geco.stageControl().updateMassStarttimes(zeroTime, oldTime);
 			geco.runnerControl().updateRegisteredStarttimes(zeroTime, oldTime);
 			return true;
 		} catch (ParseException e1) {

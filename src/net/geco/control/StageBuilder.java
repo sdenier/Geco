@@ -19,6 +19,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import net.geco.basics.GecoResources;
+import net.geco.control.checking.Checker;
 import net.geco.model.Factory;
 import net.geco.model.Stage;
 import net.geco.model.iojson.PersistentStore;

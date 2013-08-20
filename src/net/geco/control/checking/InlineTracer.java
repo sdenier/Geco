@@ -2,22 +2,25 @@
  * Copyright (c) 2011 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.control;
+package net.geco.control.checking;
 
-import java.util.Date;
-import java.util.Vector;
+import java.util.LinkedList;
+import java.util.List;
 
+import net.geco.basics.TimeManager;
+import net.geco.control.BasicControl;
 import net.geco.model.Factory;
 import net.geco.model.Punch;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Trace;
+import net.geco.model.TraceData;
 
 /**
  * @author Simon Denier
  * @since Aug 9, 2011
  *
  */
-public class InlineTracer extends AbstractTracer {
+public class InlineTracer extends BasicControl implements Tracer {
 
 	public InlineTracer(Factory factory) {
 		super(factory);
@@ -29,10 +32,12 @@ public class InlineTracer extends AbstractTracer {
 	 * a central control in a loop).
 	 */
 	@Override
-	public void computeTrace(int[] codes, Punch[] punches) {
+	public TraceData computeTrace(int[] codes, Punch[] punches) {
 		int[][] matrix = lcssMatrix(codes, punches);
-		this.nbMPs = codes.length - matrix[punches.length][codes.length];
-		this.trace = backtrace(codes, punches, matrix).toArray(new Trace[0]);
+		TraceData traceData = factory().createTraceData();
+		traceData.setNbMPs(codes.length - matrix[punches.length][codes.length]);
+		traceData.setTrace(backtrace(codes, punches, matrix).toArray(new Trace[0]));
+		return traceData;
 	}
 
 	/**
@@ -68,8 +73,8 @@ public class InlineTracer extends AbstractTracer {
 		return Math.max(a, Math.max(b, c));
 	}
 
-	public Vector<Trace> backtrace(int[] codes, Punch[] punches, int[][] matrix) {
-		Vector<Trace> path = new Vector<Trace>();
+	public List<Trace> backtrace(int[] codes, Punch[] punches, int[][] matrix) {
+		List<Trace> path = new LinkedList<Trace>();
 		int i = codes.length - 1;
 		int j = punches.length - 1;
 		
@@ -96,7 +101,7 @@ public class InlineTracer extends AbstractTracer {
 						break choice;
 					}
 					if( max==matrix[j+1][i] ) {
-						path.add(0, factory().createTrace("-" + codes[i], new Date(0))); //$NON-NLS-1$
+						path.add(0, factory().createTrace("-" + codes[i], TimeManager.NO_TIME)); //$NON-NLS-1$
 						i--;
 						break choice;
 					}
@@ -104,7 +109,7 @@ public class InlineTracer extends AbstractTracer {
 			}
 		}
 		while( i>=0 ) {
-			path.add(0, factory().createTrace("-" + codes[i], new Date(0))); //$NON-NLS-1$
+			path.add(0, factory().createTrace("-" + codes[i], TimeManager.NO_TIME)); //$NON-NLS-1$
 			i--;			
 		}
 		while( j>=0 ) {

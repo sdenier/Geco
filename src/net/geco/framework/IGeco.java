@@ -8,19 +8,21 @@ import net.geco.basics.Announcer;
 import net.geco.basics.Logger;
 import net.geco.basics.MergeRequestHandler;
 import net.geco.control.ArchiveManager;
-import net.geco.control.Checker;
 import net.geco.control.HeatBuilder;
 import net.geco.control.MergeControl;
 import net.geco.control.RegistryStats;
 import net.geco.control.RunnerControl;
 import net.geco.control.SIReaderHandler;
+import net.geco.control.SectionService;
 import net.geco.control.StageControl;
 import net.geco.control.StartlistExporter;
 import net.geco.control.StartlistImporter;
+import net.geco.control.checking.Checker;
 import net.geco.control.results.CNCalculator;
 import net.geco.control.results.ResultBuilder;
 import net.geco.control.results.ResultExporter;
 import net.geco.control.results.RunnerSplitPrinter;
+import net.geco.control.results.SectionsExporter;
 import net.geco.control.results.SplitExporter;
 import net.geco.model.Registry;
 
@@ -55,5 +57,7 @@ public interface IGeco {
 	public CNCalculator cnCalculator();
 	public MergeControl mergeControl();
 	public StartlistExporter startlistExporter();
-	
+	public SectionService sectionService();
+	public SectionsExporter sectionsExporter();
+
 }

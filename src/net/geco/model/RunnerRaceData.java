@@ -17,21 +17,19 @@ public interface RunnerRaceData extends Cloneable {
 
 	public void setRunner(Runner runner);
 
+	public ECardData getEcardData();
+
+	public void setEcardData(ECardData ecardData);
+	
 	public Date getStarttime();
 
 	public void setStarttime(Date starttime);
 	
 	public Date getOfficialStarttime();
 	
-	public boolean useRegisteredStarttime();
-
 	public Date getFinishtime();
 
 	public void setFinishtime(Date finishtime);
-
-	public Date getErasetime();
-
-	public void setErasetime(Date erasetime);
 
 	public Date getControltime();
 
@@ -48,6 +46,10 @@ public interface RunnerRaceData extends Cloneable {
 	public void setPunches(Punch[] punches);
 
 	public Course getCourse();
+	
+	public TraceData getTraceData();
+
+	public void setTraceData(TraceData trace);
 	
 	public boolean hasData();
 	
@@ -67,12 +69,8 @@ public interface RunnerRaceData extends Cloneable {
 	
 	public long getRacetime();
 	
-	public long realRaceTime();
-	
-	public long officialRaceTime();
+	public long computeRunningTime();
 
-	public String punchSummary(int sumLength);
-	
 	public RunnerRaceData clone();
 
 	public void copyFrom(RunnerRaceData newData);

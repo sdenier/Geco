@@ -6,8 +6,8 @@ package test.net.geco.model.iojson;
 
 import java.util.Properties;
 
-import net.geco.control.PenaltyChecker;
 import net.geco.control.StageBuilder;
+import net.geco.control.checking.PenaltyChecker;
 import net.geco.model.Stage;
 import net.geco.model.impl.POFactory;
 import net.geco.model.iojson.PersistentStore;

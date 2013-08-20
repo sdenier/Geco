@@ -11,6 +11,12 @@ package net.geco.model;
  */
 public interface RunnerResult extends Cloneable {
 
+	public long getRunningTime();
+
+	public void setRunningTime(long runningTime);
+	
+	public String formatRunningTime();
+
 	public long getRacetime();
 
 	public void setRacetime(long racetime);
@@ -27,30 +33,12 @@ public interface RunnerResult extends Cloneable {
 	
 	public String shortFormat();
 
-	public int getNbMPs();
-
-	public void setNbMPs(int nbMPs);
-
 	public void setTimePenalty(long timePenalty);
 	
 	public long getTimePenalty();
 
 	public String formatTimePenalty();
 
-	public Trace[] getTrace();
-
-	public Trace[] getClearTrace();
-
-	public void setTrace(Trace[] trace);
-	
-	public String formatTrace();
-	
-	public String formatMpTrace();
-
-	public String formatClearTrace();
-
 	public RunnerResult clone();
-
-	public Trace[] retrieveLeg(String legStart, String legEnd);
 	
 }

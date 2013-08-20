@@ -6,19 +6,21 @@ package net.geco.app;
 
 import javax.swing.JFrame;
 
+import net.geco.basics.GecoConfig;
 import net.geco.control.ArchiveManager;
 import net.geco.control.GecoControl;
 import net.geco.control.HeatBuilder;
-import net.geco.control.InlineTracer;
 import net.geco.control.MergeControl;
-import net.geco.control.PenaltyChecker;
 import net.geco.control.RegistryStats;
 import net.geco.control.RunnerControl;
 import net.geco.control.SIReaderHandler;
+import net.geco.control.SectionService;
 import net.geco.control.StageBuilder;
 import net.geco.control.StageControl;
 import net.geco.control.StartlistExporter;
 import net.geco.control.StartlistImporter;
+import net.geco.control.checking.InlineTracer;
+import net.geco.control.checking.PenaltyChecker;
 import net.geco.control.results.CNCalculator;
 import net.geco.control.results.ResultBuilder;
 import net.geco.control.results.ResultExporter;
@@ -68,6 +70,11 @@ public class OrientShowAppBuilder extends AppBuilder {
 	}
 
 	@Override
+	public GecoConfig getConfig() {
+		return new GecoConfig(false);
+	}
+
+	@Override
 	protected Factory createFactory() {
 		return new POFactory();
 	}
@@ -98,6 +105,7 @@ public class OrientShowAppBuilder extends AppBuilder {
 		new CNCalculator(gecoControl);
 		new MergeControl(gecoControl);
 		new StartlistExporter(gecoControl);
+		new SectionService(gecoControl);
 		
 		new RefereeLogFunction(gecoControl);
 		new StartTimeFunction(gecoControl);

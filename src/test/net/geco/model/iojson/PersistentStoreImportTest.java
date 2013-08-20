@@ -81,7 +81,9 @@ public class PersistentStoreImportTest {
 		subject.importCourses(testStore, registry, factory);
 		assertThat(registry.getCourses().size(), equalTo(4));
 		assertThat(registry.findCourse("Circuit C").getLength(), equalTo(3010));
+		assertThat(registry.findCourse("Circuit C").getMassStartTime(), equalTo(new Date(32400000)));
 		assertThat(registry.findCourse("Circuit D").getCodes()[0], equalTo(43));
+		assertThat(registry.findCourse("Circuit D").getMassStartTime(), equalTo(TimeManager.NO_TIME));
 		assertThat(registry.findCourse("[Auto]").getCodes().length, equalTo(0));
 	}
 	
@@ -130,9 +132,9 @@ public class PersistentStoreImportTest {
 		assertThat(runner136.getPunches().length, equalTo(15));
 		assertThat(runner136.getResult().getStatus(), equalTo(Status.OK));
 		assertThat(runner136.getResult().getRacetime(), equalTo(4186000L));
-		assertThat(runner136.getResult().getTrace()[2].isNeutralized(), equalTo(true));
-		assertThat(runner136.getResult().getTrace()[3].isNeutralized(), equalTo(false));
-		assertThat(runner136.getResult().getTrace()[5].isNeutralized(), equalTo(true));
+		assertThat(runner136.getTraceData().getTrace()[2].isNeutralized(), equalTo(true));
+		assertThat(runner136.getTraceData().getTrace()[3].isNeutralized(), equalTo(false));
+		assertThat(runner136.getTraceData().getTrace()[5].isNeutralized(), equalTo(true));
 	}
 
 	@Test
@@ -154,9 +156,9 @@ public class PersistentStoreImportTest {
 		assertThat(runner224.getRunner().getClub(), equalTo(registry.findClub("CSMR")));
 		assertThat(runner224.getRunner().isNC(), equalTo(true));
 		assertThat(runner224.getResult().getStatus(), equalTo(Status.MP));
-		assertThat(runner224.getResult().getNbMPs(), equalTo(2));
+		assertThat(runner224.getTraceData().getNbMPs(), equalTo(2));
 		assertThat(runner224.getResult().getTimePenalty(), equalTo(60000L));
-		assertThat(runner224.getResult().getTrace()[6].getCode(), equalTo("-167"));
+		assertThat(runner224.getTraceData().getTrace()[6].getCode(), equalTo("-167"));
 	}
 		
 }

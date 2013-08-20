@@ -182,7 +182,7 @@ public class LiveComponent implements RunnersTableListener {
 			mapControl.resetControls();
 			if( runnerData.hasTrace() ) {
 				map.showTrace( mapControl.createPunchTraceFor(course,
-										runnerData.getResult().formatTrace().split(",")) ); //$NON-NLS-1$
+										runnerData.getTraceData().formatTrace().split(",")) ); //$NON-NLS-1$
 			} else {
 				map.showTrace(course);
 			}
