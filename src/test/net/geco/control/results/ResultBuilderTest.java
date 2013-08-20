@@ -73,9 +73,9 @@ public class ResultBuilderTest {
 		
 		// runner with same rank
 		assertEquals(12, ranking.get(11).getRank());
-		assertEquals("Bill Hopkins", ranking.get(12).getRunnerData().getRunner().getName());
+		assertEquals("Bill Hopkins", ranking.get(11).getRunnerData().getRunner().getName());
 		assertEquals(12, ranking.get(12).getRank());
-		assertEquals("Richard Williamson", ranking.get(11).getRunnerData().getRunner().getName());
+		assertEquals("Richard Williamson", ranking.get(12).getRunnerData().getRunner().getName());
 		// next
 		assertEquals(14, ranking.get(13).getRank());
 		assertEquals("Joe Lalor", ranking.get(13).getRunnerData().getRunner().getName());

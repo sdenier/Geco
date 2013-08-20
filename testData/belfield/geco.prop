@@ -1,15 +1,20 @@
-#Geco Wed Jul 04 23:43:17 CEST 2012
-#Wed Jul 04 23:43:17 CEST 2012
-Version=V1.2
+#Geco Tue Aug 20 21:11:53 CEST 2013
+#Tue Aug 20 21:11:53 CEST 2013
+SIZeroTime=32400000
+RankingTemplate=/Users/deniersi/workspace/Geco/formats/results_ranking.mustache
+AutoHandler=true
+SplitsNbColumns=12
+MPPenalty=0
+NbAutoBackups=9
+ColumnTemplate=/Users/deniersi/workspace/Geco/formats/splits_columns.mustache
+SplitNbColumns=12
+MPLimit=0
+AutosaveDelay=2
+SplitsTemplate=/Users/deniersi/workspace/Geco/formats/results_splits.mustache
+SplitPrinter=Canon MP560
 SplitFormat=MultiColumns
 AppBuilder=net.geco.app.OrientShowAppBuilder
-name=Belfield
-NbAutoBackups=9
-CNFile=/Users/deniersi/Documents/Geco 1.x/data/CN-Ped-Base.csv
-AutosaveDelay=2
-SIZeroTime=32400000
-MPPenalty=0
-MPLimit=0
-SplitNbColumns=12
 SIPortname=
-SplitPrinter=Canon MP560 wifi
+ArchiveLookup=true
+TicketTemplate=/Users/deniersi/workspace/Geco/formats/splits_ticket.mustache
+name=Belfield
