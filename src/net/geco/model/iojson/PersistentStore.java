@@ -87,7 +87,7 @@ public final class PersistentStore {
 			course.setName(c.getString(K.NAME));
 			course.setLength(c.getInt(K.LENGTH));
 			course.setClimb(c.getInt(K.CLIMB));
-			course.setMassStartTime(new Date(c.optLong(K.START, TimeManager.NO_TIME_l)));
+			course.setMassStartTime(new Date(c.optLong(K.START, TimeManager.NO_TIME_l))); // MIGR
 			JSONArray codez = c.getJSONArray(K.CODES);
 			int[] codes = new int[codez.length()];
 			for (int j = 0; j < codes.length; j++) {
@@ -278,12 +278,13 @@ public final class PersistentStore {
 			for (int code : course.getCodes()) { json.value(code); }
 			json.endArray().startArrayField(K.SECTIONS);
 			for (Section section : course.getSections()) {
-				json.startArray()
-					.id(section)
-					.value(section.getStartIndex())
-					.value(section.getName())
-					.value(section.getType().name())
-					.endArray();
+				json.startObject()
+					.id(K.ID, section)
+					.field(K.START_ID, section.getStartIndex())
+					.field(K.NAME, section.getName())
+					.field(K.TYPE, section.getType().name())
+					.optField(K.NEUTRALIZED, section.neutralized())
+					.endObject();
 			}
 			json.endArray()
 				.endObject();
