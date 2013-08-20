@@ -87,14 +87,14 @@ public final class PersistentStore {
 			course.setName(c.getString(K.NAME));
 			course.setLength(c.getInt(K.LENGTH));
 			course.setClimb(c.getInt(K.CLIMB));
-			course.setMassStartTime(new Date(c.optLong(K.START, TimeManager.NO_TIME_l))); // MIGR
+			course.setMassStartTime(new Date(c.optLong(K.START, TimeManager.NO_TIME_l))); // MIGR v2.x -> v2.2
 			JSONArray codez = c.getJSONArray(K.CODES);
 			int[] codes = new int[codez.length()];
 			for (int j = 0; j < codes.length; j++) {
 				codes[j] = codez.getInt(j);
 			}
 			course.setCodes(codes);
-			if( c.has(K.SECTIONS) ) { // MIGR: for raid app
+			if( c.has(K.SECTIONS) ) {
 				JSONArray sectionz = c.getJSONArray(K.SECTIONS);
 				for (int j = 0; j < sectionz.length(); j++) {
 					JSONObject sectionTuple = sectionz.getJSONObject(j);
@@ -229,7 +229,7 @@ public final class PersistentStore {
 			raceData.setTraceData(traceData);
 			
 			RunnerResult result = factory.createRunnerResult();
-			result.setRunningTime(r.getLong(K.RUNNING_TIME));
+			result.setRunningTime(r.optLong(K.RUNNING_TIME, TimeManager.NO_TIME_l)); // MIGR v2.x -> v2.2
 			result.setRacetime(r.getLong(K.TIME));
 			result.setStatus(Status.valueOf(r.getString(K.STATUS)));
 			result.setTimePenalty(r.getLong(K.PENALTY));
