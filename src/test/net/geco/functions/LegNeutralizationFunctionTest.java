@@ -276,7 +276,6 @@ public class LegNeutralizationFunctionTest {
 		assertEquals("17:28", registry.findRunnerData("51009").getResult().formatRacetime()); // Caoimhe O'Boyle
 		assertEquals("26:40", registry.findRunnerData("11428").getResult().formatRacetime()); // Claire Garvey
 		assertEquals("26:26", registry.findRunnerData("11444").getResult().formatRacetime()); // Aaron Clogher & Eoin Connell
-		assertEquals("12:00:06", registry.findRunnerData("11477").getResult().formatRacetime()); // Laoise Brennan
 		assertEquals("59:36", registry.findRunnerData("11476").getResult().formatRacetime()); // Laura Murphy
 
 		// changed result
