@@ -66,7 +66,7 @@ public class PenaltyChecker extends AbstractChecker implements StageListener {
 	
 	@Override
 	public long computeRaceTime(RunnerRaceData data) {
-		long runningTime = data.computeRunningTime();
+		long runningTime = data.getResult().getRunningTime();
 		if( runningTime==TimeManager.NO_TIME_l ) {
 			return runningTime;
 		}

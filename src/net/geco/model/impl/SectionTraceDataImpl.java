@@ -4,12 +4,14 @@
  */
 package net.geco.model.impl;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.Set;
 import java.util.TreeMap;
 
+import net.geco.basics.TimeManager;
 import net.geco.model.Section;
 import net.geco.model.SectionTraceData;
 
@@ -56,6 +58,14 @@ public class SectionTraceDataImpl extends TraceDataImpl implements SectionTraceD
 			}
 		}
 		return finishTimes;
+	}
+
+	@Override
+	public long computeSectionTime(Integer sectionIndex, Date startTime, Date finishTime) {
+		Date sectionStart = (sectionIndex == sectionsMap.firstKey()) ? startTime : trace[sectionIndex].getTime();
+		Date sectionEnd = (sectionIndex == sectionsMap.lastKey()) ? finishTime :
+																	trace[sectionsMap.higherKey(sectionIndex)].getTime();
+		return TimeManager.computeSplit(sectionStart.getTime(), sectionEnd.getTime());
 	}
 
 }

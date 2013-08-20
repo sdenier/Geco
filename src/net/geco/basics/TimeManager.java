@@ -101,25 +101,11 @@ public class TimeManager {
 		}		
 	}
 
+	public static long subtract(long aTime, long bTime) {
+		if( aTime==TimeManager.NO_TIME_l || bTime==TimeManager.NO_TIME_l ) {
+			return aTime;
+		}
+		return aTime - bTime;
+	}
 
-//	Calendar day = Calendar.getInstance();
-//	// reset time
-//	day.set(Calendar.HOUR_OF_DAY, 0);
-//	day.set(Calendar.MINUTE, 0);
-//	day.set(Calendar.SECOND, 0);
-//	day.set(Calendar.MILLISECOND, 0);
-	
-//	private Date addTime(Calendar currentDay, Date time) {
-//		Calendar correctTime = Calendar.getInstance();
-//		correctTime.setTime(time);
-//		setField(currentDay, correctTime, Calendar.DAY_OF_MONTH);
-//		setField(currentDay, correctTime, Calendar.MONTH);
-//		setField(currentDay, correctTime, Calendar.YEAR);
-//		return correctTime.getTime();
-//	}
-//	
-//	private void setField(Calendar currentDay, Calendar time, int field) {
-//		time.set(field, currentDay.get(field));
-//	}
-	
 }
