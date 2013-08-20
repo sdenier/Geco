@@ -97,11 +97,12 @@ public final class PersistentStore {
 			if( c.has(K.SECTIONS) ) { // MIGR: for raid app
 				JSONArray sectionz = c.getJSONArray(K.SECTIONS);
 				for (int j = 0; j < sectionz.length(); j++) {
-					JSONArray sectionTuple = sectionz.getJSONArray(j);
-					Section section = store.register(factory.createSection(), sectionTuple.getInt(0));
-					section.setStartIndex(sectionTuple.getInt(1));
-					section.setName(sectionTuple.getString(2));
-					section.setType(SectionType.valueOf(sectionTuple.getString(3)));
+					JSONObject sectionTuple = sectionz.getJSONObject(j);
+					Section section = store.register(factory.createSection(), sectionTuple.getInt(K.ID));
+					section.setStartIndex(sectionTuple.getInt(K.START_ID));
+					section.setName(sectionTuple.getString(K.NAME));
+					section.setType(SectionType.valueOf(sectionTuple.getString(K.TYPE)));
+					section.setNeutralized(sectionTuple.optBoolean(K.NEUTRALIZED, false));
 					course.putSection(section);
 				}
 				course.refreshSectionCodes();
