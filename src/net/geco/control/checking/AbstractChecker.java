@@ -36,13 +36,13 @@ public abstract class AbstractChecker extends BasicControl implements Checker {
 
 	public TraceData computeTraceData(RunnerRaceData runnerData) {
 		TraceData traceData = tracer.computeTrace(runnerData.getCourse().getCodes(), runnerData.getPunches());
-		traceData.setRunningTime(runnerData.computeRunningTime());
 		return traceData;
 	}
 
 	protected void setResult(RunnerRaceData runnerData) {
 		RunnerResult result = factory().createRunnerResult();
 		runnerData.setResult(result);
+		result.setRunningTime(computeRunningTime(runnerData));
 		result.setTimePenalty(computeTimePenalty(runnerData));
 		result.setRacetime(computeRaceTime(runnerData));
 		result.setStatus(computeStatus(runnerData));

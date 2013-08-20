@@ -21,6 +21,8 @@ public interface Checker {
 
 	public Status computeStatus(RunnerRaceData raceData);
 
+	public long computeRunningTime(RunnerRaceData runnerData);
+	
 	public long computeRaceTime(RunnerRaceData raceData);
 
 	public long computeTimePenalty(RunnerRaceData raceData);

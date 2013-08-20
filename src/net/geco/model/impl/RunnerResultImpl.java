@@ -10,6 +10,8 @@ import net.geco.model.Status;
 
 
 public class RunnerResultImpl implements RunnerResult {
+
+	private long runningTime = TimeManager.NO_TIME_l;
 	
 	private long racetime = TimeManager.NO_TIME_l;
 	
@@ -24,6 +26,18 @@ public class RunnerResultImpl implements RunnerResult {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public long getRunningTime() {
+		return runningTime;
+	}
+
+	public void setRunningTime(long runningTime) {
+		this.runningTime = runningTime;
+	}
+
+	public String formatRunningTime() {
+		return TimeManager.time(runningTime);
 	}
 	
 	public long getRacetime() {

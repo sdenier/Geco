@@ -207,7 +207,6 @@ public final class PersistentStore {
 			JSONObject r = runnerTuple.getJSONObject(I_RESULT);
 			TraceData traceData = factory.createTraceData();
 			traceData.setNbMPs(r.getInt(K.MPS));
-			traceData.setRunningTime(r.optLong(K.RUNNING_TIME, TimeManager.NO_TIME_l)); // MIGR: for raid app
 			JSONArray t = r.getJSONArray(K.TRACE);
 			Trace[] trace = new Trace[t.length() / 2];
 			for (int j = 0; j < trace.length; j++) {
@@ -231,6 +230,7 @@ public final class PersistentStore {
 			raceData.setTraceData(traceData);
 			
 			RunnerResult result = factory.createRunnerResult();
+			result.setRunningTime(r.getLong(K.RUNNING_TIME));
 			result.setRacetime(r.getLong(K.TIME));
 			result.setStatus(Status.valueOf(r.getString(K.STATUS)));
 			result.setTimePenalty(r.getLong(K.PENALTY));
@@ -378,7 +378,7 @@ public final class PersistentStore {
 				.field(K.STATUS, result.getStatus().name())
 				.field(K.MPS, traceData.getNbMPs())
 				.field(K.PENALTY, result.getTimePenalty())
-				.field(K.RUNNING_TIME, traceData.getRunningTime());
+				.field(K.RUNNING_TIME, result.getRunningTime());
 			
 			Trace[] traceArray = traceData.getTrace();
 			int nbNeut = 0;

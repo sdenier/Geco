@@ -11,12 +11,6 @@ package net.geco.model;
  */
 public interface TraceData extends Cloneable {
 
-	public long getRunningTime();
-
-	public void setRunningTime(long runningTime);
-	
-	public String formatRunningTime();
-
 	public int getNbMPs();
 
 	public void setNbMPs(int nbMPs);

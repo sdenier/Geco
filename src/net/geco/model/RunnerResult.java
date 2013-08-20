@@ -11,6 +11,12 @@ package net.geco.model;
  */
 public interface RunnerResult extends Cloneable {
 
+	public long getRunningTime();
+
+	public void setRunningTime(long runningTime);
+	
+	public String formatRunningTime();
+
 	public long getRacetime();
 
 	public void setRacetime(long racetime);

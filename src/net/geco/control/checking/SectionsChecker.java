@@ -24,10 +24,7 @@ public class SectionsChecker extends PenaltyChecker {
 
 	@Override
 	public TraceData computeTraceData(RunnerRaceData runnerData) {
-		TraceData traceData = sectionsTracer.computeTrace(runnerData.getCourse().getSections(),
-														  runnerData.getPunches());
-		traceData.setRunningTime(runnerData.computeRunningTime());
-		return traceData;
+		return sectionsTracer.computeTrace(runnerData.getCourse().getSections(), runnerData.getPunches());
 	}
 
 }

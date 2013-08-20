@@ -20,7 +20,7 @@ import net.geco.model.Status;
  * @since Dec 7, 2008
  *
  */
-public class PenaltyChecker extends AbstractChecker implements Checker, StageListener {
+public class PenaltyChecker extends AbstractChecker implements StageListener {
 	
 	protected long MPPenalty;
 
@@ -48,6 +48,11 @@ public class PenaltyChecker extends AbstractChecker implements Checker, StageLis
 	@Override
 	public void postInitialize(Stage stage) {
 		setNewProperties(stage);
+	}
+
+	@Override
+	public long computeRunningTime(RunnerRaceData runnerData) {
+		return runnerData.computeRunningTime();
 	}
 
 	@Override
