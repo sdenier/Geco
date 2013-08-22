@@ -33,18 +33,18 @@ public class SectionsChecker extends PenaltyChecker {
 	}
 
 	@Override
-	public long computeRunningTime(RunnerRaceData runnerData) {
-		long runningTime = super.computeRunningTime(runnerData);
+	public long computeRaceTime(RunnerRaceData runnerData) {
+		long raceTime = super.computeRaceTime(runnerData);
 		SectionTraceData traceData = (SectionTraceData) runnerData.getTraceData();
 		for (Entry<Integer, Section> sectionData : traceData.getSectionData()) {
 			if( sectionData.getValue().neutralized() ) {
 				long neutralizedTime = traceData.computeSectionTime(sectionData.getKey(),
 																	runnerData.getOfficialStarttime(),
 																	runnerData.getFinishtime());
-				runningTime = TimeManager.subtract(runningTime, neutralizedTime);
+				raceTime = TimeManager.subtract(raceTime, neutralizedTime);
 			}
 		}
-		return runningTime;
+		return raceTime;
 	}
 
 }

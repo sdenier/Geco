@@ -49,7 +49,7 @@ public abstract class AbstractChecker extends BasicControl implements Checker {
 	@Override
 	public void resetRaceTime(RunnerRaceData runnerData) {
 		RunnerResult result = runnerData.getResult();
-		result.setRunningTime(computeRunningTime(runnerData));
+		result.setRaceTime(computeRaceTime(runnerData));
 		result.setTimePenalty(computeTimePenalty(runnerData));
 		result.setResultTime(computeResultTime(runnerData));
 	}

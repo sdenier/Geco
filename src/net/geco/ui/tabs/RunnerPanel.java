@@ -167,7 +167,7 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 		displayCardTimeWithMissingHint(officialStartTimeF, runnerData.getOfficialStarttime());
 		displayCardTimeWithMissingHint(officialFinishTimeF, runnerData.getFinishtime());
 		displayRacetime(runningTimeF, runnerData.computeRunningTime());
-		displayRacetime(raceTimeF, runnerData.getResult().getRunningTime());
+		displayRacetime(raceTimeF, runnerData.getResult().getRaceTime());
 		mpF.setText(Integer.toString(runnerData.getTraceData().getNbMPs()));
 		penaltyF.setText(runnerData.getResult().formatTimePenalty());
 		displayOfficialResultTime(fullTimeF, geco().checker().computeResultTime(runnerData));

@@ -134,7 +134,7 @@ public class LiveServer extends Control {
 		TraceData traceData = factory().createTraceData();
 		traceData.setNbMPs(Integer.parseInt(data[9]));
 		traceData.setTrace(createTraceFrom(Arrays.copyOfRange(data, 11, data.length)));
-//		traceData.setRunningTime(runningTime); TODO runningTime
+//		traceData.setRaceTime(raceTime); TODO raceTime
 		
 		RunnerResult result = factory().createRunnerResult();
 		result.setStatus(Status.valueOf(data[7]));
