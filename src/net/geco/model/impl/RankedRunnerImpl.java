@@ -28,6 +28,6 @@ public class RankedRunnerImpl implements RankedRunner {
 	}
 
 	public String formatDiffTime(long bestTime) {
-		return TimeManager.time(runnerData.getRacetime() - bestTime);
+		return TimeManager.time(runnerData.getResultTime() - bestTime);
 	}
 }

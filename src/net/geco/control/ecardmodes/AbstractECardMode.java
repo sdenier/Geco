@@ -73,7 +73,6 @@ public abstract class AbstractECardMode extends Control implements ECardMode {
 
 	public RunnerRaceData updateRaceDataWith(RunnerRaceData runnerData, SiDataFrame card) {
 		runnerData.stampReadtime();
-//		runnerData.setErasetime(safeTime(card.getClearTime())); // TODO remove data field
 		runnerData.setControltime(safeTime(card.getCheckTime()));		
 		processStarttime(runnerData, card);
 		processFinishtime(runnerData, card);

@@ -1,13 +1,20 @@
-#Geco Sun Aug 28 23:52:01 CEST 2011
-#Sun Aug 28 23:52:01 CEST 2011
-Version=V1.2
+#Geco Tue Aug 20 23:14:11 CEST 2013
+#Tue Aug 20 23:14:11 CEST 2013
+SIZeroTime=32400000
+RankingTemplate=/Users/deniersi/workspace/Geco/formats/results_ranking.mustache
+AutoHandler=true
+SplitsNbColumns=12
+MPPenalty=0
+NbAutoBackups=9
+ColumnTemplate=/Users/deniersi/workspace/Geco/formats/splits_columns.mustache
+SplitNbColumns=12
+MPLimit=0
+AutosaveDelay=2
+SplitsTemplate=/Users/deniersi/workspace/Geco/formats/results_splits.mustache
+SplitPrinter=Canon MP560
 SplitFormat=MultiColumns
 AppBuilder=net.geco.app.FreeOrderAppBuilder
-name=TEST Free Order
-NbAutoBackups=9
-CNFile=/Users/deniersi/workspace/GecO/data/CN-Ped-Base.csv
-AutosaveDelay=2
-SIZeroTime=32400000
-SplitNbColumns=12
 SIPortname=
-SplitPrinter=Canon MP560 usb
+ArchiveLookup=true
+TicketTemplate=/Users/deniersi/workspace/Geco/formats/splits_ticket.mustache
+name=TEST Free Order

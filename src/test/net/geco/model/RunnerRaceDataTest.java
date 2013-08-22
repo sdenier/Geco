@@ -61,7 +61,7 @@ public class RunnerRaceDataTest {
 		RunnerRaceData data = factory.createRunnerRaceData();
 		RunnerResult result = factory.createRunnerResult();
 		data.setResult(result);
-		result.setRacetime(960000);
+		result.setResultTime(960000);
 		Runner runner = factory.createRunner();
 		Course course = factory.createCourse();
 		course.setLength(4000);
@@ -79,7 +79,7 @@ public class RunnerRaceDataTest {
 		RunnerRaceData data = factory.createRunnerRaceData();
 		RunnerResult result = factory.createRunnerResult();
 		data.setResult(result);
-		result.setRacetime(960000);
+		result.setResultTime(960000);
 		Runner runner = factory.createRunner();
 		Course course = factory.createCourse();
 		course.setLength(0);

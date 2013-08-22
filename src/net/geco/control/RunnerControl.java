@@ -272,12 +272,12 @@ public class RunnerControl extends Control {
 		return true;
 	}
 	
-	public boolean validateRaceTime(RunnerRaceData runnerData, String raceTime) {
+	public boolean validateResultTime(RunnerRaceData runnerData, String resultTime) {
 		try {
-			long oldTime = runnerData.getResult().getRacetime();
-			Date newTime = TimeManager.userParse(raceTime);
+			long oldTime = runnerData.getResult().getResultTime();
+			Date newTime = TimeManager.userParse(resultTime);
 			if( oldTime!=newTime.getTime() ) {
-				runnerData.getResult().setRacetime(newTime.getTime());
+				runnerData.getResult().setResultTime(newTime.getTime());
 				geco().log(Messages.getString("RunnerControl.RacetimeChangeMessage") //$NON-NLS-1$
 						+ runnerData.getRunner().idString() + Messages.getString("RunnerControl.FromMessage") //$NON-NLS-1$
 						+ TimeManager.fullTime(oldTime) + Messages.getString("RunnerControl.ToMessage") //$NON-NLS-1$
@@ -291,9 +291,9 @@ public class RunnerControl extends Control {
 	}
 	
 	public boolean resetRaceTime(RunnerRaceData runnerData) {
-		long oldTime = runnerData.getResult().getRacetime();
+		long oldTime = runnerData.getResult().getResultTime();
 		geco().checker().resetRaceTime(runnerData);
-		long newTime = runnerData.getResult().getRacetime();
+		long newTime = runnerData.getResult().getResultTime();
 		if( oldTime!=newTime ) {
 			geco().log(Messages.getString("RunnerControl.RacetimeResetMessage") //$NON-NLS-1$
 						+ runnerData.getRunner().idString() + Messages.getString("RunnerControl.FromMessage") //$NON-NLS-1$
@@ -337,7 +337,7 @@ public class RunnerControl extends Control {
 		for (RunnerRaceData data: registry().getRunnersData()) {
 			if( data.statusIsRecheckable() ) {
 				Status oldStatus = data.getStatus();
-				long oldRacetime = data.getResult().getRacetime();
+				long oldRacetime = data.getResult().getResultTime();
 				geco().checker().check(data);
 				if( oldStatus!=data.getStatus() ){
 					geco().log(Messages.getString("RunnerControl.StatusChangeMessage") //$NON-NLS-1$
@@ -345,11 +345,11 @@ public class RunnerControl extends Control {
 								+ oldStatus + " -> " //$NON-NLS-1$
 								+ data.getStatus());
 				}
-				if( oldRacetime!=data.getResult().getRacetime() ){
+				if( oldRacetime!=data.getResult().getResultTime() ){
 					geco().log(Messages.getString("RunnerControl.RacetimeResetMessage") //$NON-NLS-1$
 								+ data.getRunner().idString() + " " //$NON-NLS-1$
 								+ TimeManager.time(oldRacetime) + " -> " //$NON-NLS-1$
-								+ data.getResult().formatRacetime());
+								+ data.getResult().formatResultTime());
 				}
 			}
 		}

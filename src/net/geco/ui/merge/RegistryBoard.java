@@ -34,7 +34,7 @@ public class RegistryBoard extends AbstractMergeBoard {
 	private FilterComboBox searchRegistryCB;
 	private DataField categoryF;
 	private DataField courseF;
-	private DataField raceTimeF;
+	private DataField resultTimeF;
 	private StatusField statusF;
 
 	public RegistryBoard(MergeWizard wizard, JComponent panel, int firstLine) {
@@ -60,14 +60,14 @@ public class RegistryBoard extends AbstractMergeBoard {
 					categoryF.setText(runner.getCategory().getName());
 					courseF.setText(runner.getCourse().getName());
 					RunnerRaceData runnerData = registry().findRunnerData(runner);
-					raceTimeF.setText(runnerData.getResult().formatRacetime());
+					resultTimeF.setText(runnerData.getResult().formatResultTime());
 					statusF.update(runnerData.getStatus());
 					overwriteWarningL.setVisible(runnerData.hasData());
 					mergeRunnerB.setEnabled(true);					
 				} else {
 					categoryF.setText(""); //$NON-NLS-1$
 					courseF.setText(""); //$NON-NLS-1$
-					raceTimeF.setText(""); //$NON-NLS-1$
+					resultTimeF.setText(""); //$NON-NLS-1$
 					statusF.reset();
 					overwriteWarningL.setVisible(false);
 					mergeRunnerB.setEnabled(false);
@@ -153,8 +153,8 @@ public class RegistryBoard extends AbstractMergeBoard {
 		statusF = new StatusField();
 		panel.add(statusF, c);
 		panel.add(new JLabel(Messages.uiGet("RegistryBoard.TimeLabel")), c); //$NON-NLS-1$
-		raceTimeF = new DataField();
-		panel.add(raceTimeF, c);
+		resultTimeF = new DataField();
+		panel.add(resultTimeF, c);
 	}
 	
 }

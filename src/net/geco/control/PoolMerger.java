@@ -40,10 +40,10 @@ public class PoolMerger extends Control {
 		Status mergedStatus = Status.OK;
 		for (Stage stage : poolStages) {
 			RunnerRaceData poolData = stage.registry().findRunnerData(runnerData.getRunner().getEcard());
-			mergedTime = mergeTime(mergedTime, poolData.getResult().getRacetime());
+			mergedTime = mergeTime(mergedTime, poolData.getResult().getResultTime());
 			mergedStatus = mergeStatus(mergedStatus, poolData.getResult().getStatus());
 		}
-		runnerData.getResult().setRacetime(mergedTime);
+		runnerData.getResult().setResultTime(mergedTime);
 		runnerData.getResult().setStatus(mergedStatus);
 	}
 

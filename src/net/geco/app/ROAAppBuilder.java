@@ -23,6 +23,7 @@ import net.geco.control.results.CNCalculator;
 import net.geco.control.results.ResultBuilder;
 import net.geco.control.results.ResultExporter;
 import net.geco.control.results.RunnerSplitPrinter;
+import net.geco.control.results.SectionsExporter;
 import net.geco.control.results.SplitExporter;
 import net.geco.framework.IGecoApp;
 import net.geco.functions.DeleteFunction;
@@ -102,6 +103,7 @@ public class ROAAppBuilder extends AppBuilder {
 		new MergeControl(gecoControl);
 		new StartlistExporter(gecoControl);
 		new SectionService(gecoControl);
+		new SectionsExporter(gecoControl);
 		
 		new RefereeLogFunction(gecoControl);
 		new StartTimeFunction(gecoControl);

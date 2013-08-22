@@ -81,7 +81,7 @@ public class PenaltyCheckerTest {
 			});
 		checker.check(data);
 		assertEquals(Status.OK, data.getResult().getStatus());
-		assertTrue(data.getResult().getRacetime() == 20000000);
+		assertTrue(data.getResult().getResultTime() == 20000000);
 	}
 
 	@Test
@@ -95,7 +95,7 @@ public class PenaltyCheckerTest {
 			});
 		checker.check(data);
 		assertEquals(Status.OK, data.getResult().getStatus());
-		assertTrue(data.getResult().getRacetime() == 630000);
+		assertTrue(data.getResult().getResultTime() == 630000);
 	}
 
 
@@ -109,7 +109,7 @@ public class PenaltyCheckerTest {
 			});
 		checker.check(data);
 		assertEquals(Status.OK, data.getResult().getStatus());
-		assertTrue(data.getResult().getRacetime() == 630000 + checker.timePenalty(1));
+		assertTrue(data.getResult().getResultTime() == 630000 + checker.timePenalty(1));
 	}
 
 	@Test
@@ -122,7 +122,7 @@ public class PenaltyCheckerTest {
 			});
 		checker.check(data);
 		assertEquals(Status.OK, data.getResult().getStatus());
-		assertTrue(data.getResult().getRacetime() == 630000 + checker.timePenalty(2));
+		assertTrue(data.getResult().getResultTime() == 630000 + checker.timePenalty(2));
 	}
 	
 	@Test
@@ -135,7 +135,7 @@ public class PenaltyCheckerTest {
 			});
 		checker.check(data);
 		assertEquals(Status.OK, data.getResult().getStatus());
-		assertTrue(data.getResult().getRacetime() == 630000 + checker.timePenalty(3));
+		assertTrue(data.getResult().getResultTime() == 630000 + checker.timePenalty(3));
 	}
 
 	@Test
@@ -148,7 +148,7 @@ public class PenaltyCheckerTest {
 			});
 		checker.check(data);
 		assertEquals(Status.MP, data.getResult().getStatus());
-		assertTrue(data.getResult().getRacetime() == (630000 + checker.timePenalty(5)));
+		assertTrue(data.getResult().getResultTime() == (630000 + checker.timePenalty(5)));
 	}
 
 	
@@ -163,7 +163,7 @@ public class PenaltyCheckerTest {
 			});
 		checker.check(data);
 		assertEquals(Status.OK, data.getResult().getStatus());
-		assertTrue(data.getResult().getRacetime() == 630000);
+		assertTrue(data.getResult().getResultTime() == 630000);
 	}
 
 	@Test
@@ -177,7 +177,7 @@ public class PenaltyCheckerTest {
 			});
 		checker.check(data);
 		assertEquals(Status.OK, data.getResult().getStatus());
-		assertTrue(data.getResult().getRacetime() == 630000);
+		assertTrue(data.getResult().getResultTime() == 630000);
 	}
 
 	
@@ -192,7 +192,7 @@ public class PenaltyCheckerTest {
 			});
 		checker.check(data);
 		assertEquals(Status.OK, data.getResult().getStatus());
-		assertTrue(data.getResult().getRacetime() == 630000 + checker.timePenalty(2));
+		assertTrue(data.getResult().getResultTime() == 630000 + checker.timePenalty(2));
 	}
 
 	@Test
@@ -211,7 +211,7 @@ public class PenaltyCheckerTest {
 			});
 		checker.check(data);
 		assertEquals(Status.OK, data.getResult().getStatus());
-		assertTrue(data.getResult().getRacetime() == 630000 + checker.timePenalty(2));
+		assertTrue(data.getResult().getResultTime() == 630000 + checker.timePenalty(2));
 	}
 
 	@Test
@@ -225,7 +225,7 @@ public class PenaltyCheckerTest {
 			});
 		checker.check(data);
 		assertEquals(Status.OK, data.getResult().getStatus());
-		assertTrue(data.getResult().getRacetime() == 630000 + checker.timePenalty(3));
+		assertTrue(data.getResult().getResultTime() == 630000 + checker.timePenalty(3));
 	}
 
 	@Test
@@ -238,7 +238,7 @@ public class PenaltyCheckerTest {
 			});
 		checker.check(data);
 		assertEquals(Status.MP, data.getResult().getStatus());
-		assertTrue(data.getResult().getRacetime() == 630000 + checker.timePenalty(6));
+		assertTrue(data.getResult().getResultTime() == 630000 + checker.timePenalty(6));
 	}
 	
 	@Test
@@ -250,7 +250,7 @@ public class PenaltyCheckerTest {
 		checker.check(data);
 		assertEquals(Status.MP, data.getResult().getStatus());
 		long maxPenalties = 630000 + checker.timePenalty(data.getCourse().nbControls());
-		assertTrue(data.getResult().getRacetime() == maxPenalties);
+		assertTrue(data.getResult().getResultTime() == maxPenalties);
 	}
 
 }

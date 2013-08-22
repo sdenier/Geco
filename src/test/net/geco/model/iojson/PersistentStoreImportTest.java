@@ -131,7 +131,7 @@ public class PersistentStoreImportTest {
 		assertThat(runner136.getCourse(), equalTo(registry.findCourse("Circuit C")));
 		assertThat(runner136.getPunches().length, equalTo(15));
 		assertThat(runner136.getResult().getStatus(), equalTo(Status.OK));
-		assertThat(runner136.getResult().getRacetime(), equalTo(4186000L));
+		assertThat(runner136.getResult().getResultTime(), equalTo(4186000L));
 		assertThat(runner136.getTraceData().getTrace()[2].isNeutralized(), equalTo(true));
 		assertThat(runner136.getTraceData().getTrace()[3].isNeutralized(), equalTo(false));
 		assertThat(runner136.getTraceData().getTrace()[5].isNeutralized(), equalTo(true));

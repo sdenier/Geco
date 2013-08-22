@@ -34,6 +34,8 @@ public interface Section {
 		public int[] getCodes() {return new int[0];}
 		public void setCodes(int[] allCodes, int endIndex) {}
 		public String displayString() {return "";}
+		public boolean neutralized() { return false; }
+		public void setNeutralized(boolean flag) {}
 	};
 
 	public int getStartIndex();
@@ -47,6 +49,10 @@ public interface Section {
 	public SectionType getType();
 	
 	public void setType(SectionType type);
+
+	public boolean neutralized();
+
+	public void setNeutralized(boolean flag);
 	
 	public int[] getCodes();
 
