@@ -102,7 +102,7 @@ public class SplitXmlExporter extends Control {
 									TimeManager.time(runnerData.getOfficialStarttime())); //$NON-NLS-1$
 		createContentChildElement(result, "FinishTime", //$NON-NLS-1$
 									TimeManager.time(runnerData.getFinishtime())); //$NON-NLS-1$
-		createContentChildElement(result, "Time", runnerData.getResult().formatRacetime()); //$NON-NLS-1$
+		createContentChildElement(result, "Time", runnerData.getResult().formatResultTime()); //$NON-NLS-1$
 		if( rank > 0 ) {
 			createContentChildElement(result, "ResultPosition", Integer.toString(rank)); //$NON-NLS-1$
 		}

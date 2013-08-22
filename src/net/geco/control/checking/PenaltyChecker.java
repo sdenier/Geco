@@ -65,7 +65,7 @@ public class PenaltyChecker extends AbstractChecker implements StageListener {
 	}
 	
 	@Override
-	public long computeRaceTime(RunnerRaceData data) {
+	public long computeResultTime(RunnerRaceData data) {
 		long runningTime = data.getResult().getRunningTime();
 		if( runningTime==TimeManager.NO_TIME_l ) {
 			return runningTime;
@@ -76,7 +76,7 @@ public class PenaltyChecker extends AbstractChecker implements StageListener {
 	@Override
 	public Status computeStatus(RunnerRaceData data) {
 		Status status = (noMPLimit || data.getTraceData().getNbMPs() <= getMPLimit()) ? Status.OK : Status.MP;
-		if( data.getResult().getRacetime()==TimeManager.NO_TIME_l ) {
+		if( data.getResult().getResultTime()==TimeManager.NO_TIME_l ) {
 			status = Status.MP;
 		}
 		return status;

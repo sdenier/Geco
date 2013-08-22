@@ -51,7 +51,7 @@ public abstract class AbstractChecker extends BasicControl implements Checker {
 		RunnerResult result = runnerData.getResult();
 		result.setRunningTime(computeRunningTime(runnerData));
 		result.setTimePenalty(computeTimePenalty(runnerData));
-		result.setRacetime(computeRaceTime(runnerData));
+		result.setResultTime(computeResultTime(runnerData));
 	}
 
 }

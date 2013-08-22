@@ -28,7 +28,7 @@ public class ECardBoard extends AbstractMergeBoard {
 	private DataField ecardF;
 	private DataField startTimeF;
 	private DataField finishTimeF;
-	private DataField raceTimeF;
+	private DataField resultTimeF;
 	private StatusField statusF;
 	
 	private boolean recheckCourseOnChange = true;
@@ -64,7 +64,7 @@ public class ECardBoard extends AbstractMergeBoard {
 	}
 
 	public void updateResults() {
-		raceTimeF.setText(ecardData().getResult().formatRacetime());
+		resultTimeF.setText(ecardData().getResult().formatResultTime());
 		statusF.update(ecardData().getStatus());
 	}
 	
@@ -141,8 +141,8 @@ public class ECardBoard extends AbstractMergeBoard {
 		setInsets(c, INSET, INSET);
 		panel.add(new JLabel(Messages.uiGet("ECardBoard.TimeLabel")), c); //$NON-NLS-1$
 		resetInsets(c);
-		raceTimeF = new DataField();
-		panel.add(raceTimeF, c);
+		resultTimeF = new DataField();
+		panel.add(resultTimeF, c);
 	}
 	
 }

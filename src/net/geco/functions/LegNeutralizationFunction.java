@@ -176,9 +176,9 @@ public class LegNeutralizationFunction extends GecoFunction {
 					geco().announcer().dataInfo(raceData.getRunner().idString() + " - split " + TimeManager.time(splitTime)); //$NON-NLS-1$
 				} else {
 					RunnerResult result = raceData.getResult();
-					if( result.getRacetime()!=TimeManager.NO_TIME_l ){
-						result.setRacetime(result.getRacetime() - splitTime);
-						geco().log(raceData.getRunner().idString() + " - split " + TimeManager.time(splitTime) + " - race " + result.formatRacetime()); //$NON-NLS-1$ //$NON-NLS-2$
+					if( result.getResultTime()!=TimeManager.NO_TIME_l ){
+						result.setResultTime(result.getResultTime() - splitTime);
+						geco().log(raceData.getRunner().idString() + " - split " + TimeManager.time(splitTime) + " - race " + result.formatResultTime()); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 					leg[1].setNeutralized(true);					
 				}

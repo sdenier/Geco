@@ -79,7 +79,7 @@ public class ResultImpl implements Result {
 		if( this.rankedRunners.isEmpty() ){
 			return 0;
 		} else {
-			return getRanking().get(0).getRunnerData().getRacetime();
+			return getRanking().get(0).getRunnerData().getResultTime();
 		}
 	}
 
@@ -103,7 +103,7 @@ public class ResultImpl implements Result {
 	public void sortRankedRunners() {
 		Collections.sort(this.rankedRunners, new Comparator<RunnerRaceData>() {
 			public int compare(RunnerRaceData o1, RunnerRaceData o2) {
-				long diff = o1.getResult().getRacetime() - o2.getResult().getRacetime();
+				long diff = o1.getResult().getResultTime() - o2.getResult().getResultTime();
 				if( diff < 0) {
 					return -1;
 				}
@@ -123,7 +123,7 @@ public class ResultImpl implements Result {
 			RunnerRaceData previous = null;
 			for (RunnerRaceData runner : this.rankedRunners) {
 				if( previous!=null &&
-						previous.getResult().getRacetime()!=runner.getResult().getRacetime() ) {
+						previous.getResult().getResultTime()!=runner.getResult().getResultTime() ) {
 					rank = counter; // increment or jump to current counter
 				} // else: same rank, do not increment
 				this.memoRanking.add(new RankedRunnerImpl(rank, runner));

@@ -84,7 +84,7 @@ public class ResultBuilderTest {
 		assertEquals("Des Doyle", ranking.get(31).getRunnerData().getRunner().getName());
 		
 		for (int i = 0; i < ranking.size()-1; i++) {
-			assertTrue(ranking.get(i).getRunnerData().getResult().getRacetime() <= ranking.get(i+1).getRunnerData().getResult().getRacetime());
+			assertTrue(ranking.get(i).getRunnerData().getResult().getResultTime() <= ranking.get(i+1).getRunnerData().getResult().getResultTime());
 		}
 	}
 

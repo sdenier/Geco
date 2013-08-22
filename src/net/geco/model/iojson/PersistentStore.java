@@ -230,7 +230,7 @@ public final class PersistentStore {
 			
 			RunnerResult result = factory.createRunnerResult();
 			result.setRunningTime(r.optLong(K.RUNNING_TIME, TimeManager.NO_TIME_l)); // MIGR v2.x -> v2.2
-			result.setRacetime(r.getLong(K.TIME));
+			result.setResultTime(r.getLong(K.TIME));
 			result.setStatus(Status.valueOf(r.getString(K.STATUS)));
 			result.setTimePenalty(r.getLong(K.PENALTY));
 			raceData.setResult(result);
@@ -372,7 +372,7 @@ public final class PersistentStore {
 			TraceData traceData = runnerData.getTraceData();
 			RunnerResult result = runnerData.getResult();
 			json.startObject()
-				.field(K.TIME, result.getRacetime())
+				.field(K.TIME, result.getResultTime())
 				.field(K.STATUS, result.getStatus().name())
 				.field(K.MPS, traceData.getNbMPs())
 				.field(K.PENALTY, result.getTimePenalty())

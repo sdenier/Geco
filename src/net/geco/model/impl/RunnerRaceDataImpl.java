@@ -180,8 +180,8 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 		this.result = result;
 	}
 
-	public long getRacetime() {
-		return result.getRacetime();
+	public long getResultTime() {
+		return result.getResultTime();
 	}
 
 	public long computeRunningTime() {
@@ -199,7 +199,7 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 	public String infoString() {
 		StringBuilder buffer = new StringBuilder(getRunner().idString());
 		buffer.append(", " + getCourse().getName() + " " + getResult().formatStatus()); //$NON-NLS-1$ //$NON-NLS-2$
-		buffer.append(Messages.getString("RunnerRaceDataImpl.InTimeLabel") + getResult().formatRacetime()); //$NON-NLS-1$
+		buffer.append(Messages.getString("RunnerRaceDataImpl.InTimeLabel") + getResult().formatResultTime()); //$NON-NLS-1$
 		return buffer.toString();
 	}
 	
@@ -213,7 +213,7 @@ public class RunnerRaceDataImpl implements RunnerRaceData {
 
 	public float getMillisecondPace() {
 		float km = getCourse().getLength() / 1000.0f;
-		return getRacetime() / km;
+		return getResultTime() / km;
 	}
 
 	public String formatPace() {

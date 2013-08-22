@@ -113,7 +113,7 @@ public class ExtendedRunnersTableModel extends AbstractTableModel {
 		case 7: return result.formatRunningTime();
 		case 8: return getRunnerData(rowIndex).getTraceData().getNbMPs();
 		case 9: return result.formatTimePenalty();
-		case 10: return result.formatRacetime();
+		case 10: return result.formatResultTime();
 		case 11: return result.getStatus();
 		default: return "Pbm"; //$NON-NLS-1$
 		}

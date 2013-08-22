@@ -17,11 +17,11 @@ public interface RunnerResult extends Cloneable {
 	
 	public String formatRunningTime();
 
-	public long getRacetime();
+	public long getResultTime();
 
-	public void setRacetime(long racetime);
+	public void setResultTime(long resultTime);
 	
-	public String formatRacetime();
+	public String formatResultTime();
 
 	public Status getStatus();
 

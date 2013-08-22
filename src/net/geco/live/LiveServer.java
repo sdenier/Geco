@@ -138,7 +138,7 @@ public class LiveServer extends Control {
 		
 		RunnerResult result = factory().createRunnerResult();
 		result.setStatus(Status.valueOf(data[7]));
-		result.setRacetime(Long.parseLong(data[8]));
+		result.setResultTime(Long.parseLong(data[8]));
 		result.setTimePenalty(Long.parseLong(data[10]));
 		
 		RunnerRaceData runnerData = registry().findRunnerData(runner);

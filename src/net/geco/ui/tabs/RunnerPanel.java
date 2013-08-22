@@ -170,7 +170,7 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 		displayRacetime(raceTimeF, runnerData.getResult().getRunningTime());
 		mpF.setText(Integer.toString(runnerData.getTraceData().getNbMPs()));
 		penaltyF.setText(runnerData.getResult().formatTimePenalty());
-		displayOfficialRacetime(fullTimeF, geco().checker().computeRaceTime(runnerData));
+		displayOfficialResultTime(fullTimeF, geco().checker().computeResultTime(runnerData));
 	}
 
 	private void prvDisplayTime(JTextField timeF, String text, Color bgColor) {
@@ -202,8 +202,8 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 		timeF.setText(TimeManager.time(time));
 	}
 
-	protected void displayOfficialRacetime(JTextField timeF, long computedTime) {
-		if( computedTime != runnerData.getResult().getRacetime() ) {
+	protected void displayOfficialResultTime(JTextField timeF, long computedTime) {
+		if( computedTime != runnerData.getResult().getResultTime() ) {
 			prvDisplayTime(timeF, TimeManager.time(computedTime), PALE_YELLOW);
 		} else {
 			prvDisplayTime(timeF, TimeManager.time(computedTime), Color.white);

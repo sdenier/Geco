@@ -13,7 +13,7 @@ public class RunnerResultImpl implements RunnerResult {
 
 	private long runningTime = TimeManager.NO_TIME_l;
 	
-	private long racetime = TimeManager.NO_TIME_l;
+	private long resultTime = TimeManager.NO_TIME_l;
 	
 	private Status status = Status.NOS;
 	
@@ -40,16 +40,16 @@ public class RunnerResultImpl implements RunnerResult {
 		return TimeManager.time(runningTime);
 	}
 	
-	public long getRacetime() {
-		return racetime;
+	public long getResultTime() {
+		return resultTime;
 	}
 
-	public void setRacetime(long racetime) {
-		this.racetime = racetime;
+	public void setResultTime(long resultTime) {
+		this.resultTime = resultTime;
 	}
 
-	public String formatRacetime() {
-		return TimeManager.time(racetime);
+	public String formatResultTime() {
+		return TimeManager.time(resultTime);
 	}
 
 	public Status getStatus() {
@@ -70,7 +70,7 @@ public class RunnerResultImpl implements RunnerResult {
 	
 	public String shortFormat() {
 		return is(Status.OK) ?
-			formatRacetime() :
+			formatResultTime() :
 			formatStatus();
 	}
 

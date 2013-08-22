@@ -264,7 +264,7 @@ public abstract class AResultExporter extends Control {
 				resultId,
 				rank,
 				runnerData.getResult().formatStatus(),
-				TimeManager.fullTime(runnerData.getResult().getRacetime()),
+				TimeManager.fullTime(runnerData.getResult().getResultTime()),
 				(runner.isNC()) ? "NC" : "", //$NON-NLS-1$ //$NON-NLS-2$
 				TimeManager.fullTime(runnerData.getOfficialStarttime()),
 				TimeManager.fullTime(runnerData.getFinishtime()),

@@ -101,7 +101,7 @@ public class RunnerResultPanel extends ResultPanel {
 		courseL.setText(raceData.getCourse().getName());
 		
 		RunnerResult result = raceData.getResult();
-		racetimeL.setText(result.formatRacetime());
+		racetimeL.setText(result.formatResultTime());
 		updateStatusLabel(result.getStatus());
 		penaltiesL.setText(result.formatTimePenalty());
 		updateMps(raceData.getTraceData().getNbMPs());
