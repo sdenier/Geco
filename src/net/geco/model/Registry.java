@@ -4,10 +4,14 @@
 package net.geco.model;
 
 import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+
+import net.geco.basics.TimeManager;
 
 
 
@@ -36,10 +40,13 @@ public class Registry {
 
 	private Course autoCourse;
 
+	private Map<Integer, Date> controlPenalties;
+
 	
 	public Registry() {
 		runnerRegistry = new RunnerRegistry();
 		courseRegistry = new GroupRegistry<Course>();
+		controlPenalties = new HashMap<Integer, Date>();
 		clubRegistry = new GroupRegistry<Club>();
 		categoryRegistry = new GroupRegistry<Category>();
 		heatsetRegistry = new GroupRegistry<HeatSet>();
@@ -108,7 +115,17 @@ public class Registry {
 		return Messages.getString("Registry.AutoCourseName"); //$NON-NLS-1$
 	}
 
-	
+	public Date getControlPenalty(Integer code) {
+		if( ! controlPenalties.containsKey(code) ) {
+			setControlPenalty(code, TimeManager.ZERO);
+		}
+		return controlPenalties.get(code);
+	}
+
+	public void setControlPenalty(Integer code, Date newPenalty) {
+		controlPenalties.put(code, newPenalty);
+	}
+
 	/*
 	 * Clubs
 	 */

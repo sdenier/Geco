@@ -19,6 +19,8 @@ public class TimeManager {
 	public static final long NO_TIME_l = NO_TIME.getTime();
 	public static final String NO_TIME_STRING = "--:--"; //$NON-NLS-1$
 
+	public static final Date ZERO = new Date(0);
+	
 	private static SimpleDateFormat FORMATTER;
 	private static SimpleDateFormat FORMATTER60;
 

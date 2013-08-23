@@ -243,7 +243,7 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 		
 		if( geco.getConfig().sectionsEnabled ) {
 			sectionService = geco.sectionService();
-			controlsModel = createControlsWithSectionsModel();
+			controlsModel = createControlsWithSectionsModel(geco);
 			controlsModel.setData(Collections.<Integer>emptyList());
 			
 			final JButton sectionB = new JButton("Section...");
@@ -257,7 +257,7 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 				}
 			});
 			
-			controlsPanel.initialize(controlsModel, new Dimension(250, 450), sectionB);
+			controlsPanel.initialize(controlsModel, new Dimension(350, 450), sectionB);
 			controlsPanel.table().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 				public void valueChanged(ListSelectionEvent arg0) {
 					if( controlsPanel.getSelectedData() != null ) {
@@ -271,6 +271,7 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 			columnModel.getColumn(0).setPreferredWidth(20);
 			columnModel.getColumn(1).setPreferredWidth(40);
 			columnModel.getColumn(2).setPreferredWidth(140);
+			columnModel.getColumn(3).setPreferredWidth(40);
 		} else {
 			controlsModel = createControlsModel();
 			controlsModel.setData(Collections.<Integer>emptyList());
@@ -314,20 +315,24 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 		};
 	}
 
-	private ConfigTableModel<Integer> createControlsWithSectionsModel() {
-		return new ConfigTableModel<Integer>(new String[] {"Num", "Code", "Section"}) {
+	private ConfigTableModel<Integer> createControlsWithSectionsModel(final IGecoApp geco) {
+		return new ConfigTableModel<Integer>(new String[] {"Num", "Code", "Section", "Penalty"}) {
 			@Override
-			public void setValueIn(Integer t, Object value, int col) {}
+			public void setValueIn(Integer code, Object value, int col) {
+				geco.stageControl().validateControlPenalty(code, (String) value);
+			}
 			@Override
 			public boolean isCellEditable(int row, int col) {
-				return false;
+				return col == 3;
 			}
 			@Override
 			public Object getValueAt(int row, int col) {
+				Integer code = getData().get(row);
 				switch (col) {
 				case 0: return row + 1;
-				case 1: return getData().get(row);
+				case 1: return code;
 				case 2: return sectionService.findSection(getSelectedCourse(), row).displayString();
+				case 3: return TimeManager.time(geco.registry().getControlPenalty(code));
 				}
 				return "Pbm";
 			}
