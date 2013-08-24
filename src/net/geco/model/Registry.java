@@ -52,7 +52,26 @@ public class Registry {
 		heatsetRegistry = new GroupRegistry<HeatSet>();
 	}
 	
+
+	/*
+	 * Control Penalties
+	 */
 	
+	public Set<Integer> getControls() {
+		return controlPenalties.keySet();
+	}
+	
+	public Date getControlPenalty(Integer code) {
+		if( ! controlPenalties.containsKey(code) ) {
+			setControlPenalty(code, TimeManager.ZERO);
+		}
+		return controlPenalties.get(code);
+	}
+
+	public void setControlPenalty(Integer code, Date newPenalty) {
+		controlPenalties.put(code, newPenalty);
+	}
+
 	/*
 	 * Courses
 	 */
@@ -113,17 +132,6 @@ public class Registry {
 
 	public static String autoCourseName() {
 		return Messages.getString("Registry.AutoCourseName"); //$NON-NLS-1$
-	}
-
-	public Date getControlPenalty(Integer code) {
-		if( ! controlPenalties.containsKey(code) ) {
-			setControlPenalty(code, TimeManager.ZERO);
-		}
-		return controlPenalties.get(code);
-	}
-
-	public void setControlPenalty(Integer code, Date newPenalty) {
-		controlPenalties.put(code, newPenalty);
 	}
 
 	/*
