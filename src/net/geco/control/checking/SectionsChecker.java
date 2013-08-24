@@ -8,9 +8,12 @@ import java.util.Map.Entry;
 
 import net.geco.basics.TimeManager;
 import net.geco.control.GecoControl;
+import net.geco.model.Registry;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Section;
 import net.geco.model.SectionTraceData;
+import net.geco.model.Stage;
+import net.geco.model.Trace;
 import net.geco.model.TraceData;
 
 /**
@@ -21,12 +24,20 @@ import net.geco.model.TraceData;
 public class SectionsChecker extends PenaltyChecker {
 
 	private SectionsTracer sectionsTracer;
+	
+	private Registry registry;
 
 	public SectionsChecker(GecoControl gecoControl) {
 		super(gecoControl, null);
 		sectionsTracer = new SectionsTracer(gecoControl.factory());
 	}
 
+	@Override
+	public void postInitialize(Stage stage) {
+		super.postInitialize(stage);
+		registry = stage.registry();
+	}
+	
 	@Override
 	public TraceData computeTraceData(RunnerRaceData runnerData) {
 		return sectionsTracer.computeTrace(runnerData.getCourse().getSections(), runnerData.getPunches());
@@ -45,6 +56,19 @@ public class SectionsChecker extends PenaltyChecker {
 			}
 		}
 		return raceTime;
+	}
+
+	@Override
+	public long computeTimePenalty(RunnerRaceData raceData) {
+		long timePenalty = 0;
+		if ( raceData.getTraceData().getNbMPs() > 0) {
+			for (Trace trace : raceData.getTraceData().getTrace()) {
+				if( trace.isMP() ) {
+					timePenalty += registry.getControlPenalty(Integer.parseInt(trace.getBasicCode())).getTime();
+				}
+			}
+		}
+		return timePenalty;
 	}
 
 }
