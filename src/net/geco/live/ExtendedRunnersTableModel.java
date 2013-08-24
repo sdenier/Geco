@@ -14,10 +14,10 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
-import net.geco.basics.TimeManager;
 import net.geco.model.Messages;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
+import net.geco.model.RunnerResult;
 import net.geco.model.Status;
 
 
@@ -101,6 +101,7 @@ public class ExtendedRunnersTableModel extends AbstractTableModel {
 	
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Runner runner = getRunner(rowIndex);
+		RunnerResult result = getRunnerData(rowIndex).getResult();
 		switch (columnIndex) {
 		case 0: return runner.getStartId();
 		case 1: return runner.getEcard();
@@ -109,11 +110,11 @@ public class ExtendedRunnersTableModel extends AbstractTableModel {
 		case 4: return runner.getCategory().getShortname();
 		case 5: return runner.getCourse().getName();
 		case 6: return runner.getClub().getName();
-		case 7: return TimeManager.time(getRunnerData(rowIndex).computeRunningTime());
+		case 7: return result.formatRaceTime();
 		case 8: return getRunnerData(rowIndex).getTraceData().getNbMPs();
-		case 9: return getRunnerData(rowIndex).getResult().formatTimePenalty();
-		case 10: return getRunnerData(rowIndex).getResult().formatRacetime();
-		case 11: return getRunnerData(rowIndex).getResult().getStatus();
+		case 9: return result.formatTimePenalty();
+		case 10: return result.formatResultTime();
+		case 11: return result.getStatus();
 		default: return "Pbm"; //$NON-NLS-1$
 		}
 	}

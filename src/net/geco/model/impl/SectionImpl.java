@@ -21,6 +21,8 @@ public class SectionImpl implements Section {
 	
 	private SectionType type;
 
+	private boolean neutralized;
+
 	private int[] codes;
 
 	public SectionImpl() {
@@ -51,6 +53,14 @@ public class SectionImpl implements Section {
 		this.type = type;
 	}
 
+	public boolean neutralized() {
+		return neutralized;
+	}
+
+	public void setNeutralized(boolean flag) {
+		this.neutralized = flag;
+	}
+
 	public int[] getCodes(int[] allCodes, int endIndex) {
 		return Arrays.copyOfRange(allCodes, startIndex, endIndex);
 	}
@@ -64,7 +74,11 @@ public class SectionImpl implements Section {
 	}
 
 	public String displayString() {
-		return String.format("%s - %s", getName(), getType().toString());
+		if( neutralized() ) {
+			return String.format("%s - %s, neutralized", getName(), getType().toString());
+		} else {
+			return String.format("%s - %s", getName(), getType().toString());
+		}
 	}
 	
 }

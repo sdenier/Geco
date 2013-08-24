@@ -39,6 +39,7 @@ import net.geco.control.results.CNCalculator;
 import net.geco.control.results.ResultBuilder;
 import net.geco.control.results.ResultExporter;
 import net.geco.control.results.RunnerSplitPrinter;
+import net.geco.control.results.SectionsExporter;
 import net.geco.control.results.SplitExporter;
 import net.geco.framework.IGecoApp;
 import net.geco.framework.IStageLaunch;
@@ -351,6 +352,9 @@ public class Geco implements IGecoApp, MergeRequestHandler {
 	}
 	public SectionService sectionService() {
 		return getService(SectionService.class);
+	}
+	public SectionsExporter sectionsExporter() {
+		return getService(SectionsExporter.class);
 	}
 
 	public MergeRequestHandler defaultMergeHandler() {

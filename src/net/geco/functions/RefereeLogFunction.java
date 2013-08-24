@@ -96,14 +96,14 @@ public class RefereeLogFunction extends GecoFunction {
 		RunnerResult officialResult = officialData.getResult();
 		RunnerResult autoResult = autoData.getResult();
 		boolean statusChanged = ! officialResult.is(autoResult.getStatus());
-		boolean timeChanged = officialResult.getRacetime() != autoResult.getRacetime();
+		boolean timeChanged = officialResult.getResultTime() != autoResult.getResultTime();
 		if( statusChanged || timeChanged ) {
 			StringBuilder string = new StringBuilder(officialData.getRunner().idString());
 			if( statusChanged ) {
 				string.append(", ").append(autoResult.formatStatus() + " -> " + officialResult.formatStatus()); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			if( timeChanged ) {
-				string.append(", ").append(autoResult.formatRacetime() + " -> " + officialResult.formatRacetime()); //$NON-NLS-1$ //$NON-NLS-2$
+				string.append(", ").append(autoResult.formatResultTime() + " -> " + officialResult.formatResultTime()); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			log.writeLine(string.toString());	
 			return 1;

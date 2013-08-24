@@ -6,7 +6,6 @@ package net.geco.model.impl;
 
 import java.util.ArrayList;
 
-import net.geco.basics.TimeManager;
 import net.geco.basics.Util;
 import net.geco.model.Trace;
 import net.geco.model.TraceData;
@@ -17,12 +16,10 @@ import net.geco.model.TraceData;
  *
  */
 public class TraceDataImpl implements TraceData {
-
-	private long runningTime;
 	
 	private int nbMPs = 0;
 	
-	private Trace[] trace = new Trace[0];
+	protected Trace[] trace = new Trace[0];
 
 	public TraceData clone() {
 		try {
@@ -37,18 +34,6 @@ public class TraceDataImpl implements TraceData {
 			e.printStackTrace();
 		}
 		return null;
-	}
-	
-	public long getRunningTime() {
-		return runningTime;
-	}
-
-	public void setRunningTime(long runningTime) {
-		this.runningTime = runningTime;
-	}
-
-	public String formatRunningTime() {
-		return TimeManager.time(runningTime);
 	}
 
 	public int getNbMPs() {

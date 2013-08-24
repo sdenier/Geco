@@ -21,10 +21,6 @@ public interface ECardData extends Cloneable {
 
 	public void setFinishTime(Date finishtime);
 
-	public Date getClearTime();
-
-	public void setClearTime(Date cleartime);
-
 	public Date getCheckTime();
 
 	public void setCheckTime(Date checktime);

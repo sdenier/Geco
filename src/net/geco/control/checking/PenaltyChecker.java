@@ -20,7 +20,7 @@ import net.geco.model.Status;
  * @since Dec 7, 2008
  *
  */
-public class PenaltyChecker extends AbstractChecker implements Checker, StageListener {
+public class PenaltyChecker extends AbstractChecker implements StageListener {
 	
 	protected long MPPenalty;
 
@@ -51,6 +51,11 @@ public class PenaltyChecker extends AbstractChecker implements Checker, StageLis
 	}
 
 	@Override
+	public long computeRaceTime(RunnerRaceData runnerData) {
+		return runnerData.computeRunningTime();
+	}
+
+	@Override
 	public long computeTimePenalty(RunnerRaceData raceData) {
 		return timePenalty(raceData.getTraceData().getNbMPs());
 	}
@@ -60,18 +65,18 @@ public class PenaltyChecker extends AbstractChecker implements Checker, StageLis
 	}
 	
 	@Override
-	public long computeRaceTime(RunnerRaceData data) {
-		long runningTime = data.computeRunningTime();
-		if( runningTime==TimeManager.NO_TIME_l ) {
-			return runningTime;
+	public long computeResultTime(RunnerRaceData data) {
+		long raceTime = data.getResult().getRaceTime();
+		if( raceTime==TimeManager.NO_TIME_l ) {
+			return raceTime;
 		}
-		return runningTime + data.getResult().getTimePenalty();
+		return raceTime + data.getResult().getTimePenalty();
 	}
 
 	@Override
 	public Status computeStatus(RunnerRaceData data) {
 		Status status = (noMPLimit || data.getTraceData().getNbMPs() <= getMPLimit()) ? Status.OK : Status.MP;
-		if( data.getResult().getRacetime()==TimeManager.NO_TIME_l ) {
+		if( data.getResult().getResultTime()==TimeManager.NO_TIME_l ) {
 			status = Status.MP;
 		}
 		return status;

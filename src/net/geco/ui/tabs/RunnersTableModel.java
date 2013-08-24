@@ -142,7 +142,7 @@ public class RunnersTableModel extends AbstractTableModel {
 		case 4: return runner.getCategory().getShortname();
 		case 5: return runner.getCourse().getName();
 		case 6: return runner.getClub().getName();
-		case 7: return getRunnerData(rowIndex).getResult().formatRacetime();
+		case 7: return getRunnerData(rowIndex).getResult().formatResultTime();
 		case 8: return getRunnerData(rowIndex).getResult().getStatus();
 		default: return "Pbm"; //$NON-NLS-1$
 		}
@@ -418,11 +418,11 @@ public class RunnersTableModel extends AbstractTableModel {
 		private RunnerRaceData selectedData;
 		@Override
 		public Object getCellEditorValue() {
-			return selectedData.getResult().formatRacetime();
+			return selectedData.getResult().formatResultTime();
 		}
 		@Override
 		public boolean validateInput() {
-			return control().validateRaceTime(selectedData, getValue());
+			return control().validateResultTime(selectedData, getValue());
 		}
 		@Override
 		public Component getTableCellEditorComponent(JTable table, Object value,

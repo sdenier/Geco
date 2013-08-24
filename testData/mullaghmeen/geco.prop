@@ -1,17 +1,20 @@
-#Geco Thu Jan 17 00:51:48 CET 2013
-#Thu Jan 17 00:51:48 CET 2013
-SplitFormat=MultiColumns
-SplitHeaderMessage=http\://sdenier.github.com/Geco/begin/contribute.html
-AppBuilder=net.geco.app.OrientShowAppBuilder
-name=LL Mullagmmeen 12 Oct 2008
-NbAutoBackups=9
-AutosaveDelay=2
+#Geco Tue Aug 20 23:17:07 CEST 2013
+#Tue Aug 20 23:17:07 CEST 2013
 SIZeroTime=32400000
-MPPenalty=0
-MPLimit=0
-SplitNbColumns=12
-SIPortname=
-SplitPrinter=Canon MP560 wifi
-ArchiveLookup=true
+RankingTemplate=/Users/deniersi/workspace/Geco/formats/results_ranking.mustache
 AutoHandler=true
-SplitFooterMessage=Geco
+SplitsNbColumns=12
+MPPenalty=0
+NbAutoBackups=9
+ColumnTemplate=/Users/deniersi/workspace/Geco/formats/splits_columns.mustache
+SplitNbColumns=12
+MPLimit=0
+AutosaveDelay=2
+SplitsTemplate=/Users/deniersi/workspace/Geco/formats/results_splits.mustache
+SplitPrinter=Canon MP560
+SplitFormat=MultiColumns
+AppBuilder=net.geco.app.OrientShowAppBuilder
+SIPortname=
+ArchiveLookup=true
+TicketTemplate=/Users/deniersi/workspace/Geco/formats/splits_ticket.mustache
+name=LL Mullagmmeen 12 Oct 2008

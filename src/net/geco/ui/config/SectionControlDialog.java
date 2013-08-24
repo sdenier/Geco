@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -46,6 +47,7 @@ public class SectionControlDialog extends JDialog {
 		sectionNameF.requestFocusInWindow();
 		final JComboBox sectionTypeCB = new JComboBox(Section.SectionType.values());
 		sectionTypeCB.setSelectedItem(targetSection.getType());
+		final JCheckBox neutralizedCB = new JCheckBox("", targetSection.neutralized());
 		
 		JButton saveB = new JButton(Messages.uiGet("CourseControlDialog.SaveLabel")); //$NON-NLS-1$
 		saveB.addActionListener(new ActionListener() {
@@ -60,6 +62,7 @@ public class SectionControlDialog extends JDialog {
 				} else {
 					targetSection.setName(sectionName);
 					targetSection.setType((SectionType) sectionTypeCB.getSelectedItem());
+					targetSection.setNeutralized(neutralizedCB.isSelected());
 					selectedCourse.putSection(targetSection);
 					selectedCourse.refreshSectionCodes();
 					setVisible(false);
@@ -95,6 +98,9 @@ public class SectionControlDialog extends JDialog {
 		c.gridy = 2;
 		formPanel.add(new JLabel("Section Type:"), c);
 		formPanel.add(sectionTypeCB, c);
+		c.gridy = 3;
+		formPanel.add(new JLabel("Neutralized:"), c);
+		formPanel.add(neutralizedCB, c);
 
 		JPanel buttons = new JPanel(new FlowLayout(FlowLayout.TRAILING));
 		buttons.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));

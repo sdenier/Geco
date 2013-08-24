@@ -132,7 +132,7 @@ public class CNCalculator extends AResultExporter implements StageListener {
 					String currentCN = (cnArchive.get(id) != null) ?
 							cnArchive.get(id).toString() : ""; //$NON-NLS-1$
 					String raceScore = (id != null) ?
-							Integer.toString((int) (courseScore / runnerData.getRacetime())) : ""; //$NON-NLS-1$
+							Integer.toString((int) (courseScore / runnerData.getResultTime())) : ""; //$NON-NLS-1$
 
 					RunnerContext runnerCtx =
 							rankingCollection.addContext(RunnerContext.createRankedRunner(rankedRunner, bestTime));
@@ -176,7 +176,7 @@ public class CNCalculator extends AResultExporter implements StageListener {
 	}
 	
 	private long personalValue(RunnerRaceData data) {
-		return data.getResult().getRacetime() * cnArchive.get(data.getRunner().getArchiveId());
+		return data.getResult().getResultTime() * cnArchive.get(data.getRunner().getArchiveId());
 	}
 
 	private List<RunnerRaceData> selectTwoThirdRankedRunners(Result result) {

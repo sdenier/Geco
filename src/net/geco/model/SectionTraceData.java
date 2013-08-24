@@ -4,6 +4,7 @@
  */
 package net.geco.model;
 
+import java.util.Date;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -19,5 +20,9 @@ public interface SectionTraceData extends TraceData {
 	public void putSectionAt(Section section, int index);
 	
 	public String sectionLabelAt(int rowIndex);
+
+	public long[] sectionsFinishTimes(long raceTime);
+
+	public long computeSectionTime(Integer sectionIndex, Date startTime, Date finishTime);
 
 }

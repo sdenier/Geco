@@ -21,8 +21,6 @@ public class ECardDataImpl implements ECardData {
 
 	private Date finishtime = TimeManager.NO_TIME;
 
-	private Date erasetime = TimeManager.NO_TIME;
-
 	private Date controltime = TimeManager.NO_TIME;
 
 	private Date readtime = TimeManager.NO_TIME;
@@ -34,7 +32,6 @@ public class ECardDataImpl implements ECardData {
 			ECardData clone = (ECardData) super.clone();
 			clone.setStartTime((Date) getStartTime().clone());
 			clone.setFinishTime((Date) getFinishTime().clone());
-			clone.setClearTime((Date) getClearTime().clone());
 			clone.setCheckTime((Date) getCheckTime().clone());
 			clone.setReadTime((Date) getReadTime().clone());
 			Punch[] punches = new Punch[getPunches().length];
@@ -63,14 +60,6 @@ public class ECardDataImpl implements ECardData {
 
 	public void setFinishTime(Date finishtime) {
 		this.finishtime = finishtime;
-	}
-
-	public Date getClearTime() {
-		return erasetime;
-	}
-
-	public void setClearTime(Date erasetime) {
-		this.erasetime = erasetime;
 	}
 
 	public Date getCheckTime() {

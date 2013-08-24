@@ -291,7 +291,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 				( runner.isNC() ) ? "X" : "0", //$NON-NLS-1$ //$NON-NLS-2$
 				oeTime(runnerData.getOfficialStarttime()),
 				oeTime(runnerData.getFinishtime()),
-				oeTime(new Date(runnerData.getResult().getRacetime())),
+				oeTime(new Date(runnerData.getResult().getResultTime())),
 				oeEvaluationCode(runnerData.getStatus()),
 				names.clubIndex(club.getName()),
 				club.getShortname(),

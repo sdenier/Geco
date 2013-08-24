@@ -156,7 +156,7 @@ public class LegNeutralizationFunctionTest {
 	@Test
 	public void shouldSetNeutralizedLegAndSubtractNeutralizedTimeFromOfficialTime(){
 		RunnerResult result = factory.createRunnerResult();
-		result.setRacetime(100000);
+		result.setResultTime(100000);
 		Trace endTrace = factory.createTrace("32", new Date(30000));
 		RunnerRaceData raceData = mock(RunnerRaceData.class);
 		when(raceData.getResult()).thenReturn(result);
@@ -170,23 +170,23 @@ public class LegNeutralizationFunctionTest {
 		LegNeutralizationFunction function = new LegNeutralizationFunction(geco);
 		function.setNeutralizedLeg(31, 32);
 		function.neutralizeLeg(raceData, false);
-		assertEquals("should substract leg time from official time", 90000, result.getRacetime());
+		assertEquals("should substract leg time from official time", 90000, result.getResultTime());
 		assertTrue(endTrace.isNeutralized());
 		
 		function.neutralizeLeg(raceData, false);
-		assertEquals("should not change official time again once leg is neutralized", 90000, result.getRacetime());
+		assertEquals("should not change official time again once leg is neutralized", 90000, result.getResultTime());
 		assertTrue(endTrace.isNeutralized());
 		
 		endTrace.setNeutralized(false);
 		function.neutralizeLeg(raceData, false);
-		assertEquals(80000, result.getRacetime());
+		assertEquals(80000, result.getResultTime());
 		assertTrue(endTrace.isNeutralized());	
 	}
 
 	@Test
 	public void shouldNotNeutralizeLegWithNoTime(){
 		RunnerResult result = factory.createRunnerResult();
-		result.setRacetime(100000);
+		result.setResultTime(100000);
 		Trace endTrace = factory.createTrace("32", new Date(10000));
 		RunnerRaceData raceData = mock(RunnerRaceData.class);
 		when(raceData.getResult()).thenReturn(result);
@@ -196,14 +196,14 @@ public class LegNeutralizationFunctionTest {
 		LegNeutralizationFunction function = new LegNeutralizationFunction(null);
 		function.setNeutralizedLeg(31, 32);
 		function.neutralizeLeg(raceData, false);
-		assertEquals("should not neutralize leg when split has no time", 100000, result.getRacetime());
+		assertEquals("should not neutralize leg when split has no time", 100000, result.getResultTime());
 		assertFalse(endTrace.isNeutralized());
 	}
 	
 	@Test
 	public void shouldNotChangeRacetimeWhenMissingLeg(){
 		RunnerResult result = factory.createRunnerResult();
-		result.setRacetime(100000);
+		result.setResultTime(100000);
 		RunnerRaceData raceData = mock(RunnerRaceData.class);
 		when(raceData.getResult()).thenReturn(result);
 		when(raceData.retrieveLeg(anyInt(), anyInt())).thenReturn(null);
@@ -211,13 +211,13 @@ public class LegNeutralizationFunctionTest {
 		LegNeutralizationFunction function = new LegNeutralizationFunction(null);
 		function.setNeutralizedLeg(31, 32);
 		function.neutralizeLeg(raceData, false);
-		assertEquals(100000, result.getRacetime());
+		assertEquals(100000, result.getResultTime());
 	}
 
 	@Test
 	public void shouldNotChangeRacetimeWithNoTime(){
 		RunnerResult result = factory.createRunnerResult();
-		result.setRacetime(TimeManager.NO_TIME_l);
+		result.setResultTime(TimeManager.NO_TIME_l);
 		Trace endTrace = factory.createTrace("32", new Date(40000));
 		RunnerRaceData raceData = mock(RunnerRaceData.class);
 		when(raceData.getResult()).thenReturn(result);
@@ -227,14 +227,14 @@ public class LegNeutralizationFunctionTest {
 		LegNeutralizationFunction function = new LegNeutralizationFunction(null);
 		function.setNeutralizedLeg(31, 32);
 		function.neutralizeLeg(raceData, false);
-		assertEquals(TimeManager.NO_TIME_l, result.getRacetime());
+		assertEquals(TimeManager.NO_TIME_l, result.getResultTime());
 		assertTrue(endTrace.isNeutralized());
 	}
 	
 	@Test
 	public void testSimulateLegNeutralization(){
 		RunnerResult result = factory.createRunnerResult();
-		result.setRacetime(100000);
+		result.setResultTime(100000);
 		Trace endTrace = factory.createTrace("32", new Date(30000));
 		RunnerRaceData raceData = mock(RunnerRaceData.class);
 		when(raceData.getResult()).thenReturn(result);
@@ -253,7 +253,7 @@ public class LegNeutralizationFunctionTest {
 		function.setNeutralizedLeg(31, 32);
 		function.neutralizeLeg(raceData, true);
 		Mockito.verify(announcer).dataInfo("Doe - split 0:10");
-		assertEquals("should not change official time", 100000, result.getRacetime());
+		assertEquals("should not change official time", 100000, result.getResultTime());
 		assertFalse(endTrace.isNeutralized());
 	}
 
@@ -273,11 +273,10 @@ public class LegNeutralizationFunctionTest {
 		assertTrue(courses.contains(registry.findCourse("Yellow")));
 		
 		function.execute();
-		assertEquals("17:28", registry.findRunnerData("51009").getResult().formatRacetime()); // Caoimhe O'Boyle
-		assertEquals("26:40", registry.findRunnerData("11428").getResult().formatRacetime()); // Claire Garvey
-		assertEquals("26:26", registry.findRunnerData("11444").getResult().formatRacetime()); // Aaron Clogher & Eoin Connell
-		assertEquals("12:00:06", registry.findRunnerData("11477").getResult().formatRacetime()); // Laoise Brennan
-		assertEquals("59:36", registry.findRunnerData("11476").getResult().formatRacetime()); // Laura Murphy
+		assertEquals("17:28", registry.findRunnerData("51009").getResult().formatResultTime()); // Caoimhe O'Boyle
+		assertEquals("26:40", registry.findRunnerData("11428").getResult().formatResultTime()); // Claire Garvey
+		assertEquals("26:26", registry.findRunnerData("11444").getResult().formatResultTime()); // Aaron Clogher & Eoin Connell
+		assertEquals("59:36", registry.findRunnerData("11476").getResult().formatResultTime()); // Laura Murphy
 
 		// changed result
 		Result result = new ResultBuilder(mullaghmeen).buildResultForCourse(orange);
@@ -294,7 +293,7 @@ public class LegNeutralizationFunctionTest {
 		trace.setNeutralized(true);
 		traceData.setTrace(new Trace[]{ trace });
 		RunnerResult result = factory.createRunnerResult();
-		result.setRacetime(100000);
+		result.setResultTime(100000);
 		RunnerRaceData raceData = factory.createRunnerRaceData();
 		raceData.setStarttime(new Date(30000));
 		raceData.setFinishtime(new Date(140000));
@@ -311,7 +310,7 @@ public class LegNeutralizationFunctionTest {
 		
 		LegNeutralizationFunction function = new LegNeutralizationFunction(geco);
 		function.resetAllOfficialTimes();
-		assertEquals("should reset official time to original time", 125000, result.getRacetime());
+		assertEquals("should reset official time to original time", 125000, result.getResultTime());
 		assertFalse("should reset neutralized leg", trace.isNeutralized());
 	}
 	

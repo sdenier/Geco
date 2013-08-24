@@ -10,8 +10,10 @@ import net.geco.model.Status;
 
 
 public class RunnerResultImpl implements RunnerResult {
+
+	private long raceTime = TimeManager.NO_TIME_l;
 	
-	private long racetime = TimeManager.NO_TIME_l;
+	private long resultTime = TimeManager.NO_TIME_l;
 	
 	private Status status = Status.NOS;
 	
@@ -26,16 +28,28 @@ public class RunnerResultImpl implements RunnerResult {
 		return null;
 	}
 	
-	public long getRacetime() {
-		return racetime;
+	public long getRaceTime() {
+		return raceTime;
 	}
 
-	public void setRacetime(long racetime) {
-		this.racetime = racetime;
+	public void setRaceTime(long raceTime) {
+		this.raceTime = raceTime;
 	}
 
-	public String formatRacetime() {
-		return TimeManager.time(racetime);
+	public String formatRaceTime() {
+		return TimeManager.time(raceTime);
+	}
+	
+	public long getResultTime() {
+		return resultTime;
+	}
+
+	public void setResultTime(long resultTime) {
+		this.resultTime = resultTime;
+	}
+
+	public String formatResultTime() {
+		return TimeManager.time(resultTime);
 	}
 
 	public Status getStatus() {
@@ -56,7 +70,7 @@ public class RunnerResultImpl implements RunnerResult {
 	
 	public String shortFormat() {
 		return is(Status.OK) ?
-			formatRacetime() :
+			formatResultTime() :
 			formatStatus();
 	}
 

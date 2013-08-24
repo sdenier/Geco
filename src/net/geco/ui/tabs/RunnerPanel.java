@@ -60,12 +60,14 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 	// E-card
 	private JTextField readTimeF;
 	private JTextField checkTimeF;
-	private JTextField clearTimeF;
 	private JTextField startTimeF;
 	private JTextField finishTimeF;
-	private JTextField raceTimeF;
 
-	// Result
+	// Race/Result
+	private JTextField officialStartTimeF;
+	private JTextField officialFinishTimeF;
+	private JTextField runningTimeF;
+	private JTextField raceTimeF;
 	private JTextField mpF;
 	private JTextField penaltyF;
 	private JTextField fullTimeF;
@@ -94,7 +96,6 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 			panel2.setLayout(new GridBagLayout());
 			GridBagConstraints c = SwingUtils.gbConstr();
 			c.fill = GridBagConstraints.HORIZONTAL;
-//			c.insets = new Insets(5, 0, 0, 0);
 			panel2.add(initRegistrationPanel(), c);
 			c.gridy = 1;
 			panel2.add(initEcardPanel(), c);
@@ -157,17 +158,19 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 
 	protected void refreshEcardPanel() {
 		displayCardTime(readTimeF, runnerData.getReadtime());
-		displayCardTime(clearTimeF, runnerData.getErasetime());
 		displayCardTime(checkTimeF, runnerData.getControltime());
-		displayCardTimeWithMissingHint(startTimeF, runnerData.getStarttime());
-		displayCardTimeWithMissingHint(finishTimeF, runnerData.getFinishtime());
-		displayRacetime(raceTimeF, runnerData.computeRunningTime());
+		displayCardTime(startTimeF, runnerData.getStarttime());
+		displayCardTime(finishTimeF, runnerData.getFinishtime());
 	}
 
 	protected void refreshResultPanel() {
+		displayCardTimeWithMissingHint(officialStartTimeF, runnerData.getOfficialStarttime());
+		displayCardTimeWithMissingHint(officialFinishTimeF, runnerData.getFinishtime());
+		displayRacetime(runningTimeF, runnerData.computeRunningTime());
+		displayRacetime(raceTimeF, runnerData.getResult().getRaceTime());
 		mpF.setText(Integer.toString(runnerData.getTraceData().getNbMPs()));
 		penaltyF.setText(runnerData.getResult().formatTimePenalty());
-		displayOfficialRacetime(fullTimeF, geco().checker().computeRaceTime(runnerData));
+		displayOfficialResultTime(fullTimeF, geco().checker().computeResultTime(runnerData));
 	}
 
 	private void prvDisplayTime(JTextField timeF, String text, Color bgColor) {
@@ -199,15 +202,8 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 		timeF.setText(TimeManager.time(time));
 	}
 
-//	protected void displayStarttime(JTextField timeF, Date time) {
-//		displayTime(timeF, time);
-//		if( runnerData.useRegisteredStarttime() && ! time.equals(TimeManager.NO_TIME) ) {
-//			timeF.setBackground(PALE_BLUE);
-//		}
-//	}
-
-	protected void displayOfficialRacetime(JTextField timeF, long computedTime) {
-		if( computedTime != runnerData.getResult().getRacetime() ) {
+	protected void displayOfficialResultTime(JTextField timeF, long computedTime) {
+		if( computedTime != runnerData.getResult().getResultTime() ) {
 			prvDisplayTime(timeF, TimeManager.time(computedTime), PALE_YELLOW);
 		} else {
 			prvDisplayTime(timeF, TimeManager.time(computedTime), Color.white);
@@ -294,8 +290,6 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 	}
 
 	public JPanel initEcardPanel() {
-		clearTimeF = new JTextField(FIELDSIZE);
-		clearTimeF.setEditable(false);
 		checkTimeF = new JTextField(FIELDSIZE);
 		checkTimeF.setEditable(false);
 		startTimeF = new JTextField(FIELDSIZE);
@@ -304,38 +298,37 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 		finishTimeF.setEditable(false);
 		readTimeF = new JTextField(FIELDSIZE);
 		readTimeF.setEditable(false);
-		raceTimeF = new JTextField(FIELDSIZE);
-		raceTimeF.setEditable(false);
-		raceTimeF.setToolTipText(Messages.uiGet("RunnerPanel.RealRacetimeTooltip1")); //$NON-NLS-1$
 		
 		JPanel ecardPanel = new JPanel();
 		ecardPanel.setLayout(new GridBagLayout());
 		
 		GridBagConstraints c = buildGBConstraint();
 		addRow(ecardPanel, c, 
-				new JLabel(Messages.uiGet("RunnerPanel.EraseLabel")), //$NON-NLS-1$
-				clearTimeF,
 				new JLabel(Messages.uiGet("RunnerPanel.ControlLabel")), //$NON-NLS-1$
-				checkTimeF);
-		c.gridy = 1;
-		addRow(ecardPanel, c,
+				checkTimeF,
 				new JLabel(Messages.uiGet("RunnerPanel.StartLabel")), //$NON-NLS-1$
-				startTimeF,
-				new JLabel(Messages.uiGet("RunnerPanel.FinishLabel")), //$NON-NLS-1$
-				finishTimeF);
-		c.gridy = 2;
+				startTimeF);
+		c.gridy = 1;
 		addRow(ecardPanel, c,
 				new JLabel(Messages.uiGet("RunnerPanel.ReadLabel")), //$NON-NLS-1$
 				readTimeF,
-				new JLabel(Messages.uiGet("RunnerPanel.RaceLabel")), //$NON-NLS-1$
-				raceTimeF);
+				new JLabel(Messages.uiGet("RunnerPanel.FinishLabel")), //$NON-NLS-1$
+				finishTimeF);
 		
 		ecardPanel.setBorder(BorderFactory.createTitledBorder(Messages.uiGet("RunnerPanel.EcardTitle"))); //$NON-NLS-1$
 		return ecardPanel;
 	}
-	
-	
+
 	public JPanel initResultPanel() {
+		officialStartTimeF = new JTextField(FIELDSIZE);
+		officialStartTimeF.setEditable(false);
+		officialFinishTimeF = new JTextField(FIELDSIZE);
+		officialFinishTimeF.setEditable(false);
+		runningTimeF = new JTextField(FIELDSIZE);
+		runningTimeF.setEditable(false);
+		raceTimeF = new JTextField(FIELDSIZE);
+		raceTimeF.setEditable(false);
+		raceTimeF.setToolTipText(Messages.uiGet("RunnerPanel.RealRacetimeTooltip1")); //$NON-NLS-1$
 		mpF = new JTextField(FIELDSIZE);
 		mpF.setEditable(false);
 		penaltyF = new JTextField(FIELDSIZE);
@@ -344,29 +337,33 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 		fullTimeF.setEditable(false);
 		fullTimeF.setToolTipText(Messages.uiGet("RunnerPanel.OfficialTimeTooltip"));		 //$NON-NLS-1$
 
-		
 		JPanel resultPanel = new JPanel();
 		resultPanel.setLayout(new GridBagLayout());
 
 		GridBagConstraints c = buildGBConstraint();
 		addRow(resultPanel, c,
+				new JLabel(Messages.uiGet("RunnerPanel.StartLabel")), //$NON-NLS-1$
+				officialStartTimeF,
+				new JLabel(Messages.uiGet("RunnerPanel.FinishLabel")), //$NON-NLS-1$
+				officialFinishTimeF);
+		c.gridy = 1;
+		addRow(resultPanel, c,
+				new JLabel("Running"),
+				runningTimeF,
+				new JLabel(Messages.uiGet("RunnerPanel.RaceLabel")), //$NON-NLS-1$
+				raceTimeF);
+		c.gridy = 2;
+		addRow(resultPanel, c,
 				new JLabel(Messages.uiGet("RunnerPanel.MPLabel")), //$NON-NLS-1$
 				mpF,
 				new JLabel(Messages.uiGet("RunnerPanel.PenaltyLabel")), //$NON-NLS-1$
 				penaltyF);
-		c.gridy = 1;
+		c.gridy = 3;
 		addRow(resultPanel, c, 
 				Box.createGlue(),
 				Box.createGlue(),
 				new JLabel(Messages.uiGet("RunnerPanel.OfficialTimeLabel")), //$NON-NLS-1$
 				fullTimeF);
-
-//		c.gridy = 2;
-//		addRow(resultPanel, c, 
-//				new JLabel(Messages.uiGet("RunnerPanel.StartLabel")), //$NON-NLS-1$
-//				new JTextField(4),
-//				new JLabel(Messages.uiGet("RunnerPanel.FinishLabel")), //$NON-NLS-1$
-//				new JTextField(4));
 
 		resultPanel.setBorder(BorderFactory.createTitledBorder(Messages.uiGet("RunnerPanel.ResultTitle"))); //$NON-NLS-1$
 		return resultPanel;
