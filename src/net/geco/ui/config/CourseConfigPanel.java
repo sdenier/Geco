@@ -252,7 +252,7 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 				public void actionPerformed(ActionEvent arg0) {
 					int controlIndex = controlsPanel.table().getSelectedRow();
 					Section section = sectionService.findOrCreateSection(getSelectedCourse(), controlIndex);
-					new SectionControlDialog(frame, getSelectedCourse(), section);
+					new SectionControlDialog(geco, frame, getSelectedCourse(), section);
 					controlsModel.fireTableRowsUpdated(controlIndex, controlIndex);
 				}
 			});

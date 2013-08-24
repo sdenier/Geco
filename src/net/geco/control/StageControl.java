@@ -346,5 +346,18 @@ public class StageControl extends Control {
 			return false;
 		}
 	}
+
+	public boolean validateControlsPenalty(int[] codes, String penaltyTime) {
+		try {
+			Date newPenalty = TimeManager.userParse(penaltyTime);
+			for (int code : codes) {
+				registry().setControlPenalty(code, newPenalty);
+			}
+			return true;
+		} catch (ParseException e1) {
+			geco().info("Bad format for time", true);
+			return false;
+		}
+	}
 	
 }

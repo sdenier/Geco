@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import net.geco.basics.Html;
+import net.geco.framework.IGecoApp;
 import net.geco.model.Course;
 import net.geco.model.Messages;
 import net.geco.model.Section;
@@ -37,7 +38,7 @@ import net.geco.ui.basics.SwingUtils;
  */
 public class SectionControlDialog extends JDialog {
 
-	public SectionControlDialog(JFrame frame, final Course selectedCourse, final Section targetSection) {
+	public SectionControlDialog(final IGecoApp geco, JFrame frame, final Course selectedCourse, final Section targetSection) {
 		super(frame, "Create or Edit a Section...", true); //$NON-NLS-1$
 		setResizable(false);
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
@@ -48,6 +49,7 @@ public class SectionControlDialog extends JDialog {
 		final JComboBox sectionTypeCB = new JComboBox(Section.SectionType.values());
 		sectionTypeCB.setSelectedItem(targetSection.getType());
 		final JCheckBox neutralizedCB = new JCheckBox("", targetSection.neutralized());
+		final JTextField penaltyF = new JTextField(12);
 		
 		JButton saveB = new JButton(Messages.uiGet("CourseControlDialog.SaveLabel")); //$NON-NLS-1$
 		saveB.addActionListener(new ActionListener() {
@@ -65,6 +67,7 @@ public class SectionControlDialog extends JDialog {
 					targetSection.setNeutralized(neutralizedCB.isSelected());
 					selectedCourse.putSection(targetSection);
 					selectedCourse.refreshSectionCodes();
+					geco.stageControl().validateControlsPenalty(targetSection.getCodes(), penaltyF.getText());
 					setVisible(false);
 				}
 			}
@@ -101,6 +104,9 @@ public class SectionControlDialog extends JDialog {
 		c.gridy = 3;
 		formPanel.add(new JLabel("Neutralized:"), c);
 		formPanel.add(neutralizedCB, c);
+		c.gridy = 4;
+		formPanel.add(new JLabel("Reset Penalties:"), c);
+		formPanel.add(penaltyF, c);
 
 		JPanel buttons = new JPanel(new FlowLayout(FlowLayout.TRAILING));
 		buttons.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
