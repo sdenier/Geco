@@ -29,15 +29,15 @@
     <table>
       <tr class="section_headers"><td></td>{{#geco_SectionHeaders}}<td class="right">{{geco_SectionName}}</td>{{/geco_SectionHeaders}}</tr>
 {{#geco_RankedRunners}}
-      <tr class="rsplit"><td>{{geco_RunnerRank}}</td><td colspan="3">{{geco_RunnerFirstName}} {{geco_RunnerLastName}}</td><td>{{geco_RunnerResultTime}}</td></tr>
+      <tr class="rsplit"><td>{{geco_RunnerRank}}</td><td colspan="4">{{geco_RunnerFirstName}} {{geco_RunnerLastName}}: {{geco_RunnerClubName}}</td><td>{{geco_RunnerResultTime}}</td><td>(+{{geco_RunnerTimePenalty}})</td></tr>
       <tr class="splits"><td></td>{{#geco_SplitRow}}<td {{#geco_BestSplit?}}class="best"{{/geco_BestSplit?}}>{{geco_SectionTime}}</td>{{/geco_SplitRow}}</tr>
       <tr class="times"><td></td>{{#geco_TimeRow}}<td {{#geco_BestTime?}}class="best"{{/geco_BestTime?}}>{{geco_CumulTime}}</td>{{/geco_TimeRow}}</tr>
 {{/geco_RankedRunners}}
       <tr class="empty"><td>&nbsp;</td></tr>
 {{#geco_UnrankedRunners}}
-      <tr class="rsplit"><td>{{geco_RunnerRank}}</td><td colspan="3">{{geco_RunnerFirstName}} {{geco_RunnerLastName}}</td><td>{{geco_RunnerStatusOrTime}}</td></tr>
-      <tr class="splits"><td></td>{{#geco_SplitRow}}<td {{#geco_BestSplit?}}class="best"{{/geco_BestSplit?}}>{{geco_SectionTime}}</td>{{/geco_SplitRow}}</tr>
-      <tr class="times"><td></td>{{#geco_TimeRow}}<td {{#geco_BestTime?}}class="best"{{/geco_BestTime?}}>{{geco_CumulTime}}</td>{{/geco_TimeRow}}</tr>
+      <tr class="rsplit"><td>{{geco_RunnerRank}}</td><td colspan="4">{{geco_RunnerFirstName}} {{geco_RunnerLastName}}: {{geco_RunnerClubName}}</td><td>{{geco_RunnerStatusOrTime}}</td><td>(+{{geco_RunnerTimePenalty}})</td></tr>
+      <tr class="splits"><td></td>{{#geco_SplitRow}}<td>{{geco_SectionTime}}</td>{{/geco_SplitRow}}</tr>
+      <tr class="times"><td></td>{{#geco_TimeRow}}<td>{{geco_CumulTime}}</td>{{/geco_TimeRow}}</tr>
 {{/geco_UnrankedRunners}}
     </table>
 {{#geco_PrintMode?}}
