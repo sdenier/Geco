@@ -349,9 +349,11 @@ public class StageControl extends Control {
 
 	public boolean validateControlsPenalty(int[] codes, String penaltyTime) {
 		try {
-			Date newPenalty = TimeManager.userParse(penaltyTime);
-			for (int code : codes) {
-				registry().setControlPenalty(code, newPenalty);
+			if( ! penaltyTime.equals("") ) { //$NON-NLS-1$
+				Date newPenalty = TimeManager.userParse(penaltyTime);
+				for (int code : codes) {
+					registry().setControlPenalty(code, newPenalty);
+				}
 			}
 			return true;
 		} catch (ParseException e1) {

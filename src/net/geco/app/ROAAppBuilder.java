@@ -22,8 +22,8 @@ import net.geco.control.checking.SectionsChecker;
 import net.geco.control.results.CNCalculator;
 import net.geco.control.results.ResultBuilder;
 import net.geco.control.results.ResultExporter;
-import net.geco.control.results.RunnerSplitPrinter;
 import net.geco.control.results.SectionsExporter;
+import net.geco.control.results.SectionsSplitPrinter;
 import net.geco.control.results.SplitExporter;
 import net.geco.framework.IGecoApp;
 import net.geco.functions.DeleteFunction;
@@ -94,7 +94,6 @@ public class ROAAppBuilder extends AppBuilder {
 		new ResultBuilder(gecoControl);
 		new ResultExporter(gecoControl);
 		new SplitExporter(gecoControl);
-		new RunnerSplitPrinter(gecoControl);
 		new RegistryStats(gecoControl);
 		new ArchiveManager(gecoControl);
 		new SIReaderHandler(gecoControl);
@@ -104,6 +103,7 @@ public class ROAAppBuilder extends AppBuilder {
 		new StartlistExporter(gecoControl);
 		new SectionService(gecoControl);
 		new SectionsExporter(gecoControl);
+		new SectionsSplitPrinter(gecoControl);
 		
 		new RefereeLogFunction(gecoControl);
 		new StartTimeFunction(gecoControl);
