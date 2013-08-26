@@ -29,6 +29,7 @@ public interface Section {
 		public void setStartIndex(int index) {}
 		public void setName(String name) {}
 		public SectionType getType() {return SectionType.INLINE;}
+		public int getStartControl() { return 0; }
 		public int getStartIndex() {return 0;}
 		public String getName() {return "";}
 		public int[] getCodes() {return new int[0];}
@@ -41,6 +42,8 @@ public interface Section {
 	public int getStartIndex();
 	
 	public void setStartIndex(int index);
+	
+	public int getStartControl();
 	
 	public String getName();
 	

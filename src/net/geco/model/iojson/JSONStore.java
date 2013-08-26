@@ -41,6 +41,10 @@ public class JSONStore {
 		refMap = new RefMap(capacity);
 	}
 	
+	public boolean has(String key) {
+		return jsonRoot.has(key);
+	}
+	
 	public JSONArray getJSONArray(String key) throws JSONException {
 		return jsonRoot.getJSONArray(key);
 	}

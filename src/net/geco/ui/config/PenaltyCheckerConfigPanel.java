@@ -77,28 +77,30 @@ public class PenaltyCheckerConfigPanel extends JPanel implements ConfigPanel {
 			mpLimitS.setEnabled(false);
 		}
 		add(SwingUtils.embed(noMpLimitCB), c);
-		
-		c.gridy = 2;
-		add(new JLabel(Messages.uiGet("PenaltyCheckerConfigPanel.TimePenaltyLabel")), c); //$NON-NLS-1$
-		long penalty = checker(geco).getMPPenalty();
-		final JLabel penaltyMinuteL = new JLabel(TimeManager.time(penalty) + Messages.uiGet("PenaltyCheckerConfigPanel.PerMpLabel")); //$NON-NLS-1$
-		final JSpinner penaltyS = new JSpinner(new SpinnerNumberModel(penalty / 1000, 0l, null, 10));
-		penaltyS.setPreferredSize(new Dimension(100, SwingUtils.SPINNERHEIGHT));
-		penaltyS.setToolTipText(Messages.uiGet("PenaltyCheckerConfigPanel.TimePenaltyTooltip")); //$NON-NLS-1$
-		penaltyS.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				long oldPenalty = checker(geco).getMPPenalty();
-				long newPenalty = 1000 * ((Long) penaltyS.getValue()).longValue();
-				if( oldPenalty!=newPenalty ) {
-					checker(geco).setMPPenalty(newPenalty);
-					penaltyMinuteL.setText(TimeManager.time(newPenalty) + Messages.uiGet("PenaltyCheckerConfigPanel.PerMpLabel")); //$NON-NLS-1$
-				}
-			}
-		});
-		add(SwingUtils.embed(penaltyS), c);
-		add(penaltyMinuteL, c);
 
-		c.gridy = 3;
+		c.gridy = 2;
+		if( ! geco.getConfig().sectionsEnabled ) {
+			add(new JLabel(Messages.uiGet("PenaltyCheckerConfigPanel.TimePenaltyLabel")), c); //$NON-NLS-1$
+			long penalty = checker(geco).getMPPenalty();
+			final JLabel penaltyMinuteL = new JLabel(TimeManager.time(penalty) + Messages.uiGet("PenaltyCheckerConfigPanel.PerMpLabel")); //$NON-NLS-1$
+			final JSpinner penaltyS = new JSpinner(new SpinnerNumberModel(penalty / 1000, 0l, null, 10));
+			penaltyS.setPreferredSize(new Dimension(100, SwingUtils.SPINNERHEIGHT));
+			penaltyS.setToolTipText(Messages.uiGet("PenaltyCheckerConfigPanel.TimePenaltyTooltip")); //$NON-NLS-1$
+			penaltyS.addChangeListener(new ChangeListener() {
+				public void stateChanged(ChangeEvent e) {
+					long oldPenalty = checker(geco).getMPPenalty();
+					long newPenalty = 1000 * ((Long) penaltyS.getValue()).longValue();
+					if( oldPenalty!=newPenalty ) {
+						checker(geco).setMPPenalty(newPenalty);
+						penaltyMinuteL.setText(TimeManager.time(newPenalty) + Messages.uiGet("PenaltyCheckerConfigPanel.PerMpLabel")); //$NON-NLS-1$
+					}
+				}
+			});
+			add(SwingUtils.embed(penaltyS), c);
+			add(penaltyMinuteL, c);
+			c.gridy = 3;
+		}
+
 		c.gridwidth = 2;
 		String helpL = new Html()
 			.open("i") //$NON-NLS-1$

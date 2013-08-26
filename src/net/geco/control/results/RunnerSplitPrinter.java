@@ -61,8 +61,8 @@ public class RunnerSplitPrinter extends Control implements StageListener, CardLi
 	private boolean autoPrint;
 	private boolean prototypeMode;
 	
-	private final ResultBuilder builder;
-	private final SplitExporter exporter;
+	protected final ResultBuilder builder;
+	protected final SplitExporter exporter;
 	
 	public RunnerSplitPrinter(GecoControl gecoControl) {
 		super(RunnerSplitPrinter.class, gecoControl);

@@ -37,6 +37,14 @@ public class SectionImpl implements Section {
 		this.startIndex = startIndex;
 	}
 
+	public int getStartControl() {
+		if( codes != null && codes.length > 0 ) {
+			return codes[0];
+		} else {
+			return 0;
+		}
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -59,10 +67,6 @@ public class SectionImpl implements Section {
 
 	public void setNeutralized(boolean flag) {
 		this.neutralized = flag;
-	}
-
-	public int[] getCodes(int[] allCodes, int endIndex) {
-		return Arrays.copyOfRange(allCodes, startIndex, endIndex);
 	}
 
 	public int[] getCodes() {

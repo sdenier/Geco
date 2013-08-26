@@ -214,7 +214,7 @@ public class StageControl extends Control {
 			}
 			return true;
 		} catch (ParseException e1) {
-			geco().info(Messages.getString("RunnerControl.RegisteredStartimeWarning"), true); //$NON-NLS-1$
+			geco().info("Bad format for time", true);
 			return false;
 		}
 	}
@@ -330,6 +330,35 @@ public class StageControl extends Control {
 			category.setLongname(tokens[1]); // enforce long name
 			category.setCourse(course);
 			line = reader.readLine();
+		}
+	}
+
+	public boolean validateControlPenalty(Integer code, String penaltyTime) {
+		try {
+			Date newPenalty = (penaltyTime.equals("")) ? //$NON-NLS-1$
+				TimeManager.ZERO
+				:
+				TimeManager.userParse(penaltyTime);
+			registry().setControlPenalty(code, newPenalty);
+			return true;
+		} catch (ParseException e1) {
+			geco().info("Bad format for time", true);
+			return false;
+		}
+	}
+
+	public boolean validateControlsPenalty(int[] codes, String penaltyTime) {
+		try {
+			if( ! penaltyTime.equals("") ) { //$NON-NLS-1$
+				Date newPenalty = TimeManager.userParse(penaltyTime);
+				for (int code : codes) {
+					registry().setControlPenalty(code, newPenalty);
+				}
+			}
+			return true;
+		} catch (ParseException e1) {
+			geco().info("Bad format for time", true);
+			return false;
 		}
 	}
 	

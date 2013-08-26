@@ -71,11 +71,22 @@ public final class PersistentStore {
 	
 	public void importDataIntoRegistry(JSONStore store, Registry registry, Factory factory)
 			throws JSONException {
+		importControls(store, registry);
 		importCourses(store, registry, factory);
 		importCategories(store, registry, factory);
 		importClubs(store, registry, factory);
 		importHeatSets(store, registry, factory);
 		importRunnersData(store, registry, factory);
+	}
+
+	public void importControls(JSONStore store, Registry registry) throws JSONException {
+		if( store.has(K.CONTROLS) ) { // MIRG 2.x -> 2.2
+			JSONArray controls = store.getJSONArray(K.CONTROLS);
+			for (int i = 0; i < controls.length(); i++) {
+				JSONArray codeData = controls.getJSONArray(i);
+				registry.setControlPenalty(codeData.getInt(0), new Date(codeData.getLong(1)));
+			}
+		}
 	}
 
 	public void importCourses(JSONStore store, Registry registry, Factory factory)
@@ -254,6 +265,7 @@ public final class PersistentStore {
 		json.startObject()
 			.field(K.VERSION, JSON_SCHEMA_VERSION);
 		Registry registry = stage.registry();
+		exportControls(json, registry);
 		exportCourses(json, registry.getCourses());
 		exportCategories(json, registry.getCategories());
 		exportClubs(json, registry.getClubs());
@@ -262,6 +274,14 @@ public final class PersistentStore {
 		json.idMax(K.MAXID)
 			.endObject()
 			.close();
+	}
+
+	public void exportControls(JSONSerializer json, Registry registry) throws IOException {
+		json.startArrayField(K.CONTROLS);
+		for (Integer code : registry.getControls()) {
+			json.startArray().value(code).value(registry.getControlPenalty(code)).endArray();
+		}
+		json.endArray();
 	}
 
 	public void exportCourses(JSONSerializer json, Collection<Course> courses)
@@ -418,6 +438,7 @@ public final class PersistentStore {
 		public static final String NAME = "name"; //$NON-NLS-1$
 		public static final String VERSION = "version"; //$NON-NLS-1$
 
+		public static final String CONTROLS = "controls"; //$NON-NLS-1$
 		public static final String COURSES = "courses"; //$NON-NLS-1$
 		public static final String LENGTH = "length"; //$NON-NLS-1$
 		public static final String CLIMB = "climb"; //$NON-NLS-1$

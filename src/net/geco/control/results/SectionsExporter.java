@@ -62,17 +62,13 @@ public class SectionsExporter extends AResultExporter {
 			if( ! result.isEmpty() && result.sameCourse() ) {
 				List<Section> sections = result.anyCourse().getSections();
 				SplitTime[] bestSplits = resultBuilder.initializeBestSectionSplits(sections);
-				Map<RunnerRaceData, SplitTime[]> allSections = resultBuilder.buildAllSectionSplits(result, sections, bestSplits);
+				Map<RunnerRaceData, SplitTime[]> allSections =
+						resultBuilder.buildAllSectionSplits(result, sections, bestSplits);
 				long bestTime = result.bestTime();
 
 				ResultContext resultCtx =
 						resultsCollection.addContext(new ResultContext(result, isSingleCourseResult));
-				ContextList sectionsList = resultCtx.createContextList("geco_SectionHeaders", sections.size());
-				for (Section section : sections) {
-					GenericContext sectionCtx = new GenericContext();
-					sectionCtx.put("geco_SectionName", section.getName());
-					sectionsList.add(sectionCtx);
-				}
+				buildSectionsHeader(sections, resultCtx);
 				
 				ContextList rankingCollection = resultCtx.createRankedRunnersCollection();
 				ContextList unrankedCollection = resultCtx.createUnrankedRunnersCollection();
@@ -104,9 +100,19 @@ public class SectionsExporter extends AResultExporter {
 		return stageCtx;
 	}
 
+	public void buildSectionsHeader(List<Section> sections, GenericContext context) {
+		ContextList sectionsList = context.createContextList("geco_SectionHeaders", sections.size());
+		for (Section section : sections) {
+			GenericContext sectionCtx = new GenericContext();
+			sectionCtx.put("geco_SectionName", section.getName());
+			sectionCtx.put("geco_SectionStartControl", section.getStartControl());
+			sectionsList.add(sectionCtx);
+		}
+	}
+
 	public void createRunnerSplits(RunnerContext runnerCtx, SplitTime[] runnerSectionTimes, SplitTime[] bestSplits) {
-		ContextList timeRow = runnerCtx.createContextList("geco_TimeRow"); //$NON-NLS-1$
-		ContextList splitRow = runnerCtx.createContextList("geco_SplitRow"); //$NON-NLS-1$
+		ContextList timeRow = runnerCtx.createContextList("geco_SectionTimeRow"); //$NON-NLS-1$
+		ContextList splitRow = runnerCtx.createContextList("geco_SectionSplitRow"); //$NON-NLS-1$
 		for (int i = 0; i < runnerSectionTimes.length; i++) {
 			SplitTime splitTime = runnerSectionTimes[i];
 
