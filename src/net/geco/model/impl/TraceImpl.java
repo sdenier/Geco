@@ -44,8 +44,11 @@ public class TraceImpl implements Trace {
 	public String getBasicCode() {
 		if( isOK() ) {
 			return code;
+		} else
+		if( isSubst() ) {
+			return code.substring(1, code.indexOf('+'));
 		} else {
-			return code.substring(1); // works dumbly with subst trace
+			return code.substring(1);
 		}
 	}
 	public Date getTime() {

@@ -5,6 +5,7 @@
 package net.geco.framework;
 
 import net.geco.basics.Announcer;
+import net.geco.basics.GecoConfig;
 import net.geco.basics.Logger;
 import net.geco.basics.MergeRequestHandler;
 import net.geco.control.ArchiveManager;
@@ -36,6 +37,7 @@ public interface IGeco {
 	public Registry registry();
 	public Announcer announcer();
 	public MergeRequestHandler defaultMergeHandler();
+	public GecoConfig getConfig();
 	
 	public Logger logger();
 	public void debug(String message);

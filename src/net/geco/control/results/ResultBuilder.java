@@ -285,7 +285,7 @@ public class ResultBuilder extends Control {
 		return sectionsSplits;
 	}
 
-	private SplitTime[] buildSectionSplits(RunnerRaceData runnerData, SplitTime[] bestSplits) {
+	public SplitTime[] buildSectionSplits(RunnerRaceData runnerData, SplitTime[] bestSplits) {
 		SectionTraceData sectionData = (SectionTraceData) runnerData.getTraceData();
 		long[] sectionsTimes = sectionData.sectionsFinishTimes(runnerData.getFinishtime().getTime());
 		SplitTime[] sectionsSplits = new SplitTime[sectionsTimes.length];
@@ -295,7 +295,7 @@ public class ResultBuilder extends Control {
 			long punchTime = sectionsTimes[i];
 			sectionsSplits[i] = createSplit("", null, startTime, previousTime, punchTime);
 			previousTime = punchTime;
-			if( runnerData.getResult().is(Status.OK) ) {
+			if( bestSplits.length > 0 && runnerData.getResult().is(Status.OK) ) {
 				SplitTime bestSplit = bestSplits[i];
 				bestSplit.time = Math.min(bestSplit.time, sectionsSplits[i].time);
 				bestSplit.split = Math.min(bestSplit.split, sectionsSplits[i].split);

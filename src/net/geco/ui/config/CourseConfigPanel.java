@@ -57,8 +57,16 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 	}
 	
 	public CourseConfigPanel(final IGecoApp geco, final JFrame frame) {
-		sectionService = geco.sectionService();
-		final ConfigTableModel<Course> tableModel = createTableModel(geco);
+		initCoursesTable(geco, frame);
+		ConfigTablePanel<Integer> controlsPanel = initControlsTable(geco, frame);
+		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		add(coursePanel);
+		add(Box.createHorizontalStrut(10));
+		add(controlsPanel);
+	}
+
+	private void initCoursesTable(final IGecoApp geco, final JFrame frame) {
+		final ConfigTableModel<Course> tableModel = createCoursesModel(geco);
 		tableModel.setData(geco.registry().getSortedCourses());
 		
 		geco.announcer().registerStageConfigListener( new Announcer.StageConfigListener() {
@@ -185,61 +193,9 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 		columnModel.getColumn(0).setPreferredWidth(125);
 		columnModel.getColumn(1).setPreferredWidth(50);
 		columnModel.getColumn(2).setPreferredWidth(25);
-
-		final ConfigTableModel<Integer> controlsModel = createControlModel();
-		List<Integer> empty = Collections.emptyList();
-		controlsModel.setData(empty);
-		final ConfigTablePanel<Integer> controlsPanel = new ConfigTablePanel<Integer>();
-		coursePanel.table().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent e) {
-				if( getSelectedCourse()!=null ) {
-					List<Integer> courseControls = new ArrayList<Integer>(getSelectedCourse().getCodes().length);
-					for (int code : getSelectedCourse().getCodes()) {
-						courseControls.add(code);
-					}
-					controlsModel.setData(courseControls);
-				}
-			}
-		});
-		
-		if( geco.getConfig().sectionsEnabled ){
-			final JButton sectionB = new JButton("Section...");
-			sectionB.setEnabled(false);
-			sectionB.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					int controlIndex = controlsPanel.table().getSelectedRow();
-					Section section = sectionService.findOrCreateSection(getSelectedCourse(), controlIndex);
-					new SectionControlDialog(frame, getSelectedCourse(), section);
-					controlsModel.fireTableRowsUpdated(controlIndex, controlIndex);
-				}
-			});
-			
-			controlsPanel.initialize(controlsModel, new Dimension(250, 450), sectionB);
-			controlsPanel.table().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-				public void valueChanged(ListSelectionEvent arg0) {
-					if( controlsPanel.getSelectedData() != null ) {
-						sectionB.setEnabled(true);
-					} else {
-						sectionB.setEnabled(false);
-					}
-				}
-			});
-		} else {
-			controlsPanel.initialize(controlsModel, new Dimension(250, 450));
-		}
-		controlsPanel.table().setRowSorter(null);
-		columnModel = controlsPanel.table().getColumnModel();
-		columnModel.getColumn(0).setPreferredWidth(20);
-		columnModel.getColumn(1).setPreferredWidth(40);
-		columnModel.getColumn(2).setPreferredWidth(140);
-		
-		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-		add(coursePanel);
-		add(Box.createHorizontalStrut(10));
-		add(controlsPanel);
 	}
 
-	private ConfigTableModel<Course> createTableModel(final IGecoApp geco) {
+	private ConfigTableModel<Course> createCoursesModel(final IGecoApp geco) {
 		return new ConfigTableModel<Course>(new String[] {
 											Messages.uiGet("CourseConfigPanel.CourseNameHeader"), //$NON-NLS-1$
 											"Mass Start",
@@ -281,8 +237,67 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 		return coursePanel.getSelectedData();
 	}
 
-	private ConfigTableModel<Integer> createControlModel() {
-		return new ConfigTableModel<Integer>(new String[] {"Num", "Code", "Section"}) {
+	private ConfigTablePanel<Integer> initControlsTable(final IGecoApp geco, final JFrame frame) {
+		final ConfigTablePanel<Integer> controlsPanel = new ConfigTablePanel<Integer>();
+		final ConfigTableModel<Integer> controlsModel;
+		
+		if( geco.getConfig().sectionsEnabled ) {
+			sectionService = geco.sectionService();
+			controlsModel = createControlsWithSectionsModel(geco);
+			controlsModel.setData(Collections.<Integer>emptyList());
+			
+			final JButton sectionB = new JButton("Section...");
+			sectionB.setEnabled(false);
+			sectionB.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					int controlIndex = controlsPanel.table().getSelectedRow();
+					Section section = sectionService.findOrCreateSection(getSelectedCourse(), controlIndex);
+					new SectionControlDialog(geco, frame, getSelectedCourse(), section);
+					controlsModel.fireTableRowsUpdated(controlIndex, controlIndex);
+				}
+			});
+			
+			controlsPanel.initialize(controlsModel, new Dimension(350, 450), sectionB);
+			controlsPanel.table().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+				public void valueChanged(ListSelectionEvent arg0) {
+					if( controlsPanel.getSelectedData() != null ) {
+						sectionB.setEnabled(true);
+					} else {
+						sectionB.setEnabled(false);
+					}
+				}
+			});
+			TableColumnModel columnModel = controlsPanel.table().getColumnModel();
+			columnModel.getColumn(0).setPreferredWidth(20);
+			columnModel.getColumn(1).setPreferredWidth(40);
+			columnModel.getColumn(2).setPreferredWidth(140);
+			columnModel.getColumn(3).setPreferredWidth(40);
+		} else {
+			controlsModel = createControlsModel();
+			controlsModel.setData(Collections.<Integer>emptyList());
+			controlsPanel.initialize(controlsModel, new Dimension(50, 450));
+			TableColumnModel columnModel = controlsPanel.table().getColumnModel();
+			columnModel.getColumn(0).setPreferredWidth(20);
+			columnModel.getColumn(1).setPreferredWidth(80);
+		}
+
+		controlsPanel.table().setRowSorter(null);
+		coursePanel.table().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				if( getSelectedCourse()!=null ) {
+					List<Integer> courseControls = new ArrayList<Integer>(getSelectedCourse().getCodes().length);
+					for (int code : getSelectedCourse().getCodes()) {
+						courseControls.add(code);
+					}
+					controlsModel.setData(courseControls);
+				}
+			}
+		});
+		return controlsPanel;
+	}
+
+	private ConfigTableModel<Integer> createControlsModel() {
+		return new ConfigTableModel<Integer>(new String[] {"Num", "Code"}) {
 			@Override
 			public void setValueIn(Integer t, Object value, int col) {}
 			@Override
@@ -294,7 +309,30 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 				switch (col) {
 				case 0: return row + 1;
 				case 1: return getData().get(row);
+				}
+				return "Pbm";
+			}
+		};
+	}
+
+	private ConfigTableModel<Integer> createControlsWithSectionsModel(final IGecoApp geco) {
+		return new ConfigTableModel<Integer>(new String[] {"Num", "Code", "Section", "Penalty"}) {
+			@Override
+			public void setValueIn(Integer code, Object value, int col) {
+				geco.stageControl().validateControlPenalty(code, (String) value);
+			}
+			@Override
+			public boolean isCellEditable(int row, int col) {
+				return col == 3;
+			}
+			@Override
+			public Object getValueAt(int row, int col) {
+				Integer code = getData().get(row);
+				switch (col) {
+				case 0: return row + 1;
+				case 1: return code;
 				case 2: return sectionService.findSection(getSelectedCourse(), row).displayString();
+				case 3: return TimeManager.time(geco.registry().getControlPenalty(code));
 				}
 				return "Pbm";
 			}

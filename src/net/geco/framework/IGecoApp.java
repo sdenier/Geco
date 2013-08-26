@@ -6,7 +6,6 @@ package net.geco.framework;
 
 import java.util.List;
 
-import net.geco.basics.GecoConfig;
 import net.geco.model.Stage;
 
 /**
@@ -27,8 +26,6 @@ public interface IGecoApp extends IGeco {
 	public String buildStamp();
 
 	public String getAppName();
-
-	public GecoConfig getConfig();
 	
 	public Stage stage();
 
