@@ -4,7 +4,6 @@
  */
 package net.geco.control.results;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringWriter;
@@ -124,30 +123,28 @@ public abstract class AResultExporter extends Control {
 	}
 
 	protected Template getInternalTemplate() throws IOException {
-		Template template = templates.get(getInternalTemplatePath());
+		return getInternalTemplate(getInternalTemplatePath());
+	}
+	
+	protected Template getInternalTemplate(String templatePath) throws IOException {
+		Template template = templates.get(templatePath);
 		if( template==null ) {
-			Reader templateReader = getInternalTemplateReader();
-			template = loadTemplate(templateReader, getInternalTemplatePath());
+			Reader templateReader = GecoResources.getResourceReader(templatePath);
+			template = loadTemplate(templateReader, templatePath);
 			templateReader.close();
 		}
 		return template;
 	}
 
 	protected Template getExternalTemplate() throws IOException {
-		Template template = templates.get(getExternalTemplatePath());
-		if( template == null ) {
-			Reader templateReader = getExternalTemplateReader();
-			template = loadTemplate(templateReader, getExternalTemplatePath());
-			templateReader.close();
-		}
-		return template;
+		return getExternalTemplate(getExternalTemplatePath());
 	}
 
-	protected Template getTemplate(String templatePath) throws IOException {
+	protected Template getExternalTemplate(String templatePath) throws IOException {
 		Template template = templates.get(templatePath);
 		if( template == null ) {
 			Reader templateReader = GecoResources.getSafeReaderFor(templatePath);
-			template = loadTemplate(templateReader, getExternalTemplatePath());
+			template = loadTemplate(templateReader, templatePath);
 			templateReader.close();
 		}
 		return template;
@@ -161,14 +158,6 @@ public abstract class AResultExporter extends Control {
 	
 	public void resetTemplate(String templatePath) {
 		templates.remove(templatePath);
-	}
-	
-	protected Reader getInternalTemplateReader() {
-		return GecoResources.getResourceReader(getInternalTemplatePath());
-	}
-
-	protected Reader getExternalTemplateReader() throws FileNotFoundException {
-		return GecoResources.getSafeReaderFor(getExternalTemplatePath());
 	}
 
 	protected abstract String getInternalTemplatePath();

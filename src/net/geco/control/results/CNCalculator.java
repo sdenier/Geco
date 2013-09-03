@@ -5,9 +5,7 @@
 package net.geco.control.results;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -32,6 +30,8 @@ import net.geco.model.ResultType;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Stage;
+
+import com.samskivert.mustache.Template;
 
 
 /**
@@ -96,8 +96,8 @@ public class CNCalculator extends AResultExporter implements StageListener {
 	}
 
 	@Override
-	protected Reader getExternalTemplateReader() throws FileNotFoundException {
-		return getInternalTemplateReader();
+	protected Template getExternalTemplate() throws IOException {
+		return getInternalTemplate();
 	}
 
 	@Override
