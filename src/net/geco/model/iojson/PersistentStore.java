@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import net.geco.basics.GecoResources;
+import net.geco.basics.TimeManager;
 import net.geco.model.Category;
 import net.geco.model.Club;
 import net.geco.model.Course;
@@ -170,7 +171,7 @@ public final class PersistentStore {
 			RunnerRaceData ecardData = factory.createRunnerRaceData();
 			ecardData.setStarttime(new Date(d.getLong(K.START)));
 			ecardData.setFinishtime(new Date(d.getLong(K.FINISH)));
-			ecardData.setErasetime(new Date(d.getLong(K.ERASE)));
+			ecardData.setErasetime(new Date(d.optLong(K.ERASE, TimeManager.NO_TIME_l)));
 			ecardData.setControltime(new Date(d.getLong(K.CHECK)));
 			ecardData.setReadtime(new Date(d.getLong(K.READ)));
 			JSONArray p = d.getJSONArray(K.PUNCHES);

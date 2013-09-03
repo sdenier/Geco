@@ -4,6 +4,7 @@
  */
 package net.geco.control.context;
 
+import net.geco.model.Course;
 import net.geco.model.Result;
 
 /**
@@ -21,8 +22,14 @@ public class ResultContext extends GenericContext {
 		put("geco_NbFinishedRunners", result.nbFinishedRunners()); //$NON-NLS-1$
 		put("geco_NbPresentRunners", result.nbPresentRunners()); //$NON-NLS-1$
 		if( isSingleCourseResult ) {
-			put("geco_CourseLength", result.anyCourse().getLength()); //$NON-NLS-1$
-			put("geco_CourseClimb", result.anyCourse().getClimb()); //$NON-NLS-1$
+			Course course = result.anyCourse();
+			put("geco_CourseLength", course.getLength()); //$NON-NLS-1$
+			put("geco_CourseClimb", course.getClimb()); //$NON-NLS-1$
+			put("geco_CourseNbControls", course.getCodes().length); //$NON-NLS-1$
+			ContextList controls = createContextList("geco_CourseControls", course.getCodes().length); //$NON-NLS-1$
+			for (int code : course.getCodes()) {
+				controls.add(GenericContext.createSingleElement("geco_ControlCode", code));
+			}
 		}
 	}
 	

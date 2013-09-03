@@ -90,6 +90,11 @@ public class ResultExporter extends AResultExporter implements StageListener {
 	}
 
 	@Override
+	protected GenericContext buildCustomContext(ResultConfig config, int refreshInterval, OutputType outputType) {
+		return buildDataContext(config, refreshInterval, outputType);
+	}
+
+	@Override
 	public void generateOECsvResult(ResultConfig config, CsvWriter writer) throws IOException {
 		getService(SplitExporter.class).generateOECsvResult(config, false, writer);
 	}

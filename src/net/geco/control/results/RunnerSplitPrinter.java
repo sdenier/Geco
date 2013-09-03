@@ -135,7 +135,7 @@ public class RunnerSplitPrinter extends Control implements StageListener, CardLi
 	private void generateSingleSplitsInLine(RunnerRaceData data, Writer out) throws IOException {
 		RunnerContext runnerCtx = buildRunnerSplitContext(data);
 		exporter.mergeCustomStageProperties(runnerCtx);
-		exporter.createRunnerSplitsInlineTickets(runnerCtx,
+		exporter.createRunnerSplitsInline(runnerCtx,
 												 builder.buildLinearSplits(data));
 		
 		exporter.getExternalTemplate(getTicketTemplatePath()).execute(runnerCtx, out);

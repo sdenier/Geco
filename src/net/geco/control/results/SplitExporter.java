@@ -187,7 +187,56 @@ public class SplitExporter extends AResultExporter implements StageListener {
 		}
 	}
 
-	public void createRunnerSplitsInlineTickets(RunnerContext runnerCtx, SplitTime[] linearSplits) {
+	@Override
+	protected GenericContext buildCustomContext(ResultConfig config, int refreshInterval, OutputType outputType) {
+		boolean isSingleCourseResult = config.resultType != ResultType.CategoryResult;
+		List<Result> results = buildResults(config);
+
+		StageContext stageCtx = new StageContext(
+				stage().getName(), isSingleCourseResult, config.showPenalties, refreshInterval, outputType);
+		ContextList resultsCollection = stageCtx.createResultsCollection(results.size());
+		mergeI18nProperties(stageCtx);
+		mergeCustomStageProperties(stageCtx);
+
+		for (Result result : results) {
+			if( ! result.isEmpty() ) {
+				long bestTime = result.bestTime();
+				SplitTime[] bestSplits = new SplitTime[0];
+				Map<RunnerRaceData, SplitTime[]> allSplits = resultBuilder.buildAllNormalSplits(result, bestSplits);
+
+				ResultContext resultCtx =
+						resultsCollection.addContext(new ResultContext(result, isSingleCourseResult));
+				ContextList rankingCollection = resultCtx.createRankedRunnersCollection();
+				ContextList unrankedCollection = resultCtx.createUnrankedRunnersCollection();
+
+				for (RankedRunner rankedRunner : result.getRanking()) {
+					SplitTime[] runnerSplitTimes = allSplits.get(rankedRunner.getRunnerData());
+					RunnerContext runnerCtx =
+							rankingCollection.addContext(RunnerContext.createRankedRunner(rankedRunner, bestTime));
+					createRunnerSplitsInline(runnerCtx, runnerSplitTimes);
+				}
+
+				for (RunnerRaceData data : result.getUnrankedRunners()) {
+					SplitTime[] runnerSplitTimes = allSplits.get(data);
+					Runner runner = data.getRunner();
+					if( runner.isNC() ) {
+						if( config.showNC ) {
+							RunnerContext runnerCtx =
+									unrankedCollection.addContext(RunnerContext.createNCRunner(data));
+							createRunnerSplitsInline(runnerCtx, runnerSplitTimes);
+						} // else nothing
+					} else {
+						RunnerContext runnerCtx =
+								unrankedCollection.addContext(RunnerContext.createUnrankedRunner(data));
+						createRunnerSplitsInline(runnerCtx, runnerSplitTimes);
+					}
+				}
+			}
+		}
+		return stageCtx;
+	}
+
+	public void createRunnerSplitsInline(RunnerContext runnerCtx, SplitTime[] linearSplits) {
 		ContextList splits = runnerCtx.createContextList("geco_RunnerSplits", linearSplits.length); //$NON-NLS-1$
 		for (SplitTime splitTime : linearSplits) {
 			GenericContext splitCtx = splits.addContext(new GenericContext());
@@ -208,11 +257,13 @@ public class SplitExporter extends AResultExporter implements StageListener {
 				splitCtx.put("geco_ControlStatus", "time"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			splitCtx.put("geco_ControlNum", splitTime.seq); //$NON-NLS-1$
+			splitCtx.put("geco_ControlTimeMs", splitTime.time); //$NON-NLS-1$
 			splitCtx.put("geco_ControlTime", TimeManager.time(splitTime.time)); //$NON-NLS-1$
+			splitCtx.put("geco_SplitTimeMs", splitTime.split); //$NON-NLS-1$
 			splitCtx.put("geco_SplitTime", TimeManager.time(splitTime.split)); //$NON-NLS-1$
 		}
 	}
-	
+
 	@Override
 	protected Collection<String> computeCsvRecord(RunnerRaceData runnerData, String resultId, String rank) {
 		// edit collection
