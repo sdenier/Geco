@@ -130,6 +130,12 @@ public class SectionsExporter extends AResultExporter {
 	}
 	
 	@Override
+	protected GenericContext buildCustomContext(ResultConfig config, int refreshInterval, OutputType outputType) {
+		geco().info(Messages.getString("CNCalculator.NotFunctionalLabel"), true); //$NON-NLS-1$
+		return new GenericContext();
+	}
+
+	@Override
 	public void generateOECsvResult(ResultConfig config, CsvWriter writer) throws IOException {
 		getService(SplitExporter.class).generateOECsvResult(config, false, writer);
 	}
