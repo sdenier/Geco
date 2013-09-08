@@ -17,8 +17,7 @@
 "finishingRunnersCount":{{geco_NbFinishedRunners}},"presentRunnersCount":{{geco_NbPresentRunners}},
 "rankedRunners": [{{#geco_RankedRunners}}{
 "rank":"{{geco_RunnerRank}}","status":"{{geco_RunnerStatus}}","firstname":"{{geco_RunnerFirstName}}","lastname":"{{geco_RunnerLastName}}","category":"{{geco_RunnerCategory}}","club":"{{geco_RunnerClubName}}",
-"splitTimes":[{{#geco_RunnerSplits}}{{geco_SplitTimeMs}},{{/geco_RunnerSplits}}],
-"cumulatedTimes":[{{#geco_RunnerSplits}}{{geco_ControlTimeMs}},{{/geco_RunnerSplits}}]},
+"cumulatedTimes":[{{#geco_RunnerSplits}}{{geco_ControlTimeS}},{{/geco_RunnerSplits}}]},
 {{/geco_RankedRunners}}]},
 {{/geco_ResultsCollection}}]};
     window.addEventListener("message", function(event) {

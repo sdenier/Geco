@@ -257,9 +257,9 @@ public class SplitExporter extends AResultExporter implements StageListener {
 				splitCtx.put("geco_ControlStatus", "time"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			splitCtx.put("geco_ControlNum", splitTime.seq); //$NON-NLS-1$
-			splitCtx.put("geco_ControlTimeMs", splitTime.time); //$NON-NLS-1$
+			splitCtx.put("geco_ControlTimeS", (splitTime.time / 1000)); //$NON-NLS-1$
 			splitCtx.put("geco_ControlTime", TimeManager.time(splitTime.time)); //$NON-NLS-1$
-			splitCtx.put("geco_SplitTimeMs", splitTime.split); //$NON-NLS-1$
+			splitCtx.put("geco_SplitTimeS", (splitTime.split / 1000)); //$NON-NLS-1$
 			splitCtx.put("geco_SplitTime", TimeManager.time(splitTime.split)); //$NON-NLS-1$
 		}
 	}
