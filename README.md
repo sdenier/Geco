@@ -1,5 +1,5 @@
-Geco 2.1 beta
-=============
+Geco 2.1
+========
 Copyright (c) 2008-2013 Simon Denier  
 Homepage: http://sdenier.github.io/Geco
 
@@ -15,10 +15,10 @@ The Geco UI is designed to provide a lean user experience: navigate through stag
 Geco can handle multiple race formats: classic inline, free order, Orient'Show (penalty count, knockout qualifications).
 
 
-About the 2.1 beta
-------------------
+About the 2.1
+-------------
 
-Geco 2.1 is the second beta in the 2.x series. It provides a brand new feature which allows anyone to customize results outputs using the [mustache](http://mustache.github.io) template system. Customizable outputs include ranking, ranking with splits, tickets for runner...
+Geco 2.1 is the first stable release in the 2.x series. It provides a brand new feature which allows anyone to customize results outputs using the [mustache](http://mustache.github.io) template system. Customizable outputs include ranking, ranking with splits, tickets for runner...
 
 
 Install & Launch

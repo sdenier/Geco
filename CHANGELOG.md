@@ -1,9 +1,12 @@
 # Geco Changelog
 
-## Version 2.1 beta
+## Version 2.1
 
-- Use Mustache as a versatile export engine for results (ranking, splits...)
+- Push GecoSI 1.0.0 stable release
+- Use Mustache as a versatile export engine for results (ranking, splits, O'Splits...)
+- Basic startlist export
 - Let user choose the path for result auto-export
+- Focus on runner after a manual merge
 
 ## Version 2.0 beta1 (2013/05/01)
 
