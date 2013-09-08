@@ -1,3 +1,6 @@
-#Wed, 04 Sep 2013 23:16:00 +0200
+#Sun, 08 Sep 2013 22:16:19 +0200
 
 version.num=2.1-beta2
+
+build.num=v2.1-beta2-0-ge4d8227
+build.stamp=20130908
