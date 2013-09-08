@@ -4,7 +4,6 @@
  */
 package net.geco.control.results;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringWriter;
@@ -74,11 +73,14 @@ public abstract class AResultExporter extends Control {
 
 	public void exportFile(String filename, String format, ResultConfig config, int refreshInterval)
 			throws Exception {
-		if( !filename.endsWith(format) ) {
+		if( filename.indexOf(".") == -1 ) {
 			filename = filename + "." + format; //$NON-NLS-1$
 		}
 		if( format.equals("html") ) { //$NON-NLS-1$
 			exportHtmlFile(filename, config, refreshInterval);
+		}
+		if( format.equals("custom") ) { //$NON-NLS-1$
+			exportCustomFile(filename, config, refreshInterval);
 		}
 		if( format.equals("csv") ) { //$NON-NLS-1$
 			exportCsvFile(filename, config);
@@ -124,30 +126,28 @@ public abstract class AResultExporter extends Control {
 	}
 
 	protected Template getInternalTemplate() throws IOException {
-		Template template = templates.get(getInternalTemplatePath());
+		return getInternalTemplate(getInternalTemplatePath());
+	}
+	
+	protected Template getInternalTemplate(String templatePath) throws IOException {
+		Template template = templates.get(templatePath);
 		if( template==null ) {
-			Reader templateReader = getInternalTemplateReader();
-			template = loadTemplate(templateReader, getInternalTemplatePath());
+			Reader templateReader = GecoResources.getResourceReader(templatePath);
+			template = loadTemplate(templateReader, templatePath);
 			templateReader.close();
 		}
 		return template;
 	}
 
 	protected Template getExternalTemplate() throws IOException {
-		Template template = templates.get(getExternalTemplatePath());
-		if( template == null ) {
-			Reader templateReader = getExternalTemplateReader();
-			template = loadTemplate(templateReader, getExternalTemplatePath());
-			templateReader.close();
-		}
-		return template;
+		return getExternalTemplate(getExternalTemplatePath());
 	}
 
-	protected Template getTemplate(String templatePath) throws IOException {
+	protected Template getExternalTemplate(String templatePath) throws IOException {
 		Template template = templates.get(templatePath);
 		if( template == null ) {
 			Reader templateReader = GecoResources.getSafeReaderFor(templatePath);
-			template = loadTemplate(templateReader, getExternalTemplatePath());
+			template = loadTemplate(templateReader, templatePath);
 			templateReader.close();
 		}
 		return template;
@@ -162,20 +162,27 @@ public abstract class AResultExporter extends Control {
 	public void resetTemplate(String templatePath) {
 		templates.remove(templatePath);
 	}
-	
-	protected Reader getInternalTemplateReader() {
-		return GecoResources.getResourceReader(getInternalTemplatePath());
-	}
-
-	protected Reader getExternalTemplateReader() throws FileNotFoundException {
-		return GecoResources.getSafeReaderFor(getExternalTemplatePath());
-	}
 
 	protected abstract String getInternalTemplatePath();
 
 	protected abstract String getExternalTemplatePath();
 
 	protected abstract GenericContext buildDataContext(ResultConfig config, int refreshInterval, OutputType outputType);
+
+	protected void exportCustomFile(String filename, ResultConfig config, int refreshInterval)
+			throws IOException {
+		Template template = getInternalTemplate("/resources/formats/results_osplits.mustache");
+		Writer writer = GecoResources.getSafeWriterFor(filename);
+		buildCustomResults(template, config, refreshInterval, writer, OutputType.FILE);
+		writer.close();
+	}
+	
+	protected void buildCustomResults(Template template, ResultConfig config, int refreshInterval,
+			Writer writer, OutputType outputType) {
+		template.execute(buildCustomContext(config, refreshInterval, outputType), writer);
+	}
+
+	protected abstract GenericContext buildCustomContext(ResultConfig config, int refreshInterval, OutputType outputType);
 
 	protected void mergeI18nProperties(GenericContext stageCtx) {
 		stageCtx.put("i18n_RankingTitle", Messages.getString("ResultExporter.ResultsOutputTitle")); //$NON-NLS-1$ //$NON-NLS-2$

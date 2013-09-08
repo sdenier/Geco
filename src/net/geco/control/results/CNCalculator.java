@@ -5,9 +5,7 @@
 package net.geco.control.results;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -32,6 +30,8 @@ import net.geco.model.ResultType;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Stage;
+
+import com.samskivert.mustache.Template;
 
 
 /**
@@ -96,8 +96,8 @@ public class CNCalculator extends AResultExporter implements StageListener {
 	}
 
 	@Override
-	protected Reader getExternalTemplateReader() throws FileNotFoundException {
-		return getInternalTemplateReader();
+	protected Template getExternalTemplate() throws IOException {
+		return getInternalTemplate();
 	}
 
 	@Override
@@ -195,11 +195,20 @@ public class CNCalculator extends AResultExporter implements StageListener {
 	}
 
 	@Override
+	protected void exportCustomFile(String filename, ResultConfig config, int refreshInterval) throws IOException {
+		geco().info(Messages.getString("CNCalculator.NotFunctionalLabel"), true); //$NON-NLS-1$
+	}
+
+	@Override
+	protected GenericContext buildCustomContext(ResultConfig config, int refreshInterval, OutputType outputType) {
+		return new GenericContext();
+	}
+
+	@Override
 	public void generateOECsvResult(ResultConfig config, CsvWriter writer) throws IOException {
 		getService(SplitExporter.class).generateOECsvResult(config, false, writer);
 	}
 
-	
 	@Override
 	protected void exportCsvFile(String filename, ResultConfig config) throws IOException {
 		geco().info(Messages.getString("CNCalculator.NotFunctionalLabel"), true); //$NON-NLS-1$

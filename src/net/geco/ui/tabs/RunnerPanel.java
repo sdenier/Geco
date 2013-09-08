@@ -413,7 +413,10 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 		mergeDialogB.setToolTipText(Messages.uiGet("RunnerPanel.MergeTooltip")); //$NON-NLS-1$
 		mergeDialogB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new MergeWizard(geco(),	frame()).showMergeRunner(runnerData.clone());
+				String targetEcard = new MergeWizard(geco(), frame()).showMergeRunner(runnerData.clone());
+				if( targetEcard != null ) {
+					parentContainer.focusTableOnRunner(registry().findRunnerData(targetEcard));
+				}
 			}
 		});
 		return mergeDialogB;

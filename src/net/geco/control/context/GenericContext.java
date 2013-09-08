@@ -14,6 +14,12 @@ import java.util.Properties;
  */
 public class GenericContext extends HashMap<String, Object> {
 
+	public static GenericContext createSingleElement(String key, Object value) {
+		GenericContext context = new GenericContext();
+		context.put(key, value);
+		return context;
+	}
+	
 	public ContextList createContextList(String key) {
 		return createContextList(key, 10);
 	}

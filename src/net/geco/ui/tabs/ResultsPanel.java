@@ -405,6 +405,12 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 				exportFormat = "html"; //$NON-NLS-1$
 			}
 		});
+		JRadioButton selectCustomB = new JRadioButton("Custom"); //$NON-NLS-1$
+		selectCustomB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				exportFormat = "custom"; //$NON-NLS-1$
+			}
+		});
 		JRadioButton selectCsvB = new JRadioButton("CSV"); //$NON-NLS-1$
 		selectCsvB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -427,12 +433,14 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		});
 		ButtonGroup group = new ButtonGroup();
 		group.add(selectHtmlB);
+		group.add(selectCustomB);
 		group.add(selectCsvB);
 		group.add(selectOECsvB);
 		group.add(selectXmlB);
 		group.setSelected(selectHtmlB.getModel(), true);
 		exportFormat = "html"; //$NON-NLS-1$
 		fileFormatRB.add(selectHtmlB);
+		fileFormatRB.add(selectCustomB);
 		fileFormatRB.add(selectCsvB);
 		fileFormatRB.add(selectOECsvB);
 		fileFormatRB.add(selectXmlB);
