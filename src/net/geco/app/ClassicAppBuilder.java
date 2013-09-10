@@ -41,6 +41,7 @@ import net.geco.ui.config.ClubConfigPanel;
 import net.geco.ui.config.CourseConfigPanel;
 import net.geco.ui.config.SIReaderConfigPanel;
 import net.geco.ui.config.StageConfigPanel;
+import net.geco.ui.config.TemplateConfigPanel;
 import net.geco.ui.framework.ConfigPanel;
 import net.geco.ui.framework.TabPanel;
 import net.geco.ui.framework.UIAnnouncers;
@@ -120,6 +121,7 @@ public class ClassicAppBuilder extends AppBuilder {
 		return new ConfigPanel[] {
 				new StageConfigPanel(geco, frame),
 				new SIReaderConfigPanel(geco, frame),
+				new TemplateConfigPanel(geco, frame),
 				new CourseConfigPanel(geco, frame),
 				new CategoryConfigPanel(geco, frame),
 				new ClubConfigPanel(geco, frame),

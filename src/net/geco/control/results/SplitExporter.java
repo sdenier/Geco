@@ -68,6 +68,8 @@ public class SplitExporter extends AResultExporter implements StageListener {
 
 	private int nbColumns;
 
+	private File customTemplate;
+
 	
 	public SplitExporter(GecoControl gecoControl) {
 		super(SplitExporter.class, gecoControl);
@@ -92,6 +94,11 @@ public class SplitExporter extends AResultExporter implements StageListener {
 	@Override
 	protected String getExternalTemplatePath() {
 		return getSplitsTemplate().getAbsolutePath();
+	}
+
+	@Override
+	protected String getCustomTemplatePath() {
+		return getCustomTemplate().getAbsolutePath();
 	}
 
 	@Override
@@ -453,19 +460,34 @@ public class SplitExporter extends AResultExporter implements StageListener {
 		splitsTemplate = selectedFile;
 	}
 
+	public File getCustomTemplate() {
+		return customTemplate;
+	}
+
+	public void setCustomTemplate(File selectedFile) {
+		if( getCustomTemplate() != null ) {
+			resetTemplate(getCustomTemplatePath());
+		}
+		customTemplate = selectedFile;
+	}
+
 	@Override
 	public void changed(Stage previous, Stage current) {
 		Properties props = stage().getProperties();
 		setNbColumns(Integer.parseInt(props.getProperty(splitsNbColumnsProperty(), "12"))); //$NON-NLS-1$
 		setSplitsTemplate(new File( props.getProperty(splitsTemplateProperty(),
 													  "formats/results_splits.mustache") )); //$NON-NLS-1$
+		setCustomTemplate(new File( props.getProperty(customTemplateProperty(), ""))); //$NON-NLS-1$
 	}
 
 	@Override
 	public void saving(Stage stage, Properties properties) {
 		properties.setProperty(splitsNbColumnsProperty(), Integer.toString(nbColumns()));
-		if( getSplitsTemplate().exists() ){
-			properties.setProperty(splitsTemplateProperty(), getSplitsTemplate().getAbsolutePath());
+		if( getSplitsTemplate().exists() ) {
+			properties.setProperty(splitsTemplateProperty(), getExternalTemplatePath());
+		}
+		if( getCustomTemplate().exists() ) {
+			properties.setProperty(customTemplateProperty(), getCustomTemplatePath());
 		}
 	}
 
@@ -478,6 +500,10 @@ public class SplitExporter extends AResultExporter implements StageListener {
 
 	public static String splitsTemplateProperty() {
 		return "SplitsTemplate"; //$NON-NLS-1$
+	}
+
+	private String customTemplateProperty() {
+		return "CustomTemplate"; //$NON-NLS-1$
 	}
 
 }

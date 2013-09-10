@@ -200,6 +200,11 @@ public class CNCalculator extends AResultExporter implements StageListener {
 	}
 
 	@Override
+	protected String getCustomTemplatePath() {
+		return "";
+	}
+
+	@Override
 	protected GenericContext buildCustomContext(ResultConfig config, int refreshInterval, OutputType outputType) {
 		return new GenericContext();
 	}

@@ -1,4 +1,4 @@
-<html data-mustache="results_splits">
+<html data-mustache="on">
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
 {{#geco_AutoRefresh?}}
@@ -7,10 +7,12 @@
   </head>
   <body>
     <h1>{{geco_StageTitle}} - {{i18n_SplitsTitle}}</h1>
-	  <div id="gecoResults"></div>
+	  <div id="gecoResults">
+      <a href="https://chrome.google.com/webstore/detail/osplits/kfnlllbjdagblbcdnmghcljobdlaoaii">Installer O'Splits sous Google Chrome</a>
+	  </div>
 	<script id="gecoOrienteeringResults" type="text/javascript">
     var gecoOrienteeringResults = {
-"version": 1,
+"version": 2,
 "circuits": [{{#geco_ResultsCollection}}{
 "description":"{{geco_ResultName}} ({{geco_NbFinishedRunners}}/{{geco_NbPresentRunners}}) - {{geco_CourseLength}}m, {{geco_CourseClimb}}m",
 {{#geco_SingleCourse?}}"controls":[{{#geco_CourseControls}}{{geco_ControlCode}},{{/geco_CourseControls}}],{{/geco_SingleCourse?}}
