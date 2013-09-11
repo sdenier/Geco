@@ -201,7 +201,7 @@ public class CNCalculator extends AResultExporter implements StageListener {
 
 	@Override
 	protected String getCustomTemplatePath() {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	@Override

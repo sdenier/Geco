@@ -51,7 +51,7 @@ public class TemplateConfigPanel extends JPanel implements ConfigPanel {
 
 	public Component createRunnerSplitPanel(final IGecoApp geco, final JFrame frame) {
 		JPanel runnerSplitPanel = new JPanel(new GridBagLayout());
-		runnerSplitPanel.setBorder(BorderFactory.createTitledBorder("Runner Split"));
+		runnerSplitPanel.setBorder(BorderFactory.createTitledBorder(Messages.uiGet("TemplateConfigPanel.RunnerSplitTitle"))); //$NON-NLS-1$
 		GridBagConstraints c = SwingUtils.gbConstr();
 		c.fill = GridBagConstraints.HORIZONTAL;
 		
@@ -137,7 +137,7 @@ public class TemplateConfigPanel extends JPanel implements ConfigPanel {
 
 	public Component createResultsPanel(final IGecoApp geco, final JFrame frame) {
 		JPanel resultsPanel = new JPanel(new GridBagLayout());
-		resultsPanel.setBorder(BorderFactory.createTitledBorder("Results"));
+		resultsPanel.setBorder(BorderFactory.createTitledBorder(Messages.uiGet("TemplateConfigPanel.ResultsTitle"))); //$NON-NLS-1$
 		GridBagConstraints c = SwingUtils.gbConstr();
 		c.fill = GridBagConstraints.HORIZONTAL;
 		
@@ -181,7 +181,7 @@ public class TemplateConfigPanel extends JPanel implements ConfigPanel {
 		resultsPanel.add(new JLabel(Messages.uiGet("StageConfigPanel.ColumnsLabel")), c); //$NON-NLS-1$
 
 		FileSelector customTemplateFS = new FileSelector(geco, frame,
-				"Select Mustache template for custom results",
+				Messages.uiGet("TemplateConfigPanel.CustomTemplateTitle"), //$NON-NLS-1$
 				GecoIcon.OpenSmall) {
 			public File currentFile() {
 				return geco.splitsExporter().getCustomTemplate();
@@ -191,7 +191,7 @@ public class TemplateConfigPanel extends JPanel implements ConfigPanel {
 			}
 		};
 		setGridBagConstraints(c, 2, 0);
-		resultsPanel.add(new JLabel("Custom Template:"), c);
+		resultsPanel.add(new JLabel(Messages.uiGet("TemplateConfigPanel.CustomTemplateLabel")), c); //$NON-NLS-1$
 		resultsPanel.add(customTemplateFS.getFilenameField(), c);
 		resultsPanel.add(customTemplateFS.getSelectFileButton(), c);
 		
@@ -205,7 +205,7 @@ public class TemplateConfigPanel extends JPanel implements ConfigPanel {
 
 	@Override
 	public String getLabel() {
-		return "Templates";
+		return Messages.uiGet("TemplateConfigPanel.TemplatesTitle"); //$NON-NLS-1$
 	}
 
 	@Override

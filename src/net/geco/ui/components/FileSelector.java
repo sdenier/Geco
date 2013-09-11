@@ -56,7 +56,7 @@ public abstract class FileSelector {
 	}
 
 	public String filenameValue() {
-		return currentFile() != null ? currentFile().getName() : "";
+		return currentFile() != null ? currentFile().getName() : ""; //$NON-NLS-1$
 	}
 	
 	public abstract File currentFile();

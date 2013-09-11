@@ -73,7 +73,7 @@ public abstract class AResultExporter extends Control {
 
 	public void exportFile(String filename, String format, ResultConfig config, int refreshInterval)
 			throws Exception {
-		if( filename.indexOf(".") == -1 ) {
+		if( filename.indexOf(".") == -1 ) { //$NON-NLS-1$
 			filename = filename + "." + format; //$NON-NLS-1$
 		}
 		if( format.equals("html") ) { //$NON-NLS-1$

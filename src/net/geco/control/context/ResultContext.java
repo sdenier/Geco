@@ -28,7 +28,7 @@ public class ResultContext extends GenericContext {
 			put("geco_CourseNbControls", course.getCodes().length); //$NON-NLS-1$
 			ContextList controls = createContextList("geco_CourseControls", course.getCodes().length); //$NON-NLS-1$
 			for (int code : course.getCodes()) {
-				controls.add(GenericContext.createSingleElement("geco_ControlCode", code));
+				controls.add(GenericContext.createSingleElement("geco_ControlCode", code)); //$NON-NLS-1$
 			}
 		}
 	}

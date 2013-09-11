@@ -16,6 +16,7 @@ import net.geco.control.GecoControl;
 import net.geco.control.RunnerBuilder;
 import net.geco.control.RunnerControl;
 import net.geco.model.Course;
+import net.geco.model.Messages;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 
@@ -34,12 +35,12 @@ public class ResetECardFunction extends AbstractRunnerFunction {
 
 	@Override
 	public String toString() {
-		return "Reset données de course";
+		return Messages.uiGet("ResetECardFunction.ResetECardTitle"); //$NON-NLS-1$
 	}
 
 	@Override
 	public String executeTooltip() {
-		return "Suppression des données puces, remise à zéro des coureurs dans l'état 'Non parti'"; 
+		return Messages.uiGet("ResetECardFunction.ResetECardTooltip");  //$NON-NLS-1$
 	}
 
 	@Override
@@ -54,7 +55,7 @@ public class ResetECardFunction extends AbstractRunnerFunction {
 		Collection<RunnerRaceData> selectedRunners = selectedRunners();
 		boolean resetAutoCourse = resetAutoCourseC.isSelected();
 		Course autoCourse = geco().registry().autoCourse();
-		geco().log("Resetting " + selectedRunners.size() + " runners data");
+		geco().log("Resetting " + selectedRunners.size() + " runners data"); //$NON-NLS-1$ //$NON-NLS-2$
 		for (RunnerRaceData runnerData : selectedRunners) {
 			Runner runner = runnerData.getRunner();
 			runnerControl.updateRunnerDataFor(runner, rBuilder.buildRunnerData());
@@ -62,15 +63,13 @@ public class ResetECardFunction extends AbstractRunnerFunction {
 				runnerControl.updateCourse(runner, runner.getCourse(), autoCourse );
 			}
 		}
-		geco().log("Reset done");
+		geco().log("Reset done"); //$NON-NLS-1$
 	}
 
 	@Override
 	public JComponent getParametersConfig() {
-		resetAutoCourseC = new JCheckBox("Reset du circuit en [Auto]");
-		resetAutoCourseC.setToolTipText("Force le coureur sur le circuit [Auto] si coché");
-
-//		resetAllRunnersC.setAlignmentX(Component.LEFT_ALIGNMENT);
+		resetAutoCourseC = new JCheckBox(Messages.uiGet("ResetECardFunction.ResetAutoCourseLabel")); //$NON-NLS-1$
+		resetAutoCourseC.setToolTipText(Messages.uiGet("ResetECardFunction.ResetAutoCourseTooltip")); //$NON-NLS-1$
 		
 		Box box = Box.createVerticalBox();
 		box.add(resetAutoCourseC);
