@@ -59,6 +59,10 @@ public class ArchiveManager extends OEImporter implements StageListener {
 		archive = new Archive();
 		super.loadArchiveFrom(archiveFile);
 	}
+
+	public File getArchiveFile() {
+		return this.archiveFile;
+	}
 	
 	public void setArchiveFile(File archiveFile) {
 		this.archiveFile = archiveFile;

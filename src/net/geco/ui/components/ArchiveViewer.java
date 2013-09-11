@@ -33,7 +33,7 @@ import javax.swing.RowFilter;
 import javax.swing.table.TableRowSorter;
 
 import net.geco.control.ArchiveManager;
-import net.geco.framework.IGeco;
+import net.geco.framework.IGecoApp;
 import net.geco.model.Archive;
 import net.geco.model.ArchiveRunner;
 import net.geco.model.Messages;
@@ -47,7 +47,7 @@ import net.geco.ui.basics.SwingUtils;
  */
 public class ArchiveViewer extends JFrame {
 	
-	private IGeco geco;
+	private IGecoApp geco;
 	
 	private ArchiveTableModel tableModel;
 	
@@ -62,7 +62,7 @@ public class ArchiveViewer extends JFrame {
 	private JLabel nbEntriesL;
 
 	
-	public ArchiveViewer(IGeco geco) {
+	public ArchiveViewer(IGecoApp geco) {
 		this.geco = geco;
 		guiInit();
 	}
@@ -138,7 +138,12 @@ public class ArchiveViewer extends JFrame {
 		loadFileB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir")); //$NON-NLS-1$
+				File archiveFile = archiveManager().getArchiveFile();
+				String openPath = (archiveFile != null && archiveFile.exists()) ?
+						archiveFile.getAbsolutePath()
+						:
+						geco.getCurrentStagePath();
+				JFileChooser fileChooser = new JFileChooser(openPath);
 				fileChooser.setDialogTitle(Messages.uiGet("ArchiveViewer.SelectArchiveLabel")); //$NON-NLS-1$
 				int answer = fileChooser.showOpenDialog(ArchiveViewer.this);
 				if( answer==JFileChooser.APPROVE_OPTION ) {
@@ -186,7 +191,6 @@ public class ArchiveViewer extends JFrame {
 	private Component initTableScroll() {
 		tableModel = new ArchiveTableModel();
 		table = new JTable(tableModel);
-//		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 		table.setPreferredScrollableViewportSize(new Dimension(700, 500));
 		table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.getSelectionModel().setSelectionInterval(0, 0);
@@ -199,7 +203,6 @@ public class ArchiveViewer extends JFrame {
 					RowFilter<Object,Object> filter = RowFilter.regexFilter("(?i)" + filterField.getText()); //$NON-NLS-1$
 					sorter.setRowFilter(filter);
 					showRowCount();
-//					table.getSelectionModel().setSelectionInterval(0, 0);
 				} catch (java.util.regex.PatternSyntaxException e1) {
 					return;
 				}				

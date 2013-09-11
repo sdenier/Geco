@@ -95,8 +95,8 @@ public class TemplateConfigPanel extends JPanel implements ConfigPanel {
 		FileSelector columnsTemplateFS = new FileSelector(geco, frame,
 				  Messages.uiGet("SIReaderConfigPanel.ColumnTemplateTitle"), //$NON-NLS-1$
 				  GecoIcon.OpenSmall) {
-			public String filenameValue() {
-				return geco.splitPrinter().getColumnTemplate().getName();
+			public File currentFile() {
+				return geco.splitPrinter().getColumnTemplate();
 			}
 			public void fileChosen(File selectedFile) {
 				geco.splitPrinter().setColumnTemplate(selectedFile);
@@ -120,8 +120,8 @@ public class TemplateConfigPanel extends JPanel implements ConfigPanel {
 		FileSelector ticketTemplateFS = new FileSelector(geco, frame,
 				 Messages.uiGet("SIReaderConfigPanel.TicketTemplateTitle"), //$NON-NLS-1$
 				 GecoIcon.OpenSmall) {
-			public String filenameValue() {
-				return geco.splitPrinter().getTicketTemplate().getName();
+			public File currentFile() {
+				return geco.splitPrinter().getTicketTemplate();
 			}
 			public void fileChosen(File selectedFile) {
 				geco.splitPrinter().setTicketTemplate(selectedFile);
@@ -144,8 +144,8 @@ public class TemplateConfigPanel extends JPanel implements ConfigPanel {
 		FileSelector rankingTemplateFS = new FileSelector(geco, frame,
 				Messages.uiGet("StageConfigPanel.RankingTemplateTitle"), //$NON-NLS-1$
 				GecoIcon.OpenSmall) {
-			public String filenameValue() {
-				return geco.resultExporter().getRankingTemplate().getName();
+			public File currentFile() {
+				return geco.resultExporter().getRankingTemplate();
 			}
 			public void fileChosen(File selectedFile) {
 				geco.resultExporter().setRankingTemplate(selectedFile);
@@ -158,8 +158,8 @@ public class TemplateConfigPanel extends JPanel implements ConfigPanel {
 		FileSelector splitsTemplateFS = new FileSelector(geco, frame,
 				Messages.uiGet("StageConfigPanel.SplitsTemplateTitle"), //$NON-NLS-1$
 				GecoIcon.OpenSmall) {
-			public String filenameValue() {
-				return geco.splitsExporter().getSplitsTemplate().getName();
+			public File currentFile() {
+				return geco.splitsExporter().getSplitsTemplate();
 			}
 			public void fileChosen(File selectedFile) {
 				geco.splitsExporter().setSplitsTemplate(selectedFile);
@@ -183,8 +183,8 @@ public class TemplateConfigPanel extends JPanel implements ConfigPanel {
 		FileSelector customTemplateFS = new FileSelector(geco, frame,
 				"Select Mustache template for custom results",
 				GecoIcon.OpenSmall) {
-			public String filenameValue() {
-				return geco.splitsExporter().getCustomTemplate().getName();
+			public File currentFile() {
+				return geco.splitsExporter().getCustomTemplate();
 			}
 			public void fileChosen(File selectedFile) {
 				geco.splitsExporter().setCustomTemplate(selectedFile);

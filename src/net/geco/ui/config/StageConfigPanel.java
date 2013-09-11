@@ -89,11 +89,9 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 		FileSelector archiveFS = new FileSelector(geco, frame,
 												Messages.uiGet("ArchiveViewer.SelectArchiveLabel"), //$NON-NLS-1$
 												GecoIcon.OpenArchive) {
-			@Override
-			public String filenameValue() {
-				return geco.archiveManager().getArchiveName();
+			public File currentFile() {
+				return geco.archiveManager().getArchiveFile();
 			}
-			@Override
 			public void fileChosen(File selectedFile) {
 				geco.archiveManager().setArchiveFile(selectedFile);
 			}
@@ -106,11 +104,9 @@ public class StageConfigPanel extends JPanel implements ConfigPanel {
 		FileSelector cnScoreFS = new FileSelector(geco, frame,
 												Messages.uiGet("StageConfigPanel.SelectCNfileLabel"), //$NON-NLS-1$
 												GecoIcon.OpenArchive) {
-			@Override
-			public String filenameValue() {
-				return geco.cnCalculator().getCnFile().getName();
+			public File currentFile() {
+				return geco.cnCalculator().getCnFile();
 			}
-			@Override
 			public void fileChosen(File selectedFile) {
 				geco.cnCalculator().setCnFile(selectedFile);
 			}
