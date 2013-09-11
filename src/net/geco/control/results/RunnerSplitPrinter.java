@@ -123,22 +123,26 @@ public class RunnerSplitPrinter extends Control implements StageListener, CardLi
 
 	private void generateSingleSplitsInColumns(RunnerRaceData data, Writer out) throws IOException {
 		RunnerContext runnerCtx = buildRunnerSplitContext(data);
-		exporter.mergeCustomStageProperties(runnerCtx);
 		exporter.createRunnerSplitsRowsAndColumns(runnerCtx,
 												  builder.buildNormalSplits(data, true),
 												  new SplitTime[0],
 												  nbColumns());
-		
-		exporter.getExternalTemplate(getColumnTemplatePath()).execute(runnerCtx, out);
+		generateSingleSplits(getColumnTemplatePath(), runnerCtx, out);
 	}
 
 	private void generateSingleSplitsInLine(RunnerRaceData data, Writer out) throws IOException {
 		RunnerContext runnerCtx = buildRunnerSplitContext(data);
-		exporter.mergeCustomStageProperties(runnerCtx);
 		exporter.createRunnerSplitsInline(runnerCtx,
 												 builder.buildLinearSplits(data));
-		
-		exporter.getExternalTemplate(getTicketTemplatePath()).execute(runnerCtx, out);
+		generateSingleSplits(getTicketTemplatePath(), runnerCtx, out);
+	}
+
+	private void generateSingleSplits(final String templatePath, RunnerContext runnerCtx, Writer out) throws IOException {
+		if( prototypeMode ) {
+			exporter.resetTemplate(templatePath);
+		}
+		exporter.mergeCustomStageProperties(runnerCtx);
+		exporter.getExternalTemplate(templatePath).execute(runnerCtx, out);
 	}
 
 	protected RunnerContext buildRunnerSplitContext(RunnerRaceData data) {
