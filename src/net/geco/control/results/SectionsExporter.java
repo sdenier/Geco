@@ -130,8 +130,17 @@ public class SectionsExporter extends AResultExporter {
 	}
 	
 	@Override
-	protected GenericContext buildCustomContext(ResultConfig config, int refreshInterval, OutputType outputType) {
+	protected void exportCustomFile(String filename, ResultConfig config, int refreshInterval) throws IOException {
 		geco().info(Messages.getString("CNCalculator.NotFunctionalLabel"), true); //$NON-NLS-1$
+	}
+	
+	@Override
+	protected String getCustomTemplatePath() {
+		return ""; //$NON-NLS-1$
+	}
+
+	@Override
+	protected GenericContext buildCustomContext(ResultConfig config, int refreshInterval, OutputType outputType) {
 		return new GenericContext();
 	}
 
