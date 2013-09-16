@@ -62,12 +62,3 @@ sudo kextcache -system-caches
 4\. Restart your computer to check that the system takes into account your modifications.
 
 Now the station should appear as **/dev/tty.SLAB\_USBtoUART** in Geco (also appear in the System profiler as **SPORTident USB to UART Bridge Controller**).
-
-
-## Geco misreads control code with code higher than 255
-This is a current limitation of Geco. If you reprogram a station with a code higher than 255, Geco can still read punches from this station, but will read the control code modulo 255 (the remainder of division by 255). For example:
-
-- 300 modulo 255 gives 45
-- 600 modulo 255 gives 90 (or, if you want, 255 * 2 + 90 = 600)
-
-It is not recommended to bypass this limit when using Geco. If you still want to use control code higher than 255, you will have to edit each course and replace control codes > 255 with their modulo.

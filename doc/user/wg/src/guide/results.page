@@ -29,7 +29,7 @@ Results display runners with OK status, as well as runners with status MP, DNF, 
 
 Geco also computes the **difference** to best time as well as **mean pace** when course length is available.
 
-Results can be displayed in the right panel (*Refresh* button), printed, or exported in an external file. The default export format is HTML.
+Results can be displayed in the right panel (*Refresh* button), printed, or exported in an external file.
 
 <a href="../images/results_splits.png"><img src="../images/results_splits.png" /></a>
 
@@ -38,9 +38,12 @@ Results can be displayed in the right panel (*Refresh* button), printed, or expo
 Geco offers four file formats for export:
 
 - **HTML** for web publication
+- **Custom**, to be used by different tools, including your own (O'Splits...)
 - **CSV**, a complete format for spreadsheets
 - **OE CSV**, which is recognized by some analysis applications
 - **XML**, which is the standard IOF format for result exchange
+
+You can completely edit the HTML and custom formats through the [results templates](stage.html). The Mustache engine can actually produce any kind of text outpute, not only HTML.
 
 The dedicated *CSV* Geco format can easily be imported in a spreadsheet to process results. This format provides numerous information, including punches, MPs, rank, etc.
 
@@ -48,7 +51,7 @@ For RouteGadget and other analysis tools, select *Splits* then *XML* or *OE CSV*
 
 ### CN simulator
 
-The CN simulator computes scores for competitors from the FFCO. You can use this function to check that data are ok for publication.
+The CN simulator computes scores for competitors from the french federation. You can use this function to check that data are ok for publication.
 
 Check the correctness of archive ids to ensure ok results! Best way to do it is simply to use archive import or CSV import.
 
@@ -57,4 +60,4 @@ Check the correctness of archive ids to ensure ok results! Best way to do it is 
 
 ## Auto mode (results)
 
-The *Auto* button, when on (pressed), repeatedly refreshes results or generates a result file called `lastresults` in the data folder with the interval specified (in seconds) in the textfield at the right. The auto feature takes into account parameters specified when the button is pressed (selected courses or categories, ranking/splits/CN, export format, options). Stop then start again auto mode to take into account new parameters.
+The *Auto* button, when on (pressed), repeatedly refreshes results or generates a result file with the interval specified (in seconds) in the textfield at the right. The auto feature takes into account parameters specified when the button is pressed (selected courses or categories, ranking/splits/CN, export format, options). Stop then start again auto mode to take into account new parameters.

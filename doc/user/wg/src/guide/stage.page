@@ -6,7 +6,7 @@ in_menu: true
 
 # Configuration Panel
 
-The configuration panel allows one to set up many configuration items for the stage, depending on the stage format. Configuration items are grouped by topics in the left list. Select one topic to see available options in the main pane.
+The configuration panel allows one to set up different options for the stage. options are grouped by sections in the sidebar. Select one section to see available options in the main pane.
 
 <a href="../images/stage_panel.png"><img src="../images/stage_panel.png" /></a>
 (Click to zoom in)
@@ -17,11 +17,9 @@ The configuration panel allows one to set up many configuration items for the st
 - CN base: path to score file for the [french CN](results.html) (national ranking), exported as [CSV](http://cn.ffcorientation.fr/classement)
 
 ## SI Reader
-- Station port: *SPORTident master station must be connected before launching the app so that Geco can detect the port*
-- Split format: multi-columns (see `SplitNbColumns` in `geco.prop`) or ticket (single column, best for thermal printer)
-- You can customize header and footer of the split sheet with some texts
+- Station port: Geco scans available ports each time you open the dropdown list
 
-This panel also allows you to customize a bit more the behavior of Geco when reading ecards (either in racing or training [modes](ecard_modes.html)). You can choose to:
+This panel also allows you to customize the behavior of Geco when reading ecards (either in racing or training [modes](ecard_modes.html)). You can choose to:
 
 - manually resolve ecard issues with the [Merge wizard](merge.html) *or* let Geco handles all ecards [automatically](../workflows/auto.html), creating an entry for each reading (unknown, duplicate entries)
 - let Geco lookup unregistered ecards and insert entries from archive (only for the automatic behavior)
@@ -31,7 +29,15 @@ This panel also allows you to customize a bit more the behavior of Geco when rea
 - Don't check MP limit: runner can have any number of missing punches without ever being MP (disable MP limit)
 - Time penalty: time penalty per missing punch, in seconds (also displayed in minutes for large time penalty)
 
-<a href="../images/stage_panel_penalties.png"><img src="../images/stage_panel_penalties.png" /></a>
+## Templates
+
+This section allows you to select [custom Mustache templates](../howtos/customresults.html) for exporting and printing results, as well as set up runner splits printing. If no templates are selected, Geco uses the internal ones.
+
+Three templates are available for stage results: ranking, split times, and custom (which can be used to easily export results in a different format).
+
+You can choose between multi-columns format or single-column 'ticket' (for thermal printer) for the runner splits. The *Prototyping* checkbox makes it easy to quickly change and test template files: instead of printing a split, Geco will open a window with the split and writes a *runner_splits.html* file.
+
+<a href="../images/stage_panel_templates.png"><img src="../images/stage_panel_templates.png" /></a>
 
 ## Course
 - Geco can import courses described with the *[IOF XML](http://www.soenniksen.dk/iof-datastandard/index.shtml)* format. Click the *XML* button to select the course file. You can choose between the **XML V2** (current) format or the new **XML V3** format.

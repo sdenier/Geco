@@ -8,7 +8,24 @@ in_menu: true
 
 ## Version 2.1 beta - 2013/06/04
 
-[Geco 2.1](http://bitbucket.org/sdenier/geco/downloads/geco-2.1-beta.jar) is solely focused on a new template engine to export results. Ranking, splits, runner splits are now generated using [Mustache](http://mustache.github.io). Thus templates can be fully [edited and customized](../howtos/customresults.html) by the user.
+[Geco 2.1](http://bitbucket.org/sdenier/geco/downloads/geco-2.1-beta.jar) is the first stable release in the 2.x series. It includes the first stable version of GecoSI (1.0.0) as well as a new template engine to export results.
+
+- [GecoSI](https://github.com/sdenier/GecoSI) 1.0.0 can read all SPORTident cards (from Si5 to Si11/SIAC) with the *extended protocol*. It also supports the 192 punches mode for Si6 cards. Geco handles registered starttimes as well as starttime given by start station. GecoSI correctly handles punch times for races which go past midnight or even last more than 24 hours.
+- Ranking, splits, runner splits are now generated using [Mustache](http://mustache.github.io). Thus templates can be fully [edited and customized](../howtos/customresults.html) by the user. See for example the custom template for the [O'Splits](https://chrome.google.com/webstore/detail/osplits/kfnlllbjdagblbcdnmghcljobdlaoaii?hl=fr) analysis extension.
+
+### Minor Changes
+
+- A startlist by course can now be exported from the runners table.
+- One can choose the file and path for automatic export of results.
+- A manual merge between two entries puts the focus on the resulting entry.
+
+### Bug Fix
+
+- GecoSI 1.0.0 intefration fixes multiple bugs when reading ecards withtout start times or when using the 192 punches mode.
+
+### Known Issue
+
+- Ecard reading can be slow for some generation of ecards. The master station may also freeze if the runner removes the ecard too fast (before the bip).
 
 
 ## Version 2.0 beta - 2013/05/01

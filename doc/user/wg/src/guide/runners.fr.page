@@ -19,6 +19,7 @@ La vue dans le panneau de droite peut montrer des données détaillées sur le c
 
 - *Créer/Supprimer un coureur :* ajouter un nouveau concurrent à la fin de la liste de départ ; supprimer le concurrent sélectionné
 - *Importer CSV / Ouvrir la vue [Archive](archive.fr.html) :* pour faire des pré-inscriptions en masse
+- *Exporter les listes de départ :* pour exporter rapidement les listes de départ par circuit
 - *Trier les concurrents :* cliquez sur l'entête d'une colonne pour trier les concurrents par rang ascendant/descendant
 - *Filtrer les concurrents :* entrez quelques caractères pour montrer les entrées correspondant à la recherche
 - *Édition rapide :* un seul clic dans la table permet d'éditer les données - utile quand il s'agit d'effectuer rapidement plusieurs modifications manuelles
