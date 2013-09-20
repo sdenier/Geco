@@ -33,7 +33,6 @@ import net.geco.control.SectionService;
 import net.geco.framework.IGecoApp;
 import net.geco.model.Course;
 import net.geco.model.Messages;
-import net.geco.model.Section;
 import net.geco.model.xml.CourseSaxImporter;
 import net.geco.model.xml.V3CourseSaxImporter;
 import net.geco.model.xml.XMLCourseImporter;
@@ -242,7 +241,6 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 		final ConfigTableModel<Integer> controlsModel;
 		
 		if( geco.getConfig().sectionsEnabled ) {
-			sectionService = geco.sectionService();
 			controlsModel = createControlsWithSectionsModel(geco);
 			controlsModel.setData(Collections.<Integer>emptyList());
 			
@@ -251,8 +249,7 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 			sectionB.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					int controlIndex = controlsPanel.table().getSelectedRow();
-					Section section = sectionService.findOrCreateSection(getSelectedCourse(), controlIndex);
-					new SectionControlDialog(geco, frame, getSelectedCourse(), section);
+					new SectionControlDialog(geco, frame, getSelectedCourse(), controlIndex);
 					controlsModel.fireTableRowsUpdated(controlIndex, controlIndex);
 				}
 			});
@@ -316,6 +313,7 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 	}
 
 	private ConfigTableModel<Integer> createControlsWithSectionsModel(final IGecoApp geco) {
+		sectionService = geco.sectionService();
 		return new ConfigTableModel<Integer>(new String[] {"Num", "Code", "Section", "Penalty"}) {
 			@Override
 			public void setValueIn(Integer code, Object value, int col) {

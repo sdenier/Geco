@@ -36,5 +36,15 @@ public class SectionService extends Control {
 			return section;
 		}
 	}
+
+	public void put(Course course, Section section) {
+		course.putSection(section);
+		course.refreshSectionCodes();
+	}
+
+	public void remove(Course course, Section section) {
+		course.removeSection(section);
+		course.refreshSectionCodes();
+	}
 	
 }

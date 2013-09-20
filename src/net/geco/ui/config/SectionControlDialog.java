@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import net.geco.basics.Html;
+import net.geco.control.SectionService;
 import net.geco.framework.IGecoApp;
 import net.geco.model.Course;
 import net.geco.model.Messages;
@@ -38,10 +39,13 @@ import net.geco.ui.basics.SwingUtils;
  */
 public class SectionControlDialog extends JDialog {
 
-	public SectionControlDialog(final IGecoApp geco, JFrame frame, final Course selectedCourse, final Section targetSection) {
+	public SectionControlDialog(final IGecoApp geco, JFrame frame, final Course selectedCourse, int controlIndex) {
 		super(frame, "Create or Edit a Section...", true); //$NON-NLS-1$
 		setResizable(false);
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
+		
+		final SectionService sectionService = geco.sectionService();
+		final Section targetSection = sectionService.findOrCreateSection(selectedCourse, controlIndex);
 		
 		final JTextField sectionNameF = new JTextField(12);
 		sectionNameF.setText(targetSection.getName());
@@ -65,8 +69,7 @@ public class SectionControlDialog extends JDialog {
 					targetSection.setName(sectionName);
 					targetSection.setType((SectionType) sectionTypeCB.getSelectedItem());
 					targetSection.setNeutralized(neutralizedCB.isSelected());
-					selectedCourse.putSection(targetSection);
-					selectedCourse.refreshSectionCodes();
+					sectionService.put(selectedCourse, targetSection);
 					geco.stageControl().validateControlsPenalty(targetSection.getCodes(), penaltyF.getText());
 					setVisible(false);
 				}
@@ -76,7 +79,7 @@ public class SectionControlDialog extends JDialog {
 		JButton deleteB = new JButton("Delete");
 		deleteB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				selectedCourse.removeSection(targetSection);
+				sectionService.remove(selectedCourse, targetSection);
 				setVisible(false);
 			}
 		});
