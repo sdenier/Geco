@@ -43,7 +43,7 @@ Geco offers four file formats for export:
 - **OE CSV**, which is recognized by some analysis applications
 - **XML**, which is the standard IOF format for result exchange
 
-You can completely edit the HTML and custom formats through the [results templates](stage.html). The Mustache engine can actually produce any kind of text outpute, not only HTML.
+You can choose HTML and custom formats through [results templates](stage.html). To start with, **basic templates** are provided in the *formats* folder. You can also [edit template files](../howtos/customresults.html) to export your own format. The Mustache engine can actually produce any kind of text outpute, not only HTML.
 
 The dedicated *CSV* Geco format can easily be imported in a spreadsheet to process results. This format provides numerous information, including punches, MPs, rank, etc.
 

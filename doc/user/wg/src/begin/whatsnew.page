@@ -4,13 +4,13 @@ sort_info: 5
 in_menu: true
 ---
 
-#What's new?
+# What's new?
 
-## Version 2.1 beta - 2013/06/04
+## Version 2.1 - 2013/09/21
 
-[Geco 2.1](http://bitbucket.org/sdenier/geco/downloads/geco-2.1-beta.jar) is the first stable release in the 2.x series. It includes the first stable version of GecoSI (1.0.0) as well as a new template engine to export results.
+[Geco 2.1](http://bitbucket.org/sdenier/geco/downloads/geco-2.1.zip) is the first stable release in the 2.x series. It includes the first stable version of GecoSI (1.0.0) as well as a new template engine to export results.
 
-- [GecoSI](https://github.com/sdenier/GecoSI) 1.0.0 can read all SPORTident cards (from Si5 to Si11/SIAC) with the *extended protocol*. It also supports the 192 punches mode for Si6 cards. Geco handles registered starttimes as well as starttime given by start station. GecoSI correctly handles punch times for races which go past midnight or even last more than 24 hours.
+- [GecoSI](https://github.com/sdenier/GecoSI) 1.0.0 can read all SPORTident cards (from Si5 to Si11/SIAC) with the *extended protocol*. It also supports the 192 punches mode for Si6 cards. Geco handles registered starttimes as well as starttime given by start station. GecoSI correctly handles punch times for races which go past midnight, even those lasting more than 24 hours.
 - Ranking, splits, runner splits are now generated using [Mustache](http://mustache.github.io). Thus templates can be fully [edited and customized](../howtos/customresults.html) by the user. See for example the custom template for the [O'Splits](https://chrome.google.com/webstore/detail/osplits/kfnlllbjdagblbcdnmghcljobdlaoaii?hl=fr) analysis extension.
 
 ### Minor Changes

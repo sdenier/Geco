@@ -42,7 +42,7 @@ Geco propose quatre formats d'export :
 - **OE CSV**, format reconnu par certains outils d'analyse
 - **XML**, format standard de l'IOF pour échanger des résultats
 
-Les formats HTML et personnalisé peuvent en fait être modifiés comme vous le souhaitez en éditant les [modèles des résultats](stage.fr.html). D'ailleurs, ces modèles peuvent très bien produire un tout autre format que le HTML.
+Les fichiers modèles pour les formats HTML et personnalisé peuvent choisis dans la [configuration](stage.fr.html). Des **modèles de base** sont fournis dans le dossier *formats*. Vous pouvez [éditer ces modèles](../howtos/customresults.fr.html) pour exporter votre propre format. Vous pouvez d'ailleurs produire n'importe quel document texte (et pas seulement de l'HTML).
 
 Le format de résultats *CSV* propre à Geco peut être facilement importer dans un tableur pour traîter les résultats. Il contient de nombreuses informations, y compris les poinçons, les PMs, la place atteinte par le coureur, etc.
 

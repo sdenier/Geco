@@ -6,9 +6,9 @@ in_menu: true
 
 # Quoi de neuf ?
 
-## Version 2.1 - //2013
+## Version 2.1 - 21/09/2013
 
-[Geco 2.1](http://bitbucket.org/sdenier/geco/downloads/geco-2.1-beta.jar) est la première version stable dans la série 2.x. Elle intègre la première version stable de GecoSI (1.0.0) ainsi qu'un nouveau moteur extensible pour l'export des résultats.
+[Geco 2.1](http://bitbucket.org/sdenier/geco/downloads/geco-2.1.zip) est la première version stable dans la série 2.x. Elle intègre la première version stable de GecoSI (1.0.0) ainsi qu'un nouveau moteur extensible pour l'export des résultats.
 
 - [GecoSI](https://github.com/sdenier/GecoSI) 1.0.0 peut lire toutes les générations de puces SPORTident (Si5 à Si11/SIAC) avec le *protocole étendu*. Le mode 192 poinçons pour les puces Si6 est aussi supporté. Geco gère les départs pré-attribués comme les départs au boîtier. GecoSI permet d'utiliser les puces SPORTident sur des courses de plus de 24h00, en calculant correctement le passage du temps après minuit.
 - Les classements, splits, tickets pour le coureur sont maintenant générés grâce à [Mustache](http://mustache.github.io). Les fichiers modèles peuvent ainsi être [modifiés et personnalisés](../howtos/customresults.fr.html) par l'utilisateur. Par exemple, il est possible d'exporter directement le fichier de résultats pour [O'Splits](https://chrome.google.com/webstore/detail/osplits/kfnlllbjdagblbcdnmghcljobdlaoaii?hl=fr).

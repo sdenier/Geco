@@ -31,7 +31,7 @@ This panel also allows you to customize the behavior of Geco when reading ecards
 
 ## Templates
 
-This section allows you to select [custom Mustache templates](../howtos/customresults.html) for exporting and printing results, as well as set up runner splits printing. If no templates are selected, Geco uses the internal ones.
+This section allows you to select [custom Mustache templates](../howtos/customresults.html) for exporting and printing results, as well as set up runner splits printing. To start with, **basic templates** are provided in the *formats* folder. If no templates are selected, Geco uses the internal ones.
 
 Three templates are available for stage results: ranking, split times, and custom (which can be used to easily export results in a different format).
 

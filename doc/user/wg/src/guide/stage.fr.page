@@ -30,7 +30,7 @@ Cette section permet aussi de configurer le comportement de Geco à la lecture d
 
 ## Modèles
 
-Cette section permet de choisir les [modèles personnalisés](../howtos/customresults.fr.html) Mustache pour l'export (et l'impression) des résultats ainsi que de configurer l'impression des tickets pour les coureurs. A défaut de configurer ces modèles, Geco utilisera les modèles internes par défaut.
+Cette section permet de choisir les [modèles personnalisés](../howtos/customresults.fr.html) Mustache pour l'export (et l'impression) des résultats ainsi que de configurer l'impression des tickets pour les coureurs. Des **modèles de base** sont fournis dans le dossier *formats*. À défaut de configurer ces modèles, Geco utilisera les modèles internes par défaut.
 
 Trois modèles sont disponibles pour les résultats de la course : classement, splits et personnalisé (pour exporter les résultats sous un autre format par exemple).
 
