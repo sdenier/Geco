@@ -53,13 +53,13 @@
             <h1>Download</h1>
             <div id="downloads">
               <ul>
-                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-1.3.zip">Version 1.3</a></li>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.1.zip">Version 2.1</a></li>
                 <li>See <a href="../begin/whatsnew.html">what's new</a></li>
               </ul>
             </div>
           
             <h1>Contents</h1>
-            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.html">Launcher</a></li><li class="webgen-menu-level1"><a href="toolbar.html">Toolbar</a></li><li class="webgen-menu-level1"><a href="ecard_modes.html">Ecard Modes</a></li><li class="webgen-menu-level1"><a href="stage.html">Configuration</a></li><li class="webgen-menu-level1"><a href="runners.html">Runners</a></li><li class="webgen-menu-level1"><a href="archive.html">Archive</a></li><li class="webgen-menu-level1"><a href="merge.html">Merge</a></li><li class="webgen-menu-level1"><a href="log.html">Log/Stats</a></li><li class="webgen-menu-level1"><a href="functions.html">Functions</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Results</span></li><li class="webgen-menu-level1"><a href="heats.html">Heats</a></li></ul></div>
+            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.html">Launch</a></li><li class="webgen-menu-level1"><a href="toolbar.html">Toolbar</a></li><li class="webgen-menu-level1"><a href="ecard_modes.html">Ecard Modes</a></li><li class="webgen-menu-level1"><a href="stage.html">Configuration</a></li><li class="webgen-menu-level1"><a href="runners.html">Runners</a></li><li class="webgen-menu-level1"><a href="archive.html">Archive</a></li><li class="webgen-menu-level1"><a href="merge.html">Merge</a></li><li class="webgen-menu-level1"><a href="log.html">Log/Stats</a></li><li class="webgen-menu-level1"><a href="functions.html">Functions</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Results</span></li><li class="webgen-menu-level1"><a href="heats.html">Heats</a></li></ul></div>
           
             <h1>Links</h1>
             <div id="links">
@@ -103,7 +103,7 @@
 
 <p>Geco also computes the <strong>difference</strong> to best time as well as <strong>mean pace</strong> when course length is available.</p>
 
-<p>Results can be displayed in the right panel (<em>Refresh</em> button), printed, or exported in an external file. The default export format is HTML.</p>
+<p>Results can be displayed in the right panel (<em>Refresh</em> button), printed, or exported in an external file.</p>
 
 <p><a href="../images/results_splits.png"><img src="../images/results_splits.png" /></a></p>
 
@@ -113,10 +113,13 @@
 
 <ul>
   <li><strong>HTML</strong> for web publication</li>
+  <li><strong>Custom</strong>, to be used by different tools, including your own (O&#8217;Splits&#8230;)</li>
   <li><strong>CSV</strong>, a complete format for spreadsheets</li>
   <li><strong>OE CSV</strong>, which is recognized by some analysis applications</li>
   <li><strong>XML</strong>, which is the standard IOF format for result exchange</li>
 </ul>
+
+<p>You can choose HTML and custom formats through <a href="stage.html">results templates</a>. To start with, <strong>basic templates</strong> are provided in the <em>formats</em> folder. You can also <a href="../howtos/customresults.html">edit template files</a> to export your own format. The Mustache engine can actually produce any kind of text outpute, not only HTML.</p>
 
 <p>The dedicated <em>CSV</em> Geco format can easily be imported in a spreadsheet to process results. This format provides numerous information, including punches, MPs, rank, etc.</p>
 
@@ -124,7 +127,7 @@
 
 <h3 id="cn-simulator">CN simulator</h3>
 
-<p>The CN simulator computes scores for competitors from the FFCO. You can use this function to check that data are ok for publication.</p>
+<p>The CN simulator computes scores for competitors from the french federation. You can use this function to check that data are ok for publication.</p>
 
 <p>Check the correctness of archive ids to ensure ok results! Best way to do it is simply to use archive import or CSV import.</p>
 
@@ -132,7 +135,7 @@
 
 <h2 id="auto-mode-results">Auto mode (results)</h2>
 
-<p>The <em>Auto</em> button, when on (pressed), repeatedly refreshes results or generates a result file called <code>lastresults</code> in the data folder with the interval specified (in seconds) in the textfield at the right. The auto feature takes into account parameters specified when the button is pressed (selected courses or categories, ranking/splits/CN, export format, options). Stop then start again auto mode to take into account new parameters.</p>
+<p>The <em>Auto</em> button, when on (pressed), repeatedly refreshes results or generates a result file with the interval specified (in seconds) in the textfield at the right. The auto feature takes into account parameters specified when the button is pressed (selected courses or categories, ranking/splits/CN, export format, options). Stop then start again auto mode to take into account new parameters.</p>
 
           </div>
         </div>

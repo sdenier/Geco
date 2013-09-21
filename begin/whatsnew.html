@@ -53,7 +53,7 @@
             <h1>Download</h1>
             <div id="downloads">
               <ul>
-                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-1.3.zip">Version 1.3</a></li>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.1.zip">Version 2.1</a></li>
                 <li>See <a href="../begin/whatsnew.html">what's new</a></li>
               </ul>
             </div>
@@ -75,6 +75,52 @@
           <div id="contentalt">
             
 <h1 id="whats-new">What&#8217;s new?</h1>
+
+<h2 id="version-21---20130921">Version 2.1 - 2013/09/21</h2>
+
+<p><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.1.zip">Geco 2.1</a> is the first stable release in the 2.x series. It includes the first stable version of GecoSI (1.0.0) as well as a new template engine to export results.</p>
+
+<ul>
+  <li><a href="https://github.com/sdenier/GecoSI">GecoSI</a> 1.0.0 can read all SPORTident cards (from Si5 to Si11/SIAC) with the <em>extended protocol</em>. It also supports the 192 punches mode for Si6 cards. Geco handles registered starttimes as well as starttime given by start station. GecoSI correctly handles punch times for races which go past midnight, even those lasting more than 24 hours.</li>
+  <li>Ranking, splits, runner splits are now generated using <a href="http://mustache.github.io">Mustache</a>. Thus templates can be fully <a href="../howtos/customresults.html">edited and customized</a> by the user. See for example the custom template for the <a href="https://chrome.google.com/webstore/detail/osplits/kfnlllbjdagblbcdnmghcljobdlaoaii?hl=fr">O&#8217;Splits</a> analysis extension.</li>
+</ul>
+
+<h3 id="minor-changes">Minor Changes</h3>
+
+<ul>
+  <li>A startlist by course can now be exported from the runners table.</li>
+  <li>One can choose the file and path for automatic export of results.</li>
+  <li>A manual merge between two entries puts the focus on the resulting entry.</li>
+</ul>
+
+<h3 id="bug-fix">Bug Fix</h3>
+
+<ul>
+  <li>GecoSI 1.0.0 intefration fixes multiple bugs when reading ecards withtout start times or when using the 192 punches mode.</li>
+</ul>
+
+<h3 id="known-issue">Known Issue</h3>
+
+<ul>
+  <li>Ecard reading can be slow for some generation of ecards. The master station may also freeze if the runner removes the ecard too fast (before the bip).</li>
+</ul>
+
+<h2 id="version-20-beta---20130501">Version 2.0 beta - 2013/05/01</h2>
+
+<p><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.0-beta1.jar">Geco 2.0</a> introduces a new period in Geco history, with a policy to produce smaller releases in shorter cycles. This first 2.x release primarily provides some big changes under the hood.</p>
+
+<ul>
+  <li>Geco can now read all SPORTident cards Si5 through Si11/Siac, thanks to its new <a href="http://github.com/sdenier/GecoSI">GecoSI library</a>.</li>
+  <li>The CSV files supporting persistence in Geco 1.x are now deprecated and have been replaced by the more extensible JSON format.</li>
+</ul>
+
+<p>Other minor changes include:</p>
+
+<ul>
+  <li>Refresh serial ports on pop-up (you can hot plug a SPORTident station and see it in Geco).</li>
+  <li>Create OE CSV startlists with a <a href="../workflows/register.html">custom course field</a> for each runner.</li>
+  <li>Export <a href="../guide/heats.html">heats startlist</a> as custom OE CSV format.</li>
+</ul>
 
 <h2 id="version-13---20121105">Version 1.3 - 2012/11/05</h2>
 

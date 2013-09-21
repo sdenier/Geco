@@ -53,7 +53,7 @@
             <h1>Download</h1>
             <div id="downloads">
               <ul>
-                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-1.3.zip">Version 1.3</a></li>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.1.zip">Version 2.1</a></li>
                 <li>Voir les <a href="../begin/whatsnew.fr.html">nouveautés</a></li>
               </ul>
             </div>
@@ -134,16 +134,6 @@ sudo kextcache -system-caches
 <p>4. Redémarrer à nouveau pour vérifier que le système prenne en compte les modifications.</p>
 
 <p>Le boîtier apparaît sous l&#8217;identifiant <strong>/dev/tty.SLAB_USBtoUART</strong> dans Geco (et aussi comme <strong>SPORTident USB to UART Bridge Controller</strong> dans le profil système).</p>
-
-<h2 id="geco-lit-un-mauvais-code-quand-le-code-dune-station-est-suprieur--255">Geco lit un mauvais code quand le code d&#8217;une station est supérieur à 255</h2>
-<p>C&#8217;est une limite actuelle de Geco. Si une station est reprogrammée avec un code supérieur à 255, Geco peut toujours lire le poinçon de la puce mais affectera le code de la station modulo 255 (le reste de la division entière par 255). Par exemple :</p>
-
-<ul>
-  <li>300 modulo 255 donne 45</li>
-  <li>600 modulo 255 donne 90 (soit encore, 255 * 2 + 90 = 600)</li>
-</ul>
-
-<p>Pour éviter les risques de confusion, il n&#8217;est pas recommandé de dépasser cette limite avec Geco. Si vous voulez quand même utiliser des codes supérieurs à 255, il faut éditer chaque circuit pour remplacer les codes &gt; 255 par leur modulo.</p>
 
           </div>
         </div>

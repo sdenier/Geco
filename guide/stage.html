@@ -53,13 +53,13 @@
             <h1>Download</h1>
             <div id="downloads">
               <ul>
-                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-1.3.zip">Version 1.3</a></li>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.1.zip">Version 2.1</a></li>
                 <li>See <a href="../begin/whatsnew.html">what's new</a></li>
               </ul>
             </div>
           
             <h1>Contents</h1>
-            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.html">Launcher</a></li><li class="webgen-menu-level1"><a href="toolbar.html">Toolbar</a></li><li class="webgen-menu-level1"><a href="ecard_modes.html">Ecard Modes</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Configuration</span></li><li class="webgen-menu-level1"><a href="runners.html">Runners</a></li><li class="webgen-menu-level1"><a href="archive.html">Archive</a></li><li class="webgen-menu-level1"><a href="merge.html">Merge</a></li><li class="webgen-menu-level1"><a href="log.html">Log/Stats</a></li><li class="webgen-menu-level1"><a href="functions.html">Functions</a></li><li class="webgen-menu-level1"><a href="results.html">Results</a></li><li class="webgen-menu-level1"><a href="heats.html">Heats</a></li></ul></div>
+            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.html">Launch</a></li><li class="webgen-menu-level1"><a href="toolbar.html">Toolbar</a></li><li class="webgen-menu-level1"><a href="ecard_modes.html">Ecard Modes</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Configuration</span></li><li class="webgen-menu-level1"><a href="runners.html">Runners</a></li><li class="webgen-menu-level1"><a href="archive.html">Archive</a></li><li class="webgen-menu-level1"><a href="merge.html">Merge</a></li><li class="webgen-menu-level1"><a href="log.html">Log/Stats</a></li><li class="webgen-menu-level1"><a href="functions.html">Functions</a></li><li class="webgen-menu-level1"><a href="results.html">Results</a></li><li class="webgen-menu-level1"><a href="heats.html">Heats</a></li></ul></div>
           
             <h1>Links</h1>
             <div id="links">
@@ -76,7 +76,7 @@
             
 <h1 id="configuration-panel">Configuration Panel</h1>
 
-<p>The configuration panel allows one to set up many configuration items for the stage, depending on the stage format. Configuration items are grouped by topics in the left list. Select one topic to see available options in the main pane.</p>
+<p>The configuration panel allows one to set up different options for the stage. options are grouped by sections in the sidebar. Select one section to see available options in the main pane.</p>
 
 <p><a href="../images/stage_panel.png"><img src="../images/stage_panel.png" /></a>
 (Click to zoom in)</p>
@@ -90,12 +90,10 @@
 
 <h2 id="si-reader">SI Reader</h2>
 <ul>
-  <li>Station port: <em>SPORTident master station must be connected before launching the app so that Geco can detect the port</em></li>
-  <li>Split format: multi-columns (see <code>SplitNbColumns</code> in <code>geco.prop</code>) or ticket (single column, best for thermal printer)</li>
-  <li>You can customize header and footer of the split sheet with some texts</li>
+  <li>Station port: Geco scans available ports each time you open the dropdown list</li>
 </ul>
 
-<p>This panel also allows you to customize a bit more the behavior of Geco when reading ecards (either in racing or training <a href="ecard_modes.html">modes</a>). You can choose to:</p>
+<p>This panel also allows you to customize the behavior of Geco when reading ecards (either in racing or training <a href="ecard_modes.html">modes</a>). You can choose to:</p>
 
 <ul>
   <li>manually resolve ecard issues with the <a href="merge.html">Merge wizard</a> <em>or</em> let Geco handles all ecards <a href="../workflows/auto.html">automatically</a>, creating an entry for each reading (unknown, duplicate entries)</li>
@@ -109,7 +107,15 @@
   <li>Time penalty: time penalty per missing punch, in seconds (also displayed in minutes for large time penalty)</li>
 </ul>
 
-<p><a href="../images/stage_panel_penalties.png"><img src="../images/stage_panel_penalties.png" /></a></p>
+<h2 id="templates">Templates</h2>
+
+<p>This section allows you to select <a href="../howtos/customresults.html">custom Mustache templates</a> for exporting and printing results, as well as set up runner splits printing. To start with, <strong>basic templates</strong> are provided in the <em>formats</em> folder. If no templates are selected, Geco uses the internal ones.</p>
+
+<p>Three templates are available for stage results: ranking, split times, and custom (which can be used to easily export results in a different format).</p>
+
+<p>You can choose between multi-columns format or single-column &#8216;ticket&#8217; (for thermal printer) for the runner splits. The <em>Prototyping</em> checkbox makes it easy to quickly change and test template files: instead of printing a split, Geco will open a window with the split and writes a <em>runner_splits.html</em> file.</p>
+
+<p><a href="../images/stage_panel_templates.png"><img src="../images/stage_panel_templates.png" /></a></p>
 
 <h2 id="course">Course</h2>
 <ul>

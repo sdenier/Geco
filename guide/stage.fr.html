@@ -53,13 +53,13 @@
             <h1>Download</h1>
             <div id="downloads">
               <ul>
-                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-1.3.zip">Version 1.3</a></li>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.1.zip">Version 2.1</a></li>
                 <li>Voir les <a href="../begin/whatsnew.fr.html">nouveautés</a></li>
               </ul>
             </div>
           
             <h1>Contenu</h1>
-            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.fr.html">Lanceur</a></li><li class="webgen-menu-level1"><a href="toolbar.fr.html">Barre d'outils</a></li><li class="webgen-menu-level1"><a href="ecard_modes.fr.html">Modes de lecture</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Configuration</span></li><li class="webgen-menu-level1"><a href="runners.fr.html">Coureurs</a></li><li class="webgen-menu-level1"><a href="archive.fr.html">Archive</a></li><li class="webgen-menu-level1"><a href="merge.fr.html">Fusion</a></li><li class="webgen-menu-level1"><a href="log.fr.html">Log/Stats</a></li><li class="webgen-menu-level1"><a href="functions.fr.html">Fonctions</a></li><li class="webgen-menu-level1"><a href="results.fr.html">Résultats</a></li><li class="webgen-menu-level1"><a href="heats.fr.html">Séries</a></li></ul></div>
+            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.fr.html">Lancement</a></li><li class="webgen-menu-level1"><a href="toolbar.fr.html">Barre d'outils</a></li><li class="webgen-menu-level1"><a href="ecard_modes.fr.html">Modes de lecture</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Configuration</span></li><li class="webgen-menu-level1"><a href="runners.fr.html">Coureurs</a></li><li class="webgen-menu-level1"><a href="archive.fr.html">Archive</a></li><li class="webgen-menu-level1"><a href="merge.fr.html">Fusion</a></li><li class="webgen-menu-level1"><a href="log.fr.html">Log/Stats</a></li><li class="webgen-menu-level1"><a href="functions.fr.html">Fonctions</a></li><li class="webgen-menu-level1"><a href="results.fr.html">Résultats</a></li><li class="webgen-menu-level1"><a href="heats.fr.html">Séries</a></li></ul></div>
           
             <h1>Liens</h1>
             <div id="links">
@@ -75,7 +75,7 @@
           <div id="contentalt">
             <h1 id="onglet-configuration">Onglet Configuration</h1>
 
-<p>Cet onglet permet de configurer tous les éléments de la course. Les éléments sont groupés par thème dans la liste à gauche. Sélectionnez un thème pour voir les options disponibles dans la fenêtre principale.</p>
+<p>Cet onglet permet de configurer différentes options pour la course. Les options sont groupées par section dans la barre latérale. Sélectionnez une section pour voir les options disponibles dans la fenêtre principale.</p>
 
 <p><a href="../images/stage_panel.fr.png"><img src="../images/stage_panel.fr.png" /></a>
 (Cliquez pour zoomer)</p>
@@ -89,9 +89,7 @@
 
 <h2 id="lecture-si">Lecture SI</h2>
 <ul>
-  <li>Port : <em>le boîtier maître SPORTident doit être connecté avant de lancer l&#8217;application pour que Geco détecte le port</em></li>
-  <li>Format splits : multi-colonnes (voir option <code>SplitNbColumns</code> dans le fichier <code>geco.prop</code>) ou ticket (une seule colonne, pour imprimante thermique à ticket)</li>
-  <li>Vous pouvez éditer l&#8217;en-tête et le pied de page de la feuille d&#8217;impression</li>
+  <li>Port : Geco scanne les ports disponibles chaque fois que vous ouvrez la liste</li>
 </ul>
 
 <p>Cette section permet aussi de configurer le comportement de Geco à la lecture des puces (en <a href="ecard_modes.fr.html">mode</a> compétition ou entraînement). Vous pouvez choisir de :</p>
@@ -108,7 +106,15 @@
   <li>Pénalité : pénalité de temps en secondes par poste manquant (aussi affichée en minutes)</li>
 </ul>
 
-<p><a href="../images/stage_panel_penalties.fr.png"><img src="../images/stage_panel_penalties.fr.png" /></a></p>
+<h2 id="modles">Modèles</h2>
+
+<p>Cette section permet de choisir les <a href="../howtos/customresults.fr.html">modèles personnalisés</a> Mustache pour l&#8217;export (et l&#8217;impression) des résultats ainsi que de configurer l&#8217;impression des tickets pour les coureurs. Des <strong>modèles de base</strong> sont fournis dans le dossier <em>formats</em>. À défaut de configurer ces modèles, Geco utilisera les modèles internes par défaut.</p>
+
+<p>Trois modèles sont disponibles pour les résultats de la course : classement, splits et personnalisé (pour exporter les résultats sous un autre format par exemple).</p>
+
+<p>Pour le ticket du coureur, Geco permet de choisir entre un modèle à plusieurs colonnes et un modèle tout en ligne (pour imprimante thermique). L&#8217;option <em>Prototypage</em> permet de rapidement modifier les fichiers modèles et de voir le résultat sans gaspiller de papier : Geco ouvre une fenêtre avec le résultat (et écrit un fichier <em>runner_splits.html</em>) au lieu de lancer l&#8217;impression du ticket.</p>
+
+<p><a href="../images/stage_panel_templates.fr.png"><img src="../images/stage_panel_templates.fr.png" /></a></p>
 
 <h2 id="circuit">Circuit</h2>
 <ul>
