@@ -36,7 +36,7 @@ public abstract class FileSelector {
 		selectFileB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser fileChooser = new JFileChooser(geco.getCurrentStagePath());
+				JFileChooser fileChooser = new JFileChooser(openPath(geco));
 				fileChooser.setDialogTitle(fileChooserTitle);
 				int answer = fileChooser.showOpenDialog(frame);
 				if( answer==JFileChooser.APPROVE_OPTION ) {
@@ -55,7 +55,19 @@ public abstract class FileSelector {
 		return selectFileB;
 	}
 
-	public abstract String filenameValue();
+	public String filenameValue() {
+		return currentFile() != null ? currentFile().getName() : ""; //$NON-NLS-1$
+	}
+	
+	public abstract File currentFile();
 	
 	public abstract void fileChosen(File selectedFile);
+
+	private String openPath(final IGecoApp geco) {
+		if( currentFile() != null && currentFile().exists() ) {
+			return currentFile().getAbsolutePath();
+		} else {
+			return geco.getCurrentStagePath();
+		}
+	}
 }

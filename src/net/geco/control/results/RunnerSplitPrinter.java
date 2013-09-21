@@ -9,6 +9,7 @@ import java.awt.Toolkit;
 import java.awt.print.PrinterJob;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -39,6 +40,8 @@ import net.geco.model.Course;
 import net.geco.model.Messages;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Stage;
+
+import com.samskivert.mustache.Template;
 
 
 /**
@@ -123,22 +126,40 @@ public class RunnerSplitPrinter extends Control implements StageListener, CardLi
 
 	private void generateSingleSplitsInColumns(RunnerRaceData data, Writer out) throws IOException {
 		RunnerContext runnerCtx = buildRunnerSplitContext(data);
-		exporter.mergeCustomStageProperties(runnerCtx);
 		exporter.createRunnerSplitsRowsAndColumns(runnerCtx,
 												  builder.buildNormalSplits(data, true),
 												  new SplitTime[0],
 												  nbColumns());
-		
-		exporter.getExternalTemplate(getColumnTemplatePath()).execute(runnerCtx, out);
+		generateSingleSplits(getColumnTemplatePath(),
+							 runnerCtx,
+							 out,
+							 "/resources/formats/backup_splits_columns.mustache"); //$NON-NLS-1$
 	}
 
 	private void generateSingleSplitsInLine(RunnerRaceData data, Writer out) throws IOException {
 		RunnerContext runnerCtx = buildRunnerSplitContext(data);
-		exporter.mergeCustomStageProperties(runnerCtx);
 		exporter.createRunnerSplitsInline(runnerCtx,
 												 builder.buildLinearSplits(data));
-		
-		exporter.getExternalTemplate(getTicketTemplatePath()).execute(runnerCtx, out);
+		generateSingleSplits(getTicketTemplatePath(),
+							 runnerCtx,
+							 out,
+							 "/resources/formats/backup_splits_ticket.mustache"); //$NON-NLS-1$
+	}
+
+	private void generateSingleSplits(String templatePath, RunnerContext runnerCtx, Writer out, String defaultTemplate)
+			throws IOException {
+		if( prototypeMode ) {
+			exporter.resetTemplate(templatePath);
+		}
+		exporter.mergeCustomStageProperties(runnerCtx);
+		Template template;
+		try {
+			template = exporter.getExternalTemplate(templatePath);
+		} catch (FileNotFoundException e) {
+			geco().info(Messages.getString("RunnerSplitPrinter.TemplateNotFoundWarning"), true); //$NON-NLS-1$
+			template = exporter.getInternalTemplate(defaultTemplate);
+		}
+		template.execute(runnerCtx, out);
 	}
 
 	protected RunnerContext buildRunnerSplitContext(RunnerRaceData data) {
@@ -186,7 +207,7 @@ public class RunnerSplitPrinter extends Control implements StageListener, CardLi
 		}
 		if( bestMedia==null ){
 			bestMedia = MediaSize.findMedia(width, height, MediaSize.INCH);
-			geco().debug(Messages.getString("SingleSplitPrinter.SmallTicketSizeWarning")); //$NON-NLS-1$
+			geco().debug(Messages.getString("RunnerSplitPrinter.SmallTicketSizeWarning")); //$NON-NLS-1$
 			if( prototypeMode ){
 				System.out.print("Found: "); //$NON-NLS-1$
 			}			
@@ -202,7 +223,7 @@ public class RunnerSplitPrinter extends Control implements StageListener, CardLi
 				System.out.println(fitSize.toString(MediaSize.MM, "mm")); //$NON-NLS-1$
 			}
 		} else {
-			geco().log(Messages.getString("SingleSplitPrinter.NoMatchingTicketSizeWarning")); //$NON-NLS-1$
+			geco().log(Messages.getString("RunnerSplitPrinter.NoMatchingTicketSizeWarning")); //$NON-NLS-1$
 		}
 	}
 

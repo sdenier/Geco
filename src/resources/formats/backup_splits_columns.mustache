@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <style type="text/css">
+      body { font-size: 10 }
+      h1 { font-size: 20; text-align: center }
+      h2 { font-size: 15 }
+      table { border-collapse:collapse; width: 100%; font-size: 10 }
+      .runner td, .runner th { padding: 0px 10px }
+      .left { text-align: left }
+      .center { text-align: center }
+      .right, .time, .pace, .diff, .controls, .times, .splits { text-align: right }
+      .diff, .splits { font-style: italic }
+      .controls { background-color: #F0F0F0 }
+      .times, .splits { background-color: white }
+      .rsplit td, .col0 td, .col1 td { padding: 0 5px 0 0 }
+      .rsplit td, .time, .best { font-weight: bold }
+  </style>
+  </head>
+  <body>
+    <div align="center">{{geco_StageTitle}}</div>
+    <br />
+    <table>
+      <tr class="runner"><th colspan="2">{{geco_RunnerFirstName}} {{geco_RunnerLastName}}</th><th>{{geco_RunnerCourse}}</th><th>{{geco_RunnerCategory}}</th></tr>
+      <tr class="runner"><td class="time">{{geco_RunnerStatusOrTime}}</td><td class="center">{{geco_RunnerPace}} min/km</td><td class="center">{{geco_CourseLength}}, {{geco_CourseClimb}}</td><td class="center">{{geco_RunnerClubName}}</td></tr>
+    </table>
+    <br />
+    <table>
+      {{#geco_SplitRows}}
+        <tr class="controls"><td></td>{{#geco_ControlRow}}<td>{{geco_ControlNum}} ({{geco_ControlCode}})</td>{{/geco_ControlRow}}</tr>
+        <tr class="times"><td></td>{{#geco_TimeRow}}<td>{{geco_ControlTime}}</td>{{/geco_TimeRow}}</tr>
+        <tr class="splits"><td></td>{{#geco_SplitRow}}<td>{{geco_SplitTime}}</td>{{/geco_SplitRow}}</tr>
+      {{/geco_SplitRows}}
+    </table>
+    <br />
+    <div align="center">Geco - http://sdenier.github.io/Geco</div>
+  </body>
+</html>

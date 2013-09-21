@@ -21,8 +21,10 @@ Project
 
 Used only when necessary, with a small footprint. I prefer to use a custom built solution than reusing a big library doing too many things in a cumbersome way (for a simple app like Geco). Also it has to be license-compatible (prefer MIT, Apache licences...) to avoid licensing hell (Geco is currently GPLed v2 just because of one file).
 
-- SIReader.jar (include RXTX) for SPORTident communication
+- GecoSI (include RXTX) for SPORTident communication
 - icu4j-charsetdetector (a small subset of the Unicode icu4j project)
+- Jackson and org.json subsets for JSON IO
+- JMustache as template engine
 - JUnit 4 for tests only
 - mockito 1.8 for tests only
 

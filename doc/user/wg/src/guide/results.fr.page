@@ -28,7 +28,7 @@ Les résultats affichent les concurrents classés OK, ainsi que les concurrents 
 
 Dans les classements, Geco calcule aussi la **différence** de temps par rapport au premier et le **pas moyen** du coureur si la distance du circuit est connue.
 
-Les résultats peuvent s'afficher dans la fenêtre (bouton *Actualiser*), être imprimés, ou exportés dans un fichier. Le format HTML est le format d'export par défaut.
+Les résultats peuvent s'afficher dans la fenêtre (bouton *Actualiser*), être imprimés, ou exportés dans un fichier.
 
 <a href="../images/results_splits.fr.png"><img src="../images/results_splits.fr.png" /></a>
 
@@ -37,15 +37,18 @@ Les résultats peuvent s'afficher dans la fenêtre (bouton *Actualiser*), être 
 Geco propose quatre formats d'export :
 
 - **HTML** pour la publication web
+- **Personnalisé**, pour l'exploitation par d'autres outils, y compris les vôtres (O'Splits...)
 - **CSV**, format très complet pour tableurs
 - **OE CSV**, format reconnu par certains outils d'analyse
 - **XML**, format standard de l'IOF pour échanger des résultats
+
+Les fichiers modèles pour les formats HTML et personnalisé peuvent choisis dans la [configuration](stage.fr.html). Des **modèles de base** sont fournis dans le dossier *formats*. Vous pouvez [éditer ces modèles](../howtos/customresults.fr.html) pour exporter votre propre format. Vous pouvez d'ailleurs produire n'importe quel document texte (et pas seulement de l'HTML).
 
 Le format de résultats *CSV* propre à Geco peut être facilement importer dans un tableur pour traîter les résultats. Il contient de nombreuses informations, y compris les poinçons, les PMs, la place atteinte par le coureur, etc.
 
 Utilisez *Splits* et *OE CSV* ou *XML* pour un fichier compatible avec RouteGadget et d'autres outils d'analyse.
 
-Pour le Classement National, utilisez *Splits* avec le format *OE CSV*.
+Pour le Classement National, utilisez le format *OE CSV* en mode *Classement* ou *Splits*.
 
 ### Simulation CN
 
@@ -57,4 +60,4 @@ Geco utilise le numéro d'archive pour repérer les coureurs CN. Ce numéro doit
 
 ## Mode auto (résultats)
 
-Le bouton *Auto*, une fois activé, rafraîchit les résultats dans la fenêtre ou génère un fichier nommé `derniers_resultats` à intervalles réguliers (en secondes). La fonction auto prend en compte les paramètres spécifiés à l'activation (circuits ou catégories, classement/splits/CN, format d'export, options). Arrêtez et redémarrez le mode auto pour prendre en compte de nouveaux paramètres.
+Le bouton *Auto*, une fois activé, rafraîchit les résultats dans la fenêtre ou génère un fichier à intervalles réguliers (en secondes). La fonction auto prend en compte les paramètres spécifiés à l'activation (circuits ou catégories, classement/splits/CN, format d'export, options). Arrêtez et redémarrez le mode auto pour prendre en compte de nouveaux paramètres.

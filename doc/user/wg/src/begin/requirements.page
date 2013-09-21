@@ -8,11 +8,12 @@ in_menu: true
 
 What do you need to run Geco?
 
-- A recent JRE (Java Runtime Environment, version 6+)
+- A JRE (Java Runtime Environment, version 6+)
 - Geco bundle: it includes the application (jar file), some template files, user documentation, native libraries for serial communication (RXTX)
 - SportIdent drivers
   - Windows: check sportident website
   - Linux: recent kernels recognize the chip used by SI station, so it's plug'n'play
   - Mac OS X: see the [FAQ](faq.html) for custom install.
+- the SPORTident master station must be set up to use the *extended protocol* in *handshake* mode (no autosend). SiConfig can easily change a station configuration.
 
 To launch Geco, **execute the geco.jar file**. It should opens automatically if your JRE is correctly configured.

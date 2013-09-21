@@ -234,13 +234,13 @@ public class RunnersPanel extends TabPanel
 		topPanel.add(archiveB);
 
 		JButton exportStartlistB = new JButton(GecoIcon.createIcon(GecoIcon.Startlist));
-		exportStartlistB.setToolTipText("Export Startlists");
+		exportStartlistB.setToolTipText(Messages.uiGet("RunnersPanel.ExportStartlistsTooltip")); //$NON-NLS-1$
 		exportStartlistB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setDialogTitle("Export Startlists by Course to html");
+				fileChooser.setDialogTitle(Messages.uiGet("RunnersPanel.ExportStartlistsTitle")); //$NON-NLS-1$
 				fileChooser.setSelectedFile(new File(geco().getCurrentStagePath()
-						+ File.separator + "startlists_course.html").getAbsoluteFile());
+						+ File.separator + Messages.uiGet("RunnersPanel.ExportStartlistsFile")).getAbsoluteFile()); //$NON-NLS-1$
 				int answer = fileChooser.showSaveDialog(frame());
 				if( answer==JFileChooser.APPROVE_OPTION ) {
 					try {

@@ -63,12 +63,3 @@ sudo kextcache -system-caches
 4\. Redémarrer à nouveau pour vérifier que le système prenne en compte les modifications.
 
 Le boîtier apparaît sous l'identifiant **/dev/tty.SLAB\_USBtoUART** dans Geco (et aussi comme **SPORTident USB to UART Bridge Controller** dans le profil système).
-
-
-## Geco lit un mauvais code quand le code d'une station est supérieur à 255
-C'est une limite actuelle de Geco. Si une station est reprogrammée avec un code supérieur à 255, Geco peut toujours lire le poinçon de la puce mais affectera le code de la station modulo 255 (le reste de la division entière par 255). Par exemple :
-
-- 300 modulo 255 donne 45
-- 600 modulo 255 donne 90 (soit encore, 255 * 2 + 90 = 600)
-
-Pour éviter les risques de confusion, il n'est pas recommandé de dépasser cette limite avec Geco. Si vous voulez quand même utiliser des codes supérieurs à 255, il faut éditer chaque circuit pour remplacer les codes > 255 par leur modulo.

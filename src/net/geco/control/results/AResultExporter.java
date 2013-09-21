@@ -4,6 +4,7 @@
  */
 package net.geco.control.results;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringWriter;
@@ -73,7 +74,7 @@ public abstract class AResultExporter extends Control {
 
 	public void exportFile(String filename, String format, ResultConfig config, int refreshInterval)
 			throws Exception {
-		if( filename.indexOf(".") == -1 ) {
+		if( filename.indexOf(".") == -1 ) { //$NON-NLS-1$
 			filename = filename + "." + format; //$NON-NLS-1$
 		}
 		if( format.equals("html") ) { //$NON-NLS-1$
@@ -140,7 +141,12 @@ public abstract class AResultExporter extends Control {
 	}
 
 	protected Template getExternalTemplate() throws IOException {
-		return getExternalTemplate(getExternalTemplatePath());
+		try {
+			return getExternalTemplate(getExternalTemplatePath());
+		} catch (FileNotFoundException e) {
+			geco().info(Messages.getString("AResultExporter.TemplateNotFoundWarning"), true); //$NON-NLS-1$
+			return getInternalTemplate();
+		}
 	}
 
 	protected Template getExternalTemplate(String templatePath) throws IOException {
@@ -167,16 +173,24 @@ public abstract class AResultExporter extends Control {
 
 	protected abstract String getExternalTemplatePath();
 
+	protected abstract String getCustomTemplatePath();
+
 	protected abstract GenericContext buildDataContext(ResultConfig config, int refreshInterval, OutputType outputType);
 
 	protected void exportCustomFile(String filename, ResultConfig config, int refreshInterval)
 			throws IOException {
-		Template template = getInternalTemplate("/resources/formats/results_osplits.mustache");
+		Template template;
+		try {
+			template = getExternalTemplate(getCustomTemplatePath());
+		} catch (FileNotFoundException e) {
+			geco().info(Messages.getString("AResultExporter.CustomTemplateNotFoundWarning"), true); //$NON-NLS-1$
+			template = getInternalTemplate();
+		}
 		Writer writer = GecoResources.getSafeWriterFor(filename);
 		buildCustomResults(template, config, refreshInterval, writer, OutputType.FILE);
 		writer.close();
 	}
-	
+
 	protected void buildCustomResults(Template template, ResultConfig config, int refreshInterval,
 			Writer writer, OutputType outputType) {
 		template.execute(buildCustomContext(config, refreshInterval, outputType), writer);

@@ -90,8 +90,13 @@ public class ResultExporter extends AResultExporter implements StageListener {
 	}
 
 	@Override
+	protected String getCustomTemplatePath() {
+		return getService(SplitExporter.class).getCustomTemplatePath();
+	}
+
+	@Override
 	protected GenericContext buildCustomContext(ResultConfig config, int refreshInterval, OutputType outputType) {
-		return buildDataContext(config, refreshInterval, outputType);
+		return getService(SplitExporter.class).buildCustomContext(config, refreshInterval, outputType);
 	}
 
 	@Override

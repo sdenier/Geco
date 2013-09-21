@@ -18,6 +18,7 @@ The right pane can display details about the currently selected runner (e-card d
 
 - *Add/Remove Runner:* add a runner at the end of the startlist; remove the currently selected runner
 - *Import CSV / Open [Archive](archive.html) Viewer:* click to perform mass registrations
+- *Export Startlists:* quickly export startlists by course
 - *Sort Runners:* click on a header cell of the table to sort runners according to ascending/descending rank
 - *Filter Runners:* start typing to display only entries matching your search (the search is performed full-text and matches substring in data)
 - *Fast edit Mode (tickbox):* start edition with just one click - useful when lots of manual edition have to be done quickly

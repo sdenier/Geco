@@ -55,7 +55,7 @@ public class StartlistExporter extends Control {
 	
 	protected GenericContext buildDataContext() {
 		StageContext stageCtx = new StageContext(stage().getName());
-		ContextList startlistsCtx = stageCtx.createContextList("geco_StartlistsCollection");
+		ContextList startlistsCtx = stageCtx.createContextList("geco_StartlistsCollection"); //$NON-NLS-1$
 		for(String courseName: registry().getSortedCourseNames()) {
 			Course course = registry().findCourse(courseName);
 			List<RunnerRaceData> runners = registry().getRunnerDataFromCourse(course);
@@ -68,7 +68,7 @@ public class StartlistExporter extends Control {
 			if( ! runners.isEmpty() ) {
 				CourseContext courseCtx = new CourseContext(course, runners.size());
 				startlistsCtx.add(courseCtx);
-				ContextList runnersCtx = courseCtx.createContextList("geco_Runners");
+				ContextList runnersCtx = courseCtx.createContextList("geco_Runners"); //$NON-NLS-1$
 				for (RunnerRaceData runner : runners) {
 					runnersCtx.add(RunnerContext.createRegisteredRunner(runner));
 				}
