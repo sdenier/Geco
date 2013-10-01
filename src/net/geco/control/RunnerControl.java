@@ -366,6 +366,24 @@ public class RunnerControl extends Control {
 			}
 		}
 	}
+
+	public void recheckAllRunnersFromCourse(Course course) {
+		List<Runner> runners = registry().getRunnersFromCourse(course);
+		geco().log(Messages.getString("RunnerControl.RecheckCourseMessage") + course.getName()); //$NON-NLS-1$
+		for (Runner runner : runners) {
+			RunnerRaceData runnerData = registry().findRunnerData(runner);
+			// force recheck of all trace with section data
+			if( runnerData.getTraceData().getTrace().length > 0 ) {
+				if( runnerData.statusIsRecheckable() ) {
+					recheckRunner(runnerData);
+				} else {
+					Status status = runnerData.getStatus();
+					geco().checker().check(runnerData);
+					runnerData.getResult().setStatus(status);
+				}
+			}
+		}
+	}
 	
 	public boolean validateRegisteredStartTime(Runner runner, String startTime) {
 		try {

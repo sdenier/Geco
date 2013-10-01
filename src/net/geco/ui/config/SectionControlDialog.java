@@ -79,7 +79,14 @@ public class SectionControlDialog extends JDialog {
 		JButton deleteB = new JButton("Delete");
 		deleteB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				sectionService.remove(selectedCourse, targetSection);
+				int ok = JOptionPane.showConfirmDialog(SectionControlDialog.this,
+						"This would force a recheck for all runners from course " + selectedCourse.getName(),
+						"Proceed with section deletion",
+						JOptionPane.OK_CANCEL_OPTION);
+				if( ok == JOptionPane.OK_OPTION ) {
+					sectionService.remove(selectedCourse, targetSection);
+					geco.runnerControl().recheckAllRunnersFromCourse(selectedCourse);
+				}
 				setVisible(false);
 			}
 		});
