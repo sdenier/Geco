@@ -192,31 +192,39 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 		columnModel.getColumn(0).setPreferredWidth(125);
 		columnModel.getColumn(1).setPreferredWidth(50);
 		columnModel.getColumn(2).setPreferredWidth(25);
+		columnModel.getColumn(3).setPreferredWidth(25);
+		columnModel.getColumn(4).setPreferredWidth(25);
 	}
 
 	private ConfigTableModel<Course> createCoursesModel(final IGecoApp geco) {
 		return new ConfigTableModel<Course>(new String[] {
 											Messages.uiGet("CourseConfigPanel.CourseNameHeader"), //$NON-NLS-1$
 											"Mass Start",
+											"Length",
+											"Climb",
 											Messages.uiGet("CourseConfigPanel.CourseNbControlsHeader")}) { //$NON-NLS-1$
 			@Override
 			public Object getValueIn(Course course, int columnIndex) {
 				switch (columnIndex) {
 				case 0: return course.getName();
 				case 1: return TimeManager.fullTime(course.getMassStartTime());
-				case 2: return course.nbControls();
+				case 2: return course.getLength();
+				case 3: return course.getClimb();
+				case 4: return course.nbControls();
 				default: return super.getValueIn(course, columnIndex);
 				}
 			}
 			@Override
 			public boolean isCellEditable(int row, int col) {
-				return col < 2;
+				return col < 4;
 			}
 			@Override
 			public void setValueIn(Course course, Object value, int col) {
 				switch (col) {
 				case 0: geco.stageControl().updateName(course, (String) value); break;
 				case 1: geco.stageControl().validateMassStartTime(course, (String) value); break;
+				case 2: geco.stageControl().validateCourseLength(course, (Integer) value); break;
+				case 3: geco.stageControl().validateCourseClimb(course, (Integer) value); break;
 				default: break;
 				}
 			}
@@ -225,6 +233,8 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 				switch (columnIndex) {
 				case 1: return String.class;
 				case 2: return Integer.class;
+				case 3: return Integer.class;
+				case 4: return Integer.class;
 				default: return super.getColumnClass(columnIndex);
 				}
 

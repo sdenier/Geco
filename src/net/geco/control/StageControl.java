@@ -219,6 +219,34 @@ public class StageControl extends Control {
 		}
 	}
 
+	public boolean validateCourseLength(Course course, Integer length) {
+		try {
+			if( length >= 0 ) {
+				course.setLength(length);
+				return true;
+			} else {
+				geco().info("Course length should be a positive number", true);
+			}
+		} catch (NumberFormatException e) {
+			geco().info("Bad format for course length", true);
+		}
+		return false;
+	}
+
+	public boolean validateCourseClimb(Course course, Integer climb) {
+		try {
+			if( climb >= 0 ) {
+				course.setClimb(climb);
+				return true;
+			} else {
+				geco().info("Course climb should be a positive number", true);
+			}
+		} catch (NumberFormatException e) {
+			geco().info("Bad format for course climb", true);
+		}
+		return false;
+	}
+	
 	public void updateMassStarttimes(long zeroTime, long oldTime) {
 		for (Course course : registry().getCourses()) {
 			Date relativeTime = TimeManager.relativeTime(course.getMassStartTime(), oldTime);
