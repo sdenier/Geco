@@ -1,6 +1,6 @@
-#Fri, 13 Sep 2013 20:19:50 +0200
+#Wed, 02 Oct 2013 21:11:05 +0200
 
-version.num=2.2-beta
+version.num=2.2-beta2
 
-build.num=v2.2-beta-0-g4cf0208
-build.stamp=20130913
+build.num=v2.2-beta2-0-gd45b205
+build.stamp=20131002
