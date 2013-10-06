@@ -48,6 +48,7 @@ public class RunnerContext extends GenericContext {
 	}
 
 	protected RunnerContext buildBasicContext(Runner runner) {
+		put("geco_RunnerStartId", runner.getStartId()); //$NON-NLS-1$
 		put("geco_RunnerFirstName", runner.getFirstname()); //$NON-NLS-1$
 		put("geco_RunnerLastName", runner.getLastname()); //$NON-NLS-1$
 		put("geco_RunnerClubName", runner.getClub().getName()); //$NON-NLS-1$
@@ -56,7 +57,6 @@ public class RunnerContext extends GenericContext {
 	}
 
 	protected RunnerContext buildRegistrationContext(RunnerRaceData runnerData) {
-		put("geco_RunnerStartId", runnerData.getRunner().getStartId()); //$NON-NLS-1$
 		put("geco_RunnerEcard", runnerData.getRunner().getEcard()); //$NON-NLS-1$
 		put("geco_RunnerStartTime", TimeManager.time(runnerData.getOfficialStarttime())); //$NON-NLS-1$
 		return this;
