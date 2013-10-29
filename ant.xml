@@ -9,51 +9,58 @@
 	<property name="geco.dir" value="${basedir}"/>
 	<property name="gecosi.dir" value="${basedir}/../GecoSI"/>
 	
-	<target name="cleanAll" depends="cleanWebgen,cleanBackups" />
+	<target name="cleanAll" depends="cleanBuild,cleanWebgen,cleanBackups" />
+
+	<target name="cleanBuild">
+		<delete quiet="true" includeemptydirs="true">
+			<fileset dir="build" includes="**/*"/>
+			<fileset dir="bin" includes="**/*"/>
+		</delete>
+	</target>
 	
-    <target name="cleanBackups">
+	<target name="cleanBackups">
 		<delete>
 			<fileset dir="testData" includes="**/backups/*.zip"/>
 			<fileset dir="data" includes="**/backups/*.zip"/>
 			<fileset dir="demo" includes="**/backups/*.zip"/>
 		</delete>
-    </target>
+	</target>
 
 	<target name="cleanWebgen">
 		<delete dir="${wg.dir}/out" />
 		<delete file="${wg.dir}/webgen.cache" />
 		<mkdir dir="${wg.dir}/out/samples" />
-    	<copy todir="${wg.dir}/out/samples">
-    		<fileset dir="${wg.dir}/src/samples" />
+		<copy todir="${wg.dir}/out/samples">
+			<fileset dir="${wg.dir}/src/samples" />
 		</copy>
-    </target>
+	</target>
 	
-    <target name="webgen">
-    	<exec dir="${wg.dir}" executable="webgen"></exec>
-    </target>
+	<target name="webgen">
+		<exec dir="${wg.dir}" executable="webgen"></exec>
+	</target>
 
 	<target name="webgen with analytics">
 		<exec dir="${wg.dir}" executable="webgen">
 			<env key="analytics_tracking" value="true" />
 		</exec>
-    </target>
+	</target>
 
 	<target name="gh-pages" depends="cleanWebgen,webgen with analytics">
-    	<delete>
-    		<fileset dir="${wg.dir}/gh-pages" includes="**/*.html **/*.png **/*.gif **/*.css **/*.csv" />
-    	</delete>
-    	<copy todir="${wg.dir}/gh-pages">
-    		<fileset dir="${wg.dir}/out" />
+		<delete>
+			<fileset dir="${wg.dir}/gh-pages" includes="**/*.html **/*.png **/*.gif **/*.css **/*.csv" />
+		</delete>
+		<copy todir="${wg.dir}/gh-pages">
+			<fileset dir="${wg.dir}/out" />
 		</copy>
-    </target>
+	</target>
 
 	<target name="userHelp" depends="cleanWebgen,webgen">
-    	<delete dir="help" />
+		<delete dir="help" />
 		<mkdir dir="help" />
-    	<copy todir="help">
-    		<fileset dir="${wg.dir}/out" />
+		<copy todir="help">
+			<fileset dir="${wg.dir}/out" />
 		</copy>
-    </target>
+	</target>
 
 	<target name="buildnumber">
 		<exec executable="${git.cmd}" outputproperty="build.number">
@@ -66,56 +73,79 @@
 	</target>
 
 	<target name="fileout_buildnumber" depends="buildnumber">
-		<propertyfile file="src/version.prop">
+		<propertyfile file="${geco.dir}/src/version.prop">
 			<entry key="build.num" value="${build.number}"/>
 			<entry key="build.stamp" value="${DSTAMP}"/>
 		</propertyfile>	
 	</target>
+
+  <target name="init">
+		<mkdir dir="${geco.dir}/build"/>
+		<copy todir="${geco.dir}/build">
+			<fileset dir="${geco.dir}/src" includes="**/*.properties"/>
+			<fileset dir="${geco.dir}/src" includes="resources/**/*.*"/>
+			<fileset file="${geco.dir}/src/version.prop"/>
+		</copy>
+  </target>
+
+  <target name="compile" depends="init">
+		<javac srcdir="${geco.dir}/src" destdir="${geco.dir}/build" includeantruntime="no">
+			<classpath>
+				<fileset dir="${geco.dir}/lib">
+					<include name="**/*.jar"/>
+				</fileset>
+			</classpath>
+		</javac>
+		<mkdir dir="${geco.dir}/bin"/>
+		<copy todir="${geco.dir}/bin">
+			<fileset dir="${geco.dir}/build"/>
+		</copy>
+  </target>
 	
 	<target name="build_release_jar" depends="fileout_buildnumber">
 		<property name="geco.jarname" value="geco-${version.num}.jar" />
-	  	<antcall target="build_jar" />
+		<antcall target="build_jar" />
 	</target>
 
 	<target name="build_dev_jar" depends="fileout_buildnumber">
 		<property name="geco.jarname" value="geco-${build.number}.jar" />
-	  	<antcall target="build_jar" />
+		<antcall target="build_jar" />
 	</target>
 	
-    <target name="build_jar">
-        <jar destfile="${geco.dir}/${geco.jarname}" filesetmanifest="mergewithoutmain">
-            <manifest>
-                <attribute name="Main-Class" value="net.geco.GecoLoader"/>
-                <attribute name="Class-Path" value="."/>
-            	<attribute name="Built-By" value="${dev.username}"/>
-            	<attribute name="Built-Date" value="${TODAY}"/> 
-               	<attribute name="Implementation-Version" value="${build.number}"/>
-            </manifest>
-            <fileset dir="${geco.dir}/bin" excludes="test/,version.prop"/>
-            <fileset file="${geco.dir}/src/version.prop"/>
-        	<fileset file="${geco.dir}/lib/org-json-reader-geco2.0.jar"/>
-        	<fileset file="${geco.dir}/lib/jackson-core-2.1.1.jar"/>
-        	<fileset file="${geco.dir}/lib/GecoSI.jar"/>
-        	<fileset file="${geco.dir}/lib/icu4j-charsetdetector-4_4_2.jar"/>
-        	<fileset file="${geco.dir}/lib/jmustache-1.8.jar"/>
-        </jar>
-    </target>
+	<target name="build_jar" depends="compile">
+		<jar destfile="${geco.dir}/${geco.jarname}" filesetmanifest="mergewithoutmain">
+			<manifest>
+				<attribute name="Main-Class" value="net.geco.GecoLoader"/>
+				<attribute name="Class-Path" value="."/>
+				<attribute name="Built-By" value="${dev.username}"/>
+				<attribute name="Built-Date" value="${TODAY}"/> 
+				<attribute name="Implementation-Version" value="${build.number}"/>
+			</manifest>
+			<fileset dir="${geco.dir}/bin" excludes="test/,version.prop"/>
+			<fileset file="${geco.dir}/src/version.prop"/>
+			<fileset file="${geco.dir}/lib/org-json-reader-geco2.0.jar"/>
+			<fileset file="${geco.dir}/lib/jackson-core-2.1.1.jar"/>
+			<fileset file="${geco.dir}/lib/GecoSI.jar"/>
+			<fileset file="${geco.dir}/lib/icu4j-charsetdetector-4_4_2.jar"/>
+			<fileset file="${geco.dir}/lib/jmustache-1.8.jar"/>
+		</jar>
+	</target>
 	
 	<target name="build_GecoSI_jar">
 		<ant dir="${gecosi.dir}" target="build_jar" />
 		<copy file="${gecosi.dir}/GecoSI.jar" tofile="${geco.dir}/lib/GecoSI.jar" overwrite="true" />
 	</target>
 	
-    <target name="build_distrib" depends="build_release_jar,userHelp">
-    	<echo message="${geco.jarname}" />
-    	<zip destfile="${geco.dir}/geco-${version.num}.zip">
-    		<fileset file="${geco.dir}/${geco.jarname}"/>
-    		<fileset dir="${geco.dir}" includes="help/"/>
-    		<fileset dir="${geco.dir}" includes="licenses/"/>
-    		<fileset dir="${geco.dir}" includes="data/modeles/"/>
-    		<fileset dir="${geco.dir}" includes="data/templates/"/>
-    		<fileset dir="${geco.dir}" includes="formats/"/>
-    	</zip>
+	<target name="build_distrib" depends="build_release_jar,userHelp">
+		<echo message="${geco.jarname}" />
+		<zip destfile="${geco.dir}/geco-${version.num}.zip">
+			<fileset file="${geco.dir}/${geco.jarname}"/>
+			<fileset dir="${geco.dir}" includes="help/"/>
+			<fileset dir="${geco.dir}" includes="licenses/"/>
+			<fileset dir="${geco.dir}" includes="data/modeles/"/>
+			<fileset dir="${geco.dir}" includes="data/templates/"/>
+			<fileset dir="${geco.dir}" includes="formats/"/>
+		</zip>
 	</target>
 
 	<target name="build_demo" depends="cleanBackups,build_release_jar,userHelp">
@@ -123,42 +153,42 @@
 			<fileset dir="demo" includes="**/backups/*.zip"/>
 			<fileset dir="demo" includes="**/*.log"/>
 		</delete>
-    	<zip destfile="${geco.dir}/geco-${version.num}_demo.zip">
-    		<fileset file="${geco.dir}/${geco.jarname}"/>
-    		<fileset dir="${geco.dir}" includes="help/"/>
-    		<fileset dir="${geco.dir}" includes="licenses/"/>
-    		<fileset dir="${geco.dir}" includes="data/modeles/"/>
-    		<fileset dir="${geco.dir}" includes="demo/"/>
-    		<fileset dir="${geco.dir}" includes="data/templates/"/>
-    		<fileset dir="${geco.dir}" includes="formats/"/>
-    	</zip>
+		<zip destfile="${geco.dir}/geco-${version.num}_demo.zip">
+			<fileset file="${geco.dir}/${geco.jarname}"/>
+			<fileset dir="${geco.dir}" includes="help/"/>
+			<fileset dir="${geco.dir}" includes="licenses/"/>
+			<fileset dir="${geco.dir}" includes="data/modeles/"/>
+			<fileset dir="${geco.dir}" includes="demo/"/>
+			<fileset dir="${geco.dir}" includes="data/templates/"/>
+			<fileset dir="${geco.dir}" includes="formats/"/>
+		</zip>
 	</target>	
 
-    <target name="build_livejar" depends="buildnumber">
-        <jar destfile="${geco.dir}/livegeco-${build.number}.jar" filesetmanifest="mergewithoutmain">
-            <manifest>
-                <attribute name="Main-Class" value="net.geco.live.GecoLive"/>
-                <attribute name="Class-Path" value="."/>
-            	<attribute name="Built-By" value="${dev.username}"/>
-            	<attribute name="Built-Date" value="${TODAY}"/> 
-               	<attribute name="Implementation-Version" value="${build.number}"/>
-            </manifest>
-            <fileset dir="${geco.dir}/bin" excludes="test/"/>
-        </jar>
-    </target>
+	<target name="build_livejar" depends="buildnumber">
+		<jar destfile="${geco.dir}/livegeco-${build.number}.jar" filesetmanifest="mergewithoutmain">
+			<manifest>
+				<attribute name="Main-Class" value="net.geco.live.GecoLive"/>
+				<attribute name="Class-Path" value="."/>
+				<attribute name="Built-By" value="${dev.username}"/>
+				<attribute name="Built-Date" value="${TODAY}"/> 
+				<attribute name="Implementation-Version" value="${build.number}"/>
+			</manifest>
+			<fileset dir="${geco.dir}/bin" excludes="test/"/>
+		</jar>
+	</target>
 
-    <target name="build_webstart" depends="buildnumber">
-        <jar destfile="${geco.dir}/webstart/gecows.jar" filesetmanifest="mergewithoutmain">
-            <manifest>
-                <attribute name="Main-Class" value="net.geco.live.GecoWebStart"/>
-                <attribute name="Class-Path" value="."/>
-            	<attribute name="Built-By" value="${dev.username}"/>
-            	<attribute name="Built-Date" value="${TODAY}"/> 
-               	<attribute name="Implementation-Version" value="${build.number}"/>
-            </manifest>
-            <fileset dir="${geco.dir}/bin" excludes="test/"/>
-            <fileset dir="${webstart.data}"/>
-        </jar>
-    </target>
+	<target name="build_webstart" depends="buildnumber">
+		<jar destfile="${geco.dir}/webstart/gecows.jar" filesetmanifest="mergewithoutmain">
+			<manifest>
+				<attribute name="Main-Class" value="net.geco.live.GecoWebStart"/>
+				<attribute name="Class-Path" value="."/>
+				<attribute name="Built-By" value="${dev.username}"/>
+				<attribute name="Built-Date" value="${TODAY}"/> 
+				<attribute name="Implementation-Version" value="${build.number}"/>
+			</manifest>
+			<fileset dir="${geco.dir}/bin" excludes="test/"/>
+			<fileset dir="${webstart.data}"/>
+		</jar>
+	</target>
 
 </project>
