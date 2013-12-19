@@ -120,28 +120,25 @@ public class SectionsExporter extends AResultExporter {
 			boolean isBestTime = i < bestSplits.length && splitTime.time == bestSplits[i].time;
 			timeCtx.put("geco_BestTime?", isBestTime); //$NON-NLS-1$
 			timeCtx.put("geco_CumulTime", TimeManager.time(splitTime.time)); //$NON-NLS-1$
-
+			timeCtx.put("geco_CumulTimeS", splitTime.time / 1000); //$NON-NLS-1$
+			
 			GenericContext splitCtx = splitRow.addContext(new GenericContext());
 			boolean isBestSplit = i < bestSplits.length && splitTime.split == bestSplits[i].split;
 			String label = (splitTime.isOK()) ? TimeManager.time(splitTime.split) : ""; //$NON-NLS-1$
 			splitCtx.put("geco_BestSplit?", isBestSplit); //$NON-NLS-1$
 			splitCtx.put("geco_SectionTime", label); //$NON-NLS-1$
+			splitCtx.put("geco_SectionTimeS", splitTime.split / 1000); //$NON-NLS-1$
 		}
 	}
 	
 	@Override
-	protected void exportCustomFile(String filename, ResultConfig config, int refreshInterval) throws IOException {
-		geco().info(Messages.getString("CNCalculator.NotFunctionalLabel"), true); //$NON-NLS-1$
-	}
-	
-	@Override
 	protected String getCustomTemplatePath() {
-		return ""; //$NON-NLS-1$
+		return getService(SplitExporter.class).getCustomTemplatePath();
 	}
 
 	@Override
 	protected GenericContext buildCustomContext(ResultConfig config, int refreshInterval, OutputType outputType) {
-		return new GenericContext();
+		return buildDataContext(config, refreshInterval, outputType);
 	}
 
 	@Override
