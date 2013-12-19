@@ -27,12 +27,16 @@ public class TestTimePattern {
 	private static final SimpleDateFormat FORMATTERp = (SimpleDateFormat) DateFormat.getTimeInstance();
 
 	public static void main(String[] args) {
-		FORMATTER.applyPattern("H:mm:ss Z");
+		FORMATTER.applyPattern("HHH:mm:ss Z");
 		FORMATTER.setTimeZone(TimeZone.getTimeZone("GMT"));
 		time(0);
 		time(3600);
 		time(3600000);
 		time(-31240000);
+		int s = 86400000;
+		time(s);
+		s = s /1000;
+		System.out.println(String.format("%d:%02d:%02d", s/3600, (s%3600)/60, (s%60)));
 	}
 	
 	public static void time(long time) {
