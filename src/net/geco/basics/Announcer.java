@@ -146,7 +146,8 @@ public class Announcer {
 	}
 	
 	public interface StationListener {
-		public void stationStatus(String status);
+		void stationReady(String status);
+		void stationError(String status, String errorMessage);
 	}
 
 	private ArrayList<Logging> loggers;
@@ -335,10 +336,16 @@ public class Announcer {
 		}
 	}
 	
-	public void announceStationStatus(String status) {
+	public void announceStationReady(String status) {
 		for (StationListener listener : this.stationListeners) {
-			listener.stationStatus(status);
+			listener.stationReady(status);
 		}		
+	}
+
+	public void announceStationError(String status, String errorMessage) {
+		for (StationListener listener : this.stationListeners) {
+			listener.stationError(status, errorMessage);
+		}
 	}
 
 	public void announceCourseChanged(Course course) {

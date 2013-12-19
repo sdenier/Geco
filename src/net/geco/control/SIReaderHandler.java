@@ -287,7 +287,7 @@ public class SIReaderHandler extends Control implements Announcer.StageListener,
 	public void notify(CommStatus status) {
 		switch (status) {
 		case ON:
-			geco().announcer().announceStationStatus("Ready"); //$NON-NLS-1$
+			geco().announcer().announceStationReady(status.name());
 			break;
 		default:
 			break;
@@ -296,15 +296,8 @@ public class SIReaderHandler extends Control implements Announcer.StageListener,
 
 	@Override
 	public void notify(CommStatus errorStatus, String errorMessage) {
-		// TODO Auto-generated method stub
 		geco().log(errorMessage);
-		geco().announcer().announceStationStatus("Failed"); //$NON-NLS-1$
-//		if( starting ) { // wrong port
-//		geco().announcer().announceStationStatus("NotFound"); //$NON-NLS-1$
-//	} else { // station was disconnected?
-//		geco().announcer().announceStationStatus("Failed"); //$NON-NLS-1$
-//	}
-
+		geco().announcer().announceStationError(errorStatus.name(), errorMessage);
 	}
 
 	@Override

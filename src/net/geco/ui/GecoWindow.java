@@ -343,28 +343,24 @@ public class GecoWindow extends JFrame
 	}
 
 	@Override
-	public void stationStatus(String status) {
-		if( status.equals("Ready") ) { //$NON-NLS-1$
-			modeSelector.modeActivated();
-			geco.info(Messages.uiGet("GecoWindow.StationReadyStatus"), false); //$NON-NLS-1$
-			return;
-		}
-		if( status.equals("NotFound") ) { //$NON-NLS-1$
-			geco.info(
-					Messages.uiGet("GecoWindow.StationNotFoundStatus") //$NON-NLS-1$
-					+ geco.siHandler().getPort(),
-					false);
-			modeSelector.recoverOffMode();
-			return;
-		}
-		if( status.equals("Failed") ) { //$NON-NLS-1$
-			geco.info(
-					Messages.uiGet("GecoWindow.StationOffline1Status") //$NON-NLS-1$
-					+ geco.siHandler().getPort()
-					+ Messages.uiGet("GecoWindow.StationOffline2Status"), //$NON-NLS-1$
-					false);
-			modeSelector.recoverOffMode();
-		}
+	public void stationReady(String status) {
+		modeSelector.modeActivated();
+		geco.info(Messages.uiGet("GecoWindow.StationReadyStatus"), false); //$NON-NLS-1$
+	}
+
+	@Override
+	public void stationError(String status, String errorMessage) {
+		JOptionPane.showMessageDialog(
+				GecoWindow.this,
+				String.format("Station %s\n%s - %s", geco.siHandler().getPort(), status, errorMessage), //$NON-NLS-1$
+				Messages.uiGet("GecoWindow.StationErrorTitle"), //$NON-NLS-1$
+				JOptionPane.ERROR_MESSAGE);
+		geco.info(String.format("%s%s%s", //$NON-NLS-1$
+					Messages.uiGet("GecoWindow.StationOffline1Status"), //$NON-NLS-1$
+					geco.siHandler().getPort(),
+					Messages.uiGet("GecoWindow.StationOffline2Status")), //$NON-NLS-1$
+				false);
+		modeSelector.recoverOffMode();
 	}
 
 	private void initVersionDialog(JToolBar toolBar) {
