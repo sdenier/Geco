@@ -14,8 +14,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Properties;
-import java.util.Vector;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -60,7 +60,8 @@ public class RunnerSplitPrinter extends Control implements StageListener, CardLi
 	private int nbColumns;
 	private File columnTemplate;
 	private File ticketTemplate;
-	
+	private PrintRequestAttributeSet splitPrintAttributes;
+
 	private boolean autoPrint;
 	private boolean prototypeMode;
 	
@@ -89,10 +90,10 @@ public class RunnerSplitPrinter extends Control implements StageListener, CardLi
 				ticket.setContentType("text/html"); //$NON-NLS-1$
 				ticket.setText(out.toString());
 				
-				final PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
-				if( splitFormat==SplitFormat.Ticket ) {
-					computeMediaForTicket(ticket, attributes);
-				}
+				final PrintRequestAttributeSet attributes = ( splitFormat==SplitFormat.Ticket ) ?
+					computeMediaForTicket(ticket.getPreferredSize(), new HashPrintRequestAttributeSet())
+					:
+					getPrintRequestAttributeSet();
 				
 				Callable<Boolean> callable = new Callable<Boolean>() {
 					@Override
@@ -172,9 +173,8 @@ public class RunnerSplitPrinter extends Control implements StageListener, CardLi
 		return runnerCtx;
 	}
 
-	private void computeMediaForTicket(final JTextPane ticket,
-			final PrintRequestAttributeSet attributes) {
-		Dimension preferredSize = ticket.getPreferredSize();
+	private PrintRequestAttributeSet computeMediaForTicket(Dimension preferredSize,
+															PrintRequestAttributeSet attributes) {
 		int dpi = Toolkit.getDefaultToolkit().getScreenResolution();
 		float height = ((float) preferredSize.height) / dpi;
 		float width = ((float) preferredSize.width) / dpi;
@@ -225,11 +225,12 @@ public class RunnerSplitPrinter extends Control implements StageListener, CardLi
 		} else {
 			geco().log(Messages.getString("RunnerSplitPrinter.NoMatchingTicketSizeWarning")); //$NON-NLS-1$
 		}
+		return attributes;
 	}
 
 	private MediaSizeName[] getSplitMedia() {
-		if( splitMedia==null ) {
-			Vector<MediaSizeName> mediaSizenames = new Vector<MediaSizeName>();
+		if( splitMedia == null ) {
+			ArrayList<MediaSizeName> mediaSizenames = new ArrayList<MediaSizeName>();
 			Media[] media = (Media[]) getSplitPrinter().getSupportedAttributeValues(Media.class, null, null);
 			for (Media m : media) {
 				if( m!=null && m instanceof MediaSizeName ){
@@ -241,10 +242,11 @@ public class RunnerSplitPrinter extends Control implements StageListener, CardLi
 		return splitMedia;
 	}
 
-	public Vector<String> listPrinterNames() {
-		Vector<String> printerNames = new Vector<String>();
-		for (PrintService printer : PrinterJob.lookupPrintServices()) {
-			printerNames.add(printer.getName());
+	public String[] listPrinterNames() {
+		final PrintService[] printServices = PrinterJob.lookupPrintServices();
+		String[] printerNames = new String[printServices.length];
+		for (int i = 0; i < printServices.length; i++) {
+			printerNames[i] = printServices[i].getName();
 		}
 		return printerNames;
 	}
@@ -287,6 +289,13 @@ public class RunnerSplitPrinter extends Control implements StageListener, CardLi
 	
 	public void setSplitFormat(SplitFormat format) {
 		this.splitFormat = format;
+	}
+
+	public PrintRequestAttributeSet getPrintRequestAttributeSet() {
+		if( splitPrintAttributes == null ) {
+			splitPrintAttributes = new HashPrintRequestAttributeSet();
+		}
+		return splitPrintAttributes;
 	}
 
 	public void enableFormatPrototyping(boolean flag) {

@@ -11,11 +11,14 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.print.PrinterJob;
 import java.io.File;
 
+import javax.print.attribute.PrintRequestAttributeSet;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -27,6 +30,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import net.geco.control.results.RunnerSplitPrinter;
+import net.geco.control.results.RunnerSplitPrinter.SplitFormat;
 import net.geco.framework.IGecoApp;
 import net.geco.model.Messages;
 import net.geco.ui.basics.GecoIcon;
@@ -64,33 +68,48 @@ public class TemplateConfigPanel extends JPanel implements ConfigPanel {
 				geco.splitPrinter().setSplitPrinterName((String) printersCB.getSelectedItem());
 			}
 		});
-		setGridBagConstraints(c, 2, 10);
-		runnerSplitPanel.add(new JLabel(Messages.uiGet("SIReaderConfigPanel.SplitPrinterLabel")), c); //$NON-NLS-1$
-		runnerSplitPanel.add(printersCB, c);
-		
-		final JComboBox splitFormatCB = new JComboBox(RunnerSplitPrinter.SplitFormat.values());
-		splitFormatCB.setPreferredSize(new Dimension(170, splitFormatCB.getPreferredSize().height));
-		splitFormatCB.setSelectedItem(geco.splitPrinter().getSplitFormat());
-		splitFormatCB.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				geco.splitPrinter().setSplitFormat((RunnerSplitPrinter.SplitFormat) splitFormatCB.getSelectedItem());
-			}
-		});
 		final JCheckBox prototypeFormatB = new JCheckBox(Messages.uiGet("SIReaderConfigPanel.PrototypingLabel")); //$NON-NLS-1$
 		prototypeFormatB.setToolTipText(Messages.uiGet("SIReaderConfigPanel.PrototypingTooltip")); //$NON-NLS-1$
 		prototypeFormatB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				geco.splitPrinter().enableFormatPrototyping(prototypeFormatB.isSelected());
+				boolean prototyping = prototypeFormatB.isSelected();
+				printersCB.setEnabled(! prototyping);
+				geco.splitPrinter().enableFormatPrototyping(prototyping);
+			}
+		});
+		setGridBagConstraints(c, 2, 10);
+		runnerSplitPanel.add(new JLabel(Messages.uiGet("SIReaderConfigPanel.SplitPrinterLabel")), c); //$NON-NLS-1$
+		runnerSplitPanel.add(printersCB, c);
+		c.gridwidth = 3;
+		runnerSplitPanel.add(prototypeFormatB, c);
+		c.gridwidth = 1;
+
+		final JButton printSetupB = new JButton(GecoIcon.createIcon(GecoIcon.SplitSetup));
+		printSetupB.setToolTipText(Messages.uiGet("TemplateConfigPanel.SplitFormatTooltip")); //$NON-NLS-1$
+		printSetupB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PrintRequestAttributeSet attributes = geco.splitPrinter().getPrintRequestAttributeSet();
+				PrinterJob printerJob = PrinterJob.getPrinterJob();
+				printerJob.pageDialog(attributes);
+			}
+		});
+		final JComboBox splitFormatCB = new JComboBox(RunnerSplitPrinter.SplitFormat.values());
+		splitFormatCB.setPreferredSize(new Dimension(170, splitFormatCB.getPreferredSize().height));
+		splitFormatCB.setSelectedItem(geco.splitPrinter().getSplitFormat());
+		printSetupB.setEnabled(geco.splitPrinter().getSplitFormat() == SplitFormat.MultiColumns);
+		splitFormatCB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				final SplitFormat selectedFormat = (SplitFormat) splitFormatCB.getSelectedItem();
+				printSetupB.setEnabled(selectedFormat == SplitFormat.MultiColumns);
+				geco.splitPrinter().setSplitFormat(selectedFormat);
 			}
 		});
 		setGridBagConstraints(c, 3, 0);
 		runnerSplitPanel.add(new JLabel(Messages.uiGet("SIReaderConfigPanel.SplitFormatLabel")), c); //$NON-NLS-1$
 		runnerSplitPanel.add(splitFormatCB, c);
-		c.gridwidth = 3;
-		runnerSplitPanel.add(prototypeFormatB, c);
-		c.gridwidth = 1;
+		runnerSplitPanel.add(printSetupB, c);
 
 		FileSelector columnsTemplateFS = new FileSelector(geco, frame,
 				  Messages.uiGet("SIReaderConfigPanel.ColumnTemplateTitle"), //$NON-NLS-1$

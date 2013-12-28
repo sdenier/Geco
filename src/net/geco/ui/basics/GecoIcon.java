@@ -35,6 +35,7 @@ public enum GecoIcon {
 	Startlist	("playlist.png"), //$NON-NLS-1$
 	ResetTime	("history.png"), //$NON-NLS-1$
 	SplitPrint	("filequickprint_small.png"), //$NON-NLS-1$
+	SplitSetup	("fileprint_small.png"), //$NON-NLS-1$
 
 	Reset		("cancel.png"), //$NON-NLS-1$
 	Help		("documentinfo.png"), //$NON-NLS-1$
