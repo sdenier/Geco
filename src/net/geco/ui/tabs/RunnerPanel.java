@@ -157,7 +157,7 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 	}
 
 	protected void refreshEcardPanel() {
-		displayCardTime(readTimeF, runnerData.getReadtime());
+		displayReadTime(readTimeF, runnerData.getReadtime());
 		displayCardTime(checkTimeF, runnerData.getControltime());
 		displayCardTime(startTimeF, runnerData.getStarttime());
 		displayCardTime(finishTimeF, runnerData.getFinishtime());
@@ -185,7 +185,11 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 			prvDisplayTime(timeF, TimeManager.fullTime(time), PALE_BLUE);
 		}
 	}
-	
+
+	protected void displayReadTime(JTextField timeF, Date time) {
+		timeF.setText(TimeManager.fullTime24(time.getTime()));
+	}
+
 	protected void displayCardTime(JTextField timeF, Date time) {
 		timeF.setText(TimeManager.fullTime(time));
 	}

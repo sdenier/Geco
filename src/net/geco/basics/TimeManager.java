@@ -21,8 +21,8 @@ public class TimeManager {
 
 	public static final Date ZERO = new Date(0);
 	
-	private static SimpleDateFormat FORMATTER;
-	private static SimpleDateFormat FORMATTER60;
+	private static final SimpleDateFormat FORMATTER;
+	private static final SimpleDateFormat FORMATTER60;
 
 	static { // have to set GMT time zone to avoid TZ offset in race time computation
 		FORMATTER = new SimpleDateFormat("H:mm:ss"); //$NON-NLS-1$
@@ -51,28 +51,65 @@ public class TimeManager {
 		}
 	}
 
-	public static String fullTime(Date date) {
+	public static String fullTime24(Date date) {
 		if( date.equals(NO_TIME) )
 			return NO_TIME_STRING;
 		return FORMATTER.format(date);
 	}
 
-	public static String fullTime(long timestamp) {
-		return fullTime(new Date(timestamp));
+	public static String fullTime24(long timestamp) {
+		return fullTime24(new Date(timestamp));
 	}
-	
-	public static String time(Date date) {
+
+	public static String time24(Date date) {
 		if( date.equals(NO_TIME) )
 			return NO_TIME_STRING;
-		if( date.getTime()<3600000 ) {
+		if( date.getTime() < 3600000 ) {
 			return FORMATTER60.format(date);
 		} else {
 			return FORMATTER.format(date);
 		}
 	}
+
+	public static String time24(long timestamp) {
+		return time(new Date(timestamp));
+	}
+
+	public static String fullTime(Date date) {
+		return fullTime(date.getTime());
+	}
+
+	public static String fullTime(long timestamp) {
+		if( timestamp == NO_TIME_l ) {
+			return NO_TIME_STRING;
+		}
+		final long fullSeconds = timestamp / 1000;
+		final long hours = fullSeconds / 3600;
+		final long minutes = (fullSeconds % 3600) / 60;
+		final long seconds = fullSeconds % 60;
+		return String.format("%d:%02d:%02d", hours, minutes, seconds); //$NON-NLS-1$
+	}
+
+	public static String time60minutes(long timestamp) {
+		if( timestamp == NO_TIME_l ) {
+			return NO_TIME_STRING;
+		}
+		final long fullSeconds = timestamp / 1000;
+		final long minutes = fullSeconds / 60;
+		final long seconds = fullSeconds % 60;
+		return String.format("%d:%02d", minutes, seconds); //$NON-NLS-1$
+	}
+
+	public static String time(Date date) {
+		return time(date.getTime());
+	}
 	
 	public static String time(long timestamp) {
-		return time(new Date(timestamp));
+		if( timestamp < 3600000 ) {
+			return time60minutes(timestamp);
+		} else {
+			return fullTime(timestamp);
+		}
 	}
 	
 	public static Date absoluteTime(Date relativeTime, long zeroTime) {
