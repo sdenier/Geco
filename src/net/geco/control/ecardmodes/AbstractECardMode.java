@@ -93,24 +93,11 @@ public abstract class AbstractECardMode extends Control implements ECardMode {
 	}
 
 	public void processStarttime(RunnerRaceData runnerData, SiDataFrame card) {
-		Date startTime = safeTime(card.getStartTime());
-		runnerData.setStarttime(startTime); // raw time
-		if( startTime.equals(TimeManager.NO_TIME) // no start time on card
-				&& runnerData.getRunner()!=null ){
-			// retrieve registered start time for next check to be accurate
-			startTime = runnerData.getRunner().getRegisteredStarttime();
-		}
-		if( startTime.equals(TimeManager.NO_TIME) ) {
-			geco().log("MISSING start time for " + card.getSiNumber()); //$NON-NLS-1$
-		}
+		runnerData.setStarttime(safeTime(card.getStartTime()));
 	}
 
 	public void processFinishtime(RunnerRaceData runnerData, SiDataFrame card) {
-		Date finishTime = safeTime(card.getFinishTime());
-		runnerData.setFinishtime(finishTime);
-		if( finishTime.equals(TimeManager.NO_TIME) ) {
-			geco().log("MISSING finish time for " + card.getSiNumber()); //$NON-NLS-1$
-		}
+		runnerData.setFinishtime(safeTime(card.getFinishTime()));
 	}
 
 	private void processPunches(RunnerRaceData runnerData, SiPunch[] punchArray) {
