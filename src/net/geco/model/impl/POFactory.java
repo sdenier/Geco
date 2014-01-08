@@ -10,6 +10,7 @@ import net.geco.model.ArchiveRunner;
 import net.geco.model.Category;
 import net.geco.model.Club;
 import net.geco.model.Course;
+import net.geco.model.CourseSet;
 import net.geco.model.Factory;
 import net.geco.model.Heat;
 import net.geco.model.HeatSet;
@@ -100,6 +101,11 @@ public class POFactory implements Factory {
 	@Override
 	public ArchiveRunner createArchiveRunner() {
 		return new ArchiveRunnerImpl();
+	}
+
+	@Override
+	public CourseSet createCourseSet() {
+		return new CourseSetImpl();
 	}
 	
 }

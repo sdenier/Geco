@@ -13,6 +13,7 @@ import java.util.TreeMap;
 
 import net.geco.basics.TimeManager;
 import net.geco.model.Course;
+import net.geco.model.CourseSet;
 import net.geco.model.Messages;
 import net.geco.model.Section;
 
@@ -36,6 +37,8 @@ public class CourseImpl implements Course {
 	private int[] codes;
 	
 	private Map<Integer, Section> sectionsMap = new TreeMap<Integer, Section>();
+
+	private CourseSet courseset;
 
 	public int getClimb() {
 		return climb;
@@ -131,6 +134,14 @@ public class CourseImpl implements Course {
 			}
 			sections.get(sections.size() - 1).setCodes(codes, codes.length);
 		}
+	}
+
+	public CourseSet getCourseSet() {
+		return courseset;
+	}
+
+	public void setCourseSet(CourseSet courseset) {
+		this.courseset = courseset;
 	}
 
 }

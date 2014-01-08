@@ -32,6 +32,8 @@ public class Registry {
 	
 	private GroupRegistry<Course> courseRegistry;
 	
+	private GroupRegistry<CourseSet> coursesetRegistry;
+
 	private GroupRegistry<Club> clubRegistry;
 
 	private GroupRegistry<Category> categoryRegistry;
@@ -46,6 +48,7 @@ public class Registry {
 	public Registry() {
 		runnerRegistry = new RunnerRegistry();
 		courseRegistry = new GroupRegistry<Course>();
+		coursesetRegistry = new GroupRegistry<CourseSet>();
 		controlPenalties = new HashMap<Integer, Date>();
 		clubRegistry = new GroupRegistry<Club>();
 		categoryRegistry = new GroupRegistry<Category>();
@@ -132,6 +135,22 @@ public class Registry {
 
 	public static String autoCourseName() {
 		return Messages.getString("Registry.AutoCourseName"); //$NON-NLS-1$
+	}
+
+	/*
+	 * CourseSet
+	 */
+
+	public CourseSet findCourseSet(String courseset) {
+		return coursesetRegistry.find(courseset);
+	}
+
+	public void addCourseSet(CourseSet courseset) {
+		coursesetRegistry.add(courseset);
+	}
+
+	public List<String> getSortedCourseSetNames() {
+		return coursesetRegistry.getSortedNames();
 	}
 
 	/*
