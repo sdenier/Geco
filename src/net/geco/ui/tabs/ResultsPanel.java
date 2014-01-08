@@ -542,7 +542,10 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	public void coursesChanged() {
 		refresh();
 	}
-	
+
+	@Override
+	public void coursesetsChanged() {}
+
 	@Override
 	public void componentShown(ComponentEvent e) {
 		refreshB.requestFocusInWindow();

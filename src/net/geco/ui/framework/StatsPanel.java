@@ -78,5 +78,7 @@ public abstract class StatsPanel extends TabPanel implements Announcer.StageConf
 		changed(null, null);
 	}
 
-	
+	@Override
+	public void coursesetsChanged() {}
+
 }

@@ -580,6 +580,8 @@ public class RunnersPanel extends TabPanel
 		refreshComboBoxes();
 	}
 
+	@Override
+	public void coursesetsChanged() {}
 
 	@Override
 	public void cardRead(String ecard) {

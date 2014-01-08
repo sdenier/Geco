@@ -17,7 +17,10 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -67,13 +70,17 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 	private void initCoursesTable(final IGecoApp geco, final JFrame frame) {
 		final ConfigTableModel<Course> tableModel = createCoursesModel(geco);
 		tableModel.setData(geco.registry().getSortedCourses());
-		
+		final JComboBox coursesetsCB = new JComboBox();
+
 		geco.announcer().registerStageConfigListener( new Announcer.StageConfigListener() {
 			public void coursesChanged() {
 				tableModel.setData(new Vector<Course>(geco.registry().getSortedCourses()));
 			}
 			public void clubsChanged() {}
 			public void categoriesChanged() {}
+			public void coursesetsChanged() {
+				updateCourseSetsCB(geco, coursesetsCB);
+			}
 		});
 		
 		ActionListener addAction = new ActionListener() {
@@ -196,6 +203,15 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 		columnModel.getColumn(3).setPreferredWidth(25);
 		columnModel.getColumn(4).setPreferredWidth(25);
 		columnModel.getColumn(5).setPreferredWidth(25);
+
+		coursesetsCB.setEditable(true);
+		updateCourseSetsCB(geco, coursesetsCB);
+		coursePanel.table().getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(coursesetsCB));
+	}
+
+	private void updateCourseSetsCB(IGecoApp geco, JComboBox coursesetsCB) {
+		Vector<String> sortedCoursets = new Vector<String>(geco.registry().getSortedCourseSetNames());
+		coursesetsCB.setModel(new DefaultComboBoxModel(sortedCoursets));
 	}
 
 	private ConfigTableModel<Course> createCoursesModel(final IGecoApp geco) {

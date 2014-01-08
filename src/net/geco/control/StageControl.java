@@ -405,6 +405,7 @@ public class StageControl extends Control {
 			set = factory().createCourseSet();
 			set.setName(courseset);
 			registry().addCourseSet(set);
+			announcer().announceCoursesetsChanged();
 		}
 		return set;
 	}

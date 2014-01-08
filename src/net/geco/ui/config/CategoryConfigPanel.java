@@ -52,6 +52,7 @@ public class CategoryConfigPanel extends JPanel implements ConfigPanel {
 			public void categoriesChanged() {
 				tableModel.setData(geco.registry().getSortedCategories());
 			}
+			public void coursesetsChanged() {}
 		});
 	
 		ActionListener addAction = new ActionListener() {
