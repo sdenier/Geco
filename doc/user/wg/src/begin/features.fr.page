@@ -19,6 +19,8 @@ Les formats Ordre libre et Orient'Show supportent les options suivantes pour la 
 - pénalités de temps pour chaque poste manquant
 - limite sur le nombre de PM autorisé, de 0 jusqu'à pas de limite
 
+Geco permet aussi l'organisation de courses avec départ en masse et de [One Man Relay](../workflows/omr.fr.html).
+
 Geco offre des possibilités puissantes pour la lecture des puces :
 
 - trois [modes](../guide/ecard_modes.fr.html) de lecture : compétition, entraînement, inscription

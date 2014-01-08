@@ -78,6 +78,7 @@ For each course/category in the results:
 For each runner (ranked or not):
 
 - geco_RunnerRank : place in ranking (empty if unranked)
+- geco_RunnerStartId
 - geco_RunnerFirstName
 - geco_RunnerLastName
 - geco_RunnerClubName

@@ -12,8 +12,8 @@ What do you need to run Geco?
 - Geco bundle: it includes the application (jar file), some template files, user documentation, native libraries for serial communication (RXTX)
 - SportIdent drivers
   - Windows: check sportident website
-  - Linux: recent kernels recognize the chip used by SI station, so it's plug'n'play
-  - Mac OS X: see the [FAQ](faq.html) for custom install.
-- the SPORTident master station must be set up to use the *extended protocol* in *handshake* mode (no autosend). SiConfig can easily change a station configuration.
+  - Mac OS X: see the [FAQ](faq.html) for custom install
+  - Linux: if you are lucky, it works out of the box; if not, you are in for some [RXTX](http://rxtx.qbang.org) custom install.
+- The SPORTident master station must be set up to use the *extended protocol* in *handshake* mode (no autosend). SiConfig can easily change a station configuration.
 
 To launch Geco, **execute the geco.jar file**. It should opens automatically if your JRE is correctly configured.

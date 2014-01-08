@@ -6,6 +6,34 @@ in_menu: true
 
 # Quoi de neuf ?
 
+## Version 2.2 - 2014/01/xx
+
+[Geco 2.2](http://bitbucket.org/sdenier/geco/downloads/geco-2.2.zip) améliore la rapidité de lecture des puces et apporte la gestion par groupe de circuits, qui facilitent l'organisation de courses type [One Man Relay](../workflows/omr.fr.html)...
+
+- [GecoSI](https://github.com/sdenier/GecoSI) passe en version 1.1.0, avec une lecture des puces Si6/6*/10/11/SIAC plus rapide et plus fiable
+- Ajout des groupes de circuits, qui permettent de rassembler des circuits similaires (par exemple, les différentes variations d'un circuit papillon)
+- Classement par groupe de circuits (pour classer les coureurs d'un One Man Relay par exemple)
+- Possibilité de restreindre la détection automatique de circuits suivant la catégorie du coureur (en lien avec les groupes de circuits)
+- Un véritable horaire de départ en masse peut maintenent être défini pour chaque circuit
+
+### Améliorations mineures
+
+- Affichage et édition des longeur et dénivelé possibles depuis la section configuration des circuits
+- Affichage des postes du circuit immédiatement sélectionné
+- Affichages des temps au format 24h00+, pour les courses durant plus d'une journée
+- Affichage de plus de détails sur les temps dans la vue coureur (heure de départ réel, temps avant/après neutralisation)
+- Export en un clic pour [O'Splits](https://chrome.google.com/webstore/detail/osplits/kfnlllbjdagblbcdnmghcljobdlaoaii/details?hl=fr)
+- Amélioration de la robustesse de l'import des logs stations et logs puces
+- En cas de problème avec la station maître, Geco ouvre maintenant un popup avec l'erreur
+- Possibilité de configurer le format du ticket multi-colonnes
+
+*La configuration ROA est désactivée dans la 2.2, en prévision de la gestion prochaine des sections.*
+
+### Bugs corrigés
+
+- GecoSI en version 1.1.0 corrige un bug lors de la lecture des puces vides.
+
+
 ## Version 2.1 - 21/09/2013
 
 [Geco 2.1](http://bitbucket.org/sdenier/geco/downloads/geco-2.1.zip) est la première version stable dans la série 2.x. Elle intègre la première version stable de GecoSI (1.0.0) ainsi qu'un nouveau moteur extensible pour l'export des résultats.

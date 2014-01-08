@@ -12,9 +12,9 @@ The results panel can generate results from current data at any time during a ra
 
 ## Computing results
 
-1\. Select either *Courses* or *Categories* i.e., the kind of pools with which to compute results. A manual selection of courses (categories) can be performed in the list below.
+1\. Select either *Courses*, *[Course Sets](../workflows/omr.html)*, or *Categories* i.e., the kind of pools with which to compute results. A manual selection of courses (categories) can be performed in the list below.
 
-The *Category/Courses* is a third option which computes one ranking per category in each course. It is useful when categories are split across different courses in pools.
+The *Category/Courses* is a fourth option which computes one ranking per category in each course. It is useful when categories are split across different courses in pools.
 
 2\. Select either *Ranking*, *Splits*, or *CN* to set the kind of results to compute.
 
@@ -35,15 +35,16 @@ Results can be displayed in the right panel (*Refresh* button), printed, or expo
 
 ### Export format
 
-Geco offers four file formats for export:
+Geco offers different file formats for export:
 
 - **HTML** for web publication
-- **Custom**, to be used by different tools, including your own (O'Splits...)
+- **O'Splits**, html splits + javascript data for the [O'Splits](https://chrome.google.com/webstore/detail/osplits/kfnlllbjdagblbcdnmghcljobdlaoaii) Chrome extension
+- **Custom**, to be used by different tools, including your own
 - **CSV**, a complete format for spreadsheets
 - **OE CSV**, which is recognized by some analysis applications
 - **XML**, which is the standard IOF format for result exchange
 
-You can choose HTML and custom formats through [results templates](stage.html). To start with, **basic templates** are provided in the *formats* folder. You can also [edit template files](../howtos/customresults.html) to export your own format. The Mustache engine can actually produce any kind of text outpute, not only HTML.
+You can set HTML and custom formats through [results templates](stage.html). To start with, **basic templates** are provided in the *formats* folder. You can also [edit template files](../howtos/customresults.html) to export your own format. The Mustache engine can actually produce any kind of text outpute, not only HTML.
 
 The dedicated *CSV* Geco format can easily be imported in a spreadsheet to process results. This format provides numerous information, including punches, MPs, rank, etc.
 

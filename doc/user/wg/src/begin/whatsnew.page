@@ -6,6 +6,34 @@ in_menu: true
 
 # What's new?
 
+## Version 2.2 - 2014/01/xx
+
+[Geco 2.2](http://bitbucket.org/sdenier/geco/downloads/geco-2.2.zip) provides faster ecard readouts and introduces course sets, which enables easier handling of [One Man Relay](../workflows/omr.html) events and the like...
+
+- Push [GecoSI](https://github.com/sdenier/GecoSI) to 1.1.0, which enables faster and more reliable readouts for Si6/6*/10/11/SIAC
+- Introduce course sets, which define group of related courses (for example, variations in a butterfly course)
+- Enable results by course sets (for example, to rank runners in a One Man Relay)
+- Enable course detection restricted by runner category, based on course sets
+- True mass start time can be set up for each course
+
+### Minor Changes
+
+- Course length & climb can be viewed and edited from the course configuration panel
+- Course code are immediately displayed next to the course (not yet editable)
+- Time are now displayed in 24h00+ format, not in modulo 24h00 format
+- Runner panel displays more details about time computation (start time, before/after neutralization)
+- One-click export for [O'Splits](https://chrome.google.com/webstore/detail/osplits/kfnlllbjdagblbcdnmghcljobdlaoaii/details?hl=fr)
+- More robust parsing for station log and ecard log (trim field quotes, skip bad record)
+- Raise popup to better inform user when the master station notifies a fatal error
+- Enable page format setup for multi-columns ticket
+
+*The ROA configuration is disabled in 2.2, prelude to the next version with full sections management.*
+
+### Bug Fix
+
+- GecoSI 1.1.0 integration fixes a bug when reading empty ecards.
+
+
 ## Version 2.1 - 2013/09/21
 
 [Geco 2.1](http://bitbucket.org/sdenier/geco/downloads/geco-2.1.zip) is the first stable release in the 2.x series. It includes the first stable version of GecoSI (1.0.0) as well as a new template engine to export results.
@@ -21,7 +49,7 @@ in_menu: true
 
 ### Bug Fix
 
-- GecoSI 1.0.0 intefration fixes multiple bugs when reading ecards withtout start times or when using the 192 punches mode.
+- GecoSI 1.0.0 integration fixes multiple bugs when reading ecards without start times or when using the 192 punches mode.
 
 ### Known Issue
 

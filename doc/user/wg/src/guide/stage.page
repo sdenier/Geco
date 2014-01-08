@@ -23,11 +23,28 @@ This panel also allows you to customize the behavior of Geco when reading ecards
 
 - manually resolve ecard issues with the [Merge wizard](merge.html) *or* let Geco handles all ecards [automatically](../workflows/auto.html), creating an entry for each reading (unknown, duplicate entries)
 - let Geco lookup unregistered ecards and insert entries from archive (only for the automatic behavior)
+- restrict automatic course detection using [course sets](../workflows/omr.html) per category
 
 ## Penalties (for Orient'Show, Free Order, ...)
 - MP limit: number of missing punches authorized before marking the runner as MP
 - Don't check MP limit: runner can have any number of missing punches without ever being MP (disable MP limit)
 - Time penalty: time penalty per missing punch, in seconds (also displayed in minutes for large time penalty)
+
+## Course
+- Geco can import courses described with the *[IOF XML](http://www.soenniksen.dk/iof-datastandard/index.shtml)* format. Click the *XML* button to select the course file. You can choose between the **XML V2** (current) format or the new **XML V3** format.
+- You can set course length, climb, mass start time (optional), or [course set](../workflows/omr.html)
+- Course Sets are created on the fly if they do not yet exist
+- You can *Edit* the course sequence by hand, if necessary
+- You can *Recheck* all runners from a course after a change
+  
+The **\[Auto\]** course always exists in Geco: it can't be renamed or deleted. This is the default course used by Geco for any new entry (unless a category course is used). This special course tells Geco to detect the *real* course on ecard reading: after reading, the runner course will be automatically updated with the detected course.
+
+<a href="../images/stage_panel_courses.png"><img src="../images/stage_panel_courses.png" /></a>
+
+## Category
+- Course column: set the default course for runners in category (used when importing registrations from file or from archive)
+- [Course set](../workflows/omr.html) column: restrict automatic course detection to the given course set for runners in category (tick option in SI reader configuration)
+- You can import a CSV *Template* file describing common categories and their default courses. See `data/modeles` for some sample files following french rules. Each line describes a category as `short name, long name, course name`
 
 ## Templates
 
@@ -36,16 +53,3 @@ This section allows you to select [custom Mustache templates](../howtos/customre
 Three templates are available for stage results: ranking, split times, and custom (which can be used to easily export results in a different format).
 
 You can choose between multi-columns format or single-column 'ticket' (for thermal printer) for the runner splits. The *Prototyping* checkbox makes it easy to quickly change and test template files: instead of printing a split, Geco will open a window with the split and writes a *runner_splits.html* file.
-
-<a href="../images/stage_panel_templates.png"><img src="../images/stage_panel_templates.png" /></a>
-
-## Course
-- Geco can import courses described with the *[IOF XML](http://www.soenniksen.dk/iof-datastandard/index.shtml)* format. Click the *XML* button to select the course file. You can choose between the **XML V2** (current) format or the new **XML V3** format.
-- You can *Edit* the course sequence by hand, if necessary
-- You can *Recheck* all runners from a course after a change
-  
-The **\[Auto\]** course always exists in Geco: it can't be renamed or deleted. This is the default course used by Geco for any new entry (unless a category course is used). This special course tells Geco to detect the *real* course on ecard reading: after reading, the runner's course will be automatically updated with the detected course.
-
-## Category
-- Course column: set the default course for runners in the category (used when importing registrations from file or from archive)
-- You can import a CSV *Template* file describing common categories and their default courses. See `data/modeles` for some sample files following french rules. Each line describes a category as `short name, long name, course name`

@@ -1,6 +1,6 @@
-Geco 2.1
+Geco 2.2
 ========
-Copyright (c) 2008-2013 Simon Denier  
+Copyright (c) 2008-2014 Simon Denier  
 Homepage: http://sdenier.github.io/Geco
 
 [![Build Status](https://travis-ci.org/sdenier/Geco.png)](https://travis-ci.org/sdenier/Geco)
@@ -15,10 +15,10 @@ The Geco UI is designed to provide a lean user experience: navigate through stag
 Geco can handle multiple race formats: classic inline, free order, Orient'Show (penalty count, knockout qualifications).
 
 
-About the 2.1
+About the 2.2
 -------------
 
-Geco 2.1 is the first stable release in the 2.x series. It provides a brand new feature which allows anyone to customize results outputs using the [mustache](http://mustache.github.io) template system. Customizable outputs include ranking, ranking with splits, tickets for runner...
+Geco 2.2 provides faster ecard readouts and introduces course sets, which enables easier handling of One Man Relay events and the like...
 
 
 Install & Launch

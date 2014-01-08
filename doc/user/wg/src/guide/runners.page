@@ -64,12 +64,14 @@ The *Runner Data* pane shows complementary information about the currently selec
 - Registration
   - Registered Start: in case you allocate start times to competitors. Note that a start time in e-card always has priority over the registered start time
   - Rented e-card: if ticked, Geco displays a warning message when reading this e-card
-- E-card (information fields, non-editable)
-  - The *Race* field always displays *finish - start* time, not taking into account time penalties
-  - *Start/Finish* times are displayed with a **red background** if missing
-- Result (information fields, non-editable)
+- E-card (non-editable)
+  - Display raw data from e-card
+- Result (non-editable)
+  - Official start and finish times used for computing race time (**red background** if missing)
+  - Basic running (stopwatch) time
+  - Race time includes neutralization with running time
   - Official is the official time computed as race time + penalties
-  - The time taken by Geco to compute results is the one given in the table (which can be edited by hand if necessary) - Official time is displayed with a **yellow background** if it does not match with the table
+  - The time taken by Geco for results and ranking is the one given in the table (which can be edited by hand if necessary) - Official time is displayed with a **yellow background** if it does not match with the table
 - Buttons
   - *Recheck* (mod+R) computes the status based on punches and course and reset the official time
   - *Reset Official Time* computes the official time in table based on race time and penalties

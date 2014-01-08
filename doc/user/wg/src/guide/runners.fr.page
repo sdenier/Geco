@@ -64,12 +64,14 @@ La vue *Données* du coureur montre des informations complémentaires sur le cou
 - Inscription
   - Horaire départ : si vous faites un départ avec horaires attribués à l'avance. Notez que vous pouvez mélanger horaire départ et boîtier départ : Geco donne priorité à l'heure de départ enregistrée dans la puce
   - Puce louée : si cochée, Geco affiche un message lors de la lecture de la puce
-- Données puce (champs d'information, non modifiables)
-  - Le champ *Chrono* montre toujours le temps *Arrivée - Départ*, sans prendre en compte des pénalités
-  - Les temps *Départ/Arrivée* sont affichées avec un **fond rouge** s'ils sont manquants
-- Résultats (champs d'information, non modifiables)
-  - Le champ du temps officiel affiche toujours le chrono + pénalité
-  - Geco utilise le temps officiel de la table pour calculer les résultats (qui peut être changé à la main) - le champ est affiché avec un **fond jaune** pour indiquer un changement dans la table
+- Données puce (non modifiables)
+  - données issues directement de la puce
+- Résultats (non modifiables)
+  - Temps *Départ/Arrivée* retenus pour le calcul du temps de course (affichage d'un **fond rouge** si manquant)
+  - Temps *Chrono = Arrivée - Départ*
+  - Temps de course calculé en prenant en compte les neutralisations
+  - Le temps officiel affiche toujours le temps de course + pénalités
+  - Geco utilise le temps officiel dans la table (qui peut être changé à la main) pour calculer les résultats - ce champ s'affiche alors avec un **fond jaune** pour indiquer une différence avec le temps officiel de la table
 - Boutons
   - *Vérifier* (mod+R) recalcule le statut du coureur et le temps officiel
   - *Réinitialiser temps officiel* recalcule le temps officiel

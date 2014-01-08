@@ -12,8 +12,8 @@ Pour faire tourner Geco, vous avez besoin :
 - d'une archive Geco qui contient l'application (fichier jar), différents fichiers modèles, la documentation, les bibliothèques natives de communication série
 - des pilotes SPORTident 
   - Windows : voir le site SPORTident
-  - Linux : les noyaux récents reconnaissent la puce utilisée par les boîtiers maîtres, plug'n'play !
   - Mac OS X : voir la [FAQ](faq.fr.html) pour une installation "à la main".
-- la station maître SPORTident doit être configurée pour utiliser le *protocole étendu* avec le mode *handshake* (pas autosend). SiCondif permet de rapidement reconfigurer une station.
+  - Linux : suivant votre système, Geco se lancera directement, ou bien vous devrez par une étape compliquée de configuration de [RXTX](http://rxtx.qbang.org).
+- la station maître SPORTident doit être configurée pour utiliser le *protocole étendu* avec le mode *handshake* (pas autosend). SiConfig permet de rapidement reconfigurer une station.
 
 Pour lancer Geco, **exécuter le fichier geco.jar**. Il devrait se lancer directement si votre JRE est bien configuré.

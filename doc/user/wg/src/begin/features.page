@@ -19,6 +19,8 @@ Free Order and Orient'Show support the following options when checking e-cards:
 - time penalties on missing punches
 - MP limit, from 0 MP allowed to any number of MP
 
+Geco also supports Mass Start events and [One Man Relay](../workflows/omr.html) with an easy setup.
+
 Geco offers powerful capabilities for ecard reading:
 
 - three reading [modes](../guide/ecard_modes.html): racing, training, registration
