@@ -60,6 +60,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	private static final int AutoexportDelay = 60;
 	
 	private List<String> coursenames;
+	private List<String> coursesetnames;
 	private List<String> categorynames;
 	private JTextPane resultTA;
 	
@@ -112,7 +113,22 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 
 	private void updateNames() {
 		coursenames = registry().getSortedCourseNames();
+		coursesetnames = registry().getSortedCourseSetNames();
 		categorynames = registry().getSortedCategoryNames();
+	}
+	private void refreshPoolList() {
+		switch (getResultType()) {
+		case CourseResult:
+			updateCourseList();
+			break;
+		case CourseSetResult:
+			updateCourseSetList();
+			break;
+		case CategoryResult:
+		case MixedResult:
+			updateCategoryList();
+			break;
+		}
 	}
 	private void updateCourseList() {
 		poolList.setModel(new AbstractListModel() {
@@ -121,6 +137,17 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 			}
 			public Object getElementAt(int index) {
 				return coursenames.get(index);
+			}
+		});
+		selectAllPools();
+	}
+	private void updateCourseSetList() {
+		poolList.setModel(new AbstractListModel() {
+			public int getSize() {
+				return coursesetnames.size();
+			}
+			public Object getElementAt(int index) {
+				return coursesetnames.get(index);
 			}
 		});
 		selectAllPools();
@@ -144,9 +171,6 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	}
 	private ResultType getResultType() {
 		return (ResultType) resultTypeCB.getSelectedItem();
-	}
-	private boolean showCourses() {
-		return getResultType() == ResultType.CourseResult;
 	}
 	private ResultConfig createResultConfig() {
 		return ResultBuilder.createResultConfig(
@@ -174,15 +198,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		resultTypeCB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				switch (getResultType()) {
-				case CourseResult:
-					updateCourseList();
-					break;
-				case CategoryResult:
-				case MixedResult:
-					updateCategoryList();
-					break;
-				}
+				refreshPoolList();
 			}
 		});
 		selectAllB.addActionListener(new ActionListener() {
@@ -507,11 +523,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 
 	private void refresh() {
 		updateNames();
-		if( showCourses() ) {
-			updateCourseList();
-		} else {
-			updateCategoryList();
-		}
+		refreshPoolList();
 		repaint();
 	}
 
@@ -544,7 +556,9 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	}
 
 	@Override
-	public void coursesetsChanged() {}
+	public void coursesetsChanged() {
+		refresh();
+	}
 
 	@Override
 	public void componentShown(ComponentEvent e) {

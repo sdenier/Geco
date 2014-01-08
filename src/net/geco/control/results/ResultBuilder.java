@@ -16,6 +16,7 @@ import net.geco.control.Control;
 import net.geco.control.GecoControl;
 import net.geco.model.Category;
 import net.geco.model.Course;
+import net.geco.model.CourseSet;
 import net.geco.model.Messages;
 import net.geco.model.Pool;
 import net.geco.model.Result;
@@ -90,6 +91,20 @@ public class ResultBuilder extends Control {
 		return result;
 	}
 
+	public Result buildResultForCourseSet(CourseSet courseset) {
+		Result result = factory().createResult();
+		result.setIdentifier(courseset.getName());
+		List<Runner> allRunners = new ArrayList<Runner>();
+		for (Course course : registry().getCoursesFromCourseSet(courseset)) {
+			List<Runner> runners = registry().getRunnersFromCourse(course);
+			if( runners!=null ) {
+				allRunners.addAll(runners);
+			}
+		}
+		sortResult(result, allRunners);
+		return result;
+	}
+
 	protected Result sortResult(Result result, List<Runner> runners) {
 		for (Runner runner : runners) {
 			RunnerRaceData data = registry().findRunnerData(runner);
@@ -128,6 +143,10 @@ public class ResultBuilder extends Control {
 			case CourseResult:
 				results.add(
 						buildResultForCourse((Course) pool));
+				break;
+			case CourseSetResult:
+				results.add(
+						buildResultForCourseSet((CourseSet) pool));
 				break;
 			case CategoryResult:
 				results.add(

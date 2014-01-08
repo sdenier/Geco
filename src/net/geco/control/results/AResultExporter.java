@@ -64,6 +64,9 @@ public abstract class AResultExporter extends Control {
 			case CourseResult:
 				pools.add( registry().findCourse((String) selName) );
 				break;
+			case CourseSetResult:
+				pools.add( registry().findCourseSet((String) selName) );
+				break;
 			case CategoryResult:
 			case MixedResult:
 				pools.add( registry().findCategory((String) selName) );

@@ -3,6 +3,7 @@
  */
 package net.geco.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -155,6 +156,16 @@ public class Registry {
 
 	public List<String> getSortedCourseSetNames() {
 		return coursesetRegistry.getSortedNames();
+	}
+
+	public Collection<Course> getCoursesFromCourseSet(CourseSet courseset) {
+		Collection<Course> courses = new ArrayList<Course>();
+		for (Course course : getCourses()) {
+			if( courseset.equals(course.getCourseSet()) ) {
+				courses.add(course);
+			}
+		}
+		return courses;
 	}
 
 	/*
