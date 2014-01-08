@@ -149,6 +149,10 @@ public class Registry {
 		coursesetRegistry.add(courseset);
 	}
 
+	public Collection<CourseSet> getCourseSets() {
+		return coursesetRegistry.getGroups();
+	}
+
 	public List<String> getSortedCourseSetNames() {
 		return coursesetRegistry.getSortedNames();
 	}

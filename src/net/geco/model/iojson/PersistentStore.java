@@ -16,6 +16,7 @@ import net.geco.basics.TimeManager;
 import net.geco.model.Category;
 import net.geco.model.Club;
 import net.geco.model.Course;
+import net.geco.model.CourseSet;
 import net.geco.model.Factory;
 import net.geco.model.HeatSet;
 import net.geco.model.Pool;
@@ -72,6 +73,7 @@ public final class PersistentStore {
 	public void importDataIntoRegistry(JSONStore store, Registry registry, Factory factory)
 			throws JSONException {
 		importControls(store, registry);
+		importCourseSets(store, registry, factory);
 		importCourses(store, registry, factory);
 		importCategories(store, registry, factory);
 		importClubs(store, registry, factory);
@@ -89,6 +91,19 @@ public final class PersistentStore {
 		}
 	}
 
+	public void importCourseSets(JSONStore store, Registry registry, Factory factory)
+			throws JSONException {
+		if( store.has(K.COURSESETS) ) { // MIGR v2.x -> v2.2
+			JSONArray coursesets = store.getJSONArray(K.COURSESETS);
+			for (int i = 0; i < coursesets.length(); i++) {
+				JSONObject c = coursesets.getJSONObject(i);
+				CourseSet courseset = store.register(factory.createCourseSet(), c.getInt(K.ID));
+				courseset.setName(c.getString(K.NAME));
+				registry.addCourseSet(courseset);
+			}
+		}
+	}
+
 	public void importCourses(JSONStore store, Registry registry, Factory factory)
 			throws JSONException {
 		JSONArray courses = store.getJSONArray(K.COURSES);
@@ -99,6 +114,7 @@ public final class PersistentStore {
 			course.setLength(c.getInt(K.LENGTH));
 			course.setClimb(c.getInt(K.CLIMB));
 			course.setMassStartTime(new Date(c.optLong(K.START, TimeManager.NO_TIME_l))); // MIGR v2.x -> v2.2
+			course.setCourseSet(store.retrieve(c.optInt(K.COURSESET, 0), CourseSet.class));
 			JSONArray codez = c.getJSONArray(K.CODES);
 			int[] codes = new int[codez.length()];
 			for (int j = 0; j < codes.length; j++) {
@@ -266,6 +282,7 @@ public final class PersistentStore {
 			.field(K.VERSION, JSON_SCHEMA_VERSION);
 		Registry registry = stage.registry();
 		exportControls(json, registry);
+		exportCourseSets(json, registry.getCourseSets());
 		exportCourses(json, registry.getCourses());
 		exportCategories(json, registry.getCategories());
 		exportClubs(json, registry.getClubs());
@@ -284,6 +301,17 @@ public final class PersistentStore {
 		json.endArray();
 	}
 
+	public void exportCourseSets(JSONSerializer json, Collection<CourseSet> coursesets) throws IOException {
+		json.startArrayField(K.COURSESETS);
+		for (CourseSet courseset : coursesets) {
+			json.startObject()
+				.id(K.ID, courseset)
+				.field(K.NAME, courseset.getName())
+				.endObject();
+		}
+		json.endArray();
+	}
+
 	public void exportCourses(JSONSerializer json, Collection<Course> courses)
 			throws IOException {
 		json.startArrayField(K.COURSES);
@@ -294,6 +322,7 @@ public final class PersistentStore {
 				.field(K.LENGTH, course.getLength())
 				.field(K.CLIMB, course.getClimb())
 				.field(K.START, course.getMassStartTime())
+				.optRef(K.COURSESET, course.getCourseSet())
 				.startArrayField(K.CODES);
 			for (int code : course.getCodes()) { json.value(code); }
 			json.endArray().startArrayField(K.SECTIONS);
@@ -444,6 +473,8 @@ public final class PersistentStore {
 		public static final String CLIMB = "climb"; //$NON-NLS-1$
 		public static final String CODES = "codes"; //$NON-NLS-1$
 		public static final String SECTIONS = "sections"; //$NON-NLS-1$
+		public static final String COURSESETS = "coursesets"; //$NON-NLS-1$
+		public static final String COURSESET = "courseset"; //$NON-NLS-1$
 
 		public static final String CATEGORIES = "categories";; //$NON-NLS-1$
 		public static final String LONG = "long"; //$NON-NLS-1$
