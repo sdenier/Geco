@@ -148,6 +148,7 @@ public final class PersistentStore {
 			category.setName(c.getString(K.NAME));
 			category.setLongname(c.getString(K.LONG));
 			category.setCourse(store.retrieve(c.optInt(K.COURSE, 0), Course.class));
+			category.setCourseSet(store.retrieve(c.optInt(K.COURSESET, 0), CourseSet.class));
 			registry.addCategory(category);
 		}
 	}
@@ -350,6 +351,7 @@ public final class PersistentStore {
 				.field(K.NAME, cat.getShortname())
 				.field(K.LONG, cat.getLongname())
 				.optRef(K.COURSE, cat.getCourse())
+				.optRef(K.COURSESET, cat.getCourseSet())
 				.endObject();
 		}
 		json.endArray();		

@@ -41,18 +41,21 @@ public class CategoryConfigPanel extends JPanel implements ConfigPanel {
 	public CategoryConfigPanel(final IGecoApp geco, final JFrame frame) {
 		final ConfigTablePanel<Category> categoryPanel = new ConfigTablePanel<Category>();
 		final ConfigTableModel<Category> tableModel = createTableModel(geco);
-		final JComboBox coursesCB = new JComboBox();
 		tableModel.setData(geco.registry().getSortedCategories());
+		final JComboBox coursesCB = new JComboBox();
+		final JComboBox coursesetCB = new JComboBox();
 		
 		geco.announcer().registerStageConfigListener( new Announcer.StageConfigListener() {
 			public void coursesChanged() {
-				updateCoursesCBforCategories(geco, coursesCB);
+				updateComboBoxesforCategories(geco, coursesCB, coursesetCB);
 			}
 			public void clubsChanged() {}
 			public void categoriesChanged() {
 				tableModel.setData(geco.registry().getSortedCategories());
 			}
-			public void coursesetsChanged() {}
+			public void coursesetsChanged() {
+				updateComboBoxesforCategories(geco, coursesCB, coursesetCB);
+			}
 		});
 	
 		ActionListener addAction = new ActionListener() {
@@ -107,8 +110,11 @@ public class CategoryConfigPanel extends JPanel implements ConfigPanel {
 				addAction,
 				removeAction,
 				importB);
-		updateCoursesCBforCategories(geco, coursesCB);
+
+		coursesetCB.setEditable(true);
+		updateComboBoxesforCategories(geco, coursesCB, coursesetCB);
 		categoryPanel.table().getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(coursesCB));
+		categoryPanel.table().getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(coursesetCB));
 		
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		add(categoryPanel);
@@ -118,13 +124,15 @@ public class CategoryConfigPanel extends JPanel implements ConfigPanel {
 		return new ConfigTableModel<Category>(new String[] {
 											Messages.uiGet("CategoryConfigPanel.CategoryShortNameHeader"), //$NON-NLS-1$
 											Messages.uiGet("CategoryConfigPanel.CategoryLongNameHeader"), //$NON-NLS-1$
-											Messages.uiGet("CategoryConfigPanel.CategoryCourseHeader") }) { //$NON-NLS-1$
+											Messages.uiGet("CategoryConfigPanel.CategoryCourseHeader"), //$NON-NLS-1$
+											"Course Set"}) {
 			@Override
 			public Object getValueIn(Category cat, int columnIndex) {
 				switch (columnIndex) {
 				case 0: return cat.getShortname();
 				case 1: return cat.getLongname();
 				case 2: return (cat.getCourse()==null) ? "" : cat.getCourse().getName(); //$NON-NLS-1$
+				case 3: return (cat.getCourseSet()==null) ? "" : cat.getCourseSet().getName(); //$NON-NLS-1$
 				default: return super.getValueIn(cat, columnIndex);
 				}
 			}
@@ -134,6 +142,7 @@ public class CategoryConfigPanel extends JPanel implements ConfigPanel {
 				case 0: geco.stageControl().updateShortname(cat, (String) value); break;
 				case 1: geco.stageControl().updateName(cat, (String) value); break;
 				case 2: setCourse(cat, (String) value); break;
+				case 3: geco.stageControl().updateCategoryCourseSet(cat, (String) value); break;
 				default: break;
 				}
 			}
@@ -147,10 +156,12 @@ public class CategoryConfigPanel extends JPanel implements ConfigPanel {
 		};
 	}
 
-	private void updateCoursesCBforCategories(IGecoApp geco, JComboBox coursesCB) {
+	private void updateComboBoxesforCategories(IGecoApp geco, JComboBox coursesCB, JComboBox coursesetCB) {
 		Vector<String> sortedCoursenames = new Vector<String>( geco.registry().getSortedCourseNames() );
 		sortedCoursenames.add(0, ""); //$NON-NLS-1$
 		coursesCB.setModel(new DefaultComboBoxModel(sortedCoursenames));
+		Vector<String> sortedCoursets = new Vector<String>(geco.registry().getSortedCourseSetNames());
+		coursesetCB.setModel(new DefaultComboBoxModel(sortedCoursets));
 	}
 
 	@Override

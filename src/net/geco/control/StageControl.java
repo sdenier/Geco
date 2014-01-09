@@ -399,6 +399,14 @@ public class StageControl extends Control {
 		}
 	}
 
+	public void updateCategoryCourseSet(Category cat, String courseset) {
+		if( courseset.equals("") ) {
+			cat.setCourseSet(null);
+		} else {
+			cat.setCourseSet(findOrCreateCourseSet(courseset));
+		}
+	}
+
 	public CourseSet findOrCreateCourseSet(String courseset) {
 		CourseSet set = registry().findCourseSet(courseset);
 		if( set == null ) {

@@ -6,6 +6,7 @@ package net.geco.model.impl;
 
 import net.geco.model.Category;
 import net.geco.model.Course;
+import net.geco.model.CourseSet;
 
 
 /**
@@ -20,6 +21,8 @@ public class CategoryImpl implements Category {
 	private String longname;
 	
 	private String shortname;
+
+	private CourseSet courseset;
 
 	public Course getCourse() {
 		return course;
@@ -45,14 +48,20 @@ public class CategoryImpl implements Category {
 		this.shortname = shortname;
 	}
 
-	@Override
 	public String getName() {
 		return getShortname();
 	}
 
-	@Override
 	public void setName(String name) {
 		setShortname(name);
+	}
+
+	public CourseSet getCourseSet() {
+		return courseset;
+	}
+
+	public void setCourseSet(CourseSet courseset) {
+		this.courseset = courseset;
 	}
 	
 }
