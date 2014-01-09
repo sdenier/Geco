@@ -5,12 +5,14 @@
 package net.geco.control.ecardmodes;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import net.geco.control.Control;
 import net.geco.control.GecoControl;
 import net.geco.control.RunnerControl;
+import net.geco.model.Category;
 import net.geco.model.Course;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.RunnerResult;
@@ -26,6 +28,8 @@ public class CourseDetector extends Control {
 	private RunnerControl runnerControl;
 
 	private Course autoCourse;
+
+	private boolean useCategoryCourseSet;
 
 	public CourseDetector(GecoControl gecoControl) {
 		super(gecoControl);
@@ -69,10 +73,36 @@ public class CourseDetector extends Control {
 		}
 	}
 
+	public void toggleCategoryCourseSet(boolean flag) {
+		useCategoryCourseSet = flag;
+	}
+
+	public boolean categoryCourseSetEnabled() {
+		return useCategoryCourseSet;
+	}
+
 	public Course detectCourse(RunnerRaceData data) {
+		return detect(data, registry().getCourses());
+	}
+
+	public Course detectCourse(RunnerRaceData data, Category cat) {
+		Collection<Course> selectedCourses;
+		if( useCategoryCourseSet && cat.getCourseSet() != null) {
+			selectedCourses = registry().getCoursesFromCourseSet(cat.getCourseSet());
+			if ( selectedCourses.isEmpty() ) {
+				geco().info("Warning,  empty course set for category " + cat.getName(), true);
+				selectedCourses = registry().getCourses();
+			}
+		} else {
+			selectedCourses =  registry().getCourses();
+		}
+		return detect(data, selectedCourses);
+	}
+
+	private Course detect(RunnerRaceData data, Collection<Course> courses) {
 		int nbPunches = data.getPunches().length;
-		List<CandidateCourse> candidates = new ArrayList<CandidateCourse>(registry().getCourses().size());
-		for (Course course : registry().getCourses()) {
+		List<CandidateCourse> candidates = new ArrayList<CandidateCourse>(courses.size());
+		for (Course course : courses) {
 			if( course != autoCourse ){
 				// don't include Auto course in candidates - will match all traces as OK
 				candidates.add(new CandidateCourse(Math.abs(nbPunches - course.nbControls()), course));

@@ -47,6 +47,8 @@ public class SIReaderHandler extends Control implements Announcer.StageListener,
 	
 	
 	private ECardMode currentEcardMode;
+
+	private CourseDetector courseDetector;
 	
 	private boolean autoHandlerOn;
 
@@ -82,7 +84,7 @@ public class SIReaderHandler extends Control implements Announcer.StageListener,
 	public SIReaderHandler(GecoControl geco) {
 		super(SIReaderHandler.class, geco);
 
-		CourseDetector courseDetector = new CourseDetector(geco);
+		courseDetector = new CourseDetector(geco);
 		new ECardRacingMode(geco, courseDetector);
 		new ECardTrainingMode(geco, courseDetector);
 		new ECardRegisterMode(geco);
@@ -131,7 +133,17 @@ public class SIReaderHandler extends Control implements Announcer.StageListener,
 		toggleArchiveLookup(false);
 	}
 	
+	public void toggleDetectionByCourseSet(boolean flag) {
+		courseDetector.toggleCategoryCourseSet(flag);
+	}
+
+	public boolean detectionByCourseSetEnabled() {
+		return courseDetector.categoryCourseSetEnabled();
+	}
+
 	private void setupHandlers() {
+		courseDetector.toggleCategoryCourseSet(Boolean.parseBoolean(
+						stage().getProperties().getProperty(coursesetDetectionProperty(), "false"))); //$NON-NLS-1$
 		autoHandlerOn = Boolean.parseBoolean(
 						stage().getProperties().getProperty(autoHandlerProperty(), "true")); //$NON-NLS-1$
 		archiveLookupOn = Boolean.parseBoolean(
@@ -150,7 +162,11 @@ public class SIReaderHandler extends Control implements Announcer.StageListener,
 	public static String archiveLookupProperty() {
 		return "ArchiveLookup"; //$NON-NLS-1$
 	}
-	
+
+	public static String coursesetDetectionProperty() {
+		return "CourseSetDetection";
+	}
+
 	public static String portNameProperty() {
 		return "SIPortname"; //$NON-NLS-1$
 	}
@@ -310,6 +326,8 @@ public class SIReaderHandler extends Control implements Announcer.StageListener,
 	public void saving(Stage stage, Properties properties) {
 		properties.setProperty(autoHandlerProperty(), Boolean.toString(autoHandlerOn));
 		properties.setProperty(archiveLookupProperty(), Boolean.toString(archiveLookupOn));
+		properties.setProperty(coursesetDetectionProperty(),
+								Boolean.toString(detectionByCourseSetEnabled()));
 		properties.setProperty(portNameProperty(), getPort().name());
 	}
 

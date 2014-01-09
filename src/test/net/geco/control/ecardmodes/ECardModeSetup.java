@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Date;
 
+import net.geco.model.Category;
 import net.geco.model.Course;
 import net.geco.model.Punch;
 import net.geco.model.Runner;
@@ -28,6 +29,7 @@ import test.net.geco.control.MockControlSetup;
 public class ECardModeSetup extends MockControlSetup {
 
 	protected Course testCourse;
+	protected Category testCategory;
 	@Mock protected SiDataFrame card;
 	protected Runner fullRunner;
 	protected RunnerRaceData fullRunnerData;
@@ -36,6 +38,7 @@ public class ECardModeSetup extends MockControlSetup {
 	public void setUpMockCardData() {
 		setUpCardPunches(card);
 		testCourse = createCourse();
+		testCategory = factory.createCategory();
 		fullRunner = createRunner();
 		fullRunnerData = createFullRunnerData();
 		danglingRunnerData = factory.createRunnerRaceData();
@@ -64,6 +67,7 @@ public class ECardModeSetup extends MockControlSetup {
 		runner.setStartId(1);
 		runner.setEcard("999");
 		runner.setCourse(testCourse);
+		runner.setCategory(testCategory);
 		return runner;
 	}
 

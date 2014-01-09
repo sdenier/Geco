@@ -126,26 +126,19 @@ public class ArchiveManager extends OEImporter implements StageListener {
 		return cat;
 	}
 	
-	
-	public Runner findAndCreateRunner(String ecard, Course course) {
+	public Runner findAndBuildRunner(String ecard) {
 		try {
 			ArchiveRunner arkRunner = archive().findRunner(ecard);
-			if( arkRunner==null ){
+			if( arkRunner == null ) {
 				return null;
 			}
-			if( course==null ) {
-				Category rCat = ensureCategoryInRegistry(arkRunner.getCategory());
-				course = registry().getDefaultCourseOrAutoFor(rCat);
-			}
-			return buildRunner(arkRunner, arkRunner.getEcard(), course);			
+			Category rCat = ensureCategoryInRegistry(arkRunner.getCategory());
+			Course course = registry().getDefaultCourseOrAutoFor(rCat);
+			return buildRunner(arkRunner, ecard, course);
 		} catch (IOException e) {
 			geco().log(e.toString());
 			return null;
 		}
-	}
-	
-	public Runner findAndCreateRunner(String ecard) {
-		return findAndCreateRunner(ecard, null);
 	}
 	
 	public Runner insertRunner(ArchiveRunner arkRunner) {

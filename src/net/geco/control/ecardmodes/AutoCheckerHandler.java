@@ -27,7 +27,7 @@ public class AutoCheckerHandler extends AbstractHandlerWithCourseDetector implem
 	public String handleFinish(RunnerRaceData data) {
 		Runner runner = data.getRunner();
 		if( runner.getCourse() == autoCourse ) {
-			runnerControl.updateCourse(runner, autoCourse, courseDetector.detectCourse(data));
+			runnerControl.updateCourse(runner, autoCourse, courseDetector.detectCourse(data, runner.getCategory()));
 		} else {
 			geco().checker().check(data);
 		}

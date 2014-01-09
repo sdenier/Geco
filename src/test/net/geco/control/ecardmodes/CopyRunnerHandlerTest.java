@@ -18,6 +18,7 @@ import net.geco.basics.TimeManager;
 import net.geco.control.RunnerControl;
 import net.geco.control.ecardmodes.CopyRunnerHandler;
 import net.geco.control.ecardmodes.CourseDetector;
+import net.geco.model.Category;
 import net.geco.model.Course;
 import net.geco.model.Runner;
 
@@ -35,6 +36,7 @@ public class CopyRunnerHandlerTest extends ECardModeSetup {
 
 	private Runner runner;
 	private Course newCourse;
+	private Category cat;
 	@Mock private CourseDetector detector;
 	@Mock private RunnerControl runnerControl;
 	
@@ -45,18 +47,20 @@ public class CopyRunnerHandlerTest extends ECardModeSetup {
 
 		newCourse = factory.createCourse();
 		when(registry.nextStartId()).thenReturn(314);
-		when(detector.detectCourse(fullRunnerData)).thenReturn(newCourse);
+		when(detector.detectCourse(eq(fullRunnerData), any(Category.class))).thenReturn(newCourse);
 		when(runnerControl.deriveUniqueEcard("999")).thenReturn("999a");
 		when(gecoControl.getService(RunnerControl.class)).thenReturn(runnerControl);
 		
 		runner = factory.createRunner();
 		runner.setEcard("999");
+		cat = factory.createCategory();
+		runner.setCategory(cat);
 	}
 
 	@Test
 	public void handleDuplicate_callsDetector() {
 		new CopyRunnerHandler(gecoControl, detector).handleDuplicate(fullRunnerData, runner);
-		verify(detector).detectCourse(fullRunnerData);
+		verify(detector).detectCourse(fullRunnerData, cat);
 	}
 	
 	@Test

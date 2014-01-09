@@ -35,13 +35,13 @@ public class ManualHandlerTest extends ECardModeSetup {
 	@Test
 	public void handleDuplicateCallsCourseDetector() {
 		new ManualHandler(gecoControl, detector).handleDuplicate(danglingRunnerData, fullRunner);
-		verify(detector).detectCourse(danglingRunnerData);
+		verify(detector).detectCourse(danglingRunnerData, testCategory);
 	}
 	
 	@Test
 	public void handleDuplicateRequestsMerge() {
 		Course course = factory.createCourse();
-		when(detector.detectCourse(danglingRunnerData)).thenReturn(course);
+		when(detector.detectCourse(danglingRunnerData, testCategory)).thenReturn(course);
 		new ManualHandler(gecoControl, detector).handleDuplicate(danglingRunnerData, fullRunner);
 		verify(requestHandler).requestMergeExistingRunner(danglingRunnerData, fullRunner, course);
 	}

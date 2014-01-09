@@ -7,7 +7,6 @@ package net.geco.control.ecardmodes;
 import net.geco.control.ArchiveManager;
 import net.geco.control.GecoControl;
 import net.geco.control.RunnerCreationException;
-import net.geco.model.Course;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
 
@@ -38,16 +37,16 @@ public class ArchiveLookupHandler extends AbstractHandlerWithCourseDetector impl
 
 	@Override
 	public String handleUnregistered(RunnerRaceData data, String cardId) {
-		Course course = courseDetector.detectCourse(data);
-		Runner runner = archiveManager.findAndCreateRunner(cardId, course);
-		if( runner!=null ){
+		Runner runner = archiveManager.findAndBuildRunner(cardId);
+		if( runner != null ) {
 			foundInArchive = true;
+			runner.setCourse(courseDetector.detectCourse(data, runner.getCategory()));
 			runnerControl.registerRunner(runner, data);
 			geco().log("Insertion " + data.infoString()); //$NON-NLS-1$
 		} else {
 			try {
 				foundInArchive = false;
-				this.anonHandler.registerAnonymousRunner(data, course, cardId);
+				this.anonHandler.registerAnonymousRunner(data, courseDetector.detectCourse(data), cardId);
 			} catch (RunnerCreationException e) {
 				geco().log(e.getLocalizedMessage());
 				return null;
