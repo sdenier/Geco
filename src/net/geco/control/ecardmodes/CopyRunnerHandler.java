@@ -26,7 +26,7 @@ public class CopyRunnerHandler extends AbstractHandlerWithCourseDetector impleme
 
 	@Override
 	public String handleDuplicate(RunnerRaceData data, Runner runner) {
-		Course course = courseDetector.detectCourse(data);
+		Course course = courseDetector.detectCourse(data, runner.getCategory());
 		String uniqueEcard = runnerControl.deriveUniqueEcard(runner.getEcard());
 		Runner newRunner = runner.copyWith(registry().nextStartId(), uniqueEcard, course);
 		newRunner.setRegisteredStarttime(TimeManager.NO_TIME);

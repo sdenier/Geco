@@ -87,12 +87,12 @@ public class ECardRacingModeTest extends ECardModeSetup {
 	@Test
 	public void handleUnregisteredInsertsFromArchive() {
 		ecardMode.handleUnregistered(danglingRunnerData, "997");
-		verify(archive).findAndCreateRunner("997", testCourse);
+		verify(archive).findAndBuildRunner("997");
 	}
 
 	@Test
 	public void handleUnregisteredCallsAnnouncer() {
-		when(archive.findAndCreateRunner("997", testCourse)).thenReturn(fullRunnerData.getRunner());
+		when(archive.findAndBuildRunner("997")).thenReturn(fullRunnerData.getRunner());
 		ecardMode.handleUnregistered(danglingRunnerData, "997");
 		verify(announcer).announceCardRead("997");
 	}

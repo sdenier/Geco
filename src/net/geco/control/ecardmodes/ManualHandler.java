@@ -31,7 +31,8 @@ public class ManualHandler implements ECardHandler {
 
 	@Override
 	public String handleDuplicate(RunnerRaceData data, Runner runner) {
-		return requestHandler.requestMergeExistingRunner(data, runner, detector.detectCourse(data));
+		return requestHandler.requestMergeExistingRunner(data, runner,
+														detector.detectCourse(data, runner.getCategory()));
 	}
 
 	@Override

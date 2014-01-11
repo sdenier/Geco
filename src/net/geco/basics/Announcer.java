@@ -65,6 +65,8 @@ public class Announcer {
 		public void categoriesChanged();
 		
 		public void clubsChanged();
+
+		public void coursesetsChanged();
 	}
 	
 	public interface CourseListener {
@@ -267,6 +269,12 @@ public class Announcer {
 	public void announceClubsChanged() {
 		for (StageConfigListener listener : this.stageConfigListeners) {
 			listener.clubsChanged();
+		}
+	}
+
+	public void announceCoursesetsChanged() {
+		for (StageConfigListener listener : this.stageConfigListeners) {
+			listener.coursesetsChanged();
 		}
 	}
 

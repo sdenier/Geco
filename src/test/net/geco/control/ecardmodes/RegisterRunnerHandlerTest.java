@@ -73,15 +73,15 @@ public class RegisterRunnerHandlerTest extends ECardModeSetup {
 	
 	@Test
 	public void handleUnregisteredCallsArchiveManager() {
-		when(archive.findAndCreateRunner("600")).thenReturn(dummyRunner("600"));
+		when(archive.findAndBuildRunner("600")).thenReturn(dummyRunner("600"));
 		new RegisterRunnerHandler(gecoControl).handleUnregistered(null, "600");
-		verify(archive).findAndCreateRunner("600");
+		verify(archive).findAndBuildRunner("600");
 	}
 
 	@Test
 	public void handleUnregisteredRegistersRunnerFromArchiveIfFound() {
 		Runner runner = dummyRunner("600");
-		when(archive.findAndCreateRunner("600")).thenReturn(runner);
+		when(archive.findAndBuildRunner("600")).thenReturn(runner);
 		ArgumentCaptor<RunnerRaceData> data = ArgumentCaptor.forClass(RunnerRaceData.class);
 		new RegisterRunnerHandler(gecoControl).handleUnregistered(null, "600");
 		
@@ -117,7 +117,7 @@ public class RegisterRunnerHandlerTest extends ECardModeSetup {
 
 	@Test
 	public void handleUnregisteredReturnsId() {
-		when(archive.findAndCreateRunner("600")).thenReturn(dummyRunner("600"));
+		when(archive.findAndBuildRunner("600")).thenReturn(dummyRunner("600"));
 		String returnedEcard = new RegisterRunnerHandler(gecoControl).handleUnregistered(null, "600");
 		assertEquals("600", returnedEcard);
 	}

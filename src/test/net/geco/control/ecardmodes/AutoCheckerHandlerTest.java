@@ -58,13 +58,13 @@ public class AutoCheckerHandlerTest extends ECardModeSetup {
 	public void handleFinishCallsDetectorWhenAutoCourse() {
 		setUpRunnerWithAutoCourse();
 		new AutoCheckerHandler(gecoControl, detector).handleFinish(fullRunnerData);
-		verify(detector).detectCourse(fullRunnerData);
+		verify(detector).detectCourse(fullRunnerData, testCategory);
 	}
 
 	@Test
 	public void handleFinishUpdatesDetectedCourse() {
 		Course autoCourse = setUpRunnerWithAutoCourse();
-		when(detector.detectCourse(fullRunnerData)).thenReturn(testCourse);
+		when(detector.detectCourse(fullRunnerData, testCategory)).thenReturn(testCourse);
 		new AutoCheckerHandler(gecoControl, detector).handleFinish(fullRunnerData);
 		verify(runnerControl).updateCourse(fullRunner, autoCourse, testCourse);
 	}

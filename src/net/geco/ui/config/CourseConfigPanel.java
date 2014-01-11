@@ -17,7 +17,10 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -67,13 +70,17 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 	private void initCoursesTable(final IGecoApp geco, final JFrame frame) {
 		final ConfigTableModel<Course> tableModel = createCoursesModel(geco);
 		tableModel.setData(geco.registry().getSortedCourses());
-		
+		final JComboBox coursesetsCB = new JComboBox();
+
 		geco.announcer().registerStageConfigListener( new Announcer.StageConfigListener() {
 			public void coursesChanged() {
 				tableModel.setData(new Vector<Course>(geco.registry().getSortedCourses()));
 			}
 			public void clubsChanged() {}
 			public void categoriesChanged() {}
+			public void coursesetsChanged() {
+				updateCourseSetsCB(geco, coursesetsCB);
+			}
 		});
 		
 		ActionListener addAction = new ActionListener() {
@@ -183,22 +190,34 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 		coursePanel.initialize(
 				Messages.uiGet("CourseConfigPanel.Title"), //$NON-NLS-1$
 				tableModel,
-				new Dimension(350, 450),
+				new Dimension(400, 450),
 				addAction,
 				removeAction,
 				editB,
-				importB,refreshB);
+				importB,
+				refreshB);
 		TableColumnModel columnModel = coursePanel.table().getColumnModel();
-		columnModel.getColumn(0).setPreferredWidth(125);
+		columnModel.getColumn(0).setPreferredWidth(75);
 		columnModel.getColumn(1).setPreferredWidth(50);
-		columnModel.getColumn(2).setPreferredWidth(25);
+		columnModel.getColumn(2).setPreferredWidth(50);
 		columnModel.getColumn(3).setPreferredWidth(25);
 		columnModel.getColumn(4).setPreferredWidth(25);
+		columnModel.getColumn(5).setPreferredWidth(25);
+
+		coursesetsCB.setEditable(true);
+		updateCourseSetsCB(geco, coursesetsCB);
+		coursePanel.table().getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(coursesetsCB));
+	}
+
+	private void updateCourseSetsCB(IGecoApp geco, JComboBox coursesetsCB) {
+		Vector<String> sortedCoursets = new Vector<String>(geco.registry().getSortedCourseSetNames());
+		coursesetsCB.setModel(new DefaultComboBoxModel(sortedCoursets));
 	}
 
 	private ConfigTableModel<Course> createCoursesModel(final IGecoApp geco) {
 		return new ConfigTableModel<Course>(new String[] {
 											Messages.uiGet("CourseConfigPanel.CourseNameHeader"), //$NON-NLS-1$
+											"Course Set",
 											"Mass Start",
 											"Length",
 											"Climb",
@@ -207,34 +226,37 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 			public Object getValueIn(Course course, int columnIndex) {
 				switch (columnIndex) {
 				case 0: return course.getName();
-				case 1: return TimeManager.fullTime(course.getMassStartTime());
-				case 2: return course.getLength();
-				case 3: return course.getClimb();
-				case 4: return course.nbControls();
+				case 1: return course.getCourseSet() == null ? "" : course.getCourseSet().getName();
+				case 2: return TimeManager.fullTime(course.getMassStartTime());
+				case 3: return course.getLength();
+				case 4: return course.getClimb();
+				case 5: return course.nbControls();
 				default: return super.getValueIn(course, columnIndex);
 				}
 			}
 			@Override
 			public boolean isCellEditable(int row, int col) {
-				return col < 4;
+				return col < 5;
 			}
 			@Override
 			public void setValueIn(Course course, Object value, int col) {
 				switch (col) {
 				case 0: geco.stageControl().updateName(course, (String) value); break;
-				case 1: geco.stageControl().validateMassStartTime(course, (String) value); break;
-				case 2: geco.stageControl().validateCourseLength(course, (Integer) value); break;
-				case 3: geco.stageControl().validateCourseClimb(course, (Integer) value); break;
+				case 1: geco.stageControl().updateCourseSet(course, (String) value); break;
+				case 2: geco.stageControl().validateMassStartTime(course, (String) value); break;
+				case 3: geco.stageControl().validateCourseLength(course, (Integer) value); break;
+				case 4: geco.stageControl().validateCourseClimb(course, (Integer) value); break;
 				default: break;
 				}
 			}
+
 			@Override
 			public Class<?> getColumnClass(int columnIndex) {
 				switch (columnIndex) {
-				case 1: return String.class;
-				case 2: return Integer.class;
+				case 2: return String.class;
 				case 3: return Integer.class;
 				case 4: return Integer.class;
+				case 5: return Integer.class;
 				default: return super.getColumnClass(columnIndex);
 				}
 

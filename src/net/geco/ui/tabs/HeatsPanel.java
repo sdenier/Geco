@@ -396,6 +396,8 @@ public class HeatsPanel extends TabPanel implements Announcer.StageConfigListene
 		refresh();
 	}
 	@Override
+	public void coursesetsChanged() {}
+	@Override
 	public void componentShown(ComponentEvent e) {
 		refreshB.requestFocusInWindow();
 	}

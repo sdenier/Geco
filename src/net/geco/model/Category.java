@@ -23,4 +23,8 @@ public interface Category extends Pool, Group {
 	
 	public void setCourse(Course course);
 
+	public CourseSet getCourseSet();
+
+	public void setCourseSet(CourseSet courseset);
+
 }

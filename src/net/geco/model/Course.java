@@ -51,5 +51,9 @@ public interface Course extends Pool, Group {
 	public void removeSection(Section targetSection);
 
 	public void refreshSectionCodes();
+
+	public CourseSet getCourseSet();
+
+	public void setCourseSet(CourseSet courseset);
 	
 }

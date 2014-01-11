@@ -110,7 +110,7 @@ public class StationLogCheckerTest {
 	public void checkECardStatus_registerUnregisteredECardOnDemand() {
 		ArchiveManager archive = mock(ArchiveManager.class);
 		Runner runner = mock(Runner.class);
-		when(archive.findAndCreateRunner("1000000")).thenReturn(runner);
+		when(archive.findAndBuildRunner("1000000")).thenReturn(runner);
 		when(geco.getService(ArchiveManager.class)).thenReturn(archive);
 		when(registry.findRunnerByEcard("1000000")).thenReturn(null);
 		subject().checkECardStatus("1000000", true);

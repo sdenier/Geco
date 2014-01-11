@@ -16,6 +16,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -132,6 +133,17 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 		
 		modeConfigBox.add(Box.createVerticalStrut(10));
 		modeConfigBox.add(insertConfigBox);
+
+		final JCheckBox coursesetB = new JCheckBox("Restrict course detection to category course set");
+		coursesetB.setSelected(geco.siHandler().detectionByCourseSetEnabled());
+		coursesetB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				geco.siHandler().toggleDetectionByCourseSet(coursesetB.isSelected());
+			}
+		});
+		modeConfigBox.add(Box.createVerticalStrut(10));
+		modeConfigBox.add(new JLabel(Html.htmlTag("i", "When reading a runner in auto course with a known category (registered/duplicate/archive)")));
+		modeConfigBox.add(coursesetB);
 	}
 
 	private void populateCommPorts(final IGecoApp geco, final JComboBox stationPortCB) {

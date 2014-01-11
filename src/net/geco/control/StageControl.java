@@ -16,6 +16,7 @@ import net.geco.basics.Util;
 import net.geco.model.Category;
 import net.geco.model.Club;
 import net.geco.model.Course;
+import net.geco.model.CourseSet;
 import net.geco.model.HeatSet;
 import net.geco.model.Messages;
 import net.geco.model.Pool;
@@ -388,6 +389,33 @@ public class StageControl extends Control {
 			geco().info("Bad format for time", true);
 			return false;
 		}
+	}
+
+	public void updateCourseSet(Course course, String courseset) {
+		if( courseset.equals("") ) {
+			course.setCourseSet(null);
+		} else {
+			course.setCourseSet(findOrCreateCourseSet(courseset));
+		}
+	}
+
+	public void updateCategoryCourseSet(Category cat, String courseset) {
+		if( courseset.equals("") ) {
+			cat.setCourseSet(null);
+		} else {
+			cat.setCourseSet(findOrCreateCourseSet(courseset));
+		}
+	}
+
+	public CourseSet findOrCreateCourseSet(String courseset) {
+		CourseSet set = registry().findCourseSet(courseset);
+		if( set == null ) {
+			set = factory().createCourseSet();
+			set.setName(courseset);
+			registry().addCourseSet(set);
+			announcer().announceCoursesetsChanged();
+		}
+		return set;
 	}
 	
 }

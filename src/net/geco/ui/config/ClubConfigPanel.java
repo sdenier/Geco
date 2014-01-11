@@ -61,6 +61,7 @@ public class ClubConfigPanel extends JPanel implements ConfigPanel {
 				tableModel.setData(geco.registry().getSortedClubs());
 			}
 			public void categoriesChanged() {}
+			public void coursesetsChanged() {}
 		});
 		
 		ActionListener addAction = new ActionListener() {

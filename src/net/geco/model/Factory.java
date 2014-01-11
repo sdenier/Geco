@@ -48,4 +48,6 @@ public interface Factory {
 	
 	public ArchiveRunner createArchiveRunner();
 
+	public CourseSet createCourseSet();
+
 }

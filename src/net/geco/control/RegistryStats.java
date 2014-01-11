@@ -330,6 +330,9 @@ public class RegistryStats extends Control
 	}
 
 	@Override
+	public void coursesetsChanged() {}
+
+	@Override
 	public void runnersChanged() {
 		fullUpdate();		
 	}

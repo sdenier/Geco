@@ -58,13 +58,13 @@ public class ArchiveLookupHandlerTest extends ECardModeSetup {
 	@Test
 	public void handleUnregisteredCallsArchiveManager() {
 		subject().handleUnregistered(fullRunnerData, "2000");
-		verify(archive).findAndCreateRunner("2000", testCourse);
+		verify(archive).findAndBuildRunner("2000");
 	}
 
 	@Test
 	public void handleUnregisteredRegistersRunnerFromArchiveIfFound() {
 		Runner runner = factory.createRunner();
-		when(archive.findAndCreateRunner("2000", testCourse)).thenReturn(runner);
+		when(archive.findAndBuildRunner("2000")).thenReturn(runner);
 		subject().handleUnregistered(fullRunnerData, "2000");
 		verify(runnerControl).registerRunner(runner, fullRunnerData);
 	}
@@ -73,7 +73,7 @@ public class ArchiveLookupHandlerTest extends ECardModeSetup {
 	public void foundInArchive() {
 		Runner runner = factory.createRunner();
 		ArchiveLookupHandler handler = subject();
-		when(archive.findAndCreateRunner("2000", testCourse)).thenReturn(runner, (Runner) null);
+		when(archive.findAndBuildRunner("2000")).thenReturn(runner, (Runner) null);
 		
 		handler.handleUnregistered(fullRunnerData, "2000");
 		assertTrue(handler.foundInArchive());
