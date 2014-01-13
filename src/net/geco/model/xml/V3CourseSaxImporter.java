@@ -66,7 +66,7 @@ public class V3CourseSaxImporter extends DefaultHandler implements XMLCourseImpo
 
 	public static void main(String args[]) throws Exception {
 //		List<Course> courses = importFromXml("testData/IOFdata-3.beta/testOMR.Courses.xml", new POFactory());
-		List<Course> courses = importFromXml("testData/IOFdata-3.beta/TestOMR4._parcours.xml", new POFactory());
+		List<Course> courses = importFromXml("testData/IOFdata-3.beta/TestOMR4._parcours.xml", new POFactory()); //$NON-NLS-1$
 		for (Course course : courses) {
 			System.out.println(course);
 		}

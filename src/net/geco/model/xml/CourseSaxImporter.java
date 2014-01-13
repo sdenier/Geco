@@ -47,7 +47,7 @@ public class CourseSaxImporter extends DefaultHandler implements XMLCourseImport
 	private Float[] coord;
 
 	public static void main(String args[]) throws Exception {
-		new CourseSaxImporter(new POFactory()).importFromXml("testData/IOFdata-2.0.3/CourseData_example1.xml");
+		new CourseSaxImporter(new POFactory()).importFromXml("testData/IOFdata-2.0.3/CourseData_example1.xml"); //$NON-NLS-1$
 //		new CourseSaxImporter(new POFactory()).importFromXml("testData/IOFdata-2.0.3/SampleEvent-purplepen.xml");
 	}
 	

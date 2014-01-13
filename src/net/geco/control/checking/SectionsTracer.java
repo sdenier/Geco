@@ -278,7 +278,7 @@ public class SectionsTracer extends BasicControl {
 		}
 
 		public String toString() {
-			return String.format("[%s:%s]", firstOkPunchIndex, lastOkPunchIndex);
+			return String.format("[%s:%s]", firstOkPunchIndex, lastOkPunchIndex); //$NON-NLS-1$
 		}
 
 	}

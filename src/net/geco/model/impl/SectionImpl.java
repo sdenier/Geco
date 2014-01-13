@@ -81,7 +81,7 @@ public class SectionImpl implements Section {
 		if( neutralized() ) {
 			return String.format("%s - %s, neutralized", getName(), getType().toString());
 		} else {
-			return String.format("%s - %s", getName(), getType().toString());
+			return String.format("%s - %s", getName(), getType().toString()); //$NON-NLS-1$
 		}
 	}
 	

@@ -31,10 +31,10 @@ public interface Section {
 		public SectionType getType() {return SectionType.INLINE;}
 		public int getStartControl() { return 0; }
 		public int getStartIndex() {return 0;}
-		public String getName() {return "";}
+		public String getName() {return "";} //$NON-NLS-1$
 		public int[] getCodes() {return new int[0];}
 		public void setCodes(int[] allCodes, int endIndex) {}
-		public String displayString() {return "";}
+		public String displayString() {return "";} //$NON-NLS-1$
 		public boolean neutralized() { return false; }
 		public void setNeutralized(boolean flag) {}
 	};

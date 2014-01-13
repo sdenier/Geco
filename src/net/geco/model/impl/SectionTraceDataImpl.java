@@ -36,7 +36,7 @@ public class SectionTraceDataImpl extends TraceDataImpl implements SectionTraceD
 	@Override
 	public String sectionLabelAt(int index) {
 		Section section = sectionsMap.get(index);
-		return section != null ? section.getName() : "";
+		return section != null ? section.getName() : ""; //$NON-NLS-1$
 	}
 
 	@Override

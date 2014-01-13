@@ -29,7 +29,7 @@ public class GreedyLooseTracer extends BasicControl implements Tracer {
 			Punch punch = punches[i];
 			trace[i] = contains(codes, punch.getCode()) ?
 						factory().createTrace(punch) :
-						factory().createTrace("+" + punch.getCode(), punch.getTime());
+						factory().createTrace("+" + punch.getCode(), punch.getTime()); //$NON-NLS-1$
 		}
 		TraceData traceData = factory().createTraceData();
 		traceData.setTrace(trace);

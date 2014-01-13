@@ -101,11 +101,11 @@ public class SectionsExporter extends AResultExporter {
 	}
 
 	public void buildSectionsHeader(List<Section> sections, GenericContext context) {
-		ContextList sectionsList = context.createContextList("geco_SectionHeaders", sections.size());
+		ContextList sectionsList = context.createContextList("geco_SectionHeaders", sections.size()); //$NON-NLS-1$
 		for (Section section : sections) {
 			GenericContext sectionCtx = new GenericContext();
-			sectionCtx.put("geco_SectionName", section.getName());
-			sectionCtx.put("geco_SectionStartControl", section.getStartControl());
+			sectionCtx.put("geco_SectionName", section.getName()); //$NON-NLS-1$
+			sectionCtx.put("geco_SectionStartControl", section.getStartControl()); //$NON-NLS-1$
 			sectionsList.add(sectionCtx);
 		}
 	}

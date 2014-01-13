@@ -312,7 +312,7 @@ public class ResultBuilder extends Control {
 		long previousTime = startTime;
 		for (int i = 0; i < sectionsTimes.length; i++) {
 			long punchTime = sectionsTimes[i];
-			sectionsSplits[i] = createSplit("", null, startTime, previousTime, punchTime);
+			sectionsSplits[i] = createSplit("", null, startTime, previousTime, punchTime); //$NON-NLS-1$
 			previousTime = punchTime;
 			if( bestSplits.length > 0 && runnerData.getResult().is(Status.OK) ) {
 				SplitTime bestSplit = bestSplits[i];

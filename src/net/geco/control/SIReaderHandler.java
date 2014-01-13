@@ -164,7 +164,7 @@ public class SIReaderHandler extends Control implements Announcer.StageListener,
 	}
 
 	public static String coursesetDetectionProperty() {
-		return "CourseSetDetection";
+		return "CourseSetDetection"; //$NON-NLS-1$
 	}
 
 	public static String portNameProperty() {
