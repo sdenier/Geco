@@ -195,6 +195,11 @@ public class CNCalculator extends AResultExporter implements StageListener {
 	}
 
 	@Override
+	protected void exportOSplitsFiles(String filename, ResultConfig config, int refreshInterval) throws IOException {
+		geco().info(Messages.getString("CNCalculator.NotFunctionalLabel"), true); //$NON-NLS-1$
+	}
+
+	@Override
 	protected void exportCustomFile(String filename, ResultConfig config, int refreshInterval) throws IOException {
 		geco().info(Messages.getString("CNCalculator.NotFunctionalLabel"), true); //$NON-NLS-1$
 	}

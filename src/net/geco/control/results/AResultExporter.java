@@ -4,6 +4,7 @@
  */
 package net.geco.control.results;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
@@ -77,14 +78,17 @@ public abstract class AResultExporter extends Control {
 
 	public void exportFile(String filename, String format, ResultConfig config, int refreshInterval)
 			throws Exception {
-		if( filename.indexOf(".") == -1 ) { //$NON-NLS-1$
-			filename = filename + "." + format; //$NON-NLS-1$
-		}
-		if( format.equals("html") ) { //$NON-NLS-1$
-			exportHtmlFile(filename, config, refreshInterval);
-		}
 		if( format.equals("custom") ) { //$NON-NLS-1$
 			exportCustomFile(filename, config, refreshInterval);
+			return;
+		}
+		if( format.equals("osplits") ) { //$NON-NLS-1$
+			exportOSplitsFiles(filenameAndFormat(filename, "html"), config, refreshInterval); //$NON-NLS-1$
+			return;
+		}
+		filename = filenameAndFormat(filename, format);
+		if( format.equals("html") ) { //$NON-NLS-1$
+			exportHtmlFile(filename, config, refreshInterval);
 		}
 		if( format.equals("csv") ) { //$NON-NLS-1$
 			exportCsvFile(filename, config);
@@ -94,6 +98,14 @@ public abstract class AResultExporter extends Control {
 		}
 		if( format.equals("xml") ) { //$NON-NLS-1$
 			exportXmlFile(filename, config);
+		}
+	}
+
+	protected String filenameAndFormat(String filename, String format) {
+		if( filename.indexOf(".") == -1 ) { //$NON-NLS-1$
+			return filename + "." + format; //$NON-NLS-1$
+		} else {
+			return filename;
 		}
 	}
 
@@ -180,6 +192,18 @@ public abstract class AResultExporter extends Control {
 
 	protected abstract GenericContext buildDataContext(ResultConfig config, int refreshInterval, OutputType outputType);
 
+	protected void exportOSplitsFiles(String filename, ResultConfig config, int refreshInterval)
+			throws IOException {
+		GenericContext splitsCtx = getService(SplitExporter.class).buildDataContext(config, refreshInterval, OutputType.FILE);
+		Template template = getInternalTemplate("/resources/formats/results_osplits.html.mustache"); //$NON-NLS-1$
+		write(filename, template, splitsCtx);
+		GenericContext osplitsCtx = buildCustomContext(config, refreshInterval, OutputType.FILE);
+		template = getInternalTemplate("/resources/formats/osplitsdata.js.mustache"); //$NON-NLS-1$
+		String parent = new File(filename).getParent();
+		String datafile = ( parent == null ) ? "osplitsdata.js" : parent + GecoResources.sep + "osplitsdata.js"; //$NON-NLS-1$ //$NON-NLS-2$
+		write(datafile, template, osplitsCtx);
+	}
+
 	protected void exportCustomFile(String filename, ResultConfig config, int refreshInterval)
 			throws IOException {
 		Template template;
@@ -189,17 +213,16 @@ public abstract class AResultExporter extends Control {
 			geco().info(Messages.getString("AResultExporter.CustomTemplateNotFoundWarning"), true); //$NON-NLS-1$
 			template = getInternalTemplate();
 		}
-		Writer writer = GecoResources.getSafeWriterFor(filename);
-		buildCustomResults(template, config, refreshInterval, writer, OutputType.FILE);
-		writer.close();
-	}
-
-	protected void buildCustomResults(Template template, ResultConfig config, int refreshInterval,
-			Writer writer, OutputType outputType) {
-		template.execute(buildCustomContext(config, refreshInterval, outputType), writer);
+		write(filename, template, buildCustomContext(config, refreshInterval, OutputType.FILE));
 	}
 
 	protected abstract GenericContext buildCustomContext(ResultConfig config, int refreshInterval, OutputType outputType);
+
+	private void write(String filename, Template template, GenericContext context) throws IOException {
+		Writer writer = GecoResources.getSafeWriterFor(filename);
+		template.execute(context, writer);
+		writer.close();
+	}
 
 	protected void mergeI18nProperties(GenericContext stageCtx) {
 		stageCtx.put("i18n_RankingTitle", Messages.getString("ResultExporter.ResultsOutputTitle")); //$NON-NLS-1$ //$NON-NLS-2$

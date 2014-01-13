@@ -130,7 +130,12 @@ public class SectionsExporter extends AResultExporter {
 			splitCtx.put("geco_SectionTimeS", splitTime.split / 1000); //$NON-NLS-1$
 		}
 	}
-	
+
+	@Override
+	protected void exportOSplitsFiles(String filename, ResultConfig config, int refreshInterval) throws IOException {
+		geco().info(Messages.getString("CNCalculator.NotFunctionalLabel"), true); //$NON-NLS-1$
+	}
+
 	@Override
 	protected String getCustomTemplatePath() {
 		return getService(SplitExporter.class).getCustomTemplatePath();
