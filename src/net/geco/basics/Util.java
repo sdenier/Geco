@@ -25,7 +25,26 @@ public class Util {
 		}
 		return data;
 	}
-	
+
+	/**
+	 * Remove " in "field".
+	 */
+	public static String trimQuotes(String field) {
+		if( field.charAt(0)=='"' ){
+			return field.substring(1, field.length() - 1);
+		} else {
+			return field;
+		}
+	}
+
+	public static String safeTrimQuotes(String field) {
+		if( field.isEmpty() ) {
+			return field;
+		} else {
+			return trimQuotes(field);
+		}
+	}
+
 	public static String join(Collection<?> objects, String token, StringBuilder buf) {
 		for (Iterator<?> it = objects.iterator(); it.hasNext();) {
 			buf.append(it.next()).append(token);

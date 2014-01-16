@@ -52,23 +52,4 @@ public abstract class OEImporter extends Control {
 		return stageControl;
 	}
 
-	/**
-	 * Remove " in "field".
-	 */
-	protected String trimQuotes(String field) {
-		if( field.charAt(0)=='"' ){
-			return field.substring(1, field.length() - 1);
-		} else {
-			return field;
-		}
-	}
-	
-	protected String safeTrimQuotes(String field) {
-		if( field.isEmpty() ) {
-			return field;
-		} else {
-			return trimQuotes(field);
-		}
-	}
-
 }

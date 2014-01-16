@@ -4,6 +4,8 @@
  */
 package net.geco.control;
 
+import static net.geco.basics.Util.trimQuotes;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;

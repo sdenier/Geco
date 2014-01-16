@@ -4,6 +4,9 @@
  */
 package net.geco.control;
 
+import static net.geco.basics.Util.safeTrimQuotes;
+import static net.geco.basics.Util.trimQuotes;
+
 import java.util.Date;
 
 import net.geco.basics.TimeManager;
@@ -13,7 +16,6 @@ import net.geco.model.Club;
 import net.geco.model.Course;
 import net.geco.model.Messages;
 import net.geco.model.Runner;
-
 
 
 /**

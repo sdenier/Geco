@@ -4,6 +4,8 @@
  */
 package net.geco.functions;
 
+import static net.geco.basics.Util.safeTrimQuotes;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -33,7 +35,6 @@ import net.geco.control.GecoControl;
 import net.geco.control.functions.StationLogChecker;
 import net.geco.model.Messages;
 import net.geco.ui.basics.GecoIcon;
-
 
 /**
  * @author Simon Denier
@@ -99,11 +100,11 @@ public class StationLogFunction extends GecoFunction {
 		record = reader.readRecord();
 		while( record!=null ){
 			try {
-				ecards.add(record[1]);
-				record = reader.readRecord();
-			} catch(IndexOutOfBoundsException e) {
+				ecards.add(safeTrimQuotes(record[1]));
+			} catch(Exception e) {
 				geco().info(Messages.uiGet("StationLogFunction.WrongRecordMessage") + record, true); //$NON-NLS-1$
 			}
+			record = reader.readRecord();
 		}
 	}
 

@@ -4,6 +4,8 @@
  */
 package net.geco.control.functions;
 
+import static net.geco.basics.Util.safeTrimQuotes;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -38,8 +40,9 @@ public class ECardLogImporter extends Control {
 		while( record!=null ){
 			try {
 				processor.processECard(convertRecord(record));
-			} catch (IndexOutOfBoundsException e) {
-				geco().debug("Wrong record " + Util.join(record, ",", new StringBuilder())); //$NON-NLS-1$ //$NON-NLS-2$
+			} catch (Exception e) {
+				geco().info("Wrong record (" + e.toString() + ") " + //$NON-NLS-1$ //$NON-NLS-2$
+							Util.join(record, ",", new StringBuilder()), true); //$NON-NLS-1$
 			}
 			record = reader.readRecord();
 		}
@@ -50,15 +53,16 @@ public class ECardLogImporter extends Control {
  * 		CLR_CN;CLR_DOW;clear time;CHK_CN;CHK_DOW;check time;ST_CN;ST_DOW;start time;FI_CN;FI_DOW;Finish time;No. of punches;
  * 		1.CN;1.DOW;1.Time;2.CN;2.DOW;2.Time;3.CN;3.DOW;3.Time;4.CN;4.DOW;4.Time;5.CN;5.DOW;5.Time;6.CN;6.DOW;6.Time;
  */
-		String siNumber = record[2];
-		long checkTime = TimeManager.safeParse(record[21]).getTime();
-		long startTime = TimeManager.safeParse(record[24]).getTime();
-		long finishTime = TimeManager.safeParse(record[27]).getTime();
+		String siNumber = safeTrimQuotes(record[2]);
+		long checkTime = TimeManager.safeParse(safeTrimQuotes(record[21])).getTime();
+		long startTime = TimeManager.safeParse(safeTrimQuotes(record[24])).getTime();
+		long finishTime = TimeManager.safeParse(safeTrimQuotes(record[27])).getTime();
 			
-		int nbPunches = Integer.parseInt(record[28]);
+		int nbPunches = Integer.parseInt(safeTrimQuotes(record[28]));
 		SiPunch[] punches = new SiPunch[nbPunches];
 		for (int i = 0; i < nbPunches; i++) {
-			punches[i] = new SiPunch(Integer.parseInt(record[i*3 + 29]), TimeManager.safeParse(record[i*3 + 31]).getTime());
+			punches[i] = new SiPunch(Integer.parseInt(safeTrimQuotes(record[i*3 + 29])),
+									TimeManager.safeParse(safeTrimQuotes(record[i*3 + 31])).getTime());
 		};
 
 		return new MockDataFrame(siNumber, checkTime, startTime, finishTime, punches);

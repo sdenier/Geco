@@ -4,6 +4,8 @@
  */
 package net.geco.control.results;
 
+import static net.geco.basics.Util.trimQuotes;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,7 +34,6 @@ import net.geco.model.RunnerRaceData;
 import net.geco.model.Stage;
 
 import com.samskivert.mustache.Template;
-
 
 /**
  * @author Simon Denier
