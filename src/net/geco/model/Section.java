@@ -14,12 +14,12 @@ public interface Section {
 	public static enum SectionType {
 		INLINE {
 			public String toString() {
-				return "Inline";
+				return Messages.getString("Section.InlineSectionLabel"); //$NON-NLS-1$
 			}
 		},
 		FREEORDER {
 			public String toString() {
-				return "Free Order";
+				return Messages.getString("Section.FreeOrderSectionLabel"); //$NON-NLS-1$
 			}
 		}
 	}

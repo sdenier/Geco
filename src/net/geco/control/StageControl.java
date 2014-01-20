@@ -208,14 +208,14 @@ public class StageControl extends Control {
 				TimeManager.userParse(startTime);
 			if( ! oldTime.equals(newTime) ) {
 				course.setMassStartTime(newTime);
-				geco().log("Change Mass start time for course "
+				geco().log(Messages.getString("StageControl.ChangeMassStartMessage") //$NON-NLS-1$
 						+ course.getName() + Messages.getString("RunnerControl.FromMessage") //$NON-NLS-1$
 						+ TimeManager.fullTime(oldTime) + Messages.getString("RunnerControl.ToMessage") //$NON-NLS-1$
 						+ TimeManager.fullTime(newTime));
 			}
 			return true;
 		} catch (ParseException e1) {
-			geco().info("Bad format for time", true);
+			geco().info(Messages.getString("StageControl.BadTimeFormatWarning"), true); //$NON-NLS-1$
 			return false;
 		}
 	}
@@ -226,10 +226,10 @@ public class StageControl extends Control {
 				course.setLength(length);
 				return true;
 			} else {
-				geco().info("Course length should be a positive number", true);
+				geco().info(Messages.getString("StageControl.PositiveNumberExpectedWarning"), true); //$NON-NLS-1$
 			}
 		} catch (NumberFormatException e) {
-			geco().info("Bad format for course length", true);
+			geco().info(Messages.getString("StageControl.BadNumberFormatWarning"), true); //$NON-NLS-1$
 		}
 		return false;
 	}
@@ -240,10 +240,10 @@ public class StageControl extends Control {
 				course.setClimb(climb);
 				return true;
 			} else {
-				geco().info("Course climb should be a positive number", true);
+				geco().info(Messages.getString("StageControl.PositiveNumberExpectedWarning"), true); //$NON-NLS-1$
 			}
 		} catch (NumberFormatException e) {
-			geco().info("Bad format for course climb", true);
+			geco().info(Messages.getString("StageControl.BadNumberFormatWarning"), true); //$NON-NLS-1$
 		}
 		return false;
 	}
@@ -371,7 +371,7 @@ public class StageControl extends Control {
 			registry().setControlPenalty(code, newPenalty);
 			return true;
 		} catch (ParseException e1) {
-			geco().info("Bad format for time", true);
+			geco().info(Messages.getString("StageControl.BadTimeFormatWarning"), true); //$NON-NLS-1$
 			return false;
 		}
 	}
@@ -386,13 +386,13 @@ public class StageControl extends Control {
 			}
 			return true;
 		} catch (ParseException e1) {
-			geco().info("Bad format for time", true);
+			geco().info(Messages.getString("StageControl.BadTimeFormatWarning"), true); //$NON-NLS-1$
 			return false;
 		}
 	}
 
 	public void updateCourseSet(Course course, String courseset) {
-		if( courseset.equals("") ) {
+		if( courseset.equals("") ) { //$NON-NLS-1$
 			course.setCourseSet(null);
 		} else {
 			course.setCourseSet(findOrCreateCourseSet(courseset));
@@ -400,7 +400,7 @@ public class StageControl extends Control {
 	}
 
 	public void updateCategoryCourseSet(Category cat, String courseset) {
-		if( courseset.equals("") ) {
+		if( courseset.equals("") ) { //$NON-NLS-1$
 			cat.setCourseSet(null);
 		} else {
 			cat.setCourseSet(findOrCreateCourseSet(courseset));

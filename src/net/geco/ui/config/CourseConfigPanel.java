@@ -217,16 +217,16 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 	private ConfigTableModel<Course> createCoursesModel(final IGecoApp geco) {
 		return new ConfigTableModel<Course>(new String[] {
 											Messages.uiGet("CourseConfigPanel.CourseNameHeader"), //$NON-NLS-1$
-											"Course Set",
-											"Mass Start",
-											"Length",
-											"Climb",
+											Messages.uiGet("CourseConfigPanel.CourseSetLabel"), //$NON-NLS-1$
+											Messages.uiGet("CourseConfigPanel.MassStartLabel"), //$NON-NLS-1$
+											Messages.uiGet("CourseConfigPanel.LengthLabel"), //$NON-NLS-1$
+											Messages.uiGet("CourseConfigPanel.ClimbLabel"), //$NON-NLS-1$
 											Messages.uiGet("CourseConfigPanel.CourseNbControlsHeader")}) { //$NON-NLS-1$
 			@Override
 			public Object getValueIn(Course course, int columnIndex) {
 				switch (columnIndex) {
 				case 0: return course.getName();
-				case 1: return course.getCourseSet() == null ? "" : course.getCourseSet().getName();
+				case 1: return course.getCourseSet() == null ? "" : course.getCourseSet().getName(); //$NON-NLS-1$
 				case 2: return TimeManager.fullTime(course.getMassStartTime());
 				case 3: return course.getLength();
 				case 4: return course.getClimb();
@@ -276,7 +276,7 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 			controlsModel = createControlsWithSectionsModel(geco);
 			controlsModel.setData(Collections.<Integer>emptyList());
 			
-			final JButton sectionB = new JButton("Section...");
+			final JButton sectionB = new JButton(Messages.uiGet("CourseConfigPanel.EditSectionLabel")); //$NON-NLS-1$
 			sectionB.setEnabled(false);
 			sectionB.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
@@ -326,7 +326,7 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 	}
 
 	private ConfigTableModel<Integer> createControlsModel() {
-		return new ConfigTableModel<Integer>(new String[] {"Num", "Code"}) {
+		return new ConfigTableModel<Integer>(new String[] {Messages.uiGet("CourseConfigPanel.PunchNumLabel"), Messages.uiGet("CourseConfigPanel.PunchCodeLabel")}) { //$NON-NLS-1$ //$NON-NLS-2$
 			@Override
 			public void setValueIn(Integer t, Object value, int col) {}
 			@Override
@@ -339,14 +339,14 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 				case 0: return row + 1;
 				case 1: return getData().get(row);
 				}
-				return "Pbm";
+				return "Pbm"; //$NON-NLS-1$
 			}
 		};
 	}
 
 	private ConfigTableModel<Integer> createControlsWithSectionsModel(final IGecoApp geco) {
 		sectionService = geco.sectionService();
-		return new ConfigTableModel<Integer>(new String[] {"Num", "Code", "Section", "Penalty"}) {
+		return new ConfigTableModel<Integer>(new String[] {Messages.uiGet("CourseConfigPanel.PunchNumLabel"), Messages.uiGet("CourseConfigPanel.PunchCodeLabel"), Messages.uiGet("CourseConfigPanel.SectionLabel"), Messages.uiGet("CourseConfigPanel.PenaltyLabel")}) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			@Override
 			public void setValueIn(Integer code, Object value, int col) {
 				geco.stageControl().validateControlPenalty(code, (String) value);
@@ -364,7 +364,7 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 				case 2: return sectionService.findSection(getSelectedCourse(), row).displayString();
 				case 3: return TimeManager.time(geco.registry().getControlPenalty(code));
 				}
-				return "Pbm";
+				return "Pbm"; //$NON-NLS-1$
 			}
 		};
 	}

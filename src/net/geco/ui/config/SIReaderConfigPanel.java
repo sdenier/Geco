@@ -134,7 +134,7 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 		modeConfigBox.add(Box.createVerticalStrut(10));
 		modeConfigBox.add(insertConfigBox);
 
-		final JCheckBox coursesetB = new JCheckBox("Restrict course detection to category course set");
+		final JCheckBox coursesetB = new JCheckBox(Messages.uiGet("SIReaderConfigPanel.CategoryCourseSetLabel")); //$NON-NLS-1$
 		coursesetB.setSelected(geco.siHandler().detectionByCourseSetEnabled());
 		coursesetB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -142,7 +142,7 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 			}
 		});
 		modeConfigBox.add(Box.createVerticalStrut(10));
-		modeConfigBox.add(new JLabel(Html.htmlTag("i", "When reading a runner in auto course with a known category (registered/duplicate/archive)")));
+		modeConfigBox.add(new JLabel(Html.htmlTag("i", Messages.uiGet("SIReaderConfigPanel.CategoryCourseSetTitle")))); //$NON-NLS-1$ //$NON-NLS-2$
 		modeConfigBox.add(coursesetB);
 	}
 

@@ -13,7 +13,7 @@ public enum ResultType {
 
 	CourseSetResult() {
 		@Override public String toString() {
-			return "Course Sets"; }},
+			return Messages.getString("ResultType.CourseSetLabel"); }}, //$NON-NLS-1$
 
 	CategoryResult() {
 		@Override public String toString() {

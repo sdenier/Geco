@@ -6,6 +6,7 @@ package net.geco.model.impl;
 
 import java.util.Arrays;
 
+import net.geco.model.Messages;
 import net.geco.model.Section;
 
 /**
@@ -79,7 +80,7 @@ public class SectionImpl implements Section {
 
 	public String displayString() {
 		if( neutralized() ) {
-			return String.format("%s - %s, neutralized", getName(), getType().toString());
+			return String.format("%s - %s, %s", getName(), getType().toString(), Messages.getString("Section.NeutralizedLabel")); //$NON-NLS-1$ //$NON-NLS-2$
 		} else {
 			return String.format("%s - %s", getName(), getType().toString()); //$NON-NLS-1$
 		}

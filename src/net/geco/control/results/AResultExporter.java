@@ -235,7 +235,7 @@ public abstract class AResultExporter extends Control {
 		stageCtx.put("i18n_DiffHeader", Messages.getString("ResultExporter.DiffHeader")); //$NON-NLS-1$ //$NON-NLS-2$
 		stageCtx.put("i18n_PaceHeader", Messages.getString("ResultExporter.minkmLabel")); //$NON-NLS-1$ //$NON-NLS-2$
 		stageCtx.put("i18n_MPHeader", Messages.getString("ResultBuilder.MPHeader")); //$NON-NLS-1$ //$NON-NLS-2$
-		stageCtx.put("i18n_PenaltyHeader", "Penalty"); //$NON-NLS-1$
+		stageCtx.put("i18n_PenaltyHeader", Messages.getString("AResultExporter.PenaltyHeader")); //$NON-NLS-1$ //$NON-NLS-2$
 		stageCtx.put("i18n_RacetimeHeader", Messages.getString("ResultBuilder.RacetimeHeader")); //$NON-NLS-1$ //$NON-NLS-2$
 		stageCtx.put("i18n_LastUpdateLabel", Messages.getString("ResultExporter.LastUpdateLabel")); //$NON-NLS-1$ //$NON-NLS-2$
 		stageCtx.put("i18n_CNHeader", Messages.getString("CNCalculator.CNHeader")); //$NON-NLS-1$ //$NON-NLS-2$

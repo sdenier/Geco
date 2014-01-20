@@ -352,7 +352,7 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 				officialFinishTimeF);
 		c.gridy = 1;
 		addRow(resultPanel, c,
-				new JLabel("Running"),
+				new JLabel(Messages.uiGet("RunnerPanel.RunningTimeLabel")), //$NON-NLS-1$
 				runningTimeF,
 				new JLabel(Messages.uiGet("RunnerPanel.RaceLabel")), //$NON-NLS-1$
 				raceTimeF);

@@ -125,7 +125,7 @@ public class CategoryConfigPanel extends JPanel implements ConfigPanel {
 											Messages.uiGet("CategoryConfigPanel.CategoryShortNameHeader"), //$NON-NLS-1$
 											Messages.uiGet("CategoryConfigPanel.CategoryLongNameHeader"), //$NON-NLS-1$
 											Messages.uiGet("CategoryConfigPanel.CategoryCourseHeader"), //$NON-NLS-1$
-											"Course Set"}) {
+											Messages.uiGet("CourseConfigPanel.CourseSetLabel")}) { //$NON-NLS-1$
 			@Override
 			public Object getValueIn(Category cat, int columnIndex) {
 				switch (columnIndex) {

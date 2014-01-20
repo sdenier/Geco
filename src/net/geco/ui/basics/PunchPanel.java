@@ -124,7 +124,7 @@ public class PunchPanel extends JPanel implements RunnersTableListener {
 				case 2:
 					return Messages.uiGet("PunchPanel.TimeLabel"); //$NON-NLS-1$
 				case 3:
-					return "Section";
+					return Messages.uiGet("PunchPanel.SectionLabel"); //$NON-NLS-1$
 				default:
 					return ""; //$NON-NLS-1$
 				}

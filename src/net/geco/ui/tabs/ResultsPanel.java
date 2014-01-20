@@ -300,7 +300,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 
 		rankingResultRB = new JRadioButton(Messages.uiGet("ResultsPanel.RankingLabel")); //$NON-NLS-1$
 		splitResultRB = new JRadioButton(Messages.uiGet("ResultsPanel.SplitsLabel")); //$NON-NLS-1$
-		sectionResultRB = new JRadioButton("Sections");
+		sectionResultRB = new JRadioButton(Messages.uiGet("ResultsPanel.SectionsLabel")); //$NON-NLS-1$
 		cnScoreRB = new JRadioButton(Messages.uiGet("ResultsPanel.CNLabel")); //$NON-NLS-1$
 		ButtonGroup builderGroup = new ButtonGroup();
 		builderGroup.add(rankingResultRB);

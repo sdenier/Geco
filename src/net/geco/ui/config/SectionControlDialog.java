@@ -52,7 +52,7 @@ public class SectionControlDialog extends JDialog {
 		sectionNameF.requestFocusInWindow();
 		final JComboBox sectionTypeCB = new JComboBox(Section.SectionType.values());
 		sectionTypeCB.setSelectedItem(targetSection.getType());
-		final JCheckBox neutralizedCB = new JCheckBox("", targetSection.neutralized());
+		final JCheckBox neutralizedCB = new JCheckBox("", targetSection.neutralized()); //$NON-NLS-1$
 		final JTextField penaltyF = new JTextField(12);
 		
 		JButton saveB = new JButton(Messages.uiGet("CourseControlDialog.SaveLabel")); //$NON-NLS-1$
@@ -62,8 +62,8 @@ public class SectionControlDialog extends JDialog {
 				if( sectionName.isEmpty() ){
 					JOptionPane.showMessageDialog(
 							SectionControlDialog.this,
-							"Section name can not be empty", 
-							"Warning",
+							Messages.uiGet("SectionControlDialog.EmptySectionNameWarning"),  //$NON-NLS-1$
+							Messages.uiGet("SectionControlDialog.WarningTitle"), //$NON-NLS-1$
 							JOptionPane.ERROR_MESSAGE);
 				} else {
 					targetSection.setName(sectionName);
@@ -76,12 +76,12 @@ public class SectionControlDialog extends JDialog {
 			}
 		});
 		
-		JButton deleteB = new JButton("Delete");
+		JButton deleteB = new JButton(Messages.uiGet("SectionControlDialog.DeleteLabel")); //$NON-NLS-1$
 		deleteB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int ok = JOptionPane.showConfirmDialog(SectionControlDialog.this,
-						"This would force a recheck for all runners from course " + selectedCourse.getName(),
-						"Proceed with section deletion",
+						Messages.uiGet("SectionControlDialog.SectionDeletionMessage") + selectedCourse.getName(), //$NON-NLS-1$
+						Messages.uiGet("SectionControlDialog.SectionDeletionTitle"), //$NON-NLS-1$
 						JOptionPane.OK_CANCEL_OPTION);
 				if( ok == JOptionPane.OK_OPTION ) {
 					sectionService.remove(selectedCourse, targetSection);
@@ -102,20 +102,20 @@ public class SectionControlDialog extends JDialog {
 		GridBagConstraints c = SwingUtils.gbConstr();
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.insets = new Insets(5, 0, 0, 0);
-		formPanel.add(new JLabel("Control:"), c);
-		formPanel.add(new JLabel(Html.htmlTag("i",
+		formPanel.add(new JLabel(Messages.uiGet("SectionControlDialog.ControlLabel")), c); //$NON-NLS-1$
+		formPanel.add(new JLabel(Html.htmlTag("i", //$NON-NLS-1$
 				Integer.toString(selectedCourse.getCodes()[targetSection.getStartIndex()]))), c);
 		c.gridy = 1;
-		formPanel.add(new JLabel("Section Name:"), c);
+		formPanel.add(new JLabel(Messages.uiGet("SectionControlDialog.SectionNameLabel")), c); //$NON-NLS-1$
 		formPanel.add(sectionNameF, c);
 		c.gridy = 2;
-		formPanel.add(new JLabel("Section Type:"), c);
+		formPanel.add(new JLabel(Messages.uiGet("SectionControlDialog.SectionTypeLabel")), c); //$NON-NLS-1$
 		formPanel.add(sectionTypeCB, c);
 		c.gridy = 3;
-		formPanel.add(new JLabel("Neutralized:"), c);
+		formPanel.add(new JLabel(Messages.uiGet("SectionControlDialog.NeutralizedLabel")), c); //$NON-NLS-1$
 		formPanel.add(neutralizedCB, c);
 		c.gridy = 4;
-		formPanel.add(new JLabel("Reset Penalties:"), c);
+		formPanel.add(new JLabel(Messages.uiGet("SectionControlDialog.ResetPenaltiesLabel")), c); //$NON-NLS-1$
 		formPanel.add(penaltyF, c);
 
 		JPanel buttons = new JPanel(new FlowLayout(FlowLayout.TRAILING));

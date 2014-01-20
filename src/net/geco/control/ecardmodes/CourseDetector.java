@@ -14,6 +14,7 @@ import net.geco.control.GecoControl;
 import net.geco.control.RunnerControl;
 import net.geco.model.Category;
 import net.geco.model.Course;
+import net.geco.model.Messages;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.RunnerResult;
 import net.geco.model.TraceData;
@@ -90,7 +91,7 @@ public class CourseDetector extends Control {
 		if( useCategoryCourseSet && cat.getCourseSet() != null) {
 			selectedCourses = registry().getCoursesFromCourseSet(cat.getCourseSet());
 			if ( selectedCourses.isEmpty() ) {
-				geco().info("Warning,  empty course set for category " + cat.getName(), true);
+				geco().info(Messages.getString("CourseDetector.EmptyCourseSetWarning") + cat.getName(), true); //$NON-NLS-1$
 				selectedCourses = registry().getCourses();
 			}
 		} else {
