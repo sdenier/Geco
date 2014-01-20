@@ -129,10 +129,10 @@ public class ClassicAppBuilder extends AppBuilder {
 		return new ConfigPanel[] {
 				new StageConfigPanel(geco, frame),
 				new SIReaderConfigPanel(geco, frame),
-				new TemplateConfigPanel(geco, frame),
 				new CourseConfigPanel(geco, frame),
 				new CategoryConfigPanel(geco, frame),
 				new ClubConfigPanel(geco, frame),
+				new TemplateConfigPanel(geco, frame),
 		};
 	}
 

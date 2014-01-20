@@ -129,10 +129,10 @@ public class FreeOrderAppBuilder extends AppBuilder {
 				new StageConfigPanel(geco, frame),
 				new SIReaderConfigPanel(geco, frame),
 				new PenaltyCheckerConfigPanel(geco),
-				new TemplateConfigPanel(geco, frame),
 				new CourseConfigPanel(geco, frame),
 				new CategoryConfigPanel(geco, frame),
 				new ClubConfigPanel(geco, frame),
+				new TemplateConfigPanel(geco, frame),
 		};
 	}
 
