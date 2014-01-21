@@ -1,6 +1,6 @@
 # Geco Changelog
 
-## Version 2.2 (2014/01/XX)
+## Version 2.2 (2014/02/06)
 
 - Push GecoSI 1.1.0 (faster and more reliable readout for Si6/10/11, fix bug with empty ecards)
 - Introduce course sets, which define group of related courses (for example, variations in a butterfly course)
