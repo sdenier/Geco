@@ -70,7 +70,7 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 	private JTextField raceTimeF;
 	private JTextField mpF;
 	private JTextField penaltyF;
-	private JTextField fullTimeF;
+	private JTextField officialTimeF;
 
 	// Actions
 	private JButton recheckStatusB;
@@ -170,7 +170,7 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 		displayRacetime(raceTimeF, runnerData.getResult().getRaceTime());
 		mpF.setText(Integer.toString(runnerData.getTraceData().getNbMPs()));
 		penaltyF.setText(runnerData.getResult().formatTimePenalty());
-		displayOfficialResultTime(fullTimeF, geco().checker().computeResultTime(runnerData));
+		displayOfficialResultTime(officialTimeF, geco().checker().computeResultTime(runnerData));
 	}
 
 	private void prvDisplayTime(JTextField timeF, String text, Color bgColor) {
@@ -330,16 +330,17 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 		officialFinishTimeF.setEditable(false);
 		runningTimeF = new JTextField(FIELDSIZE);
 		runningTimeF.setEditable(false);
+		runningTimeF.setToolTipText(Messages.uiGet("RunnerPanel.RunningTimeTooltip")); //$NON-NLS-1$
 		raceTimeF = new JTextField(FIELDSIZE);
 		raceTimeF.setEditable(false);
-		raceTimeF.setToolTipText(Messages.uiGet("RunnerPanel.RealRacetimeTooltip1")); //$NON-NLS-1$
+		raceTimeF.setToolTipText(Messages.uiGet("RunnerPanel.RacetimeTooltip")); //$NON-NLS-1$
 		mpF = new JTextField(FIELDSIZE);
 		mpF.setEditable(false);
 		penaltyF = new JTextField(FIELDSIZE);
 		penaltyF.setEditable(false);
-		fullTimeF = new JTextField(FIELDSIZE);
-		fullTimeF.setEditable(false);
-		fullTimeF.setToolTipText(Messages.uiGet("RunnerPanel.OfficialTimeTooltip"));		 //$NON-NLS-1$
+		officialTimeF = new JTextField(FIELDSIZE);
+		officialTimeF.setEditable(false);
+		officialTimeF.setToolTipText(Messages.uiGet("RunnerPanel.OfficialTimeTooltip")); //$NON-NLS-1$
 
 		JPanel resultPanel = new JPanel();
 		resultPanel.setLayout(new GridBagLayout());
@@ -367,7 +368,7 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 				Box.createGlue(),
 				Box.createGlue(),
 				new JLabel(Messages.uiGet("RunnerPanel.OfficialTimeLabel")), //$NON-NLS-1$
-				fullTimeF);
+				officialTimeF);
 
 		resultPanel.setBorder(BorderFactory.createTitledBorder(Messages.uiGet("RunnerPanel.ResultTitle"))); //$NON-NLS-1$
 		return resultPanel;
