@@ -250,7 +250,7 @@ public class GecoLauncher extends JDialog {
 			addAppRadioButton(ClassicAppBuilder.getName(), ClassicAppBuilder.class, rulePanel, builderGroup); 
 		addAppRadioButton(OrientShowAppBuilder.getName(), OrientShowAppBuilder.class, rulePanel, builderGroup);
 		addAppRadioButton(FreeOrderAppBuilder.getName(), FreeOrderAppBuilder.class, rulePanel, builderGroup);
-		addAppRadioButton(ROAAppBuilder.getName(), ROAAppBuilder.class, rulePanel, builderGroup);
+		addAppRadioButton(ROAAppBuilder.getName(), ROAAppBuilder.class, rulePanel, builderGroup).setEnabled(false);
 		builderGroup.setSelected(classicAppRB.getModel(), true);
 		c = SwingUtils.gbConstr(2);
 		c.gridwidth = 3;
