@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Geco lightweight desktop application for orienteering race" />
+    <meta name="keywords" content="orienteering race management lightweight" />
+    <meta name="author" content="Simon Denier / Original design: Andreas Viklund - http://andreasviklund.com/" />
+    <meta name="generator" content="webgen - http://webgen.rubyforge.org" />
+    <link rel="stylesheet" href="../default.css" type="text/css" media="screen,projection" />
+    <title>Geco - One Man Relay</title>
+      <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-3230191-5']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+  
+<link type="text/html" rel="alternate" hreflang="en" href="omr.html" lang="en" title="One Man Relay" /></head>
+
+  <body>
+    <div id="container">
+      <a id="top"></a>
+
+      <div id="sitename">
+        <h1>Documentation Geco</h1>
+        <a id="menu"></a>
+      </div>
+
+      <div id="nav">
+        <ul><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../begin/index.fr.html">Présentation</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../guide/index.fr.html">Guide interface</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../howtos/index.fr.html">Guide pratique</a></li><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><a href="index.fr.html">Workflows</a></li></ul>
+      </div>
+
+      <div id="wrap1">
+        <div id="wrap2">
+
+          <div id="topbox">
+            <strong><a href="../index.html">/</a> &raquo; <a href="index.fr.html">Workflows</a> &raquo; <span>One Man Relay</span></strong> &nbsp; (<a href="omr.html">en</a> | <span class="webgen-langbar-current-lang">fr</span>)            
+          </div>
+
+          <div id="leftside">
+            <a id="sectionmenu"></a>
+            <h1>Download</h1>
+            <div id="downloads">
+              <ul>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.2.zip">Version 2.2</a></li>
+                <li>Voir les <a href="../begin/whatsnew.fr.html">nouveautés</a></li>
+              </ul>
+            </div>
+          
+            <h1>Contenu</h1>
+            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.fr.html">Organisations</a></li><li class="webgen-menu-level1"><a href="register.fr.html">Inscriptions</a></li><li class="webgen-menu-level1"><a href="auto.fr.html">Process Auto</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>One Man Relay</span></li><li class="webgen-menu-level1"><a href="endstage.fr.html">Fin de course</a></li><li class="webgen-menu-level1"><a href="training.fr.html">Entraînement</a></li><li class="webgen-menu-level1"><a href="quals.fr.html">Qualifications</a></li></ul></div>
+          
+            <h1>Liens</h1>
+            <div id="links">
+                    <ul>
+                    <li><a href="http://sdenier.github.com/Geco/geco_formation_11.pdf">Doc formation 1.1</a></li>
+                    <li><a href="http://github.com/sdenier/Geco">Référentiel</a></li>
+                    <li><a href="http://www.o-news.fr/viewforum.php?f=21">Onews/Geco</a></li>
+                    </ul>
+            </div>
+          </div>
+
+          <a id="main"></a>
+          <div id="contentalt">
+            
+<h1 id="one-man-relay-avec-les-groupes-de-circuits">One Man Relay avec les groupes de circuits</h1>
+
+<p>Un One Man Relay est un format populaire où chaque coureur doit effectuer toutes les boucles de son circuit. Le départ est souvent donné en masse pour favoriser les contacts durant la course. A partir de la version 2.2, Geco dispose de fonctionnalités spéciales pour faciliter l&#8217;organisation de ce format de course.</p>
+
+<h2 id="configurer-un-one-man-relay-sous-geco">Configurer un One Man Relay sous Geco</h2>
+
+<p>Prenons par exemple trois boucles A, B et C. En les combinant, il est possible de créer plusieurs circuits tous équivalents : ABC, ACB, BAC, BCA, CAB, CBA. Chaque coureur doit effectuer un seul de ces circuits pour être classé avec tous les autres. Geco doit donc connaître chacun de ces circuits (l&#8217;ordre spécifique d&#8217;enchaînement des postes) pour pouvoir vérifier les codes des puces suivant la variante parcourure.</p>
+
+<p>Les logiciels de conception de circuit permettent généralement de créer toutes ces variations puis de les exporter au format XML. La configuration d&#8217;un One Man Relay sous Geco n&#8217;est donc guère différente d&#8217;un format plus classique :</p>
+
+<ol>
+  <li>exporter les circuits au format XML depuis le logiciel de conception de circuit ;</li>
+  <li>importer les circuits dans l&#8217;onglet <a href="../guide/stage.fr.html">configuration</a> ;</li>
+  <li>définir un horaire de départ en masse pour chaque circuit (si nécessaire) ;</li>
+  <li>faire les <a href="register.fr.html">inscriptions</a> des concurrents.</li>
+</ol>
+
+<p>Il n&#8217;y a aucune contrainte particulière sur l&#8217;inscription des coureurs. Vous pouvez assigner à chaque coureur une des variantes du circuit - dans ce cas il faut s&#8217;assurer que chaque coureur reçoive la bonne carte au départ. Ou vous pouvez attribuer le circuit Auto à tous les concurrents : de cette façon, Geco déterminera automatiquement la variante courue par le coureur lors de la lecture de puce (voir plus bas).</p>
+
+<h2 id="utiliser-les-groupes-de-circuit-pour-exporter-les-rsultats-dun-one-man-relay">Utiliser les groupes de circuit pour exporter les résultats d&#8217;un One Man Relay</h2>
+
+<p>L&#8217;export des résultats pour un OMR est légèrement différente d&#8217;un export classique. En effet, générer des résultats par circuit est peu utile puisque cela revient à classer les coureurs par variante. Les catégories peuvent permettre de regrouper les concurrents de toutes les variantes. Cependant ce n&#8217;est pas toujours possible (par exemple, si on souhaite conserver les catégories d&#8217;âge, sans contrainte sur les circuits par catégorie).</p>
+
+<p>A partir de la version 2.2, Geco introduit les <em>groupes de circuit</em>, qui réunissent plusieurs circuits et permettent de classer ensemble tous les coureurs appartenant au même groupe.</p>
+
+<p><img src="../images/omr_coursesets.fr.png" style="float: none; width: 400px;" /></p>
+
+<p>Les groupes de circuit sont à définir dans la <a href="../guide/stage.fr.html">configuration des circuits</a> :</p>
+
+<ul>
+  <li>vous pouvez lier chaque circuit à un unique groupe en donnant le nom du groupe dans la cellule dédiée du tableau ;</li>
+  <li>si le groupe n&#8217;existe pas déjà, il sera créé sur le champ ;</li>
+  <li>dans l&#8217;onglet <a href="../guide/results.fr.html">résultats</a>, sélectionnez <em>Groupes de circuit</em> au lieu de  <em>Circuits</em> ou <em>Catégories</em> pour classer les coureurs, puis cliquez sur <em>Actualiser</em> pour afficher les résultats.</li>
+</ul>
+
+<p><img src="../images/omr_results.fr.png" style="float: none; width: 281px;" /></p>
+
+<h2 id="organisation-lgre-avec-le-process-auto-et-les-groupes-de-circuit">Organisation légère avec le process auto et les groupes de circuit</h2>
+
+<p>La détection de circuit au coeur du <a href="auto.fr.html">process auto</a> permet l&#8217;organisation facile de courses et en particulier de One Man Relay. En effet, avec la détection automatique il n&#8217;est plus nécessaire d&#8217;affecter une variante à chaque coureur, ni de s&#8217;assurer que le coureur prend la bonne carte au départ. Il suffit de laisser Geco détecter le circuit à la lecture de la puce du concurrent.</p>
+
+<p><strong>Note :</strong> il faut alors que les concurrents soient fair-play et ne suivent pas aveuglément un autre concurrent, sans se soucier du circuit sur leur carte. Geco ne peut pas détecter les tricheurs en vérifiant les codes des postes !</p>
+
+<h3 id="restreindre-la-dtection-de-circuit-avec-les-groupes-de-circuit">Restreindre la détection de circuit avec les groupes de circuit</h3>
+
+<p>Dans certains cas, Geco doit être plus strict quand il s&#8217;agit d&#8217;affecter automatiquement un circuit à un concurrent. Si par exemple un coureur H21 part sur un long circuit mais abandonne rapidement, il y a un risque pour que Geco le place sur un circuit court (car il a peu de poinçons et en particulier moins de faux poinçons sur ce circuit court). Pour éviter cela, vous pouvez configurer Geco pour qu&#8217;un coureur d&#8217;une catégorie donnée ne puisse appartenir que à un groupe spécifique de circuits.</p>
+
+<ul>
+  <li>Cocher l&#8217;option &#8220;Restreindre la détection du circuit&#8230;&#8221; dans la configuration de la <a href="../guide/stage.fr.html">lecture SI</a>.</li>
+  <li>Lier une catégorie à un groupe de circuit dans la configuration des catégories.</li>
+  <li>Les groupes de circuit fonctionnent de la même façon dans la configuration des circuits et des catégories. Vous pouvez créer un groupe à la volée pour une catégorie, mais ce groupe sera vide jusqu&#8217;au moment où vous aurez associer des circuits avec ce groupe.</li>
+</ul>
+
+<p><img src="../images/omr_category_option.fr.png" /></p>
+
+<p>Dans notre example, on peut créer un groupe nommé A avec les circuits A1, A2, A3, et le lier aussi avec la catégorie H21. Lors de la lecture de puces, Geco détectera la meilleure variante entre les circuits A1, A2 et A3 pour un coureur H21 avec le circuit Auto. Mais il n&#8217;utilisera pas d&#8217;autres circuits.</p>
+
+<p><img src="../images/omr_categories.fr.png" style="float: none; width: 355px;" /></p>
+
+<p>Pour la détection automatique, les groupes de circuit liés aux catégories sont l&#8217;équivalent du circuit par défaut associé à une catégorie lors des inscriptions.</p>
+
+          </div>
+        </div>
+
+        <div id="footer">
+                &copy; 2008-2014 Simon Denier | 
+                Généré avec <a href="http://webgen.rubyforge.org">webgen</a> | 
+                Design par <a href="http://andreasviklund.com">Andreas Viklund</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

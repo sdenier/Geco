@@ -53,7 +53,7 @@
             <h1>Download</h1>
             <div id="downloads">
               <ul>
-                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.1.zip">Version 2.1</a></li>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.2.zip">Version 2.2</a></li>
                 <li>Voir les <a href="../begin/whatsnew.fr.html">nouveautés</a></li>
               </ul>
             </div>
@@ -142,16 +142,18 @@ La vue dans le panneau de droite peut montrer des données détaillées sur le c
       <li>Puce louée : si cochée, Geco affiche un message lors de la lecture de la puce</li>
     </ul>
   </li>
-  <li>Données puce (champs d&#8217;information, non modifiables)
+  <li>Données puce (non modifiables)
     <ul>
-      <li>Le champ <em>Chrono</em> montre toujours le temps <em>Arrivée - Départ</em>, sans prendre en compte des pénalités</li>
-      <li>Les temps <em>Départ/Arrivée</em> sont affichées avec un <strong>fond rouge</strong> s&#8217;ils sont manquants</li>
+      <li>données issues directement de la puce</li>
     </ul>
   </li>
-  <li>Résultats (champs d&#8217;information, non modifiables)
+  <li>Résultats (non modifiables)
     <ul>
-      <li>Le champ du temps officiel affiche toujours le chrono + pénalité</li>
-      <li>Geco utilise le temps officiel de la table pour calculer les résultats (qui peut être changé à la main) - le champ est affiché avec un <strong>fond jaune</strong> pour indiquer un changement dans la table</li>
+      <li>Temps <em>Départ/Arrivée</em> retenus pour le calcul du temps de course (affichage d&#8217;un <strong>fond rouge</strong> si manquant)</li>
+      <li>Temps <em>Chrono = Arrivée - Départ</em></li>
+      <li>Temps de course calculé en prenant en compte les neutralisations</li>
+      <li>Le temps officiel affiche toujours le temps de course + pénalités</li>
+      <li>Geco utilise le temps officiel dans la table (qui peut être changé à la main) pour calculer les résultats - ce champ s&#8217;affiche alors avec un <strong>fond jaune</strong> pour indiquer une différence avec le temps officiel de la table</li>
     </ul>
   </li>
   <li>Boutons
@@ -181,7 +183,7 @@ La vue dans le panneau de droite peut montrer des données détaillées sur le c
         </div>
 
         <div id="footer">
-                &copy; 2008-2013 Simon Denier | 
+                &copy; 2008-2014 Simon Denier | 
                 Généré avec <a href="http://webgen.rubyforge.org">webgen</a> | 
                 Design par <a href="http://andreasviklund.com">Andreas Viklund</a>
         </div>

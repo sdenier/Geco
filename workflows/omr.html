@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Geco lightweight desktop application for orienteering race" />
+    <meta name="keywords" content="orienteering race management lightweight" />
+    <meta name="author" content="Simon Denier / Original design: Andreas Viklund - http://andreasviklund.com/" />
+    <meta name="generator" content="webgen - http://webgen.rubyforge.org" />
+    <link rel="stylesheet" href="../default.css" type="text/css" media="screen,projection" />
+    <title>Geco - One Man Relay</title>
+      <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-3230191-5']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+  
+<link type="text/html" rel="alternate" hreflang="fr" href="omr.fr.html" lang="fr" title="One Man Relay" /></head>
+
+  <body>
+    <div id="container">
+      <a id="top"></a>
+
+      <div id="sitename">
+        <h1>Geco User Help</h1>
+        <a id="menu"></a>
+      </div>
+
+      <div id="nav">
+        <ul><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../begin/index.html">Presentation</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../guide/index.html">UI Guide</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../howtos/index.html">How-tos</a></li><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><a href="index.html">Workflows</a></li></ul>
+      </div>
+
+      <div id="wrap1">
+        <div id="wrap2">
+
+          <div id="topbox">
+            <strong><a href="../index.html">/</a> &raquo; <a href="index.html">Workflows</a> &raquo; <span>One Man Relay</span></strong> &nbsp; (<span class="webgen-langbar-current-lang">en</span> | <a href="omr.fr.html">fr</a>)            
+          </div>
+
+          <div id="leftside">
+            <a id="sectionmenu"></a>
+            <h1>Download</h1>
+            <div id="downloads">
+              <ul>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.2.zip">Version 2.2</a></li>
+                <li>See <a href="../begin/whatsnew.html">what's new</a></li>
+              </ul>
+            </div>
+          
+            <h1>Contents</h1>
+            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.html">Organisations</a></li><li class="webgen-menu-level1"><a href="register.html">Registration</a></li><li class="webgen-menu-level1"><a href="auto.html">Auto Handler</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>One Man Relay</span></li><li class="webgen-menu-level1"><a href="endstage.html">End of stage</a></li><li class="webgen-menu-level1"><a href="training.html">Training</a></li><li class="webgen-menu-level1"><a href="quals.html">Qualifications</a></li></ul></div>
+          
+            <h1>Links</h1>
+            <div id="links">
+                    <ul>
+                    
+                    <li><a href="http://github.com/sdenier/Geco">Repository</a></li>
+                    <li><a href="http://www.o-news.fr/viewforum.php?f=21">Forum (french)</a></li>
+                    </ul>
+            </div>
+          </div>
+
+          <a id="main"></a>
+          <div id="contentalt">
+            
+<h1 id="one-man-relay-with-course-sets">One Man Relay with Course Sets</h1>
+
+<p>One Man Relay is a popular format where each runner completes all legs/loops in a single course, often with a mass start to favor contacts during the race. Although it was possible to organize OMR prior to 2.2, Geco now provides some helpful features to make it easier. This page explains how to best use those features in Geco.</p>
+
+<h2 id="setting-up-a-one-man-relay-in-geco">Setting up a One Man Relay in Geco</h2>
+
+<p>Let&#8217;s take a simple example. Given three legs A, B, and C, there are many ways to combine these legs to get equivalent courses: ABC, ACB, BAC, BCA, CAB, CBA. Each competitor will run one (and only one) of these courses. Geco needs to know about each of this variant courses (their specific sequence of codes) in order to check punch codes for one runner variant.</p>
+
+<p>Fortunately course design softwares allow you to create all variations for a one man relay and export them as courses in XML format. That means setting up a One Man Relay is really not different from any other race setup in Geco:</p>
+
+<ol>
+  <li>export courses as XML from your course design software (you can also create them by hand);</li>
+  <li>import them in the <a href="../guide/stage.html">course configuration</a> panel;</li>
+  <li>set mass start times for each course if need be;</li>
+  <li>proceed with competitors <a href="register.html">registration</a>.</li>
+</ol>
+
+<p>There are no constraint on the way to register competitors. You can pre-assign them one of the variant courses before the race - in which case you must ensure they get the right map with their assigned course at start. Or you can set the auto course for all competitors: this way you use the powerful course detection algorithm to let Geco determine which variant has been run by the competitor (see below for more on that subject).</p>
+
+<h2 id="using-course-sets-to-export-omr-results">Using Course Sets to export OMR results</h2>
+
+<p>Exporting results for a OMR is where you handle things in a different way. Indeed, generating results by course would not give you full results as runners would only be ranked by variants. You could use categories to rank together competitors across different variants. But this is not possible if categories do not match the set of variants (for example, if you wish to keep age categories).</p>
+
+<p>Starting with 2.2, Geco introduces <em>Course Sets</em>, which lets you define arbitrary groups of related courses and rank together runners belonging to the same course set.</p>
+
+<p><img src="../images/omr_coursesets.png" style="float: none; width: 400px;" /></p>
+
+<p>To use course sets, first go to the <a href="../guide/stage.html">course configuration</a> panel:</p>
+
+<ul>
+  <li>you can link any course to a course set by giving the name of the course set in the custom cell;</li>
+  <li>if the course set does not yet exist, it will be created on the fly;</li>
+  <li>then go to the <a href="../guide/results.html">results</a>, select <em>Course Sets</em> instead of <em>Courses</em> or <em>Categories</em> for ranking runners, and press <em>Refresh</em> to compute the results.</li>
+</ul>
+
+<p><img src="../images/omr_results.png" style="float: none; width: 281px;" /></p>
+
+<h2 id="lightweight-omr-with-auto-handler-and-course-sets">Lightweight OMR with Auto handler and Course Sets</h2>
+
+<p>Course detection by the <a href="auto.html">Auto handler</a> is a powerful tool to make your organization lightweight, especially when it comes to a One Man Relay. Indeed, with this mode you don&#8217;t have to preset a course for each runner, and moreover you don&#8217;t have to ensure that they take the map with the right course at start. You just let Geco detect which variant the runner has run, based on punch codes.</p>
+
+<p><strong>Note:</strong> this assumes that all your competitors play fair and don&#8217;t follow blindly another runner, regardless of the course on their map. Geco can not detect cheaters based on their punch codes!</p>
+
+<h3 id="restrict-course-detection-using-course-sets">Restrict Course Detection using Course Sets</h3>
+
+<p>In some cases, you may want Geco to be more strict about the courses a competitor may fall in after automatic detection. For example, take a Men 21 starting on a long course and quitting early. At readout, there is chance that Geco will assign a short course to the runner (as he has few punch codes and thus less missing punches on this short course). If you want to avoid this, you can setup Geco so that a runner in a given category can only be assigned courses in a given course set.</p>
+
+<ul>
+  <li>Tick the &#8220;Restrict course detection&#8230;&#8221; in the <a href="../guide/stage.html">SI reader configuration</a> panel.</li>
+  <li>Link a category with a course set in the category configuration panel.</li>
+  <li>Course sets work the same way in course and categories panel. You can create a course set on the fly for a category, but then it will be empty until you also link some courses to the same course set.</li>
+</ul>
+
+<p><img src="../images/omr_category_option.png" /></p>
+
+<p>In our example, you can create a course set named A, linked to courses A1, A2, A3, and also link the Men 21 category to the same course set. At readout, Geco will set the best match among A1, A2, A3 courses for a M21 runner with Auto course. But it will not use other courses.</p>
+
+<p><img src="../images/omr_categories.png" style="float: none; width: 355px;" /></p>
+
+<p>Course sets for categories work for course detection much in the same way as default courses for categories work for registration.</p>
+
+          </div>
+        </div>
+
+        <div id="footer">
+                &copy; 2008-2014 Simon Denier | 
+                Generated by <a href="http://webgen.rubyforge.org">webgen</a> | 
+                Design by <a href="http://andreasviklund.com">Andreas Viklund</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

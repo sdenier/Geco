@@ -53,7 +53,7 @@
             <h1>Download</h1>
             <div id="downloads">
               <ul>
-                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.1.zip">Version 2.1</a></li>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.2.zip">Version 2.2</a></li>
                 <li>Voir les <a href="../begin/whatsnew.fr.html">nouveautés</a></li>
               </ul>
             </div>
@@ -97,6 +97,7 @@
 <ul>
   <li>résoudre manuellement les problèmes de puce avec <a href="merge.fr.html">l&#8217;assistant de fusion</a> <em>ou</em> laisser Geco prendre en charge <a href="../workflows/auto.fr.html">automatiquement</a>) toutes les puces, en créant de nouvelles inscriptions au besoin (inscriptions inconnues, doublons)</li>
   <li>laisser Geco chercher les puces inconnues dans l&#8217;archive pour créer de nouvelles inscriptions (seulement en automatique)</li>
+  <li>restreindre la détection automatique de circuits aux <a href="../workflows/omr.fr.html">groupes de circuit</a> associés à chaque catégorie</li>
 </ul>
 
 <h2 id="pnalits-pour-les-formats-orientshow-ordre-libre">Pénalités (pour les formats Orient&#8217;Show, Ordre libre&#8230;)</h2>
@@ -104,6 +105,26 @@
   <li>Limites PM : nombre de postes manquant autorisés avant de marquer le coureur comme PM</li>
   <li>Pas de limite PM : le coureur n&#8217;est jamais marqué PM, quelque soit le nombre de postes manquant</li>
   <li>Pénalité : pénalité de temps en secondes par poste manquant (aussi affichée en minutes)</li>
+</ul>
+
+<h2 id="circuit">Circuit</h2>
+<ul>
+  <li>Geco peut importer des circuits décrits au format <em><a href="http://www.soenniksen.dk/iof-datastandard/index.shtml">IOF XML</a></em>. Cliquez sur le bouton <em>XML</em> pour sélectionner le fichier de circuits. Vous pouvez choisir entre le format <strong>XML V2</strong> (courant) ou le nouveau format <strong>XML V3</strong>.</li>
+  <li>Vous pouvez modifier la longueur et le dénivelé du circuit, l&#8217;heure (optionnelle) de départ en masse, ou le <a href="../workflows/omr.fr.html">groupe du circuit</a></li>
+  <li>Un groupe de circuit est créé à la volée s&#8217;il n&#8217;existe pas déjà</li>
+  <li>Vous pouvez <em>Éditer</em> les circuits à la main, si besoin</li>
+  <li>Vous pouvez <em>Revérifier</em> tous les coureurs d&#8217;un circuit après changement</li>
+</ul>
+
+<p>Le circuit <strong>[Auto]</strong> existe par défaut dans Geco : il ne peut pas être renommé ou supprimé. C&#8217;est le circuit utilisé par Geco pour toute nouvelle inscription (sauf à utiliser les circuits par catégorie). Ce circuit spécial indique à Geco qu&#8217;il faut détecter le <em>véritable</em> circuit lors de la lecture de la puce : après lecture, le circuit du coureur sera automatiquement mis à jour avec le circuit détecté.</p>
+
+<p><a href="../images/stage_panel_courses.fr.png"><img src="../images/stage_panel_courses.fr.png" /></a></p>
+
+<h2 id="catgorie">Catégorie</h2>
+<ul>
+  <li>Colonne Circuit : circuit par défaut pour les coureurs de la catégorie (utilisé en particulier pour l&#8217;import CSV ou depuis l&#8217;archive)</li>
+  <li>Colonne <a href="../workflows/omr.fr.html">Groupe de circuit</a> : restreindre la détection automatique de circuit au groupe de circuit sélectionné pour les coureurs de la catégorie (si option activée dans la lecture SI)</li>
+  <li>Vous pouvez importer un modèle CSV avec les catégories courantes et leur circuit associé. Voir le répoertoire <code>data/modeles</code> pour des exemples de fichiers avec les formats pour courses régionales etc.</li>
 </ul>
 
 <h2 id="modles">Modèles</h2>
@@ -114,28 +135,11 @@
 
 <p>Pour le ticket du coureur, Geco permet de choisir entre un modèle à plusieurs colonnes et un modèle tout en ligne (pour imprimante thermique). L&#8217;option <em>Prototypage</em> permet de rapidement modifier les fichiers modèles et de voir le résultat sans gaspiller de papier : Geco ouvre une fenêtre avec le résultat (et écrit un fichier <em>runner_splits.html</em>) au lieu de lancer l&#8217;impression du ticket.</p>
 
-<p><a href="../images/stage_panel_templates.fr.png"><img src="../images/stage_panel_templates.fr.png" /></a></p>
-
-<h2 id="circuit">Circuit</h2>
-<ul>
-  <li>Geco peut importer des circuits décrits au format <em><a href="http://www.soenniksen.dk/iof-datastandard/index.shtml">IOF XML</a></em>. Cliquez sur le bouton <em>XML</em> pour sélectionner le fichier de circuits. Vous pouvez choisir entre le format <strong>XML V2</strong> (courant) ou le nouveau format <strong>XML V3</strong>.</li>
-  <li>Vous pouvez <em>Éditer</em> les circuits à la main, si besoin</li>
-  <li>Vous pouvez <em>Revérifier</em> tous les coureurs d&#8217;un circuit après changement</li>
-</ul>
-
-<p>Le circuit <strong>[Auto]</strong> existe par défaut dans Geco : il ne peut pas être renommé ou supprimé. C&#8217;est le circuit utilisé par Geco pour toute nouvelle inscription (sauf à utiliser les circuits par catégorie). Ce circuit spécial indique à Geco qu&#8217;il faut détecter le <em>véritable</em> circuit lors de la lecture de la puce : après lecture, le circuit du coureur sera automatiquement mis à jour avec le circuit détecté.</p>
-
-<h2 id="catgorie">Catégorie</h2>
-<ul>
-  <li>Colonne Circuit : circuit par défaut pour les coureurs de la catégorie (utilisé en particulier pour l&#8217;import CSV ou depuis l&#8217;archive)</li>
-  <li>Vous pouvez importer un modèle CSV avec les catégories courantes et leur circuit associé. Voir le répoertoire <code>data/modeles</code> pour des exemples de fichiers avec les formats pour courses régionales etc.</li>
-</ul>
-
           </div>
         </div>
 
         <div id="footer">
-                &copy; 2008-2013 Simon Denier | 
+                &copy; 2008-2014 Simon Denier | 
                 Généré avec <a href="http://webgen.rubyforge.org">webgen</a> | 
                 Design par <a href="http://andreasviklund.com">Andreas Viklund</a>
         </div>

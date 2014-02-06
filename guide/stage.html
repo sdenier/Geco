@@ -53,7 +53,7 @@
             <h1>Download</h1>
             <div id="downloads">
               <ul>
-                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.1.zip">Version 2.1</a></li>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.2.zip">Version 2.2</a></li>
                 <li>See <a href="../begin/whatsnew.html">what's new</a></li>
               </ul>
             </div>
@@ -98,6 +98,7 @@
 <ul>
   <li>manually resolve ecard issues with the <a href="merge.html">Merge wizard</a> <em>or</em> let Geco handles all ecards <a href="../workflows/auto.html">automatically</a>, creating an entry for each reading (unknown, duplicate entries)</li>
   <li>let Geco lookup unregistered ecards and insert entries from archive (only for the automatic behavior)</li>
+  <li>restrict automatic course detection using <a href="../workflows/omr.html">course sets</a> per category</li>
 </ul>
 
 <h2 id="penalties-for-orientshow-free-order-">Penalties (for Orient&#8217;Show, Free Order, &#8230;)</h2>
@@ -105,6 +106,26 @@
   <li>MP limit: number of missing punches authorized before marking the runner as MP</li>
   <li>Don&#8217;t check MP limit: runner can have any number of missing punches without ever being MP (disable MP limit)</li>
   <li>Time penalty: time penalty per missing punch, in seconds (also displayed in minutes for large time penalty)</li>
+</ul>
+
+<h2 id="course">Course</h2>
+<ul>
+  <li>Geco can import courses described with the <em><a href="http://www.soenniksen.dk/iof-datastandard/index.shtml">IOF XML</a></em> format. Click the <em>XML</em> button to select the course file. You can choose between the <strong>XML V2</strong> (current) format or the new <strong>XML V3</strong> format.</li>
+  <li>You can set course length, climb, mass start time (optional), or <a href="../workflows/omr.html">course set</a></li>
+  <li>Course Sets are created on the fly if they do not yet exist</li>
+  <li>You can <em>Edit</em> the course sequence by hand, if necessary</li>
+  <li>You can <em>Recheck</em> all runners from a course after a change</li>
+</ul>
+
+<p>The <strong>[Auto]</strong> course always exists in Geco: it can&#8217;t be renamed or deleted. This is the default course used by Geco for any new entry (unless a category course is used). This special course tells Geco to detect the <em>real</em> course on ecard reading: after reading, the runner course will be automatically updated with the detected course.</p>
+
+<p><a href="../images/stage_panel_courses.png"><img src="../images/stage_panel_courses.png" /></a></p>
+
+<h2 id="category">Category</h2>
+<ul>
+  <li>Course column: set the default course for runners in category (used when importing registrations from file or from archive)</li>
+  <li><a href="../workflows/omr.html">Course set</a> column: restrict automatic course detection to the given course set for runners in category (tick option in SI reader configuration)</li>
+  <li>You can import a CSV <em>Template</em> file describing common categories and their default courses. See <code>data/modeles</code> for some sample files following french rules. Each line describes a category as <code>short name, long name, course name</code></li>
 </ul>
 
 <h2 id="templates">Templates</h2>
@@ -115,28 +136,11 @@
 
 <p>You can choose between multi-columns format or single-column &#8216;ticket&#8217; (for thermal printer) for the runner splits. The <em>Prototyping</em> checkbox makes it easy to quickly change and test template files: instead of printing a split, Geco will open a window with the split and writes a <em>runner_splits.html</em> file.</p>
 
-<p><a href="../images/stage_panel_templates.png"><img src="../images/stage_panel_templates.png" /></a></p>
-
-<h2 id="course">Course</h2>
-<ul>
-  <li>Geco can import courses described with the <em><a href="http://www.soenniksen.dk/iof-datastandard/index.shtml">IOF XML</a></em> format. Click the <em>XML</em> button to select the course file. You can choose between the <strong>XML V2</strong> (current) format or the new <strong>XML V3</strong> format.</li>
-  <li>You can <em>Edit</em> the course sequence by hand, if necessary</li>
-  <li>You can <em>Recheck</em> all runners from a course after a change</li>
-</ul>
-
-<p>The <strong>[Auto]</strong> course always exists in Geco: it can&#8217;t be renamed or deleted. This is the default course used by Geco for any new entry (unless a category course is used). This special course tells Geco to detect the <em>real</em> course on ecard reading: after reading, the runner&#8217;s course will be automatically updated with the detected course.</p>
-
-<h2 id="category">Category</h2>
-<ul>
-  <li>Course column: set the default course for runners in the category (used when importing registrations from file or from archive)</li>
-  <li>You can import a CSV <em>Template</em> file describing common categories and their default courses. See <code>data/modeles</code> for some sample files following french rules. Each line describes a category as <code>short name, long name, course name</code></li>
-</ul>
-
           </div>
         </div>
 
         <div id="footer">
-                &copy; 2008-2013 Simon Denier | 
+                &copy; 2008-2014 Simon Denier | 
                 Generated by <a href="http://webgen.rubyforge.org">webgen</a> | 
                 Design by <a href="http://andreasviklund.com">Andreas Viklund</a>
         </div>

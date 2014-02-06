@@ -53,7 +53,7 @@
             <h1>Download</h1>
             <div id="downloads">
               <ul>
-                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.1.zip">Version 2.1</a></li>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.2.zip">Version 2.2</a></li>
                 <li>Voir les <a href="../begin/whatsnew.fr.html">nouveautés</a></li>
               </ul>
             </div>
@@ -76,6 +76,39 @@
             
 <h1 id="quoi-de-neuf-">Quoi de neuf ?</h1>
 
+<h2 id="version-22---06022014">Version 2.2 - 06/02/2014</h2>
+
+<p><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.2.zip">Geco 2.2</a> améliore la rapidité de lecture des puces et apporte la gestion par groupe de circuits, qui facilitent l&#8217;organisation de courses type <a href="../workflows/omr.fr.html">One Man Relay</a>&#8230;</p>
+
+<ul>
+  <li><a href="https://github.com/sdenier/GecoSI">GecoSI</a> passe en version 1.1.0, avec une lecture des puces Si6/6*/10/11/SIAC plus rapide et plus fiable</li>
+  <li>Ajout des groupes de circuits, qui permettent de rassembler des circuits similaires (par exemple, les différentes variations d&#8217;un circuit papillon)</li>
+  <li>Classement par groupe de circuits (pour classer les coureurs d&#8217;un One Man Relay par exemple)</li>
+  <li>Possibilité de restreindre la détection automatique de circuits suivant la catégorie du coureur (en lien avec les groupes de circuits)</li>
+  <li>Un véritable horaire de départ en masse peut maintenent être défini pour chaque circuit</li>
+</ul>
+
+<h3 id="amliorations-mineures">Améliorations mineures</h3>
+
+<ul>
+  <li>Affichage et édition des longeur et dénivelé possibles depuis la section configuration des circuits</li>
+  <li>Affichage des postes du circuit immédiatement sélectionné</li>
+  <li>Affichages des temps au format 24h00+, pour les courses durant plus d&#8217;une journée</li>
+  <li>Affichage de plus de détails sur les temps dans la vue coureur (heure de départ réel, temps avant/après neutralisation)</li>
+  <li>Export en un clic pour <a href="https://chrome.google.com/webstore/detail/osplits/kfnlllbjdagblbcdnmghcljobdlaoaii/details?hl=fr">O&#8217;Splits</a></li>
+  <li>Amélioration de la robustesse de l&#8217;import des logs stations et logs puces</li>
+  <li>En cas de problème avec la station maître, Geco ouvre maintenant un popup avec l&#8217;erreur</li>
+  <li>Possibilité de configurer le format du ticket multi-colonnes</li>
+</ul>
+
+<p><em>La configuration ROA est désactivée dans la 2.2, en prévision de la gestion prochaine des sections.</em></p>
+
+<h3 id="bugs-corrigs">Bugs corrigés</h3>
+
+<ul>
+  <li>GecoSI en version 1.1.0 corrige un bug lors de la lecture des puces vides.</li>
+</ul>
+
 <h2 id="version-21---21092013">Version 2.1 - 21/09/2013</h2>
 
 <p><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.1.zip">Geco 2.1</a> est la première version stable dans la série 2.x. Elle intègre la première version stable de GecoSI (1.0.0) ainsi qu&#8217;un nouveau moteur extensible pour l&#8217;export des résultats.</p>
@@ -93,7 +126,7 @@
   <li>Quand on fusionne deux inscriptions ensemble, le focus est mis sur l&#8217;inscription résultante dans la table des coureurs.</li>
 </ul>
 
-<h3 id="bugs-corrigs">Bugs corrigés</h3>
+<h3 id="bugs-corrigs-1">Bugs corrigés</h3>
 
 <ul>
   <li>L&#8217;intégration de GecoSI 1.0.0 corrige plusieurs bugs liés aux puces sans horaire de départ et au mode 192 poinçons.</li>
@@ -157,7 +190,7 @@
 
 <p>La nouvelle section <a href="../workflows/index.fr.html">Workflows</a> décrit comment exploiter ces fonctionnalités ensemble.</p>
 
-<h3 id="amliorations-mineures">Améliorations mineures</h3>
+<h3 id="amliorations-mineures-1">Améliorations mineures</h3>
 
 <ul>
   <li>ajout du statut &#8220;Hors-délai&#8221;</li>
@@ -169,7 +202,7 @@
   <li>mode manuel/mode auto/insertion auto archive : ce sont maintenant des options à choisir dans la configuration de la course</li>
 </ul>
 
-<h3 id="bugs-corrigs-1">Bugs corrigés</h3>
+<h3 id="bugs-corrigs-2">Bugs corrigés</h3>
 
 <ul>
   <li>export CSV pour le CN (status corrects, encodage)</li>
@@ -251,7 +284,7 @@
         </div>
 
         <div id="footer">
-                &copy; 2008-2013 Simon Denier | 
+                &copy; 2008-2014 Simon Denier | 
                 Généré avec <a href="http://webgen.rubyforge.org">webgen</a> | 
                 Design par <a href="http://andreasviklund.com">Andreas Viklund</a>
         </div>
