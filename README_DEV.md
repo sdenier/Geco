@@ -98,9 +98,9 @@ A future goal is to have a true 'continuous release' workflow with Travis: a suc
 
 The file `ant.xml` contains targets for the Ant build system, especially to create a bundle for release:
 
-- `userHelp` regenerates the `help` folder with user documentation
-- `build_dev_jar` builds the jar for a development release. They are named incrementally after the last stable release, like `geco-1.3-5-fd32k43.jar` (fifth release after release tagged 1.3)
-- `build_release_jar` builds the jar for a stable release. The only difference is in the given name, which is simpler, like `geco-1.3.jar`
-- `build_distrib` builds the archive bundle for a stable release, including the jar, the user documentation and other files.
+- `user-help` regenerates the `help` folder with user documentation
+- `make-dev-jar` builds the jar for a development release. They are named incrementally after the last stable release, like `geco-1.3-5-fd32k43.jar` (fifth release after release tagged 1.3)
+- `make-release-jar` builds the jar for a stable release. The only difference is in the given name, which is simpler, like `geco-1.3.jar`
+- `make-distrib` builds the archive bundle for a stable release, including the jar, the user documentation and other files.
 
 > Note: the `build.xml` file contains targets for continuous integration with Travis.

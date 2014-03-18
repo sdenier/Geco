@@ -3,22 +3,22 @@
 	<property file="src/version.prop"/>
 	<property file="dev.prop"/>
 	<property file="webstart/webstart.prop"/>
-	
+
 	<property name="srcdoc.dir" value="doc" />
 	<property name="wg.dir" value="${srcdoc.dir}/user/wg" />
 	<property name="geco.dir" value="${basedir}"/>
 	<property name="gecosi.dir" value="${basedir}/../GecoSI"/>
-	
-	<target name="cleanAll" depends="cleanBuild,cleanWebgen,cleanBackups" />
 
-	<target name="cleanBuild">
+	<target name="clean-all" depends="clean-build,clean-backups,clean-webgen" />
+
+	<target name="clean-build">
 		<delete quiet="true" includeemptydirs="true">
 			<fileset dir="build" includes="**/*"/>
 			<fileset dir="bin" includes="**/*"/>
 		</delete>
 	</target>
-	
-	<target name="cleanBackups">
+
+	<target name="clean-backups">
 		<delete>
 			<fileset dir="testData" includes="**/backups/*.zip"/>
 			<fileset dir="data" includes="**/backups/*.zip"/>
@@ -26,7 +26,7 @@
 		</delete>
 	</target>
 
-	<target name="cleanWebgen">
+	<target name="clean-webgen">
 		<delete dir="${wg.dir}/out" />
 		<delete file="${wg.dir}/webgen.cache" />
 		<mkdir dir="${wg.dir}/out/samples" />
@@ -34,18 +34,18 @@
 			<fileset dir="${wg.dir}/src/samples" />
 		</copy>
 	</target>
-	
+
 	<target name="webgen">
 		<exec dir="${wg.dir}" executable="webgen"></exec>
 	</target>
 
-	<target name="webgen with analytics">
+	<target name="webgen-analytics">
 		<exec dir="${wg.dir}" executable="webgen">
 			<env key="analytics_tracking" value="true" />
 		</exec>
 	</target>
 
-	<target name="gh-pages" depends="cleanWebgen,webgen with analytics">
+	<target name="gh-pages" depends="clean-webgen,webgen-analytics">
 		<delete>
 			<fileset dir="${wg.dir}/gh-pages" includes="**/*.html **/*.png **/*.gif **/*.css **/*.csv" />
 		</delete>
@@ -54,7 +54,7 @@
 		</copy>
 	</target>
 
-	<target name="userHelp" depends="cleanWebgen,webgen">
+	<target name="user-help" depends="clean-webgen,webgen">
 		<delete dir="help" />
 		<mkdir dir="help" />
 		<copy todir="help">
@@ -72,11 +72,11 @@
 		<echo message="STAMP ${DSTAMP}" />
 	</target>
 
-	<target name="fileout_buildnumber" depends="buildnumber">
+	<target name="fileout-buildnumber" depends="buildnumber">
 		<propertyfile file="${geco.dir}/src/version.prop">
 			<entry key="build.num" value="${build.number}"/>
 			<entry key="build.stamp" value="${DSTAMP}"/>
-		</propertyfile>	
+		</propertyfile>
 	</target>
 
   <target name="init">
@@ -101,24 +101,26 @@
 			<fileset dir="${geco.dir}/build"/>
 		</copy>
   </target>
-	
-	<target name="build_release_jar" depends="fileout_buildnumber">
+
+	<target name="build-dev-jar" depends="compile,make-dev-jar" />
+
+	<target name="make-release-jar" depends="fileout-buildnumber">
 		<property name="geco.jarname" value="geco-${version.num}.jar" />
-		<antcall target="build_jar" />
+		<antcall target="make-jar" />
 	</target>
 
-	<target name="build_dev_jar" depends="fileout_buildnumber">
+	<target name="make-dev-jar" depends="fileout-buildnumber">
 		<property name="geco.jarname" value="geco-${build.number}.jar" />
-		<antcall target="build_jar" />
+		<antcall target="make-jar" />
 	</target>
-	
-	<target name="build_jar" depends="compile">
+
+	<target name="make-jar">
 		<jar destfile="${geco.dir}/${geco.jarname}" filesetmanifest="mergewithoutmain">
 			<manifest>
 				<attribute name="Main-Class" value="net.geco.GecoLoader"/>
 				<attribute name="Class-Path" value="."/>
 				<attribute name="Built-By" value="${dev.username}"/>
-				<attribute name="Built-Date" value="${TODAY}"/> 
+				<attribute name="Built-Date" value="${TODAY}"/>
 				<attribute name="Implementation-Version" value="${build.number}"/>
 			</manifest>
 			<fileset dir="${geco.dir}/bin" excludes="test/,version.prop"/>
@@ -130,13 +132,13 @@
 			<fileset file="${geco.dir}/lib/jmustache-1.8.jar"/>
 		</jar>
 	</target>
-	
-	<target name="build_GecoSI_jar">
+
+	<target name="make-GecoSI-jar">
 		<ant dir="${gecosi.dir}" target="build_jar" />
 		<copy file="${gecosi.dir}/GecoSI.jar" tofile="${geco.dir}/lib/GecoSI.jar" overwrite="true" />
 	</target>
-	
-	<target name="build_distrib" depends="build_release_jar,userHelp">
+
+	<target name="make-distrib" depends="make-release-jar,user-help">
 		<echo message="${geco.jarname}" />
 		<zip destfile="${geco.dir}/geco-${version.num}.zip">
 			<fileset file="${geco.dir}/${geco.jarname}"/>
@@ -148,7 +150,7 @@
 		</zip>
 	</target>
 
-	<target name="build_demo" depends="cleanBackups,build_release_jar,userHelp">
+	<target name="make-demo-distrib" depends="clean-backups,make-release-jar,user-help">
 		<delete>
 			<fileset dir="demo" includes="**/backups/*.zip"/>
 			<fileset dir="demo" includes="**/*.log"/>
@@ -162,28 +164,28 @@
 			<fileset dir="${geco.dir}" includes="data/templates/"/>
 			<fileset dir="${geco.dir}" includes="formats/"/>
 		</zip>
-	</target>	
+	</target>
 
-	<target name="build_livejar" depends="buildnumber">
+	<target name="make-livejar" depends="buildnumber">
 		<jar destfile="${geco.dir}/livegeco-${build.number}.jar" filesetmanifest="mergewithoutmain">
 			<manifest>
 				<attribute name="Main-Class" value="net.geco.live.GecoLive"/>
 				<attribute name="Class-Path" value="."/>
 				<attribute name="Built-By" value="${dev.username}"/>
-				<attribute name="Built-Date" value="${TODAY}"/> 
+				<attribute name="Built-Date" value="${TODAY}"/>
 				<attribute name="Implementation-Version" value="${build.number}"/>
 			</manifest>
 			<fileset dir="${geco.dir}/bin" excludes="test/"/>
 		</jar>
 	</target>
 
-	<target name="build_webstart" depends="buildnumber">
+	<target name="make-webstart" depends="buildnumber">
 		<jar destfile="${geco.dir}/webstart/gecows.jar" filesetmanifest="mergewithoutmain">
 			<manifest>
 				<attribute name="Main-Class" value="net.geco.live.GecoWebStart"/>
 				<attribute name="Class-Path" value="."/>
 				<attribute name="Built-By" value="${dev.username}"/>
-				<attribute name="Built-Date" value="${TODAY}"/> 
+				<attribute name="Built-Date" value="${TODAY}"/>
 				<attribute name="Implementation-Version" value="${build.number}"/>
 			</manifest>
 			<fileset dir="${geco.dir}/bin" excludes="test/"/>
