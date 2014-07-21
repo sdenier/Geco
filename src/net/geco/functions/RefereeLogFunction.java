@@ -52,7 +52,7 @@ public class RefereeLogFunction extends GecoOperation {
 	}
 
 	@Override
-	public void execute() {
+	public void run() {
 		LogStream log;
 		if( displayOnlyCB.isSelected() ) {
 			log = new LogStream();
@@ -139,12 +139,12 @@ public class RefereeLogFunction extends GecoOperation {
 	}
 
 	@Override
-	public String executeTooltip() {
+	public String runTooltip() {
 		return Messages.uiGet("RefereeLogFunction.RefereeLogTooltip"); //$NON-NLS-1$
 	}
 
 	@Override
-	public JComponent getParametersConfig() {
+	public JComponent buildInnerUI() {
 		displayOnlyCB = new JCheckBox(Messages.uiGet("RefereeLogFunction.DisplayOnlyLabel")); //$NON-NLS-1$
 		displayOnlyCB.setAlignmentX(Component.LEFT_ALIGNMENT);
 		logFileF = new JTextField(15);

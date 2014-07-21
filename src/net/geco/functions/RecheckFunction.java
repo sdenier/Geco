@@ -26,7 +26,7 @@ public class RecheckFunction extends AbstractRunnerFunction {
 	}
 
 	@Override
-	public String executeTooltip() {
+	public String runTooltip() {
 		return Messages.uiGet("RecheckFunction.ExecuteTooltip"); //$NON-NLS-1$
 	}
 
@@ -36,7 +36,7 @@ public class RecheckFunction extends AbstractRunnerFunction {
 	}
 
 	@Override
-	public void execute() {
+	public void run() {
 		RunnerControl runnerControl = getService(RunnerControl.class);
 		for (RunnerRaceData runnerData : selectedRunners()) {
 			if( runnerData.statusIsRecheckable() ){

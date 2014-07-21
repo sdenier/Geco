@@ -76,7 +76,7 @@ public class GeneratorFunction extends GecoOperation {
 	}
 
 	@Override
-	public void execute() {
+	public void run() {
 		if (genThread != null && genThread.isAlive()) {
 			genThread.interrupt();
 		} else {
@@ -107,12 +107,12 @@ public class GeneratorFunction extends GecoOperation {
 	}
 
 	@Override
-	public String executeTooltip() {
+	public String runTooltip() {
 		return Messages.uiGet("GeneratorFunction.ExecuteTooltip"); //$NON-NLS-1$
 	}
 
 	@Override
-	public JComponent getParametersConfig() {
+	public JComponent buildInnerUI() {
 		
 		nbGeneration = new JSpinner(new SpinnerNumberModel(10, 0, null, 5));
 		nbGeneration.setToolTipText(Messages.uiGet("GeneratorFunction.GenerationNumberTooltip")); //$NON-NLS-1$

@@ -47,7 +47,7 @@ public abstract class AbstractRunnerFunction extends GecoOperation {
 	}
 
 	@Override
-	public JComponent getParametersConfig() {
+	public JComponent buildInnerUI() {
 		coursesRB = new JRadioButton(Messages.uiGet("AbstractRunnerFunction.CourseLabel")); //$NON-NLS-1$
 		categoriesRB = new JRadioButton(Messages.uiGet("AbstractRunnerFunction.CategoryLabel")); //$NON-NLS-1$
 		runnersRB = new JRadioButton(Messages.uiGet("AbstractRunnerFunction.RunnerLabel"));		 //$NON-NLS-1$

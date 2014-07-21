@@ -58,12 +58,12 @@ public class StationLogFunction extends GecoOperation {
 	}
 
 	@Override
-	public String executeTooltip() {
+	public String runTooltip() {
 		return Messages.uiGet("StationLogFunction.CheckStationLogTooltip"); //$NON-NLS-1$
 	}
 	
 	@Override
-	public void execute() {
+	public void run() {
 		boolean simulationMode = simulateB.isSelected();
 		if( simulationMode ) {
 			geco().announcer().dataInfo(Messages.uiGet("StationLogFunction.StartSimMessage")); //$NON-NLS-1$
@@ -109,7 +109,7 @@ public class StationLogFunction extends GecoOperation {
 	}
 
 	@Override
-	public JComponent getParametersConfig() {
+	public JComponent buildInnerUI() {
 		logFiles = new DefaultListModel();
 		JList logFilesL = new JList(logFiles);
 		logFilesL.setToolTipText(Messages.uiGet("StationLogFunction.SelectLogFilesHelp")); //$NON-NLS-1$

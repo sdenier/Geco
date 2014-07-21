@@ -39,7 +39,7 @@ public class ResetECardFunction extends AbstractRunnerFunction {
 	}
 
 	@Override
-	public String executeTooltip() {
+	public String runTooltip() {
 		return Messages.uiGet("ResetECardFunction.ResetECardTooltip");  //$NON-NLS-1$
 	}
 
@@ -49,7 +49,7 @@ public class ResetECardFunction extends AbstractRunnerFunction {
 	}
 
 	@Override
-	public void execute() {
+	public void run() {
 		RunnerControl runnerControl = getService(RunnerControl.class);
 		RunnerBuilder rBuilder = new RunnerBuilder(geco().factory());
 		Collection<RunnerRaceData> selectedRunners = selectedRunners();
@@ -67,7 +67,7 @@ public class ResetECardFunction extends AbstractRunnerFunction {
 	}
 
 	@Override
-	public JComponent getParametersConfig() {
+	public JComponent buildInnerUI() {
 		resetAutoCourseC = new JCheckBox(Messages.uiGet("ResetECardFunction.ResetAutoCourseLabel")); //$NON-NLS-1$
 		resetAutoCourseC.setToolTipText(Messages.uiGet("ResetECardFunction.ResetAutoCourseTooltip")); //$NON-NLS-1$
 		
@@ -76,7 +76,7 @@ public class ResetECardFunction extends AbstractRunnerFunction {
 		box.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 		box.setAlignmentY(Component.TOP_ALIGNMENT);
 		
-		JComponent config = super.getParametersConfig();
+		JComponent config = super.buildInnerUI();
 		config.add(box);
 		return config;
 	}

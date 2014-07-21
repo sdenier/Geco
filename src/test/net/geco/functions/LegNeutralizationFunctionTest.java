@@ -263,7 +263,7 @@ public class LegNeutralizationFunctionTest {
 		Registry registry = mullaghmeen.registry();
 		Course orange = registry.findCourse("Orange");
 		LegNeutralizationFunction function = new LegNeutralizationFunction(mullaghmeen);
-		function.getParametersConfig(); // init simulateCB
+		function.buildInnerUI(); // init simulateCB
 		function.setNeutralizedLeg(156, 157);
 		
 		Collection<Course> courses = function.selectCoursesWithNeutralizedLeg();
@@ -272,7 +272,7 @@ public class LegNeutralizationFunctionTest {
 		assertTrue(courses.contains(registry.findCourse("White")));
 		assertTrue(courses.contains(registry.findCourse("Yellow")));
 		
-		function.execute();
+		function.run();
 		assertEquals("17:28", registry.findRunnerData("51009").getResult().formatResultTime()); // Caoimhe O'Boyle
 		assertEquals("26:40", registry.findRunnerData("11428").getResult().formatResultTime()); // Claire Garvey
 		assertEquals("26:26", registry.findRunnerData("11444").getResult().formatResultTime()); // Aaron Clogher & Eoin Connell

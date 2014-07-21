@@ -54,12 +54,12 @@ public class LegNeutralizationFunction extends GecoOperation {
 	}
 
 	@Override
-	public String executeTooltip() {
+	public String runTooltip() {
 		return Messages.uiGet("LegNeutralizationFunction.ExecuteTooltip"); //$NON-NLS-1$
 	}
 
 	@Override
-	public JComponent getParametersConfig() {
+	public JComponent buildInnerUI() {
 		final JFormattedTextField startCodeF = new JFormattedTextField();
 		startCodeF.setValue(Integer.valueOf(legStart));
 		startCodeF.addPropertyChangeListener("value", new PropertyChangeListener() { //$NON-NLS-1$
@@ -128,7 +128,7 @@ public class LegNeutralizationFunction extends GecoOperation {
 	}
 
 	@Override
-	public void execute() {
+	public void run() {
 		boolean simulate = simulateCB.isSelected();
 		String startMessage = Messages.uiGet("LegNeutralizationFunction.StartingLegNeutralizationMessage") + legStart + " -> " + legEnd; //$NON-NLS-1$ //$NON-NLS-2$
 		if( simulate ){

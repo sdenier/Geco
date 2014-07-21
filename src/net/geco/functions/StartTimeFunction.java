@@ -41,12 +41,12 @@ public class StartTimeFunction extends AbstractRunnerFunction {
 	}
 
 	@Override
-	public String executeTooltip() {
+	public String runTooltip() {
 		return Messages.uiGet("StartTimeFunction.ExecuteTooltip"); //$NON-NLS-1$
 	}
 
 	@Override
-	public void execute() {
+	public void run() {
 		try {
 			Date startTime = TimeManager.userParse(starttimeF.getText());
 			String start = TimeManager.time(startTime);
@@ -73,7 +73,7 @@ public class StartTimeFunction extends AbstractRunnerFunction {
 	}
 
 	@Override
-	public JComponent getParametersConfig() {
+	public JComponent buildInnerUI() {
 		resetAllRunnersC = new JCheckBox(Messages.uiGet("StartTimeFunction.ResetStarttimeLabel")); //$NON-NLS-1$
 		resetAllRunnersC.setToolTipText(
 				Messages.uiGet("StartTimeFunction.ResetStarttimeTooltip1") //$NON-NLS-1$
@@ -92,7 +92,7 @@ public class StartTimeFunction extends AbstractRunnerFunction {
 		box.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 		box.setAlignmentY(Component.TOP_ALIGNMENT);
 		
-		JComponent config = super.getParametersConfig();
+		JComponent config = super.buildInnerUI();
 		config.add(box);
 		return config;
 	}

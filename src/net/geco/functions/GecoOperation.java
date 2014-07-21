@@ -4,12 +4,15 @@
  */
 package net.geco.functions;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 
 import net.geco.control.Control;
@@ -65,14 +68,25 @@ public abstract class GecoOperation extends Control {
 	
 	public abstract String toString();
 	
-	public abstract void execute();
+	public abstract void run();
 	
-	public abstract String executeTooltip();
+	public abstract String runTooltip();
 	
-	public abstract JComponent getParametersConfig();
+	public abstract JComponent buildInnerUI();
+	
+	protected JButton buildRunButton() {
+		final JButton execB = new JButton(Messages.uiGet("GecoOperation.RunLabel")); //$NON-NLS-1$
+		execB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				run();
+			}
+		});
+		execB.setToolTipText(runTooltip());
+		return execB;
+	}
 	
 	public JComponent buildUI() {
-		JComponent parametersConfig = getParametersConfig();
+		JComponent parametersConfig = buildInnerUI();
 		parametersConfig.setBorder(
 			BorderFactory.createTitledBorder(Messages.uiGet("GecoOperation.ParameterLabel"))); //$NON-NLS-1$
 		return parametersConfig;

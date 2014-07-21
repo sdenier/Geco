@@ -51,12 +51,12 @@ public class ECardLogFunction extends GecoOperation {
 	}
 
 	@Override
-	public String executeTooltip() {
+	public String runTooltip() {
 		return Messages.uiGet("ECardLogFunction.ImportEcardTooltip"); //$NON-NLS-1$
 	}
 	
 	@Override
-	public void execute() {
+	public void run() {
 		CourseDetector detector = new CourseDetector(geco());
 		boolean autoInsert = autoInsertB.isSelected();
 		ECardMode processor;
@@ -73,7 +73,7 @@ public class ECardLogFunction extends GecoOperation {
 	}
 
 	@Override
-	public JComponent getParametersConfig() {
+	public JComponent buildInnerUI() {
 		logFileF = new JTextField(15);
 		logFileF.setMaximumSize(logFileF.getPreferredSize());
 		logFileF.setEnabled(false);
