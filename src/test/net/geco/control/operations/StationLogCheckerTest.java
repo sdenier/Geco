@@ -2,7 +2,7 @@
  * Copyright (c) 2012 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package test.net.geco.control.functions;
+package test.net.geco.control.operations;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -16,7 +16,7 @@ import java.util.Collections;
 import net.geco.control.ArchiveManager;
 import net.geco.control.GecoControl;
 import net.geco.control.RunnerControl;
-import net.geco.control.functions.StationLogChecker;
+import net.geco.control.operations.StationLogChecker;
 import net.geco.model.Registry;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;

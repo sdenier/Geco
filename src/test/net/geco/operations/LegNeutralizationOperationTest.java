@@ -2,7 +2,7 @@
  * Copyright (c) 2011 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package test.net.geco.functions;
+package test.net.geco.operations;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -26,7 +26,6 @@ import net.geco.control.GecoControl;
 import net.geco.control.checking.InlineTracer;
 import net.geco.control.checking.PenaltyChecker;
 import net.geco.control.results.ResultBuilder;
-import net.geco.functions.LegNeutralizationOperation;
 import net.geco.model.Category;
 import net.geco.model.Course;
 import net.geco.model.Messages;
@@ -39,6 +38,7 @@ import net.geco.model.RunnerResult;
 import net.geco.model.Trace;
 import net.geco.model.TraceData;
 import net.geco.model.impl.POFactory;
+import net.geco.operations.LegNeutralizationOperation;
 
 import org.junit.Before;
 import org.junit.Test;

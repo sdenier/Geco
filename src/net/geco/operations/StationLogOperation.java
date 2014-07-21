@@ -2,7 +2,7 @@
  * Copyright (c) 2010 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.functions;
+package net.geco.operations;
 
 import static net.geco.basics.Util.safeTrimQuotes;
 
@@ -32,7 +32,7 @@ import javax.swing.JScrollPane;
 import net.geco.basics.CsvReader;
 import net.geco.basics.Html;
 import net.geco.control.GecoControl;
-import net.geco.control.functions.StationLogChecker;
+import net.geco.control.operations.StationLogChecker;
 import net.geco.model.Messages;
 import net.geco.ui.basics.GecoIcon;
 

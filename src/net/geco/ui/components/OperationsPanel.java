@@ -17,9 +17,9 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import net.geco.functions.GecoOperation;
-import net.geco.functions.GecoOperation.OperationCategory;
 import net.geco.model.Messages;
+import net.geco.operations.GecoOperation;
+import net.geco.operations.GecoOperation.OperationCategory;
 import net.geco.ui.framework.TabbedSubpane;
 
 

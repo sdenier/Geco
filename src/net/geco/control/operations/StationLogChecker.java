@@ -2,7 +2,7 @@
  * Copyright (c) 2012 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.control.functions;
+package net.geco.control.operations;
 
 import java.util.Set;
 

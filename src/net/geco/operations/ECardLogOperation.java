@@ -2,7 +2,7 @@
  * Copyright (c) 2010 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.functions;
+package net.geco.operations;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -25,7 +25,7 @@ import net.geco.control.ecardmodes.CourseDetector;
 import net.geco.control.ecardmodes.ECardMode;
 import net.geco.control.ecardmodes.ECardRacingMode;
 import net.geco.control.ecardmodes.ECardTrainingMode;
-import net.geco.control.functions.ECardLogImporter;
+import net.geco.control.operations.ECardLogImporter;
 import net.geco.model.Messages;
 import net.geco.ui.basics.GecoIcon;
 

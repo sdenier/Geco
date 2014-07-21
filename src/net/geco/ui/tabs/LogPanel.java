@@ -20,9 +20,9 @@ import javax.swing.JTextArea;
 
 import net.geco.basics.Announcer.Logging;
 import net.geco.framework.IGecoApp;
-import net.geco.functions.GecoOperation.OperationCategory;
 import net.geco.model.Messages;
 import net.geco.model.Stage;
+import net.geco.operations.GecoOperation.OperationCategory;
 import net.geco.ui.components.OperationsPanel;
 import net.geco.ui.framework.TabPanel;
 import net.geco.ui.framework.TabbedSubpane;

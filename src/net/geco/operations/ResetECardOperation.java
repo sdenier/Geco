@@ -2,7 +2,7 @@
  * Copyright (c) 2013 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.functions;
+package net.geco.operations;
 
 import java.awt.Component;
 import java.util.Collection;
