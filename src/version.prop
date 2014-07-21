@@ -1,6 +1,3 @@
 #Thu, 06 Feb 2014 22:24:31 +0100
 
-version.num=2.2
-
-build.num=v2.2-0-g4dae96b
-build.stamp=20140206
+version.num=2.3-beta
