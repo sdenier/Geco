@@ -150,6 +150,7 @@ public class GeneratorFunction extends GecoOperation {
 		Box vBoxButtons = Box.createVerticalBox();
 		vBoxButtons.add(cUnknownB);
 		vBoxButtons.add(cOverwriteB);
+		embedRunButton(vBoxButtons);
 
 		paramP.setMaximumSize(paramP.getPreferredSize());
 		paramP.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));

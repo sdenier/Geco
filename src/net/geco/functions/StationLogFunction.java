@@ -169,6 +169,7 @@ public class StationLogFunction extends GecoOperation {
 		optionsBox.add(simulateB);
 		optionsBox.add(autoInsertB);
 		optionsBox.add(setDnsB);
+		embedRunButton(optionsBox);
 
 		JPanel configPanel = new JPanel(new BorderLayout());
 		configPanel.add(filePanel, BorderLayout.CENTER);

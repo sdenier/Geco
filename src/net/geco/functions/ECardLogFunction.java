@@ -122,6 +122,7 @@ public class ECardLogFunction extends GecoOperation {
 		configBox.add(modeBox);
 		configBox.add(Box.createVerticalStrut(5));
 		configBox.add(archiveBox);
+		embedRunButton(configBox);
 		return configBox;
 	}
 

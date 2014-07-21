@@ -110,6 +110,7 @@ public class LegNeutralizationFunction extends GecoOperation {
 		Box vBoxButtons = Box.createVerticalBox();
 		vBoxButtons.add(detectCoursesB);
 		vBoxButtons.add(resetRaceTimeB);
+		embedRunButton(vBoxButtons);
 
 		paramP.setMaximumSize(paramP.getPreferredSize());
 		paramP.setAlignmentY(Component.TOP_ALIGNMENT);

@@ -89,6 +89,7 @@ public class StartTimeFunction extends AbstractRunnerFunction {
 		box.add(resetAllRunnersC);
 		box.add(Box.createVerticalStrut(5));
 		box.add(starttimeF);
+		embedRunButton(box);
 		box.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 		box.setAlignmentY(Component.TOP_ALIGNMENT);
 		

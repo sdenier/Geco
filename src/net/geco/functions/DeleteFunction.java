@@ -105,6 +105,7 @@ public class DeleteFunction extends GecoOperation {
 		configBox.add(new JLabel(Messages.uiGet("DeleteFunction.BackupLabel"))); //$NON-NLS-1$
 		configBox.add(deleteBox);
 		configBox.add(cleanupBox);
+		embedRunButton(configBox);
 		return configBox;
 	}
 

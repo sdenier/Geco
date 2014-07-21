@@ -185,6 +185,7 @@ public class RefereeLogFunction extends GecoOperation {
 		config.add(fileBox);
 		config.add(Box.createVerticalStrut(5));
 		config.add(help);
+		embedRunButton(config);
 		return config;
 	}
 

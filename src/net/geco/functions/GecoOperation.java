@@ -4,6 +4,9 @@
  */
 package net.geco.functions;
 
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -14,10 +17,13 @@ import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 
+import net.geco.basics.Html;
 import net.geco.control.Control;
 import net.geco.control.GecoControl;
 import net.geco.model.Messages;
+import net.geco.ui.basics.SwingUtils;
 
 
 /**
@@ -75,7 +81,7 @@ public abstract class GecoOperation extends Control {
 	public abstract JComponent buildInnerUI();
 	
 	protected JButton buildRunButton() {
-		final JButton execB = new JButton(Messages.uiGet("GecoOperation.RunLabel")); //$NON-NLS-1$
+		final JButton execB = new JButton(Html.htmlTag("b", Messages.uiGet("GecoOperation.RunLabel"))); //$NON-NLS-1$
 		execB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				run();
@@ -84,11 +90,20 @@ public abstract class GecoOperation extends Control {
 		execB.setToolTipText(runTooltip());
 		return execB;
 	}
-	
+
+	protected Container embedRunButton(Container box) {
+		JPanel button = SwingUtils.makeButtonBar(FlowLayout.LEADING, buildRunButton());
+		box.add(button);
+		for (Component c : box.getComponents()) {
+			((JComponent) c).setAlignmentX(Component.LEFT_ALIGNMENT);
+		}
+		return box;
+	}
+
 	public JComponent buildUI() {
 		JComponent parametersConfig = buildInnerUI();
 		parametersConfig.setBorder(
-			BorderFactory.createTitledBorder(Messages.uiGet("GecoOperation.ParameterLabel"))); //$NON-NLS-1$
+			BorderFactory.createTitledBorder(toString())); //$NON-NLS-1$
 		return parametersConfig;
 	}
 	

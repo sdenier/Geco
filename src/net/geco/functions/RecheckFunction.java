@@ -4,6 +4,11 @@
  */
 package net.geco.functions;
 
+import java.awt.Component;
+
+import javax.swing.Box;
+import javax.swing.JComponent;
+
 import net.geco.control.GecoControl;
 import net.geco.control.RunnerControl;
 import net.geco.model.Messages;
@@ -45,5 +50,14 @@ public class RecheckFunction extends AbstractRunnerFunction {
 		}
 	}
 
+	@Override
+	public JComponent buildInnerUI() {
+		JComponent config = super.buildInnerUI();
+		Box box = Box.createVerticalBox();
+		embedRunButton(box);
+		box.setAlignmentY(Component.TOP_ALIGNMENT);
+		config.add(box);
+		return config;
+	}
 
 }
