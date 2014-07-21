@@ -30,7 +30,7 @@ public class ResetECardFunction extends AbstractRunnerFunction {
 	private JCheckBox resetAutoCourseC;
 
 	public ResetECardFunction(GecoControl gecoControl) {
-		super(gecoControl, FunctionCategory.BATCH);
+		super(gecoControl, OperationCategory.BATCH);
 	}
 
 	@Override

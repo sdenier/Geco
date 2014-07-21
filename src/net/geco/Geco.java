@@ -43,7 +43,7 @@ import net.geco.control.results.SectionsExporter;
 import net.geco.control.results.SplitExporter;
 import net.geco.framework.IGecoApp;
 import net.geco.framework.IStageLaunch;
-import net.geco.functions.GecoFunction;
+import net.geco.functions.GecoOperation;
 import net.geco.model.Course;
 import net.geco.model.Messages;
 import net.geco.model.Registry;
@@ -199,7 +199,7 @@ public class Geco implements IGecoApp, MergeRequestHandler {
 	}
 	
 	public void startup(GecoStageLaunch stageLaunch) throws Exception {
-		GecoFunction.resetAll();
+		GecoOperation.resetAll();
 		AppBuilder builder = stageLaunch.getAppBuilder();
 		appName = builder.getAppName();
 		config = builder.getConfig();

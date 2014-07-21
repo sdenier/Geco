@@ -44,7 +44,7 @@ import net.gecosi.dataframe.SiPunch;
  * @since Aug 23, 2010
  *
  */
-public class GeneratorFunction extends GecoFunction {
+public class GeneratorFunction extends GecoOperation {
 
 	private static final int NoTimeFactor = 100;
 	private static final int TimeDispersion = 5;
@@ -64,7 +64,7 @@ public class GeneratorFunction extends GecoFunction {
 
 
 	public GeneratorFunction(GecoControl gecoControl){
-		super(gecoControl, FunctionCategory.BATCH);
+		super(gecoControl, OperationCategory.BATCH);
 		this.runnerControl = getService(RunnerControl.class);
 		this.siHandler = getService(SIReaderHandler.class);
 		this.mutationX = 40;

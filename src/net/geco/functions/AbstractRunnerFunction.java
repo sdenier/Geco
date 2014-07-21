@@ -31,14 +31,14 @@ import net.geco.model.RunnerRaceData;
  * @since Nov 11, 2010
  *
  */
-public abstract class AbstractRunnerFunction extends GecoFunction {
+public abstract class AbstractRunnerFunction extends GecoOperation {
 
 	protected JList data;
 	protected JRadioButton coursesRB;
 	protected JRadioButton categoriesRB;
 	protected JRadioButton runnersRB;
 
-	public AbstractRunnerFunction(GecoControl gecoControl, FunctionCategory category) {
+	public AbstractRunnerFunction(GecoControl gecoControl, OperationCategory category) {
 		super(gecoControl, category);
 	}
 

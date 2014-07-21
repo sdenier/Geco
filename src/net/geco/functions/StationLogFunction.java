@@ -41,7 +41,7 @@ import net.geco.ui.basics.GecoIcon;
  * @since Nov 19, 2010
  *
  */
-public class StationLogFunction extends GecoFunction {
+public class StationLogFunction extends GecoOperation {
 
 	private DefaultListModel logFiles;
 	private JCheckBox simulateB;
@@ -49,7 +49,7 @@ public class StationLogFunction extends GecoFunction {
 	private JCheckBox setDnsB;
 
 	public StationLogFunction(GecoControl gecoControl) {
-		super(gecoControl, FunctionCategory.STAGE);
+		super(gecoControl, OperationCategory.STAGE);
 	}
 
 	@Override
