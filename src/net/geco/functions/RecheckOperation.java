@@ -19,9 +19,9 @@ import net.geco.model.RunnerRaceData;
  * @since Nov 9, 2010
  *
  */
-public class RecheckFunction extends AbstractRunnerFunction {
+public class RecheckOperation extends AbstractRunnerOperation {
 
-	public RecheckFunction(GecoControl gecoControl) {
+	public RecheckOperation(GecoControl gecoControl) {
 		super(gecoControl, OperationCategory.BATCH);
 	}
 

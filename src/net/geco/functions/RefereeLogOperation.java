@@ -36,13 +36,13 @@ import net.geco.ui.basics.GecoIcon;
  * @since Apr 4, 2012
  *
  */
-public class RefereeLogFunction extends GecoOperation {
+public class RefereeLogOperation extends GecoOperation {
 
 	private JCheckBox displayOnlyCB;
 	private JTextField logFileF;
 
 	
-	public RefereeLogFunction(GecoControl gecoControl) {
+	public RefereeLogOperation(GecoControl gecoControl) {
 		super(gecoControl, OperationCategory.REFEREE);
 	}
 

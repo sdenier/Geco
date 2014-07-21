@@ -25,11 +25,11 @@ import net.geco.model.RunnerRaceData;
  * @since Apr 7, 2013
  *
  */
-public class ResetECardFunction extends AbstractRunnerFunction {
+public class ResetECardOperation extends AbstractRunnerOperation {
 
 	private JCheckBox resetAutoCourseC;
 
-	public ResetECardFunction(GecoControl gecoControl) {
+	public ResetECardOperation(GecoControl gecoControl) {
 		super(gecoControl, OperationCategory.BATCH);
 	}
 

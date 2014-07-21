@@ -35,13 +35,13 @@ import net.geco.ui.basics.GecoIcon;
  * @since Jun 11, 2012
  *
  */
-public class ECardLogFunction extends GecoOperation {
+public class ECardLogOperation extends GecoOperation {
 
 	private JTextField logFileF;
 	private JCheckBox autoInsertB;
 	private JRadioButton trainingB;
 
-	public ECardLogFunction(GecoControl gecoControl) {
+	public ECardLogOperation(GecoControl gecoControl) {
 		super(gecoControl, OperationCategory.BATCH);
 	}
 

@@ -26,12 +26,12 @@ import net.geco.model.RunnerRaceData;
  * @since Nov 9, 2010
  *
  */
-public class StartTimeFunction extends AbstractRunnerFunction {
+public class StartTimeOperation extends AbstractRunnerOperation {
 
 	private JCheckBox resetAllRunnersC;
 	private JTextField starttimeF;
 
-	public StartTimeFunction(GecoControl gecoControl) {
+	public StartTimeOperation(GecoControl gecoControl) {
 		super(gecoControl, OperationCategory.STAGE);
 	}
 
@@ -51,7 +51,7 @@ public class StartTimeFunction extends AbstractRunnerFunction {
 			Date startTime = TimeManager.userParse(starttimeF.getText());
 			String start = TimeManager.time(startTime);
 			for (RunnerRaceData r : selectedRunners()) {
-				Runner runner = r.getRunner(); // TODO: Function works on Runner, not RunnerRaceData anymore, refactor
+				Runner runner = r.getRunner();
 				if( runner.getRegisteredStarttime().equals(TimeManager.NO_TIME) || resetAllRunnersC.isSelected() ){
 					Date oldStart = runner.getRegisteredStarttime();
 					runner.setRegisteredStarttime(startTime);

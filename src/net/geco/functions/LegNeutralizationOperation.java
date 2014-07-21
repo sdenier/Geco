@@ -38,13 +38,13 @@ import net.geco.ui.basics.SwingUtils;
  * @since Sep 18, 2011
  *
  */
-public class LegNeutralizationFunction extends GecoOperation {
+public class LegNeutralizationOperation extends GecoOperation {
 
 	private int legStart;
 	private int legEnd;
 	private JCheckBox simulateCB;
 
-	public LegNeutralizationFunction(GecoControl gecoControl) {
+	public LegNeutralizationOperation(GecoControl gecoControl) {
 		super(gecoControl, OperationCategory.REFEREE);
 	}
 

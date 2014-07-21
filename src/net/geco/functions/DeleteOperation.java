@@ -27,7 +27,7 @@ import net.geco.ui.basics.SwingUtils;
  * @since Jun 11, 2012
  *
  */
-public class DeleteFunction extends GecoOperation {
+public class DeleteOperation extends GecoOperation {
 
 	private JCheckBox deleteRunnerB;
 	private JCheckBox deleteCourseB;
@@ -36,7 +36,7 @@ public class DeleteFunction extends GecoOperation {
 	private JCheckBox deleteBackupB;
 	private JSpinner olderBackupS;
 
-	public DeleteFunction(GecoControl gecoControl) {
+	public DeleteOperation(GecoControl gecoControl) {
 		super(gecoControl, OperationCategory.BATCH);
 	}
 

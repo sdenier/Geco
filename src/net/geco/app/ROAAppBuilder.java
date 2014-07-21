@@ -26,15 +26,15 @@ import net.geco.control.results.SectionsExporter;
 import net.geco.control.results.SectionsSplitPrinter;
 import net.geco.control.results.SplitExporter;
 import net.geco.framework.IGecoApp;
-import net.geco.functions.DeleteFunction;
-import net.geco.functions.ECardLogFunction;
-import net.geco.functions.GeneratorFunction;
-import net.geco.functions.LegNeutralizationFunction;
-import net.geco.functions.RecheckFunction;
-import net.geco.functions.RefereeLogFunction;
-import net.geco.functions.ResetECardFunction;
-import net.geco.functions.StartTimeFunction;
-import net.geco.functions.StationLogFunction;
+import net.geco.functions.DeleteOperation;
+import net.geco.functions.ECardLogOperation;
+import net.geco.functions.GeneratorOperation;
+import net.geco.functions.LegNeutralizationOperation;
+import net.geco.functions.RecheckOperation;
+import net.geco.functions.RefereeLogOperation;
+import net.geco.functions.ResetECardOperation;
+import net.geco.functions.StartTimeOperation;
+import net.geco.functions.StationLogOperation;
 import net.geco.model.Factory;
 import net.geco.model.Messages;
 import net.geco.model.impl.SectionFactory;
@@ -106,15 +106,15 @@ public class ROAAppBuilder extends AppBuilder {
 		new SectionsExporter(gecoControl);
 		new SectionsSplitPrinter(gecoControl);
 		
-		new RefereeLogFunction(gecoControl);
-		new StartTimeFunction(gecoControl);
-		new LegNeutralizationFunction(gecoControl);
-		new StationLogFunction(gecoControl);
-		new ECardLogFunction(gecoControl);
-		new RecheckFunction(gecoControl);
-		new ResetECardFunction(gecoControl);
-		new DeleteFunction(gecoControl);
-		new GeneratorFunction(gecoControl);
+		new RefereeLogOperation(gecoControl);
+		new StartTimeOperation(gecoControl);
+		new LegNeutralizationOperation(gecoControl);
+		new StationLogOperation(gecoControl);
+		new ECardLogOperation(gecoControl);
+		new RecheckOperation(gecoControl);
+		new ResetECardOperation(gecoControl);
+		new DeleteOperation(gecoControl);
+		new GeneratorOperation(gecoControl);
 	}
 
 	@Override

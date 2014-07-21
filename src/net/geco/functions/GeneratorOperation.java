@@ -44,7 +44,7 @@ import net.gecosi.dataframe.SiPunch;
  * @since Aug 23, 2010
  *
  */
-public class GeneratorFunction extends GecoOperation {
+public class GeneratorOperation extends GecoOperation {
 
 	private static final int NoTimeFactor = 100;
 	private static final int TimeDispersion = 5;
@@ -63,7 +63,7 @@ public class GeneratorFunction extends GecoOperation {
 	private JSpinner genDelay;
 
 
-	public GeneratorFunction(GecoControl gecoControl){
+	public GeneratorOperation(GecoControl gecoControl){
 		super(gecoControl, OperationCategory.BATCH);
 		this.runnerControl = getService(RunnerControl.class);
 		this.siHandler = getService(SIReaderHandler.class);
@@ -303,7 +303,7 @@ public class GeneratorFunction extends GecoOperation {
 		}
 	}
 	
-	public GeneratorFunction withRegistryControls() {
+	public GeneratorOperation withRegistryControls() {
 		Set<Integer> controls = new HashSet<Integer>();
 		for (Course c : registry().getCourses()) {
 			for (int i : c.getCodes()) {

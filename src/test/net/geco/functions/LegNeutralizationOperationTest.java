@@ -26,7 +26,7 @@ import net.geco.control.GecoControl;
 import net.geco.control.checking.InlineTracer;
 import net.geco.control.checking.PenaltyChecker;
 import net.geco.control.results.ResultBuilder;
-import net.geco.functions.LegNeutralizationFunction;
+import net.geco.functions.LegNeutralizationOperation;
 import net.geco.model.Category;
 import net.geco.model.Course;
 import net.geco.model.Messages;
@@ -51,7 +51,7 @@ import test.net.geco.GecoFixtures;
  * @since Sep 18, 2011
  *
  */
-public class LegNeutralizationFunctionTest {
+public class LegNeutralizationOperationTest {
 	
 	private POFactory factory;
 	private Course courseA;
@@ -83,7 +83,7 @@ public class LegNeutralizationFunctionTest {
 		
 		GecoControl geco = GecoFixtures.mockGecoControlWithRegistry(registry);
 		when(geco.announcer()).thenReturn(new Announcer());
-		LegNeutralizationFunction function = new LegNeutralizationFunction(geco);
+		LegNeutralizationOperation function = new LegNeutralizationOperation(geco);
 		function.setNeutralizedLeg(45, 31);
 		Collection<Course> courses = function.selectCoursesWithNeutralizedLeg();
 		assertEquals("should select 2 out of 3 courses", 2, courses.size());
@@ -167,7 +167,7 @@ public class LegNeutralizationFunctionTest {
 
 		GecoControl geco = mock(GecoControl.class);
 		Mockito.doNothing().when(geco).log(Mockito.anyString());
-		LegNeutralizationFunction function = new LegNeutralizationFunction(geco);
+		LegNeutralizationOperation function = new LegNeutralizationOperation(geco);
 		function.setNeutralizedLeg(31, 32);
 		function.neutralizeLeg(raceData, false);
 		assertEquals("should substract leg time from official time", 90000, result.getResultTime());
@@ -193,7 +193,7 @@ public class LegNeutralizationFunctionTest {
 		when(raceData.retrieveLeg(anyInt(), anyInt())).thenReturn(
 				new Trace[]{ factory.createTrace("", new Date(20000)), endTrace });
 
-		LegNeutralizationFunction function = new LegNeutralizationFunction(null);
+		LegNeutralizationOperation function = new LegNeutralizationOperation(null);
 		function.setNeutralizedLeg(31, 32);
 		function.neutralizeLeg(raceData, false);
 		assertEquals("should not neutralize leg when split has no time", 100000, result.getResultTime());
@@ -208,7 +208,7 @@ public class LegNeutralizationFunctionTest {
 		when(raceData.getResult()).thenReturn(result);
 		when(raceData.retrieveLeg(anyInt(), anyInt())).thenReturn(null);
 
-		LegNeutralizationFunction function = new LegNeutralizationFunction(null);
+		LegNeutralizationOperation function = new LegNeutralizationOperation(null);
 		function.setNeutralizedLeg(31, 32);
 		function.neutralizeLeg(raceData, false);
 		assertEquals(100000, result.getResultTime());
@@ -224,7 +224,7 @@ public class LegNeutralizationFunctionTest {
 		when(raceData.retrieveLeg(anyInt(), anyInt())).thenReturn(
 				new Trace[]{ factory.createTrace("", new Date(20000)), endTrace });
 
-		LegNeutralizationFunction function = new LegNeutralizationFunction(null);
+		LegNeutralizationOperation function = new LegNeutralizationOperation(null);
 		function.setNeutralizedLeg(31, 32);
 		function.neutralizeLeg(raceData, false);
 		assertEquals(TimeManager.NO_TIME_l, result.getResultTime());
@@ -249,7 +249,7 @@ public class LegNeutralizationFunctionTest {
 		Announcer announcer = mock(Announcer.class);
 		when(geco.announcer()).thenReturn(announcer);
 		
-		LegNeutralizationFunction function = new LegNeutralizationFunction(geco);
+		LegNeutralizationOperation function = new LegNeutralizationOperation(geco);
 		function.setNeutralizedLeg(31, 32);
 		function.neutralizeLeg(raceData, true);
 		Mockito.verify(announcer).dataInfo("Doe - split 0:10");
@@ -262,7 +262,7 @@ public class LegNeutralizationFunctionTest {
 		GecoControl mullaghmeen = GecoFixtures.loadFixtures("testData/mullaghmeen", new ClassicAppBuilder());
 		Registry registry = mullaghmeen.registry();
 		Course orange = registry.findCourse("Orange");
-		LegNeutralizationFunction function = new LegNeutralizationFunction(mullaghmeen);
+		LegNeutralizationOperation function = new LegNeutralizationOperation(mullaghmeen);
 		function.buildInnerUI(); // init simulateCB
 		function.setNeutralizedLeg(156, 157);
 		
@@ -308,7 +308,7 @@ public class LegNeutralizationFunctionTest {
 		checker.setMPPenalty(15000);
 		when(geco.checker()).thenReturn(checker);
 		
-		LegNeutralizationFunction function = new LegNeutralizationFunction(geco);
+		LegNeutralizationOperation function = new LegNeutralizationOperation(geco);
 		function.resetAllOfficialTimes();
 		assertEquals("should reset official time to original time", 125000, result.getResultTime());
 		assertFalse("should reset neutralized leg", trace.isNeutralized());

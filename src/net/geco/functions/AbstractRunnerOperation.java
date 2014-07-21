@@ -8,6 +8,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Vector;
@@ -31,14 +32,14 @@ import net.geco.model.RunnerRaceData;
  * @since Nov 11, 2010
  *
  */
-public abstract class AbstractRunnerFunction extends GecoOperation {
+public abstract class AbstractRunnerOperation extends GecoOperation {
 
 	protected JList data;
 	protected JRadioButton coursesRB;
 	protected JRadioButton categoriesRB;
 	protected JRadioButton runnersRB;
 
-	public AbstractRunnerFunction(GecoControl gecoControl, OperationCategory category) {
+	public AbstractRunnerOperation(GecoControl gecoControl, OperationCategory category) {
 		super(gecoControl, category);
 	}
 
@@ -118,7 +119,7 @@ public abstract class AbstractRunnerFunction extends GecoOperation {
 	}
 
 	protected Collection<RunnerRaceData> selectedRunners() {
-		Collection<RunnerRaceData> runners = new Vector<RunnerRaceData>();
+		Collection<RunnerRaceData> runners = new ArrayList<RunnerRaceData>();
 		if( coursesRB.isSelected() ){
 			for (Object course : data.getSelectedValues()) {
 				List<Runner> runnersFromCourse = registry().getRunnersFromCourse((String) course);
