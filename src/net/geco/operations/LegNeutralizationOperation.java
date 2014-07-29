@@ -2,7 +2,7 @@
  * Copyright (c) 2011 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.functions;
+package net.geco.operations;
 
 import java.awt.Component;
 import java.awt.GridBagConstraints;
@@ -38,14 +38,14 @@ import net.geco.ui.basics.SwingUtils;
  * @since Sep 18, 2011
  *
  */
-public class LegNeutralizationFunction extends GecoFunction {
+public class LegNeutralizationOperation extends GecoOperation {
 
 	private int legStart;
 	private int legEnd;
 	private JCheckBox simulateCB;
 
-	public LegNeutralizationFunction(GecoControl gecoControl) {
-		super(gecoControl, FunctionCategory.REFEREE);
+	public LegNeutralizationOperation(GecoControl gecoControl) {
+		super(gecoControl, OperationCategory.REFEREE);
 	}
 
 	@Override
@@ -54,12 +54,12 @@ public class LegNeutralizationFunction extends GecoFunction {
 	}
 
 	@Override
-	public String executeTooltip() {
+	public String runTooltip() {
 		return Messages.uiGet("LegNeutralizationFunction.ExecuteTooltip"); //$NON-NLS-1$
 	}
 
 	@Override
-	public JComponent getParametersConfig() {
+	public JComponent buildInnerUI() {
 		final JFormattedTextField startCodeF = new JFormattedTextField();
 		startCodeF.setValue(Integer.valueOf(legStart));
 		startCodeF.addPropertyChangeListener("value", new PropertyChangeListener() { //$NON-NLS-1$
@@ -110,6 +110,7 @@ public class LegNeutralizationFunction extends GecoFunction {
 		Box vBoxButtons = Box.createVerticalBox();
 		vBoxButtons.add(detectCoursesB);
 		vBoxButtons.add(resetRaceTimeB);
+		embedRunButton(vBoxButtons);
 
 		paramP.setMaximumSize(paramP.getPreferredSize());
 		paramP.setAlignmentY(Component.TOP_ALIGNMENT);
@@ -128,7 +129,7 @@ public class LegNeutralizationFunction extends GecoFunction {
 	}
 
 	@Override
-	public void execute() {
+	public void run() {
 		boolean simulate = simulateCB.isSelected();
 		String startMessage = Messages.uiGet("LegNeutralizationFunction.StartingLegNeutralizationMessage") + legStart + " -> " + legEnd; //$NON-NLS-1$ //$NON-NLS-2$
 		if( simulate ){

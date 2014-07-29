@@ -2,7 +2,7 @@
  * Copyright (c) 2013 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.functions;
+package net.geco.operations;
 
 import java.awt.Component;
 import java.util.Collection;
@@ -25,12 +25,12 @@ import net.geco.model.RunnerRaceData;
  * @since Apr 7, 2013
  *
  */
-public class ResetECardFunction extends AbstractRunnerFunction {
+public class ResetECardOperation extends AbstractRunnerOperation {
 
 	private JCheckBox resetAutoCourseC;
 
-	public ResetECardFunction(GecoControl gecoControl) {
-		super(gecoControl, FunctionCategory.BATCH);
+	public ResetECardOperation(GecoControl gecoControl) {
+		super(gecoControl, OperationCategory.BATCH);
 	}
 
 	@Override
@@ -39,7 +39,7 @@ public class ResetECardFunction extends AbstractRunnerFunction {
 	}
 
 	@Override
-	public String executeTooltip() {
+	public String runTooltip() {
 		return Messages.uiGet("ResetECardFunction.ResetECardTooltip");  //$NON-NLS-1$
 	}
 
@@ -49,7 +49,7 @@ public class ResetECardFunction extends AbstractRunnerFunction {
 	}
 
 	@Override
-	public void execute() {
+	public void run() {
 		RunnerControl runnerControl = getService(RunnerControl.class);
 		RunnerBuilder rBuilder = new RunnerBuilder(geco().factory());
 		Collection<RunnerRaceData> selectedRunners = selectedRunners();
@@ -67,16 +67,17 @@ public class ResetECardFunction extends AbstractRunnerFunction {
 	}
 
 	@Override
-	public JComponent getParametersConfig() {
+	public JComponent buildInnerUI() {
 		resetAutoCourseC = new JCheckBox(Messages.uiGet("ResetECardFunction.ResetAutoCourseLabel")); //$NON-NLS-1$
 		resetAutoCourseC.setToolTipText(Messages.uiGet("ResetECardFunction.ResetAutoCourseTooltip")); //$NON-NLS-1$
 		
 		Box box = Box.createVerticalBox();
 		box.add(resetAutoCourseC);
+		embedRunButton(box);
 		box.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 		box.setAlignmentY(Component.TOP_ALIGNMENT);
 		
-		JComponent config = super.getParametersConfig();
+		JComponent config = super.buildInnerUI();
 		config.add(box);
 		return config;
 	}

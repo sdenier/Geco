@@ -2,7 +2,7 @@
  * Copyright (c) 2010 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.functions;
+package net.geco.operations;
 
 import java.awt.Component;
 import java.text.ParseException;
@@ -26,13 +26,13 @@ import net.geco.model.RunnerRaceData;
  * @since Nov 9, 2010
  *
  */
-public class StartTimeFunction extends AbstractRunnerFunction {
+public class StartTimeOperation extends AbstractRunnerOperation {
 
 	private JCheckBox resetAllRunnersC;
 	private JTextField starttimeF;
 
-	public StartTimeFunction(GecoControl gecoControl) {
-		super(gecoControl, FunctionCategory.STAGE);
+	public StartTimeOperation(GecoControl gecoControl) {
+		super(gecoControl, OperationCategory.STAGE);
 	}
 
 	@Override
@@ -41,17 +41,17 @@ public class StartTimeFunction extends AbstractRunnerFunction {
 	}
 
 	@Override
-	public String executeTooltip() {
+	public String runTooltip() {
 		return Messages.uiGet("StartTimeFunction.ExecuteTooltip"); //$NON-NLS-1$
 	}
 
 	@Override
-	public void execute() {
+	public void run() {
 		try {
 			Date startTime = TimeManager.userParse(starttimeF.getText());
 			String start = TimeManager.time(startTime);
 			for (RunnerRaceData r : selectedRunners()) {
-				Runner runner = r.getRunner(); // TODO: Function works on Runner, not RunnerRaceData anymore, refactor
+				Runner runner = r.getRunner();
 				if( runner.getRegisteredStarttime().equals(TimeManager.NO_TIME) || resetAllRunnersC.isSelected() ){
 					Date oldStart = runner.getRegisteredStarttime();
 					runner.setRegisteredStarttime(startTime);
@@ -73,7 +73,7 @@ public class StartTimeFunction extends AbstractRunnerFunction {
 	}
 
 	@Override
-	public JComponent getParametersConfig() {
+	public JComponent buildInnerUI() {
 		resetAllRunnersC = new JCheckBox(Messages.uiGet("StartTimeFunction.ResetStarttimeLabel")); //$NON-NLS-1$
 		resetAllRunnersC.setToolTipText(
 				Messages.uiGet("StartTimeFunction.ResetStarttimeTooltip1") //$NON-NLS-1$
@@ -89,10 +89,11 @@ public class StartTimeFunction extends AbstractRunnerFunction {
 		box.add(resetAllRunnersC);
 		box.add(Box.createVerticalStrut(5));
 		box.add(starttimeF);
+		embedRunButton(box);
 		box.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 		box.setAlignmentY(Component.TOP_ALIGNMENT);
 		
-		JComponent config = super.getParametersConfig();
+		JComponent config = super.buildInnerUI();
 		config.add(box);
 		return config;
 	}

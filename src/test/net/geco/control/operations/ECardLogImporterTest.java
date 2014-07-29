@@ -2,7 +2,7 @@
  * Copyright (c) 2012 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package test.net.geco.control.functions;
+package test.net.geco.control.operations;
 
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -16,7 +16,7 @@ import net.geco.basics.CsvReader;
 import net.geco.basics.TimeManager;
 import net.geco.basics.Util;
 import net.geco.control.ecardmodes.ECardMode;
-import net.geco.control.functions.ECardLogImporter;
+import net.geco.control.operations.ECardLogImporter;
 import net.gecosi.dataframe.SiDataFrame;
 import net.gecosi.dataframe.SiPunch;
 

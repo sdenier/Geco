@@ -87,7 +87,7 @@ Autres changements mineurs :
   - recherche incrémentale dans la base des inscrits ou dans l'archive
 - circuit Auto disponible par défaut
 - import de circuits au format XML IOF V3 (OCAD 11...) - beta
-- Nouvelles [fonctions](../guide/functions.fr.html) batch
+- Nouvelles [opérations](../guide/operations.fr.html) batch
   - import des logs des stations (stations contrôle/départ lues avec SIConfig) : détection des absents et des coureurs encore en course
   - import d'un fichier de puces créé par SIConfig pour recréer toute la course et les résultats à partir de la mémoire de la station maître
   - export d'un log arbitrage, indiquant les modifications manuelles détectées sur la course
@@ -157,7 +157,7 @@ Autres changements :
 - nouveaux statuts et statistiques pour gérer les cas spéciaux (concurrents en course, puces inconnues et doublons pour le mode automatique)
 - nouveaux champs de données pour chaque concurrent : horaire de départ pré-attribué, champ d'archive, puce louée
 - attribution d'un circuit par défaut à une catégorie
-- ajout des Fonctions pour effectuer des opérations batch sur les données
+- ajout des opérations pour transformer des ensembles de données
 - format d'export CSV pour le Classement National + simulation des points CN
 - styles CSS pour les fichiers résultats HTML
 - meilleure gestion des fichiers avec différents charsets
@@ -167,7 +167,7 @@ Architecture/Code :
 - les `Controls` peuvent s'enregistrer comme services et accéder simplement l'un à l'autre
 - ré-ingénierie de la classe `ResultBuilder` et affiliées : séparation entre le calcul des résultats et l'export des résultats et splits
 - \[Mac\] mise à jour pour la dernière révision Mac Java
-- quelques changements dans les fichiers de données pour supporter les fonctions 1.1
+- quelques changements dans les fichiers de données pour supporter les fonctionnalités 1.1
 
 
 ##Version 1.0 - 19/10/2010

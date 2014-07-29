@@ -2,7 +2,7 @@
  * Copyright (c) 2010 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.functions;
+package net.geco.operations;
 
 import static net.geco.basics.Util.safeTrimQuotes;
 
@@ -32,7 +32,7 @@ import javax.swing.JScrollPane;
 import net.geco.basics.CsvReader;
 import net.geco.basics.Html;
 import net.geco.control.GecoControl;
-import net.geco.control.functions.StationLogChecker;
+import net.geco.control.operations.StationLogChecker;
 import net.geco.model.Messages;
 import net.geco.ui.basics.GecoIcon;
 
@@ -41,15 +41,15 @@ import net.geco.ui.basics.GecoIcon;
  * @since Nov 19, 2010
  *
  */
-public class StationLogFunction extends GecoFunction {
+public class StationLogOperation extends GecoOperation {
 
 	private DefaultListModel logFiles;
 	private JCheckBox simulateB;
 	private JCheckBox autoInsertB;
 	private JCheckBox setDnsB;
 
-	public StationLogFunction(GecoControl gecoControl) {
-		super(gecoControl, FunctionCategory.STAGE);
+	public StationLogOperation(GecoControl gecoControl) {
+		super(gecoControl, OperationCategory.STAGE);
 	}
 
 	@Override
@@ -58,12 +58,12 @@ public class StationLogFunction extends GecoFunction {
 	}
 
 	@Override
-	public String executeTooltip() {
+	public String runTooltip() {
 		return Messages.uiGet("StationLogFunction.CheckStationLogTooltip"); //$NON-NLS-1$
 	}
 	
 	@Override
-	public void execute() {
+	public void run() {
 		boolean simulationMode = simulateB.isSelected();
 		if( simulationMode ) {
 			geco().announcer().dataInfo(Messages.uiGet("StationLogFunction.StartSimMessage")); //$NON-NLS-1$
@@ -109,7 +109,7 @@ public class StationLogFunction extends GecoFunction {
 	}
 
 	@Override
-	public JComponent getParametersConfig() {
+	public JComponent buildInnerUI() {
 		logFiles = new DefaultListModel();
 		JList logFilesL = new JList(logFiles);
 		logFilesL.setToolTipText(Messages.uiGet("StationLogFunction.SelectLogFilesHelp")); //$NON-NLS-1$
@@ -169,6 +169,7 @@ public class StationLogFunction extends GecoFunction {
 		optionsBox.add(simulateB);
 		optionsBox.add(autoInsertB);
 		optionsBox.add(setDnsB);
+		embedRunButton(optionsBox);
 
 		JPanel configPanel = new JPanel(new BorderLayout());
 		configPanel.add(filePanel, BorderLayout.CENTER);

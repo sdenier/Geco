@@ -2,7 +2,12 @@
  * Copyright (c) 2010 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.functions;
+package net.geco.operations;
+
+import java.awt.Component;
+
+import javax.swing.Box;
+import javax.swing.JComponent;
 
 import net.geco.control.GecoControl;
 import net.geco.control.RunnerControl;
@@ -14,10 +19,10 @@ import net.geco.model.RunnerRaceData;
  * @since Nov 9, 2010
  *
  */
-public class RecheckFunction extends AbstractRunnerFunction {
+public class RecheckOperation extends AbstractRunnerOperation {
 
-	public RecheckFunction(GecoControl gecoControl) {
-		super(gecoControl, FunctionCategory.BATCH);
+	public RecheckOperation(GecoControl gecoControl) {
+		super(gecoControl, OperationCategory.BATCH);
 	}
 
 	@Override
@@ -26,7 +31,7 @@ public class RecheckFunction extends AbstractRunnerFunction {
 	}
 
 	@Override
-	public String executeTooltip() {
+	public String runTooltip() {
 		return Messages.uiGet("RecheckFunction.ExecuteTooltip"); //$NON-NLS-1$
 	}
 
@@ -36,7 +41,7 @@ public class RecheckFunction extends AbstractRunnerFunction {
 	}
 
 	@Override
-	public void execute() {
+	public void run() {
 		RunnerControl runnerControl = getService(RunnerControl.class);
 		for (RunnerRaceData runnerData : selectedRunners()) {
 			if( runnerData.statusIsRecheckable() ){
@@ -45,5 +50,14 @@ public class RecheckFunction extends AbstractRunnerFunction {
 		}
 	}
 
+	@Override
+	public JComponent buildInnerUI() {
+		JComponent config = super.buildInnerUI();
+		Box box = Box.createVerticalBox();
+		embedRunButton(box);
+		box.setAlignmentY(Component.TOP_ALIGNMENT);
+		config.add(box);
+		return config;
+	}
 
 }

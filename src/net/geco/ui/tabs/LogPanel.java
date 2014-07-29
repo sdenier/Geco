@@ -20,10 +20,10 @@ import javax.swing.JTextArea;
 
 import net.geco.basics.Announcer.Logging;
 import net.geco.framework.IGecoApp;
-import net.geco.functions.GecoFunction.FunctionCategory;
 import net.geco.model.Messages;
 import net.geco.model.Stage;
-import net.geco.ui.components.FunctionsPanel;
+import net.geco.operations.GecoOperation.OperationCategory;
+import net.geco.ui.components.OperationsPanel;
 import net.geco.ui.framework.TabPanel;
 import net.geco.ui.framework.TabbedSubpane;
 
@@ -35,7 +35,7 @@ import net.geco.ui.framework.TabbedSubpane;
  */
 public class LogPanel extends TabPanel implements Logging {
 
-	private JTabbedPane tabbedFunctions;
+	private JTabbedPane tabbedPanes;
 
 	private JTextArea logArea;
 	
@@ -51,13 +51,13 @@ public class LogPanel extends TabPanel implements Logging {
 	}
 
 	public void initPanels(JPanel panel) {
-		tabbedFunctions = new JTabbedPane(JTabbedPane.BOTTOM);
-		tabbedFunctions.add(Messages.uiGet("LogPanel.StatsTitle"), initStatsPanel()); //$NON-NLS-1$
-		for (FunctionCategory functionCategory : FunctionCategory.values()) {
-			tabbedFunctions.add(functionCategory.toString(), createFunctionsPanel(functionCategory)); //$NON-NLS-1$
+		tabbedPanes = new JTabbedPane(JTabbedPane.BOTTOM);
+		tabbedPanes.add(Messages.uiGet("LogPanel.StatsTitle"), initStatsPanel()); //$NON-NLS-1$
+		for (OperationCategory category : OperationCategory.values()) {
+			tabbedPanes.add(category.toString(), createOperationsPanel(category)); //$NON-NLS-1$
 		}
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-		splitPane.add(tabbedFunctions);
+		splitPane.add(tabbedPanes);
 		splitPane.add(initLogArea());
 		splitPane.setBorder(BorderFactory.createEmptyBorder());
 		panel.add(splitPane);
@@ -67,8 +67,8 @@ public class LogPanel extends TabPanel implements Logging {
 		return new HStatsPanel(geco(), frame(), createClearLogButton());
 	}
 	
-	private FunctionsPanel createFunctionsPanel(FunctionCategory functionCategory) {
-		return new FunctionsPanel(functionCategory, frame(), createClearLogButton());
+	private OperationsPanel createOperationsPanel(OperationCategory category) {
+		return new OperationsPanel(category, frame(), createClearLogButton());
 	}
 
 	public JPanel initLogArea() {
@@ -121,7 +121,7 @@ public class LogPanel extends TabPanel implements Logging {
 
 	@Override
 	public void componentShown(ComponentEvent e) {
-		((TabbedSubpane) tabbedFunctions.getSelectedComponent()).componentShown();
+		((TabbedSubpane) tabbedPanes.getSelectedComponent()).componentShown();
 		logArea.requestFocusInWindow();
 	}
 

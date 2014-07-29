@@ -1,23 +1,23 @@
 ---
-title: Fonctions
+title: Opérations
 sort_info: 9
 in_menu: true
 ---
 
-# Fonctions (Onglet Log)
+# Opérations
 
-Les fonctions servent à appliquer des opérations sur des lots de données (batch). Elles permettent de changer/vérifier les données de la base en une seule passe.
+Les opérations transforment des lots de données à la volée. Elles permettent de changer/vérifier les données de la base en une seule passe.
 
-<a href="../images/stage_functions.fr.png"><img src="../images/stage_functions.fr.png" /></a>
+<a href="../images/stage_operations.fr.png"><img src="../images/stage_operations.fr.png" /></a>
 
-Il y a trois groupes (onglets) de fonctions à côté de l'onglet Stats dans le [Log](log.fr.html). Sélectionnez un groupe puis choisissez une fonction dans la liste déroulante. Chaque fonction affiche ses paramètres et ses actions dans la vue haute. Cliquez *Exécuter* pour lancer l'opération par défaut de la fonction.
+Il y a trois groupes (onglets) d'opérations à côté de l'onglet Stats dans le [Log](log.fr.html). Sélectionnez un groupe puis choisissez une opération dans la liste déroulante. Chaque opération affiche ses paramètres et ses actions dans la vue haute. Cliquez *Exécuter* pour lancer l'opération.
 
-- Les fonctions *Étape* servent communément durant une course
-- Les fonctions *Arbitrage* servent l'arbitre
-- Les fonctions *Batch* regroupent les opérations moins communes
+- Les opérations *Étape* servent communément durant une course
+- Les opérations *Arbitrage* servent l'arbitre
+- Les opérations *Batch* regroupent les opérations moins communes
 
 
-## Fonctions Étape
+## Opérations Étape
 
 ### Horaires de départ
 - Changer tous les horaires de départ pour un groupe de coureurs (par course, catégorie, ou un groupe arbitraire) ; cela peut servir à simuler un départ en masse
@@ -29,19 +29,19 @@ Il y a trois groupes (onglets) de fonctions à côté de l'onglet Stats dans le 
 - Vous pouvez demander l'insertion des puces non inscrites depuis l'archive
 - Cocher *Simuler* pour voir ce que Geco ferait avec les données
 
-Il y a deux conditions importantes pour utiliser cette fonction
+Il y a deux conditions importantes pour utiliser cette opération :
 
 - La mémoire des station doit être effacée avant la course, sinon les logs contiennent des données inconsistentes
 - Tous les logs doivent être lus (par exemple toutes les stations Effacer) avant de cocher l'option *Marquer les absents*, afin de ne pas manquer des puces en course
 
 
-## Fonctions Arbitrage
+## Opérations Arbitrage
 
 ### Log arbitre
 - Affiche/exporte un log pour l'arbitre contenant toutes les modifications manuelles avec un impact sur les résultats (comme un changement de statut ou du temps de course)
 
 
-## Fonctions Batch
+## Opérations Batch
 
 ### Import log puces
 - Import d'un log de puces avec poinçons pour une gestion électronique "post-mortem" : Geco lira les puces dans le log comme si elles étaient lues directement, en mode entraînement ou compétition (inclus la détection du circuit, la recherche dans l'archive)

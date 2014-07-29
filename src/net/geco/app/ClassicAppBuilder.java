@@ -26,18 +26,18 @@ import net.geco.control.results.ResultExporter;
 import net.geco.control.results.RunnerSplitPrinter;
 import net.geco.control.results.SplitExporter;
 import net.geco.framework.IGecoApp;
-import net.geco.functions.DeleteFunction;
-import net.geco.functions.ECardLogFunction;
-import net.geco.functions.GeneratorFunction;
-import net.geco.functions.LegNeutralizationFunction;
-import net.geco.functions.RecheckFunction;
-import net.geco.functions.RefereeLogFunction;
-import net.geco.functions.ResetECardFunction;
-import net.geco.functions.StartTimeFunction;
-import net.geco.functions.StationLogFunction;
 import net.geco.model.Factory;
 import net.geco.model.Messages;
 import net.geco.model.impl.POFactory;
+import net.geco.operations.DeleteOperation;
+import net.geco.operations.ECardLogOperation;
+import net.geco.operations.GeneratorOperation;
+import net.geco.operations.LegNeutralizationOperation;
+import net.geco.operations.RecheckOperation;
+import net.geco.operations.RefereeLogOperation;
+import net.geco.operations.ResetECardOperation;
+import net.geco.operations.StartTimeOperation;
+import net.geco.operations.StationLogOperation;
 import net.geco.ui.config.CategoryConfigPanel;
 import net.geco.ui.config.ClubConfigPanel;
 import net.geco.ui.config.CourseConfigPanel;
@@ -104,15 +104,15 @@ public class ClassicAppBuilder extends AppBuilder {
 		new StartlistExporter(gecoControl);
 		new SectionService(gecoControl);
 		
-		new RefereeLogFunction(gecoControl);
-		new StartTimeFunction(gecoControl);
-		new LegNeutralizationFunction(gecoControl);
-		new StationLogFunction(gecoControl);
-		new ECardLogFunction(gecoControl);
-		new RecheckFunction(gecoControl);
-		new ResetECardFunction(gecoControl);
-		new DeleteFunction(gecoControl);
-		new GeneratorFunction(gecoControl);
+		new RefereeLogOperation(gecoControl);
+		new StartTimeOperation(gecoControl);
+		new LegNeutralizationOperation(gecoControl);
+		new StationLogOperation(gecoControl);
+		new ECardLogOperation(gecoControl);
+		new RecheckOperation(gecoControl);
+		new ResetECardOperation(gecoControl);
+		new DeleteOperation(gecoControl);
+		new GeneratorOperation(gecoControl);
 	}
 
 	@Override

@@ -2,7 +2,7 @@
  * Copyright (c) 2010 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.functions;
+package net.geco.operations;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -44,7 +44,7 @@ import net.gecosi.dataframe.SiPunch;
  * @since Aug 23, 2010
  *
  */
-public class GeneratorFunction extends GecoFunction {
+public class GeneratorOperation extends GecoOperation {
 
 	private static final int NoTimeFactor = 100;
 	private static final int TimeDispersion = 5;
@@ -63,8 +63,8 @@ public class GeneratorFunction extends GecoFunction {
 	private JSpinner genDelay;
 
 
-	public GeneratorFunction(GecoControl gecoControl){
-		super(gecoControl, FunctionCategory.BATCH);
+	public GeneratorOperation(GecoControl gecoControl){
+		super(gecoControl, OperationCategory.BATCH);
 		this.runnerControl = getService(RunnerControl.class);
 		this.siHandler = getService(SIReaderHandler.class);
 		this.mutationX = 40;
@@ -76,7 +76,7 @@ public class GeneratorFunction extends GecoFunction {
 	}
 
 	@Override
-	public void execute() {
+	public void run() {
 		if (genThread != null && genThread.isAlive()) {
 			genThread.interrupt();
 		} else {
@@ -107,12 +107,12 @@ public class GeneratorFunction extends GecoFunction {
 	}
 
 	@Override
-	public String executeTooltip() {
+	public String runTooltip() {
 		return Messages.uiGet("GeneratorFunction.ExecuteTooltip"); //$NON-NLS-1$
 	}
 
 	@Override
-	public JComponent getParametersConfig() {
+	public JComponent buildInnerUI() {
 		
 		nbGeneration = new JSpinner(new SpinnerNumberModel(10, 0, null, 5));
 		nbGeneration.setToolTipText(Messages.uiGet("GeneratorFunction.GenerationNumberTooltip")); //$NON-NLS-1$
@@ -150,6 +150,7 @@ public class GeneratorFunction extends GecoFunction {
 		Box vBoxButtons = Box.createVerticalBox();
 		vBoxButtons.add(cUnknownB);
 		vBoxButtons.add(cOverwriteB);
+		embedRunButton(vBoxButtons);
 
 		paramP.setMaximumSize(paramP.getPreferredSize());
 		paramP.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
@@ -302,7 +303,7 @@ public class GeneratorFunction extends GecoFunction {
 		}
 	}
 	
-	public GeneratorFunction withRegistryControls() {
+	public GeneratorOperation withRegistryControls() {
 		Set<Integer> controls = new HashSet<Integer>();
 		for (Course c : registry().getCourses()) {
 			for (int i : c.getCodes()) {

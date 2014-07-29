@@ -2,7 +2,7 @@
  * Copyright (c) 2012 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.functions;
+package net.geco.operations;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -36,14 +36,14 @@ import net.geco.ui.basics.GecoIcon;
  * @since Apr 4, 2012
  *
  */
-public class RefereeLogFunction extends GecoFunction {
+public class RefereeLogOperation extends GecoOperation {
 
 	private JCheckBox displayOnlyCB;
 	private JTextField logFileF;
 
 	
-	public RefereeLogFunction(GecoControl gecoControl) {
-		super(gecoControl, FunctionCategory.REFEREE);
+	public RefereeLogOperation(GecoControl gecoControl) {
+		super(gecoControl, OperationCategory.REFEREE);
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class RefereeLogFunction extends GecoFunction {
 	}
 
 	@Override
-	public void execute() {
+	public void run() {
 		LogStream log;
 		if( displayOnlyCB.isSelected() ) {
 			log = new LogStream();
@@ -139,12 +139,12 @@ public class RefereeLogFunction extends GecoFunction {
 	}
 
 	@Override
-	public String executeTooltip() {
+	public String runTooltip() {
 		return Messages.uiGet("RefereeLogFunction.RefereeLogTooltip"); //$NON-NLS-1$
 	}
 
 	@Override
-	public JComponent getParametersConfig() {
+	public JComponent buildInnerUI() {
 		displayOnlyCB = new JCheckBox(Messages.uiGet("RefereeLogFunction.DisplayOnlyLabel")); //$NON-NLS-1$
 		displayOnlyCB.setAlignmentX(Component.LEFT_ALIGNMENT);
 		logFileF = new JTextField(15);
@@ -185,6 +185,7 @@ public class RefereeLogFunction extends GecoFunction {
 		config.add(fileBox);
 		config.add(Box.createVerticalStrut(5));
 		config.add(help);
+		embedRunButton(config);
 		return config;
 	}
 

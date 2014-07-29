@@ -2,7 +2,7 @@
  * Copyright (c) 2010 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.functions;
+package net.geco.operations;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -27,7 +27,7 @@ import net.geco.ui.basics.SwingUtils;
  * @since Jun 11, 2012
  *
  */
-public class DeleteFunction extends GecoFunction {
+public class DeleteOperation extends GecoOperation {
 
 	private JCheckBox deleteRunnerB;
 	private JCheckBox deleteCourseB;
@@ -36,8 +36,8 @@ public class DeleteFunction extends GecoFunction {
 	private JCheckBox deleteBackupB;
 	private JSpinner olderBackupS;
 
-	public DeleteFunction(GecoControl gecoControl) {
-		super(gecoControl, FunctionCategory.BATCH);
+	public DeleteOperation(GecoControl gecoControl) {
+		super(gecoControl, OperationCategory.BATCH);
 	}
 
 	@Override
@@ -46,12 +46,12 @@ public class DeleteFunction extends GecoFunction {
 	}
 
 	@Override
-	public String executeTooltip() {
+	public String runTooltip() {
 		return Messages.uiGet("DeleteFunction.DeleteTooltip"); //$NON-NLS-1$
 	}
 	
 	@Override
-	public void execute() {
+	public void run() {
 		geco().saveCurrentStage();
 		geco().info(Messages.uiGet("DeleteFunction.BackupSavedMessage"), false); //$NON-NLS-1$
 		if( deleteRunnerB.isSelected() ){
@@ -73,7 +73,7 @@ public class DeleteFunction extends GecoFunction {
 	}
 
 	@Override
-	public JComponent getParametersConfig() {
+	public JComponent buildInnerUI() {
 		deleteRunnerB = new JCheckBox(Messages.uiGet("DeleteFunction.RunnersLabel")); //$NON-NLS-1$
 		deleteCategoryB = new JCheckBox(Messages.uiGet("DeleteFunction.CategoriesLabel")); //$NON-NLS-1$
 		deleteCategoryB.setToolTipText(Messages.uiGet("DeleteFunction.CategoriesTooltip")); //$NON-NLS-1$
@@ -105,6 +105,7 @@ public class DeleteFunction extends GecoFunction {
 		configBox.add(new JLabel(Messages.uiGet("DeleteFunction.BackupLabel"))); //$NON-NLS-1$
 		configBox.add(deleteBox);
 		configBox.add(cleanupBox);
+		embedRunButton(configBox);
 		return configBox;
 	}
 

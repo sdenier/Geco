@@ -2,7 +2,7 @@
  * Copyright (c) 2010 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.functions;
+package net.geco.operations;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -25,7 +25,7 @@ import net.geco.control.ecardmodes.CourseDetector;
 import net.geco.control.ecardmodes.ECardMode;
 import net.geco.control.ecardmodes.ECardRacingMode;
 import net.geco.control.ecardmodes.ECardTrainingMode;
-import net.geco.control.functions.ECardLogImporter;
+import net.geco.control.operations.ECardLogImporter;
 import net.geco.model.Messages;
 import net.geco.ui.basics.GecoIcon;
 
@@ -35,14 +35,14 @@ import net.geco.ui.basics.GecoIcon;
  * @since Jun 11, 2012
  *
  */
-public class ECardLogFunction extends GecoFunction {
+public class ECardLogOperation extends GecoOperation {
 
 	private JTextField logFileF;
 	private JCheckBox autoInsertB;
 	private JRadioButton trainingB;
 
-	public ECardLogFunction(GecoControl gecoControl) {
-		super(gecoControl, FunctionCategory.BATCH);
+	public ECardLogOperation(GecoControl gecoControl) {
+		super(gecoControl, OperationCategory.BATCH);
 	}
 
 	@Override
@@ -51,12 +51,12 @@ public class ECardLogFunction extends GecoFunction {
 	}
 
 	@Override
-	public String executeTooltip() {
+	public String runTooltip() {
 		return Messages.uiGet("ECardLogFunction.ImportEcardTooltip"); //$NON-NLS-1$
 	}
 	
 	@Override
-	public void execute() {
+	public void run() {
 		CourseDetector detector = new CourseDetector(geco());
 		boolean autoInsert = autoInsertB.isSelected();
 		ECardMode processor;
@@ -73,7 +73,7 @@ public class ECardLogFunction extends GecoFunction {
 	}
 
 	@Override
-	public JComponent getParametersConfig() {
+	public JComponent buildInnerUI() {
 		logFileF = new JTextField(15);
 		logFileF.setMaximumSize(logFileF.getPreferredSize());
 		logFileF.setEnabled(false);
@@ -122,6 +122,7 @@ public class ECardLogFunction extends GecoFunction {
 		configBox.add(modeBox);
 		configBox.add(Box.createVerticalStrut(5));
 		configBox.add(archiveBox);
+		embedRunButton(configBox);
 		return configBox;
 	}
 

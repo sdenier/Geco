@@ -86,7 +86,7 @@ Other minor changes include:
     - incremental search in registry and archive
 - Auto course available by default
 - Import of XML IOF V3 (beta) course file (OCAD 11...)
-- New batch [functions](../guide/functions.html)
+- New batch [operations](../guide/operations.html)
     - import station logs and check DNS/Running
     - import ecard logs to recreate a race/training from the master station backup memory
     - export a referee log with all manual modifications
@@ -155,7 +155,7 @@ Other changes:
 - new status and stats to better manage special cases (competitors still running, unknown and duplicate e-cards for automatic mode)
 - new data fields for each competitor: registered start time, archive id for competitor, flag for rented e-card
 - a default course can be linked to a category (use when performing registration through CSV or archive)
-- introduce Functions to perform batch operations on data
+- introduce Operations to transform batch set of data
 - CSV export format for French CN (Classement National) + CN simulation in results
 - HTML result files can be styled with CSS
 - better handling of files with different charsets across platforms

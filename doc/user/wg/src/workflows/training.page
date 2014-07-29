@@ -35,7 +35,7 @@ Thus the training mode allows runners to perform several courses without worryin
 Geco also provides the capability to import the ecard log as extracted from the master station (with Si-Config). Then the logistics for training becomes minimal as everything can be done after the event at home. Furthermore, one benefits from the sophisticated algorithms of Geco for course detection and rebuilding results a posteriori. In two steps:
 
 1. export the log from the master station using Si-Config
-1. import it in Geco from the Log panel, using *Import Ecard Log* among [Batch](../guide/functions.html) functions. One just needs to select the log file then click on *Execute*. The function imports each line as if it was an ecard read from the station.
+1. import it in Geco from the Log panel, using *Import Ecard Log* among [Batch](../guide/operations.html) operations. One just needs to select the log file then click on *Execute*. The operation imports each line as if it was an ecard read from the station.
 
 <a href="../images/ecard_import.png"><img src="../images/ecard_import.png" /></a>
 
