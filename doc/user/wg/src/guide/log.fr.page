@@ -3,9 +3,9 @@ title: Log/Stats
 sort_info: 8
 in_menu: true
 ---
-# Onglet Log
+# Log/Stats (onglet Opérations)
 
-L'onglet log affiche le journal des événements importants depuis le début de la session. Il affiche également les statistiques de course et permet l'accès aux [fonctions](functions.fr.html).
+L'onglet Opérations affiche le journal des événements importants depuis le début de la session. Il affiche également les statistiques de course et permet l'accès aux [opérations](operations.fr.html).
 Pour voir tous les événements depuis la création de la course, ouvrez le fichier `geco.log`.
 
 <a href="../images/log_stats.fr.png"><img src="../images/log_stats.fr.png" /></a>

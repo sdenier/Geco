@@ -35,7 +35,7 @@ Le mode entraînement permet donc aux coureurs de réaliser plusieurs circuits s
 Une autre possibilité est de réaliser la GEC "à la maison", en important simplement le log des puces lues par la station de lecture (on peut exporter ce log avec Si-Config). Ceci permet de ne transporter que le minimum de matériel pour l'entraînement. De plus, on profite des algorithmes sophistiqués de Geco pour détecter les circuits et reconstruire les résultats a posteriori. Il faut donc :
 
 1. exporter le log de la station de lecture depuis Si-Config
-1. Importer dans Geco à partir de l'onglet Log, fonction *Import log puces* parmi les fonctions [Batch](../guide/functions.fr.html). Il suffit de sélectionner le fichier log puis de lancer *Exécuter*. La fonction importe chaque ligne du log comme s'il s'agissait d'une puce lue dans la station.
+1. Importer dans Geco à partir de l'onglet Log, opération *Import log puces* parmi les opérations [Batch](../guide/operations.fr.html). Il suffit de sélectionner le fichier log puis de lancer *Exécuter*. L'opération importe chaque ligne du log comme s'il s'agissait d'une puce lue dans la station.
 
 <a href="../images/ecard_import.fr.png"><img src="../images/ecard_import.fr.png" /></a>
 

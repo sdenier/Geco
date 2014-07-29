@@ -1,23 +1,23 @@
 ---
-title: Functions
+title: Operations
 sort_info: 9
 in_menu: true
 ---
 
-# Functions (Log Panel)
+# Operations
 
-Functions are special purpose operations which can be performed on batch of data, usually runners. They allow one to change/check data in registry at once.
+Operations can be performed on batch of data, usually runners. They allow one to change/check data in registry at once.
 
-<a href="../images/stage_functions.png"><img src="../images/stage_functions.png" /></a>
+<a href="../images/stage_operations.png"><img src="../images/stage_operations.png" /></a>
 
-There are three groups (tabs) of functions next to Stats in the [Log](log.html) panel. Select a tab and then choose a function in the combobox. Each function displays its set of parameters and actions in the top pane. Pressing *Execute* performs the default operation of the function.
+There are three groups (tabs) of operations next to Stats in the Operations panel. Select a tab and then choose a operation in the combobox. Each operation displays its set of parameters and actions in the top pane. Pressing *Execute* runs the operation.
 
-- *Stage* functions are commonly performed during stage
-- *Referee* functions serve referee purposes
-- *Batch* functions deal with less common operations
+- *Stage* operations are commonly performed during stage
+- *Referee* operations serve referee purposes
+- *Batch* operations deal with less common operations
 
 
-## Stage Functions
+## Stage Operations
 
 ### Set Start Times
 - Change registered start times at once for the selected pool of runners (by course, category, or an arbitrary set); can be use to mimic a mass start if necessary
@@ -29,19 +29,19 @@ There are three groups (tabs) of functions next to Stats in the [Log](log.html) 
 - You can choose to insert unregistered ecards from archive (in case some late runners completely bypassed registration - at least you will know they are in forest)
 - Tick *Simulate* to see what would Geco do with the given data
 
-There are two important gotchas when using this function
+There are two important gotchas when using this operation:
 
 - Station memories should be erased before the stage, otherwise logs would give inconsistent data
 - Be sure to read all logs (for example all erase stations) before ticking the *Mark DNS* option, so that you don't miss some running ecards
 
 
-## Referee Functions
+## Referee Operations
 
 ### Referee Log
 - Display/write a log for the referee with all manual changes having an impact on results, like status change or time change
 
 
-## Batch Functions
+## Batch Operations
 
 ### Import Ecard Log
 - Import an ecard log with punch data to handle a stage "post-mortem": Geco behaves as if ecards were read live, either in training or racing mode (including course detection, archive lookup)
