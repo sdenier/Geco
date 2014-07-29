@@ -405,6 +405,14 @@ public class JarClassLoader extends ClassLoader {
         return lst;
     } // findJarEntries()
     
+    private String getArchMatchingPattern() {
+    	if (System.getProperty("os.name").startsWith("Mac")) {
+    		return "";
+    	} else {
+        	return System.getProperty("os.arch").contains("64") ? "64" : "32";
+    	}
+    }
+
     /**
      * Finds native library entry.
      * 
@@ -416,6 +424,7 @@ public class JarClassLoader extends ClassLoader {
      * @return Native library entry.
      */
     private JarEntryInfo findJarNativeEntry(String sLib) {
+    	String archPattern = getArchMatchingPattern();
         String sName = System.mapLibraryName(sLib);
         for (JarFileInfo jarFileInfo : lstJarFile) {
             JarFile jarFile = jarFileInfo.jarFile;
@@ -431,7 +440,7 @@ public class JarClassLoader extends ClassLoader {
                 //   - in the path: abc/Native.dll/xyz/my.dll <-- do not load this one!
                 //   - in the partial name: abc/aNative.dll   <-- do not load this one!
                 String[] token = sEntry.split("/"); // the last token is library name
-                if (token.length > 0 && token[token.length - 1].equals(sName)) {
+                if (sEntry.contains(archPattern) && token.length > 0 && token[token.length - 1].equals(sName)) {
                     logInfo(LogArea.NATIVE, "Loading native library '%s' found as '%s' in JAR %s", 
                             sLib, sEntry, jarFileInfo.simpleName);
                     return new JarEntryInfo(jarFileInfo, je); 
