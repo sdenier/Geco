@@ -27,15 +27,18 @@ public class PenaltyChecker extends AbstractChecker implements StageListener {
 	protected int MPLimit;
 
 	protected boolean noMPLimit;
+
+	private long extraPenalty;
 	
 	
 	public PenaltyChecker(Factory factory, Tracer tracer) {
 		super(factory, tracer);
 		setMPLimit(defaultMPLimit());
 		setMPPenalty(defaultMPPenalty());
+		setExtraPenalty(defaultExtraPenalty());
 		noMPLimit = false;
 	}
-	
+
 	public PenaltyChecker(Factory factory) {
 		this(factory, new InlineTracer(factory));
 	}
@@ -89,6 +92,10 @@ public class PenaltyChecker extends AbstractChecker implements StageListener {
 	public long defaultMPPenalty() {
 		return 0;
 	}
+	
+	public long defaultExtraPenalty() {
+		return 0;
+	}
 
 	public long getMPPenalty() {
 		return MPPenalty;
@@ -96,6 +103,14 @@ public class PenaltyChecker extends AbstractChecker implements StageListener {
 
 	public void setMPPenalty(long penalty) {
 		MPPenalty = penalty;
+	}
+
+	public long getExtraPenalty() {
+		return extraPenalty;
+	}
+
+	public void setExtraPenalty(long penalty) {
+		extraPenalty = penalty;
 	}
 
 	public int getMPLimit() {
@@ -123,34 +138,34 @@ public class PenaltyChecker extends AbstractChecker implements StageListener {
 	}
 
 	protected void setNewProperties(Stage stage) {
-		String limit = stage.getProperties().getProperty(mpLimitProperty());
-		if( limit!=null ) {
-			try {
-				setMPLimit(new Integer(limit));
-				if( getMPLimit()==-1 ){
-					disableMPLimit();
-					setMPLimit(defaultMPLimit());
-				} else {
-					enableMPLimit();
-				}
-			} catch (NumberFormatException e) {
+		Properties properties = stage.getProperties();
+		String limit = properties.getProperty(mpLimitProperty(), Integer.toString(defaultMPLimit()));
+		try {
+			setMPLimit(Integer.parseInt(limit));
+			if( getMPLimit()==-1 ){
+				disableMPLimit();
 				setMPLimit(defaultMPLimit());
-				System.err.println(e);
+			} else {
+				enableMPLimit();
 			}
-		} else {
+		} catch (NumberFormatException e) {
 			setMPLimit(defaultMPLimit());
+			System.err.println(e);
 		}
-		String penalty = stage.getProperties().getProperty(mpPenaltyProperty());
-		if( penalty!=null ) {
-			try {
-				setMPPenalty(new Long(penalty));				
-			} catch (NumberFormatException e) {
-				setMPPenalty(defaultMPPenalty());
-				System.err.println(e);
-			}
-		} else {
+		String penalty = properties.getProperty(mpPenaltyProperty(), Long.toString(defaultMPPenalty()));
+		try {
+			setMPPenalty(Long.parseLong(penalty));				
+		} catch (NumberFormatException e) {
 			setMPPenalty(defaultMPPenalty());
-		}		
+			System.err.println(e);
+		}
+		String xPenalty = properties.getProperty(extraPenaltyProperty(), Long.toString(defaultExtraPenalty()));
+		try {
+			setExtraPenalty(Long.parseLong(xPenalty));				
+		} catch (NumberFormatException e) {
+			setExtraPenalty(defaultExtraPenalty());
+			System.err.println(e);
+		}
 	}
 	
 	@Override
@@ -163,9 +178,10 @@ public class PenaltyChecker extends AbstractChecker implements StageListener {
 		if( noMPLimit ){
 			properties.setProperty(mpLimitProperty(), "-1"); //$NON-NLS-1$
 		} else {
-			properties.setProperty(mpLimitProperty(), new Integer(getMPLimit()).toString());
+			properties.setProperty(mpLimitProperty(), Integer.toString(getMPLimit()));
 		}
-		properties.setProperty(mpPenaltyProperty(), new Long(getMPPenalty()).toString());
+		properties.setProperty(mpPenaltyProperty(), Long.toString(getMPPenalty()));
+		properties.setProperty(extraPenaltyProperty(), Long.toString(getExtraPenalty()));
 	}
 
 	public static String mpLimitProperty() {
@@ -174,6 +190,10 @@ public class PenaltyChecker extends AbstractChecker implements StageListener {
 
 	public static String mpPenaltyProperty() {
 		return "MPPenalty"; //$NON-NLS-1$
+	}
+
+	public static String extraPenaltyProperty() {
+		return "ExtraPenalty"; //$NON-NLS-1$
 	}
 
 	@Override
