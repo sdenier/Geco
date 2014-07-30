@@ -189,7 +189,7 @@ public class PenaltyCheckerForFreeOrderTest {
 		checker.check(data);
 		RunnerResult result = data.getResult();
 		assertEquals(Status.OK, result.getStatus());
-		assertTrue(result.getResultTime() == 630000 + checker.timePenalty(2));
+		assertTrue(result.getResultTime() == 630000 + checker.mpTimePenalty(2));
 		assertEquals(2, data.getTraceData().getNbMPs());
 		assertEquals("121,33,45,-122,-34", data.getTraceData().formatTrace());
 	}
@@ -207,7 +207,7 @@ public class PenaltyCheckerForFreeOrderTest {
 		checker.check(data);
 		RunnerResult result = data.getResult();
 		assertEquals(Status.MP, result.getStatus());
-		assertTrue(result.getResultTime() == 630000 + checker.timePenalty(3));
+		assertTrue(result.getResultTime() == 630000 + checker.mpTimePenalty(3));
 		assertEquals(3, data.getTraceData().getNbMPs());
 		assertEquals("121,34,-122,-33,-45", data.getTraceData().formatTrace());
 	}

@@ -13,6 +13,7 @@ import net.geco.model.Factory;
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Stage;
 import net.geco.model.Status;
+import net.geco.model.TraceData;
 
 
 /**
@@ -60,13 +61,18 @@ public class PenaltyChecker extends AbstractChecker implements StageListener {
 
 	@Override
 	public long computeTimePenalty(RunnerRaceData raceData) {
-		return timePenalty(raceData.getTraceData().getNbMPs());
+		TraceData traceData = raceData.getTraceData();
+		return mpTimePenalty(traceData.getNbMPs()) + extraTimePenalty(traceData.getNbExtraneous());
 	}
 
-	public long timePenalty(int nbMPs) {
+	public long mpTimePenalty(int nbMPs) {
 		return nbMPs * getMPPenalty();
 	}
-	
+
+	public long extraTimePenalty(int nbExtra) {
+		return nbExtra * getExtraPenalty();
+	}
+
 	@Override
 	public long computeResultTime(RunnerRaceData data) {
 		long raceTime = data.getResult().getRaceTime();
