@@ -47,6 +47,7 @@ public class FreeOrderTracer extends BasicControl implements Tracer {
 		TraceData traceData = factory().createTraceData();
 		traceData.setNbMPs(nbMPs);
 		traceData.setTrace(trace.toArray(new Trace[0]));
+		traceData.setNbExtraneous(ExtraneousPunchTracer.compute(codes, trace).size());
 		return traceData;
 	}
 

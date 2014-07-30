@@ -42,13 +42,23 @@ public class TraceImpl implements Trace {
 		return code;
 	}
 	public String getBasicCode() {
-		if( isOK() ) {
-			return code;
+		if( isMP() || isAdded() ) {
+			return code.substring(1);
 		} else
 		if( isSubst() ) {
 			return code.substring(1, code.indexOf('+'));
 		} else {
+			return code;
+		}
+	}
+	public String getAddedCode() {
+		if( isAdded() ) {
 			return code.substring(1);
+		} else
+		if( isSubst() ) {
+			return code.substring(code.indexOf('+') + 1);
+		} else {
+			return "";
 		}
 	}
 	public Date getTime() {

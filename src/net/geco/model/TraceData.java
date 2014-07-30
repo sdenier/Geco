@@ -15,6 +15,10 @@ public interface TraceData extends Cloneable {
 
 	public void setNbMPs(int nbMPs);
 
+	public int getNbExtraneous();
+
+	public void setNbExtraneous(int nbExtra);
+	
 	public Trace[] getTrace();
 
 	public Trace[] getClearTrace();

@@ -26,17 +26,17 @@ import org.junit.Test;
 public class FreeOrderTracerTest {
 	
 	private Factory factory;
-	private Tracer checker;
+	private Tracer tracer;
 	private int[] courseCodes;
 
 	@Before
 	public void setUp() {
 		factory = new POFactory();
-		checker = new FreeOrderTracer(factory);
+		tracer = new FreeOrderTracer(factory);
 		courseCodes = new int[] { 121, 122, 34, 33, 45};
 	}
 	
-	public Punch[] createPunches(int... punches){
+	public Punch[] punches(int... punches){
 		Punch[] punchez = new Punch[punches.length];
 		for (int i = 0; i < punches.length; i++) {
 			punchez[i] = punch(punches[i]);
@@ -57,51 +57,65 @@ public class FreeOrderTracerTest {
 
 	@Test
 	public void testNoPunchMP() {
-		TraceData data = checker.computeTrace(courseCodes, new Punch[0]);
+		TraceData data = tracer.computeTrace(courseCodes, new Punch[0]);
 		assertEquals(5, data.getNbMPs());
 		assertEquals("-121,-122,-34,-33,-45", data.formatTrace());
 	}
 	
 	@Test
 	public void testSimpleCourseOK() {
-		TraceData data = checker.computeTrace(courseCodes, createPunches(121, 122, 34, 33, 45));
+		TraceData data = tracer.computeTrace(courseCodes, punches(121, 122, 34, 33, 45));
 		assertEquals(0, data.getNbMPs());
 		assertEquals("121,122,34,33,45", data.formatTrace());
 	}
 
 	@Test
 	public void testSimpleCourseFreeOrderOK() {
-		TraceData data = checker.computeTrace(courseCodes, createPunches(45, 122, 34, 33, 121));
+		TraceData data = tracer.computeTrace(courseCodes, punches(45, 122, 34, 33, 121));
 		assertEquals(0, data.getNbMPs());
 		assertEquals("45,122,34,33,121", data.formatTrace());
 	}
 
 	@Test
 	public void testSimpleCourseDuplicateOK() {
-		TraceData data = checker.computeTrace(courseCodes, createPunches(45, 122, 33, 45, 121, 34, 33));
+		TraceData data = tracer.computeTrace(courseCodes, punches(45, 122, 33, 45, 121, 34, 33));
 		assertEquals(0, data.getNbMPs());
 		assertEquals("45,122,33,+45,121,34,+33", data.formatTrace());
 	}
 
 	@Test
 	public void testSimpleCourseMP() {
-		TraceData data = checker.computeTrace(courseCodes, createPunches(121, 34, 33, 45));
+		TraceData data = tracer.computeTrace(courseCodes, punches(121, 34, 33, 45));
 		assertEquals(1, data.getNbMPs());
 		assertEquals("121,34,33,45,-122", data.formatTrace());
 	}
 
 	@Test
 	public void testSimpleCourseMPs() {
-		TraceData data = checker.computeTrace(courseCodes, createPunches(34, 33, 45));
+		TraceData data = tracer.computeTrace(courseCodes, punches(34, 33, 45));
 		assertEquals(2, data.getNbMPs());
 		assertEquals("34,33,45,-121,-122", data.formatTrace());
 	}
 
 	@Test
 	public void testSimpleCourseReplacePunch() {
-		TraceData data = checker.computeTrace(courseCodes, createPunches(121, 122, 34, 33, 46));
+		TraceData data = tracer.computeTrace(courseCodes, punches(121, 122, 34, 33, 46));
 		assertEquals(1, data.getNbMPs());
 		assertEquals("121,122,34,33,+46,-45", data.formatTrace());
 	}
 
+	@Test
+	public void trace_hasAddedPunches_withoutExtraneousPenalties() {
+		TraceData trace = tracer.computeTrace(courseCodes, punches(121, 34, 34, 45, 33, 45));
+		assertEquals(0, trace.getNbExtraneous());
+		assertEquals("121,34,+34,45,33,+45,-122", trace.formatTrace());
+	}
+
+	@Test
+	public void trace_hasAddedPunches_withExtraneousPenalties() {
+		TraceData trace = tracer.computeTrace(courseCodes, punches(121,122,204,45,205,121));
+		assertEquals(2, trace.getNbExtraneous());
+		assertEquals("121,122,+204,45,+205,+121,-34,-33", trace.formatTrace());
+	}
+	
 }
