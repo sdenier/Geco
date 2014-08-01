@@ -145,7 +145,7 @@ public class PenaltyCheckerTest {
 		data.setStarttime(new Date(0));
 		data.setFinishtime(new Date(630000));
 		data.setPunches(new Punch[] {
-				punch(122), punch(31), punch(33)
+				punch(122), punch(31), punch(34)
 			});
 		checker.check(data);
 		assertEquals(Status.MP, data.getResult().getStatus());
@@ -221,7 +221,7 @@ public class PenaltyCheckerTest {
 		data.setStarttime(new Date(0));
 		data.setFinishtime(new Date(630000));
 		data.setPunches(new Punch[] {
-				punch(43), punch(122), punch(121), punch(123), punch(121), punch(126), punch(125), punch(124),  
+				punch(43), punch(122), punch(44), punch(121), punch(123), punch(121), punch(126), punch(125), punch(124),
 				punch(121),	punch(45), 
 			});
 		checker.check(data);
@@ -273,7 +273,7 @@ public class PenaltyCheckerTest {
 		data.setStarttime(new Date(0));
 		data.setFinishtime(new Date(630000));
 		data.setPunches(new Punch[] {
-				punch(205), punch(121), punch(33), punch(122), punch(34), punch(204), punch(45), punch(46)
+				punch(200), punch(121), punch(33), punch(122), punch(34), punch(201), punch(45), punch(202), punch(46)
 			});
 		checker.check(data);
 		assertEquals(Status.OK, data.getResult().getStatus());

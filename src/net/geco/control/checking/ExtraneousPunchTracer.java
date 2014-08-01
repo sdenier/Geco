@@ -23,8 +23,9 @@ public class ExtraneousPunchTracer {
 			codez.add(Integer.toString(code));
 		}
 		ArrayList<Trace> extraneousPunches = new ArrayList<Trace>();
+		// Subst punches do not count towards extraneous penalties - considered only as a MP
 		for (Trace t : trace) {
-			if( (t.isAdded() || t.isSubst()) && ! codez.contains(t.getAddedCode()) ) {
+			if( t.isAdded() && ! codez.contains(t.getAddedCode()) ) {
 				extraneousPunches.add(t);
 			}
 		}

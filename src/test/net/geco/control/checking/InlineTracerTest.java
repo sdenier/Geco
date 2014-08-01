@@ -125,20 +125,26 @@ public class InlineTracerTest {
 	}
 
 	int[] course5 = new int[] {31,32,33,34,35};
-	int[] trace_addedPunches = new int[] {31,32,32,33,35,34,35};
 	int[] trace_extraneousPunches = new int[] {31,32,43,34,45,35,34};
 
 	@Test
 	public void trace_hasAddedPunches_withoutExtraneousPenalties() {
-		TraceData trace = tracer.computeTrace(course5, punches(trace_addedPunches));
+		TraceData trace = tracer.computeTrace(course5, punches(new int[] {31,32,32,33,35,34,35}));
 		assertEquals(0, trace.getNbExtraneous());
 		assertEquals("31,+32,32,33,+35,34,35", trace.formatTrace());
 	}
 
 	@Test
 	public void trace_hasAddedPunches_withExtraneousPenalties() {
-		TraceData trace = tracer.computeTrace(course5, punches(trace_extraneousPunches));
+		TraceData trace = tracer.computeTrace(course5, punches(new int[] {31,43,32,34,45,35,34}));
 		assertEquals(2, trace.getNbExtraneous());
+		assertEquals("31,+43,32,-33,34,+45,35,+34", trace.formatTrace());
+	}
+
+	@Test
+	public void trace_hasSubstPunches_doNoCountAsExtraneousPenalties() {
+		TraceData trace = tracer.computeTrace(course5, punches(new int[] {31,32,43,34,45,35,34}));
+		assertEquals(1, trace.getNbExtraneous());
 		assertEquals("31,32,-33+43,34,+45,35,+34", trace.formatTrace());
 	}
 
