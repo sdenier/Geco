@@ -78,7 +78,7 @@ public class RunnerImpl extends AbstractRunnerImpl implements Runner {
 
 	@Override
 	public String toString() {
-		return getNameR() + ", " + getEcard() + ", " + getCourse().getName(); //$NON-NLS-1$ //$NON-NLS-2$
+		return getStartId() + ", "+  getNameR() + ", " + getEcard() + ", " + getCourse().getName(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	public String idString() {
