@@ -36,7 +36,9 @@ public class InlineTracer extends BasicControl implements Tracer {
 		int[][] matrix = lcssMatrix(codes, punches);
 		TraceData traceData = factory().createTraceData();
 		traceData.setNbMPs(codes.length - matrix[punches.length][codes.length]);
-		traceData.setTrace(backtrace(codes, punches, matrix).toArray(new Trace[0]));
+		List<Trace> trace = backtrace(codes, punches, matrix);
+		traceData.setTrace(trace.toArray(new Trace[0]));
+		traceData.setNbExtraneous(ExtraneousPunchTracer.compute(codes, trace).size());
 		return traceData;
 	}
 

@@ -234,6 +234,7 @@ public final class PersistentStore {
 			JSONObject r = runnerTuple.getJSONObject(I_RESULT);
 			TraceData traceData = factory.createTraceData();
 			traceData.setNbMPs(r.getInt(K.MPS));
+			traceData.setNbExtraneous(r.optInt(K.EXTRA)); // MIGR v2.x -> v2.3
 			JSONArray t = r.getJSONArray(K.TRACE);
 			Trace[] trace = new Trace[t.length() / 2];
 			for (int j = 0; j < trace.length; j++) {
@@ -426,6 +427,7 @@ public final class PersistentStore {
 				.field(K.TIME, result.getResultTime())
 				.field(K.STATUS, result.getStatus().name())
 				.field(K.MPS, traceData.getNbMPs())
+				.field(K.EXTRA, traceData.getNbExtraneous())
 				.field(K.PENALTY, result.getTimePenalty())
 				.field(K.RACE_TIME, result.getRaceTime());
 			
@@ -511,6 +513,7 @@ public final class PersistentStore {
 		public static final String TIME;
 		public static final String STATUS;
 		public static final String MPS;
+		public static final String EXTRA;
 		public static final String PENALTY;
 		public static final String RACE_TIME;
 		public static final String TRACE;
@@ -539,6 +542,7 @@ public final class PersistentStore {
 				TIME = "time"; //$NON-NLS-1$
 				STATUS = "status"; //$NON-NLS-1$
 				MPS = "mps"; //$NON-NLS-1$
+				EXTRA = "extra"; //$NON-NLS-1$
 				PENALTY = "penalty"; //$NON-NLS-1$
 				RACE_TIME = "running"; //$NON-NLS-1$
 				TRACE = "trace"; //$NON-NLS-1$
@@ -565,6 +569,7 @@ public final class PersistentStore {
 				TIME = "t"; //$NON-NLS-1$
 				STATUS = "s"; //$NON-NLS-1$
 				MPS = "m"; //$NON-NLS-1$
+				EXTRA = "x"; //$NON-NLS-1$
 				PENALTY = "p"; //$NON-NLS-1$
 				RACE_TIME = "u"; //$NON-NLS-1$
 				TRACE = "r"; //$NON-NLS-1$

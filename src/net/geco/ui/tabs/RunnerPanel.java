@@ -17,7 +17,6 @@ import java.awt.event.ActionListener;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.InputVerifier;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -69,6 +68,7 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 	private JTextField runningTimeF;
 	private JTextField raceTimeF;
 	private JTextField mpF;
+	private JTextField extraF;
 	private JTextField penaltyF;
 	private JTextField officialTimeF;
 
@@ -169,6 +169,7 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 		displayRacetime(runningTimeF, runnerData.computeRunningTime());
 		displayRacetime(raceTimeF, runnerData.getResult().getRaceTime());
 		mpF.setText(Integer.toString(runnerData.getTraceData().getNbMPs()));
+		extraF.setText(Integer.toString(runnerData.getTraceData().getNbExtraneous()));
 		penaltyF.setText(runnerData.getResult().formatTimePenalty());
 		displayOfficialResultTime(officialTimeF, geco().checker().computeResultTime(runnerData));
 	}
@@ -336,6 +337,9 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 		raceTimeF.setToolTipText(Messages.uiGet("RunnerPanel.RacetimeTooltip")); //$NON-NLS-1$
 		mpF = new JTextField(FIELDSIZE);
 		mpF.setEditable(false);
+		extraF = new JTextField(FIELDSIZE);
+		extraF.setEditable(false);
+		extraF.setToolTipText("Number of extraneous punches: added punches not on course");
 		penaltyF = new JTextField(FIELDSIZE);
 		penaltyF.setEditable(false);
 		officialTimeF = new JTextField(FIELDSIZE);
@@ -365,8 +369,8 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 				penaltyF);
 		c.gridy = 3;
 		addRow(resultPanel, c, 
-				Box.createGlue(),
-				Box.createGlue(),
+				new JLabel("Extra"),
+				extraF,
 				new JLabel(Messages.uiGet("RunnerPanel.OfficialTimeLabel")), //$NON-NLS-1$
 				officialTimeF);
 

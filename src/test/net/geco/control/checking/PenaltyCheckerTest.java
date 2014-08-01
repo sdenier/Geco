@@ -41,6 +41,7 @@ public class PenaltyCheckerTest {
 		checker = new PenaltyChecker(factory);
 		checker.setMPPenalty(30000);
 		checker.setMPLimit(4);
+		checker.setExtraPenalty(45000);
 		course = factory.createCourse();
 		data = factory.createRunnerRaceData();
 		Runner runner = factory.createRunner();
@@ -109,7 +110,7 @@ public class PenaltyCheckerTest {
 			});
 		checker.check(data);
 		assertEquals(Status.OK, data.getResult().getStatus());
-		assertTrue(data.getResult().getResultTime() == 630000 + checker.timePenalty(1));
+		assertTrue(data.getResult().getResultTime() == 630000 + checker.mpTimePenalty(1));
 	}
 
 	@Test
@@ -122,7 +123,7 @@ public class PenaltyCheckerTest {
 			});
 		checker.check(data);
 		assertEquals(Status.OK, data.getResult().getStatus());
-		assertTrue(data.getResult().getResultTime() == 630000 + checker.timePenalty(2));
+		assertTrue(data.getResult().getResultTime() == 630000 + checker.mpTimePenalty(2));
 	}
 	
 	@Test
@@ -135,7 +136,7 @@ public class PenaltyCheckerTest {
 			});
 		checker.check(data);
 		assertEquals(Status.OK, data.getResult().getStatus());
-		assertTrue(data.getResult().getResultTime() == 630000 + checker.timePenalty(3));
+		assertTrue(data.getResult().getResultTime() == 630000 + checker.mpTimePenalty(3));
 	}
 
 	@Test
@@ -144,11 +145,11 @@ public class PenaltyCheckerTest {
 		data.setStarttime(new Date(0));
 		data.setFinishtime(new Date(630000));
 		data.setPunches(new Punch[] {
-				punch(122), punch(31), punch(33)
+				punch(122), punch(31), punch(34)
 			});
 		checker.check(data);
 		assertEquals(Status.MP, data.getResult().getStatus());
-		assertTrue(data.getResult().getResultTime() == (630000 + checker.timePenalty(5)));
+		assertEquals(630000 + checker.mpTimePenalty(5) + checker.extraTimePenalty(1), data.getResult().getResultTime());
 	}
 
 	
@@ -192,7 +193,7 @@ public class PenaltyCheckerTest {
 			});
 		checker.check(data);
 		assertEquals(Status.OK, data.getResult().getStatus());
-		assertTrue(data.getResult().getResultTime() == 630000 + checker.timePenalty(2));
+		assertTrue(data.getResult().getResultTime() == 630000 + checker.mpTimePenalty(2));
 	}
 
 	@Test
@@ -211,7 +212,7 @@ public class PenaltyCheckerTest {
 			});
 		checker.check(data);
 		assertEquals(Status.OK, data.getResult().getStatus());
-		assertTrue(data.getResult().getResultTime() == 630000 + checker.timePenalty(2));
+		assertTrue(data.getResult().getResultTime() == 630000 + checker.mpTimePenalty(2));
 	}
 
 	@Test
@@ -220,12 +221,12 @@ public class PenaltyCheckerTest {
 		data.setStarttime(new Date(0));
 		data.setFinishtime(new Date(630000));
 		data.setPunches(new Punch[] {
-				punch(43), punch(122), punch(121), punch(123), punch(121), punch(126), punch(125), punch(124),  
+				punch(43), punch(122), punch(44), punch(121), punch(123), punch(121), punch(126), punch(125), punch(124),
 				punch(121),	punch(45), 
 			});
 		checker.check(data);
 		assertEquals(Status.OK, data.getResult().getStatus());
-		assertTrue(data.getResult().getResultTime() == 630000 + checker.timePenalty(3));
+		assertEquals(630000 + checker.mpTimePenalty(3) + checker.extraTimePenalty(1), data.getResult().getResultTime());
 	}
 
 	@Test
@@ -238,7 +239,7 @@ public class PenaltyCheckerTest {
 			});
 		checker.check(data);
 		assertEquals(Status.MP, data.getResult().getStatus());
-		assertTrue(data.getResult().getResultTime() == 630000 + checker.timePenalty(6));
+		assertTrue(data.getResult().getResultTime() == 630000 + checker.mpTimePenalty(6));
 	}
 	
 	@Test
@@ -249,8 +250,34 @@ public class PenaltyCheckerTest {
 		data.setPunches(new Punch[] { });
 		checker.check(data);
 		assertEquals(Status.MP, data.getResult().getStatus());
-		long maxPenalties = 630000 + checker.timePenalty(data.getCourse().nbControls());
+		long maxPenalties = 630000 + checker.mpTimePenalty(data.getCourse().nbControls());
 		assertTrue(data.getResult().getResultTime() == maxPenalties);
+	}
+
+	@Test
+	public void testSimpleCourseTwoExtraneousPenalty() {
+		createSimpleCourse(course);
+		data.setStarttime(new Date(0));
+		data.setFinishtime(new Date(630000));
+		data.setPunches(new Punch[] {
+				punch(205), punch(121), punch(122), punch(34), punch(33), punch(34), punch(204), punch(45), punch(46), punch(47)
+			});
+		checker.check(data);
+		assertEquals(Status.OK, data.getResult().getStatus());
+		assertEquals(630000 + checker.extraTimePenalty(2), data.getResult().getResultTime());
+	}
+
+	@Test
+	public void testSimpleCourseMixedPenalties() {
+		createSimpleCourse(course);
+		data.setStarttime(new Date(0));
+		data.setFinishtime(new Date(630000));
+		data.setPunches(new Punch[] {
+				punch(200), punch(121), punch(33), punch(122), punch(34), punch(201), punch(45), punch(202), punch(46)
+			});
+		checker.check(data);
+		assertEquals(Status.OK, data.getResult().getStatus());
+		assertEquals(630000 + checker.mpTimePenalty(2) + checker.extraTimePenalty(2), data.getResult().getResultTime());
 	}
 
 }

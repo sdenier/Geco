@@ -18,6 +18,8 @@ import net.geco.model.TraceData;
 public class TraceDataImpl implements TraceData {
 	
 	private int nbMPs = 0;
+
+	private int nbExtraneous = 0;
 	
 	protected Trace[] trace = new Trace[0];
 
@@ -42,6 +44,14 @@ public class TraceDataImpl implements TraceData {
 
 	public void setNbMPs(int nbMPs) {
 		this.nbMPs = nbMPs;
+	}
+
+	public int getNbExtraneous() {
+		return nbExtraneous ;
+	}
+
+	public void setNbExtraneous(int nbExtraneous) {
+		this.nbExtraneous = nbExtraneous;
 	}
 
 	public Trace[] getTrace() {

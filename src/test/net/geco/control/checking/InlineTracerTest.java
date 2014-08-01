@@ -57,16 +57,16 @@ public class InlineTracerTest {
 	}
 
 	
-	int[] amelie = new int[] {
+	int[] trace1 = new int[] {
 			131,147,144,135,131,158,161,164,131,154,153,131,136,142,131,159,181,104,195,189,188,185,189,183,179,189,199,121,109,189,107,124,102,189,180,175,174,173,172,169,129,200,
 	};
-	int[] okamelie = new int[] {
+	int[] course1 = new int[] {
 			131,147,144,135,131,158,161,164,131,154,153,131,136,142,131,159,181,104,195,189,188,185,189,183,179,189,199,121,109,189,107,124,102,189,180,175,174,173,172,169,129,200,
 	};
 
 	@Test
 	public void testAmelieRace() {
-		TraceData trace = tracer.computeTrace(okamelie, punches(amelie));
+		TraceData trace = tracer.computeTrace(course1, punches(trace1));
 		assertEquals(0, trace.getNbMPs());
 		assertEquals(
 			"131,147,144,135,131,158,161,164,131,154,153,131,136,142,131,159,181,104,195,189,188,185,189,183,179,189,199,121,109,189,107,124,102,189,180,175,174,173,172,169,129,200",
@@ -74,16 +74,16 @@ public class InlineTracerTest {
 	}
 
 	
-	int[] misa = new int[] {
+	int[] trace2 = new int[] {
 			131,158,161,164,131,153,154,153,131,136,142,131,147,144,135,131,159,181,104,195,189,183,179,189,199,121,109,189,107,124,102,189,188,185,189,180,175,174,173,172,169,129,200,
 	};
-	int[] okmisa = new int[] {
+	int[] course2 = new int[] {
 			131,158,161,164,131,154,153,131,136,142,131,147,144,135,131,159,181,104,195,189,183,179,189,199,121,109,189,107,124,102,189,188,185,189,180,175,174,173,172,169,129,200
 	};
 	
 	@Test
 	public void testMisaRace() {
-		TraceData trace = tracer.computeTrace(okmisa, punches(misa));
+		TraceData trace = tracer.computeTrace(course2, punches(trace2));
 		assertEquals(0, trace.getNbMPs());
 		assertEquals(
 			"131,158,161,164,131,+153,154,153,131,136,142,131,147,144,135,131,159,181,104,195,189,183,179,189,199,121,109,189,107,124,102,189,188,185,189,180,175,174,173,172,169,129,200",
@@ -91,16 +91,16 @@ public class InlineTracerTest {
 	}
 
 	
-	int[] lola = new int[] {
+	int[] trace3 = new int[] {
 			131,154,154,152,131,142,136,142,131,147,144,135,131,158,161,164,131,159,181,104,195,189,199,121,109,189,107,124,102,189,188,185,189,183,179,189,180,175,174,173,172,169,129,200,
 	};
-	int[] oklola = new int[] {
+	int[] course3 = new int[] {
 			131,154,153,131,136,142,131,147,144,135,131,158,161,164,131,159,181,104,195,189,199,121,109,189,107,124,102,189,188,185,189,183,179,189,180,175,174,173,172,169,129,200
 	};
 	
 	@Test
 	public void testLolaRace() {
-		TraceData trace = tracer.computeTrace(oklola, punches(lola));
+		TraceData trace = tracer.computeTrace(course3, punches(trace3));
 		assertEquals(1, trace.getNbMPs());
 		assertEquals(
 			"131,+154,154,-153+152,131,+142,136,142,131,147,144,135,131,158,161,164,131,159,181,104,195,189,199,121,109,189,107,124,102,189,188,185,189,183,179,189,180,175,174,173,172,169,129,200",
@@ -108,20 +108,44 @@ public class InlineTracerTest {
 	}
 	
 	
-	int[] pauline = new int[] {
+	int[] trace4 = new int[] {
 			131,136,142,147,144,135,131,158,160,161,164,131,154,153,131,159,181,104,195,189,107,124,102,189,188,185,189,183,179,189,199,121,109,189,180,175,174,173,172,169,129,200,
 	};
-	int[] okpauline = new int[] {
+	int[] course4 = new int[] {
 			131,136,142,131,147,144,135,131,158,160,161,164,131,154,153,131,159,181,104,195,189,107,124,102,189,188,185,189,183,179,189,199,121,109,189,180,175,174,173,172,169,129,200
 	};
 
 	@Test
 	public void testPaulineRace() {
-		TraceData trace = tracer.computeTrace(okpauline, punches(pauline));
+		TraceData trace = tracer.computeTrace(course4, punches(trace4));
 		assertEquals(1, trace.getNbMPs());
 		assertEquals(
 			"131,136,142,-131,147,144,135,131,158,160,161,164,131,154,153,131,159,181,104,195,189,107,124,102,189,188,185,189,183,179,189,199,121,109,189,180,175,174,173,172,169,129,200",
 			trace.formatTrace());
+	}
+
+	int[] course5 = new int[] {31,32,33,34,35};
+	int[] trace_extraneousPunches = new int[] {31,32,43,34,45,35,34};
+
+	@Test
+	public void trace_hasAddedPunches_withoutExtraneousPenalties() {
+		TraceData trace = tracer.computeTrace(course5, punches(new int[] {31,32,32,33,35,34,35}));
+		assertEquals(0, trace.getNbExtraneous());
+		assertEquals("31,+32,32,33,+35,34,35", trace.formatTrace());
+	}
+
+	@Test
+	public void trace_hasAddedPunches_withExtraneousPenalties() {
+		TraceData trace = tracer.computeTrace(course5, punches(new int[] {31,43,32,34,45,35,34}));
+		assertEquals(2, trace.getNbExtraneous());
+		assertEquals("31,+43,32,-33,34,+45,35,+34", trace.formatTrace());
+	}
+
+	@Test
+	public void trace_hasSubstPunches_doNoCountAsExtraneousPenalties() {
+		TraceData trace = tracer.computeTrace(course5, punches(new int[] {31,32,43,34,45,35,34}));
+		assertEquals(1, trace.getNbExtraneous());
+		assertEquals("31,32,-33+43,34,+45,35,+34", trace.formatTrace());
 	}
 
 }

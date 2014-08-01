@@ -90,7 +90,7 @@ public class PenaltyCheckerConfigPanel extends JPanel implements ConfigPanel {
 				public void stateChanged(ChangeEvent e) {
 					long oldPenalty = checker(geco).getMPPenalty();
 					long newPenalty = 1000 * ((Long) penaltyS.getValue()).longValue();
-					if( oldPenalty!=newPenalty ) {
+					if( oldPenalty != newPenalty ) {
 						checker(geco).setMPPenalty(newPenalty);
 						penaltyMinuteL.setText(TimeManager.time(newPenalty) + Messages.uiGet("PenaltyCheckerConfigPanel.PerMpLabel")); //$NON-NLS-1$
 					}
@@ -98,7 +98,28 @@ public class PenaltyCheckerConfigPanel extends JPanel implements ConfigPanel {
 			});
 			add(SwingUtils.embed(penaltyS), c);
 			add(penaltyMinuteL, c);
+
 			c.gridy = 3;
+			add(new JLabel("Extra Penalty:"), c);
+			long xPenalty = checker(geco).getExtraPenalty();
+			final JLabel xPenaltyMinuteL = new JLabel(TimeManager.time(xPenalty) + " per extraneous punch");
+			final JSpinner xPenaltyS = new JSpinner(new SpinnerNumberModel(xPenalty / 1000, 0l, null, 10));
+			xPenaltyS.setPreferredSize(new Dimension(100, SwingUtils.SPINNERHEIGHT));
+			xPenaltyS.setToolTipText("Penalty for extraneous punches: added punches whose codes are not in course");
+			xPenaltyS.addChangeListener(new ChangeListener() {
+				public void stateChanged(ChangeEvent e) {
+					long oldPenalty = checker(geco).getExtraPenalty();
+					long newPenalty = 1000 * ((Long) xPenaltyS.getValue()).longValue();
+					if( oldPenalty != newPenalty ) {
+						checker(geco).setExtraPenalty(newPenalty);
+						xPenaltyMinuteL.setText(TimeManager.time(newPenalty) + " per extraneous punch");
+					}
+				}
+			});
+			add(SwingUtils.embed(xPenaltyS), c);
+			add(xPenaltyMinuteL, c);
+
+			c.gridy = 4;
 		}
 
 		c.gridwidth = 2;

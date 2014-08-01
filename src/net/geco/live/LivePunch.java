@@ -167,6 +167,11 @@ public class LivePunch implements Trace {
 		}
 	}
 
+	@Override
+	public String getAddedCode() {
+		return "";
+	}
+
 	/* (non-Javadoc)
 	 * @see valmo.geco.model.Trace#getTime()
 	 */
