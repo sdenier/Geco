@@ -2,22 +2,32 @@
  * Copyright (c) 2009 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.ui.basics;
+package net.geco.ui.components;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Date;
 
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumnModel;
 
 import net.geco.basics.Html;
 import net.geco.basics.TimeManager;
+import net.geco.framework.IGeco;
 import net.geco.model.Messages;
 import net.geco.model.RunnerRaceData;
+import net.geco.model.Section;
 import net.geco.model.SectionTraceData;
 import net.geco.model.Trace;
 import net.geco.ui.framework.RunnersTableAnnouncer.RunnersTableListener;
@@ -31,17 +41,39 @@ import net.geco.ui.framework.RunnersTableAnnouncer.RunnersTableListener;
 public class PunchPanel extends JPanel implements RunnersTableListener {
 
 	private JTable punchesT;
+	private IGeco geco;
 	
-	private boolean sectionsEnabled;
-	
-	public PunchPanel() {
-		this(false);
+	public PunchPanel(IGeco geco) {
+		this.geco = geco;
+		this.punchesT = new JTable();
+		this.punchesT.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		this.punchesT.addMouseListener(new TableMouseListener(punchesT));
+		initPunchPanel(this);
 	}
 
-	public PunchPanel(boolean sectionsEnabled) {
-		this.punchesT = new JTable();
-		this.sectionsEnabled = sectionsEnabled;
-		initPunchPanel(this);
+	private void refreshSectionPopupMenu(final RunnerRaceData raceData) {
+		JPopupMenu popupMenu = new JPopupMenu();
+		
+		for (final Section section : raceData.getCourse().getSections()) {
+			JMenuItem sectionItem = new JMenuItem(section.displayString());
+			popupMenu.add(sectionItem);
+			
+			sectionItem.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					int selectedRow = punchesT.getSelectedRow();
+					Trace trace = raceData.getTraceData().getTrace()[selectedRow];
+					if ( ! trace.isTruePunch() ) {
+						System.out.println("cant start section on MP " + trace);
+					} else {
+						geco.sectionManualChecker().refreshTraceWithUpdatedSection(raceData, section, selectedRow);
+						System.out.println(section.displayString());
+						System.out.println(punchesT.getValueAt(selectedRow, 1));
+					}
+				}
+			});
+		}
+		
+		punchesT.setComponentPopupMenu(popupMenu);
 	}
 
 	public JPanel initPunchPanel(JPanel panel) {
@@ -56,6 +88,7 @@ public class PunchPanel extends JPanel implements RunnersTableListener {
 	public void selectedRunnerChanged(RunnerRaceData raceData) {
 		if( raceData!=null ){
 			refreshPunches(raceData);
+			refreshSectionPopupMenu(raceData);
 		}
 	}
 
@@ -71,7 +104,7 @@ public class PunchPanel extends JPanel implements RunnersTableListener {
 				seq++;
 			}
 		}
-		if( sectionsEnabled ) {
+		if( geco.getConfig().sectionsEnabled ) {
 			setSectionsModel((SectionTraceData) runnerData.getTraceData(), trace, sequence);
 		} else {
 			setClassicModel(trace, sequence);
@@ -189,6 +222,30 @@ public class PunchPanel extends JPanel implements RunnersTableListener {
 		columnModel.getColumn(0).setPreferredWidth(10);
 		columnModel.getColumn(1).setPreferredWidth(75);
 		columnModel.getColumn(2).setPreferredWidth(75);
+	}
+	
+	public static class TableMouseListener extends MouseAdapter {
+
+		private JTable table;
+
+		public TableMouseListener(JTable table) {
+	        this.table = table;
+	    }
+
+				
+		@Override
+		public void mouseReleased(MouseEvent event) {
+	        Point point = event.getPoint();
+	        int currentRow = table.rowAtPoint(point);
+	        table.setRowSelectionInterval(currentRow, currentRow);
+		}
+
+//		@Override
+//	    public void mousePressed(MouseEvent event) {
+//	        Point point = event.getPoint();
+//	        int currentRow = table.rowAtPoint(point);
+//	        table.setRowSelectionInterval(currentRow, currentRow);
+//	    }
 	}
 	
 }

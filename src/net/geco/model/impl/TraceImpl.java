@@ -88,6 +88,11 @@ public class TraceImpl implements Trace {
 	}
 
 	@Override
+	public boolean isTruePunch() {
+		return ! isMP() || isSubst();
+	}
+
+	@Override
 	public boolean isNeutralized() {
 		return neutralized;
 	}

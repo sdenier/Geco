@@ -207,18 +207,18 @@ public class LivePunch implements Trace {
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see net.geco.model.Trace#isNeutralized()
-	 */
+	@Override
+	public boolean isTruePunch() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 	@Override
 	public boolean isNeutralized() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see net.geco.model.Trace#setNeutralized(boolean)
-	 */
 	@Override
 	public void setNeutralized(boolean flag) {
 		// TODO Auto-generated method stub

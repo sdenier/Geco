@@ -24,8 +24,8 @@ import net.geco.model.Messages;
 import net.geco.model.Registry;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
-import net.geco.ui.basics.PunchPanel;
 import net.geco.ui.basics.SwingUtils;
+import net.geco.ui.components.PunchPanel;
 
 /**
  * @author Simon Denier
@@ -76,7 +76,7 @@ public class MergeWizard extends JDialog {
 	}
 	
 	private JPanel createPunchPanel() {
-		punchPanel = new PunchPanel();
+		punchPanel = new PunchPanel(geco);
 		return punchPanel;
 	}
 	

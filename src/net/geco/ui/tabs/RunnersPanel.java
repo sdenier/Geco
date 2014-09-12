@@ -67,9 +67,9 @@ import net.geco.model.Status;
 import net.geco.ui.basics.EcardComparator;
 import net.geco.ui.basics.GecoIcon;
 import net.geco.ui.basics.HyperLog;
-import net.geco.ui.basics.PunchPanel;
 import net.geco.ui.basics.SwingUtils;
 import net.geco.ui.components.ArchiveViewer;
+import net.geco.ui.components.PunchPanel;
 import net.geco.ui.framework.RunnersTableAnnouncer;
 import net.geco.ui.framework.TabPanel;
 import net.geco.ui.framework.UIAnnouncers;
@@ -124,7 +124,7 @@ public class RunnersPanel extends TabPanel
 	
 	public JTabbedPane initInfoPanel() {
 		this.runnerPanel = new RunnerPanel(geco(), frame(), this);
-		this.tracePanel = new PunchPanel(geco().getConfig().sectionsEnabled);
+		this.tracePanel = new PunchPanel(geco());
 		final JTabbedPane pane = new JTabbedPane();
 		pane.addTab(Messages.uiGet("RunnersPanel.RunnerDataTitle"), this.runnerPanel); //$NON-NLS-1$
 		pane.addTab(Messages.uiGet("RunnersPanel.RunnerTraceTitle"), tracePanel); //$NON-NLS-1$
