@@ -31,6 +31,7 @@ import net.geco.model.Section;
 import net.geco.model.SectionTraceData;
 import net.geco.model.Trace;
 import net.geco.ui.framework.RunnersTableAnnouncer.RunnersTableListener;
+import net.geco.ui.tabs.RunnersPanel;
 
 
 /**
@@ -42,9 +43,11 @@ public class PunchPanel extends JPanel implements RunnersTableListener {
 
 	private JTable punchesT;
 	private IGeco geco;
+	private RunnersPanel parentContainer;
 	
-	public PunchPanel(IGeco geco) {
+	public PunchPanel(IGeco geco, RunnersPanel parentContainer) {
 		this.geco = geco;
+		this.parentContainer = parentContainer;
 		this.punchesT = new JTable();
 		this.punchesT.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.punchesT.addMouseListener(new TableMouseListener(punchesT));
@@ -66,8 +69,8 @@ public class PunchPanel extends JPanel implements RunnersTableListener {
 						System.out.println("cant start section on MP " + trace);
 					} else {
 						geco.sectionManualChecker().refreshTraceWithUpdatedSection(raceData, section, selectedRow);
-						System.out.println(section.displayString());
-						System.out.println(punchesT.getValueAt(selectedRow, 1));
+						parentContainer.refreshSelectionInTable();
+						refreshPunches(raceData);
 					}
 				}
 			});
@@ -225,13 +228,11 @@ public class PunchPanel extends JPanel implements RunnersTableListener {
 	}
 	
 	public static class TableMouseListener extends MouseAdapter {
-
 		private JTable table;
 
 		public TableMouseListener(JTable table) {
 	        this.table = table;
 	    }
-
 				
 		@Override
 		public void mouseReleased(MouseEvent event) {
@@ -239,13 +240,6 @@ public class PunchPanel extends JPanel implements RunnersTableListener {
 	        int currentRow = table.rowAtPoint(point);
 	        table.setRowSelectionInterval(currentRow, currentRow);
 		}
-
-//		@Override
-//	    public void mousePressed(MouseEvent event) {
-//	        Point point = event.getPoint();
-//	        int currentRow = table.rowAtPoint(point);
-//	        table.setRowSelectionInterval(currentRow, currentRow);
-//	    }
 	}
 	
 }

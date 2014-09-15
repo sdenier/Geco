@@ -82,8 +82,8 @@ public class SectionsManualChecker extends Control {
 			Trace trace = currentTrace[traceIndex];
 
 			if ( traceIndex == nextSection.getKey() ) {
-				sections.add(new SectionPunches(currentSection.getValue(), sectionStartIndex, punchIndex));
-				sectionStartIndex = punchIndex + 1;
+				sections.add(new SectionPunches(currentSection.getValue(), sectionStartIndex, punchIndex - 1));
+				sectionStartIndex = punchIndex;
 				currentSection = nextSection;
 				if ( eachSection.hasNext() ) {
 					nextSection = eachSection.next();					
@@ -96,7 +96,7 @@ public class SectionsManualChecker extends Control {
 			}
 			traceIndex++;
 		} while ( traceIndex < currentTrace.length );
-		sections.add(new SectionPunches(currentSection.getValue(), sectionStartIndex, currentTrace.length - 1));
+		sections.add(new SectionPunches(currentSection.getValue(), sectionStartIndex, currentSectionTrace.getPunchTrace().length - 1));
 
 		return sections;
 	}

@@ -42,12 +42,12 @@ public class TraceImpl implements Trace {
 		return code;
 	}
 	public String getBasicCode() {
-		if( isMP() || isAdded() ) {
-			return code.substring(1);
-		} else
 		if( isSubst() ) {
 			return code.substring(1, code.indexOf('+'));
 		} else {
+		if( isMP() || isAdded() ) {
+			return code.substring(1);
+		} else
 			return code;
 		}
 	}

@@ -76,7 +76,7 @@ public class MergeWizard extends JDialog {
 	}
 	
 	private JPanel createPunchPanel() {
-		punchPanel = new PunchPanel(geco);
+		punchPanel = new PunchPanel(geco, null);
 		return punchPanel;
 	}
 	

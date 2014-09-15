@@ -43,7 +43,7 @@ public abstract class ResultPanel extends JPanel {
 	}
 
 	protected void initPunchPanel() {
-		punchP = new PunchPanel(null);
+		punchP = new PunchPanel(null, null);
 		add(punchP, BorderLayout.CENTER);
 	}
 
