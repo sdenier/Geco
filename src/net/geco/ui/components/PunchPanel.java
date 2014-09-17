@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.util.Date;
 
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -66,7 +67,7 @@ public class PunchPanel extends JPanel implements RunnersTableListener {
 					int selectedRow = punchesT.getSelectedRow();
 					Trace trace = raceData.getTraceData().getTrace()[selectedRow];
 					if ( ! trace.isTruePunch() ) {
-						System.out.println("cant start section on MP " + trace);
+						JOptionPane.showMessageDialog(parentContainer, "Can not restart a section at missing punch " + trace + ". Please select a valid punch.", "Section Trace", JOptionPane.ERROR_MESSAGE);
 					} else {
 						geco.sectionManualChecker().refreshTraceWithUpdatedSection(raceData, section, selectedRow);
 						parentContainer.refreshSelectionInTable();
