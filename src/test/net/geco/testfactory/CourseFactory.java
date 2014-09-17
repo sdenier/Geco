@@ -20,8 +20,8 @@ import net.geco.model.impl.POFactory;
 public class CourseFactory {
 
 	private static Factory factory = new POFactory();
-	
-	public static Course createCourse(String name, int[] codes) {
+
+	public static Course createCourse(String name, int... codes) {
 		Course course = factory.createCourse();
 		course.setName(name);
 		course.setCodes(codes);
@@ -29,7 +29,7 @@ public class CourseFactory {
 	}
 
 	public static Course createCourse(String name) {
-		return createCourse(name, new int[]{ 31,32,33 });
+		return createCourse(name, 31, 32, 33);
 	}
 	
 	public static Course createCourseWithMassStartTime(String name, Date time) {

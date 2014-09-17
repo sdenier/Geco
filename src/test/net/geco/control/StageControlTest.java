@@ -18,7 +18,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import test.net.geco.GecoFixtures;
+import test.net.geco.testfactory.MockControls;
 
 
 
@@ -36,7 +36,7 @@ public class StageControlTest {
 	@Before
 	public void setUp(){
 		registry = new Registry();
-		GecoControl geco = GecoFixtures.mockGecoControlWithRegistry(registry);
+		GecoControl geco = MockControls.mockGecoControlWithRegistry(registry);
 		factory = new POFactory();
 		Mockito.when(geco.factory()).thenReturn(factory);
 		Mockito.when(geco.announcer()).thenReturn(new Announcer());
