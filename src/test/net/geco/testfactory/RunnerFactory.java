@@ -4,6 +4,7 @@
  */
 package test.net.geco.testfactory;
 
+import net.geco.model.Course;
 import net.geco.model.Factory;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
@@ -29,6 +30,14 @@ public class RunnerFactory {
 		runnerRaceData.setTraceData(factory.createTraceData());
 		runnerRaceData.setResult(factory.createRunnerResult());
 		return runnerRaceData;
+	}
+
+	public static RunnerRaceData createWithCourse(Course course) {
+		Runner runner = factory.createRunner();
+		runner.setCourse(course);
+		RunnerRaceData data = factory.createRunnerRaceData();
+		data.setRunner(runner);
+		return data;
 	}
 
 	public static RunnerRaceData createWithStatus(String ecard, Status status) {

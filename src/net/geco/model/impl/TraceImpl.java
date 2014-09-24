@@ -42,12 +42,12 @@ public class TraceImpl implements Trace {
 		return code;
 	}
 	public String getBasicCode() {
-		if( isMP() || isAdded() ) {
-			return code.substring(1);
-		} else
 		if( isSubst() ) {
 			return code.substring(1, code.indexOf('+'));
 		} else {
+		if( isMP() || isAdded() ) {
+			return code.substring(1);
+		} else
 			return code;
 		}
 	}
@@ -85,6 +85,11 @@ public class TraceImpl implements Trace {
 	public boolean isSubst() {
 		// Notice that isSub => isMP
 		return code.startsWith("-") && code.contains("+"); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	@Override
+	public boolean isTruePunch() {
+		return ! isMP() || isSubst();
 	}
 
 	@Override

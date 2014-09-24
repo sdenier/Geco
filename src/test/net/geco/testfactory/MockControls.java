@@ -19,13 +19,21 @@ import net.geco.model.impl.POFactory;
  *
  */
 public class MockControls {
-	
+
+	public static GecoControl mockGecoControl() {
+		return mock(GecoControl.class);
+	}
+
 	public static GecoControl mockGecoControlWith(Factory factory, Stage stage, Announcer announcer) {
-		GecoControl mockGecoControl = mock(GecoControl.class);
+		GecoControl mockGecoControl = mockGecoControl();
 		when(mockGecoControl.factory()).thenReturn(factory);
 		when(mockGecoControl.stage()).thenReturn(stage);
 		when(mockGecoControl.announcer()).thenReturn(announcer);
 		return mockGecoControl;		
+	}
+
+	public static GecoControl mockGecoControlWithFactory(Factory factory) {
+		return mockGecoControlWith(factory, mock(Stage.class), mock(Announcer.class));
 	}
 
 	public static GecoControl mockGecoControlWithRegistry(Registry registry) {

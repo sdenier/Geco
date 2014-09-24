@@ -19,6 +19,7 @@ import net.geco.control.StageControl;
 import net.geco.control.StartlistExporter;
 import net.geco.control.StartlistImporter;
 import net.geco.control.checking.Checker;
+import net.geco.control.checking.SectionsManualChecker;
 import net.geco.control.results.CNCalculator;
 import net.geco.control.results.ResultBuilder;
 import net.geco.control.results.ResultExporter;
@@ -61,5 +62,6 @@ public interface IGeco {
 	public StartlistExporter startlistExporter();
 	public SectionService sectionService();
 	public SectionsExporter sectionsExporter();
+	public SectionsManualChecker sectionManualChecker();
 
 }

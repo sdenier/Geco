@@ -19,6 +19,7 @@ import net.geco.control.StageControl;
 import net.geco.control.StartlistExporter;
 import net.geco.control.StartlistImporter;
 import net.geco.control.checking.SectionsChecker;
+import net.geco.control.checking.SectionsManualChecker;
 import net.geco.control.results.CNCalculator;
 import net.geco.control.results.ResultBuilder;
 import net.geco.control.results.ResultExporter;
@@ -104,6 +105,7 @@ public class ROAAppBuilder extends AppBuilder {
 		new StartlistExporter(gecoControl);
 		new SectionService(gecoControl);
 		new SectionsExporter(gecoControl);
+		new SectionsManualChecker(gecoControl);
 		new SectionsSplitPrinter(gecoControl);
 		
 		new RefereeLogOperation(gecoControl);

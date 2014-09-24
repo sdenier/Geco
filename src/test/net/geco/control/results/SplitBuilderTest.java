@@ -21,7 +21,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import test.net.geco.GecoFixtures;
+import test.net.geco.testfactory.GecoFixtures;
 
 
 /**

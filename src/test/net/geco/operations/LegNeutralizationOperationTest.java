@@ -12,8 +12,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static test.net.geco.GecoFixtures.createCourse;
-import static test.net.geco.GecoFixtures.punch;
+import static test.net.geco.testfactory.TraceFactory.punch;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -26,7 +25,6 @@ import net.geco.control.GecoControl;
 import net.geco.control.checking.InlineTracer;
 import net.geco.control.checking.PenaltyChecker;
 import net.geco.control.results.ResultBuilder;
-import net.geco.model.Category;
 import net.geco.model.Course;
 import net.geco.model.Messages;
 import net.geco.model.Punch;
@@ -44,7 +42,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import test.net.geco.GecoFixtures;
+import test.net.geco.testfactory.CourseFactory;
+import test.net.geco.testfactory.GecoFixtures;
+import test.net.geco.testfactory.MockControls;
+import test.net.geco.testfactory.RunnerFactory;
 
 /**
  * @author Simon Denier
@@ -60,7 +61,7 @@ public class LegNeutralizationOperationTest {
 	public void setUp() {
 		Messages.put("ui", "net.geco.ui.messages"); //$NON-NLS-1$ //$NON-NLS-2$
 		factory = new POFactory();
-		courseA = createCourse("A", 42, 43, 45, 31, 45, 32);
+		courseA = CourseFactory.createCourse("A", 42, 43, 45, 31, 45, 32);
 	}
 	
 	@Test
@@ -74,14 +75,14 @@ public class LegNeutralizationOperationTest {
 	
 	@Test
 	public void shouldSelectCoursesWithNeutralizedLeg() {
-		Course courseB = createCourse("B", 42, 43, 31, 45, 32);
-		Course courseC = createCourse("C", 31, 45, 32, 45, 31);
+		Course courseB = CourseFactory.createCourse("B", 42, 43, 31, 45, 32);
+		Course courseC = CourseFactory.createCourse("C", 31, 45, 32, 45, 31);
 		Registry registry = new Registry();
 		registry.addCourse(courseA);
 		registry.addCourse(courseB);
 		registry.addCourse(courseC);
 		
-		GecoControl geco = GecoFixtures.mockGecoControlWithRegistry(registry);
+		GecoControl geco = MockControls.mockGecoControlWithRegistry(registry);
 		when(geco.announcer()).thenReturn(new Announcer());
 		LegNeutralizationOperation function = new LegNeutralizationOperation(geco);
 		function.setNeutralizedLeg(45, 31);
@@ -96,7 +97,7 @@ public class LegNeutralizationOperationTest {
 	public void testRunnerClearTrace() {
 		PenaltyChecker checker = new PenaltyChecker(factory, new InlineTracer(factory));
 
-		RunnerRaceData data = GecoFixtures.createRunnerData(courseA, null); 
+		RunnerRaceData data = RunnerFactory.createWithCourse(courseA);
 		data.setPunches(new Punch[] { punch(42), punch(45), punch(31), punch(45), punch(32) });
 		checker.check(data);
 		assertEquals("42,-43,45,31,45,32", data.getTraceData().formatClearTrace());
@@ -120,10 +121,9 @@ public class LegNeutralizationOperationTest {
 	
 	@Test
 	public void shouldDetectRunnerWithLegToNeutralize() {
-		Category cat = factory.createCategory();
 		PenaltyChecker checker = new PenaltyChecker(factory, new InlineTracer(factory));
 
-		RunnerRaceData dataSelected = GecoFixtures.createRunnerData(courseA, cat); 
+		RunnerRaceData dataSelected = RunnerFactory.createWithCourse(courseA);
 		dataSelected.setPunches(new Punch[] { punch(42), punch(45), punch(31), punch(45), punch(32) });
 		checker.check(dataSelected);
 		Trace[] leg = dataSelected.retrieveLeg(45, 31);
@@ -131,7 +131,7 @@ public class LegNeutralizationOperationTest {
 		assertEquals(Integer.toString(45), leg[0].getCode());
 		assertEquals(Integer.toString(31), leg[1].getCode());
 		
-		RunnerRaceData dataRejected = GecoFixtures.createRunnerData(courseA, cat);
+		RunnerRaceData dataRejected = RunnerFactory.createWithCourse(courseA);
 		dataRejected.setPunches(new Punch[0]);
 		dataRejected.setTraceData(factory.createTraceData());
 		dataRejected.setResult(factory.createRunnerResult());
@@ -302,7 +302,7 @@ public class LegNeutralizationOperationTest {
 		
 		Registry registry = mock(Registry.class);
 		when(registry.getRunnersData()).thenReturn(Arrays.asList(raceData));
-		GecoControl geco = GecoFixtures.mockGecoControlWithRegistry(registry);
+		GecoControl geco = MockControls.mockGecoControlWithRegistry(registry);
 		Mockito.doNothing().when(geco).log(Mockito.anyString());
 		PenaltyChecker checker = new PenaltyChecker(factory);
 		checker.setMPPenalty(15000);

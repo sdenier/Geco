@@ -6,7 +6,7 @@ package test.net.geco.control.ecardmodes;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
-import static test.net.geco.GecoFixtures.punch;
+import static test.net.geco.testfactory.TraceFactory.punch;
 
 import java.util.Date;
 
@@ -27,7 +27,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import test.net.geco.GecoFixtures;
+import test.net.geco.testfactory.CourseFactory;
+import test.net.geco.testfactory.MockControls;
 
 /**
  * @author Simon Denier
@@ -49,15 +50,15 @@ public class CourseDetectorTest {
 	@Before
 	public void setUp() {
 		factory = new POFactory();
-		courseA = GecoFixtures.createCourse("A", 31, 34, 31, 33, 31, 32, 31);
-		courseB = GecoFixtures.createCourse("B", 31, 33, 31, 32, 31, 34, 31);
-		courseC = GecoFixtures.createCourse("C", 31, 33, 31, 32, 31, 34, 31, 35, 36);
+		courseA = CourseFactory.createCourse("A", 31, 34, 31, 33, 31, 32, 31);
+		courseB = CourseFactory.createCourse("B", 31, 33, 31, 32, 31, 34, 31);
+		courseC = CourseFactory.createCourse("C", 31, 33, 31, 32, 31, 34, 31, 35, 36);
 		registry = new Registry();
 		registry.ensureAutoCourse(factory);
 		registry.addCourse(courseA);
 		registry.addCourse(courseB);
 		registry.addCourse(courseC);
-		geco = GecoFixtures.mockGecoControlWithRegistry(registry);
+		geco = MockControls.mockGecoControlWithRegistry(registry);
 		RunnerControl runnerControl = new RunnerControl(geco);
 		when(geco.factory()).thenReturn(factory);
 		when(geco.getService(RunnerControl.class)).thenReturn(runnerControl);

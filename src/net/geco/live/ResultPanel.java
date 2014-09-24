@@ -12,7 +12,7 @@ import javax.swing.SwingConstants;
 
 import net.geco.model.RunnerRaceData;
 import net.geco.model.Status;
-import net.geco.ui.basics.PunchPanel;
+import net.geco.ui.components.PunchPanel;
 
 
 /**
@@ -43,7 +43,7 @@ public abstract class ResultPanel extends JPanel {
 	}
 
 	protected void initPunchPanel() {
-		punchP = new PunchPanel();
+		punchP = new PunchPanel(null, null);
 		add(punchP, BorderLayout.CENTER);
 	}
 

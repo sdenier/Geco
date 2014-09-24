@@ -189,6 +189,12 @@ public class SectionsTracer extends BasicControl {
 			findFirstLastIndices();
 		}
 
+		public SectionPunches(Section section, int startIndex, int endIndex) {
+			targetSection = section;
+			firstOkPunchIndex = startIndex;
+			lastOkPunchIndex = endIndex;
+		}
+
 		public SectionType getType() {
 			return targetSection.getType();
 		}
