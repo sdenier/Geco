@@ -106,4 +106,8 @@ public class ConfigTablePanel<T> extends JPanel {
 		return table;
 	}
 
+	public ConfigTableModel<T> tableModel() {
+		return tableModel;
+	}
+	
 }

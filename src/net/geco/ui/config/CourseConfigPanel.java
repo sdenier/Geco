@@ -31,6 +31,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumnModel;
 
 import net.geco.basics.Announcer;
+import net.geco.basics.Announcer.CourseListener;
 import net.geco.basics.TimeManager;
 import net.geco.control.SectionService;
 import net.geco.framework.IGecoApp;
@@ -313,16 +314,25 @@ public class CourseConfigPanel extends JPanel implements ConfigPanel {
 		controlsPanel.table().setRowSorter(null);
 		coursePanel.table().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
-				if( getSelectedCourse()!=null ) {
-					List<Integer> courseControls = new ArrayList<Integer>(getSelectedCourse().getCodes().length);
-					for (int code : getSelectedCourse().getCodes()) {
-						courseControls.add(code);
-					}
-					controlsModel.setData(courseControls);
-				}
+				displayCourseControls(controlsModel);
+			}
+		});
+		geco.announcer().registerCourseListener(new CourseListener() {
+			public void courseChanged(Course course) {
+				displayCourseControls(controlsModel);
 			}
 		});
 		return controlsPanel;
+	}
+
+	private void displayCourseControls(ConfigTableModel<Integer> controlsModel) {
+		if( getSelectedCourse()!=null ) {
+			List<Integer> courseControls = new ArrayList<Integer>(getSelectedCourse().getCodes().length);
+			for (int code : getSelectedCourse().getCodes()) {
+				courseControls.add(code);
+			}
+			controlsModel.setData(courseControls);
+		}
 	}
 
 	private ConfigTableModel<Integer> createControlsModel() {

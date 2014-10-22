@@ -63,6 +63,7 @@ public class CourseControlDialog extends JDialog {
 						newCodes[i] = Integer.parseInt(data[i]);
 					}
 					course.setCodes(newCodes);
+					course.refreshSectionCodes();
 					changed = true;
 					setVisible(false);
 				} catch (NumberFormatException e2) {
