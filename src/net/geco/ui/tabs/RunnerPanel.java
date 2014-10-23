@@ -35,6 +35,7 @@ import net.geco.model.RunnerRaceData;
 import net.geco.ui.basics.GecoIcon;
 import net.geco.ui.basics.SwingUtils;
 import net.geco.ui.framework.GecoPanel;
+import net.geco.ui.framework.RunnersTableAnnouncer;
 import net.geco.ui.framework.RunnersTableAnnouncer.RunnersTableListener;
 import net.geco.ui.merge.MergeWizard;
 
@@ -49,6 +50,7 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 	private RunnerRaceData runnerData;
 	private Runner runner;
 	private RunnersPanel parentContainer;
+	private RunnersTableAnnouncer runnerAnnouncer;
 
 	// Registration
 	private JTextField regStartF;
@@ -84,9 +86,10 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 	private static final Color PALE_RED = new Color(1.0f, 0.8f, 0.8f);
 
 	
-	public RunnerPanel(IGeco geco, JFrame frame, RunnersPanel parent) {
+	public RunnerPanel(IGeco geco, JFrame frame, RunnersPanel parent, RunnersTableAnnouncer runnersTableAnnouncer) {
 		super(geco, frame);
 		this.parentContainer = parent;
+		runnerAnnouncer = runnersTableAnnouncer;
 		initPanel(this);
 		enablePanel(false);
 	}
@@ -397,7 +400,7 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 	public void recheckRunnerStatus() {
 		if( control().recheckRunner(runnerData) ){
 			parentContainer.refreshSelectionInTable();
-			refreshPanel();
+			runnerAnnouncer.announceSelectedRunnerChange(runnerData);
 		}
 	}
 

@@ -104,26 +104,26 @@ public class RunnersPanel extends TabPanel
 		super(geco, frame);
 		announcer = new RunnersTableAnnouncer();
 		uiAnnouncers.registerAnnouncer(announcer);
-		initRunnersPanel(this);
+		initRunnersPanel(this, announcer);
 		geco().announcer().registerRunnerListener(this);
 		geco().announcer().registerStageConfigListener(this);
 		geco().announcer().registerCardListener(this);
 	}
 
 
-	public void initRunnersPanel(JPanel panel) {
+	public void initRunnersPanel(JPanel panel, RunnersTableAnnouncer announcer) {
 		JPanel tablePan = new JPanel(new BorderLayout());
 		tablePan.add(initTableScroll(), BorderLayout.CENTER);
 		tablePan.add(SwingUtils.embed(new HyperLog(geco().announcer(), this)), BorderLayout.SOUTH);
 		panel.setLayout(new BorderLayout());
 		panel.add(tablePan, BorderLayout.CENTER);
 		panel.add(initTopPanel(), BorderLayout.NORTH);
-		panel.add(initInfoPanel(), BorderLayout.EAST);
+		panel.add(initInfoPanel(announcer), BorderLayout.EAST);
 		setKeybindings();
 	}
 	
-	public JTabbedPane initInfoPanel() {
-		this.runnerPanel = new RunnerPanel(geco(), frame(), this);
+	public JTabbedPane initInfoPanel(RunnersTableAnnouncer announcer) {
+		this.runnerPanel = new RunnerPanel(geco(), frame(), this, announcer);
 		this.tracePanel = new PunchPanel(geco(), this);
 		final JTabbedPane pane = new JTabbedPane();
 		pane.addTab(Messages.uiGet("RunnersPanel.RunnerDataTitle"), this.runnerPanel); //$NON-NLS-1$
