@@ -302,7 +302,25 @@ public class RunnerControl extends Control {
 		}
 		return true;
 	}
-	
+
+	public boolean validateManualTimePenalty(RunnerRaceData runnerData, String manualTimePenalty) {
+		try {
+			long oldTime = runnerData.getResult().getManualTimePenalty();
+			Date newTime = (manualTimePenalty.equals("") || manualTimePenalty.equals("0")) ?
+				new Date(0)
+				:
+				TimeManager.userParse(manualTimePenalty);
+			if( oldTime!=newTime.getTime() ) {
+				runnerData.getResult().setManualTimePenalty(newTime.getTime());
+			}
+			resetRaceTime(runnerData);
+			return true;
+		} catch (ParseException e1) {
+			geco().info(Messages.getString("RunnerControl.RacetimeFormatMessage"), true); //$NON-NLS-1$
+			return false;
+		}
+	}
+
 	public boolean validateStatus(RunnerRaceData runnerData, Status newStatus) {
 		Status oldStatus = runnerData.getResult().getStatus();
 		if( !newStatus.equals(oldStatus) ) {
