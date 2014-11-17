@@ -96,7 +96,7 @@ public class ECardTrainingModeTest extends ECardModeSetup {
 	public void handleDuplicateCallsAnnouncer() {
 		when(registry.getEcards()).thenReturn(new HashSet<String>(Arrays.asList(new String[]{ "999" })));
 		ecardMode.handleDuplicate(danglingRunnerData, fullRunner);
-		verify(announcer).announceCardReadAgain("999a");
+		verify(announcer).announceCardRead("999a");
 	}
 
 	@Test

@@ -46,7 +46,7 @@ public class ECardTrainingMode extends AbstractEcardReadingMode {
 	public void handleDuplicate(RunnerRaceData runnerData, Runner runner) {
 		String returnedCard = duplicateHandler.handleDuplicate(runnerData, runner);
 		if( returnedCard!=null ) {
-			geco().announcer().announceCardReadAgain(returnedCard);
+			geco().announcer().announceCardRead(returnedCard);
 		}
 	}
 
