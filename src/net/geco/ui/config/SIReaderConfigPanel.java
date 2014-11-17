@@ -45,6 +45,9 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 		c.insets = new Insets(0, 0, 5, 5);
 		c.fill = GridBagConstraints.HORIZONTAL;
 		
+		/*
+		 * SI Reader config
+		 */
 		final JComboBox stationPortCB = new JComboBox();
 		populateCommPorts(geco, stationPortCB);
 		stationPortCB.setPreferredSize(new Dimension(170, stationPortCB.getPreferredSize().height));
@@ -71,16 +74,23 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 		Box modeConfigBox = Box.createVerticalBox();
 		add(modeConfigBox, c);
 		
+		/*
+		 * Auto/Manual handler config + auto options
+		 */
 		JRadioButton manualB = new JRadioButton(Messages.uiGet("SIReaderConfigPanel.ManualHandlerConfig")); //$NON-NLS-1$
 		JRadioButton autoB = new JRadioButton(Messages.uiGet("SIReaderConfigPanel.AutoHandlerConfig")); //$NON-NLS-1$
 		final JRadioButton archiveLookupB = new JRadioButton(Messages.uiGet("SIReaderConfigPanel.ArchiveLookupConfig")); //$NON-NLS-1$
 		final JRadioButton alwaysCreateB = new JRadioButton(Messages.uiGet("SIReaderConfigPanel.NoLookupConfig")); //$NON-NLS-1$
-
+		final JRadioButton copyEntryB = new JRadioButton("Copy entry with matching ecard");
+		final JRadioButton copyArchiveB = new JRadioButton("Always lookup and insert from archive, copy entry otherwise");
+		
 		manualB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				geco.siHandler().enableManualHandler();
 				archiveLookupB.setEnabled(false);
 				alwaysCreateB.setEnabled(false);
+				copyEntryB.setEnabled(false);
+				copyArchiveB.setEnabled(false);
 			}
 		});
 		autoB.addActionListener(new ActionListener() {
@@ -88,6 +98,8 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 				geco.siHandler().enableAutoHandler();
 				archiveLookupB.setEnabled(true);
 				alwaysCreateB.setEnabled(true);
+				copyEntryB.setEnabled(true);
+				copyArchiveB.setEnabled(true);
 			}
 		});
 		ButtonGroup modeConfigGroup = new ButtonGroup();
@@ -105,6 +117,9 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 		modeConfigBox.add(manualB);
 		modeConfigBox.add(autoB);
 		
+		/*
+		 * Archive Lookup/Anonymous Creation for unknown
+		 */
 		archiveLookupB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				geco.siHandler().enableArchiveLookup();
@@ -134,6 +149,43 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 		modeConfigBox.add(Box.createVerticalStrut(10));
 		modeConfigBox.add(insertConfigBox);
 
+		/*
+		 * Copy Entry/Archive Lookup for duplicate
+		 */
+		copyEntryB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				geco.siHandler().enableCopyDuplicate();
+			}
+		});
+
+		copyArchiveB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				geco.siHandler().disableCopyDuplicate();
+			}
+		});
+
+		ButtonGroup copyConfigGroup = new ButtonGroup();
+		copyConfigGroup.add(copyEntryB);
+		copyConfigGroup.add(copyArchiveB);
+		if ( geco.siHandler().copyDuplicateEnabled() ) {
+			copyEntryB.setSelected(true);
+		} else {
+			copyArchiveB.setSelected(true);
+		}
+
+		Box copyConfigBox = Box.createVerticalBox();
+		copyConfigBox.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
+		copyConfigBox.add(new JLabel(Html.htmlTag("i", "With duplicate ecards (training mode/auto handler only)")));
+		copyConfigBox.add(Box.createVerticalStrut(5));
+		copyConfigBox.add(copyEntryB);
+		copyConfigBox.add(copyArchiveB);
+
+		modeConfigBox.add(Box.createVerticalStrut(10));
+		modeConfigBox.add(copyConfigBox);
+
+		/*
+		 * Courseset config
+		 */
 		final JCheckBox coursesetB = new JCheckBox(Messages.uiGet("SIReaderConfigPanel.CategoryCourseSetLabel")); //$NON-NLS-1$
 		coursesetB.setSelected(geco.siHandler().detectionByCourseSetEnabled());
 		coursesetB.addActionListener(new ActionListener() {
