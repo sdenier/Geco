@@ -32,21 +32,34 @@ public class ArchiveLookupHandler extends AbstractHandlerWithCourseDetector impl
 	public String handleFinish(RunnerRaceData data) {return null;}
 
 	@Override
-	public String handleDuplicate(RunnerRaceData data, Runner runner) {return null;}
+	public String handleDuplicate(RunnerRaceData data, Runner runner) {
+		Runner archiveRunner = archiveManager.findAndBuildRunner(runner.getEcard());
+		if( archiveRunner != null ) {
+			insertFromArchive(data, archiveRunner);
+		} else {
+			foundInArchive = false;
+			return this.fallbackHandler.handleDuplicate(data, runner);
+		}
+		return archiveRunner.getEcard();
+	}
 
 	@Override
 	public String handleUnregistered(RunnerRaceData data, String cardId) {
 		Runner runner = archiveManager.findAndBuildRunner(cardId);
 		if( runner != null ) {
-			foundInArchive = true;
-			runner.setCourse(courseDetector.detectCourse(data, runner.getCategory()));
-			runnerControl.registerRunner(runner, data);
-			geco().log("Insertion " + data.infoString()); //$NON-NLS-1$
+			insertFromArchive(data, runner);
 		} else {
 			foundInArchive = false;
 			return this.fallbackHandler.handleUnregistered(data, cardId);
 		}
 		return cardId;
+	}
+
+	private void insertFromArchive(RunnerRaceData data, Runner archiveRunner) {
+		foundInArchive = true;
+		archiveRunner.setCourse(courseDetector.detectCourse(data, archiveRunner.getCategory()));
+		runnerControl.registerRunner(archiveRunner, data);
+		geco().log("Insertion " + data.infoString()); //$NON-NLS-1$
 	}
 
 	@Override

@@ -47,6 +47,33 @@ public class ArchiveLookupHandlerTest extends ECardModeSetup {
 	}
 
 	@Test
+	public void handleDuplicateCallsArchiveManager() {
+		subject().handleDuplicate(fullRunnerData, fullRunner);
+		verify(archive).findAndBuildRunner(fullRunner.getEcard());
+	}
+
+	@Test
+	public void handleDuplicateCallsCourseDetector() {
+		when(archive.findAndBuildRunner(fullRunner.getEcard())).thenReturn(fullRunner);
+		subject().handleDuplicate(fullRunnerData, fullRunner);
+		verify(detector).detectCourse(fullRunnerData, fullRunner.getCategory());
+	}
+
+	@Test
+	public void handleDuplicateRegistersRunnerFromArchiveIfFound() {
+		Runner runner = factory.createRunner();
+		when(archive.findAndBuildRunner(fullRunner.getEcard())).thenReturn(runner);
+		subject().handleDuplicate(fullRunnerData, fullRunner);
+		verify(runnerControl).registerRunner(runner, fullRunnerData);
+	}
+
+	@Test
+	public void handleDuplicateDelegatesToFallbackCreationHandlerIfNotFoundInArchive() {
+		subject().handleDuplicate(fullRunnerData, fullRunner);
+		verify(fallbackHandler).handleDuplicate(fullRunnerData, fullRunner);
+	}
+
+	@Test
 	public void handleUnregisteredCallsArchiveManager() {
 		subject().handleUnregistered(fullRunnerData, "2000");
 		verify(archive).findAndBuildRunner("2000");
