@@ -21,7 +21,7 @@ public abstract class AbstractEcardReadingMode extends AbstractECardMode {
 		super(geco);
 		this.detector = detector;
 		finishHandler = new AutoCheckerHandler(geco, detector);
-		enableAutoHandler(true);
+		enableAutoHandler(true, true);
 	}
 	
 	public void enableManualHandler() {
@@ -30,7 +30,7 @@ public abstract class AbstractEcardReadingMode extends AbstractECardMode {
 		unregisteredHandler = manualHandler;
 	}
 
-	public void enableAutoHandler(boolean archiveLookupOn) {	}
+	public void enableAutoHandler(boolean archiveLookupOn, boolean copyDuplicateOn) {	}
 	
 	@Override
 	public void handleRegistered(RunnerRaceData runnerData) {

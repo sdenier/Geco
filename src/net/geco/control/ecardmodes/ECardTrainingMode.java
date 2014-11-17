@@ -27,9 +27,10 @@ public class ECardTrainingMode extends AbstractEcardReadingMode {
 		}
 	}
 	
-	public void enableAutoHandler(boolean archiveLookupOn) {
-		duplicateHandler = new CopyRunnerHandler(geco(), detector);
+	@Override
+	public void enableAutoHandler(boolean archiveLookupOn, boolean copyDuplicateOn) {
 		toggleArchiveLookup(archiveLookupOn);
+		toggleCopyDuplicate(copyDuplicateOn);
 	}
 	
 	public ECardTrainingMode toggleArchiveLookup(boolean toggle) {
@@ -40,6 +41,15 @@ public class ECardTrainingMode extends AbstractEcardReadingMode {
 			unregisteredHandler = new AnonCreationHandler(geco(), detector); 
 		}
 		return this;
+	}
+
+	public void toggleCopyDuplicate(boolean toggle) {
+		if( toggle ){
+			duplicateHandler = new CopyRunnerHandler(geco(), detector);
+		} else {
+			duplicateHandler = new ArchiveLookupHandler(geco(), detector,
+									new CopyRunnerHandler(geco(), detector));
+		}
 	}
 
 	@Override
