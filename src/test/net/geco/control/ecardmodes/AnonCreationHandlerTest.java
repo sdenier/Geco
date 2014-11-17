@@ -90,22 +90,4 @@ public class AnonCreationHandlerTest extends ECardModeSetup {
 		assertNull(returnedEcard);
 	}
 
-	@Test
-	public void registerAnonymousRunnerCreatesNewRunner() {
-		try {
-			subject().registerAnonymousRunner(fullRunnerData, testCourse, "5000");
-			verify(runnerControl).buildAnonymousRunner("5000", testCourse);
-		} catch (RunnerCreationException e) { fail(); }
-	}
-
-	@Test
-	public void registerAnonymousRunnerRegisterNewRunner() {
-		Runner newRunner = factory.createRunner();
-		try {
-			when(runnerControl.buildAnonymousRunner("5000", testCourse)).thenReturn(newRunner);
-			subject().registerAnonymousRunner(fullRunnerData, testCourse, "5000");
-		} catch (RunnerCreationException e) { fail(); }
-		verify(runnerControl).registerRunner(newRunner, fullRunnerData);
-	}
-	
 }

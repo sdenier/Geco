@@ -65,7 +65,10 @@ public class AnonCreationHandler extends AbstractHandlerWithCourseDetector imple
 	protected String handleData(RunnerRaceData data, String ecard) {
 		Course course = courseDetector.detectCourse(data);
 		try {
-			registerAnonymousRunner(data, course, ecard);
+			setCustomStatus(data);
+			Runner newRunner = runnerControl.buildAnonymousRunner(ecard, course); // derive unique ecard
+			runnerControl.registerRunner(newRunner, data);
+			geco().log("Creation " + data.infoString()); //$NON-NLS-1$
 		} catch (RunnerCreationException e1) {
 			geco().log(e1.getLocalizedMessage());
 			return null;
@@ -74,14 +77,6 @@ public class AnonCreationHandler extends AbstractHandlerWithCourseDetector imple
 	}
 
 	protected void setCustomStatus(RunnerRaceData data) {	}
-
-	public void registerAnonymousRunner(RunnerRaceData data, Course course, String ecard)
-			throws RunnerCreationException {
-		setCustomStatus(data);
-		Runner newRunner = runnerControl.buildAnonymousRunner(ecard, course); // derive unique ecard
-		runnerControl.registerRunner(newRunner, data);
-		geco().log("Creation " + data.infoString()); //$NON-NLS-1$
-	}
 
 	@Override
 	public boolean foundInArchive() {
