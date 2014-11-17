@@ -262,6 +262,7 @@ public final class PersistentStore {
 			result.setResultTime(r.getLong(K.TIME));
 			result.setStatus(Status.valueOf(r.getString(K.STATUS)));
 			result.setTimePenalty(r.getLong(K.PENALTY));
+			result.setManualTimePenalty(r.optLong(K.MANUAL_PENALTY, 0)); // MIGR v2.x -> v2.3
 			raceData.setResult(result);
 		}
 	}
@@ -429,6 +430,7 @@ public final class PersistentStore {
 				.field(K.MPS, traceData.getNbMPs())
 				.field(K.EXTRA, traceData.getNbExtraneous())
 				.field(K.PENALTY, result.getTimePenalty())
+				.field(K.MANUAL_PENALTY, result.getManualTimePenalty())
 				.field(K.RACE_TIME, result.getRaceTime());
 			
 			Trace[] traceArray = traceData.getTrace();
@@ -515,6 +517,7 @@ public final class PersistentStore {
 		public static final String MPS;
 		public static final String EXTRA;
 		public static final String PENALTY;
+		public static final String MANUAL_PENALTY;
 		public static final String RACE_TIME;
 		public static final String TRACE;
 		public static final String SECTION_DATA;
@@ -544,6 +547,7 @@ public final class PersistentStore {
 				MPS = "mps"; //$NON-NLS-1$
 				EXTRA = "extra"; //$NON-NLS-1$
 				PENALTY = "penalty"; //$NON-NLS-1$
+				MANUAL_PENALTY = "manual"; //$NON-NLS-1$
 				RACE_TIME = "running"; //$NON-NLS-1$
 				TRACE = "trace"; //$NON-NLS-1$
 				SECTION_DATA = "section_data"; //$NON-NLS-1$
@@ -571,6 +575,7 @@ public final class PersistentStore {
 				MPS = "m"; //$NON-NLS-1$
 				EXTRA = "x"; //$NON-NLS-1$
 				PENALTY = "p"; //$NON-NLS-1$
+				MANUAL_PENALTY = "b"; //$NON-NLS-1$
 				RACE_TIME = "u"; //$NON-NLS-1$
 				TRACE = "r"; //$NON-NLS-1$
 				SECTION_DATA = "o"; //$NON-NLS-1$

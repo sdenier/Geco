@@ -11,6 +11,8 @@ package net.geco.model;
  */
 public interface RunnerResult extends Cloneable {
 
+	public RunnerResult clone();
+
 	public long getRaceTime();
 
 	public void setRaceTime(long raceTime);
@@ -39,6 +41,10 @@ public interface RunnerResult extends Cloneable {
 
 	public String formatTimePenalty();
 
-	public RunnerResult clone();
+	public long getManualTimePenalty();
+
+	public void setManualTimePenalty(long time);
+
+	public String formatManualTimePenalty();
 	
 }

@@ -79,7 +79,7 @@ public class PenaltyChecker extends AbstractChecker implements StageListener {
 		if( raceTime==TimeManager.NO_TIME_l ) {
 			return raceTime;
 		}
-		return raceTime + data.getResult().getTimePenalty();
+		return raceTime + data.getResult().getTimePenalty() + data.getResult().getManualTimePenalty();
 	}
 
 	@Override

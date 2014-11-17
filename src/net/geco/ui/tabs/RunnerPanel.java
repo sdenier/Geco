@@ -71,6 +71,7 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 	private JTextField raceTimeF;
 	private JTextField mpF;
 	private JTextField extraF;
+	private JTextField manualPenaltyF;
 	private JTextField penaltyF;
 	private JTextField officialTimeF;
 
@@ -134,6 +135,7 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 				archiveF,
 				rentedBx,
 				ncBx,
+				manualPenaltyF,
 				recheckStatusB,
 				mergeDialogB,
 				resetTimeB,
@@ -174,6 +176,7 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 		mpF.setText(Integer.toString(runnerData.getTraceData().getNbMPs()));
 		extraF.setText(Integer.toString(runnerData.getTraceData().getNbExtraneous()));
 		penaltyF.setText(runnerData.getResult().formatTimePenalty());
+		manualPenaltyF.setText(runnerData.getResult().formatManualTimePenalty());
 		displayOfficialResultTime(officialTimeF, geco().checker().computeResultTime(runnerData));
 	}
 
@@ -343,11 +346,31 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 		extraF = new JTextField(FIELDSIZE);
 		extraF.setEditable(false);
 		extraF.setToolTipText("Number of extraneous punches: added punches not on course");
+		manualPenaltyF = new JTextField(FIELDSIZE);
+		manualPenaltyF.setToolTipText("Manual time penalty to add or substract from race time");
 		penaltyF = new JTextField(FIELDSIZE);
 		penaltyF.setEditable(false);
 		officialTimeF = new JTextField(FIELDSIZE);
 		officialTimeF.setEditable(false);
 		officialTimeF.setToolTipText(Messages.uiGet("RunnerPanel.OfficialTimeTooltip")); //$NON-NLS-1$
+
+		manualPenaltyF.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				control().validateManualTimePenalty(runnerData, manualPenaltyF.getText());
+				refreshResultPanel();
+				parentContainer.refreshSelectionInTable();
+			}
+		});
+		manualPenaltyF.setInputVerifier(new InputVerifier() {
+			@Override
+			public boolean verify(JComponent input) {
+				control().validateManualTimePenalty(runnerData, manualPenaltyF.getText());
+				refreshResultPanel();
+				parentContainer.refreshSelectionInTable();
+				return true; // always yield focus
+			}
+		});
 
 		JPanel resultPanel = new JPanel();
 		resultPanel.setLayout(new GridBagLayout());
@@ -372,8 +395,8 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 				penaltyF);
 		c.gridy = 3;
 		addRow(resultPanel, c, 
-				new JLabel("Extra"),
-				extraF,
+				geco().getConfig().sectionsEnabled ? new JLabel("Bon/Mal") : new JLabel("Extra"),
+				geco().getConfig().sectionsEnabled ? manualPenaltyF : extraF,
 				new JLabel(Messages.uiGet("RunnerPanel.OfficialTimeLabel")), //$NON-NLS-1$
 				officialTimeF);
 

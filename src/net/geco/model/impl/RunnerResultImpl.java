@@ -19,6 +19,8 @@ public class RunnerResultImpl implements RunnerResult {
 	
 	private long timePenalty = 0;
 
+	private long manualTimePenalty = 0;
+
 	public RunnerResult clone() {
 		try {
 			return (RunnerResult) super.clone();
@@ -84,6 +86,18 @@ public class RunnerResultImpl implements RunnerResult {
 
 	public String formatTimePenalty() {
 		return TimeManager.time(timePenalty);
+	}
+
+	public long getManualTimePenalty() {
+		return this.manualTimePenalty;
+	}
+
+	public void setManualTimePenalty(long time) {
+		this.manualTimePenalty = time;
+	}
+
+	public String formatManualTimePenalty() {
+		return TimeManager.time(manualTimePenalty);
 	}
 
 }
