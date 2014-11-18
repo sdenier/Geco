@@ -36,7 +36,6 @@ public class AnonCreationHandlerTest extends ECardModeSetup {
 		setUpMockCardData();
 		fullRunner.setEcard("500");
 		when(gecoControl.getService(RunnerControl.class)).thenReturn(runnerControl);
-		when(runnerControl.deriveUniqueEcard("500")).thenReturn("500");
 		when(detector.detectCourse(fullRunnerData)).thenReturn(testCourse);
 	}
 
@@ -76,12 +75,6 @@ public class AnonCreationHandlerTest extends ECardModeSetup {
 	}
 	
 	@Test
-	public void handleUnregisteredReturnsCardId() {
-		String returnedEcard = subject().handleUnregistered(fullRunnerData, "500");
-		assertEquals("500", returnedEcard);
-	}
-
-	@Test
 	public void handleUnregisteredReturnsNullWhenCreationGoesWrong() {
 		try {
 			when(runnerControl.buildAnonymousRunner("500", testCourse)).thenThrow(new RunnerCreationException("Error"));
@@ -90,4 +83,22 @@ public class AnonCreationHandlerTest extends ECardModeSetup {
 		assertNull(returnedEcard);
 	}
 
+	@Test
+	public void handleDuplicateCreatesNewRunner() {
+		subject().handleDuplicate(fullRunnerData, fullRunner);
+		try {
+			verify(runnerControl).buildAnonymousRunner("500", testCourse);
+		} catch (RunnerCreationException e) { fail(); }
+	}
+
+	@Test
+	public void handleDuplicateRegisterNewRunner() {
+		Runner newRunner = factory.createRunner();
+		try {
+			when(runnerControl.buildAnonymousRunner("500", testCourse)).thenReturn(newRunner);
+		} catch (RunnerCreationException e) { fail(); }
+		subject().handleDuplicate(fullRunnerData, fullRunner);
+		verify(runnerControl).registerRunner(newRunner, fullRunnerData);
+	}
+	
 }

@@ -55,7 +55,9 @@ public class AnonCreationHandler extends AbstractHandlerWithCourseDetector imple
 	public String handleFinish(RunnerRaceData data) {return null;}
 
 	@Override
-	public String handleDuplicate(RunnerRaceData data, Runner runner) {return null;}
+	public String handleDuplicate(RunnerRaceData data, Runner runner) {
+		return handleData(data, runner.getEcard());
+	}
 
 	@Override
 	public String handleUnregistered(RunnerRaceData data, String cardId) {

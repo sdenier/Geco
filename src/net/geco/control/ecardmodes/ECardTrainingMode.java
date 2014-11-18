@@ -48,7 +48,7 @@ public class ECardTrainingMode extends AbstractEcardReadingMode {
 			duplicateHandler = new CopyRunnerHandler(geco(), detector);
 		} else {
 			duplicateHandler = new ArchiveLookupHandler(geco(), detector,
-									new CopyRunnerHandler(geco(), detector));
+									new AnonCreationHandler(geco(), detector));
 		}
 	}
 
