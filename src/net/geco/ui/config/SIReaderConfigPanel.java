@@ -82,7 +82,7 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 		final JRadioButton archiveLookupB = new JRadioButton(Messages.uiGet("SIReaderConfigPanel.ArchiveLookupConfig")); //$NON-NLS-1$
 		final JRadioButton alwaysCreateB = new JRadioButton(Messages.uiGet("SIReaderConfigPanel.NoLookupConfig")); //$NON-NLS-1$
 		final JRadioButton copyEntryB = new JRadioButton("Copy entry with matching ecard");
-		final JRadioButton copyArchiveB = new JRadioButton("Always lookup and insert from archive, copy entry otherwise");
+		final JRadioButton copyArchiveB = new JRadioButton(Messages.uiGet("SIReaderConfigPanel.ArchiveLookupConfig")); //$NON-NLS-1$
 		
 		manualB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
