@@ -54,6 +54,8 @@ public class SIReaderHandler extends Control implements Announcer.StageListener,
 
 	private boolean archiveLookupOn;
 
+	private boolean copyDuplicateOn;
+
 	
 	public static class SerialPort {
 		private String port;
@@ -105,8 +107,8 @@ public class SIReaderHandler extends Control implements Announcer.StageListener,
 	
 	public void enableAutoHandler() {
 		autoHandlerOn = true;
-		getService(ECardRacingMode.class).enableAutoHandler(archiveLookupOn);
-		getService(ECardTrainingMode.class).enableAutoHandler(archiveLookupOn);		
+		getService(ECardRacingMode.class).enableAutoHandler(archiveLookupOn, copyDuplicateOn);
+		getService(ECardTrainingMode.class).enableAutoHandler(archiveLookupOn, copyDuplicateOn);
 	}
 	
 	public void enableManualHandler() {
@@ -122,7 +124,7 @@ public class SIReaderHandler extends Control implements Announcer.StageListener,
 	private void toggleArchiveLookup(boolean toggle) {
 		archiveLookupOn = toggle;
 		getService(ECardRacingMode.class).toggleArchiveLookup(toggle);
-		getService(ECardTrainingMode.class).toggleArchiveLookup(toggle);		
+		getService(ECardTrainingMode.class).toggleArchiveLookup(toggle);
 	}
 	
 	public void enableArchiveLookup() {
@@ -131,6 +133,20 @@ public class SIReaderHandler extends Control implements Announcer.StageListener,
 	
 	public void disableArchiveLookup() {
 		toggleArchiveLookup(false);
+	}
+
+	public boolean copyDuplicateEnabled() {
+		return copyDuplicateOn;
+	}
+
+	public void enableCopyDuplicate() {
+		copyDuplicateOn = true;
+		getService(ECardTrainingMode.class).toggleCopyDuplicate(copyDuplicateOn);
+	}
+
+	public void disableCopyDuplicate() {
+		copyDuplicateOn = false;
+		getService(ECardTrainingMode.class).toggleCopyDuplicate(copyDuplicateOn);
 	}
 	
 	public void toggleDetectionByCourseSet(boolean flag) {
@@ -148,6 +164,8 @@ public class SIReaderHandler extends Control implements Announcer.StageListener,
 						stage().getProperties().getProperty(autoHandlerProperty(), "true")); //$NON-NLS-1$
 		archiveLookupOn = Boolean.parseBoolean(
 						stage().getProperties().getProperty(archiveLookupProperty(), "true")); //$NON-NLS-1$
+		copyDuplicateOn = Boolean.parseBoolean(
+						stage().getProperties().getProperty(copyDuplicateProperty(), "true")); //$NON-NLS-1$
 		if( autoHandlerOn ) {
 			enableAutoHandler();
 		} else {
@@ -163,6 +181,10 @@ public class SIReaderHandler extends Control implements Announcer.StageListener,
 		return "ArchiveLookup"; //$NON-NLS-1$
 	}
 
+	public static String copyDuplicateProperty() {
+		return "CopyDuplicate"; //$NON-NLS-1$
+	}
+	
 	public static String coursesetDetectionProperty() {
 		return "CourseSetDetection"; //$NON-NLS-1$
 	}
@@ -326,6 +348,7 @@ public class SIReaderHandler extends Control implements Announcer.StageListener,
 	public void saving(Stage stage, Properties properties) {
 		properties.setProperty(autoHandlerProperty(), Boolean.toString(autoHandlerOn));
 		properties.setProperty(archiveLookupProperty(), Boolean.toString(archiveLookupOn));
+		properties.setProperty(copyDuplicateProperty(), Boolean.toString(copyDuplicateOn));
 		properties.setProperty(coursesetDetectionProperty(),
 								Boolean.toString(detectionByCourseSetEnabled()));
 		properties.setProperty(portNameProperty(), getPort().name());

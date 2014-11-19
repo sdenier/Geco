@@ -8,21 +8,18 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
-import static junit.framework.Assert.fail;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import net.geco.control.ArchiveManager;
 import net.geco.control.RunnerControl;
-import net.geco.control.RunnerCreationException;
-import net.geco.control.ecardmodes.AnonCreationHandler;
 import net.geco.control.ecardmodes.ArchiveLookupHandler;
 import net.geco.control.ecardmodes.CourseDetector;
+import net.geco.control.ecardmodes.ECardHandler;
 import net.geco.model.Runner;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
 /**
  * @author Simon Denier
@@ -34,7 +31,7 @@ public class ArchiveLookupHandlerTest extends ECardModeSetup {
 	@Mock private ArchiveManager archive;
 	@Mock private CourseDetector detector;
 	@Mock private RunnerControl runnerControl;
-	@Mock private AnonCreationHandler anonHandler;
+	@Mock private ECardHandler fallbackHandler;
 
 	@Before
 	public void setUp() {
@@ -42,17 +39,38 @@ public class ArchiveLookupHandlerTest extends ECardModeSetup {
 		setUpMockCardData();
 		when(gecoControl.getService(ArchiveManager.class)).thenReturn(archive);
 		when(gecoControl.getService(RunnerControl.class)).thenReturn(runnerControl);
-		when(detector.detectCourse(fullRunnerData)).thenReturn(testCourse);
+		when(detector.detectCourse(fullRunnerData, fullRunner.getCategory())).thenReturn(testCourse);
 	}
 
 	protected ArchiveLookupHandler subject() {
-		return new ArchiveLookupHandler(gecoControl, detector, anonHandler);
+		return new ArchiveLookupHandler(gecoControl, detector, fallbackHandler);
 	}
 
 	@Test
-	public void handleUnregisteredCallsDetector() {
-		subject().handleUnregistered(fullRunnerData, "2000");
-		verify(detector).detectCourse(fullRunnerData);
+	public void handleDuplicateCallsArchiveManager() {
+		subject().handleDuplicate(fullRunnerData, fullRunner);
+		verify(archive).findAndBuildRunner(fullRunner.getEcard());
+	}
+
+	@Test
+	public void handleDuplicateCallsCourseDetector() {
+		when(archive.findAndBuildRunner(fullRunner.getEcard())).thenReturn(fullRunner);
+		subject().handleDuplicate(fullRunnerData, fullRunner);
+		verify(detector).detectCourse(fullRunnerData, fullRunner.getCategory());
+	}
+
+	@Test
+	public void handleDuplicateRegistersRunnerFromArchiveIfFound() {
+		Runner runner = factory.createRunner();
+		when(archive.findAndBuildRunner(fullRunner.getEcard())).thenReturn(runner);
+		subject().handleDuplicate(fullRunnerData, fullRunner);
+		verify(runnerControl).registerRunner(runner, fullRunnerData);
+	}
+
+	@Test
+	public void handleDuplicateDelegatesToFallbackCreationHandlerIfNotFoundInArchive() {
+		subject().handleDuplicate(fullRunnerData, fullRunner);
+		verify(fallbackHandler).handleDuplicate(fullRunnerData, fullRunner);
 	}
 
 	@Test
@@ -62,11 +80,25 @@ public class ArchiveLookupHandlerTest extends ECardModeSetup {
 	}
 
 	@Test
+	public void handleUnregisteredCallsCourseDetector() {
+		when(archive.findAndBuildRunner("2000")).thenReturn(fullRunner);
+		subject().handleUnregistered(fullRunnerData, "2000");
+		verify(detector).detectCourse(fullRunnerData, fullRunner.getCategory());
+	}
+
+	@Test
 	public void handleUnregisteredRegistersRunnerFromArchiveIfFound() {
 		Runner runner = factory.createRunner();
 		when(archive.findAndBuildRunner("2000")).thenReturn(runner);
 		subject().handleUnregistered(fullRunnerData, "2000");
 		verify(runnerControl).registerRunner(runner, fullRunnerData);
+	}
+
+	@Test
+	public void handleUnregisteredReturnsId() {
+		when(archive.findAndBuildRunner("2000")).thenReturn(factory.createRunner());
+		String returnedEcard = subject().handleUnregistered(fullRunnerData, "2000");
+		assertEquals("2000", returnedEcard);
 	}
 
 	@Test
@@ -83,25 +115,14 @@ public class ArchiveLookupHandlerTest extends ECardModeSetup {
 	}
 
 	@Test
-	public void handleUnregisteredDelegatesToAnonCreationHandlerIfNotFoundInArchive() {
+	public void handleUnregisteredDelegatesToFallbackCreationHandlerIfNotFoundInArchive() {
 		subject().handleUnregistered(fullRunnerData, "2000");
-		try {
-			verify(anonHandler).registerAnonymousRunner(fullRunnerData, testCourse, "2000");
-		} catch (RunnerCreationException e) { fail(); }
-	}
-	
-	@Test
-	public void handleUnregisteredReturnsId() {
-		String returnedEcard = subject().handleUnregistered(fullRunnerData, "2000");
-		assertEquals("2000", returnedEcard);
+		verify(fallbackHandler).handleUnregistered(fullRunnerData, "2000");
 	}
 
 	@Test
 	public void handleUnregisteredReturnsNullWhenCreationGoesWrong() {
-		try {
-			Mockito.doThrow(new RunnerCreationException("Error"))
-				.when(anonHandler).registerAnonymousRunner(fullRunnerData, testCourse, "2000");
-		} catch (RunnerCreationException e) { fail(); }
+		when(fallbackHandler.handleUnregistered(fullRunnerData, "2000")).thenReturn(null);
 		String returnedEcard = subject().handleUnregistered(fullRunnerData, "2000");
 		assertNull(returnedEcard);
 	}

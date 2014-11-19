@@ -27,7 +27,8 @@ public class ECardRacingMode extends AbstractEcardReadingMode {
 		}
 	}
 	
-	public void enableAutoHandler(boolean archiveLookupOn) {
+	@Override
+	public void enableAutoHandler(boolean archiveLookupOn, boolean copyDuplicateOn) {
 		duplicateHandler = new AnonCreationHandler.DuplicateCreationHandler(geco(), detector);
 		toggleArchiveLookup(archiveLookupOn);
 	}

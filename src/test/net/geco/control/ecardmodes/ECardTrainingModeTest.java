@@ -5,6 +5,8 @@
 package test.net.geco.control.ecardmodes;
 
 import static junit.framework.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
@@ -84,6 +86,16 @@ public class ECardTrainingModeTest extends ECardModeSetup {
 		when(registry.getEcards()).thenReturn(new HashSet<String>(Arrays.asList(new String[]{ "999" })));
 		ecardMode.handleDuplicate(danglingRunnerData, mockRunner);
 		verify(mockRunner).copyWith(100, "999a", testCourse);
+	}
+
+	@Test
+	public void handleDuplicateInsertsFromArchive() {
+		ecardMode.toggleCopyDuplicate(false);
+		Runner mockRunner = mock(Runner.class);
+		when(mockRunner.getEcard()).thenReturn("999");
+		when(archive.findAndBuildRunner("999")).thenReturn(fullRunner);
+		ecardMode.handleDuplicate(danglingRunnerData, mockRunner);
+		assertThat(danglingRunnerData.getRunner(), equalTo(fullRunner));
 	}
 
 	@Test
