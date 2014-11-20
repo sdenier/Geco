@@ -55,12 +55,12 @@ import net.geco.live.LiveClientDialog;
 import net.geco.live.LiveComponent;
 import net.geco.model.Messages;
 import net.geco.model.Stage;
-import net.geco.ui.basics.GecoStatusBar;
 import net.geco.ui.basics.StartStopButton;
 import net.geco.ui.basics.SwingUtils;
 import net.geco.ui.components.AquaECardModeSelector;
 import net.geco.ui.components.DefaultECardModeSelector;
 import net.geco.ui.components.ECardModeSelector;
+import net.geco.ui.components.GecoStatusBar;
 import net.geco.ui.framework.ConfigPanel;
 import net.geco.ui.framework.RunnersTableAnnouncer;
 import net.geco.ui.framework.TabPanel;
@@ -134,7 +134,7 @@ public class GecoWindow extends JFrame
 		setKeybindings(pane);
 		getContentPane().add(pane, BorderLayout.CENTER);
 		
-		getContentPane().add(new GecoStatusBar(this.geco.announcer()), BorderLayout.SOUTH);
+		getContentPane().add(new GecoStatusBar(this.geco), BorderLayout.SOUTH);
 	}
 
 	private void setKeybindings(final JTabbedPane pane) {

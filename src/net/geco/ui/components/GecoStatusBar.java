@@ -2,19 +2,20 @@
  * Copyright (c) 2010 Simon Denier
  * Released under the MIT License (see LICENSE file)
  */
-package net.geco.ui.basics;
+package net.geco.ui.components;
 
-import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import net.geco.basics.Announcer;
-import net.geco.basics.Html;
 import net.geco.basics.Announcer.Logging;
+import net.geco.basics.Html;
+import net.geco.framework.IGeco;
 
 
 /**
@@ -23,20 +24,27 @@ import net.geco.basics.Announcer.Logging;
  *
  */
 public class GecoStatusBar extends JPanel implements Logging {
-	
+
 	private JLabel status;
-	
-	public GecoStatusBar(Announcer announcer) {
-		setLayout(new FlowLayout(FlowLayout.LEFT));
+
+	private GecoStatusStats statsSummary;
+
+	public GecoStatusBar(IGeco geco) {
+		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 		status = new JLabel(" "); //$NON-NLS-1$
+		statsSummary = new GecoStatusStats(geco);
 		addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				status.setText(" "); //$NON-NLS-1$
+				statsSummary.updateView();
 			}
 		});
 		add(status);
-		announcer.registerLogger(this);
-		setBorder(BorderFactory.createEtchedBorder());
+		add(Box.createHorizontalGlue());
+		add(statsSummary.getView());
+		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(),
+													 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+		geco.announcer().registerLogger(this);
 	}
 
 	private void display(String message, boolean warning) {
