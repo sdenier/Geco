@@ -1,5 +1,23 @@
 # Geco Changelog
 
+## Version 2.3 (2014/11/xx)
+
+- Push GecoSI 1.2.0 (pCard support)
+- More reliable 32 vs 64 bits detection to use the correct SPORTIdent driver
+- Re-enable the multi-section race format (previously Raid Orient'Alpin), fully compatible with other Geco features (course detection, trace display)
+- Multi-sections: support in-order sections mixing inline and free order controls
+- Multi-sections: automatically detect section limits when analyzing the trace (ability to manually set section limits when detection goes wrong)
+- Multi-sections: ability to neutralize a section (subtract section time from race time)
+- Multi-sections: each control can have a custom time penalty
+- Multi-sections: ability to manually set a time bonus/malus for each entry
+- Multi-sections: custom output formats for section splits and results
+- Orientshow: count "extra" controls in trace and add a time penalty for such controls
+- Training mode: can choose between copy first or archive insertion for duplicate entries
+- Training mode: fix bug with duplicate not triggering split printing automatically
+- Display a brief summary of stage stats in status bar
+- Merge dialog: start id can also be searched (yannisgu)
+- Wording: rename "Functions" as "Operations" in the Log/Operations tab
+
 ## Version 2.2 (2014/02/06)
 
 - Push GecoSI 1.1.0 (faster and more reliable readout for Si6/10/11, fix bug with empty ecards)

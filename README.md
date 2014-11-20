@@ -1,4 +1,4 @@
-Geco 2.2
+Geco 2.3
 ========
 Copyright (c) 2008-2014 Simon Denier  
 Homepage: http://sdenier.github.io/Geco
@@ -12,13 +12,13 @@ Geco comes with powerful features designed around its algorithm for automatic co
 
 The Geco UI is designed to provide a lean user experience: navigate through stage workflow using the top tabs, and access data by direct manipulation.
 
-Geco can handle multiple race formats: classic inline, free order, Orient'Show (penalty count, knockout qualifications).
+Geco can handle multiple race formats: classic inline, free order, orientshow, multi-sections with time penalties, neutralized legs.
 
 
-About the 2.2
+About the 2.3
 -------------
 
-Geco 2.2 provides faster ecard readouts and introduces course sets, which enables easier handling of One Man Relay events and the like...
+Geco 2.3 enables the multi-sections race format, which can mix inline and free order sections, provide time penalties per control, section neutralization, split printing with sections...
 
 
 Install & Launch
@@ -31,8 +31,8 @@ Geco runs with Java version 6 and above. You can download a JRE (Java Runtime En
 You need SPORTIdent drivers to read SI cards.
 
 - Windows: download available at http://www.sportident.com/
-- Linux: recent kernels recognize the chip used by SI station, so it’s plug’n’play.
 - Mac OS X: read the [FAQ](http://sdenier.github.io/Geco/begin/faq.html).
+- Linux: always a bumpy ride. Take your chance but no guarantee it will work out of the box.
 
 
 User documentation
