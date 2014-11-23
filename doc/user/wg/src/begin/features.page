@@ -8,11 +8,12 @@ in_menu: true
 
 Geco currently supports the SPORTident timing system.
 
-The three following formats are currently available:
+The four following formats are currently available:
 
 - Classic (inline course): controls must be taken in order
 - Free Order: runner chooses in which order to take the controls
 - Orient'Show: time penalties and MP limit, knockout qualifications,...
+- Multi Sections: mixing inline and free order sections, time penalties, section neutralization…
 
 Free Order and Orient'Show support the following options when checking e-cards:
 
@@ -48,12 +49,6 @@ Geco UI is organized as a series of panels in tabs, each dedicated to one aspect
 - [Heats] to generate heats from results for the next stage in knockout qualifications (Orient'Show format only)
 
 Read the [UI Guide] for documentation about each panel.
-
-Geco presents some features dedicated to Orient'Show:
-
-- time penalties and MP limit
-- accurate count of MPs and detailed trace
-- management of parallel pools and knockout qualifications
 
 
 [UI Guide]: ../guide/index.html
