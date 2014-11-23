@@ -58,10 +58,10 @@ import net.geco.ui.tabs.RunnersPanel;
  * @since May 6, 2011
  *
  */
-public class ROAAppBuilder extends AppBuilder {
+public class MultiSectionsAppBuilder extends AppBuilder {
 
 	public static String getName() {
-		return Messages.getString("ROAAppBuilder.RoaAppName"); //$NON-NLS-1$
+		return Messages.getString("MultiSectionsAppBuilder.MultiSectionsAppName"); //$NON-NLS-1$
 	}
 	
 	@Override
