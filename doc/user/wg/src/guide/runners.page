@@ -87,5 +87,27 @@ The *Trace* pane displays the list of controls for the course compared with the 
 - in some cases, the control is displayed in red as **-X+Y**: this is a mispunch which can be explained as a substitution, the runner took control Y instead of X
 - it is also easy to spot inversion with a sequence like **-X, Y, +X**: the runner took Y before X, while he should have go the other way.
 
+### What Counts as Extra Punch (Extra Penalty)?
+<a name="extra"></a>
+
+An extra punch in a runner trace is an added punch whose code does not belong to the runner course. In some formats like the Orient'Show, such extra punches can be penalized to deter runner from punching all and any control during the race. This is to reward precise map reading and penalize blind running/punching.
+
+Take for example a course with the following controls: 31, 32, 33, 34, 35; and a runner with the following punches: 31, 34, 32, 33, 44, 45, 35. This should give us the following trace: 31, +34, 32, 33, -34+44, +45, 35. 
+
+- Only +45 counts as an extra punch in this case, because it is a single punch which does not belong to the course.
+- +34 belongs to the course and is not penalized (the runner may skip a control, then backtrace when he realizes his mistake).
+- -34+44 already counts as a missing punch and for this reason is not doubly penalized, since there is no advantage in taking a control for another instead of just skipping it.
+
+The number of extra punches appears next to the official time in the runner pane. The extra penalty is already added to the total penalty time. Like MP penalty, it can be set up in the [configuration](stage.html) panel.
+
+*Tip: extra penalty should not be higher than mp penalty.*
+
+As a best practice, you should not set a higher penalty for an extra punch than for a MP punch. If not, this could lead to unfair penalty. Sample case:
+
+- runner A substitutes extra control 32 for control 31 (-31+32): he gets 1 MP penalty
+- runner B takes extra control 32 then control 31 (+32,31): he gets 1 extra penalty
+
+Even with an extra penalty, B has performed better than A because he has all controls, so he should not be more penalized than A.
+
 ## Statistics Pane (mod+S)
 See the [Log](log.html) page for a description of stage statistics.

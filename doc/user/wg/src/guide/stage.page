@@ -29,7 +29,7 @@ This panel also allows you to customize the behavior of Geco when reading ecards
 - MP limit: number of missing punches authorized before marking the runner as MP
 - Don't check MP limit: runner can have any number of missing punches without ever being MP (disable MP limit)
 - Time penalty: time penalty per missing punch, in seconds (also displayed in minutes for large time penalty)
-- Extra penalty: time penalty per added punch not on course (penalize runner who take any control "just in case")
+- Extra penalty: time penalty per <a href="../guide/runners.html#extra">added punch not on course</a>, in seconds (penalize runner who take any control "just in case")
 
 ## Course
 - Geco can import courses described with the *[IOF XML](http://www.soenniksen.dk/iof-datastandard/index.shtml)* format. Click the *XML* button to select the course file. You can choose between the **XML V2** (current) format or the new **XML V3** format.

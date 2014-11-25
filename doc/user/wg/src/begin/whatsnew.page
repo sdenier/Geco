@@ -20,7 +20,7 @@ Geco 2.3 enables the full multi-sections race format (previously Raid Orient'Alp
 ### Minor Changes
 
 - Push GecoSI 1.2.0 (pCard support)
-- Orientshow: count "extra" controls in trace and add a time penalty for such controls
+- Orientshow: <a href="../guide/runners.html#extra">count "extra" controls</a> in trace and add a time penalty for such controls
 - Training mode: can choose between copy first or archive insertion for duplicate entries
 - Display a brief summary of stage stats in status bar
 - Merge dialog: start id can also be searched (thanks yannisgu)
