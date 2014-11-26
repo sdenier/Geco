@@ -6,7 +6,7 @@ in_menu: true
 
 # Training
 
-Geco provides a training mode which lightens actions to be taken. With this mode Geco reads all ecards and computes the normal status immediately, whether a pre-registration exists or not. Furthermore, Geco handles multiple reads of the same ecard by creating a new entry each entry, allowing a runner to perform several courses. Geco can also import an ecard log extracted from a master station.
+Geco provides a training mode which simplifies actions to be taken. With this mode Geco reads all ecards and computes the normal status immediately, whether a pre-registration exists or not. Furthermore, Geco handles multiple reads of the same ecard by creating a new entry each entry, allowing a runner to perform several exercises. Geco can also import an ecard log extracted from a master station.
 
 <img style="float:none; width:100px; margin: 0;" src="../images/training_button.png" />
 
@@ -15,7 +15,7 @@ Geco provides a training mode which lightens actions to be taken. With this mode
 
 The only necessary setup is to *import courses* in a new stage. Pre-registration is optional. One can also *setup an archive* to facilitate automatic registration (for example, using a club archive).
 
-The next step is launching read in training mode and just leave the computer in self-service. Take Simon, a beginner who runs with a rented ecard (not registered in archive). He goes onto course B and comes back. Reading his ecard *creates an anonymous entry* with the right course and status:
+The next step is launching ecard reading in training mode and just leave the computer in self-service. Take Simon, a beginner who runs with a rented ecard (not registered in archive). He goes onto course B and comes back. Reading his ecard *creates an anonymous entry* with the right course and status:
 
 > `1   1061000   X   None  Course B   NL  41:32   OK`
 
@@ -23,12 +23,26 @@ One can edit the entry with more accurate data:
 
 > `1   1061000   Simon D   H21  Course B   3810RA  41:32   OK`
 
-Simon goes back onto the A course. Coming back, reading the ecard creates yet another entry, with this course and the right status. In the case of a duplicate reading, Geco reacts as if it is the same person and *copies* the previous data.
+Simon goes back onto the A course. Coming back, reading the ecard creates another entry, with this course and the right status. In the case of a duplicate reading, Geco reacts as if it is the same person and *copies* the previous data.
 
 > `2   1061000a  Simon D   H21  Circuit A   3810RA  57:01   OK`
 
 Thus the training mode allows runners to perform several courses without worrying about unknown or duplicate entries. Results by course will display the result of each runner.
 
+### Alternative Configuration for Rolling Groups
+
+In the [SI Reader](../guide/stage.html) configuration panel, one can choose to always lookup an entry in archive when reading a duplicate, instead of copying the first entry. The use case is the following:
+
+- you have successive groups of students running the same courses
+- you use the same set of ecards with all groups
+- for each group, you have an archive which links each student with a unique ecard
+- when a new group arrives, you select the corresponding archive in Geco
+- each student starts with his assigned ecard
+- at finish, Geco reads the ecard and inserts the student identity from the group archive
+
+Instead of copying the identity of the student in the first group, Geco will now create an entry with a different identity for each group archive. At the end, you have a single stage with all results from all groups.
+
+NB: this option only works for the training mode.
 
 ## Post-mortem procedure: importing an ecard log
 
