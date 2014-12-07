@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import net.geco.basics.Announcer;
 import net.geco.control.RegistryStats.StatItem;
 import net.geco.framework.IGeco;
+import net.geco.model.Messages;
 import net.geco.model.Stage;
 
 /**
@@ -59,7 +60,7 @@ public class GecoStatusStats implements Announcer.StageListener {
 	
 	public void updateView() {
 		Map<StatItem, Integer> statuses = geco.registryStats().getTotalCourse();
-		view.setText(String.format("|| Finished: %s, Unresolved: %s, Not Started: %s, Running: %s",
+		view.setText(String.format(Messages.uiGet("GecoStatusStats.StatusFormatString"), //$NON-NLS-1$
 				statuses.get(StatItem.Finished), statuses.get(StatItem.Unresolved), statuses.get(StatItem.NOS), statuses.get(StatItem.RUN)));
 	}
 

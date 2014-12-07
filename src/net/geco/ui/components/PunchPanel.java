@@ -67,7 +67,7 @@ public class PunchPanel extends JPanel implements RunnersTableListener {
 					int selectedRow = punchesT.getSelectedRow();
 					Trace trace = raceData.getTraceData().getTrace()[selectedRow];
 					if ( ! trace.isTruePunch() ) {
-						JOptionPane.showMessageDialog(parentContainer, "Can not restart a section at missing punch " + trace + ". Please select a valid punch.", "Section Trace", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(parentContainer, Messages.uiGet("PunchPanel.NoMPSectionStartWarning1") + trace + Messages.uiGet("PunchPanel.NoMPSectionStartWarning2"), Messages.uiGet("PunchPanel.SectionWarningTitle"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					} else {
 						geco.sectionManualChecker().refreshTraceWithUpdatedSection(raceData, section, selectedRow);
 						parentContainer.refreshSelectionInTable();

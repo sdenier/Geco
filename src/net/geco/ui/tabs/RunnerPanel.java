@@ -345,9 +345,9 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 		mpF.setEditable(false);
 		extraF = new JTextField(FIELDSIZE);
 		extraF.setEditable(false);
-		extraF.setToolTipText("Number of extraneous punches: added punches not on course");
+		extraF.setToolTipText(Messages.uiGet("RunnerPanel.ExtraPunchTooltip")); //$NON-NLS-1$
 		manualPenaltyF = new JTextField(FIELDSIZE);
-		manualPenaltyF.setToolTipText("Manual time penalty to add or substract from race time");
+		manualPenaltyF.setToolTipText(Messages.uiGet("RunnerPanel.ManualPenaltyTooltip")); //$NON-NLS-1$
 		penaltyF = new JTextField(FIELDSIZE);
 		penaltyF.setEditable(false);
 		officialTimeF = new JTextField(FIELDSIZE);
@@ -395,7 +395,7 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 				penaltyF);
 		c.gridy = 3;
 		addRow(resultPanel, c, 
-				geco().getConfig().sectionsEnabled ? new JLabel("Bon/Mal") : new JLabel("Extra"),
+				geco().getConfig().sectionsEnabled ? new JLabel(Messages.uiGet("RunnerPanel.ManualPenaltyLabel")) : new JLabel(Messages.uiGet("RunnerPanel.ExtraLabel")), //$NON-NLS-1$ //$NON-NLS-2$
 				geco().getConfig().sectionsEnabled ? manualPenaltyF : extraF,
 				new JLabel(Messages.uiGet("RunnerPanel.OfficialTimeLabel")), //$NON-NLS-1$
 				officialTimeF);

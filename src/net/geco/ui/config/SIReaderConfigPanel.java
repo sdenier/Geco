@@ -81,7 +81,7 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 		JRadioButton autoB = new JRadioButton(Messages.uiGet("SIReaderConfigPanel.AutoHandlerConfig")); //$NON-NLS-1$
 		final JRadioButton archiveLookupB = new JRadioButton(Messages.uiGet("SIReaderConfigPanel.ArchiveLookupConfig")); //$NON-NLS-1$
 		final JRadioButton alwaysCreateB = new JRadioButton(Messages.uiGet("SIReaderConfigPanel.NoLookupConfig")); //$NON-NLS-1$
-		final JRadioButton copyEntryB = new JRadioButton("Copy entry with matching ecard");
+		final JRadioButton copyEntryB = new JRadioButton(Messages.uiGet("SIReaderConfigPanel.CopyEntryConfig")); //$NON-NLS-1$
 		final JRadioButton copyArchiveB = new JRadioButton(Messages.uiGet("SIReaderConfigPanel.ArchiveLookupConfig")); //$NON-NLS-1$
 		
 		manualB.addActionListener(new ActionListener() {
@@ -175,7 +175,7 @@ public class SIReaderConfigPanel extends JPanel implements ConfigPanel {
 
 		Box copyConfigBox = Box.createVerticalBox();
 		copyConfigBox.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
-		copyConfigBox.add(new JLabel(Html.htmlTag("i", "With duplicate ecards (training mode/auto handler only)")));
+		copyConfigBox.add(new JLabel(Html.htmlTag("i", Messages.uiGet("SIReaderConfigPanel.DuplicateEcardModeLabel")))); //$NON-NLS-1$ //$NON-NLS-2$
 		copyConfigBox.add(Box.createVerticalStrut(5));
 		copyConfigBox.add(copyEntryB);
 		copyConfigBox.add(copyArchiveB);

@@ -416,7 +416,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		fileFormatRB.setBorder(
 			BorderFactory.createTitledBorder(Messages.uiGet("ResultsPanel.FileFormatTitle"))); //$NON-NLS-1$
 		JRadioButton selectHtmlB = new JRadioButton("HTML+O'Splits"); //$NON-NLS-1$
-		selectHtmlB.setToolTipText("For splits or sections results, export a second file with O'Splits data");
+		selectHtmlB.setToolTipText(Messages.uiGet("ResultsPanel.HtmlOsplitsTooltip")); //$NON-NLS-1$
 		selectHtmlB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				exportFormat = "html"; //$NON-NLS-1$

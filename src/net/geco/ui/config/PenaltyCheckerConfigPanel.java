@@ -100,19 +100,19 @@ public class PenaltyCheckerConfigPanel extends JPanel implements ConfigPanel {
 			add(penaltyMinuteL, c);
 
 			c.gridy = 3;
-			add(new JLabel("Extra Penalty:"), c);
+			add(new JLabel(Messages.uiGet("PenaltyCheckerConfigPanel.ExtraPenaltyLabel")), c); //$NON-NLS-1$
 			long xPenalty = checker(geco).getExtraPenalty();
-			final JLabel xPenaltyMinuteL = new JLabel(TimeManager.time(xPenalty) + " per extraneous punch");
+			final JLabel xPenaltyMinuteL = new JLabel(TimeManager.time(xPenalty) + Messages.uiGet("PenaltyCheckerConfigPanel.PerExtraLabel")); //$NON-NLS-1$
 			final JSpinner xPenaltyS = new JSpinner(new SpinnerNumberModel(xPenalty / 1000, 0l, null, 10));
 			xPenaltyS.setPreferredSize(new Dimension(100, SwingUtils.SPINNERHEIGHT));
-			xPenaltyS.setToolTipText("Penalty for extraneous punches: added punches whose codes are not in course");
+			xPenaltyS.setToolTipText(Messages.uiGet("PenaltyCheckerConfigPanel.ExtraPenaltyTooltip")); //$NON-NLS-1$
 			xPenaltyS.addChangeListener(new ChangeListener() {
 				public void stateChanged(ChangeEvent e) {
 					long oldPenalty = checker(geco).getExtraPenalty();
 					long newPenalty = 1000 * ((Long) xPenaltyS.getValue()).longValue();
 					if( oldPenalty != newPenalty ) {
 						checker(geco).setExtraPenalty(newPenalty);
-						xPenaltyMinuteL.setText(TimeManager.time(newPenalty) + " per extraneous punch");
+						xPenaltyMinuteL.setText(TimeManager.time(newPenalty) + Messages.uiGet("PenaltyCheckerConfigPanel.PerExtraLabel")); //$NON-NLS-1$
 					}
 				}
 			});
