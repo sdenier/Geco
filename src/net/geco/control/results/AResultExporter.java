@@ -82,10 +82,6 @@ public abstract class AResultExporter extends Control {
 			exportCustomFile(filename, config, refreshInterval);
 			return;
 		}
-		if( format.equals("osplits") ) { //$NON-NLS-1$
-			exportOSplitsFiles(filenameAndFormat(filename, "html"), config, refreshInterval); //$NON-NLS-1$
-			return;
-		}
 		filename = filenameAndFormat(filename, format);
 		if( format.equals("html") ) { //$NON-NLS-1$
 			exportHtmlFile(filename, config, refreshInterval);
@@ -190,18 +186,27 @@ public abstract class AResultExporter extends Control {
 
 	protected abstract String getCustomTemplatePath();
 
+	protected String getOSplitsDataTemplatePath() {
+		return "/resources/formats/osplits.js.mustache"; //$NON-NLS-1$
+	}
+
 	protected abstract GenericContext buildDataContext(ResultConfig config, int refreshInterval, OutputType outputType);
 
-	protected void exportOSplitsFiles(String filename, ResultConfig config, int refreshInterval)
+	protected void exportOSplitsFile(String filename, ResultConfig config, int refreshInterval)
 			throws IOException {
-		GenericContext splitsCtx = getService(SplitExporter.class).buildDataContext(config, refreshInterval, OutputType.FILE);
-		Template template = getInternalTemplate("/resources/formats/results_osplits.html.mustache"); //$NON-NLS-1$
-		write(filename, template, splitsCtx);
 		GenericContext osplitsCtx = buildCustomContext(config, refreshInterval, OutputType.FILE);
-		template = getInternalTemplate("/resources/formats/osplitsdata.js.mustache"); //$NON-NLS-1$
+		Template template = getInternalTemplate(getOSplitsDataTemplatePath());
+		String osplitsFilename = osplitsFilename(filename);
 		String parent = new File(filename).getParent();
-		String datafile = ( parent == null ) ? "osplitsdata.js" : parent + GecoResources.sep + "osplitsdata.js"; //$NON-NLS-1$ //$NON-NLS-2$
+		String datafile = ( parent == null ) ? osplitsFilename : parent + GecoResources.sep + osplitsFilename;
 		write(datafile, template, osplitsCtx);
+	}
+
+	protected String osplitsFilename(String filename) {
+		String name = new File(filename).getName();
+		int suffix = name.lastIndexOf('.');
+		String basename = (suffix == -1) ? name : name.substring(0, suffix);
+		return basename + ".js"; //$NON-NLS-1$
 	}
 
 	protected void exportCustomFile(String filename, ResultConfig config, int refreshInterval)

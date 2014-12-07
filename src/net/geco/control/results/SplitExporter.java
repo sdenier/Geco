@@ -88,7 +88,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 
 	@Override
 	protected String getInternalTemplatePath() {
-		return "/resources/formats/results_splits_internal.mustache"; //$NON-NLS-1$
+		return "/resources/formats/results_osplits.html.mustache"; //$NON-NLS-1$
 	}
 
 	@Override
@@ -99,6 +99,12 @@ public class SplitExporter extends AResultExporter implements StageListener {
 	@Override
 	protected String getCustomTemplatePath() {
 		return getCustomTemplate().getAbsolutePath();
+	}
+
+	@Override
+	protected void exportHtmlFile(String filename, ResultConfig config, int refreshInterval) throws IOException {
+		super.exportHtmlFile(filename, config, refreshInterval);
+		exportOSplitsFile(filename, config, refreshInterval);
 	}
 
 	@Override
@@ -476,7 +482,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 		Properties props = stage().getProperties();
 		setNbColumns(Integer.parseInt(props.getProperty(splitsNbColumnsProperty(), "12"))); //$NON-NLS-1$
 		setSplitsTemplate(new File( props.getProperty(splitsTemplateProperty(),
-													  "formats/results_splits.mustache") )); //$NON-NLS-1$
+													  "formats/results_osplits.html.mustache") )); //$NON-NLS-1$
 		setCustomTemplate(new File( props.getProperty(customTemplateProperty(), ""))); //$NON-NLS-1$
 	}
 

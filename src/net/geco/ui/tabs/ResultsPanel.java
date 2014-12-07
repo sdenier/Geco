@@ -416,16 +416,10 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		fileFormatRB.setBorder(
 			BorderFactory.createTitledBorder(Messages.uiGet("ResultsPanel.FileFormatTitle"))); //$NON-NLS-1$
 		JRadioButton selectHtmlB = new JRadioButton("HTML"); //$NON-NLS-1$
+		selectHtmlB.setToolTipText("Html + O'Splits"); //$NON-NLS-1$
 		selectHtmlB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				exportFormat = "html"; //$NON-NLS-1$
-			}
-		});
-		JRadioButton selectOSplitsB = new JRadioButton("O'Splits"); //$NON-NLS-1$
-		selectOSplitsB.setToolTipText("HTML + O'Splits"); //$NON-NLS-1$
-		selectOSplitsB.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				exportFormat = "osplits"; //$NON-NLS-1$
 			}
 		});
 		JRadioButton selectCustomB = new JRadioButton("Custom"); //$NON-NLS-1$
@@ -456,7 +450,6 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		});
 		ButtonGroup group = new ButtonGroup();
 		group.add(selectHtmlB);
-		group.add(selectOSplitsB);
 		group.add(selectCustomB);
 		group.add(selectCsvB);
 		group.add(selectOECsvB);
@@ -464,12 +457,11 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		group.setSelected(selectHtmlB.getModel(), true);
 		exportFormat = "html"; //$NON-NLS-1$
 		fileFormatRB.add(selectHtmlB);
-		fileFormatRB.add(selectOSplitsB);
-		fileFormatRB.add(selectCustomB);
 		fileFormatRB.add(selectCsvB);
 		fileFormatRB.add(selectOECsvB);
 		fileFormatRB.add(selectXmlB);
-		
+		fileFormatRB.add(selectCustomB);
+
 		filePane = new JFileChooser();
 		filePane.setAccessory(fileFormatRB);
 	}

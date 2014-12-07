@@ -48,6 +48,17 @@ public class SectionsExporter extends AResultExporter {
 	}
 
 	@Override
+	protected String getOSplitsDataTemplatePath() {
+		return "/resources/formats/osplits_sections.js.mustache"; //$NON-NLS-1$
+	}
+
+	@Override
+	protected void exportHtmlFile(String filename, ResultConfig config, int refreshInterval) throws IOException {
+		super.exportHtmlFile(filename, config, refreshInterval);
+		exportOSplitsFile(filename, config, refreshInterval);
+	}
+
+	@Override
 	protected GenericContext buildDataContext(ResultConfig config, int refreshInterval, OutputType outputType) {
 		boolean isSingleCourseResult = config.resultType != ResultType.CategoryResult;
 		List<Result> results = buildResults(config);
@@ -129,11 +140,6 @@ public class SectionsExporter extends AResultExporter {
 			splitCtx.put("geco_SectionTime", label); //$NON-NLS-1$
 			splitCtx.put("geco_SectionTimeS", splitTime.split / 1000); //$NON-NLS-1$
 		}
-	}
-
-	@Override
-	protected void exportOSplitsFiles(String filename, ResultConfig config, int refreshInterval) throws IOException {
-		geco().info(Messages.getString("CNCalculator.NotFunctionalLabel"), true); //$NON-NLS-1$
 	}
 
 	@Override
