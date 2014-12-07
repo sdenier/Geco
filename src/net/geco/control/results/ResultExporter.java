@@ -125,7 +125,7 @@ public class ResultExporter extends AResultExporter implements StageListener {
 	public void changed(Stage previous, Stage current) {
 		setRankingTemplate(
 				new File(stage().getProperties().getProperty(rankingTemplateProperty(),
-															 "formats/results_ranking.mustache") )); //$NON-NLS-1$
+															 "formats/results_ranking.html.mustache") )); //$NON-NLS-1$
 	}
 
 	@Override

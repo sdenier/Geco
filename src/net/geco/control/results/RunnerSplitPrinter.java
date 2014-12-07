@@ -365,10 +365,10 @@ public class RunnerSplitPrinter extends Control implements StageListener, CardLi
 		setNbColumns(Integer.parseInt(props.getProperty(splitNbColumnsProperty(), "12"))); //$NON-NLS-1$
 		setColumnTemplate(
 				new File(stage().getProperties().getProperty(columnTemplateProperty(),
-															 "formats/splits_columns.mustache") )); //$NON-NLS-1$
+															 "formats/splits_columns.html.mustache") )); //$NON-NLS-1$
 		setTicketTemplate(
 				new File(stage().getProperties().getProperty(ticketTemplateProperty(),
-															 "formats/splits_ticket.mustache") )); //$NON-NLS-1$
+															 "formats/splits_ticket.html.mustache") )); //$NON-NLS-1$
 	}
 
 	@Override
