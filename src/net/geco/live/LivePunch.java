@@ -169,7 +169,7 @@ public class LivePunch implements Trace {
 
 	@Override
 	public String getAddedCode() {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)

@@ -58,7 +58,7 @@ public class TraceImpl implements Trace {
 		if( isSubst() ) {
 			return code.substring(code.indexOf('+') + 1);
 		} else {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 	}
 	public Date getTime() {

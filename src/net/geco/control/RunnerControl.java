@@ -306,7 +306,7 @@ public class RunnerControl extends Control {
 	public boolean validateManualTimePenalty(RunnerRaceData runnerData, String manualTimePenalty) {
 		try {
 			long oldTime = runnerData.getResult().getManualTimePenalty();
-			Date newTime = (manualTimePenalty.equals("") || manualTimePenalty.equals("0")) ?
+			Date newTime = (manualTimePenalty.equals("") || manualTimePenalty.equals("0")) ? //$NON-NLS-1$ //$NON-NLS-2$
 				new Date(0)
 				:
 				TimeManager.userParse(manualTimePenalty);

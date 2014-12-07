@@ -81,7 +81,7 @@ public abstract class GecoOperation extends Control {
 	public abstract JComponent buildInnerUI();
 	
 	protected JButton buildRunButton() {
-		final JButton execB = new JButton(Html.htmlTag("b", Messages.uiGet("GecoOperation.RunLabel"))); //$NON-NLS-1$
+		final JButton execB = new JButton(Html.htmlTag("b", Messages.uiGet("GecoOperation.RunLabel"))); //$NON-NLS-1$ //$NON-NLS-2$
 		execB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				run();
