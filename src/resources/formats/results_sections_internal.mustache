@@ -1,4 +1,4 @@
-<html data-gecodatajs="osplits_sections.js">
+<html data-gecodatajs="v3">
   <head>
 {{#geco_FileOutput?}}
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -21,19 +21,6 @@
       .rsplit td { padding: 10px 5px 5px 0 }
       .rsplit td, .time, .best { font-weight: bold }
     </style>
-    <script type="text/javascript">
-    window.addEventListener("message", function(event) {
-        // We only accept messages from ourselves
-        if (event.source != window)
-          return;
-        if(event.data.cmd==='loadJsonData') {
-            var s = document.createElement("script");
-            s.type = "text/javascript";
-            s.src = document.documentElement.getAttribute("data-gecodatajs");
-            document.body.appendChild(s);
-        }
-    });
-    </script>
   </head>
   <body>
     <div id="gecoResults">
