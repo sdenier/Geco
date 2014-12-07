@@ -88,7 +88,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 
 	@Override
 	protected String getInternalTemplatePath() {
-		return "/resources/formats/results_osplits.html.mustache"; //$NON-NLS-1$
+		return "/resources/formats/results_splits_internal.mustache"; //$NON-NLS-1$
 	}
 
 	@Override
