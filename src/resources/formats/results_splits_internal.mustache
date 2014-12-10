@@ -17,6 +17,7 @@
     </style>
   </head>
   <body>
+    <div id="gecoResults">
 {{#geco_ResultsCollection}}
     <h2>{{geco_ResultName}} ({{geco_NbFinishedRunners}}/{{geco_NbPresentRunners}}){{#geco_SingleCourse?}} - {{geco_CourseLength}}m, {{geco_CourseClimb}}m{{/geco_SingleCourse?}}</h2>
     <table>
@@ -39,5 +40,6 @@
 {{/geco_UnrankedRunners}}
     </table>
 {{/geco_ResultsCollection}}
+    </div>
   </body>
 </html>
