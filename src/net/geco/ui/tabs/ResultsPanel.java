@@ -67,6 +67,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	private JComboBox resultTypeCB;
 	private JRadioButton rankingResultRB;
 	private JRadioButton splitResultRB;
+	private JRadioButton sectionResultRB;
 	private JRadioButton cnScoreRB;
 
 	private JButton refreshB;
@@ -89,7 +90,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 	private JSpinner autodelayS;
 	private JRadioButton refreshRB;
 
-	private JRadioButton sectionResultRB;
+	private JRadioButton selectHtmlExportRB;
 
 
 	@Override
@@ -310,6 +311,22 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		}
 		builderGroup.add(cnScoreRB);
 		builderGroup.setSelected(rankingResultRB.getModel(), true);
+
+		ActionListener htmlLabel = new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				selectHtmlExportRB.setText("HTML"); //$NON-NLS-1$
+			}
+		};
+		rankingResultRB.addActionListener(htmlLabel);
+		cnScoreRB.addActionListener(htmlLabel);
+
+		ActionListener htmlOsplitsLabel = new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				selectHtmlExportRB.setText("HTML+O'Splits"); //$NON-NLS-1$
+			}
+		};
+		splitResultRB.addActionListener(htmlOsplitsLabel);
+		sectionResultRB.addActionListener(htmlOsplitsLabel);
 		
 		showNcC = new JCheckBox(Messages.uiGet("ResultsPanel.ShowNCLabel")); //$NON-NLS-1$
 		showNcC.setToolTipText(Messages.uiGet("ResultsPanel.ShowNCTooltip")); //$NON-NLS-1$
@@ -415,9 +432,9 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		fileFormatRB.setLayout(new BoxLayout(fileFormatRB, BoxLayout.Y_AXIS));
 		fileFormatRB.setBorder(
 			BorderFactory.createTitledBorder(Messages.uiGet("ResultsPanel.FileFormatTitle"))); //$NON-NLS-1$
-		JRadioButton selectHtmlB = new JRadioButton("HTML+O'Splits"); //$NON-NLS-1$
-		selectHtmlB.setToolTipText(Messages.uiGet("ResultsPanel.HtmlOsplitsTooltip")); //$NON-NLS-1$
-		selectHtmlB.addActionListener(new ActionListener() {
+		selectHtmlExportRB = new JRadioButton("HTML"); //$NON-NLS-1$
+		selectHtmlExportRB.setToolTipText(Messages.uiGet("ResultsPanel.HtmlOsplitsTooltip")); //$NON-NLS-1$
+		selectHtmlExportRB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				exportFormat = "html"; //$NON-NLS-1$
 			}
@@ -449,14 +466,14 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 			}
 		});
 		ButtonGroup group = new ButtonGroup();
-		group.add(selectHtmlB);
+		group.add(selectHtmlExportRB);
 		group.add(selectCustomB);
 		group.add(selectCsvB);
 		group.add(selectOECsvB);
 		group.add(selectXmlB);
-		group.setSelected(selectHtmlB.getModel(), true);
+		group.setSelected(selectHtmlExportRB.getModel(), true);
 		exportFormat = "html"; //$NON-NLS-1$
-		fileFormatRB.add(selectHtmlB);
+		fileFormatRB.add(selectHtmlExportRB);
 		fileFormatRB.add(selectCsvB);
 		fileFormatRB.add(selectOECsvB);
 		fileFormatRB.add(selectXmlB);
