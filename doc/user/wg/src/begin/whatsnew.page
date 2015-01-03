@@ -6,7 +6,7 @@ in_menu: true
 
 # What's new?
 
-## Version 2.3 (2014/11/xx)
+## Version 2.3 (2015/01/xx)
 
 Geco 2.3 enables the full multi-sections race format (previously Raid Orient'Alpin), fully compatible with other Geco features (course detection, trace display):
 
@@ -22,6 +22,7 @@ Geco 2.3 enables the full multi-sections race format (previously Raid Orient'Alp
 - Push GecoSI 1.2.0 (pCard support)
 - Orientshow: <a href="../guide/runners.html#extra">count "extra" controls</a> in trace and add a time penalty for such controls
 - Training mode: can choose between copy first or archive insertion for duplicate entries
+- Results: a single HTML+O'Splits exports all relevant files at the same time
 - Display a brief summary of stage stats in status bar
 - Merge dialog: start id can also be searched (thanks yannisgu)
 - Wording: rename "Functions" as "Operations" in the Log/Operations tab

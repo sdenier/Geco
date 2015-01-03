@@ -14,6 +14,7 @@
 - Orientshow: count "extra" controls in trace and add a time penalty for such controls
 - Training mode: can choose between copy first or archive insertion for duplicate entries
 - Training mode: fix bug with duplicate not triggering split printing automatically
+- Results: merge options to export Splits/O'Splits into a single option + updated splits template
 - Display a brief summary of stage stats in status bar
 - Merge dialog: start id can also be searched (yannisgu)
 - Wording: rename "Functions" as "Operations" in the Log/Operations tab
