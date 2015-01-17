@@ -8,11 +8,12 @@ in_menu: true
 
 Geco prend actuellement en charge le système de chronométrage SPORTident.
 
-Les trois formats suivant sont actuellement supportés :
+Les quatre formats suivant sont actuellement supportés :
 
 - Classique (course en ligne) : postes à prendre dans l'ordre du circuit
 - Ordre libre : le coureur choisit l'ordre dans lequel il prend les postes
 - Orient'Show : pénalités en temps et limite de PM, qualifications par élimination...
+- Multisections : sections en ligne ou en ordre libre, pénalités de temps, neutralisation de section,...
 
 Les formats Ordre libre et Orient'Show supportent les options suivantes pour la lecture des puces :
 
@@ -48,13 +49,6 @@ L'interface graphique de Geco est organisée autour d'une série d'onglets, chac
 - [Séries] pour calculer des séries de qualification par élimination directe à partir des résultats (format Orient'Show uniquement)
 
 Le [Guide Interface] donne les explications détaillées pour chaque onglet.
-
-Geco dispose de caractéristiques dédiées au format Orient'Show :
-
-- pénalités de temps et limite du nombre de PMs
-- comptage précis des PMs et trace détaillée
-- gestion des qualifications par poules et par élimination directe
-
 
 [Guide Interface]: ../guide/index.fr.html
 [Étape]: ../guide/stage.fr.html

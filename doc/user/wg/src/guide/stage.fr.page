@@ -28,6 +28,7 @@ Cette section permet aussi de configurer le comportement de Geco à la lecture d
 - Limites PM : nombre de postes manquant autorisés avant de marquer le coureur comme PM
 - Pas de limite PM : le coureur n'est jamais marqué PM, quelque soit le nombre de postes manquant
 - Pénalité : pénalité de temps en secondes par poste manquant (aussi affichée en minutes)
+- Pénalité Extra : pénalité de temps par poste <a href="../guide/runners.fr.html#extra">hors circuit</a>, en secondes
 
 ## Circuit
 - Geco peut importer des circuits décrits au format *[IOF XML](http://www.soenniksen.dk/iof-datastandard/index.shtml)*. Cliquez sur le bouton *XML* pour sélectionner le fichier de circuits. Vous pouvez choisir entre le format **XML V2** (courant) ou le nouveau format **XML V3**.

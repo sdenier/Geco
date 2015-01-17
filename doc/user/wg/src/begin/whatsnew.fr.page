@@ -6,6 +6,33 @@ in_menu: true
 
 # Quoi de neuf ?
 
+## Version 2.3 - xx/01/2015
+
+Geco 2.3 fournit le nouveau format de course multi-sections (auparavant Raid Orient'Alpin), complètement compatible avec les autres fonctionnalités de Geco (détection de circuit, affichage de la trace) :
+
+- permet de définir une suite de sections, en mixant des postes en ligne et des postes en ordre libre
+- détecte automatiquement les limites de section à l'analyse de la trace d'un coureur (correction manuelle des limites possible)
+- possibilité de neutraliser les sections
+- chaque poste peut avoir une pénalité de temps unique
+- possibilité d'ajouter un temps bonus/malus manuel pour chaque inscription
+- formats de résultats spécialisés avec affichage des sections
+
+### Améliorations mineures
+
+- GecoSI en version 1.2.0 (support des pCard)
+- Orientshow : <a href="../guide/runners.fr.html#extra">détecte les postes en "extra"</a> dans la trace et ajoute une pénalité en temps pour ces postes
+- Mode entraînement : possibilité de choisir entre la copie d'inscription ou l'insertion depuis l'archive pour les lectures doublons
+- Résultats : l'option d'export HTML+O'Splits crée tous les fichiers nécessaires en une fois
+- Affichage d'un résumé des statistiques dans la barre de statut
+- Assistant de fusion : recherche possible aussi par numéro de départ (yannisgu)
+- Renommage des "Fonctions" en "Opérations" dans l'onglet Log/Opérations
+
+### Bugs corrigés
+
+- Détection plus fiable de l'architecture 32 ou 64 bits pour le driver SPORTIdent
+- Mode entraînement : la lecture d'un doublon déclenche bien l'impression du ticket coureur
+
+
 ## Version 2.2 - 06/02/2014
 
 [Geco 2.2](http://bitbucket.org/sdenier/geco/downloads/geco-2.2.zip) améliore la rapidité de lecture des puces et apporte la gestion par groupe de circuits, qui facilitent l'organisation de courses type [One Man Relay](../workflows/omr.fr.html)...
