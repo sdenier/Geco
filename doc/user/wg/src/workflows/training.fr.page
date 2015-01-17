@@ -29,6 +29,21 @@ Simon repart pour le circuit A. Au retour, la lecture crée une nouvelle inscrip
 
 Le mode entraînement permet donc aux coureurs de réaliser plusieurs circuits sans soucis d'inscriptions inconnue ou doublon. Les résultats par circuit afficheront les résultats de chacun.
 
+### Configuration alternative pour des roulements de groupes
+
+Dans la configuration de [Lecture SI](../guide/stage.fr.html), on peut choisir pour la lecture des doublons de toujours chercher une entrée dans l'archive, au lieu de copier la première entrée pour créer la nouvelle. C'est utile dans le cas suivant :
+
+- vous avez plusieurs groupes successifs d'élèves qui vont courir sur les mêmes circuits
+- vous réutilisez le même ensemble de puces pour tous les groupes
+- pour chaque groupe, vous avez créer une archive où chaque élève a un numéro de puce
+- quand un nouveau groupe arrive, vous sélectionnez l'archive correspondante dans Geco
+- chaque élève part avec sa puce désignée
+- à l'arrivée, Geco lit la puce and crée une inscription avec l'élève dans l'archive en cours
+
+Au lieu de copier l'identité de l'élève du premier groupe, Geco va créer une entrée avec une identité différente à chaque fois que vous changez d'archive. A la fin, vous avez une seule course avec les résultats de tous les groupes.
+
+NB : cette option n'est disponible qu'en mode entraînement.
+
 
 ## GEC post-mortem : import d'un log de puces
 
