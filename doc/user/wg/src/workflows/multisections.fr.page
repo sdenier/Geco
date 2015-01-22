@@ -1,0 +1,103 @@
+---
+title: Multi-sections
+sort_info: 15
+in_menu: true
+---
+
+# Course multi-sections
+
+Le format de course multi-sections permet d'organiser des raids dans Geco. Geco permet en particulier de mixer librement des sections en ordre libre et des sections classiques sur la même puce. Il n'est pas nécessaire de "bricoler" en utilisant un contrôle visuel, des macros, ou une gestion mixte avec des cartons de contrôle. Les résultats sont automatiques.
+
+Le mode multi-sections de Geco ne peut cependant pas supporter tous les formats de course. Les contraintes sont détaillées ci-dessous.
+
+## Fonctionnalités du format multi-sections
+
+- Supporte une suite de sections, pouvant alterner sections classiques (en ligne) et sections en ordre libre. Il n'y a par contre pas de support direct pour organiser des sections en papillon (le concurrent choisit l'ordre dans lequel il prend les sections) - voir le [One Man Relay](omr.fr.html) pour une solution possible.
+- Détecte automatiquement les changements de section dans la trace d'un coureur à la lecture de la puce (y compris les PMs et les sections sautées) ; il est aussi possible de corriger manuellement la trace en indiquant à Geco les changements de section.
+- Possibilité de neutraliser chaque section indépendamment. Le temps de la section est soustrait du temps de course. Les postes de la section restent vérifiés par Geco et peuvent aussi donner des pénalités.
+- Chaque poste peut donner une pénalité personnalisée en temps.
+- Possibilité de définir manuellement pour chaque coureur un temps bonus/malus. Cela permet de prendre en compte des pénalités/bonifications manuelles si besoin.
+- Formats spéciaux pour la sortie des temps intermédiaires par section et des résultats par section.
+- Compatible avec les autres fonctionnalités de Geco : affichage de la trace avec tous les poinçons et les changements de section ; détection automatique du circuit multi-sections le plus proche de la trace.
+
+## Configuration des circuits pour le multi-sections
+
+Les circuits multi-sections sont gérés de la manière que les circuits classiques et en ordre libre. Un circuit est défini par une liste de codes que vous pouvez créer/importer dans Geco. Les sections sont ensuite créées en indiquant dans cette liste le premier poste de chaque section. Tous les codes entre le début de section et la section suivante font alors partie de la section. 
+
+### Créer/Importer des circuits
+
+Pour créer un circuit multi-sections dans Geco, il faut d'abord récupérer tous les postes du circuit en une seule liste. Ils doivent apparaître dans l'ordre dans lequel les sections seront enchaînées.
+
+Par exemple, voici un circuit avec trois sections :
+
+- section A en ligne avec les postes 31, 32, 33 ;
+- section B en ordre libre avec les postes 100, 101, 102 ;
+- section C en ligne avec les postes 34, 35, 36.
+
+Les sections A, B et C doivent être prises dans cet ordre. La liste des postes sera donc 31, 32, 33, 100, 101, 102, 34, 35, 36.
+
+Une fois la liste des postes définie pour chaque circuit, vous pouvez [créer les circuits](../guide/stage.html) directement ou bien via un import XML.
+
+### Configurer les sections d'un circuit
+
+1. Sélectionnez le circuit dans le panneau de gauche puis, dans la liste des postes du circuit, sélectionnez le premier poste de la section à définir. Le bouton *Section…* devient actif et vous pouvez le cliquer pour ouvrir l'éditeur de section.
+
+2. Donnez les informations de la section à créer : son nom et le type (en ligne ou ordre libre). Vous pouvez aussi modifier ces informations plus tard.
+
+<a href="../images/msections_crea2.png"><img src="../images/msections_crea2.png" /></a>
+
+3\. Cliquez *Sauver* et la section est créée.
+
+4\. Répétez pour chaque section de chaque circuit.
+
+A chaque fois qu'une section est créée ou éditée, Geco rafraîchit la liste des postes faisant partie de la section : celle-ci commence avec le premier poste de la section et finit avec le poste de la section suivante (il y a deux exceptions : la première section commence avec l'heure de départ, et la dernière avec l'heure d'arrivée).
+
+<a href="../images/msections_crea3.png"><img src="../images/msections_crea3.png" /></a>
+
+Dans l'exemple ci-dessus, la première section "VTTO" commence au poste 32 (elle commence de fait au poste départ) et son dernier poste est le 48. Elle s'achève au poste 201, qui est le premier poste de section suivante "Free O" en ordre libre.
+
+Pour changer ou supprimer une section, sélectionnez le premier poste de la section et ouvrez l'éditeur avec le bouton *Section…*. Si vous devez déplacer une section dans le circuit, vous devez la supprimer pour la recréer ailleurs.
+
+
+### Section neutralisée
+
+Dans l'éditeur de section, vous pouvez marquer une section comme neutralisée. Les postes de cette section seront toujours contrôlés (et les pénalités éventuelles comptées) mais le temps de la section (du premier poste jusqu'à la section suivante) sera soustrait du temps de course.
+
+### Pénalité personnalisée pour chaque poste
+
+Une pénalité différente de temps peut être associée à chaque poste, à définir directement via la liste des postes d'un circuit. Dans le cas où les postes d'une section ont tous la même pénalité, l'éditeur de section permet de facilement les réinitialiser.
+
+Notez qu'un poste peut recevoir une seule pénalité. Si vous utilisez ce poste sur plusieurs circuits, il aura la même pénalité partout.
+
+<img src="../images/msections_crea4.png" style="float: none; width: 359px" />
+
+## Modifications manuelles en multi-sections
+
+### Corriger les changements de section à la main
+
+Dans certains cas limites, Geco peut mal détecter les changements de section et fausser la trace. Vous pouvez corriger manuellement ces cas en indiquant les changements de section à Geco dans la [trace du coureur](../guide/runners.html).
+
+1. Sélectionnez le coureur dans l'onglet *Coureurs* puis la vue de sa trace.
+2. Faites un clic droit sur le poinçon qui doit servir de point de départ à la section fautive.
+3. Sélectionnez la section dans le menu contextuel ouvert par Geco.
+
+<img src="../images/msections_manual.png" style="float: none; width: 371px" />
+
+Geco met alors à jour la trace du coureur en prenant en compte le nouveau départ de la section et les limites existantes des autres sections. Si des erreurs persistent, vous pouvez répéter le process sur plusieurs sections.
+
+Pour recommencer le process en partant de la trace initiale, vous pouvez cliquer sur le bouton *Vérifier*.
+
+### Ajouter un bonus/malus de temps personnel
+
+Il existe toujours des cas ou des règles spéciales difficiles à gérer avec des puces. Geco définit un champ spécial pour chaque coureur permettant de rentrer manuellement un temps bonus ou malus, ajouté au temps officiel. Attention, ce champ est remise à zéro si vous revérifier la trace d'un coureur ou réinitialiser son temps.
+
+<img src="../images/msections_bonus-malus.png" style="float: none; width: 298px" />
+
+## Résultats avec les sections
+
+Les sections sont intégrées à la gestion des résultats dans Geco.
+
+- Temps intermédiaires par section : Geco peut calculer les temps de chaque section et les imprimer avec les temps intermédiaires inter-postes sur le ticket du coureur. Utilisez le modèle `splits_sections.mustache` dans la [configuration](../guide/stage.fr.html) de la course.
+- Résultats par section : en plus du classement normal et des temps intermédiaires inter-postes, vous pouvez exporter les temps intermédiaires par section pour chaque circuit multi-sections.
+
+<a href="../images/msections_results.png"><img src="../images/msections_results.png" /></a>

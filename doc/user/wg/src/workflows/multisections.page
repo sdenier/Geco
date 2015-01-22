@@ -12,8 +12,8 @@ However, Geco can not support all types of organization, so read the next sectio
 
 ## Features for Multi Sections
 
-- Support in-order sections mixing inline and free order controls: you can start with an inline section, then have a section with free order controls, then another inline section. However, all sections must be taken in order (no free order between sections).
-- Automatically detect section limits when processing punches; if Geco does some mistake in section detection (it can happen in some case), you can still fix it by manually setting section limits.
+- Support in-order sections mixing inline and free order controls: you can start with an inline section, then have a section with free order controls, then another inline section. However, all sections must be taken in order (no free order between sections - see how [One Man Relay](omr.html) works in Geco if you need that).
+- Automatically detect section limits when processing punches (including MPs and skipped sections); if Geco does some mistake in section detection (it can happen in some case), you can still fix it by manually setting section limits.
 - Ability to neutralize a section. Section can still have multiple controls and even time penalties, but section time is subtracted from race time - useful when you want to suspend time for security.
 - Each control can have a custom time penalty.
 - Ability to manually set a time bonus/malus for each entry. You can take into account a manual section this way.
@@ -51,7 +51,7 @@ Once the list of controls is defined for each course, you can [create a course](
 
 4\. Repeat until all sections and all courses are defined.
 
-Each time sections change, Geco computes the list of controls for each section: it starts at the first section control and ends just before the next section start.
+Each time sections change, Geco computes the list of controls for each section: it starts at the first section control and ends just before the next section start (two exceptions: first sections starts with start time and last section finishes with end time).
 
 <a href="../images/msections_crea3.png"><img src="../images/msections_crea3.png" /></a>
 
@@ -78,15 +78,15 @@ Beware that the penalty is per control. So if you reuse a control across multipl
 
 In some edge case, Geco may fail to properly recognize section limits and will compute a faulty trace. You can fix such case by manually setting section limits in the runner [trace panel](../guide/runners.html).
 
-1. select the runner in the runners tab then the trace panel
-2. right-click on the punch where you want a section to start for this runner trace.
-3. select the section in the contextual menu opened by Geco
+1. Select the runner in the runners tab then the trace panel.
+2. Right-click on the punch where you want a section to start for this runner trace.
+3. Select the section in the contextual menu opened by Geco.
 
 <img src="../images/msections_manual.png" style="float: none; width: 371px" />
 
-Geco will computes the runner trace with the updated section start and other section limits. If multiple sections are off-limits, you can iterate through this process until it gets correct.
+Geco will compute the runner trace with the updated section start and other section limits. If multiple sections are off-limits, you can iterate through this process until it gets correct.
 
-If you want to restart the process, you can still click the *recheck* button and get the original trace again.
+If you want to restart the process, you can still click the *Recheck* button and get the original trace again.
 
 ### Adding a custom time bonus/malus
 
