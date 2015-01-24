@@ -44,7 +44,7 @@ Une fois la liste des postes définie pour chaque circuit, vous pouvez [créer l
 
 2. Donnez les informations de la section à créer : son nom et le type (en ligne ou ordre libre). Vous pouvez aussi modifier ces informations plus tard.
 
-<a href="../images/msections_crea2.png"><img src="../images/msections_crea2.png" /></a>
+<a href="../images/msections_crea2.fr.png"><img src="../images/msections_crea2.fr.png" /></a>
 
 3\. Cliquez *Sauver* et la section est créée.
 
@@ -52,7 +52,7 @@ Une fois la liste des postes définie pour chaque circuit, vous pouvez [créer l
 
 A chaque fois qu'une section est créée ou éditée, Geco rafraîchit la liste des postes faisant partie de la section : celle-ci commence avec le premier poste de la section et finit avec le poste de la section suivante (il y a deux exceptions : la première section commence avec l'heure de départ, et la dernière avec l'heure d'arrivée).
 
-<a href="../images/msections_crea3.png"><img src="../images/msections_crea3.png" /></a>
+<a href="../images/msections_crea3.fr.png"><img src="../images/msections_crea3.fr.png" /></a>
 
 Dans l'exemple ci-dessus, la première section "VTTO" commence au poste 32 (elle commence de fait au poste départ) et son dernier poste est le 48. Elle s'achève au poste 201, qui est le premier poste de section suivante "Free O" en ordre libre.
 
@@ -69,7 +69,7 @@ Une pénalité différente de temps peut être associée à chaque poste, à dé
 
 Notez qu'un poste peut recevoir une seule pénalité. Si vous utilisez ce poste sur plusieurs circuits, il aura la même pénalité partout.
 
-<img src="../images/msections_crea4.png" style="float: none; width: 359px" />
+<img src="../images/msections_crea4.fr.png" style="float: none; width: 359px" />
 
 ## Modifications manuelles en multi-sections
 
@@ -81,7 +81,7 @@ Dans certains cas limites, Geco peut mal détecter les changements de section et
 2. Faites un clic droit sur le poinçon qui doit servir de point de départ à la section fautive.
 3. Sélectionnez la section dans le menu contextuel ouvert par Geco.
 
-<img src="../images/msections_manual.png" style="float: none; width: 371px" />
+<img src="../images/msections_manual.fr.png" style="float: none; width: 371px" />
 
 Geco met alors à jour la trace du coureur en prenant en compte le nouveau départ de la section et les limites existantes des autres sections. Si des erreurs persistent, vous pouvez répéter le process sur plusieurs sections.
 
@@ -91,7 +91,7 @@ Pour recommencer le process en partant de la trace initiale, vous pouvez cliquer
 
 Il existe toujours des cas ou des règles spéciales difficiles à gérer avec des puces. Geco définit un champ spécial pour chaque coureur permettant de rentrer manuellement un temps bonus ou malus, ajouté au temps officiel. Attention, ce champ est remise à zéro si vous revérifier la trace d'un coureur ou réinitialiser son temps.
 
-<img src="../images/msections_bonus-malus.png" style="float: none; width: 298px" />
+<img src="../images/msections_bonus-malus.fr.png" style="float: none; width: 298px" />
 
 ## Résultats avec les sections
 
@@ -100,4 +100,4 @@ Les sections sont intégrées à la gestion des résultats dans Geco.
 - Temps intermédiaires par section : Geco peut calculer les temps de chaque section et les imprimer avec les temps intermédiaires inter-postes sur le ticket du coureur. Utilisez le modèle `splits_sections.mustache` dans la [configuration](../guide/stage.fr.html) de la course.
 - Résultats par section : en plus du classement normal et des temps intermédiaires inter-postes, vous pouvez exporter les temps intermédiaires par section pour chaque circuit multi-sections.
 
-<a href="../images/msections_results.png"><img src="../images/msections_results.png" /></a>
+<a href="../images/msections_results.fr.png"><img src="../images/msections_results.fr.png" /></a>
