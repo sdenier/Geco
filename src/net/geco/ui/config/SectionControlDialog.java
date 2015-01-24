@@ -40,7 +40,7 @@ import net.geco.ui.basics.SwingUtils;
 public class SectionControlDialog extends JDialog {
 
 	public SectionControlDialog(final IGecoApp geco, JFrame frame, final Course selectedCourse, int controlIndex) {
-		super(frame, "Create or Edit a Section...", true); //$NON-NLS-1$
+		super(frame, Messages.uiGet("SectionControlDialog.Title"), true); //$NON-NLS-1$
 		setResizable(false);
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		
