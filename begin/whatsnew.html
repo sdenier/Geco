@@ -53,7 +53,7 @@
             <h1>Download</h1>
             <div id="downloads">
               <ul>
-                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.2.zip">Version 2.2</a></li>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.3.zip">Version 2.3</a></li>
                 <li>See <a href="../begin/whatsnew.html">what's new</a></li>
               </ul>
             </div>
@@ -76,6 +76,38 @@
             
 <h1 id="whats-new">What&#8217;s new?</h1>
 
+<h2 id="version-23---20150125">Version 2.3 - 2015/01/25</h2>
+
+<p>Geco 2.3 enables the full multi-sections race format (previously Raid Orient&#8217;Alpin), fully compatible with other Geco features (course detection, trace display):</p>
+
+<ul>
+  <li>support in-order sections mixing inline and free order controls</li>
+  <li>automatically detect section limits when analyzing the trace (ability to manually set section limits when detection goes wrong)</li>
+  <li>ability to neutralize a section (subtract section time from race time)</li>
+  <li>each control can have a custom time penalty</li>
+  <li>ability to manually set a time bonus/malus for each entry</li>
+  <li>custom output formats for section splits and results</li>
+</ul>
+
+<h3 id="minor-changes">Minor Changes</h3>
+
+<ul>
+  <li>Push GecoSI 1.2.0 (pCard support)</li>
+  <li>Orientshow: <a href="../guide/runners.html#extra">count &#8220;extra&#8221; controls</a> in trace and add a time penalty for such controls</li>
+  <li>Training mode: can choose between copy first or archive insertion for duplicate entries</li>
+  <li>Results: a single HTML+O&#8217;Splits exports all relevant files at the same time</li>
+  <li>Display a brief summary of stage stats in status bar</li>
+  <li>Merge dialog: start id can also be searched (thanks yannisgu)</li>
+  <li>Wording: rename &#8220;Functions&#8221; as &#8220;Operations&#8221; in the Log/Operations tab</li>
+</ul>
+
+<h3 id="bug-fix">Bug Fix</h3>
+
+<ul>
+  <li>More reliable 32 vs 64 bits detection to use the correct SPORTIdent driver</li>
+  <li>Training mode: fix bug with duplicate not triggering split printing automatically</li>
+</ul>
+
 <h2 id="version-22---20140206">Version 2.2 - 2014/02/06</h2>
 
 <p><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.2.zip">Geco 2.2</a> provides faster ecard readouts and introduces course sets, which enables easier handling of <a href="../workflows/omr.html">One Man Relay</a> events and the like&#8230;</p>
@@ -88,7 +120,7 @@
   <li>True mass start time can be set up for each course</li>
 </ul>
 
-<h3 id="minor-changes">Minor Changes</h3>
+<h3 id="minor-changes-1">Minor Changes</h3>
 
 <ul>
   <li>Course length &amp; climb can be viewed and edited from the course configuration panel</li>
@@ -103,7 +135,7 @@
 
 <p><em>The ROA configuration is disabled in 2.2, prelude to the next version with full sections management.</em></p>
 
-<h3 id="bug-fix">Bug Fix</h3>
+<h3 id="bug-fix-1">Bug Fix</h3>
 
 <ul>
   <li>GecoSI 1.1.0 integration fixes a bug when reading empty ecards.</li>
@@ -118,7 +150,7 @@
   <li>Ranking, splits, runner splits are now generated using <a href="http://mustache.github.io">Mustache</a>. Thus templates can be fully <a href="../howtos/customresults.html">edited and customized</a> by the user. See for example the custom template for the <a href="https://chrome.google.com/webstore/detail/osplits/kfnlllbjdagblbcdnmghcljobdlaoaii?hl=fr">O&#8217;Splits</a> analysis extension.</li>
 </ul>
 
-<h3 id="minor-changes-1">Minor Changes</h3>
+<h3 id="minor-changes-2">Minor Changes</h3>
 
 <ul>
   <li>A startlist by course can now be exported from the runners table.</li>
@@ -126,7 +158,7 @@
   <li>A manual merge between two entries puts the focus on the resulting entry.</li>
 </ul>
 
-<h3 id="bug-fix-1">Bug Fix</h3>
+<h3 id="bug-fix-2">Bug Fix</h3>
 
 <ul>
   <li>GecoSI 1.0.0 integration fixes multiple bugs when reading ecards without start times or when using the 192 punches mode.</li>
@@ -178,7 +210,7 @@
   </li>
   <li>Auto course available by default</li>
   <li>Import of XML IOF V3 (beta) course file (OCAD 11&#8230;)</li>
-  <li>New batch <a href="../guide/functions.html">functions</a>
+  <li>New batch <a href="../guide/operations.html">operations</a>
     <ul>
       <li>import station logs and check DNS/Running</li>
       <li>import ecard logs to recreate a race/training from the master station backup memory</li>
@@ -260,7 +292,7 @@ It paves the way for the future versions of Geco, providing some core changes in
   <li>new status and stats to better manage special cases (competitors still running, unknown and duplicate e-cards for automatic mode)</li>
   <li>new data fields for each competitor: registered start time, archive id for competitor, flag for rented e-card</li>
   <li>a default course can be linked to a category (use when performing registration through CSV or archive)</li>
-  <li>introduce Functions to perform batch operations on data</li>
+  <li>introduce Operations to transform batch set of data</li>
   <li>CSV export format for French CN (Classement National) + CN simulation in results</li>
   <li>HTML result files can be styled with CSS</li>
   <li>better handling of files with different charsets across platforms</li>
@@ -285,7 +317,7 @@ It paves the way for the future versions of Geco, providing some core changes in
         </div>
 
         <div id="footer">
-                &copy; 2008-2014 Simon Denier | 
+                &copy; 2008-2015 Simon Denier | 
                 Generated by <a href="http://webgen.rubyforge.org">webgen</a> | 
                 Design by <a href="http://andreasviklund.com">Andreas Viklund</a>
         </div>

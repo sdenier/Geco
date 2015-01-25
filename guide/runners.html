@@ -53,13 +53,13 @@
             <h1>Download</h1>
             <div id="downloads">
               <ul>
-                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.2.zip">Version 2.2</a></li>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.3.zip">Version 2.3</a></li>
                 <li>See <a href="../begin/whatsnew.html">what's new</a></li>
               </ul>
             </div>
           
             <h1>Contents</h1>
-            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.html">Launch</a></li><li class="webgen-menu-level1"><a href="toolbar.html">Toolbar</a></li><li class="webgen-menu-level1"><a href="ecard_modes.html">Ecard Modes</a></li><li class="webgen-menu-level1"><a href="stage.html">Configuration</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Runners</span></li><li class="webgen-menu-level1"><a href="archive.html">Archive</a></li><li class="webgen-menu-level1"><a href="merge.html">Merge</a></li><li class="webgen-menu-level1"><a href="log.html">Log/Stats</a></li><li class="webgen-menu-level1"><a href="functions.html">Functions</a></li><li class="webgen-menu-level1"><a href="results.html">Results</a></li><li class="webgen-menu-level1"><a href="heats.html">Heats</a></li></ul></div>
+            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.html">Launch</a></li><li class="webgen-menu-level1"><a href="toolbar.html">Toolbar</a></li><li class="webgen-menu-level1"><a href="ecard_modes.html">Ecard Modes</a></li><li class="webgen-menu-level1"><a href="stage.html">Configuration</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Runners</span></li><li class="webgen-menu-level1"><a href="archive.html">Archive</a></li><li class="webgen-menu-level1"><a href="merge.html">Merge</a></li><li class="webgen-menu-level1"><a href="log.html">Log/Stats</a></li><li class="webgen-menu-level1"><a href="operations.html">Operations</a></li><li class="webgen-menu-level1"><a href="results.html">Results</a></li><li class="webgen-menu-level1"><a href="heats.html">Heats</a></li></ul></div>
           
             <h1>Links</h1>
             <div id="links">
@@ -73,7 +73,8 @@
 
           <a id="main"></a>
           <div id="contentalt">
-            <h1 id="runners-panel">Runners Panel</h1>
+            
+<h1 id="runners-panel">Runners Panel</h1>
 
 <p>The runners panel is the central place to register runners and manage events during the race.</p>
 
@@ -175,6 +176,32 @@ The right pane can display details about the currently selected runner (e-card d
   <li>it is also easy to spot inversion with a sequence like <strong>-X, Y, +X</strong>: the runner took Y before X, while he should have go the other way.</li>
 </ul>
 
+<h3 id="what-counts-as-extra-punch-extra-penalty">What Counts as Extra Punch (Extra Penalty)?</h3>
+<p><a name="extra"></a></p>
+
+<p>An extra punch in a runner trace is an added punch whose code does not belong to the runner course. In some formats like the Orient&#8217;Show, such extra punches can be penalized to deter runner from punching all and any control during the race. This is to reward precise map reading and penalize blind running/punching.</p>
+
+<p>Take for example a course with the following controls: 31, 32, 33, 34, 35; and a runner with the following punches: 31, 34, 32, 33, 44, 45, 35. This should give us the following trace: 31, +34, 32, 33, -34+44, +45, 35. </p>
+
+<ul>
+  <li>Only +45 counts as an extra punch in this case, because it is a single punch which does not belong to the course.</li>
+  <li>+34 belongs to the course and is not penalized (the runner may skip a control, then backtrace when he realizes his mistake).</li>
+  <li>-34+44 already counts as a missing punch and for this reason is not doubly penalized, since there is no advantage in taking a control for another instead of just skipping it.</li>
+</ul>
+
+<p>The number of extra punches appears next to the official time in the runner pane. The extra penalty is already added to the total penalty time. Like MP penalty, it can be set up in the <a href="stage.html">configuration</a> panel.</p>
+
+<p><em>Tip: extra penalty should not be higher than mp penalty.</em></p>
+
+<p>As a best practice, you should not set a higher penalty for an extra punch than for a MP punch. If not, this could lead to unfair penalty. Sample case:</p>
+
+<ul>
+  <li>runner A substitutes extra control 32 for control 31 (-31+32): he gets 1 MP penalty</li>
+  <li>runner B takes extra control 32 then control 31 (+32,31): he gets 1 extra penalty</li>
+</ul>
+
+<p>Even with an extra penalty, B has performed better than A because he has all controls, so he should not be more penalized than A.</p>
+
 <h2 id="statistics-pane-mods">Statistics Pane (mod+S)</h2>
 <p>See the <a href="log.html">Log</a> page for a description of stage statistics.</p>
 
@@ -182,7 +209,7 @@ The right pane can display details about the currently selected runner (e-card d
         </div>
 
         <div id="footer">
-                &copy; 2008-2014 Simon Denier | 
+                &copy; 2008-2015 Simon Denier | 
                 Generated by <a href="http://webgen.rubyforge.org">webgen</a> | 
                 Design by <a href="http://andreasviklund.com">Andreas Viklund</a>
         </div>

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Geco lightweight desktop application for orienteering race" />
+    <meta name="keywords" content="orienteering race management lightweight" />
+    <meta name="author" content="Simon Denier / Original design: Andreas Viklund - http://andreasviklund.com/" />
+    <meta name="generator" content="webgen - http://webgen.rubyforge.org" />
+    <link rel="stylesheet" href="../default.css" type="text/css" media="screen,projection" />
+    <title>Geco - Multi-sections</title>
+      <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-3230191-5']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+  
+<link type="text/html" rel="alternate" hreflang="en" href="multisections.html" lang="en" title="Multi Sections" /></head>
+
+  <body>
+    <div id="container">
+      <a id="top"></a>
+
+      <div id="sitename">
+        <h1>Documentation Geco</h1>
+        <a id="menu"></a>
+      </div>
+
+      <div id="nav">
+        <ul><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../begin/index.fr.html">Présentation</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../guide/index.fr.html">Guide interface</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../howtos/index.fr.html">Guide pratique</a></li><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><a href="index.fr.html">Workflows</a></li></ul>
+      </div>
+
+      <div id="wrap1">
+        <div id="wrap2">
+
+          <div id="topbox">
+            <strong><a href="../index.html">/</a> &raquo; <a href="index.fr.html">Workflows</a> &raquo; <span>Multi-sections</span></strong> &nbsp; (<a href="multisections.html">en</a> | <span class="webgen-langbar-current-lang">fr</span>)            
+          </div>
+
+          <div id="leftside">
+            <a id="sectionmenu"></a>
+            <h1>Download</h1>
+            <div id="downloads">
+              <ul>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.3.zip">Version 2.3</a></li>
+                <li>Voir les <a href="../begin/whatsnew.fr.html">nouveautés</a></li>
+              </ul>
+            </div>
+          
+            <h1>Contenu</h1>
+            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.fr.html">Organisations</a></li><li class="webgen-menu-level1"><a href="register.fr.html">Inscriptions</a></li><li class="webgen-menu-level1"><a href="auto.fr.html">Process Auto</a></li><li class="webgen-menu-level1"><a href="endstage.fr.html">Fin de course</a></li><li class="webgen-menu-level1"><a href="training.fr.html">Entraînement</a></li><li class="webgen-menu-level1"><a href="omr.fr.html">One Man Relay</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Multi-sections</span></li><li class="webgen-menu-level1"><a href="quals.fr.html">Qualifications</a></li></ul></div>
+          
+            <h1>Liens</h1>
+            <div id="links">
+                    <ul>
+                    <li><a href="http://sdenier.github.com/Geco/Gecoparlapratique_201501.pdf">Doc formation 2.3</a></li>
+                    <li><a href="http://github.com/sdenier/Geco">Référentiel</a></li>
+                    <li><a href="http://www.o-news.fr/viewforum.php?f=21">Onews/Geco</a></li>
+                    </ul>
+            </div>
+          </div>
+
+          <a id="main"></a>
+          <div id="contentalt">
+            
+<h1 id="course-multi-sections">Course multi-sections</h1>
+
+<p>Le format de course multi-sections permet d&#8217;organiser des raids dans Geco. Geco permet en particulier de mixer librement des sections en ordre libre et des sections classiques sur la même puce. Il n&#8217;est pas nécessaire de &#8220;bricoler&#8221; en utilisant un contrôle visuel, des macros, ou une gestion mixte avec des cartons de contrôle. Les résultats sont automatiques.</p>
+
+<p>Le mode multi-sections de Geco ne peut cependant pas supporter tous les formats de course. Les contraintes sont détaillées ci-dessous.</p>
+
+<h2 id="fonctionnalits-du-format-multi-sections">Fonctionnalités du format multi-sections</h2>
+
+<ul>
+  <li>Supporte une suite de sections, pouvant alterner sections classiques (en ligne) et sections en ordre libre. Il n&#8217;y a par contre pas de support direct pour organiser des sections en papillon (le concurrent choisit l&#8217;ordre dans lequel il prend les sections) - voir le <a href="omr.fr.html">One Man Relay</a> pour une solution possible.</li>
+  <li>Détecte automatiquement les changements de section dans la trace d&#8217;un coureur à la lecture de la puce (y compris les PMs et les sections sautées) ; il est aussi possible de corriger manuellement la trace en indiquant à Geco les changements de section.</li>
+  <li>Possibilité de neutraliser chaque section indépendamment. Le temps de la section est soustrait du temps de course. Les postes de la section restent vérifiés par Geco et peuvent aussi donner des pénalités.</li>
+  <li>Chaque poste peut donner une pénalité personnalisée en temps.</li>
+  <li>Possibilité de définir manuellement pour chaque coureur un temps bonus/malus. Cela permet de prendre en compte des pénalités/bonifications manuelles si besoin.</li>
+  <li>Formats spéciaux pour la sortie des temps intermédiaires par section et des résultats par section.</li>
+  <li>Compatible avec les autres fonctionnalités de Geco : affichage de la trace avec tous les poinçons et les changements de section ; détection automatique du circuit multi-sections le plus proche de la trace.</li>
+</ul>
+
+<h2 id="configuration-des-circuits-pour-le-multi-sections">Configuration des circuits pour le multi-sections</h2>
+
+<p>Les circuits multi-sections sont gérés de la manière que les circuits classiques et en ordre libre. Un circuit est défini par une liste de codes que vous pouvez créer/importer dans Geco. Les sections sont ensuite créées en indiquant dans cette liste le premier poste de chaque section. Tous les codes entre le début de section et la section suivante font alors partie de la section. </p>
+
+<h3 id="crerimporter-des-circuits">Créer/Importer des circuits</h3>
+
+<p>Pour créer un circuit multi-sections dans Geco, il faut d&#8217;abord récupérer tous les postes du circuit en une seule liste. Ils doivent apparaître dans l&#8217;ordre dans lequel les sections seront enchaînées.</p>
+
+<p>Par exemple, voici un circuit avec trois sections :</p>
+
+<ul>
+  <li>section A en ligne avec les postes 31, 32, 33 ;</li>
+  <li>section B en ordre libre avec les postes 100, 101, 102 ;</li>
+  <li>section C en ligne avec les postes 34, 35, 36.</li>
+</ul>
+
+<p>Les sections A, B et C doivent être prises dans cet ordre. La liste des postes sera donc 31, 32, 33, 100, 101, 102, 34, 35, 36.</p>
+
+<p>Une fois la liste des postes définie pour chaque circuit, vous pouvez <a href="../guide/stage.fr.html">créer les circuits</a> directement ou bien via un import XML.</p>
+
+<h3 id="configurer-les-sections-dun-circuit">Configurer les sections d&#8217;un circuit</h3>
+
+<ol>
+  <li>
+    <p>Sélectionnez le circuit dans le panneau de gauche puis, dans la liste des postes du circuit, sélectionnez le premier poste de la section à définir. Le bouton <em>Section…</em> devient actif et vous pouvez le cliquer pour ouvrir l&#8217;éditeur de section.</p>
+  </li>
+  <li>
+    <p>Donnez les informations de la section à créer : son nom et le type (en ligne ou ordre libre). Vous pouvez aussi modifier ces informations plus tard.</p>
+  </li>
+</ol>
+
+<p><a href="../images/msections_crea2.fr.png"><img src="../images/msections_crea2.fr.png" /></a></p>
+
+<p>3. Cliquez <em>Sauver</em> et la section est créée.</p>
+
+<p>4. Répétez pour chaque section de chaque circuit.</p>
+
+<p>A chaque fois qu&#8217;une section est créée ou éditée, Geco rafraîchit la liste des postes faisant partie de la section : celle-ci commence avec le premier poste de la section et finit avec le poste de la section suivante (il y a deux exceptions : la première section commence avec l&#8217;heure de départ, et la dernière avec l&#8217;heure d&#8217;arrivée).</p>
+
+<p><a href="../images/msections_crea3.fr.png"><img src="../images/msections_crea3.fr.png" /></a></p>
+
+<p>Dans l&#8217;exemple ci-dessus, la première section &#8220;VTTO&#8221; commence au poste 32 (elle commence de fait au poste départ) et son dernier poste est le 48. Elle s&#8217;achève au poste 201, qui est le premier poste de section suivante &#8220;Free O&#8221; en ordre libre.</p>
+
+<p>Pour changer ou supprimer une section, sélectionnez le premier poste de la section et ouvrez l&#8217;éditeur avec le bouton <em>Section…</em>. Si vous devez déplacer une section dans le circuit, vous devez la supprimer pour la recréer ailleurs.</p>
+
+<h3 id="section-neutralise">Section neutralisée</h3>
+
+<p>Dans l&#8217;éditeur de section, vous pouvez marquer une section comme neutralisée. Les postes de cette section seront toujours contrôlés (et les pénalités éventuelles comptées) mais le temps de la section (du premier poste jusqu&#8217;à la section suivante) sera soustrait du temps de course.</p>
+
+<h3 id="pnalit-personnalise-pour-chaque-poste">Pénalité personnalisée pour chaque poste</h3>
+
+<p>Une pénalité différente de temps peut être associée à chaque poste, à définir directement via la liste des postes d&#8217;un circuit. Dans le cas où les postes d&#8217;une section ont tous la même pénalité, l&#8217;éditeur de section permet de facilement les réinitialiser.</p>
+
+<p>Notez qu&#8217;un poste peut recevoir une seule pénalité. Si vous utilisez ce poste sur plusieurs circuits, il aura la même pénalité partout.</p>
+
+<p><img src="../images/msections_crea4.fr.png" style="float: none; width: 359px" /></p>
+
+<h2 id="modifications-manuelles-en-multi-sections">Modifications manuelles en multi-sections</h2>
+
+<h3 id="corriger-les-changements-de-section--la-main">Corriger les changements de section à la main</h3>
+
+<p>Dans certains cas limites, Geco peut mal détecter les changements de section et fausser la trace. Vous pouvez corriger manuellement ces cas en indiquant les changements de section à Geco dans la <a href="../guide/runners.fr.html">trace du coureur</a>.</p>
+
+<ol>
+  <li>Sélectionnez le coureur dans l&#8217;onglet <em>Coureurs</em> puis la vue de sa trace.</li>
+  <li>Faites un clic droit sur le poinçon qui doit servir de point de départ à la section fautive.</li>
+  <li>Sélectionnez la section dans le menu contextuel ouvert par Geco.</li>
+</ol>
+
+<p><img src="../images/msections_manual.fr.png" style="float: none; width: 371px" /></p>
+
+<p>Geco met alors à jour la trace du coureur en prenant en compte le nouveau départ de la section et les limites existantes des autres sections. Si des erreurs persistent, vous pouvez répéter le process sur plusieurs sections.</p>
+
+<p>Pour recommencer le process en partant de la trace initiale, vous pouvez cliquer sur le bouton <em>Vérifier</em>.</p>
+
+<h3 id="ajouter-un-bonusmalus-de-temps-personnel">Ajouter un bonus/malus de temps personnel</h3>
+
+<p>Il existe toujours des cas ou des règles spéciales difficiles à gérer avec des puces. Geco définit un champ spécial pour chaque coureur permettant de rentrer manuellement un temps bonus ou malus, ajouté au temps officiel. Attention, ce champ est remise à zéro si vous revérifier la trace d&#8217;un coureur ou réinitialiser son temps.</p>
+
+<p><img src="../images/msections_bonus-malus.fr.png" style="float: none; width: 298px" /></p>
+
+<h2 id="rsultats-avec-les-sections">Résultats avec les sections</h2>
+
+<p>Les sections sont intégrées à la gestion des résultats dans Geco.</p>
+
+<ul>
+  <li>Temps intermédiaires par section : Geco peut calculer les temps de chaque section et les imprimer avec les temps intermédiaires inter-postes sur le ticket du coureur. Utilisez le modèle <code>splits_sections.mustache</code> dans la <a href="../guide/stage.fr.html">configuration</a> de la course.</li>
+  <li>Résultats par section : en plus du classement normal et des temps intermédiaires inter-postes, vous pouvez exporter les temps intermédiaires par section pour chaque circuit multi-sections.</li>
+</ul>
+
+<p><a href="../images/msections_results.fr.png"><img src="../images/msections_results.fr.png" /></a></p>
+
+          </div>
+        </div>
+
+        <div id="footer">
+                &copy; 2008-2015 Simon Denier | 
+                Généré avec <a href="http://webgen.rubyforge.org">webgen</a> | 
+                Design par <a href="http://andreasviklund.com">Andreas Viklund</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

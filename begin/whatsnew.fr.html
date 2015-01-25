@@ -53,7 +53,7 @@
             <h1>Download</h1>
             <div id="downloads">
               <ul>
-                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.2.zip">Version 2.2</a></li>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.3.zip">Version 2.3</a></li>
                 <li>Voir les <a href="../begin/whatsnew.fr.html">nouveautés</a></li>
               </ul>
             </div>
@@ -64,7 +64,7 @@
             <h1>Liens</h1>
             <div id="links">
                     <ul>
-                    <li><a href="http://sdenier.github.com/Geco/geco_formation_11.pdf">Doc formation 1.1</a></li>
+                    <li><a href="http://sdenier.github.com/Geco/Gecoparlapratique_201501.pdf">Doc formation 2.3</a></li>
                     <li><a href="http://github.com/sdenier/Geco">Référentiel</a></li>
                     <li><a href="http://www.o-news.fr/viewforum.php?f=21">Onews/Geco</a></li>
                     </ul>
@@ -75,6 +75,38 @@
           <div id="contentalt">
             
 <h1 id="quoi-de-neuf-">Quoi de neuf ?</h1>
+
+<h2 id="version-23---25012015">Version 2.3 - 25/01/2015</h2>
+
+<p>Geco 2.3 fournit le nouveau format de course multi-sections (auparavant Raid Orient&#8217;Alpin), complètement compatible avec les autres fonctionnalités de Geco (détection de circuit, affichage de la trace) :</p>
+
+<ul>
+  <li>permet de définir une suite de sections, en mixant des postes en ligne et des postes en ordre libre</li>
+  <li>détecte automatiquement les limites de section à l&#8217;analyse de la trace d&#8217;un coureur (correction manuelle des limites possible)</li>
+  <li>possibilité de neutraliser les sections</li>
+  <li>chaque poste peut avoir une pénalité de temps unique</li>
+  <li>possibilité d&#8217;ajouter un temps bonus/malus manuel pour chaque inscription</li>
+  <li>formats de résultats spécialisés avec affichage des sections</li>
+</ul>
+
+<h3 id="amliorations-mineures">Améliorations mineures</h3>
+
+<ul>
+  <li>GecoSI en version 1.2.0 (support des pCard)</li>
+  <li>Orientshow : <a href="../guide/runners.fr.html#extra">détecte les postes en &#8220;extra&#8221;</a> dans la trace et ajoute une pénalité en temps pour ces postes</li>
+  <li>Mode entraînement : possibilité de choisir entre la copie d&#8217;inscription ou l&#8217;insertion depuis l&#8217;archive pour les lectures doublons</li>
+  <li>Résultats : l&#8217;option d&#8217;export HTML+O&#8217;Splits crée tous les fichiers nécessaires en une fois</li>
+  <li>Affichage d&#8217;un résumé des statistiques dans la barre de statut</li>
+  <li>Assistant de fusion : recherche possible aussi par numéro de départ (yannisgu)</li>
+  <li>Renommage des &#8220;Fonctions&#8221; en &#8220;Opérations&#8221; dans l&#8217;onglet Log/Opérations</li>
+</ul>
+
+<h3 id="bugs-corrigs">Bugs corrigés</h3>
+
+<ul>
+  <li>Détection plus fiable de l&#8217;architecture 32 ou 64 bits pour le driver SPORTIdent</li>
+  <li>Mode entraînement : la lecture d&#8217;un doublon déclenche bien l&#8217;impression du ticket coureur</li>
+</ul>
 
 <h2 id="version-22---06022014">Version 2.2 - 06/02/2014</h2>
 
@@ -88,7 +120,7 @@
   <li>Un véritable horaire de départ en masse peut maintenent être défini pour chaque circuit</li>
 </ul>
 
-<h3 id="amliorations-mineures">Améliorations mineures</h3>
+<h3 id="amliorations-mineures-1">Améliorations mineures</h3>
 
 <ul>
   <li>Affichage et édition des longeur et dénivelé possibles depuis la section configuration des circuits</li>
@@ -103,7 +135,7 @@
 
 <p><em>La configuration ROA est désactivée dans la 2.2, en prévision de la gestion prochaine des sections.</em></p>
 
-<h3 id="bugs-corrigs">Bugs corrigés</h3>
+<h3 id="bugs-corrigs-1">Bugs corrigés</h3>
 
 <ul>
   <li>GecoSI en version 1.1.0 corrige un bug lors de la lecture des puces vides.</li>
@@ -126,7 +158,7 @@
   <li>Quand on fusionne deux inscriptions ensemble, le focus est mis sur l&#8217;inscription résultante dans la table des coureurs.</li>
 </ul>
 
-<h3 id="bugs-corrigs-1">Bugs corrigés</h3>
+<h3 id="bugs-corrigs-2">Bugs corrigés</h3>
 
 <ul>
   <li>L&#8217;intégration de GecoSI 1.0.0 corrige plusieurs bugs liés aux puces sans horaire de départ et au mode 192 poinçons.</li>
@@ -178,7 +210,7 @@
   </li>
   <li>circuit Auto disponible par défaut</li>
   <li>import de circuits au format XML IOF V3 (OCAD 11&#8230;) - beta</li>
-  <li>Nouvelles <a href="../guide/functions.fr.html">fonctions</a> batch
+  <li>Nouvelles <a href="../guide/operations.fr.html">opérations</a> batch
     <ul>
       <li>import des logs des stations (stations contrôle/départ lues avec SIConfig) : détection des absents et des coureurs encore en course</li>
       <li>import d&#8217;un fichier de puces créé par SIConfig pour recréer toute la course et les résultats à partir de la mémoire de la station maître</li>
@@ -190,7 +222,7 @@
 
 <p>La nouvelle section <a href="../workflows/index.fr.html">Workflows</a> décrit comment exploiter ces fonctionnalités ensemble.</p>
 
-<h3 id="amliorations-mineures-1">Améliorations mineures</h3>
+<h3 id="amliorations-mineures-2">Améliorations mineures</h3>
 
 <ul>
   <li>ajout du statut &#8220;Hors-délai&#8221;</li>
@@ -202,7 +234,7 @@
   <li>mode manuel/mode auto/insertion auto archive : ce sont maintenant des options à choisir dans la configuration de la course</li>
 </ul>
 
-<h3 id="bugs-corrigs-2">Bugs corrigés</h3>
+<h3 id="bugs-corrigs-3">Bugs corrigés</h3>
 
 <ul>
   <li>export CSV pour le CN (status corrects, encodage)</li>
@@ -259,7 +291,7 @@
   <li>nouveaux statuts et statistiques pour gérer les cas spéciaux (concurrents en course, puces inconnues et doublons pour le mode automatique)</li>
   <li>nouveaux champs de données pour chaque concurrent : horaire de départ pré-attribué, champ d&#8217;archive, puce louée</li>
   <li>attribution d&#8217;un circuit par défaut à une catégorie</li>
-  <li>ajout des Fonctions pour effectuer des opérations batch sur les données</li>
+  <li>ajout des opérations pour transformer des ensembles de données</li>
   <li>format d&#8217;export CSV pour le Classement National + simulation des points CN</li>
   <li>styles CSS pour les fichiers résultats HTML</li>
   <li>meilleure gestion des fichiers avec différents charsets</li>
@@ -271,7 +303,7 @@
   <li>les <code>Controls</code> peuvent s&#8217;enregistrer comme services et accéder simplement l&#8217;un à l&#8217;autre</li>
   <li>ré-ingénierie de la classe <code>ResultBuilder</code> et affiliées : séparation entre le calcul des résultats et l&#8217;export des résultats et splits</li>
   <li>[Mac] mise à jour pour la dernière révision Mac Java</li>
-  <li>quelques changements dans les fichiers de données pour supporter les fonctions 1.1</li>
+  <li>quelques changements dans les fichiers de données pour supporter les fonctionnalités 1.1</li>
 </ul>
 
 <h2 id="version-10---19102010">Version 1.0 - 19/10/2010</h2>
@@ -284,7 +316,7 @@
         </div>
 
         <div id="footer">
-                &copy; 2008-2014 Simon Denier | 
+                &copy; 2008-2015 Simon Denier | 
                 Généré avec <a href="http://webgen.rubyforge.org">webgen</a> | 
                 Design par <a href="http://andreasviklund.com">Andreas Viklund</a>
         </div>

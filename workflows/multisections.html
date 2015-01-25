@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Geco lightweight desktop application for orienteering race" />
+    <meta name="keywords" content="orienteering race management lightweight" />
+    <meta name="author" content="Simon Denier / Original design: Andreas Viklund - http://andreasviklund.com/" />
+    <meta name="generator" content="webgen - http://webgen.rubyforge.org" />
+    <link rel="stylesheet" href="../default.css" type="text/css" media="screen,projection" />
+    <title>Geco - Multi Sections</title>
+      <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-3230191-5']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+  
+<link type="text/html" rel="alternate" hreflang="fr" href="multisections.fr.html" lang="fr" title="Multi-sections" /></head>
+
+  <body>
+    <div id="container">
+      <a id="top"></a>
+
+      <div id="sitename">
+        <h1>Geco User Help</h1>
+        <a id="menu"></a>
+      </div>
+
+      <div id="nav">
+        <ul><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../begin/index.html">Presentation</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../guide/index.html">UI Guide</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../howtos/index.html">How-tos</a></li><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><a href="index.html">Workflows</a></li></ul>
+      </div>
+
+      <div id="wrap1">
+        <div id="wrap2">
+
+          <div id="topbox">
+            <strong><a href="../index.html">/</a> &raquo; <a href="index.html">Workflows</a> &raquo; <span>Multi Sections</span></strong> &nbsp; (<span class="webgen-langbar-current-lang">en</span> | <a href="multisections.fr.html">fr</a>)            
+          </div>
+
+          <div id="leftside">
+            <a id="sectionmenu"></a>
+            <h1>Download</h1>
+            <div id="downloads">
+              <ul>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.3.zip">Version 2.3</a></li>
+                <li>See <a href="../begin/whatsnew.html">what's new</a></li>
+              </ul>
+            </div>
+          
+            <h1>Contents</h1>
+            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.html">Organisations</a></li><li class="webgen-menu-level1"><a href="register.html">Registration</a></li><li class="webgen-menu-level1"><a href="auto.html">Auto Handler</a></li><li class="webgen-menu-level1"><a href="endstage.html">End of stage</a></li><li class="webgen-menu-level1"><a href="training.html">Training</a></li><li class="webgen-menu-level1"><a href="omr.html">One Man Relay</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Multi Sections</span></li><li class="webgen-menu-level1"><a href="quals.html">Qualifications</a></li></ul></div>
+          
+            <h1>Links</h1>
+            <div id="links">
+                    <ul>
+                    
+                    <li><a href="http://github.com/sdenier/Geco">Repository</a></li>
+                    <li><a href="http://www.o-news.fr/viewforum.php?f=21">Forum (french)</a></li>
+                    </ul>
+            </div>
+          </div>
+
+          <a id="main"></a>
+          <div id="contentalt">
+            
+<h1 id="multi-sections-race">Multi Sections Race</h1>
+
+<p>The multi sections race format in Geco can help with the organization of adventure racing or unconventional orienteering race. The main feature of Geco for multi-sections is that it enables to freely mix inline and free order sections on the same ecard. There is no need to start/end with a unique &#8220;special&#8221; section, or to use control cards whenever you want to mix a free order section inside an inline race.</p>
+
+<p>However, Geco can not support all types of organization, so read the next section to see it fits all your need.</p>
+
+<h2 id="features-for-multi-sections">Features for Multi Sections</h2>
+
+<ul>
+  <li>Support in-order sections mixing inline and free order controls: you can start with an inline section, then have a section with free order controls, then another inline section. However, all sections must be taken in order (no free order between sections - see how <a href="omr.html">One Man Relay</a> works in Geco if you need that).</li>
+  <li>Automatically detect section limits when processing punches (including MPs and skipped sections); if Geco does some mistake in section detection (it can happen in some case), you can still fix it by manually setting section limits.</li>
+  <li>Ability to neutralize a section. Section can still have multiple controls and even time penalties, but section time is subtracted from race time - useful when you want to suspend time for security.</li>
+  <li>Each control can have a custom time penalty.</li>
+  <li>Ability to manually set a time bonus/malus for each entry. You can take into account a manual section this way.</li>
+  <li>Custom output formats for section splits and results.</li>
+  <li>Fully compatible with other Geco features: Geco displays a unique trace with all punches and section markers; it can automatically detect the most fit multi-sections course based on trace.</li>
+</ul>
+
+<h2 id="setting-up-courses-with-multiple-sections">Setting up Courses with Multiple Sections</h2>
+
+<p>Courses in multi-sections are managed the same way classic or free order courses are managed. A course is just a list of controls that you create/import in Geco. The difference is that you later annotate the list to mark the beginning of each section. All controls between a section start and the next section are then part of the section.</p>
+
+<h3 id="creatingimporting-courses">Creating/Importing Courses</h3>
+
+<p>A prerequisite to create multi-sections courses in Geco: for each course, you should build the full list of controls to be taken; they should appear in the same order as the sections they belong to.</p>
+
+<p>For example, let&#8217;s say you define a course with three sections:</p>
+
+<ul>
+  <li>section A is inline with controls 31, 32, 33;</li>
+  <li>section B is free order with controls 100, 101, 102;</li>
+  <li>section C is inline with controls 34, 35, 36.</li>
+</ul>
+
+<p>Sections A, B, and C must be taken in order. Then the list of controls looks like 31, 32, 33, 100, 101, 102, 34, 35, 36.</p>
+
+<p>Once the list of controls is defined for each course, you can <a href="../guide/stage.html">create a course</a> with this list or import it through XML.</p>
+
+<h3 id="setting-up-section-for-a-course">Setting up Section for a Course</h3>
+
+<ol>
+  <li>
+    <p>Select the course in the left panel then, in the right panel, the first control of the section you want to define. The <em>Section…</em> button becomes enabled and you can click it to open the section editor</p>
+  </li>
+  <li>
+    <p>Fill in details about the section you want to create: section name and type (inline or free order). You can come back later.</p>
+  </li>
+</ol>
+
+<p><a href="../images/msections_crea2.png"><img src="../images/msections_crea2.png" /></a></p>
+
+<p>3. Click <em>Save</em> and the section is created.</p>
+
+<p>4. Repeat until all sections and all courses are defined.</p>
+
+<p>Each time sections change, Geco computes the list of controls for each section: it starts at the first section control and ends just before the next section start (two exceptions: first sections starts with start time and last section finishes with end time).</p>
+
+<p><a href="../images/msections_crea3.png"><img src="../images/msections_crea3.png" /></a></p>
+
+<p>In the above example, the first section &#8220;VTTO&#8221; starts with control 32 and ends with control 48. Free order starts at control 201 and takes all next controls.</p>
+
+<p>If you want to change or delete a section, you can do it through the <em>Section…</em> editor. If you want to move a section around, you must delete it and create it again.</p>
+
+<h3 id="section-neutralization">Section Neutralization</h3>
+
+<p>In the section editor, you can define a section as neutralized. Controls in the section will still be checked (and penalties added), but the total time in the section (from first control to next section) will be subtracted from the official time.</p>
+
+<h3 id="custom-time-penalties-per-control">Custom Time Penalties per Control</h3>
+
+<p>Each control can have a custom time penalty which you can directly modify in the control table. To speed up the process, you can use the section editor which lets you reset time penalties for all controls in the section.</p>
+
+<p>Beware that the penalty is per control. So if you reuse a control across multiple courses, it gets the same time penalty everywhere.</p>
+
+<p><img src="../images/msections_crea4.png" style="float: none; width: 359px" /></p>
+
+<h2 id="manual-modifications-for-a-multi-sections">Manual Modifications for a Multi Sections</h2>
+
+<h3 id="fixing-section-limits-by-hand">Fixing Section Limits by Hand</h3>
+
+<p>In some edge case, Geco may fail to properly recognize section limits and will compute a faulty trace. You can fix such case by manually setting section limits in the runner <a href="../guide/runners.html">trace panel</a>.</p>
+
+<ol>
+  <li>Select the runner in the runners tab then the trace panel.</li>
+  <li>Right-click on the punch where you want a section to start for this runner trace.</li>
+  <li>Select the section in the contextual menu opened by Geco.</li>
+</ol>
+
+<p><img src="../images/msections_manual.png" style="float: none; width: 371px" /></p>
+
+<p>Geco will compute the runner trace with the updated section start and other section limits. If multiple sections are off-limits, you can iterate through this process until it gets correct.</p>
+
+<p>If you want to restart the process, you can still click the <em>Recheck</em> button and get the original trace again.</p>
+
+<h3 id="adding-a-custom-time-bonusmalus">Adding a custom time bonus/malus</h3>
+
+<p>There might still be some case/rules which you can not handle through ecards. Geco provides a custom field for each runner, so that you can enter manually a bonus/malus time to be added to the official time. Beware that this field is reseted if you recheck runner status.</p>
+
+<p><img src="../images/msections_bonus-malus.png" style="float: none; width: 298px" /></p>
+
+<h2 id="results-with-sections-data">Results with Sections Data</h2>
+
+<p>Multi-sections race is fully compatible with Geco results system.</p>
+
+<ul>
+  <li>Section splits: Geco can compute section times and print them along with control splits, so that there is an immediate feedback about each section. Just select the <code>splits_sections.mustache</code> template in the stage/template <a href="../guide/stage.html">configuration</a>.</li>
+  <li>Section Results: in addition to the normal ranking and splits per control, you can export split results per section for each multi-sections course.</li>
+</ul>
+
+<p><a href="../images/msections_results.png"><img src="../images/msections_results.png" /></a></p>
+
+          </div>
+        </div>
+
+        <div id="footer">
+                &copy; 2008-2015 Simon Denier | 
+                Generated by <a href="http://webgen.rubyforge.org">webgen</a> | 
+                Design by <a href="http://andreasviklund.com">Andreas Viklund</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

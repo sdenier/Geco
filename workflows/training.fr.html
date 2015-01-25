@@ -53,18 +53,18 @@
             <h1>Download</h1>
             <div id="downloads">
               <ul>
-                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.2.zip">Version 2.2</a></li>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.3.zip">Version 2.3</a></li>
                 <li>Voir les <a href="../begin/whatsnew.fr.html">nouveautés</a></li>
               </ul>
             </div>
           
             <h1>Contenu</h1>
-            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.fr.html">Organisations</a></li><li class="webgen-menu-level1"><a href="register.fr.html">Inscriptions</a></li><li class="webgen-menu-level1"><a href="auto.fr.html">Process Auto</a></li><li class="webgen-menu-level1"><a href="omr.fr.html">One Man Relay</a></li><li class="webgen-menu-level1"><a href="endstage.fr.html">Fin de course</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Entraînement</span></li><li class="webgen-menu-level1"><a href="quals.fr.html">Qualifications</a></li></ul></div>
+            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.fr.html">Organisations</a></li><li class="webgen-menu-level1"><a href="register.fr.html">Inscriptions</a></li><li class="webgen-menu-level1"><a href="auto.fr.html">Process Auto</a></li><li class="webgen-menu-level1"><a href="endstage.fr.html">Fin de course</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Entraînement</span></li><li class="webgen-menu-level1"><a href="omr.fr.html">One Man Relay</a></li><li class="webgen-menu-level1"><a href="multisections.fr.html">Multi-sections</a></li><li class="webgen-menu-level1"><a href="quals.fr.html">Qualifications</a></li></ul></div>
           
             <h1>Liens</h1>
             <div id="links">
                     <ul>
-                    <li><a href="http://sdenier.github.com/Geco/geco_formation_11.pdf">Doc formation 1.1</a></li>
+                    <li><a href="http://sdenier.github.com/Geco/Gecoparlapratique_201501.pdf">Doc formation 2.3</a></li>
                     <li><a href="http://github.com/sdenier/Geco">Référentiel</a></li>
                     <li><a href="http://www.o-news.fr/viewforum.php?f=21">Onews/Geco</a></li>
                     </ul>
@@ -104,13 +104,30 @@
 
 <p>Le mode entraînement permet donc aux coureurs de réaliser plusieurs circuits sans soucis d&#8217;inscriptions inconnue ou doublon. Les résultats par circuit afficheront les résultats de chacun.</p>
 
+<h3 id="configuration-alternative-pour-des-roulements-de-groupes">Configuration alternative pour des roulements de groupes</h3>
+
+<p>Dans la configuration de <a href="../guide/stage.fr.html">Lecture SI</a>, on peut choisir pour la lecture des doublons de toujours chercher une entrée dans l&#8217;archive, au lieu de copier la première entrée pour créer la nouvelle. C&#8217;est utile dans le cas suivant :</p>
+
+<ul>
+  <li>vous avez plusieurs groupes successifs d&#8217;élèves qui vont courir sur les mêmes circuits</li>
+  <li>vous réutilisez le même ensemble de puces pour tous les groupes</li>
+  <li>pour chaque groupe, vous avez créer une archive où chaque élève a un numéro de puce</li>
+  <li>quand un nouveau groupe arrive, vous sélectionnez l&#8217;archive correspondante dans Geco</li>
+  <li>chaque élève part avec sa puce désignée</li>
+  <li>à l&#8217;arrivée, Geco lit la puce and crée une inscription avec l&#8217;élève dans l&#8217;archive en cours</li>
+</ul>
+
+<p>Au lieu de copier l&#8217;identité de l&#8217;élève du premier groupe, Geco va créer une entrée avec une identité différente à chaque fois que vous changez d&#8217;archive. A la fin, vous avez une seule course avec les résultats de tous les groupes.</p>
+
+<p>NB : cette option n&#8217;est disponible qu&#8217;en mode entraînement.</p>
+
 <h2 id="gec-post-mortem--import-dun-log-de-puces">GEC post-mortem : import d&#8217;un log de puces</h2>
 
 <p>Une autre possibilité est de réaliser la GEC &#8220;à la maison&#8221;, en important simplement le log des puces lues par la station de lecture (on peut exporter ce log avec Si-Config). Ceci permet de ne transporter que le minimum de matériel pour l&#8217;entraînement. De plus, on profite des algorithmes sophistiqués de Geco pour détecter les circuits et reconstruire les résultats a posteriori. Il faut donc :</p>
 
 <ol>
   <li>exporter le log de la station de lecture depuis Si-Config</li>
-  <li>Importer dans Geco à partir de l&#8217;onglet Log, fonction <em>Import log puces</em> parmi les fonctions <a href="../guide/functions.fr.html">Batch</a>. Il suffit de sélectionner le fichier log puis de lancer <em>Exécuter</em>. La fonction importe chaque ligne du log comme s&#8217;il s&#8217;agissait d&#8217;une puce lue dans la station.</li>
+  <li>Importer dans Geco à partir de l&#8217;onglet Log, opération <em>Import log puces</em> parmi les opérations <a href="../guide/operations.fr.html">Batch</a>. Il suffit de sélectionner le fichier log puis de lancer <em>Exécuter</em>. L&#8217;opération importe chaque ligne du log comme s&#8217;il s&#8217;agissait d&#8217;une puce lue dans la station.</li>
 </ol>
 
 <p><a href="../images/ecard_import.fr.png"><img src="../images/ecard_import.fr.png" /></a></p>
@@ -121,7 +138,7 @@
         </div>
 
         <div id="footer">
-                &copy; 2008-2014 Simon Denier | 
+                &copy; 2008-2015 Simon Denier | 
                 Généré avec <a href="http://webgen.rubyforge.org">webgen</a> | 
                 Design par <a href="http://andreasviklund.com">Andreas Viklund</a>
         </div>

@@ -53,18 +53,18 @@
             <h1>Download</h1>
             <div id="downloads">
               <ul>
-                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.2.zip">Version 2.2</a></li>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.3.zip">Version 2.3</a></li>
                 <li>Voir les <a href="../begin/whatsnew.fr.html">nouveautés</a></li>
               </ul>
             </div>
           
             <h1>Contenu</h1>
-            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.fr.html">Lancement</a></li><li class="webgen-menu-level1"><a href="toolbar.fr.html">Barre d'outils</a></li><li class="webgen-menu-level1"><a href="ecard_modes.fr.html">Modes de lecture</a></li><li class="webgen-menu-level1"><a href="stage.fr.html">Configuration</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Coureurs</span></li><li class="webgen-menu-level1"><a href="archive.fr.html">Archive</a></li><li class="webgen-menu-level1"><a href="merge.fr.html">Fusion</a></li><li class="webgen-menu-level1"><a href="log.fr.html">Log/Stats</a></li><li class="webgen-menu-level1"><a href="functions.fr.html">Fonctions</a></li><li class="webgen-menu-level1"><a href="results.fr.html">Résultats</a></li><li class="webgen-menu-level1"><a href="heats.fr.html">Séries</a></li></ul></div>
+            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.fr.html">Lancement</a></li><li class="webgen-menu-level1"><a href="toolbar.fr.html">Barre d'outils</a></li><li class="webgen-menu-level1"><a href="ecard_modes.fr.html">Modes de lecture</a></li><li class="webgen-menu-level1"><a href="stage.fr.html">Configuration</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Coureurs</span></li><li class="webgen-menu-level1"><a href="archive.fr.html">Archive</a></li><li class="webgen-menu-level1"><a href="merge.fr.html">Fusion</a></li><li class="webgen-menu-level1"><a href="log.fr.html">Log/Stats</a></li><li class="webgen-menu-level1"><a href="operations.fr.html">Opérations</a></li><li class="webgen-menu-level1"><a href="results.fr.html">Résultats</a></li><li class="webgen-menu-level1"><a href="heats.fr.html">Séries</a></li></ul></div>
           
             <h1>Liens</h1>
             <div id="links">
                     <ul>
-                    <li><a href="http://sdenier.github.com/Geco/geco_formation_11.pdf">Doc formation 1.1</a></li>
+                    <li><a href="http://sdenier.github.com/Geco/Gecoparlapratique_201501.pdf">Doc formation 2.3</a></li>
                     <li><a href="http://github.com/sdenier/Geco">Référentiel</a></li>
                     <li><a href="http://www.o-news.fr/viewforum.php?f=21">Onews/Geco</a></li>
                     </ul>
@@ -176,6 +176,32 @@ La vue dans le panneau de droite peut montrer des données détaillées sur le c
   <li>il est aussi facile de repérer les inversions avec la séquence <strong>-X, Y, +X</strong> : le coureur a pris Y avant de prendre X, alors qu&#8217;il aurait dû prendre l&#8217;ordre inverse.</li>
 </ul>
 
+<h3 id="quest-ce-quun-poinon-compt-comme-extra-pnalit-">Qu&#8217;est-ce qu&#8217;un poinçon compté comme extra (pénalité) ?</h3>
+<p><a name="extra"></a></p>
+
+<p>Un poinçon est compté comme extra dans la trace d&#8217;un coureur quand il s&#8217;agit d&#8217;un poste supplémentaire dont le code ne fait pas partie du circuit. Dans un format comme l&#8217;Orient&#8217;Show, ces poinçons extra sont aussi pénalisés pour dissuader les coureurs de pointer tous les postes sans lire la carte.</p>
+
+<p>Par exemple, si on prend un circuit avec les postes suivant 31, 32, 33, 34, 35 ; et un coureur avec les poinçons suivant 31, 34, 32, 33, 44, 45, 35. La trace calculée est alors 31, +34, 32, 33, -34+44, +45, 35. </p>
+
+<ul>
+  <li>Seul le +45 est compté comme extra dans ce cas, puisque c&#8217;est le seul poinçon indépendant qui ne fait pas partie du circuit.</li>
+  <li>Le poinçon +34 n&#8217;est pas pénalisé car il fait partie du circuit (ceci pour ne pas pénaliser un coureur qui aurait sauté un poste avant de revenir en arrière pour recommencer).</li>
+  <li>Le poinçon -34+44 est pénalisé uniquement comme un poinçon manquant (pas de double pénalité sur les substitutions de poste).</li>
+</ul>
+
+<p>Le nombre de poinçons extra est affiché à côté du temps officiel dans la vue Coureur. La pénalité en temps pour les postes extra est automatiquement ajouté à la pénalité totale. La pénalité extra est définie dans la <a href="stage.fr.html">configuration</a> de la course.</p>
+
+<p><em>Conseil : la pénalité pour extra ne doit pas être supérieur à la pénalité pour PM.</em></p>
+
+<p>Mettre une pénalité supérieure pour les postes extra peut donner des pénalités injustes dans certains cas particuliers :</p>
+
+<ul>
+  <li>un coureur A prend le poste 32 à la place du 31 (-31+32) : il reçoit une pénalité PM</li>
+  <li>un coureur B prend le poste 32 puis le poste 31 (+32,31) : il reçoit une pénalité extra</li>
+</ul>
+
+<p>On considère que le coureur B a mieux couru que le coureur A car il a pris tous les postes : son poste en extra ne doit donc pas le pénaliser plus que le coureur A.</p>
+
 <h2 id="vue-statistiques-mods">Vue Statistiques (mod+S)</h2>
 <p>Voir la page <a href="log.fr.html">Log</a> pour une description des statistiques de course.</p>
 
@@ -183,7 +209,7 @@ La vue dans le panneau de droite peut montrer des données détaillées sur le c
         </div>
 
         <div id="footer">
-                &copy; 2008-2014 Simon Denier | 
+                &copy; 2008-2015 Simon Denier | 
                 Généré avec <a href="http://webgen.rubyforge.org">webgen</a> | 
                 Design par <a href="http://andreasviklund.com">Andreas Viklund</a>
         </div>

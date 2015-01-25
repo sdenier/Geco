@@ -53,13 +53,13 @@
             <h1>Download</h1>
             <div id="downloads">
               <ul>
-                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.2.zip">Version 2.2</a></li>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.3.zip">Version 2.3</a></li>
                 <li>See <a href="../begin/whatsnew.html">what's new</a></li>
               </ul>
             </div>
           
             <h1>Contents</h1>
-            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.html">Organisations</a></li><li class="webgen-menu-level1"><a href="register.html">Registration</a></li><li class="webgen-menu-level1"><a href="auto.html">Auto Handler</a></li><li class="webgen-menu-level1"><a href="omr.html">One Man Relay</a></li><li class="webgen-menu-level1"><a href="endstage.html">End of stage</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Training</span></li><li class="webgen-menu-level1"><a href="quals.html">Qualifications</a></li></ul></div>
+            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.html">Organisations</a></li><li class="webgen-menu-level1"><a href="register.html">Registration</a></li><li class="webgen-menu-level1"><a href="auto.html">Auto Handler</a></li><li class="webgen-menu-level1"><a href="endstage.html">End of stage</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Training</span></li><li class="webgen-menu-level1"><a href="omr.html">One Man Relay</a></li><li class="webgen-menu-level1"><a href="multisections.html">Multi Sections</a></li><li class="webgen-menu-level1"><a href="quals.html">Qualifications</a></li></ul></div>
           
             <h1>Links</h1>
             <div id="links">
@@ -76,7 +76,7 @@
             
 <h1 id="training">Training</h1>
 
-<p>Geco provides a training mode which lightens actions to be taken. With this mode Geco reads all ecards and computes the normal status immediately, whether a pre-registration exists or not. Furthermore, Geco handles multiple reads of the same ecard by creating a new entry each entry, allowing a runner to perform several courses. Geco can also import an ecard log extracted from a master station.</p>
+<p>Geco provides a training mode which simplifies actions to be taken. With this mode Geco reads all ecards and computes the normal status immediately, whether a pre-registration exists or not. Furthermore, Geco handles multiple reads of the same ecard by creating a new entry each entry, allowing a runner to perform several exercises. Geco can also import an ecard log extracted from a master station.</p>
 
 <p><img style="float:none; width:100px; margin: 0;" src="../images/training_button.png" /></p>
 
@@ -84,7 +84,7 @@
 
 <p>The only necessary setup is to <em>import courses</em> in a new stage. Pre-registration is optional. One can also <em>setup an archive</em> to facilitate automatic registration (for example, using a club archive).</p>
 
-<p>The next step is launching read in training mode and just leave the computer in self-service. Take Simon, a beginner who runs with a rented ecard (not registered in archive). He goes onto course B and comes back. Reading his ecard <em>creates an anonymous entry</em> with the right course and status:</p>
+<p>The next step is launching ecard reading in training mode and just leave the computer in self-service. Take Simon, a beginner who runs with a rented ecard (not registered in archive). He goes onto course B and comes back. Reading his ecard <em>creates an anonymous entry</em> with the right course and status:</p>
 
 <blockquote>
   <p><code>1   1061000   X   None  Course B   NL  41:32   OK</code></p>
@@ -96,7 +96,7 @@
   <p><code>1   1061000   Simon D   H21  Course B   3810RA  41:32   OK</code></p>
 </blockquote>
 
-<p>Simon goes back onto the A course. Coming back, reading the ecard creates yet another entry, with this course and the right status. In the case of a duplicate reading, Geco reacts as if it is the same person and <em>copies</em> the previous data.</p>
+<p>Simon goes back onto the A course. Coming back, reading the ecard creates another entry, with this course and the right status. In the case of a duplicate reading, Geco reacts as if it is the same person and <em>copies</em> the previous data.</p>
 
 <blockquote>
   <p><code>2   1061000a  Simon D   H21  Circuit A   3810RA  57:01   OK</code></p>
@@ -104,13 +104,30 @@
 
 <p>Thus the training mode allows runners to perform several courses without worrying about unknown or duplicate entries. Results by course will display the result of each runner.</p>
 
+<h3 id="alternative-configuration-for-rolling-groups">Alternative Configuration for Rolling Groups</h3>
+
+<p>In the <a href="../guide/stage.html">SI Reader</a> configuration panel, one can choose to always lookup an entry in archive when reading a duplicate, instead of copying the first entry. The use case is the following:</p>
+
+<ul>
+  <li>you have successive groups of students running the same courses</li>
+  <li>you use the same set of ecards with all groups</li>
+  <li>for each group, you have an archive which links each student with a unique ecard</li>
+  <li>when a new group arrives, you select the corresponding archive in Geco</li>
+  <li>each student starts with his assigned ecard</li>
+  <li>at finish, Geco reads the ecard and inserts the student identity from the group archive</li>
+</ul>
+
+<p>Instead of copying the identity of the student in the first group, Geco will now create an entry with a different identity for each group archive. At the end, you have a single stage with all results from all groups.</p>
+
+<p>NB: this option only works for the training mode.</p>
+
 <h2 id="post-mortem-procedure-importing-an-ecard-log">Post-mortem procedure: importing an ecard log</h2>
 
 <p>Geco also provides the capability to import the ecard log as extracted from the master station (with Si-Config). Then the logistics for training becomes minimal as everything can be done after the event at home. Furthermore, one benefits from the sophisticated algorithms of Geco for course detection and rebuilding results a posteriori. In two steps:</p>
 
 <ol>
   <li>export the log from the master station using Si-Config</li>
-  <li>import it in Geco from the Log panel, using <em>Import Ecard Log</em> among <a href="../guide/functions.html">Batch</a> functions. One just needs to select the log file then click on <em>Execute</em>. The function imports each line as if it was an ecard read from the station.</li>
+  <li>import it in Geco from the Log panel, using <em>Import Ecard Log</em> among <a href="../guide/operations.html">Batch</a> operations. One just needs to select the log file then click on <em>Execute</em>. The operation imports each line as if it was an ecard read from the station.</li>
 </ol>
 
 <p><a href="../images/ecard_import.png"><img src="../images/ecard_import.png" /></a></p>
@@ -121,7 +138,7 @@
         </div>
 
         <div id="footer">
-                &copy; 2008-2014 Simon Denier | 
+                &copy; 2008-2015 Simon Denier | 
                 Generated by <a href="http://webgen.rubyforge.org">webgen</a> | 
                 Design by <a href="http://andreasviklund.com">Andreas Viklund</a>
         </div>

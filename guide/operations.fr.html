@@ -11,7 +11,7 @@
     <meta name="author" content="Simon Denier / Original design: Andreas Viklund - http://andreasviklund.com/" />
     <meta name="generator" content="webgen - http://webgen.rubyforge.org" />
     <link rel="stylesheet" href="../default.css" type="text/css" media="screen,projection" />
-    <title>Geco - Fonctions</title>
+    <title>Geco - Opérations</title>
       <script type="text/javascript">
 
   var _gaq = _gaq || [];
@@ -26,7 +26,7 @@
 
 </script>
   
-<link type="text/html" rel="alternate" hreflang="en" href="functions.html" lang="en" title="Functions" /></head>
+<link type="text/html" rel="alternate" hreflang="en" href="operations.html" lang="en" title="Operations" /></head>
 
   <body>
     <div id="container">
@@ -45,7 +45,7 @@
         <div id="wrap2">
 
           <div id="topbox">
-            <strong><a href="../index.html">/</a> &raquo; <a href="index.fr.html">Guide interface</a> &raquo; <span>Fonctions</span></strong> &nbsp; (<a href="functions.html">en</a> | <span class="webgen-langbar-current-lang">fr</span>)            
+            <strong><a href="../index.html">/</a> &raquo; <a href="index.fr.html">Guide interface</a> &raquo; <span>Opérations</span></strong> &nbsp; (<a href="operations.html">en</a> | <span class="webgen-langbar-current-lang">fr</span>)            
           </div>
 
           <div id="leftside">
@@ -53,18 +53,18 @@
             <h1>Download</h1>
             <div id="downloads">
               <ul>
-                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.2.zip">Version 2.2</a></li>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.3.zip">Version 2.3</a></li>
                 <li>Voir les <a href="../begin/whatsnew.fr.html">nouveautés</a></li>
               </ul>
             </div>
           
             <h1>Contenu</h1>
-            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.fr.html">Lancement</a></li><li class="webgen-menu-level1"><a href="toolbar.fr.html">Barre d'outils</a></li><li class="webgen-menu-level1"><a href="ecard_modes.fr.html">Modes de lecture</a></li><li class="webgen-menu-level1"><a href="stage.fr.html">Configuration</a></li><li class="webgen-menu-level1"><a href="runners.fr.html">Coureurs</a></li><li class="webgen-menu-level1"><a href="archive.fr.html">Archive</a></li><li class="webgen-menu-level1"><a href="merge.fr.html">Fusion</a></li><li class="webgen-menu-level1"><a href="log.fr.html">Log/Stats</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Fonctions</span></li><li class="webgen-menu-level1"><a href="results.fr.html">Résultats</a></li><li class="webgen-menu-level1"><a href="heats.fr.html">Séries</a></li></ul></div>
+            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.fr.html">Lancement</a></li><li class="webgen-menu-level1"><a href="toolbar.fr.html">Barre d'outils</a></li><li class="webgen-menu-level1"><a href="ecard_modes.fr.html">Modes de lecture</a></li><li class="webgen-menu-level1"><a href="stage.fr.html">Configuration</a></li><li class="webgen-menu-level1"><a href="runners.fr.html">Coureurs</a></li><li class="webgen-menu-level1"><a href="archive.fr.html">Archive</a></li><li class="webgen-menu-level1"><a href="merge.fr.html">Fusion</a></li><li class="webgen-menu-level1"><a href="log.fr.html">Log/Stats</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Opérations</span></li><li class="webgen-menu-level1"><a href="results.fr.html">Résultats</a></li><li class="webgen-menu-level1"><a href="heats.fr.html">Séries</a></li></ul></div>
           
             <h1>Liens</h1>
             <div id="links">
                     <ul>
-                    <li><a href="http://sdenier.github.com/Geco/geco_formation_11.pdf">Doc formation 1.1</a></li>
+                    <li><a href="http://sdenier.github.com/Geco/Gecoparlapratique_201501.pdf">Doc formation 2.3</a></li>
                     <li><a href="http://github.com/sdenier/Geco">Référentiel</a></li>
                     <li><a href="http://www.o-news.fr/viewforum.php?f=21">Onews/Geco</a></li>
                     </ul>
@@ -74,21 +74,21 @@
           <a id="main"></a>
           <div id="contentalt">
             
-<h1 id="fonctions-onglet-log">Fonctions (Onglet Log)</h1>
+<h1 id="oprations">Opérations</h1>
 
-<p>Les fonctions servent à appliquer des opérations sur des lots de données (batch). Elles permettent de changer/vérifier les données de la base en une seule passe.</p>
+<p>Les opérations transforment des lots de données à la volée. Elles permettent de changer/vérifier les données de la base en une seule passe.</p>
 
-<p><a href="../images/stage_functions.fr.png"><img src="../images/stage_functions.fr.png" /></a></p>
+<p><a href="../images/stage_operations.fr.png"><img src="../images/stage_operations.fr.png" /></a></p>
 
-<p>Il y a trois groupes (onglets) de fonctions à côté de l&#8217;onglet Stats dans le <a href="log.fr.html">Log</a>. Sélectionnez un groupe puis choisissez une fonction dans la liste déroulante. Chaque fonction affiche ses paramètres et ses actions dans la vue haute. Cliquez <em>Exécuter</em> pour lancer l&#8217;opération par défaut de la fonction.</p>
+<p>Il y a trois groupes (onglets) d&#8217;opérations à côté de l&#8217;onglet Stats dans le <a href="log.fr.html">Log</a>. Sélectionnez un groupe puis choisissez une opération dans la liste déroulante. Chaque opération affiche ses paramètres et ses actions dans la vue haute. Cliquez <em>Exécuter</em> pour lancer l&#8217;opération.</p>
 
 <ul>
-  <li>Les fonctions <em>Étape</em> servent communément durant une course</li>
-  <li>Les fonctions <em>Arbitrage</em> servent l&#8217;arbitre</li>
-  <li>Les fonctions <em>Batch</em> regroupent les opérations moins communes</li>
+  <li>Les opérations <em>Étape</em> servent communément durant une course</li>
+  <li>Les opérations <em>Arbitrage</em> servent l&#8217;arbitre</li>
+  <li>Les opérations <em>Batch</em> regroupent les opérations moins communes</li>
 </ul>
 
-<h2 id="fonctions-tape">Fonctions Étape</h2>
+<h2 id="oprations-tape">Opérations Étape</h2>
 
 <h3 id="horaires-de-dpart">Horaires de départ</h3>
 <ul>
@@ -104,21 +104,21 @@
   <li>Cocher <em>Simuler</em> pour voir ce que Geco ferait avec les données</li>
 </ul>
 
-<p>Il y a deux conditions importantes pour utiliser cette fonction</p>
+<p>Il y a deux conditions importantes pour utiliser cette opération :</p>
 
 <ul>
   <li>La mémoire des station doit être effacée avant la course, sinon les logs contiennent des données inconsistentes</li>
   <li>Tous les logs doivent être lus (par exemple toutes les stations Effacer) avant de cocher l&#8217;option <em>Marquer les absents</em>, afin de ne pas manquer des puces en course</li>
 </ul>
 
-<h2 id="fonctions-arbitrage">Fonctions Arbitrage</h2>
+<h2 id="oprations-arbitrage">Opérations Arbitrage</h2>
 
 <h3 id="log-arbitre">Log arbitre</h3>
 <ul>
   <li>Affiche/exporte un log pour l&#8217;arbitre contenant toutes les modifications manuelles avec un impact sur les résultats (comme un changement de statut ou du temps de course)</li>
 </ul>
 
-<h2 id="fonctions-batch">Fonctions Batch</h2>
+<h2 id="oprations-batch">Opérations Batch</h2>
 
 <h3 id="import-log-puces">Import log puces</h3>
 <ul>
@@ -148,7 +148,7 @@
         </div>
 
         <div id="footer">
-                &copy; 2008-2014 Simon Denier | 
+                &copy; 2008-2015 Simon Denier | 
                 Généré avec <a href="http://webgen.rubyforge.org">webgen</a> | 
                 Design par <a href="http://andreasviklund.com">Andreas Viklund</a>
         </div>

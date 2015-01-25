@@ -11,7 +11,7 @@
     <meta name="author" content="Simon Denier / Original design: Andreas Viklund - http://andreasviklund.com/" />
     <meta name="generator" content="webgen - http://webgen.rubyforge.org" />
     <link rel="stylesheet" href="../default.css" type="text/css" media="screen,projection" />
-    <title>Geco - Functions</title>
+    <title>Geco - Operations</title>
       <script type="text/javascript">
 
   var _gaq = _gaq || [];
@@ -26,7 +26,7 @@
 
 </script>
   
-<link type="text/html" rel="alternate" hreflang="fr" href="functions.fr.html" lang="fr" title="Fonctions" /></head>
+<link type="text/html" rel="alternate" hreflang="fr" href="operations.fr.html" lang="fr" title="Opérations" /></head>
 
   <body>
     <div id="container">
@@ -45,7 +45,7 @@
         <div id="wrap2">
 
           <div id="topbox">
-            <strong><a href="../index.html">/</a> &raquo; <a href="index.html">UI Guide</a> &raquo; <span>Functions</span></strong> &nbsp; (<span class="webgen-langbar-current-lang">en</span> | <a href="functions.fr.html">fr</a>)            
+            <strong><a href="../index.html">/</a> &raquo; <a href="index.html">UI Guide</a> &raquo; <span>Operations</span></strong> &nbsp; (<span class="webgen-langbar-current-lang">en</span> | <a href="operations.fr.html">fr</a>)            
           </div>
 
           <div id="leftside">
@@ -53,13 +53,13 @@
             <h1>Download</h1>
             <div id="downloads">
               <ul>
-                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.2.zip">Version 2.2</a></li>
+                <li><a href="http://bitbucket.org/sdenier/geco/downloads/geco-2.3.zip">Version 2.3</a></li>
                 <li>See <a href="../begin/whatsnew.html">what's new</a></li>
               </ul>
             </div>
           
             <h1>Contents</h1>
-            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.html">Launch</a></li><li class="webgen-menu-level1"><a href="toolbar.html">Toolbar</a></li><li class="webgen-menu-level1"><a href="ecard_modes.html">Ecard Modes</a></li><li class="webgen-menu-level1"><a href="stage.html">Configuration</a></li><li class="webgen-menu-level1"><a href="runners.html">Runners</a></li><li class="webgen-menu-level1"><a href="archive.html">Archive</a></li><li class="webgen-menu-level1"><a href="merge.html">Merge</a></li><li class="webgen-menu-level1"><a href="log.html">Log/Stats</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Functions</span></li><li class="webgen-menu-level1"><a href="results.html">Results</a></li><li class="webgen-menu-level1"><a href="heats.html">Heats</a></li></ul></div>
+            <div id="submenu"><ul><li class="webgen-menu-level1"><a href="index.html">Launch</a></li><li class="webgen-menu-level1"><a href="toolbar.html">Toolbar</a></li><li class="webgen-menu-level1"><a href="ecard_modes.html">Ecard Modes</a></li><li class="webgen-menu-level1"><a href="stage.html">Configuration</a></li><li class="webgen-menu-level1"><a href="runners.html">Runners</a></li><li class="webgen-menu-level1"><a href="archive.html">Archive</a></li><li class="webgen-menu-level1"><a href="merge.html">Merge</a></li><li class="webgen-menu-level1"><a href="log.html">Log/Stats</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Operations</span></li><li class="webgen-menu-level1"><a href="results.html">Results</a></li><li class="webgen-menu-level1"><a href="heats.html">Heats</a></li></ul></div>
           
             <h1>Links</h1>
             <div id="links">
@@ -74,21 +74,21 @@
           <a id="main"></a>
           <div id="contentalt">
             
-<h1 id="functions-log-panel">Functions (Log Panel)</h1>
+<h1 id="operations">Operations</h1>
 
-<p>Functions are special purpose operations which can be performed on batch of data, usually runners. They allow one to change/check data in registry at once.</p>
+<p>Operations can be performed on batch of data, usually runners. They allow one to change/check data in registry at once.</p>
 
-<p><a href="../images/stage_functions.png"><img src="../images/stage_functions.png" /></a></p>
+<p><a href="../images/stage_operations.png"><img src="../images/stage_operations.png" /></a></p>
 
-<p>There are three groups (tabs) of functions next to Stats in the <a href="log.html">Log</a> panel. Select a tab and then choose a function in the combobox. Each function displays its set of parameters and actions in the top pane. Pressing <em>Execute</em> performs the default operation of the function.</p>
+<p>There are three groups (tabs) of operations next to Stats in the Operations panel. Select a tab and then choose a operation in the combobox. Each operation displays its set of parameters and actions in the top pane. Pressing <em>Execute</em> runs the operation.</p>
 
 <ul>
-  <li><em>Stage</em> functions are commonly performed during stage</li>
-  <li><em>Referee</em> functions serve referee purposes</li>
-  <li><em>Batch</em> functions deal with less common operations</li>
+  <li><em>Stage</em> operations are commonly performed during stage</li>
+  <li><em>Referee</em> operations serve referee purposes</li>
+  <li><em>Batch</em> operations deal with less common operations</li>
 </ul>
 
-<h2 id="stage-functions">Stage Functions</h2>
+<h2 id="stage-operations">Stage Operations</h2>
 
 <h3 id="set-start-times">Set Start Times</h3>
 <ul>
@@ -104,21 +104,21 @@
   <li>Tick <em>Simulate</em> to see what would Geco do with the given data</li>
 </ul>
 
-<p>There are two important gotchas when using this function</p>
+<p>There are two important gotchas when using this operation:</p>
 
 <ul>
   <li>Station memories should be erased before the stage, otherwise logs would give inconsistent data</li>
   <li>Be sure to read all logs (for example all erase stations) before ticking the <em>Mark DNS</em> option, so that you don&#8217;t miss some running ecards</li>
 </ul>
 
-<h2 id="referee-functions">Referee Functions</h2>
+<h2 id="referee-operations">Referee Operations</h2>
 
 <h3 id="referee-log">Referee Log</h3>
 <ul>
   <li>Display/write a log for the referee with all manual changes having an impact on results, like status change or time change</li>
 </ul>
 
-<h2 id="batch-functions">Batch Functions</h2>
+<h2 id="batch-operations">Batch Operations</h2>
 
 <h3 id="import-ecard-log">Import Ecard Log</h3>
 <ul>
@@ -148,7 +148,7 @@
         </div>
 
         <div id="footer">
-                &copy; 2008-2014 Simon Denier | 
+                &copy; 2008-2015 Simon Denier | 
                 Generated by <a href="http://webgen.rubyforge.org">webgen</a> | 
                 Design by <a href="http://andreasviklund.com">Andreas Viklund</a>
         </div>
