@@ -1,6 +1,6 @@
 # Geco Changelog
 
-## Version 2.3 (2014/11/xx)
+## Version 2.3 (2015/01/25)
 
 - Push GecoSI 1.2.0 (pCard support)
 - More reliable 32 vs 64 bits detection to use the correct SPORTIdent driver

@@ -2,8 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 
 <%
-currentversion = '2.2'
-currentlink = 'http://bitbucket.org/sdenier/geco/downloads/geco-2.2.zip'
+currentversion = '2.3'
+currentlink = 'http://bitbucket.org/sdenier/geco/downloads/geco-2.3.zip'
 translations = YAML::load(File.read(File.join(context.website.directory, 'src/default.languages')))
 trans = translations[context.node.lang]
 %>
@@ -64,7 +64,7 @@ trans = translations[context.node.lang]
                     <ul>
                     <%=
         			if context.node.lang=='fr'
-			            script = '<li><a href="http://sdenier.github.com/Geco/geco_formation_11.pdf">Doc formation 1.1</a></li>'
+			            script = '<li><a href="http://sdenier.github.com/Geco/Gecoparlapratique_201501.pdf">Doc formation 2.3</a></li>'
         			else
             			script = ''
         			end
@@ -82,7 +82,7 @@ trans = translations[context.node.lang]
         </div>
 
         <div id="footer">
-                &copy; 2008-2014 Simon Denier | 
+                &copy; 2008-2015 Simon Denier | 
                 <%= trans['generated'] %> <a href="http://webgen.rubyforge.org">webgen</a> | 
                 <%= trans['design'] %> <a href="http://andreasviklund.com">Andreas Viklund</a>
         </div>

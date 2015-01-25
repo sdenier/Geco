@@ -379,7 +379,7 @@ public class GecoWindow extends JFrame
 												 geco.buildNumber(),
 												 geco.buildStamp());
 				html.contents(buildLine).br().br(); //$NON-NLS-1$
-				html.contents("Copyright (c) 2008-2014 Simon Denier.").br(); //$NON-NLS-1$
+				html.contents("Copyright (c) 2008-2015 Simon Denier.").br(); //$NON-NLS-1$
 				html.contents(Messages.uiGet("GecoWindow.AboutLicenseText")).br(); //$NON-NLS-1$
 				html.contents(Messages.uiGet("GecoWindow.AboutReadmeText")); //$NON-NLS-1$
 				html.close("div"); //$NON-NLS-1$

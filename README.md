@@ -1,6 +1,6 @@
 Geco 2.3
 ========
-Copyright (c) 2008-2014 Simon Denier  
+Copyright (c) 2008-2015 Simon Denier  
 Homepage: http://sdenier.github.io/Geco
 
 [![Build Status](https://travis-ci.org/sdenier/Geco.png)](https://travis-ci.org/sdenier/Geco)
