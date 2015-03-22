@@ -465,12 +465,20 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 				exportFormat = "xml"; //$NON-NLS-1$
 			}
 		});
+		JRadioButton selectJsonB = new JRadioButton("JSON"); //$NON-NLS-1$
+//		selectJsonB.setToolTipText(Messages.uiGet("ResultsPanel.XMLTooltip")); //$NON-NLS-1$
+		selectJsonB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				exportFormat = "json"; //$NON-NLS-1$
+			}
+		});
 		ButtonGroup group = new ButtonGroup();
 		group.add(selectHtmlExportRB);
 		group.add(selectCustomB);
 		group.add(selectCsvB);
 		group.add(selectOECsvB);
 		group.add(selectXmlB);
+		group.add(selectJsonB);
 		group.setSelected(selectHtmlExportRB.getModel(), true);
 		exportFormat = "html"; //$NON-NLS-1$
 		fileFormatRB.add(selectHtmlExportRB);
@@ -478,6 +486,7 @@ public class ResultsPanel extends TabPanel implements StageConfigListener {
 		fileFormatRB.add(selectOECsvB);
 		fileFormatRB.add(selectXmlB);
 		fileFormatRB.add(selectCustomB);
+		fileFormatRB.add(selectJsonB);
 
 		filePane = new JFileChooser();
 		filePane.setAccessory(fileFormatRB);

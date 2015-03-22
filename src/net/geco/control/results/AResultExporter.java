@@ -78,22 +78,26 @@ public abstract class AResultExporter extends Control {
 
 	public void exportFile(String filename, String format, ResultConfig config, int refreshInterval)
 			throws Exception {
-		if( format.equals("custom") ) { //$NON-NLS-1$
+		String fileformat = filenameAndFormat(filename, format);
+		switch (format) {
+		case "custom": //$NON-NLS-1$
 			exportCustomFile(filename, config, refreshInterval);
-			return;
-		}
-		filename = filenameAndFormat(filename, format);
-		if( format.equals("html") ) { //$NON-NLS-1$
-			exportHtmlFile(filename, config, refreshInterval);
-		}
-		if( format.equals("csv") ) { //$NON-NLS-1$
-			exportCsvFile(filename, config);
-		}
-		if( format.equals("oe.csv") ) { //$NON-NLS-1$
-			exportOECsvFile(filename, config);
-		}
-		if( format.equals("xml") ) { //$NON-NLS-1$
-			exportXmlFile(filename, config);
+			break;
+		case "html": //$NON-NLS-1$
+			exportHtmlFile(fileformat, config, refreshInterval);
+			break;
+		case "csv": //$NON-NLS-1$
+			exportCsvFile(fileformat, config);
+			break;
+		case "oe.csv": //$NON-NLS-1$
+			exportOECsvFile(fileformat, config);
+			break;
+		case "xml": //$NON-NLS-1$
+			exportXmlFile(fileformat, config);
+			break;
+		case "json": //$NON-NLS-1$
+			exportJsonFile(fileformat, config);
+			break;
 		}
 	}
 
@@ -347,5 +351,9 @@ public abstract class AResultExporter extends Control {
 	}
 
 	public abstract void generateXMLResult(ResultConfig config, String filename) throws Exception ;
+
+	protected void exportJsonFile(String filename, ResultConfig config) throws IOException {
+		new JsonExporter(geco()).generateJson(filename, buildResults(config));
+	}
 	
 }
