@@ -78,10 +78,12 @@ public class JsonExporter extends Control {
 		json.field("id", runner.getStartId());
 		json.field("firstName", runner.getFirstname());
 		json.field("lastName", runner.getLastname());
+		json.field("category", runner.getCategory().getName());
 		json.field("finishTime", runnerData.getResultTime());
 		json.field("readTime", runnerData.getReadtime().getTime());
 		json.field("status", runnerData.getStatus().toString());
 		json.field("rank", rank);
+		json.field("nc", runner.isNC());
 		json.endObject();
 	}
 
