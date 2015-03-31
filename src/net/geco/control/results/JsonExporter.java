@@ -7,6 +7,7 @@ package net.geco.control.results;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.TimeZone;
 
 import net.geco.basics.GecoResources;
 import net.geco.model.RankedRunner;
@@ -49,7 +50,9 @@ public class JsonExporter {
 	}
 
 	public void exportGeneralData(JSONSerializer json) throws IOException {
-		json.field("lastTime", System.currentTimeMillis());
+		long stamp = System.currentTimeMillis();
+		long lastTime = stamp + TimeZone.getDefault().getOffset(stamp);
+		json.field("lastTime", lastTime);
 		json.field("name", stage.getName());
 	}
 
