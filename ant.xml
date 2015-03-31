@@ -130,6 +130,8 @@
 			<fileset file="${geco.dir}/lib/GecoSI.jar"/>
 			<fileset file="${geco.dir}/lib/icu4j-charsetdetector-4_4_2.jar"/>
 			<fileset file="${geco.dir}/lib/jmustache-1.8.jar"/>
+			<fileset dir="${geco.dir}/lib/jetty-distribution-9.2.10.v20150310"/>
+			<fileset dir="${geco.dir}/lib/spark"/>
 		</jar>
 	</target>
 

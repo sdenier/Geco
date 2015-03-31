@@ -14,6 +14,16 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/jmustache-1.8.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-distribution-9.2.10.v20150310/lib/jetty-server-9.2.10.v20150310.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-distribution-9.2.10.v20150310/lib/jetty-webapp-9.2.10.v20150310.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-distribution-9.2.10.v20150310/lib/jetty-servlet-9.2.10.v20150310.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-distribution-9.2.10.v20150310/lib/servlet-api-3.1.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-distribution-9.2.10.v20150310/lib/jetty-util-9.2.10.v20150310.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-distribution-9.2.10.v20150310/lib/jetty-io-9.2.10.v20150310.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-distribution-9.2.10.v20150310/lib/jetty-http-9.2.10.v20150310.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/GecoSI"/>
+	<classpathentry kind="lib" path="lib/spark/slf4j-api-1.7.10.jar"/>
+	<classpathentry kind="lib" path="lib/spark/slf4j-simple-1.7.10.jar"/>
+	<classpathentry kind="lib" path="lib/spark/spark-core-2.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

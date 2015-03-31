@@ -9,12 +9,11 @@ import java.io.IOException;
 import java.util.List;
 
 import net.geco.basics.GecoResources;
-import net.geco.control.Control;
-import net.geco.control.GecoControl;
 import net.geco.model.RankedRunner;
 import net.geco.model.Result;
 import net.geco.model.Runner;
 import net.geco.model.RunnerRaceData;
+import net.geco.model.Stage;
 import net.geco.model.iojson.JSONSerializer;
 import net.geco.model.iojson.JacksonSerializer;
 
@@ -23,10 +22,12 @@ import net.geco.model.iojson.JacksonSerializer;
  * @since 21 mars 2015
  *
  */
-public class JsonExporter extends Control {
+public class JsonExporter {
 
-	public JsonExporter(GecoControl gecoControl) {
-		super(gecoControl);
+	Stage stage;
+	
+	public JsonExporter(Stage stage) {
+		this.stage = stage;
 	}
 
 	public void generateJson(String filename, List<Result> results) throws IOException {
@@ -49,7 +50,7 @@ public class JsonExporter extends Control {
 
 	public void exportGeneralData(JSONSerializer json) throws IOException {
 		json.field("lastTime", System.currentTimeMillis());
-		json.field("name", stage().getName());
+		json.field("name", stage.getName());
 	}
 
 	public void exportResult(Result result, JSONSerializer json) throws IOException {

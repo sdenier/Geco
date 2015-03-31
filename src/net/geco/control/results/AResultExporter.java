@@ -353,7 +353,7 @@ public abstract class AResultExporter extends Control {
 	public abstract void generateXMLResult(ResultConfig config, String filename) throws Exception ;
 
 	protected void exportJsonFile(String filename, ResultConfig config) throws IOException {
-		new JsonExporter(geco()).generateJson(filename, buildResults(config));
+		new JsonExporter(geco().stage()).generateJson(filename, buildResults(config));
 	}
 	
 }

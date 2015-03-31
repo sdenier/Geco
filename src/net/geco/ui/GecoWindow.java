@@ -50,8 +50,7 @@ import net.geco.basics.Announcer.StationListener;
 import net.geco.basics.Html;
 import net.geco.framework.IGecoApp;
 import net.geco.framework.IStageLaunch;
-import net.geco.live.LiveClient;
-import net.geco.live.LiveClientDialog;
+import net.geco.golive.SparkServer;
 import net.geco.live.LiveComponent;
 import net.geco.model.Messages;
 import net.geco.model.Stage;
@@ -261,7 +260,7 @@ public class GecoWindow extends JFrame
 		final ImageIcon liveOffIcon = createIcon(LiveOff);
 		final ImageIcon liveOnIcon = createIcon(LiveOn);
 		StartStopButton liveClientB = new StartStopButton() {
-			private LiveClient liveClient;
+			private SparkServer goliveServer;
 			@Override
 			public void initialize() {
 				setIcon(liveOffIcon);
@@ -269,18 +268,16 @@ public class GecoWindow extends JFrame
 			}
 			@Override
 			public void actionOn() {
-				liveClient = new LiveClient(geco, this);
-				if( new LiveClientDialog(GecoWindow.this, liveClient).open() ) {
+				goliveServer = new SparkServer(geco);
+				if( goliveServer != null ) {
 					setIcon(liveOnIcon);
 					setToolTipText(Messages.uiGet("GecoWindow.StopLiveclientTooltip")); //$NON-NLS-1$
-				} else {
-					setSelected(false);
 				}
 			}
 			@Override
 			public void actionOff() {
-				if( liveClient.isActive() ) {
-					liveClient.stop();
+				if( goliveServer != null ) {
+					goliveServer.shutdown();
 				}
 				initialize();
 			}
