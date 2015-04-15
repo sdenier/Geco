@@ -4,7 +4,7 @@
  */
 package net.geco.control;
 
-import static net.geco.basics.Util.trimQuotes;
+import static net.geco.basics.Util.safeTrimQuotes;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,7 +33,9 @@ public class ArchiveManager extends OEImporter implements StageListener {
 	private Archive archive;
 	
 	private File archiveFile;
-	
+
+	private int defaultArchiveCounter = 999000000;
+
 	public ArchiveManager(GecoControl gecoControl) {
 		super(ArchiveManager.class, gecoControl);
 		geco().announcer().registerStageListener(this);
@@ -86,23 +88,31 @@ public class ArchiveManager extends OEImporter implements StageListener {
 //		[6-9] N° club;Nom;Ville;Nat;
 //		[10-15] N° cat.;Court;Long;Num1;Num2;Num3;
 //		E_Mail;Texte1;Texte2;Texte3;Adr. nom;Rue;Ligne2;Code Post.;Ville;Tél.;Fax;E-mail;Id/Club;Louée
-		Club club = ensureClubInArchive(record[7], record[8]);
-		Category cat = ensureCategoryInArchive(record[11], record[12]);
+		Club club = ensureClubInArchive(safeTrimQuotes(record[7]), safeTrimQuotes(record[8]));
+		Category cat = ensureCategoryInArchive(safeTrimQuotes(record[11]), safeTrimQuotes(record[12]));
 		importRunner(record, club, cat);
 	}
 
 	private void importRunner(String[] record, Club club, Category cat) {
 //		[0-5] Ident. base de données;Puce;Nom;Prénom;Né;S;
 		ArchiveRunner runner = geco().factory().createArchiveRunner();
-		runner.setArchiveId(new Integer(record[0]));
-		runner.setEcard(record[1]);
-		runner.setLastname(trimQuotes(record[2]));
-		runner.setFirstname(trimQuotes(record[3]));
-		runner.setBirthYear(record[4]);
-		runner.setSex(record[5]);
+		runner.setArchiveId(ensureArchiveId(record[0]));
+		runner.setEcard(safeTrimQuotes(record[1]));
+		runner.setLastname(safeTrimQuotes(record[2]));
+		runner.setFirstname(safeTrimQuotes(record[3]));
+		runner.setBirthYear(safeTrimQuotes(record[4]));
+		runner.setSex(safeTrimQuotes(record[5]));
 		runner.setClub(club);
 		runner.setCategory(cat);
 		archive.addRunner(runner);
+	}
+
+	private Integer ensureArchiveId(String archiveId) {
+		try {
+			return new Integer(archiveId);
+		} catch (NumberFormatException e) {
+			return new Integer(defaultArchiveCounter++);
+		}
 	}
 
 
@@ -110,7 +120,7 @@ public class ArchiveManager extends OEImporter implements StageListener {
 		Club club = archive.findClub(longName);
 		if( club==null ) {
 			club = geco().factory().createClub();
-			club.setName(trimQuotes(longName));
+			club.setName(longName);
 			club.setShortname(shortName);
 			archive.addClub(club);
 		}
