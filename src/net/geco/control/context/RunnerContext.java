@@ -53,6 +53,7 @@ public class RunnerContext extends GenericContext {
 		put("geco_RunnerLastName", runner.getLastname()); //$NON-NLS-1$
 		put("geco_RunnerClubName", runner.getClub().getName()); //$NON-NLS-1$
 		put("geco_RunnerCategory", runner.getCategory().getName()); //$NON-NLS-1$
+		put("geco_RunnerBirthYear", runner.getBirthYear()); //$NON-NLS-1$
 		return this;
 	}
 

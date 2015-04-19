@@ -64,6 +64,10 @@ public class StartlistImporter extends OEImporter {
 			if( ! archiveNum.equals("") ){ //$NON-NLS-1$
 				runner.setArchiveId(Integer.valueOf(trimQuotes(archiveNum)));			
 			}
+			String birthYear = record[5];
+			if( ! birthYear.equals("") ){ //$NON-NLS-1$
+				runner.setBirthYear(safeTrimQuotes(birthYear));
+			}
 			runner.setNC(record[8].equals("X")); //$NON-NLS-1$
 			
 			Date relativeTime = TimeManager.safeParse(record[9]); // ! Time since zero hour

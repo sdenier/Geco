@@ -327,6 +327,7 @@ public abstract class AResultExporter extends Control {
 				Integer.toString(runner.getCourse().getLength()),
 				Integer.toString(runner.getCourse().getClimb()),
 				Integer.toString(runner.getCourse().nbControls()),
+				runner.getBirthYear()
 		});
 	}
 

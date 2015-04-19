@@ -349,7 +349,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 				( runner.getArchiveId()!=null )? runner.getArchiveId().toString() : "", //$NON-NLS-1$
 				runner.getLastname(),
 				runner.getFirstname(),
-				"", //$NON-NLS-1$ // ark.getBirthYear(),
+				runner.getBirthYear(),
 				"", //$NON-NLS-1$ // ark.getSex(),
 				"", //$NON-NLS-1$
 				( runner.isNC() ) ? "X" : "0", //$NON-NLS-1$ //$NON-NLS-2$
