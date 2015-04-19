@@ -212,6 +212,7 @@ public final class PersistentStore {
 			runner.setArchiveId((Integer) c.opt(K.ARK));
 			runner.setRentedEcard(c.optBoolean(K.RENT));
 			runner.setNC(c.optBoolean(K.NC));
+			runner.setBirthYear(c.optString(K.BIRTH));
 			registry.addRunner(runner);
 	
 			JSONObject d = runnerTuple.getJSONObject(I_ECARD);
@@ -409,6 +410,7 @@ public final class PersistentStore {
 				.optField(K.ARK, runner.getArchiveId())
 				.optField(K.RENT, runner.rentedEcard())
 				.optField(K.NC, runner.isNC())
+				.optField(K.BIRTH, runner.getBirthYear())
 				.endObject();
 			
 			json.startObject()
@@ -505,6 +507,7 @@ public final class PersistentStore {
 		public static final String ARK;
 		public static final String NC;
 		public static final String RENT;
+		public static final String BIRTH;
 
 		public static final String START;
 		public static final String FINISH;
@@ -535,6 +538,7 @@ public final class PersistentStore {
 				ARK = "ark"; //$NON-NLS-1$
 				RENT = "rent"; //$NON-NLS-1$
 				NC = "nc"; //$NON-NLS-1$
+				BIRTH = "birth"; //$NON-NLS-1$
 			
 				START = "start"; //$NON-NLS-1$
 				FINISH = "finish"; //$NON-NLS-1$
@@ -563,6 +567,7 @@ public final class PersistentStore {
 				ARK = "a"; //$NON-NLS-1$
 				RENT = "r"; //$NON-NLS-1$
 				NC = "n"; //$NON-NLS-1$
+				BIRTH = "b"; //$NON-NLS-1$
 			
 				START = "s"; //$NON-NLS-1$
 				FINISH = "f"; //$NON-NLS-1$

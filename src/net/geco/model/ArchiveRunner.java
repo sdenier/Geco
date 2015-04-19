@@ -11,10 +11,6 @@ package net.geco.model;
  */
 public interface ArchiveRunner extends AbstractRunner {
 	
-	public String getBirthYear();
-	
-	public void setBirthYear(String year);
-	
 	public String getSex();
 	
 	public void setSex(String sex);

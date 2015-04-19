@@ -39,6 +39,10 @@ public interface AbstractRunner {
 
 	public void setCategory(Category category);
 
+	public String getBirthYear();
+
+	public void setBirthYear(String year);
+
 	public String toString();
 
 	public String idString();

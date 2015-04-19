@@ -13,20 +13,8 @@ import net.geco.model.ArchiveRunner;
  */
 public class ArchiveRunnerImpl extends AbstractRunnerImpl implements ArchiveRunner {
 	
-	private String birthYear;
-	
 	private String sex;
 	
-
-	@Override
-	public String getBirthYear() {
-		return birthYear;
-	}
-
-	@Override
-	public void setBirthYear(String year) {
-		this.birthYear = year;
-	}
 
 	@Override
 	public String getSex() {
