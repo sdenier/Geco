@@ -35,15 +35,16 @@ public class StartlistExporter extends Control {
 		super(StartlistExporter.class, gecoControl);
 	}
 
-	public void exportTo(String filename) throws IOException {
-		Template template = getTemplate();
-		Writer writer = GecoResources.getSafeWriterFor(filename);
+	public void exportTo(String filename, String fileFormat) throws IOException {
+		Template template = getTemplate(fileFormat);
+		Writer writer = GecoResources.getSafeWriterFor(filename + "." + fileFormat); //$NON-NLS-1$
 		exportStartlists(template, writer);
 		writer.close();
 	}
 
-	protected Template getTemplate() throws IOException {
-		Reader templateReader = GecoResources.getResourceReader("/resources/formats/startlists_courses.mustache"); //$NON-NLS-1$
+	protected Template getTemplate(String fileFormat) throws IOException {
+		String templateName = "/resources/formats/startlists." + fileFormat + ".mustache"; //$NON-NLS-1$ //$NON-NLS-2$
+		Reader templateReader = GecoResources.getResourceReader(templateName);
 		Template template = Mustache.compiler().defaultValue("N/A").compile(templateReader); //$NON-NLS-1$
 		templateReader.close();
 		return template;

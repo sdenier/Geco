@@ -60,6 +60,7 @@ public class RunnerContext extends GenericContext {
 	protected RunnerContext buildRegistrationContext(RunnerRaceData runnerData) {
 		put("geco_RunnerEcard", runnerData.getRunner().getEcard()); //$NON-NLS-1$
 		put("geco_RunnerStartTime", TimeManager.time(runnerData.getOfficialStarttime())); //$NON-NLS-1$
+		put("geco_ArchiveId", runnerData.getRunner().getArchiveId()); //$NON-NLS-1$
 		return this;
 	}
 	

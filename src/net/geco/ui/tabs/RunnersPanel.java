@@ -28,6 +28,8 @@ import java.util.Vector;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -37,6 +39,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
@@ -236,15 +239,35 @@ public class RunnersPanel extends TabPanel
 		JButton exportStartlistB = new JButton(GecoIcon.createIcon(GecoIcon.Startlist));
 		exportStartlistB.setToolTipText(Messages.uiGet("RunnersPanel.ExportStartlistsTooltip")); //$NON-NLS-1$
 		exportStartlistB.addActionListener(new ActionListener() {
+			public void initFileFormats(JFileChooser fileChooser, ButtonGroup fileFormat) {
+				JPanel fileFormatRB = new JPanel();
+				fileFormatRB.setLayout(new BoxLayout(fileFormatRB, BoxLayout.Y_AXIS));
+				fileFormatRB.setBorder(
+					BorderFactory.createTitledBorder(Messages.uiGet("ResultsPanel.FileFormatTitle"))); //$NON-NLS-1$
+				JRadioButton selectHtmlExportRB = new JRadioButton("HTML", true); //$NON-NLS-1$
+				selectHtmlExportRB.setActionCommand("html"); //$NON-NLS-1$
+				selectHtmlExportRB.setToolTipText(Messages.uiGet("RunnersPanel.ExportStartlistsHtmlTooltip")); //$NON-NLS-1$
+				JRadioButton selectOECsvB = new JRadioButton("OE CSV"); //$NON-NLS-1$
+				selectOECsvB.setActionCommand("oe.csv"); //$NON-NLS-1$
+				selectOECsvB.setToolTipText(Messages.uiGet("RunnersPanel.ExportStartlistsOecsvTooltip")); //$NON-NLS-1$
+				fileFormat.add(selectHtmlExportRB);
+				fileFormat.add(selectOECsvB);
+				fileFormatRB.add(selectHtmlExportRB);
+				fileFormatRB.add(selectOECsvB);
+				fileChooser.setAccessory(fileFormatRB);
+			}
+
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser fileChooser = new JFileChooser();
+				ButtonGroup fileFormats = new ButtonGroup();
+				initFileFormats(fileChooser, fileFormats);
 				fileChooser.setDialogTitle(Messages.uiGet("RunnersPanel.ExportStartlistsTitle")); //$NON-NLS-1$
 				fileChooser.setSelectedFile(new File(geco().getCurrentStagePath()
 						+ File.separator + Messages.uiGet("RunnersPanel.ExportStartlistsFile")).getAbsoluteFile()); //$NON-NLS-1$
 				int answer = fileChooser.showSaveDialog(frame());
 				if( answer==JFileChooser.APPROVE_OPTION ) {
 					try {
-						geco().startlistExporter().exportTo(fileChooser.getSelectedFile().getAbsolutePath());
+						geco().startlistExporter().exportTo(fileChooser.getSelectedFile().getAbsolutePath(), fileFormats.getSelection().getActionCommand());
 					} catch (IOException e1) {
 						geco().debug(e1.toString());
 					}
