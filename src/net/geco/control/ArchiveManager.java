@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.Properties;
 
 import net.geco.basics.Announcer.StageListener;
+import net.geco.basics.Util;
 import net.geco.model.Archive;
 import net.geco.model.ArchiveRunner;
 import net.geco.model.Category;
@@ -88,9 +89,13 @@ public class ArchiveManager extends OEImporter implements StageListener {
 //		[6-9] N° club;Nom;Ville;Nat;
 //		[10-15] N° cat.;Court;Long;Num1;Num2;Num3;
 //		E_Mail;Texte1;Texte2;Texte3;Adr. nom;Rue;Ligne2;Code Post.;Ville;Tél.;Fax;E-mail;Id/Club;Louée
-		Club club = ensureClubInArchive(safeTrimQuotes(record[7]), safeTrimQuotes(record[8]));
-		Category cat = ensureCategoryInArchive(safeTrimQuotes(record[11]), safeTrimQuotes(record[12]));
-		importRunner(record, club, cat);
+		try {
+			Club club = ensureClubInArchive(safeTrimQuotes(record[7]), safeTrimQuotes(record[8]));
+			Category cat = ensureCategoryInArchive(safeTrimQuotes(record[11]), safeTrimQuotes(record[12]));
+			importRunner(record, club, cat);			
+		} catch (Exception e) {
+			geco().log("[Archive] " + e.getMessage() + Util.join(record, ";", new StringBuilder()));
+		}
 	}
 
 	private void importRunner(String[] record, Club club, Category cat) {
