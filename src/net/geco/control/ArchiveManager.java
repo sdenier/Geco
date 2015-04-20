@@ -180,6 +180,7 @@ public class ArchiveManager extends OEImporter implements StageListener {
 		runner.setClub(rClub);
 		runner.setCategory(rCat);
 		runner.setCourse(course);
+		runner.setBirthYear(arkRunner.getBirthYear());
 		return runner;
 	}
 	

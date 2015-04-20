@@ -446,4 +446,8 @@ public class RunnerControl extends Control {
 		}
 	}
 
+	public void validateBirthYear(Runner runner, String birthyear) {
+		runner.setBirthYear(birthyear);
+	}
+
 }

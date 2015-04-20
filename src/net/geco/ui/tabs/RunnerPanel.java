@@ -55,6 +55,7 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 	// Registration
 	private JTextField regStartF;
 	private JTextField archiveF;
+	private JTextField birthYearF;
 	private JCheckBox rentedBx;
 	private JCheckBox ncBx;
 
@@ -156,7 +157,8 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 	
 	protected void refreshRegistrationPanel() {
 		displayRegTime(regStartF, runner.getRegisteredStarttime());
-		archiveF.setText( ( runner.getArchiveId() != null ) ? runner.getArchiveId().toString() : ""); //$NON-NLS-1$
+		archiveF.setText(( runner.getArchiveId() != null ) ? runner.getArchiveId().toString() : ""); //$NON-NLS-1$
+		birthYearF.setText(( runner.getBirthYear() != null ) ? runner.getBirthYear() : ""); //$NON-NLS-1$
 		rentedBx.setSelected(runner.rentedEcard());
 		ncBx.setSelected(runner.isNC());
 	}
@@ -238,6 +240,7 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 	public JPanel initRegistrationPanel() {
 		regStartF = new JTextField(FIELDSIZE);
 		archiveF = new JTextField(FIELDSIZE);
+		birthYearF = new JTextField(FIELDSIZE);
 		rentedBx = new JCheckBox(Messages.uiGet("RunnerPanel.RentedEcardLabel")); //$NON-NLS-1$
 		ncBx = new JCheckBox(Messages.uiGet("RunnerPanel.NCLabel")); //$NON-NLS-1$
 		
@@ -271,7 +274,23 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 				refreshRegistrationPanel();
 				return true; // always yield focus
 			}
-		});	
+		});
+
+		birthYearF.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				control().validateBirthYear(runner, birthYearF.getText());
+				refreshRegistrationPanel();
+			}
+		});
+		birthYearF.setInputVerifier(new InputVerifier() {
+			@Override
+			public boolean verify(JComponent input) {
+				control().validateBirthYear(runner, birthYearF.getText());
+				refreshRegistrationPanel();
+				return true; // always yield focus
+			}
+		});
 
 		rentedBx.addActionListener(new ActionListener() {
 			@Override
@@ -294,6 +313,8 @@ public class RunnerPanel extends GecoPanel implements RunnersTableListener {
 		c.gridy = 1;
 		addRow(regPanel, c, new JLabel(Messages.uiGet("RunnerPanel.ArchiveIdLabel")), archiveF); //$NON-NLS-1$
 		c.gridy = 2;
+		addRow(regPanel, c, new JLabel(Messages.uiGet("RunnerPanel.BirthYearLabel")), birthYearF); //$NON-NLS-1$
+		c.gridy = 3;
 		addRow(regPanel, c, rentedBx, ncBx);
 		
 		regPanel.setBorder(BorderFactory.createTitledBorder(Messages.uiGet("RunnerPanel.RegistrationTitle"))); //$NON-NLS-1$

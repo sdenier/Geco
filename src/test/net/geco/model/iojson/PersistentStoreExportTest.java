@@ -158,6 +158,7 @@ public class PersistentStoreExportTest {
 		when(json.field(anyString(), anyLong())).thenReturn(json);
 		when(json.optField(anyString(), any(Integer.class))).thenReturn(json);
 		when(json.optField(anyString(), anyBoolean())).thenReturn(json);
+		when(json.optField(anyString(), anyString())).thenReturn(json);
 		when(json.id(anyString(), any())).thenReturn(json);
 		when(json.ref(anyString(), any())).thenReturn(json);
 		when(json.optRef(anyString(), any())).thenReturn(json);

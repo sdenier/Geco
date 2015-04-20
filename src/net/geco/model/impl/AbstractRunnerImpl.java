@@ -28,6 +28,8 @@ public abstract class AbstractRunnerImpl implements AbstractRunner {
 	
 	private Category category;
 
+	private String birthYear;
+
 
 	@Override
 	public Integer getArchiveId() {
@@ -85,6 +87,16 @@ public abstract class AbstractRunnerImpl implements AbstractRunner {
 
 	public void setCategory(Category category) {
 		this.category = category;
+	}
+
+	@Override
+	public String getBirthYear() {
+		return birthYear;
+	}
+
+	@Override
+	public void setBirthYear(String year) {
+		this.birthYear = year;
 	}
 	
 }
