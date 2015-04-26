@@ -94,7 +94,7 @@ public class ArchiveManager extends OEImporter implements StageListener {
 			Category cat = ensureCategoryInArchive(safeTrimQuotes(record[11]), safeTrimQuotes(record[12]));
 			importRunner(record, club, cat);			
 		} catch (Exception e) {
-			geco().log("[Archive] " + e.getMessage() + Util.join(record, ";", new StringBuilder()));
+			geco().log("[Archive] " + e.getMessage() + Util.join(record, ";", new StringBuilder())); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 

@@ -132,6 +132,7 @@ public class RunnerControl extends Control {
 	public void deleteRunner(RunnerRaceData data) {
 		registry().removeRunner(data.getRunner());
 		registry().removeRunnerData(data);
+		geco().log(String.format(Messages.getString("RunnerControl.RemovingRunnerLabel"), data.infoString())); //$NON-NLS-1$
 		announcer().announceRunnerDeletion(data);
 	}
 	
@@ -194,6 +195,7 @@ public class RunnerControl extends Control {
 			String oldEcard = runner.getEcard();
 			runner.setEcard(newEcard.trim());
 			registry().updateRunnerEcard(oldEcard, runner);
+			geco().log(String.format(Messages.getString("RunnerControl.EcardChangeLabel"), runner.getNameR(), oldEcard, runner.getEcard())); //$NON-NLS-1$
 			return true;
 		} else {
 			return false;
