@@ -31,7 +31,9 @@ public class ECardLogImporter extends Control {
 	}
 
 	public void processECardData(ECardMode processor, File file) throws IOException {
-		processECardData(processor, new CsvReader(";", file.getAbsolutePath())); //$NON-NLS-1$
+		CsvReader reader = new CsvReader(";", file.getAbsolutePath()); //$NON-NLS-1$
+		processECardData(processor, reader);
+		reader.close();
 	}
 
 	public void processECardData(ECardMode processor, CsvReader reader) throws IOException {

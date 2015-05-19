@@ -88,6 +88,7 @@ public class StationLogOperation extends GecoOperation {
 			try {
 				CsvReader reader = new CsvReader(";", file.getAbsolutePath()); //$NON-NLS-1$
 				retrieveEcardsFromFile(ecards, reader);
+				reader.close();
 			} catch (IOException e) {
 				geco().info(e.getLocalizedMessage(), true);
 			}

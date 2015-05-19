@@ -40,6 +40,7 @@ public abstract class OEImporter extends Control {
 			importRunnerRecord(record);
 			record = reader.readRecord();
 		}
+		reader.close();
 	}
 	
 	protected abstract void importRunnerRecord(String[] record);
