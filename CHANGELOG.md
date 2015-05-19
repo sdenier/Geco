@@ -1,5 +1,15 @@
 # Geco Changelog
 
+## Version 2.3.1 (2015/09/07)
+
+- feature: birth year is displayed and can be edited in runner panel (as well as imported from archive, startlist, exported in result...)
+- feature: export startlist in OE CSV format as well as in HTML
+- release constraints on OE archive format to allow one to load BOF archive (set a default archive id if none found, do not crash with invalid entry, just skip) 
+- feature: add a ticket format which includes section splits
+- fix an issue with SPORTIdent when launching under Mac OS X Yosemite
+- fix an issue with Geco not releasing CSV files after use
+- fix an issue with Geco not able to compute results by section when some runner has no trace
+
 ## Version 2.3 (2015/01/25)
 
 - Push GecoSI 1.2.0 (pCard support)

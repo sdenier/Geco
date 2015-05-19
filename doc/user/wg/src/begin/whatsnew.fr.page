@@ -6,6 +6,18 @@ in_menu: true
 
 # Quoi de neuf ?
 
+## Version 2.3.1 - 07/09/2015
+
+Geco 2.3.1 est une version mineure apportant quelques corrections de bugs et fonctionnalités supplémentaires.
+
+- fonctionnalité : l'année de naissance est affichée et peut être changée dans le panneau du coureur (elle est aussi importée depuis l'archive, une liste d'inscrits, exportée dans les résultats...)
+- fonctionnalité : la liste de départ peut être exportée au format OE CSV en plus du format HTML
+- le format de l'archive OE est moins contraint pour accepter l'archive BOF (identifiant d'archive par défaut si manquant, pas de crash si une entrée est invalide)
+- fonctionnalité : ajout d'un format ticket pour l'impression des splits avec sections
+- correction d'un problème avec SPORTIdent au chargement sous Mac OS X Yosemite
+- correction d'un problème avec les fichiers CSV importés
+- correction d'un problème dans le calcul des résultats par section quand un coureur n'a aucune trace
+
 ## Version 2.3 - 25/01/2015
 
 Geco 2.3 fournit le nouveau format de course multi-sections (auparavant Raid Orient'Alpin), complètement compatible avec les autres fonctionnalités de Geco (détection de circuit, affichage de la trace) :

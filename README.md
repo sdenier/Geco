@@ -1,5 +1,5 @@
-Geco 2.3
-========
+Geco 2.3.1
+==========
 Copyright (c) 2008-2015 Simon Denier  
 Homepage: http://sdenier.github.io/Geco
 
