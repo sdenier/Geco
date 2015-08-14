@@ -47,14 +47,16 @@ public class SectionTraceDataImpl extends TraceDataImpl implements SectionTraceD
 	@Override
 	public long[] sectionsFinishTimes(long raceTime) {
 		long[] finishTimes = new long[sectionsMap.size()];
-		Iterator<Integer> sectionIndices = sectionsMap.keySet().iterator();
-		Integer nextSectionIndex = sectionIndices.next();
-		for (int i = 0; i < finishTimes.length; i++) {
-			if( sectionIndices.hasNext() ) {
-				nextSectionIndex = sectionIndices.next();
-				finishTimes[i] = trace[nextSectionIndex].getTime().getTime();
-			} else { // last section
-				finishTimes[i] = raceTime;
+		if( sectionsMap.size() > 0 ) {
+			Iterator<Integer> sectionIndices = sectionsMap.keySet().iterator();
+			Integer nextSectionIndex = sectionIndices.next();
+			for (int i = 0; i < finishTimes.length; i++) {
+				if( sectionIndices.hasNext() ) {
+					nextSectionIndex = sectionIndices.next();
+					finishTimes[i] = trace[nextSectionIndex].getTime().getTime();
+				} else { // last section
+					finishTimes[i] = raceTime;
+				}
 			}
 		}
 		return finishTimes;
