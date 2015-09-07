@@ -142,6 +142,21 @@ public class SectionsExporter extends AResultExporter {
 		}
 	}
 
+	public void buildSectionSplitsForTicket(List<Section> sections, SplitTime[] sectionsSplits, SplitTime[] bestSplits, RunnerContext runnerCtx) {
+		ContextList sectionSplits = runnerCtx.createContextList("geco_SectionSplits"); //$NON-NLS-1$
+		for (int i = 0; i < sectionsSplits.length; i++) {
+			Section section = sections.get(i);
+			SplitTime splitTime = sectionsSplits[i];
+
+			GenericContext sectionCtx = sectionSplits.addContext(new GenericContext());
+			sectionCtx.put("geco_SectionName", section.getName()); //$NON-NLS-1$
+			sectionCtx.put("geco_SectionStartControl", section.getStartControl()); //$NON-NLS-1$
+			sectionCtx.put("geco_CumulTime", TimeManager.time(splitTime.time)); //$NON-NLS-1$
+			String label = (splitTime.isOK()) ? TimeManager.time(splitTime.split) : ""; //$NON-NLS-1$
+			sectionCtx.put("geco_SectionTime", label); //$NON-NLS-1$
+		}
+	}
+
 	@Override
 	protected String getCustomTemplatePath() {
 		return getService(SplitExporter.class).getCustomTemplatePath();

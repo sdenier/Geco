@@ -30,6 +30,7 @@ public class SectionsSplitPrinter extends RunnerSplitPrinter {
 		SplitTime[] sectionsSplits = builder.buildSectionSplits(data, bestSplits);
 		sectionsExporter.createRunnerSplits(runnerCtx, sectionsSplits, bestSplits);
 		sectionsExporter.buildSectionsHeader(data.getCourse().getSections(), runnerCtx);
+		sectionsExporter.buildSectionSplitsForTicket(data.getCourse().getSections(), sectionsSplits, bestSplits, runnerCtx);
 		return runnerCtx;
 	}
 
