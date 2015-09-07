@@ -36,11 +36,11 @@
 	</target>
 
 	<target name="webgen">
-		<exec dir="${wg.dir}" executable="webgen"></exec>
+		<exec dir="${wg.dir}" executable="${webgen.cmd}"></exec>
 	</target>
 
 	<target name="webgen-analytics">
-		<exec dir="${wg.dir}" executable="webgen">
+		<exec dir="${wg.dir}" executable="${webgen.cmd}">
 			<env key="analytics_tracking" value="true" />
 		</exec>
 	</target>
