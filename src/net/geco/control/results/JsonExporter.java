@@ -83,7 +83,10 @@ public class JsonExporter {
 		json.field("firstName", runner.getFirstname());
 		json.field("lastName", runner.getLastname());
 		json.field("category", runner.getCategory().getName());
+		json.field("club", runner.getClub().getName());
 		json.field("finishTime", runnerData.getResultTime());
+		json.field("totalPenalties", runnerData.getResult().getTimePenalty() +
+									 runnerData.getResult().getManualTimePenalty());
 		json.field("readTime", runnerData.getReadtime().getTime());
 		json.field("status", runnerData.getStatus().toString());
 		json.field("rank", rank);
