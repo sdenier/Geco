@@ -482,7 +482,7 @@ public class SplitExporter extends AResultExporter implements StageListener {
 		Properties props = stage().getProperties();
 		setNbColumns(Integer.parseInt(props.getProperty(splitsNbColumnsProperty(), "12"))); //$NON-NLS-1$
 		setSplitsTemplate(new File( props.getProperty(splitsTemplateProperty(),
-													  "formats/results_osplits.html.mustache") )); //$NON-NLS-1$
+													  "formats/results_osplits_web.html.mustache") )); //$NON-NLS-1$
 		setCustomTemplate(new File( props.getProperty(customTemplateProperty(), ""))); //$NON-NLS-1$
 	}
 
