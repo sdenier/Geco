@@ -5,7 +5,7 @@
       td, th { padding: 0px 0px 0px 10px; margin: 0px }
       .code, .time, .add, .miss, .sp { text-align: right }
       .time { font-weight: bold }
-      .add { font-style: italic }
+      .penalty, .add { font-style: italic }
     </style>
   </head>
   <body>
@@ -15,16 +15,16 @@
       <b>{{geco_RunnerFirstName}} {{geco_RunnerLastName}}</b>
       <div>{{geco_RunnerClubName}}</div>
       <div>{{geco_RunnerCourse}} - {{geco_RunnerCategory}}</div>
-      <div>{{geco_CourseLength}}, {{geco_CourseClimb}}</div>
+      <div>{{geco_CourseLength}}m, {{geco_CourseClimb}}m+</div>
       <br />
       <b>{{geco_RunnerStatusOrTime}}</b>
+      <div class="penalty">Pénalités +{{geco_RunnerTimePenalty}}</div>
       <div>{{geco_RunnerPace}} min/km</div>
     </div>
     <br />
-    <table width="90%">
+    <table width="75%">
 {{#geco_SectionSplits}}
-      <tr><td colspan="2">{{geco_SectionName}}</td></tr>
-      <tr><td class="time">{{geco_CumulTime}}</td><td class="sp">{{geco_SectionTime}}</td></tr>
+      <tr><td>{{geco_SectionStartControl}} {{geco_SectionName}}</td><td class="time">{{geco_CumulTime}}</td><td class="sp">{{geco_SectionTime}}</td></tr>
 {{/geco_SectionSplits}}
     </table>
     <br />

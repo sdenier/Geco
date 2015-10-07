@@ -1,0 +1,97 @@
+<html data-gecodatajs="v3">
+  <head>
+{{#geco_FileOutput?}}
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+{{/geco_FileOutput?}}
+{{#geco_AutoRefresh?}}
+    <meta http-equiv="refresh" content="{{geco_RefreshInterval}}">
+{{/geco_AutoRefresh?}}
+    <style type="text/css">
+    html, body, table {
+        font-family: Verdana, sans-serif;
+        font-size: 12px;
+    }
+    h1 {
+        font-size: 1.5em;
+        text-align: center;
+    }
+    h2 { 
+        font-size: 1.5em;
+        margin: 1em 0 0.5em 1em;
+    }
+    table {
+        border-collapse:collapse;
+    }
+    .right, td {
+        text-align: right;
+        padding-right: 5px;
+    }
+    .controls {
+        color: #8B8B8B;
+    }
+    .times {
+    }
+    .splits {
+        color: #586A7C;
+        font-size: 11px;
+    }
+    .rsplit {
+        font-weight: bold;
+        color: #474747;
+    }
+    .left {
+        text-align: left;
+    }
+    .ctrlCode {
+        font-size: 9px;
+        font-weight: normal;
+    }
+    td:last-of-type {
+        padding-right: 0;
+    }
+    tbody:nth-child(2n+1) {
+        background-color: rgba(87, 168, 255, 0.11);
+    }
+    tbody:nth-child(2n) {
+        background-color: rgba(87, 168, 255, 0);
+    }
+    .best {
+        color: #0055F0;
+        font-weight: bold;
+    }
+    tbody.empty {
+        background-color: rgba(87, 168, 255, 0);
+    }
+    </style>
+  </head>
+  <body>
+    <div id="gecoResults">
+    <h1>{{geco_StageTitle}} - Sections</h1>
+
+    <a href="https://chrome.google.com/webstore/detail/osplits/kfnlllbjdagblbcdnmghcljobdlaoaii">Installer O'Splits sous Google Chrome</a>
+
+{{#geco_ResultsCollection}}
+    <h2>{{geco_ResultName}} ({{geco_NbFinishedRunners}}/{{geco_NbPresentRunners}}){{#geco_SingleCourse?}} - {{geco_CourseLength}}m, {{geco_CourseClimb}}m{{/geco_SingleCourse?}}</h2>
+    <table>
+{{#geco_RankedRunners}}
+      <tbody>
+        <tr class="rsplit"><td>{{geco_RunnerRank}}</td><td colspan="4" class="left">{{geco_RunnerFirstName}} / {{geco_RunnerLastName}} - {{geco_RunnerStartId}}</td><td>{{geco_RunnerResultTime}}</td><td colspan="3">Chrono {{geco_RunnerRaceTime}} - Spéciale {{geco_RunnerManualTimePenalty}}</td></tr>
+        <tr class="controls"><td></td>{{#geco_SectionHeaders}}<td class="right">{{geco_SectionStartControl}} {{geco_SectionName}}</td>{{/geco_SectionHeaders}}</tr>
+        <tr class="times"><td></td>{{#geco_SectionTimeRow}}<td {{#geco_BestTime?}}class="best"{{/geco_BestTime?}}>{{geco_CumulTime}}</td>{{/geco_SectionTimeRow}}</tr>
+        <tr class="splits"><td></td>{{#geco_SectionSplitRow}}<td {{#geco_BestSplit?}}class="best"{{/geco_BestSplit?}}>{{geco_SectionTime}}</td>{{/geco_SectionSplitRow}}</tr>
+      </tbody>
+{{/geco_RankedRunners}}
+      <tbody class="empty"><td>&nbsp;</td></tbody>
+{{#geco_UnrankedRunners}}
+      <tbody>
+        <tr class="rsplit"><td>{{geco_RunnerRank}}</td><td colspan="4" class="left">{{geco_RunnerFirstName}} / {{geco_RunnerLastName}} - {{geco_RunnerStartId}}</td><td>{{geco_RunnerStatusOrTime}}</td><td colspan="3">Chrono {{geco_RunnerRaceTime}} - Spéciale {{geco_RunnerManualTimePenalty}}</td></tr>
+        <tr class="controls"><td></td>{{#geco_SectionHeaders}}<td class="right">{{geco_SectionStartControl}} {{geco_SectionName}}</td>{{/geco_SectionHeaders}}</tr>
+        <tr class="times"><td></td>{{#geco_SectionTimeRow}}<td>{{geco_CumulTime}}</td>{{/geco_SectionTimeRow}}</tr>
+        <tr class="splits"><td></td>{{#geco_SectionSplitRow}}<td>{{geco_SectionTime}}</td>{{/geco_SectionSplitRow}}</tr>
+      </tbody>
+{{/geco_UnrankedRunners}}
+    </table>
+{{/geco_ResultsCollection}}
+    </div>
+  </body>
+</html>
