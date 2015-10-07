@@ -1,26 +1,61 @@
 <html>
   <head>
 {{#geco_FileOutput?}}
+    <title>{{geco_StageTitle}}</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
 {{/geco_FileOutput?}}
 {{#geco_AutoRefresh?}}
     <meta http-equiv="refresh" content="{{geco_RefreshInterval}}">
 {{/geco_AutoRefresh?}}
     <style type="text/css">
-      html, body, table { font-family: Verdana, sans-serif; font-size: 12px; }
-      h1 { font-size: 1.5em; text-align: center; }
-      h2 { font-size: 1.5em; margin: 1em 0 0.5em 1em; }
-      table { border-collapse: collapse; }
-      .runner td, .runner th { padding: 0px 10px }
-      .left { text-align: left }
-      .center { text-align: center }
-      .right, .time, .pace, .diff, .controls, .times, .splits { text-align: right }
-      .diff, .splits { font-style: italic }
-      .controls { background-color: #F0F0F0 }
-      .times, .splits { background-color: white }
-      .rsplit td, .col0 td, .col1 td { padding: 0 5px 0 0 }
-      .rsplit td, .time, .best { font-weight: bold }      
-      .runner { white-space: nowrap; text-overflow: ellipsis;}
+    html, body, table {
+        font-family: Verdana, sans-serif;
+        font-size: 12px;
+    }
+    h1 {
+        font-size: 1.5em;
+        text-align: center;
+    }
+    h2 { 
+        font-size: 1.5em;
+        margin: 1em 0 0.5em 1em;
+    }
+    table {
+        border-collapse:collapse;
+    }
+    th, td {
+        padding-right: 10px;
+    }
+    td {
+        color: #586A7C;
+    }
+    th:last-of-type, td:last-of-type {
+        padding-right: 0;
+    }
+    tbody tr:nth-child(2n+1) {
+        background-color: rgba(87, 168, 255, 0.11);
+    }
+    tbody tr:nth-child(2n) {
+        background-color: rgba(87, 168, 255, 0);
+    }
+    tbody.empty tr {
+        background-color: rgba(87, 168, 255, 0);
+    }
+    .right {
+        text-align: right;
+    }
+    .left {
+        text-align: left;
+        padding-right: 20px;
+        color: #000000;
+    }
+    .time {
+      font-weight: bold;
+      padding-right: 20px;
+    }
+    .diff {
+      font-style: italic
+    }
     </style>
   </head>
   <body>
@@ -28,18 +63,21 @@
 {{#geco_ResultsCollection}}
     <h2>{{geco_ResultName}} ({{geco_NbFinishedRunners}}/{{geco_NbPresentRunners}}){{#geco_SingleCourse?}} - {{geco_CourseLength}}m, {{geco_CourseClimb}}m{{/geco_SingleCourse?}}</h2>
     <table>
-      <tr class="runner"><th></th><th></th><th class="left">{{i18n_NameHeader}}</th><th class="left">{{i18n_ClubHeader}}</th>{{#geco_RunnerCategory?}}<th class="left">{{i18n_CategoryHeader}}</th>{{/geco_RunnerCategory?}}<th class="right">{{i18n_TimeHeader}}</th><th class="right">{{i18n_DiffHeader}}</th>{{#geco_SingleCourse?}}<th class="right">{{i18n_PaceHeader}}</th>{{/geco_SingleCourse?}}{{#geco_Penalties?}}<th class="right">{{i18n_PenaltyHeader}}</th><th class="right">{{i18n_RacetimeHeader}}</th>{{/geco_Penalties?}}</tr>
+      <thead>
+        <tr class="runner"><th></th><th></th><th class="left">{{i18n_NameHeader}}</th><th class="left">{{i18n_ClubHeader}}</th>{{#geco_RunnerCategory?}}<th class="left">{{i18n_CategoryHeader}}</th>{{/geco_RunnerCategory?}}<th class="time right">{{i18n_TimeHeader}}</th><th class="right">{{i18n_DiffHeader}}</th>{{#geco_SingleCourse?}}<th class="right">{{i18n_PaceHeader}}</th>{{/geco_SingleCourse?}}{{#geco_Penalties?}}<th class="right">{{i18n_PenaltyHeader}}</th><th class="right">{{i18n_RacetimeHeader}}</th>{{/geco_Penalties?}}</tr>
+      </thead>
+      <tbody>
 {{#geco_RankedRunners}}
-      <tr class="runner"><td>{{geco_RunnerRank}}</td><td>{{geco_RunnerStartId}}</td><td>{{geco_RunnerFirstName}} {{geco_RunnerLastName}}</td><td>{{geco_RunnerClubName}}</td>{{#geco_RunnerCategory?}}<td>{{geco_RunnerCategory}}</td>{{/geco_RunnerCategory?}}<td class="time">{{geco_RunnerResultTime}}</td><td class="diff">{{geco_RunnerDiffTime}}</td>{{#geco_SingleCourse?}}<td class="pace">{{geco_RunnerPace}}</td>{{/geco_SingleCourse?}}{{#geco_Penalties?}}<td class="right">{{geco_RunnerTimePenalty}}</td><td class="right">{{geco_RunnerRaceTime}}</td>{{/geco_Penalties?}}</tr>
+        <tr class="runner"><td class="right">{{geco_RunnerRank}}</td><td class="right">{{geco_RunnerStartId}}</td><td class="left">{{geco_RunnerFirstName}} {{geco_RunnerLastName}}</td><td class="left">{{geco_RunnerClubName}}</td>{{#geco_RunnerCategory?}}<td class="left">{{geco_RunnerCategory}}</td>{{/geco_RunnerCategory?}}<td class="time right">{{geco_RunnerResultTime}}</td><td class="diff right">{{geco_RunnerDiffTime}}</td>{{#geco_SingleCourse?}}<td class="pace right">{{geco_RunnerPace}}</td>{{/geco_SingleCourse?}}{{#geco_Penalties?}}<td class="right">{{geco_RunnerTimePenalty}}</td><td class="right">{{geco_RunnerRaceTime}}</td>{{/geco_Penalties?}}</tr>
 {{/geco_RankedRunners}}
-      <tr class="empty"><td>&nbsp;</td></tr>
+      </tbody>
+      <tbody class="empty"><tr><td>&nbsp;</td></tr></tbody>
+      <tbody>
 {{#geco_UnrankedRunners}}
-      <tr class="runner"><td>{{geco_RunnerRank}}</td><td>{{geco_RunnerStartId}}</td><td>{{geco_RunnerFirstName}} {{geco_RunnerLastName}}</td><td>{{geco_RunnerClubName}}</td>{{#geco_RunnerCategory?}}<td>{{geco_RunnerCategory}}</td>{{/geco_RunnerCategory?}}<td class="time">{{geco_RunnerStatusOrTime}}</td><td></td>{{#geco_SingleCourse?}}<td></td>{{/geco_SingleCourse?}}{{#geco_Penalties?}}<td class="right">{{geco_RunnerTimePenalty}}</td><td class="right">{{geco_RunnerRaceTime}}</td>{{/geco_Penalties?}}</tr>
+        <tr class="runner"><td class="right">{{geco_RunnerRank}}</td><td class="right">{{geco_RunnerStartId}}</td><td class="left">{{geco_RunnerFirstName}} {{geco_RunnerLastName}}</td><td class="left">{{geco_RunnerClubName}}</td>{{#geco_RunnerCategory?}}<td class="left">{{geco_RunnerCategory}}</td>{{/geco_RunnerCategory?}}<td class="time right">{{geco_RunnerStatusOrTime}}</td><td></td>{{#geco_SingleCourse?}}<td></td>{{/geco_SingleCourse?}}{{#geco_Penalties?}}<td class="right">{{geco_RunnerTimePenalty}}</td><td class="right">{{geco_RunnerRaceTime}}</td>{{/geco_Penalties?}}</tr>
 {{/geco_UnrankedRunners}}
+      </tbody>
     </table>
-{{#geco_PrintMode?}}
-    <p>{{i18n_LastUpdateLabel}} {{geco_Timestamp}}</p>
-{{/geco_PrintMode?}}
 {{/geco_ResultsCollection}}
   </body>
 </html>
