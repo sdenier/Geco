@@ -1,0 +1,10 @@
+slf4j-api-1.7.10.jar
+slf4j-simple-1.7.10.jar
+spark-core-2.1.jar
+jetty-http-9.2.10.v20150310.jar
+jetty-io-9.2.10.v20150310.jar
+jetty-server-9.2.10.v20150310.jar
+jetty-servlet-9.2.10.v20150310.jar
+jetty-util-9.2.10.v20150310.jar
+jetty-webapp-9.2.10.v20150310.jar
+servlet-api-3.1.jar
